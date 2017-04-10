@@ -1,0 +1,23 @@
+{
+  "name": "@hfe/easy-canvas",
+  "version": "0.1.0-beta.1",
+  "description": "",
+  "keywords": "",
+  "main": "src/index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "chenzhuo04",
+  "license": "ISC",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
