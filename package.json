@@ -1,12 +1,9 @@
 {
-  "name": "@hfe/easy-canvas",
-  "version": "0.1.0-beta.1",
-  "description": "",
-  "keywords": "",
+  "name": "@hfe/perf-fps",
+  "version": "0.0.1",
+  "description": "采集页面fps（移除tab切换和浏览器sleep产生的脏数据），并上报到perf性能监控平台",
+  "keywords": "perf, fps",
   "main": "src/index.js",
-  "directories": {
-    "example": "examples"
-  },
   "repository": {
     "type": "git",
     "url": ""
