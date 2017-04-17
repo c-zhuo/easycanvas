@@ -61,7 +61,7 @@ var protoFunction = {
         var _item = item;
         var _img = utils.funcOrValue(_item.img);
 
-        _item.zindex = _item.zindex || 0;
+        _item.zIndex = _item.zIndex || 0;
         _item.sx = _item.sx || 0;
         _item.sy = _item.sy || 0;
         _item.tx = _item.tx || 0;
@@ -95,8 +95,8 @@ var protoFunction = {
                 y: 0
             };
             var draggingFlag = false;
-            var oMousedown = _item.events.mousedown;
-            _item.events.mousedown = function (e) {
+            var oMousedown = _item.events.mousedown || _item.events.touchstart;
+            _item.events.touchstart = _item.events.mousedown = function (e) {
                 draggingFlag = true;
 
                 // if dragable is a object, it means the range of dragable area
@@ -115,22 +115,22 @@ var protoFunction = {
                     }
                 }
 
-                startDragPosition.x = e.screenX;
-                startDragPosition.y = e.screenY;
+                startDragPosition.x = e.screenX || e.layerX;
+                startDragPosition.y = e.screenY || e.layerY;
                 return oMousedown ? oMousedown.call(_item, e) : 'drag';
             }.bind(_item);
             var oMousehold = _item.events.mousehold;
-            _item.events.mousemove = function (e) {
+            _item.events.touchmove = _item.events.mousemove = function (e) {
                 if (draggingFlag) {
-                    this.tx += (e.screenX - startDragPosition.x);
-                    this.ty += (e.screenY - startDragPosition.y);
-                    startDragPosition.x = e.screenX;
-                    startDragPosition.y = e.screenY;
+                    this.tx += (e.screenX || e.layerX - startDragPosition.x);
+                    this.ty += (e.screenY || e.layerY - startDragPosition.y);
+                    startDragPosition.x = e.screenX || e.layerX;
+                    startDragPosition.y = e.screenY || e.layerY;
                 }
                 return oMousehold ? oMousehold.call(_item, e) : 'drag';
             }.bind(_item);
-            var oMouseup = _item.events.mouseup;
-            _item.events.mouseup = function (e) {
+            var oMouseup = _item.events.mouseup || _item.events.touchend;
+            _item.events.touchend = _item.events.mouseup = function (e) {
                 draggingFlag = false;
                 return oMouseup ? oMouseup.call(_item, e) : 'drag';
             }
@@ -187,8 +187,11 @@ var protoFunction = {
         return _item;
     },
 
-    remove: function (item) {
-        this.paintList.splice(this.paintList.indexOf(item), 1);
+    remove: function (item, del) {
+        item.visible = false;
+        if (del) {
+            this.paintList.splice(this.paintList.indexOf(item), 1);
+        }
     },
 
     register: function (dom, option) {
@@ -208,6 +211,9 @@ var protoFunction = {
         dom.addEventListener('mousedown', _this.$handler.bind(_this));
         dom.addEventListener('mouseup', _this.$handler.bind(_this));
         dom.addEventListener('mousemove', _this.$handler.bind(_this));
+        dom.addEventListener('touchstart', _this.$handler.bind(_this));
+        dom.addEventListener('touchend', _this.$handler.bind(_this));
+        dom.addEventListener('touchmove', _this.$handler.bind(_this));
 
         setInterval(function () {
             if (this.eHoldingFlag) {
@@ -215,15 +221,31 @@ var protoFunction = {
                 this.$handler.call(this, {
                     layerX: e.layerX,
                     layerY: e.layerY,
-                    screenX: e.screenX,
-                    screenY: e.screenY,
+                    screenX: e.screenX || e.layerX,
+                    screenY: e.screenY || e.layerY,
                     type: 'mousehold',
                 });
             }
         }.bind(_this), 40);
     },
 
+    $visibles: function () {
+        return this.paintList
+            .filter(function (i) {
+                if (utils.funcOrValue(i.visible, i) === false) {
+                    return false;
+                }
+                return true;
+            });
+    },
+
     $handler: function (e) {
+        if (!e.layerX && e.touches && e.touches[0]) {
+            e.layerX = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
+            e.layerY = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
+        }
+console.log(e.type);
+
         var _this = this;
         var caughts = _this.paintList
             .filter(function (i) {
@@ -239,24 +261,27 @@ var protoFunction = {
                 var _ty = i.$cache.ty || utils.funcOrValue(i.ty, i);
                 var _tw = i.$cache.tw || utils.funcOrValue(i.tw, i);
                 var _th = i.$cache.th || utils.funcOrValue(i.th, i);
-                if (!i.$cache.tx && i.locate === 'center') {
+                if (i.$cache.tx === undefined && i.locate === 'center') {
                     _tx = _tx - 0.5 * _tw;
                     _ty = _ty - 0.5 * _th;
                 }
 
                 // 兼容 !!TODO!!
-                return (e.layerX > _tx) && (e.layerX < _tx + _tw) &&
-                    (e.layerY > _ty) && (e.layerY < _ty + _th);
+                return positionCompare.pointInRect(
+                    e.layerX, e.layerY,
+                    _tx, _tx + _tw,
+                    _ty, _ty + _th
+                );
             })
             .sort(function (a, b) {
                 return a.eIndex < b.eIndex;
             });
 
-        if (!_this.eHoldingFlag && e.type === 'mousedown') {
+        if (!_this.eHoldingFlag && (e.type === 'mousedown' || e.type === 'touchstart')) {
             _this.eHoldingFlag = e;
-        } else if (_this.eHoldingFlag && e.type === 'mouseup') {
+        } else if (_this.eHoldingFlag && (e.type === 'mouseup' || e.type === 'touchend')) {
             _this.eHoldingFlag = false;
-        } else if (_this.eHoldingFlag && e.type === 'mousemove') {
+        } else if (_this.eHoldingFlag && (e.type === 'mousemove' || e.type === 'touchmove')) {
             _this.eHoldingFlag = e;
         }
 
@@ -273,10 +298,11 @@ var protoFunction = {
 
             if (handler) {
                 _this.eLastMouseHover = caughts[i];
-                if (handler.call(caughts[i], e) === true) {
+                var result = handler.call(caughts[i], e);
+                if (result === true) {
                     _this.eHoldingFlag = false;
                     return;
-                } else if (handler.call(caughts[i], e) === 'drag') {
+                } else if (result === 'drag') {
                     _this.eHoldingFlag = false;
                     return;
                 }
@@ -308,7 +334,8 @@ var protoFunction = {
     write: function (text) {
         this.paintContext.font = text.font;
         this.paintContext.strokeStyle = text.style;
-        this.paintContext.strokeText(text.content, text.tx, text.ty);
+        this.paintContext.fillStyle = text.style;
+        this.paintContext[text.type || 'strokeText'](text.content, text.tx, text.ty);
     },
 
     paint: function () {
@@ -341,6 +368,7 @@ var protoFunction = {
         var _tw = utils.funcOrValue(i.tw, i);
         var _th = utils.funcOrValue(i.th, i);
         var _img = utils.funcOrValue(i.img);
+        var _opacity = utils.funcOrValue(i.opacity, i);
         var _r = utils.funcOrValue(i.rotate, i);
         var _mirrX = utils.funcOrValue(i.mirrX, i);
         // var _sx = i.sx;
@@ -409,7 +437,7 @@ var protoFunction = {
         // console.log(_sx, _sy, _sw, _sh, _tx, _ty, _tw, _th);
         // this.paintContext.fillRect(_tx, _ty, _tw, _th);
         if (i.opacity !== 1) {
-            this.paintContext.globalAlpha = i.opacity;
+            this.paintContext.globalAlpha = _opacity;
         }
 
         i.$cache = {
@@ -429,6 +457,7 @@ var protoFunction = {
                     content: item.content,
                     font: item.font,
                     style: item.style,
+                    type: item.type || 'fillText',
                 });
             });
         }
