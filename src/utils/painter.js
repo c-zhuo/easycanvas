@@ -55,30 +55,38 @@ var protoFunction = {
      *  }
      *
      */
+
+    preAdd: function (item) {
+        var _img = utils.funcOrValue(item.img);
+
+        item.zIndex = item.zIndex || 0;
+        item.sx = item.sx || 0;
+        item.sy = item.sy || 0;
+        item.tx = item.tx || 0;
+        item.ty = item.ty || 0;
+        item.sw = item.sw || _img.width;
+        item.sh = item.sh || _img.height;
+        item.tw = item.tw || 0;
+        item.th = item.th || 0;
+        item.mirrX = item.mirrX || 0;
+        item.opacity = item.opacity || 1;
+        item.marginX = item.marginX || 0;
+        item.marginY = item.marginY || 0;
+        item.events = item.events || {};
+        item.eIndex = item.eIndex || 0;
+        item.locate = item.locate || 'center';
+        item.visible = item.visible;
+
+        return item;
+    },
+
     add: function (item) {
         if (!item) return;
 
         var _item = item;
         var _img = utils.funcOrValue(_item.img);
 
-        _item.zIndex = _item.zIndex || 0;
-        _item.sx = _item.sx || 0;
-        _item.sy = _item.sy || 0;
-        _item.tx = _item.tx || 0;
-        _item.ty = _item.ty || 0;
-        _item.sw = _item.sw || _img.width;
-        _item.sh = _item.sh || _img.height;
-        _item.tw = _item.tw || 0;
-        _item.th = _item.th || 0;
-        _item.mirrX = _item.mirrX || 0;
-        _item.opacity = _item.opacity || 1;
-        _item.marginX = _item.marginX || 0;
-        _item.marginY = _item.marginY || 0;
-        _item.events = _item.events || {};
-        _item.eIndex = _item.eIndex || 0;
-        _item.locate = _item.locate || 'center';
-
-        _item.visible = _item.visible;
+        this.preAdd(_item);
 
         // avoid muti calculate of function values (may include some movement operations)
         _item.$cache = {
@@ -103,7 +111,7 @@ var protoFunction = {
                 if (typeof _item.dragable === 'object') {
                     var relativeX = e.layerX - this.tx;
                     var relativeY = e.layerY - this.ty;
-                    if (positionCompare.pointInRect(
+                    if (!positionCompare.pointInRect(
                             relativeX, relativeY,
                             utils.funcOrValue(_item.dragable.x1, _item),
                             utils.funcOrValue(_item.dragable.x2, _item),
@@ -122,8 +130,8 @@ var protoFunction = {
             var oMousehold = _item.events.mousehold;
             _item.events.touchmove = _item.events.mousemove = function (e) {
                 if (draggingFlag) {
-                    this.tx += (e.screenX || e.layerX - startDragPosition.x);
-                    this.ty += (e.screenY || e.layerY - startDragPosition.y);
+                    this.tx += (e.screenX || e.layerX) - startDragPosition.x;
+                    this.ty += (e.screenY || e.layerY) - startDragPosition.y;
                     startDragPosition.x = e.screenX || e.layerX;
                     startDragPosition.y = e.screenY || e.layerY;
                 }
@@ -150,10 +158,10 @@ var protoFunction = {
                         utils.funcOrValue(_item.dragable.y1, _item),
                         utils.funcOrValue(_item.dragable.y2, _item),
                 )) {
+                    e.preventDefault();
                     return oClick ? oClick.call(_item, e) : true;
                 }
-                e.preventDefault();
-                return true;
+                return oClick ? oClick.call(_item, e) : false;
             }
         }
 
@@ -208,6 +216,7 @@ var protoFunction = {
 
         var _this = this;
         dom.addEventListener('click', _this.$handler.bind(_this));
+        dom.addEventListener('dblclick', _this.$handler.bind(_this));
         dom.addEventListener('mousedown', _this.$handler.bind(_this));
         dom.addEventListener('mouseup', _this.$handler.bind(_this));
         dom.addEventListener('mousemove', _this.$handler.bind(_this));
@@ -244,7 +253,6 @@ var protoFunction = {
             e.layerX = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
             e.layerY = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
         }
-console.log(e.type);
 
         var _this = this;
         var caughts = _this.paintList
@@ -335,7 +343,10 @@ console.log(e.type);
         this.paintContext.font = text.font;
         this.paintContext.strokeStyle = text.style;
         this.paintContext.fillStyle = text.style;
-        this.paintContext[text.type || 'strokeText'](text.content, text.tx, text.ty);
+
+        var content = utils.funcOrValue(text.content);
+
+        this.paintContext[text.type || 'strokeText'](content, text.tx, text.ty);
     },
 
     paint: function () {
@@ -358,6 +369,12 @@ console.log(e.type);
         }
 
         var that = this;
+
+        if (i.belowAddon) {
+            i.belowAddon.forEach(function (c, _index) {
+                that.$perPaint.call(that, that.preAdd(c), _index);
+            });
+        }
 
         var _sx = utils.funcOrValue(i.sx, i);
         var _sy = utils.funcOrValue(i.sy, i);
@@ -450,15 +467,18 @@ console.log(e.type);
         this.paintContext.drawImage(_img, _sx, _sy, _sw, _sh, _tx, _ty, _tw, _th);
 
         if (i.text) {
-            i.text.forEach(function (item) {
-                that.write({
-                    tx: _tx + item.tx,
-                    ty: _ty + item.ty,
-                    content: item.content,
-                    font: item.font,
-                    style: item.style,
-                    type: item.type || 'fillText',
-                });
+            i.text.forEach(function (_item) {
+                var item = utils.funcOrValue(_item);
+                if (item) {
+                        that.write({
+                        tx: _tx + item.tx,
+                        ty: _ty + item.ty,
+                        content: item.content,
+                        font: item.font || '30',
+                        style: item.style || 'white',
+                        type: item.type || 'fillText',
+                    });
+                }
             });
         }
 
@@ -475,6 +495,12 @@ console.log(e.type);
         }
         if (_mirrX) {
             this.paintContext.restore();
+        }
+
+        if (i.aboveAddon) {
+            i.aboveAddon.forEach(function (c, _index) {
+                that.$perPaint.call(that, that.preAdd(c), _index);
+            });
         }
     },
 
