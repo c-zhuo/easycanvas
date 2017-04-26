@@ -10,7 +10,7 @@ module.exports = {
 		transitions.push(a);
 		return function () {
 			var current = transitions[l];
-			if ((current >= a && current < b) || (current > b && current <= a)) {
+			if (current !== b) {
 				transitions[l] += (b - a) / second2frame(duration);
 			}
 			return current;
