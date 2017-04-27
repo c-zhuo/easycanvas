@@ -18,7 +18,9 @@ var protoData = {
     },
     paintList: [],
     eHoldingFlag: false,
-    eLastMouseHover: null
+    eLastMouseHover: null,
+    maxFps: 0,
+    lastPaintTime: 0,
 };
 
 var protoFunction = {
@@ -28,6 +30,10 @@ var protoFunction = {
 
     setFpsHandler: function (callback) {
         this.fpsHandler = callback;
+    },
+
+    setMaxFps: function (val) {
+        this.maxFps = val || 0;
     },
 
     pause: function (val) {
@@ -68,6 +74,8 @@ var protoFunction = {
         item.sh = item.sh || _img.height;
         item.tw = item.tw || 0;
         item.th = item.th || 0;
+        item.rx = item.rx;
+        item.ry = item.ry;
         item.mirrX = item.mirrX || 0;
         item.opacity = item.opacity || 1;
         item.marginX = item.marginX || 0;
@@ -76,7 +84,6 @@ var protoFunction = {
         item.eIndex = item.eIndex || 0;
         item.locate = item.locate || 'center';
         item.visible = item.visible;
-        item.passEvent = item.passEvent;
 
         return item;
     },
@@ -283,7 +290,7 @@ var protoFunction = {
                 );
             })
             .sort(function (a, b) {
-                return utils.funcOrValue(a.eIndex, a) < utils.funcOrValue(b.eIndex, b);
+                return a.eIndex < b.eIndex;
             });
 
         if (!_this.eHoldingFlag && (e.type === 'mousedown' || e.type === 'touchstart')) {
@@ -298,10 +305,7 @@ var protoFunction = {
             var handler = caughts[i]['events'][e.type];
 
             // hover更替，触发mouseout
-            if ((e.type === 'mousemove' || e.type === 'touchmove') &&
-                _this.eLastMouseHover && _this.eLastMouseHover !== caughts[i] &&
-                caughts.indexOf(_this.eLastMouseHover) === -1
-                ) {
+            if (_this.eLastMouseHover && _this.eLastMouseHover !== caughts[i]) {
                 var eMouseout = _this.eLastMouseHover['events']['mouseout'];
                 if (eMouseout) {
                     eMouseout.call(_this.eLastMouseHover, e);
@@ -313,15 +317,11 @@ var protoFunction = {
                 var result = handler.call(caughts[i], e);
                 if (result === true) {
                     _this.eHoldingFlag = false;
-                    return result;
+                    return;
                 } else if (result === 'drag') {
                     _this.eHoldingFlag = false;
-                    return result;
+                    return;
                 }
-            }
-
-            if (caughts[i].passEvent === false) {
-                return;
             }
         }
 
@@ -338,7 +338,7 @@ var protoFunction = {
         if (handler) {
             if (handler(e)) {
                 _this.eHoldingFlag = false;
-                return true;
+                return;
             }
         }
     },
@@ -351,12 +351,15 @@ var protoFunction = {
         this.paintContext.font = text.font;
         this.paintContext.strokeStyle = text.style;
         this.paintContext.fillStyle = text.style;
-        this.paintContext.textAlign = text.align || 'left';
-        this.paintContext[text.type || 'strokeText'](text.content, text.tx, text.ty);
+
+        var content = utils.funcOrValue(text.content);
+
+        this.paintContext[text.type || 'strokeText'](content, text.tx, text.ty);
     },
 
     paint: function () {
         if (this.pausing) return;
+
         this.paintContext.clearRect(0, 0, this.contextWidth, this.contextHeight);
 
         var _this = this;
@@ -376,24 +379,25 @@ var protoFunction = {
 
         var that = this;
 
-        var _belowAddon = utils.funcOrValue(i.belowAddon, i);
-        if (_belowAddon) {
-            _belowAddon.forEach(function (c, _index) {
+        if (i.belowAddon) {
+            i.belowAddon.forEach(function (c, _index) {
                 that.$perPaint.call(that, that.preAdd(c), _index);
             });
         }
 
-        var _img = utils.funcOrValue(i.img);
         var _sx = utils.funcOrValue(i.sx, i);
         var _sy = utils.funcOrValue(i.sy, i);
         var _tx = utils.funcOrValue(i.tx, i) + i.marginX;
         var _ty = utils.funcOrValue(i.ty, i) + i.marginY;
-        var _sw = utils.funcOrValue(i.sw, i) || _img.width;
-        var _sh = utils.funcOrValue(i.sh, i) || _img.height;
+        var _sw = utils.funcOrValue(i.sw, i);
+        var _sh = utils.funcOrValue(i.sh, i);
         var _tw = utils.funcOrValue(i.tw, i);
         var _th = utils.funcOrValue(i.th, i);
+        var _img = utils.funcOrValue(i.img);
         var _opacity = utils.funcOrValue(i.opacity, i);
         var _r = utils.funcOrValue(i.rotate, i);
+        var _rx = utils.funcOrValue(i.rx, i);
+        var _ry = utils.funcOrValue(i.ry, i);
         var _mirrX = utils.funcOrValue(i.mirrX, i);
         // var _sx = i.sx;
         // var _sy = i.sy;
@@ -445,9 +449,11 @@ var protoFunction = {
 
         if (_r) {
             this.paintContext.save();
-            this.paintContext.translate(_tx + 0.5 * _tw, _ty + 0.5 * _th);
-            this.paintContext.rotate(-_r * Math.PI / 180);//旋转47度
-            this.paintContext.translate(-_tx - 0.5 * _tw, -_ty - 0.5 * _th);
+            var transX = _rx !== undefined ? _rx : _tx + 0.5 * _tw;
+            var transY = _ry !== undefined ? _ry : _ty + 0.5 * _th;
+            this.paintContext.translate(transX, transY);
+            this.paintContext.rotate(-_r * Math.PI / 180);
+            this.paintContext.translate(-transX, -transY);
         }
 
         if (_mirrX) {
@@ -458,6 +464,8 @@ var protoFunction = {
         }
 
 
+        // console.log(_sx, _sy, _sw, _sh, _tx, _ty, _tw, _th);
+        // this.paintContext.fillRect(_tx, _ty, _tw, _th);
         if (i.opacity !== 1) {
             this.paintContext.globalAlpha = _opacity;
         }
@@ -469,11 +477,6 @@ var protoFunction = {
             th: _th
         };
 
-        // if (_sx + _sw > _img.width) {
-        //     console.log('!!!!!')
-        // }
-
-        // this.paintContext.fillRect(_tx, _ty, _tw, _th);
         if (_sw && _sh) {
             this.paintContext.drawImage(_img, _sx, _sy, _sw, _sh, _tx, _ty, _tw, _th);
         }
@@ -482,12 +485,11 @@ var protoFunction = {
             i.text.forEach(function (_item) {
                 var item = utils.funcOrValue(_item);
                 if (item) {
-                    that.write({
-                        tx: _tx + utils.funcOrValue(item.tx, i),
-                        ty: _ty + utils.funcOrValue(item.ty, i),
-                        content: utils.funcOrValue(item.content, i),
-                        align: item.align,
-                        font: item.font || '30px',
+                        that.write({
+                        tx: _tx + item.tx,
+                        ty: _ty + item.ty,
+                        content: item.content,
+                        font: item.font || '30',
                         style: item.style || 'white',
                         type: item.type || 'fillText',
                     });
@@ -510,9 +512,8 @@ var protoFunction = {
             this.paintContext.restore();
         }
 
-        var _aboveAddon = utils.funcOrValue(i.aboveAddon, i);
-        if (_aboveAddon) {
-            _aboveAddon.forEach(function (c, _index) {
+        if (i.aboveAddon) {
+            i.aboveAddon.forEach(function (c, _index) {
                 that.$perPaint.call(that, that.preAdd(c), _index);
             });
         }
