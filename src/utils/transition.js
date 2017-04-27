@@ -10,8 +10,10 @@ module.exports = {
 		transitions.push(a);
 		return function () {
 			var current = transitions[l];
-			if (current !== b) {
+			if ((current >= a && current < b) || (current > b && current <= a)) {
 				transitions[l] += (b - a) / second2frame(duration);
+			} else {
+				return b;
 			}
 			return current;
 		};
@@ -21,9 +23,9 @@ module.exports = {
 		var l = transitions.length;
 		transitions.push(0);
 		return function () {
-			var current = Math.abs(Math.sin(transitions[l]));
+			var current = Math.sin(transitions[l]) + 1; // 0 ~ 2
 			transitions[l] += 3.1416 / second2frame(duration);
-			return a + (b - a) * current;
+			return a + (b - a) * current / 2;
 		};
 	}
 };
