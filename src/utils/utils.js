@@ -5,5 +5,13 @@ module.exports = {
 		}
 
 		return funcOrValue;
-	}
+	},
+
+	getMinFromArray: function (arr) {
+		var res = arr[0];
+		arr.forEach(function (item) {
+			if (item < res) res = item;
+		});
+		return res;
+	},
 };

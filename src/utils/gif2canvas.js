@@ -14,26 +14,25 @@ var gif2canvas = function (url, callback, width, height) {
 		height: _height,
 	});
 
-	if (Cache[flag] && Cache[flag] !== 'processing') {
-    	callback(Cache[flag]);
-		return;
-	}
+    if (Cache[flag] && Cache[flag] !== 'processing') {
+        callback(Cache[flag]);
+        return;
+    }
+    if (Cache[flag] === 'processing') {
+        // 防止并发初始化gif2canvas
+        setTimeout(function () {
+            gif2canvas(url, callback, _width, _height);
+        }, 100);
+        return;
+    }
 
-    var src = '../image/monster/deer_3_5.gif';
+    Cache[flag] = 'processing';
+
     imgLoader(url, function (img) {
-        if (Cache[flag] === 'processing') {
-            // 防止并发初始化gif2canvas
-            setTimeout(function () {
-                gif2canvas(url, callback, _width, _height);
-            }, 100);
-            return;
-        }
-
         var temp = document.createElement('canvas');
         temp.width = img.width;
         temp.height = img.height;
 
-        Cache[flag] = 'processing';
         // window.gifler(img.src).frames(temp, function (ctx, frame) {
         //     ctx.canvas.width  = img.width;
         //     ctx.canvas.height = img.height;

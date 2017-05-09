@@ -18,9 +18,7 @@ var protoData = {
     },
     paintList: [],
     eHoldingFlag: false,
-    eLastMouseHover: null,
-    maxFps: 0,
-    lastPaintTime: 0,
+    eLastMouseHover: null
 };
 
 var protoFunction = {
@@ -30,10 +28,6 @@ var protoFunction = {
 
     setFpsHandler: function (callback) {
         this.fpsHandler = callback;
-    },
-
-    setMaxFps: function (val) {
-        this.maxFps = val || 0;
     },
 
     pause: function (val) {
@@ -74,16 +68,16 @@ var protoFunction = {
         item.sh = item.sh || _img.height;
         item.tw = item.tw || 0;
         item.th = item.th || 0;
-        item.rx = item.rx;
-        item.ry = item.ry;
         item.mirrX = item.mirrX || 0;
-        item.opacity = item.opacity || 1;
+        item.opacity = item.opacity === undefined ? 1 : item.opacity;
         item.marginX = item.marginX || 0;
         item.marginY = item.marginY || 0;
         item.events = item.events || {};
         item.eIndex = item.eIndex || 0;
         item.locate = item.locate || 'center';
         item.visible = item.visible;
+        item.passEvent = item.passEvent;
+        item.perTickHandler = item.perTickHandler;
 
         return item;
     },
@@ -205,6 +199,12 @@ var protoFunction = {
 
     remove: function (item, del) {
         item.visible = false;
+        item.removing = true;
+        setTimeout(function () {
+            this.paintList = this.paintList.filter(function (item) {
+                return item.removing !== true;
+            });
+        }.bind(this));
         if (del) {
             this.paintList.splice(this.paintList.indexOf(item), 1);
         }
@@ -290,7 +290,7 @@ var protoFunction = {
                 );
             })
             .sort(function (a, b) {
-                return a.eIndex < b.eIndex;
+                return utils.funcOrValue(a.eIndex, a) < utils.funcOrValue(b.eIndex, b);
             });
 
         if (!_this.eHoldingFlag && (e.type === 'mousedown' || e.type === 'touchstart')) {
@@ -305,7 +305,10 @@ var protoFunction = {
             var handler = caughts[i]['events'][e.type];
 
             // hover更替，触发mouseout
-            if (_this.eLastMouseHover && _this.eLastMouseHover !== caughts[i]) {
+            if ((e.type === 'mousemove' || e.type === 'touchmove') &&
+                _this.eLastMouseHover && _this.eLastMouseHover !== caughts[i] &&
+                caughts.indexOf(_this.eLastMouseHover) === -1
+                ) {
                 var eMouseout = _this.eLastMouseHover['events']['mouseout'];
                 if (eMouseout) {
                     eMouseout.call(_this.eLastMouseHover, e);
@@ -317,11 +320,15 @@ var protoFunction = {
                 var result = handler.call(caughts[i], e);
                 if (result === true) {
                     _this.eHoldingFlag = false;
-                    return;
+                    return result;
                 } else if (result === 'drag') {
                     _this.eHoldingFlag = false;
-                    return;
+                    return result;
                 }
+            }
+
+            if (caughts[i].passEvent === false) {
+                return;
             }
         }
 
@@ -338,7 +345,7 @@ var protoFunction = {
         if (handler) {
             if (handler(e)) {
                 _this.eHoldingFlag = false;
-                return;
+                return true;
             }
         }
     },
@@ -351,15 +358,12 @@ var protoFunction = {
         this.paintContext.font = text.font;
         this.paintContext.strokeStyle = text.style;
         this.paintContext.fillStyle = text.style;
-
-        var content = utils.funcOrValue(text.content);
-
-        this.paintContext[text.type || 'strokeText'](content, text.tx, text.ty);
+        this.paintContext.textAlign = text.align || 'left';
+        this.paintContext[text.type || 'fillText'](text.content, parseInt(text.tx), parseInt(text.ty));
     },
 
     paint: function () {
         if (this.pausing) return;
-
         this.paintContext.clearRect(0, 0, this.contextWidth, this.contextHeight);
 
         var _this = this;
@@ -373,31 +377,34 @@ var protoFunction = {
     },
 
     $perPaint: function (i, index) {
+        if (i.perTickHandler) {
+            i.perTickHandler.call(i);
+        }
+
         if (utils.funcOrValue(i.visible, i) === false) {
             return;
         }
 
         var that = this;
 
-        if (i.belowAddon) {
-            i.belowAddon.forEach(function (c, _index) {
+        var _belowAddon = utils.funcOrValue(i.belowAddon, i);
+        if (_belowAddon) {
+            _belowAddon.forEach(function (c, _index) {
                 that.$perPaint.call(that, that.preAdd(c), _index);
             });
         }
 
+        var _img = utils.funcOrValue(i.img);
         var _sx = utils.funcOrValue(i.sx, i);
         var _sy = utils.funcOrValue(i.sy, i);
         var _tx = utils.funcOrValue(i.tx, i) + i.marginX;
         var _ty = utils.funcOrValue(i.ty, i) + i.marginY;
-        var _sw = utils.funcOrValue(i.sw, i);
-        var _sh = utils.funcOrValue(i.sh, i);
+        var _sw = utils.funcOrValue(i.sw, i) || _img.width;
+        var _sh = utils.funcOrValue(i.sh, i) || _img.height;
         var _tw = utils.funcOrValue(i.tw, i);
         var _th = utils.funcOrValue(i.th, i);
-        var _img = utils.funcOrValue(i.img);
         var _opacity = utils.funcOrValue(i.opacity, i);
         var _r = utils.funcOrValue(i.rotate, i);
-        var _rx = utils.funcOrValue(i.rx, i);
-        var _ry = utils.funcOrValue(i.ry, i);
         var _mirrX = utils.funcOrValue(i.mirrX, i);
         // var _sx = i.sx;
         // var _sy = i.sy;
@@ -420,21 +427,23 @@ var protoFunction = {
                 loopIndex = 0;
             }
 
-            _sx = loopIndex % (0 - i.loop.x) * px;
-            _sy = parseInt(loopIndex / (0 - i.loop.x)) % (0 - i.loop.y) * py;
+            if (i.loop.x) {
+                _sx = loopIndex % (0 - i.loop.x) * px;
+                _sy = parseInt(loopIndex / (0 - i.loop.x)) % (0 - i.loop.y) * py;
+            }
 
             if (!i.loop.circle && loopIndex > 0 && _sx === 0 && _sy === 0) {
-                this.paintList.splice(index, 1);
+                this.remove(i);
                 return;
             }
 
-            if (this.nextTickTime - i.loop.lastTickTime >= i.loop.interval) {
+            if (this.nextTickTime - i.loop.lastTickTime >= utils.funcOrValue(i.loop.interval, i)) {
                 i.loop.lastTickTime = this.nextTickTime;
                 i.loop.index++;
             }
 
-            _sw = px;
-            _sh = py;
+            _sw = px || _sw;
+            _sh = py || _sh;
             _tw = _tw || px;
             _th = _th || py;
         }
@@ -449,11 +458,9 @@ var protoFunction = {
 
         if (_r) {
             this.paintContext.save();
-            var transX = _rx !== undefined ? _rx : _tx + 0.5 * _tw;
-            var transY = _ry !== undefined ? _ry : _ty + 0.5 * _th;
-            this.paintContext.translate(transX, transY);
-            this.paintContext.rotate(-_r * Math.PI / 180);
-            this.paintContext.translate(-transX, -transY);
+            this.paintContext.translate(_tx + 0.5 * _tw, _ty + 0.5 * _th);
+            this.paintContext.rotate(-_r * Math.PI / 180);//旋转47度
+            this.paintContext.translate(-_tx - 0.5 * _tw, -_ty - 0.5 * _th);
         }
 
         if (_mirrX) {
@@ -464,11 +471,14 @@ var protoFunction = {
         }
 
 
-        // console.log(_sx, _sy, _sw, _sh, _tx, _ty, _tw, _th);
-        // this.paintContext.fillRect(_tx, _ty, _tw, _th);
         if (i.opacity !== 1) {
             this.paintContext.globalAlpha = _opacity;
         }
+
+        _tx = parseInt(_tx);
+        _ty = parseInt(_ty);
+        _tw = parseInt(_tw);
+        _th = parseInt(_th);
 
         i.$cache = {
             tx: _tx,
@@ -477,19 +487,30 @@ var protoFunction = {
             th: _th
         };
 
+        // if (_sx + _sw > _img.width) {
+        //     console.log('!!!!!')
+        // }
+
+        // this.paintContext.fillRect(_tx, _ty, _tw, _th);
         if (_sw && _sh) {
             this.paintContext.drawImage(_img, _sx, _sy, _sw, _sh, _tx, _ty, _tw, _th);
         }
 
-        if (i.text) {
-            i.text.forEach(function (_item) {
+        if (i.opacity !== 1) {
+            this.paintContext.globalAlpha = 1;
+        }
+
+        var _text = utils.funcOrValue(i.text, i);
+        if (_text) {
+            _text.forEach(function (_item) {
                 var item = utils.funcOrValue(_item);
                 if (item) {
-                        that.write({
-                        tx: _tx + item.tx,
-                        ty: _ty + item.ty,
-                        content: item.content,
-                        font: item.font || '30',
+                    that.write({
+                        tx: _tx + utils.funcOrValue(item.tx, i),
+                        ty: _ty + utils.funcOrValue(item.ty, i),
+                        content: utils.funcOrValue(item.content, i) || '',
+                        align: item.align,
+                        font: item.font || '30px',
                         style: item.style || 'white',
                         type: item.type || 'fillText',
                     });
@@ -501,10 +522,6 @@ var protoFunction = {
         i.tw = i.tw || _tw;
         i.th = i.th || _th;
 
-        if (i.opacity !== 1) {
-            this.paintContext.globalAlpha = 1;
-        }
-
         if (_r) {
             this.paintContext.restore();
         }
@@ -512,8 +529,9 @@ var protoFunction = {
             this.paintContext.restore();
         }
 
-        if (i.aboveAddon) {
-            i.aboveAddon.forEach(function (c, _index) {
+        var _aboveAddon = utils.funcOrValue(i.aboveAddon, i);
+        if (_aboveAddon) {
+            _aboveAddon.forEach(function (c, _index) {
                 that.$perPaint.call(that, that.preAdd(c), _index);
             });
         }
