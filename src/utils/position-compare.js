@@ -47,14 +47,18 @@ module.exports = {
 
     xy: function () {
         var _num = num.apply(this, arguments);
-        return NUM2XAY[_num] || {};
+        return JSON.parse(JSON.stringify(NUM2XAY[_num] || {}));
     },
 
     NUM2XAY: function (val) {
-        return NUM2XAY[val];
+        return JSON.parse(JSON.stringify(NUM2XAY[val]));
     },
 
     pointInRect: function (x, y, x1, x2, y1, y2) {
         return !(x < x1 || x > x2 || y < y1 || y > y2);
     },
+
+    getDistanceSq: function (x1, y1, x2, y2) {
+        return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+    }
 };
