@@ -68,6 +68,8 @@ var protoFunction = {
         item.sh = item.sh || _img.height;
         item.tw = item.tw || 0;
         item.th = item.th || 0;
+        item.rx = item.rx;
+        item.ry = item.ry;
         item.mirrX = item.mirrX || 0;
         item.opacity = item.opacity === undefined ? 1 : item.opacity;
         item.marginX = item.marginX || 0;
@@ -359,7 +361,10 @@ var protoFunction = {
         this.paintContext.strokeStyle = text.style;
         this.paintContext.fillStyle = text.style;
         this.paintContext.textAlign = text.align || 'left';
-        this.paintContext[text.type || 'fillText'](text.content, parseInt(text.tx), parseInt(text.ty));
+
+        var content = utils.funcOrValue(text.content);
+
+        this.paintContext[text.type || 'fillText'](content, parseInt(text.tx), parseInt(text.ty));
     },
 
     paint: function () {
@@ -405,6 +410,8 @@ var protoFunction = {
         var _th = utils.funcOrValue(i.th, i);
         var _opacity = utils.funcOrValue(i.opacity, i);
         var _r = utils.funcOrValue(i.rotate, i);
+        var _rx = utils.funcOrValue(i.rx, i);
+        var _ry = utils.funcOrValue(i.ry, i);
         var _mirrX = utils.funcOrValue(i.mirrX, i);
         // var _sx = i.sx;
         // var _sy = i.sy;
@@ -458,9 +465,13 @@ var protoFunction = {
 
         if (_r) {
             this.paintContext.save();
-            this.paintContext.translate(_tx + 0.5 * _tw, _ty + 0.5 * _th);
-            this.paintContext.rotate(-_r * Math.PI / 180);//旋转47度
-            this.paintContext.translate(-_tx - 0.5 * _tw, -_ty - 0.5 * _th);
+
+            // 定点旋转
+            var transX = _rx !== undefined ? _rx : _tx + 0.5 * _tw;
+            var transY = _ry !== undefined ? _ry : _ty + 0.5 * _th;
+            this.paintContext.translate(transX, transY);
+            this.paintContext.rotate(-_r * Math.PI / 180);
+            this.paintContext.translate(-transX, -transY);
         }
 
         if (_mirrX) {
