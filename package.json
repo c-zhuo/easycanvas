@@ -1,12 +1,9 @@
 {
-  "name": "easy-canvas",
+  "name": "easycanvas",
   "version": "0.1.0-beta.5",
   "description": "A cute canvas framework. Easily managing an Array, which is connected with a Canvas.",
-  "keywords": "",
+  "keywords": "canvas, framework, animation",
   "main": "build/index.lite.js",
-  "directories": {
-    "example": "examples"
-  },
   "repository": {
     "type": "git",
     "url": ""
