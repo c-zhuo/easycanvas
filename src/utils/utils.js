@@ -14,4 +14,8 @@ module.exports = {
 		});
 		return res;
 	},
+
+	getCharFromKey: function (k) {
+		return k.key || String.fromCharCode(k.keyCode);
+	},
 };
