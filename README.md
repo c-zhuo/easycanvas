@@ -1,4 +1,4 @@
-## easy-canvas
+## easycanvas
 
 ### 简介 / Introduction
 
@@ -23,7 +23,7 @@ Keywords: layout, animation, animation sequence diagram, events.
 ```
 
 // import or require
-import EasyCanvas from 'easy-canvas';
+import EasyCanvas from 'easycanvas';
 
 // create an EasyCanvas instance
 var Foo = new EasyCanvas.painter();
@@ -62,25 +62,34 @@ EasyCanvas.imgLoader('http://xxx.yyy/zzz.jpg', function (img) {
     // create a sprite
     var sprite1 = Foo.add({
         img: img,
-        tx: 0, // target position, default 0
+
+        // source position, default 0
+        sx: 0, sy: 0,
+
+        // target position, default 0
+        tx: 0,
         ty: function () {
             // you can return the value from functions to create animation.
             return new Date().getTime() % 100;
             // other props can be functions as well, e.g. img/zIndex/visible
         },
+
         // EasyCanvas also prepare some animation-functions, like pendulum
         opacity: EasyCanvas.transition.pendulum(0.1, 0.9, 1000),
-        sx: 0, sy: 0, // source position, default 0
+        
         locate: 'lt', // default center
+
         zIndex: 1, // z-index of this image
         eIndex: 2, // event-index of this image
+        visible: true, // like "display: none;" in css
+
         dragable: { // means this is dragable and which area works
             x1: 0,
             x2: function () {return this.img.width;},
             y1: 0,
             y2: function () {return this.img.height;},
         },
-        visible: true, // like "display: none;" in css
+
         events: {
             // events of current image
             click: function (e) {
@@ -91,6 +100,7 @@ EasyCanvas.imgLoader('http://xxx.yyy/zzz.jpg', function (img) {
             },
             // others: mousehold, mousedown, mouseout and touch events
         },
+
         // False will stop bubbling all events, default true
         passEvent: false,
 
