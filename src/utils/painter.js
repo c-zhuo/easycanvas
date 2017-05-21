@@ -5,6 +5,7 @@ import positionCompare from './position-compare.js';
 var painter = function () {};
 
 var protoData = {
+    canvasDom: null,
     paintContext: null,
     nextTickTime: 0,
     pausing: false,
@@ -18,7 +19,10 @@ var protoData = {
     },
     paintList: [],
     eHoldingFlag: false,
-    eLastMouseHover: null
+    eLastMouseHover: null,
+
+    maxFps: -1,
+    lastPaintTime: 0
 };
 
 var protoFunction = {
@@ -28,6 +32,10 @@ var protoFunction = {
 
     setFpsHandler: function (callback) {
         this.fpsHandler = callback;
+    },
+
+    setMaxFps: function (fps) {
+        this.maxFps = fps || -1;
     },
 
     pause: function (val) {
@@ -68,8 +76,6 @@ var protoFunction = {
         item.sh = item.sh || _img.height;
         item.tw = item.tw || 0;
         item.th = item.th || 0;
-        item.rx = item.rx;
-        item.ry = item.ry;
         item.mirrX = item.mirrX || 0;
         item.opacity = item.opacity === undefined ? 1 : item.opacity;
         item.marginX = item.marginX || 0;
@@ -93,12 +99,7 @@ var protoFunction = {
         this.preAdd(_item);
 
         // avoid muti calculate of function values (may include some movement operations)
-        _item.$cache = {
-            tx: _item.tx,
-            ty: _item.ty,
-            tw: _item.tw,
-            th: _item.th
-        };
+        _item.$cache = {};
 
         if (_item.dragable) {
             // add drag events to item
@@ -217,6 +218,7 @@ var protoFunction = {
             this[i] = JSON.parse(JSON.stringify(protoData[i]));
         }
 
+        this.canvasDom = dom;
         this.paintContext = dom.getContext('2d');
         this.contextWidth = dom.width;
         this.contextHeight = dom.height;
@@ -225,6 +227,7 @@ var protoFunction = {
         this.missingEvents = _option.events || {};
 
         var _this = this;
+        dom.addEventListener('contextmenu', _this.$handler.bind(_this));
         dom.addEventListener('click', _this.$handler.bind(_this));
         dom.addEventListener('dblclick', _this.$handler.bind(_this));
         dom.addEventListener('mousedown', _this.$handler.bind(_this));
@@ -292,7 +295,7 @@ var protoFunction = {
                 );
             })
             .sort(function (a, b) {
-                return utils.funcOrValue(a.eIndex, a) < utils.funcOrValue(b.eIndex, b);
+                return utils.funcOrValue(a.eIndex, a) < utils.funcOrValue(b.eIndex, b) ? 1 : -1;
             });
 
         if (!_this.eHoldingFlag && (e.type === 'mousedown' || e.type === 'touchstart')) {
@@ -301,6 +304,9 @@ var protoFunction = {
             _this.eHoldingFlag = false;
         } else if (_this.eHoldingFlag && (e.type === 'mousemove' || e.type === 'touchmove')) {
             _this.eHoldingFlag = e;
+        } else if (!_this.eHoldingFlag && e.type === 'contextmenu') {
+            // return;
+            // _this.eHoldingFlag = e;
         }
 
         for (var i = 0; i < caughts.length; i++) {
@@ -361,10 +367,7 @@ var protoFunction = {
         this.paintContext.strokeStyle = text.style;
         this.paintContext.fillStyle = text.style;
         this.paintContext.textAlign = text.align || 'left';
-
-        var content = utils.funcOrValue(text.content);
-
-        this.paintContext[text.type || 'fillText'](content, parseInt(text.tx), parseInt(text.ty));
+        this.paintContext[text.type || 'fillText'](text.content, parseInt(text.tx), parseInt(text.ty));
     },
 
     paint: function () {
@@ -465,14 +468,12 @@ var protoFunction = {
 
         if (_r) {
             this.paintContext.save();
-
             // 定点旋转
             var transX = _rx !== undefined ? _rx : _tx + 0.5 * _tw;
             var transY = _ry !== undefined ? _ry : _ty + 0.5 * _th;
             this.paintContext.translate(transX, transY);
             this.paintContext.rotate(-_r * Math.PI / 180);
-            this.paintContext.translate(-transX, -transY);
-        }
+            this.paintContext.translate(-transX, -transY);        }
 
         if (_mirrX) {
             this.paintContext.save();
@@ -486,10 +487,35 @@ var protoFunction = {
             this.paintContext.globalAlpha = _opacity;
         }
 
+        if (_sx < 0 && _sw) {
+            var cutRate = (-_sx / _sw);
+            _tx += _tw * cutRate;
+            _sx = 0;
+        }
+        if (_sy < 0 && _sh) {
+            var cutRate = (-_sy / _sh);
+            _ty += _th * cutRate;
+            _sy = 0;
+        }
+        if (_sx + _sw > _img.width) {
+            var cutRate = (_sx + _sw - _img.width) / _sw;
+            _sw -= _sw * cutRate;
+            _tw -= _tw * cutRate;
+        }
+        if (_sy + _sh > _img.height) {
+            var cutRate = (_sy + _sh - _img.height) / _sh;
+            _sh -= _sh * cutRate;
+            _th -= _th * cutRate;
+        }
+
         _tx = parseInt(_tx);
         _ty = parseInt(_ty);
         _tw = parseInt(_tw);
         _th = parseInt(_th);
+        _sh = parseInt(_sh);
+        _sw = parseInt(_sw);
+        _sx = parseInt(_sx);
+        _sy = parseInt(_sy);
 
         i.$cache = {
             tx: _tx,
@@ -498,12 +524,12 @@ var protoFunction = {
             th: _th
         };
 
-        // if (_sx + _sw > _img.width) {
-        //     console.log('!!!!!')
+        // if (_sx + _sw > _img.width || _sy + _sh > _img.height || _sx < 0 || _sy < 0) {
+        //     console.log(_sx, _sy)
         // }
 
         // this.paintContext.fillRect(_tx, _ty, _tw, _th);
-        if (_sw && _sh) {
+        if (_sw && _sh && _tx < this.canvasDom.width && _ty < this.canvasDom.height) {
             this.paintContext.drawImage(_img, _sx, _sy, _sw, _sh, _tx, _ty, _tw, _th);
         }
 
@@ -521,7 +547,7 @@ var protoFunction = {
                         ty: _ty + utils.funcOrValue(item.ty, i),
                         content: utils.funcOrValue(item.content, i) || '',
                         align: item.align,
-                        font: item.font || '30px',
+                        font: item.font || '14px Courier New',
                         style: item.style || 'white',
                         type: item.type || 'fillText',
                     });
@@ -565,8 +591,14 @@ var protoFunction = {
         }
 
         tick(function () {
-            f();
             this.$rAFer(f);
+            if (this.maxFps > 0) {
+                if (time - this.lastPaintTime < 1000 / this.maxFps) {
+                    return;
+                }
+                this.lastPaintTime = time;
+            }
+            f();
         }.bind(this));
     }
 };
