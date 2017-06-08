@@ -2,7 +2,7 @@
 
 ### 展示 / Display 
 
-![](./_forIO/display.gif)
+![](https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/display.gif?raw=true)
 
 ### 简介 / Introduction
 
@@ -56,7 +56,7 @@ EasyCanvas.imgLoader('./G.png', function (img) {
 });
 ```
 
-![./_forIO/demo1.html](./_forIO/demo1.gif)
+![https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo1.html](https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo1.gif?raw=true)
 
 - work in progress...
 
