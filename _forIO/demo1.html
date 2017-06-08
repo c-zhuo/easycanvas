@@ -1,0 +1,72 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="500" height="400"></canvas>
+
+    <script>
+        var $Painter = new EasyCanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        EasyCanvas.imgLoader('./G.png', function (img) {
+            // create a sprite
+            var sprite1 = $Painter.add({
+                img: img,
+
+                // source position, default 0
+                sx: 0, sy: 0,
+
+                // target position, default 0
+                tx: 0,
+                ty: function () {
+                    // you can return the value from functions to create animation.
+                    return new Date().getTime() % 1000 / 50;
+                    // other props can be functions as well, e.g. img/zIndex/visible
+                },
+
+                // EasyCanvas also prepare some animation-functions, like pendulum
+                opacity: EasyCanvas.transition.pendulum(0.1, 0.9, 1000),
+                
+                locate: 'lt', // default center
+
+                zIndex: 1, // z-index of this image
+                eIndex: 2, // event-index of this image
+                visible: true, // like "display: none;" in css
+
+                dragable: { // means this is dragable and which area works
+                    x1: 0,
+                    x2: function () {return this.img.width;},
+                    y1: 0,
+                    y2: function () {return this.img.height;},
+                },
+
+                events: {
+                    // events of current image
+                    click: function (e) {
+                        // "this" means this sprite, as sprite1
+                        this.visible = false;
+                        // "true" means stopping bubbling "click" event
+                        return true;
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+
+                // False will stop bubbling all events, default true
+                passEvent: false,
+
+                // text on image, see detail below
+                // text: [],
+
+                // other sprites which mounted to current, see detail below
+                // aboveAddon: [],
+                // belowAddon: [],
+
+                // rotate, see detail below
+                // rotate: false,
+            });
+        });
+    </script>
+</body>
+

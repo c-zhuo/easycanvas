@@ -8,7 +8,7 @@ import transition from './utils/transition.js';
 import gif2canvas from './utils/gif2canvas.js';
 import posCompare from './utils/position-compare.js';
 
-module.exports = {
+var EasyCanvas = {
     painter,
     imgLoader,
     gif2canvas,
@@ -19,3 +19,6 @@ module.exports = {
     utils,
     mirror,
 };
+
+window.EasyCanvas = EasyCanvas;
+module.exports = EasyCanvas;
