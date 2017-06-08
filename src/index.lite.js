@@ -6,7 +6,7 @@ import transition from './utils/transition.js';
 import imgLoader from './utils/img-loader.js';
 import posCompare from './utils/position-compare.js';
 
-module.exports = {
+var EasyCanvas = {
     painter,
     imgLoader,
     posCompare,
@@ -15,3 +15,6 @@ module.exports = {
     utils,
     mirror,
 };
+
+window.EasyCanvas = EasyCanvas;
+module.exports = EasyCanvas;

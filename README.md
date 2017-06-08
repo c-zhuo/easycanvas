@@ -1,32 +1,68 @@
 ## easycanvas
 
+### 展示 / Display 
+
+![](./_forIO/display.gif)
+
 ### 简介 / Introduction
 
-一个易上手的Canvas框架。借助于一个Array来“描述”Canvas的内容，通过对Array中各元素的管理来间接操纵一个Canvas。
+一个易上手的数据驱动的Canvas框架。你做的仅仅是数据结构的设计和数据的修改，数据到视图的渲染完全由这些utils来实现。
 
 关键词：布局、动效开发、动画序列图、事件交互。
 
-A cute canvas framework. Easily managing an Array, which is connected with a Canvas.
+An easy and cute canvas framework driven by data. You design the data structure and modify data, these utils help you to draw into canvas.
 
 Keywords: layout, animation, animation sequence diagram, events.
 
 ### 概要 / Main Points
 
-1.兼容大多数PC浏览器和移动端。Work well with most PC and Mobile browsers.
+1. 兼容大多数PC浏览器和移动端。Work well with most PC and Mobile browsers.
 
-2.不适用于"绘制"图像，适用于多个图像文件的"展示"的管理。Not suitable for CREATING pictures, suitable for DISPLAY of existed images.
+2. 由于完全数据驱动，在开发一些数据逻辑复杂的应用时比较方便：凡是能用数据表述的场景，都可以轻易展示出来。Driven by data, it is good at those applications with complex logic: Anything can be described by data, can be displayed.
 
 ### 使用示例 / Usage
 
-## 引入 & 初始化 / Import & Start
+- 引入及初始化 / import & Start
 
 ```
-
-// import or require
 import EasyCanvas from 'easycanvas';
+var $Painter = new EasyCanvas.painter();
+$Painter.register(document.getElementById('foo'));
+$Painter.start();
+```
 
-// create an EasyCanvas instance
-var Foo = new EasyCanvas.painter();
+- 插入图像及动画 / Insert Image & Animation
+
+```
+EasyCanvas.imgLoader('./G.png', function (img) {
+    // create a sprite
+    var sprite1 = $Painter.add({
+        img: img,
+
+        sx: 0, sy: 0, // source position, default 0
+
+        tx: 0, // target position, default 0
+        ty: function () {
+            // you can return the value from functions to create animation.
+            return new Date().getTime() % 1000 / 50;
+            // other props can be functions as well, e.g. img/zIndex/visible
+        },
+
+        // EasyCanvas also prepare some animation-functions, like pendulum
+        opacity: EasyCanvas.transition.pendulum(0.1, 0.9, 1000),
+
+        locate: 'lt', // default center
+    });
+});
+```
+
+![./_forIO/demo1.html](./_forIO/demo1.gif)
+
+- work in progress...
+
+## API
+
+```
 
 // binding to a dom
 Foo.register(document.getElementById('foo'));
@@ -51,12 +87,6 @@ Foo.paint();
 
 // handler fps
 Foo.setFpsHandler(function (fps) {});
-
-```
-
-## 引入图像 / Add image sprite
-
-```
 
 EasyCanvas.imgLoader('http://xxx.yyy/zzz.jpg', function (img) {
     // create a sprite
