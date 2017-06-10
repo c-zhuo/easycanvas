@@ -1,7 +1,7 @@
 {
   "name": "easycanvas",
-  "version": "0.1.0-beta.6",
-  "description": "A cute canvas framework. Easily managing an Array, which is connected with a Canvas. https://chenzhuo1992.github.io/easycanvas",
+  "version": "0.1.0-beta.7",
+  "description": "A cute canvas framework. See https://chenzhuo1992.github.io/easycanvas",
   "keywords": "canvas, framework, animation",
   "main": "build/index.lite.js",
   "repository": {
