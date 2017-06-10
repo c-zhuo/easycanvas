@@ -33,6 +33,8 @@ $Painter.start();
 
 - 插入图像及动画 / Insert Image & Animation
 
+![https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo1.html](https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo1.gif?raw=true)
+
 ```
 EasyCanvas.imgLoader('./G.png', function (img) {
     // create a sprite
@@ -45,7 +47,6 @@ EasyCanvas.imgLoader('./G.png', function (img) {
         ty: function () {
             // you can return the value from functions to create animation.
             return new Date().getTime() % 1000 / 50;
-            // other props can be functions as well, e.g. img/zIndex/visible
         },
 
         // EasyCanvas also prepare some animation-functions, like pendulum
@@ -56,98 +57,118 @@ EasyCanvas.imgLoader('./G.png', function (img) {
 });
 ```
 
-![https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo1.html](https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo1.gif?raw=true)
+- 旋转 / Rotate
 
-- work in progress...
+![https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo2.html](https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo2.gif?raw=true)
 
-## API
+通过设置rotate可以调整旋转角度，rx和ry控制旋转中心。下面这个例子是定点旋转和动点旋转，并且两个元素的旋转角是同步的。
+
+You can controll the degree and center of a rotate by setting `rotate`, `rx` and 'ry'. The following example shows rotating around static points and active points, sharing the same degree.
 
 ```
+var G = EasyCanvas.imgLoader('./G.png');
+var r = EasyCanvas.transition.pendulum(-90, 90, 1000);
 
-// binding to a dom
-Foo.register(document.getElementById('foo'));
+var sprite1 = $Painter.add({
+    img: G,
 
-// binding to a dom and catch global mouse/touch events
-Foo.register(document.getElementById('foo'), {
+    rotate: r,
+    rx: 250, ry: 200,
+    tx: 250, ty: 200,
+});
+
+var sprite2 = $Painter.add({
+    img: G,
+
+    rotate: r,
+    rx: 500, ry: EasyCanvas.transition.pendulum(100, 200, 700),
+    tx: 500, ty: 200,
+});
+```
+
+- 事件 / Events
+
+![https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo3.html](https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo3.gif?raw=true)
+
+通过设置events属性可以捕捉元素的事件。多个元素重叠时，将按照eIndex属性的次序来依次触发相应的事件，直至某一个监听方法返回了true，否则事件最终将冒泡至整个实例。
+
+You can handle events by setting `events`. When an events is caught by mutiple sprites, the `eIndex` will decide who handles first. This chain will break when any handler return `true`, or it will bunble to the global instance handler.
+
+```
+var G = EasyCanvas.imgLoader('./G.png');
+var r1 = 0;
+var r2 = 0;
+
+var sprite1 = $Painter.add({
+    img: G,
+
+    rotate: function () {return r1;},
+    rx: 250, ry: 200, tx: 250, ty: 200,
+
+    zIndex: 1, eIndex: 2,
+
     events: {
-        touchend: function (e) {},
-        mousedown: function (e) {},
+        click: function () {
+            r1 += 180;
+            return true;
+        },
+    },
+});
+var sprite2 = $Painter.add({
+    img: G,
+
+    rotate: function () {return r2;},
+    rx: 350, ry: 200, tx: 350, ty: 200,
+
+    zIndex: 2, eIndex: 1,
+
+    events: {
+        click: function () {
+            r2 += 180;
+            return true;
+        },
+    },
+});
+```
+
+- 动作序列图 / Animation Sequence Diagram
+
+![https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo4.html](https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo4.gif?raw=true)
+
+下面这个示例展示了如何通过全局的事件来动态创建元素，并且将一个动作序列图转换为动画展示。
+
+The following demo shows how to create sprites from global event handler, and how to use an animation sequence diagram to make an animation.
+
+```
+var $Painter = new EasyCanvas.painter();
+$Painter.register(document.getElementById('foo'), {
+    events: {
+        click: function (e) {
+            $Painter.add(createFire(e.layerX, e.layerY));
+        }
     }
 });
 
-// start painting (60 fps default)
-Foo.start();
+var Fire = EasyCanvas.imgLoader('./Fire.png');
 
-// set max fps, pause and continue
-Foo.setMaxFps(16);
-Foo.pause();Foo.pause(false);
+var createFire = function (initX, initY) {
+    return {
+        img: Fire,
 
-// paint once
-Foo.paint();
+        tx: initX, ty: initY,
 
-// handler fps
-Foo.setFpsHandler(function (fps) {});
+        loop: {
+            x: -9,
+            y: -1,
+            interval: 50,
+            circle: false
+        }
+    };
+};
 
-EasyCanvas.imgLoader('http://xxx.yyy/zzz.jpg', function (img) {
-    // create a sprite
-    var sprite1 = Foo.add({
-        img: img,
-
-        // source position, default 0
-        sx: 0, sy: 0,
-
-        // target position, default 0
-        tx: 0,
-        ty: function () {
-            // you can return the value from functions to create animation.
-            return new Date().getTime() % 100;
-            // other props can be functions as well, e.g. img/zIndex/visible
-        },
-
-        // EasyCanvas also prepare some animation-functions, like pendulum
-        opacity: EasyCanvas.transition.pendulum(0.1, 0.9, 1000),
-        
-        locate: 'lt', // default center
-
-        zIndex: 1, // z-index of this image
-        eIndex: 2, // event-index of this image
-        visible: true, // like "display: none;" in css
-
-        dragable: { // means this is dragable and which area works
-            x1: 0,
-            x2: function () {return this.img.width;},
-            y1: 0,
-            y2: function () {return this.img.height;},
-        },
-
-        events: {
-            // events of current image
-            click: function (e) {
-                // "this" means this sprite, as sprite1
-                this.visible = false;
-                // "true" means stopping bubbling "click" event
-                return true;
-            },
-            // others: mousehold, mousedown, mouseout and touch events
-        },
-
-        // False will stop bubbling all events, default true
-        passEvent: false,
-
-        // text on image, see detail below
-        // text: [],
-
-        // other sprites which mounted to current, see detail below
-        // aboveAddon: [],
-        // belowAddon: [],
-
-        // rotate, see detail below
-        // rotate: false,
-    });
-});
-
+$Painter.start();
 ```
 
-## 进阶 / More
+## More API
 
 整理中. Work in progress.

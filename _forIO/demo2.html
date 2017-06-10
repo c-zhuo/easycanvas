@@ -1,0 +1,34 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="800" height="400"></canvas>
+
+    <script>
+        var $Painter = new EasyCanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        var G = EasyCanvas.imgLoader('./G.png');
+        var r = EasyCanvas.transition.pendulum(-90, 90, 1000);
+
+        var sprite1 = $Painter.add({
+            img: G,
+
+            rotate: r,
+            rx: 250, ry: 200,
+            tx: 250, ty: 200,
+        });
+
+        var sprite2 = $Painter.add({
+            img: G,
+
+            rotate: r,
+            rx: 500, ry: EasyCanvas.transition.pendulum(100, 200, 700),
+            tx: 500, ty: 200,
+        });
+
+    </script>
+</body>
+
