@@ -1,0 +1,38 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="800" height="600"></canvas>
+
+    <script>
+        var $Painter = new EasyCanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            events: {
+                click: function (e) {
+                    $Painter.add(createFire(e.layerX, e.layerY));
+                }
+            }
+        });
+
+        var Fire = EasyCanvas.imgLoader('./Fire.png');
+
+        var createFire = function (initX, initY) {
+            return {
+                img: Fire,
+
+                tx: initX, ty: initY,
+
+                loop: {
+                    x: -9,
+                    y: -1,
+                    interval: 50,
+                    circle: false
+                }
+            };
+        };
+
+        $Painter.start();
+    </script>
+</body>
+
