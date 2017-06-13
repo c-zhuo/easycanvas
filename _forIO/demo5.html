@@ -1,0 +1,39 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="800" height="400"></canvas>
+
+    <script>
+        var $Painter = new EasyCanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        var G = EasyCanvas.imgLoader('./G.png');
+
+        var sprite1 = $Painter.add({
+            img: G,
+
+            rotate: 0,
+            locate: 'lt',
+
+            events: {
+                click: function (e) {
+                    sprite1.rotate = Math.random() * 360;
+                    this.opacity = Math.random() + 0.5;
+                    $Painter.paintList[0].tx = Math.random() * 50;
+                },
+            },
+        });
+
+        setTimeout(function () {
+            $Painter.remove(sprite1);
+            console.log($Painter.paintList);
+            setTimeout(function () {
+                console.log($Painter.paintList);
+            }, 50);
+        }, 3000);
+    </script>
+</body>
+
