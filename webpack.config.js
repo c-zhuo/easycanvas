@@ -26,7 +26,8 @@ var config = {
     },
     output: {
         path: path.resolve('./build'),
-        filename: '[name].js'
+        filename: '[name].js',
+        libraryTarget: 'umd'
     },
     module: {
         loaders: [{
