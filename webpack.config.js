@@ -82,8 +82,8 @@ if (env !== 'min') {
     config.devtool = '#cheap-module-eval-source-map';
 }
 config.plugins = config.plugins.concat([
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    // new webpack.HotModuleReplacementPlugin(),
+    // new webpack.NoErrorsPlugin()
 ]);
 config.devServer = {
     disableHostCheck: true,
