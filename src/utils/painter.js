@@ -68,14 +68,14 @@ var protoFunction = {
         var _img = utils.funcOrValue(item.img);
 
         item.zIndex = item.zIndex || 0;
-        item.sx = item.sx || 0;
-        item.sy = item.sy || 0;
-        item.tx = item.tx || 0;
-        item.ty = item.ty || 0;
-        item.sw = item.sw || _img.width;
-        item.sh = item.sh || _img.height;
-        item.tw = item.tw || 0;
-        item.th = item.th || 0;
+        item.sx = utils.cent2value(item.sx || 0, _img.width);
+        item.sy = utils.cent2value(item.sy || 0, _img.height);
+        item.tx = utils.cent2value(item.tx || 0, this.contextWidth);
+        item.ty = utils.cent2value(item.ty || 0, this.contextHeight);
+        item.sw = utils.cent2value(item.sw || _img.width, _img.width);
+        item.sh = utils.cent2value(item.sh || _img.height, _img.height);
+        item.tw = utils.cent2value(item.tw || 0, this.contextWidth);
+        item.th = utils.cent2value(item.th || 0, this.contextHeight);
         item.mirrX = item.mirrX || 0;
         item.opacity = item.opacity === undefined ? 1 : item.opacity;
         item.marginX = item.marginX || 0;
@@ -403,14 +403,14 @@ var protoFunction = {
         }
 
         var _img = utils.funcOrValue(i.img);
-        var _sx = utils.funcOrValue(i.sx, i);
-        var _sy = utils.funcOrValue(i.sy, i);
-        var _tx = utils.funcOrValue(i.tx, i) + i.marginX;
-        var _ty = utils.funcOrValue(i.ty, i) + i.marginY;
-        var _sw = utils.funcOrValue(i.sw, i) || _img.width;
-        var _sh = utils.funcOrValue(i.sh, i) || _img.height;
-        var _tw = utils.funcOrValue(i.tw, i);
-        var _th = utils.funcOrValue(i.th, i);
+        var _sx = utils.cent2value(utils.funcOrValue(i.sx, i), _img.width)
+        var _sy = utils.cent2value(utils.funcOrValue(i.sy, i), _img.height)
+        var _tx = utils.cent2value(utils.funcOrValue(i.tx, i), that.contextWidth) + i.marginY;
+        var _ty = utils.cent2value(utils.funcOrValue(i.ty, i), that.contextHeight) + i.marginY;
+        var _sw = utils.cent2value(utils.funcOrValue(i.sw, i) || _img.width, _img.width)
+        var _sh = utils.cent2value(utils.funcOrValue(i.sh, i) || _img.height, _img.height)
+        var _tw = utils.cent2value(utils.funcOrValue(i.tw, i), that.contextWidth);
+        var _th = utils.cent2value(utils.funcOrValue(i.th, i), that.contextHeight);
         var _opacity = utils.funcOrValue(i.opacity, i);
         var _r = utils.funcOrValue(i.rotate, i);
         var _rx = utils.funcOrValue(i.rx, i);
