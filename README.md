@@ -43,7 +43,7 @@ EasyCanvas.imgLoader('./G.png', function (img) {
 
         sx: 0, sy: 0, // source position, default 0
 
-        tx: 0, // target position, default 0
+        tx: '10%', // target position, canvas width * 0.1, default 0, 
         ty: function () {
             // you can return the value from functions to create animation.
             return new Date().getTime() % 1000 / 50;
