@@ -17,17 +17,24 @@
 
                 sx: 0, sy: 0,
 
+                // tx: EasyCanvas.transition.oneByOne(
+                //     [
+                //         EasyCanvas.transition.linear(10, 50, 400),
+                //         EasyCanvas.transition.linear(50, 400, 500),
+                //         EasyCanvas.transition.linear(400, 10, 2000),
+                //     ]
+                // ).loop(),
+                // ty: EasyCanvas.transition.pendulum(
+                //         EasyCanvas.transition.linear(10, 55, 9000),
+                //         EasyCanvas.transition.linear(100, 55, 9000)
+                // , 1000),
                 tx: EasyCanvas.transition.oneByOne(
                     [
-                        EasyCanvas.transition.linear(10, 200, 4000),
-                        EasyCanvas.transition.linear(200, 400, 3000),
-                        EasyCanvas.transition.linear(400, -50, 2000),
+                        EasyCanvas.transition.linear(10, 50, 400),
+                        EasyCanvas.transition.pendulum(50, 400, 500).stay(),
                     ]
-                ),
-                ty: EasyCanvas.transition.pendulum(
-                        EasyCanvas.transition.linear(10, 55, 9000),
-                        EasyCanvas.transition.linear(100, 55, 9000)
-                , 1000),
+                ).loop(),
+                ty: 0,
 
                 locate: 'lt', // default center
 

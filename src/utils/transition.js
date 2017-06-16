@@ -20,11 +20,14 @@ var transFuncs = {
                 return {
                     $$value: b,
                     $$over: true,
+                    $$loop: function () {
+                        transitions[l] = a;
+                    }
                 };
             }
             return {
                 $$value: current,
-                $$over: false,
+                $$over: false
             };
         };
         return resFunc;
@@ -33,19 +36,46 @@ var transFuncs = {
     pendulum: function (a, b, duration) {
         var l = transitions.length;
         transitions.push(-PI);
+
+        var loop = false;
+        var stay = false;
+
         var resFunc = function () {
             var current = Math.cos(transitions[l]) + 1; // 0 ~ 2
             transitions[l] += PI / second2frame(duration);
+
+            if (stay && transitions[l] >= 1 * PI) {
+                transitions[l] = 1 * PI;
+            } else if (loop && transitions[l] >= 1 * PI) {
+                transitions[l] -= 2 * PI;
+            }
+
             return {
                 $$value: utils.funcOrValue(a) + (utils.funcOrValue(b) - utils.funcOrValue(a)) * current / 2,
-                $$over: transitions[l] >= 3 * PI,
+                $$over: !stay && transitions[l] >= 1 * PI,
+                $$loop: function () {
+                    transitions[l] = -PI;
+                }
             };
         };
+
+        resFunc.loop = function () {
+            loop = true;
+            return resFunc;
+        };
+        resFunc.stay = function () {
+            stay = true;
+            return resFunc;
+        };
+
         return resFunc;
     },
 
-    oneByOne: function (arr) {
-        return function () {
+    oneByOne: function (_arr) {
+        var arr = _arr;
+        var loop = false;
+
+        var resFunc = function () {
             for (var i = 0; i < arr.length; i++) {
                 var res = arr[i]();
                 if (typeof res === 'object') {
@@ -56,7 +86,26 @@ var transFuncs = {
                     return res;
                 }
             }
+
+            if (loop) {
+                var res;
+                for (var i = 0; i < arr.length; i++) {
+                    var tmp = arr[i]();
+                    if (tmp && tmp.$$loop) {
+                        tmp.$$loop();
+                        res = res || arr[i]();
+                    }
+                }
+                return res;
+            }
         };
+
+        resFunc.loop = function () {
+            loop = true;
+            return resFunc;
+        };
+
+        return resFunc;
     },
 };
 
