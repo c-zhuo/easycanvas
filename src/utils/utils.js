@@ -1,7 +1,8 @@
 module.exports = {
     funcOrValue: function (funcOrValue, _this) {
         if (typeof funcOrValue === 'function') {
-            return funcOrValue.call(_this);
+            var res = funcOrValue.call(_this);
+            return res && res.$$value ? res.$$value : res;
         }
 
         return funcOrValue;
@@ -24,4 +25,6 @@ module.exports = {
     getCharFromKey: function (k) {
         return k.key || String.fromCharCode(k.keyCode);
     },
+
+    noop: function () {},
 };
