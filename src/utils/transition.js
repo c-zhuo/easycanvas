@@ -12,11 +12,18 @@ var transFuncs = {
     linear: function (a, b, duration) {
         var l = transitions.length;
         transitions.push(a);
+
+        var loop = false;
+
         var resFunc = function () {
             var current = transitions[l];
             if ((current >= a && current < b) || (current > b && current <= a)) {
                 transitions[l] += (b - a) / second2frame(duration);
             } else {
+                if (loop) {
+                    transitions[l] = a;
+                }
+
                 return {
                     $$value: b,
                     $$over: true,
@@ -30,12 +37,23 @@ var transFuncs = {
                 $$over: false
             };
         };
+
+        resFunc.loop = function () {
+            loop = true;
+            return resFunc;
+        };
+
         return resFunc;
     },
 
-    pendulum: function (a, b, duration) {
+    pendulum: function (a, b, duration, _config) {
+        var config = _config || {};
+        config.start = utils.firstValuable(config.start, -PI);
+        config.end = utils.firstValuable(config.end, PI);
+        config.cycle = utils.firstValuable(config.cycle, 2 * PI);
+
         var l = transitions.length;
-        transitions.push(-PI);
+        transitions.push(config.start);
 
         var loop = false;
         var stay = false;
@@ -44,15 +62,17 @@ var transFuncs = {
             var current = Math.cos(transitions[l]) + 1; // 0 ~ 2
             transitions[l] += PI / second2frame(duration);
 
-            if (stay && transitions[l] >= 1 * PI) {
-                transitions[l] = 1 * PI;
-            } else if (loop && transitions[l] >= 1 * PI) {
-                transitions[l] -= 2 * PI;
+            if (transitions[l] > config.end) {
+                if (loop) {
+                    transitions[l] -= config.cycle;
+                } else {
+                    transitions[l] = config.end;
+                }
             }
 
             return {
                 $$value: utils.funcOrValue(a) + (utils.funcOrValue(b) - utils.funcOrValue(a)) * current / 2,
-                $$over: !stay && transitions[l] >= 1 * PI,
+                $$over: !stay && transitions[l] >= config.end,
                 $$loop: function () {
                     transitions[l] = -PI;
                 }
@@ -69,6 +89,14 @@ var transFuncs = {
         };
 
         return resFunc;
+    },
+
+    halfPendulum: function (a, b, duration) {
+        return transFuncs.pendulum(a, b, duration, {
+            start: -PI,
+            end: 0,
+            cycle: PI,
+        });
     },
 
     oneByOne: function (_arr) {
