@@ -57,6 +57,8 @@ EasyCanvas.imgLoader('./G.png', function (img) {
 });
 ```
 
+More transitions or want a queue ? [Here](https://github.com/chenzhuo1992/easycanvas/blob/master/README_transition.md "here")
+
 ### 旋转 / Rotate
 
 ![https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo2.html](https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/demo2.gif?raw=true)

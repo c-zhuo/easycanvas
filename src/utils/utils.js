@@ -27,4 +27,8 @@ module.exports = {
     },
 
     noop: function () {},
+
+    firstValuable: function (a, b) {
+        return typeof a === 'undefined' ? b : a;
+    },
 };
