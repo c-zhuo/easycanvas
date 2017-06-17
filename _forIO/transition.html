@@ -28,12 +28,16 @@
                 //         EasyCanvas.transition.linear(10, 55, 9000),
                 //         EasyCanvas.transition.linear(100, 55, 9000)
                 // , 1000),
+
+                // tx: EasyCanvas.transition.pendulum(50, 400, 500).stay(),
+
                 tx: EasyCanvas.transition.oneByOne(
-                    [
-                        EasyCanvas.transition.linear(10, 50, 400),
-                        EasyCanvas.transition.pendulum(50, 400, 500).stay(),
-                    ]
-                ).loop(),
+                        [
+                            EasyCanvas.transition.linear(10, 50, 400),
+                            EasyCanvas.transition.halfPendulum(50, 400, 500).stay(),
+                        ]
+                    ).loop(),
+
                 ty: 0,
 
                 locate: 'lt', // default center
