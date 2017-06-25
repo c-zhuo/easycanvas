@@ -1,0 +1,78 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="500" height="400"></canvas>
+
+    <script>
+        var $Painter = new EasyCanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        EasyCanvas.imgLoader('./G.png', function (img) {
+            // create a sprite
+            var sprite1 = $Painter.add({
+                img: img,
+
+                sx: 0, sy: 0,
+
+                // tx: EasyCanvas.transition.oneByOne(
+                //     [
+                //         EasyCanvas.transition.linear(10, 50, 400),
+                //         EasyCanvas.transition.linear(50, 400, 500),
+                //         EasyCanvas.transition.linear(400, 10, 2000),
+                //     ]
+                // ).loop(),
+                // ty: EasyCanvas.transition.pendulum(
+                //         EasyCanvas.transition.linear(10, 55, 9000),
+                //         EasyCanvas.transition.linear(100, 55, 9000)
+                // , 1000),
+                tx: EasyCanvas.transition.pendulum(100, 500, 500).loop(),
+                ty: 100,
+                locate: 'center',
+
+                children: [
+                    {
+                        img: img,
+                        tx: 80, ty: 80,
+                        position: 'relative',
+                        zIndex: 1,
+                    },
+                    {
+                        img: img,
+                        tx: 80, ty: 80,
+                        position: 'absolute',
+                        zIndex: -0.1,
+                    },
+                    {
+                        img: img,
+                        tx: 140, ty: 140,
+                        position: 'relative',
+                        zIndex: 3,
+                    },
+                    {
+                        img: img,
+                        tx: 110, ty: 110,
+                        position: 'relative',
+                        zIndex: 2,
+                    },
+                    {
+                        img: img,
+                        tx: 170, ty: 170,
+                        position: 'relative',
+                        zIndex: -5,
+                    },
+                    {
+                        img: img,
+                        tx: -20, ty: 0,
+                        position: 'relative',
+                        locate: 'center',
+                        zIndex: -5,
+                    },
+                ],
+            });
+        });
+    </script>
+</body>
+
