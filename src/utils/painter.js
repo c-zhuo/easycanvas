@@ -90,6 +90,15 @@ var protoFunction = {
         return item;
     },
 
+    preChildren: function (item, parent) {
+        var tmp = this.preAdd(item);
+        if (item.position === 'relative') {
+            tmp.$marginX = tmp.tx + parent.tx;
+            tmp.$marginY = tmp.ty + parent.ty;
+        }
+        return item;
+    },
+
     add: function (item) {
         if (!item) return;
 
@@ -227,15 +236,11 @@ var protoFunction = {
         this.missingEvents = _option.events || {};
 
         var _this = this;
-        dom.addEventListener('contextmenu', _this.$handler.bind(_this));
-        dom.addEventListener('click', _this.$handler.bind(_this));
-        dom.addEventListener('dblclick', _this.$handler.bind(_this));
-        dom.addEventListener('mousedown', _this.$handler.bind(_this));
-        dom.addEventListener('mouseup', _this.$handler.bind(_this));
-        dom.addEventListener('mousemove', _this.$handler.bind(_this));
-        dom.addEventListener('touchstart', _this.$handler.bind(_this));
-        dom.addEventListener('touchend', _this.$handler.bind(_this));
-        dom.addEventListener('touchmove', _this.$handler.bind(_this));
+
+        var eventList = ['contextmenu', 'click', 'dblclick', 'mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'];
+        eventList.forEach(function (e) {
+            dom.addEventListener(e, _this.$handler.bind(_this));
+        });
 
         setInterval(function () {
             if (this.eHoldingFlag) {
@@ -395,12 +400,12 @@ var protoFunction = {
 
         var that = this;
 
-        var _belowAddon = utils.funcOrValue(i.belowAddon, i);
-        if (_belowAddon) {
-            _belowAddon.forEach(function (c, _index) {
-                that.$perPaint.call(that, that.preAdd(c), _index);
-            });
-        }
+        // var _belowAddon = utils.funcOrValue(i.belowAddon, i);
+        // if (_belowAddon) {
+        //     _belowAddon.forEach(function (c, _index) {
+        //         that.$perPaint.call(that, that.preAdd(c), _index);
+        //     });
+        // }
 
         var _img = utils.funcOrValue(i.img);
         var _sx = utils.cent2value(utils.funcOrValue(i.sx, i), _img.width)
@@ -416,6 +421,10 @@ var protoFunction = {
         var _rx = utils.funcOrValue(i.rx, i);
         var _ry = utils.funcOrValue(i.ry, i);
         var _mirrX = utils.funcOrValue(i.mirrX, i);
+        var _locate = utils.funcOrValue(i.locate, i);
+
+        var _children = utils.funcOrValue(i.children, i);
+
         // var _sx = i.sx;
         // var _sy = i.sy;
         // var _sw = i.sw;
@@ -461,7 +470,7 @@ var protoFunction = {
         _tw = _tw || _sw || _img.width;
         _th = _th || _sh || _img.height;
 
-        if (i.locate === 'center') {
+        if (_locate === 'center') {
             _tx = _tx - 0.5 * _tw;
             _ty = _ty - 0.5 * _th;
         }
@@ -473,7 +482,8 @@ var protoFunction = {
             var transY = _ry !== undefined ? _ry : _ty + 0.5 * _th;
             this.paintContext.translate(transX, transY);
             this.paintContext.rotate(-_r * Math.PI / 180);
-            this.paintContext.translate(-transX, -transY);        }
+            this.paintContext.translate(-transX, -transY);
+        }
 
         if (_mirrX) {
             this.paintContext.save();
@@ -508,8 +518,8 @@ var protoFunction = {
             _th -= _th * cutRate;
         }
 
-        _tx = parseInt(_tx);
-        _ty = parseInt(_ty);
+        _tx = parseInt(_tx) + (i.$marginX || 0);
+        _ty = parseInt(_ty) + (i.$marginY || 0);
         _tw = parseInt(_tw);
         _th = parseInt(_th);
         _sh = parseInt(_sh);
@@ -521,16 +531,40 @@ var protoFunction = {
             tx: _tx,
             ty: _ty,
             tw: _tw,
-            th: _th
+            th: _th,
+            $inherit: {
+                tx: _tx + (_locate === 'center' ? 0.5 * _tw : 0),
+                ty: _ty + (_locate === 'center' ? 0.5 * _th : 0),
+            }
         };
 
         // if (_sx + _sw > _img.width || _sy + _sh > _img.height || _sx < 0 || _sy < 0) {
         //     console.log(_sx, _sy)
         // }
 
+        if (_children) {
+            _children.filter(function (item) {
+                return item.zIndex < 0;
+            }).sort(function (a, b) {
+                return a.zIndex > b.zIndex ? 1 : -1;
+            }).forEach(function (c, _index) {
+                that.$perPaint.call(that, that.preChildren(c, i.$cache.$inherit), _index);
+            });
+        }
+
         // this.paintContext.fillRect(_tx, _ty, _tw, _th);
         if (_sw && _sh && _tx < this.canvasDom.width && _ty < this.canvasDom.height) {
             this.paintContext.drawImage(_img, _sx, _sy, _sw, _sh, _tx, _ty, _tw, _th);
+        }
+
+        if (_children) {
+            _children.filter(function (item) {
+                return item.zIndex > 0;
+            }).sort(function (a, b) {
+                return a.zIndex > b.zIndex ? 1 : -1;
+            }).forEach(function (c, _index) {
+                that.$perPaint.call(that, that.preChildren(c, i.$cache.$inherit), _index);
+            });
         }
 
         if (i.opacity !== 1) {
@@ -566,12 +600,12 @@ var protoFunction = {
             this.paintContext.restore();
         }
 
-        var _aboveAddon = utils.funcOrValue(i.aboveAddon, i);
-        if (_aboveAddon) {
-            _aboveAddon.forEach(function (c, _index) {
-                that.$perPaint.call(that, that.preAdd(c), _index);
-            });
-        }
+        // var _aboveAddon = utils.funcOrValue(i.aboveAddon, i);
+        // if (_aboveAddon) {
+        //     _aboveAddon.forEach(function (c, _index) {
+        //         that.$perPaint.call(that, that.preAdd(c), _index);
+        //     });
+        // }
     },
 
     // $stop: function () {
