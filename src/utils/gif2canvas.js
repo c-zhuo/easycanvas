@@ -1,24 +1,33 @@
-import gifler from '../lib/gifler.js';
+/** ********** *
+ *
+ * Change gif to an active canvas
+ * - The canvas is in animating.
+ * - This will use 84kb, so it only exsits in full version.
+ *
+ * ********** **/
+
+import gifler from 'lib/gifler.js';
 import imgLoader from './img-loader.js';
 import mirror from './mirror.js';
 
-var Cache = {};
+const Cache = {};
+const ProcessingFlag = 'processing';
 
-var gif2canvas = function (url, callback, width, height) {
-	var _width = width || 500;
-	var _height = height || 500;
+const gif2canvas = function (url, callback, width, height) {
+    let _width = width || 500;
+    let _height = height || 500;
 
-	var flag = JSON.stringify({
-		url: url,
-		width: _width,
-		height: _height,
-	});
+    let flag = JSON.stringify({
+        url: url,
+        // width: _width,
+        // height: _height,
+    });
 
-    if (Cache[flag] && Cache[flag] !== 'processing') {
+    if (Cache[flag] && Cache[flag] !== ProcessingFlag) {
         callback(Cache[flag]);
         return;
     }
-    if (Cache[flag] === 'processing') {
+    if (Cache[flag] === ProcessingFlag) {
         // 防止并发初始化gif2canvas
         setTimeout(function () {
             gif2canvas(url, callback, _width, _height);
@@ -26,13 +35,14 @@ var gif2canvas = function (url, callback, width, height) {
         return;
     }
 
-    Cache[flag] = 'processing';
+    Cache[flag] = ProcessingFlag;
 
     imgLoader(url, function (img) {
-        var temp = document.createElement('canvas');
+        let temp = document.createElement('canvas');
         temp.width = img.width;
         temp.height = img.height;
 
+        // Here can modify the image
         // window.gifler(img.src).frames(temp, function (ctx, frame) {
         //     ctx.canvas.width  = img.width;
         //     ctx.canvas.height = img.height;
@@ -43,13 +53,13 @@ var gif2canvas = function (url, callback, width, height) {
         //     ctx.drawImage(frame.buffer, frame.x, frame.y, frame.width, frame.height);
 
         //     // Composite a color
-        //     // var hue = (frames * 10) % 360;
+        //     // let hue = (frames * 10) % 360;
         //     // ctx.globalCompositeOperation = 'source-atop';
         //     // ctx.fillStyle = 'hsla(' + hue + ', 100%, 50%, 0.5)';
         // }).done(function () {
         window.gifler(img.src).animate(temp).done(function () {
-        	Cache[flag] = temp;
-        	callback(temp);
+            Cache[flag] = temp;
+            callback(temp);
         });
     });
 };

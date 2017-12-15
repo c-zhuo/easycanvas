@@ -3,74 +3,96 @@
 </head>
 
 <body>
-    <canvas id="foo" width="500" height="400"></canvas>
+    <canvas id="foo" width="1200" height="2400"></canvas>
 
     <script>
-        var $Painter = new EasyCanvas.painter();
+        var $Painter = new Easycanvas.painter();
         $Painter.register(document.getElementById('foo'));
         $Painter.start();
 
-        EasyCanvas.imgLoader('./G.png', function (img) {
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/G30x30.png?raw=true', function (img) {
             // create a sprite
-            var sprite1 = $Painter.add({
-                img: img,
-
-                sx: 0, sy: 0,
-
-                // tx: EasyCanvas.transition.oneByOne(
-                //     [
-                //         EasyCanvas.transition.linear(10, 50, 400),
-                //         EasyCanvas.transition.linear(50, 400, 500),
-                //         EasyCanvas.transition.linear(400, 10, 2000),
-                //     ]
-                // ).loop(),
-                // ty: EasyCanvas.transition.pendulum(
-                //         EasyCanvas.transition.linear(10, 55, 9000),
-                //         EasyCanvas.transition.linear(100, 55, 9000)
-                // , 1000),
-                tx: EasyCanvas.transition.pendulum(100, 500, 500).loop(),
-                ty: 100,
-                locate: 'center',
+            window.sprite1 = $Painter.add({
+                name: 'sprite1',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tx: 100, ty: 100,
+                    locate: 'lt',
+                    opacity: 0.5,
+                    rotate: 40,
+                },
+                events: {
+                    click: function () {
+                        console.log(3);
+                    }
+                },
 
                 children: [
                     {
-                        img: img,
-                        tx: 80, ty: 80,
-                        position: 'relative',
-                        zIndex: 1,
+                        name: 'child1',
+                        content: {
+                            img: img,
+                        },
+                        inherit: ['opacity'],
+                        style: {
+                            tx: 500, ty: 0,
+                            zIndex: 1,
+                            opacity: 0.5,
+                            locate: 'center',
+                        },
+                        events: {
+                            eIndex: -3,
+                            click: function () {
+                                console.log(1);
+                            }
+                        }
                     },
                     {
-                        img: img,
-                        tx: 80, ty: 80,
-                        position: 'absolute',
-                        zIndex: -0.1,
+                        // inherit: ['opacity'],
+                        name: 'child2',
+                        content: {
+                            img: img,
+                        },
+                        style: {
+                            tx: 0, ty: 500,
+                            opacity: 1,
+                            zIndex: 1,
+                            locate: 'lt',
+                            scale: 5
+                        },
+                        events: {
+                            eIndex: -31,
+                            click: function () {
+                                console.log(2);
+                            }
+                        }
                     },
                     {
-                        img: img,
-                        tx: 140, ty: 140,
-                        position: 'relative',
-                        zIndex: 3,
-                    },
-                    {
-                        img: img,
-                        tx: 110, ty: 110,
-                        position: 'relative',
-                        zIndex: 2,
-                    },
-                    {
-                        img: img,
-                        tx: 170, ty: 170,
-                        position: 'relative',
-                        zIndex: -5,
-                    },
-                    {
-                        img: img,
-                        tx: -20, ty: 0,
-                        position: 'relative',
-                        locate: 'center',
-                        zIndex: -5,
+                        name: 'child3',
+                        inherit: ['tx', 'ty', 'rotate'],
+                        content: {
+                            img: img,
+                        },
+                        style: {
+                            tx: 500, ty: 500,
+                            opacity: 0.7,
+                            zIndex: 1,
+                            locate: 'center',
+                        },
+                        events: {
+                            eIndex: -31,
+                            click: function () {
+                                console.log(3);
+                                this.style.opacity = 0;
+                            }
+                        }
                     },
                 ],
+            });
+            window.sprite2 = $Painter.add({
+                name: 'sprite2',
             });
         });
     </script>

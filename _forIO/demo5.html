@@ -6,23 +6,26 @@
     <canvas id="foo" width="800" height="400"></canvas>
 
     <script>
-        var $Painter = new EasyCanvas.painter();
+        var $Painter = new Easycanvas.painter();
         $Painter.register(document.getElementById('foo'));
         $Painter.start();
 
-        var G = EasyCanvas.imgLoader('./G.png');
+        var G = Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/G.png?raw=true');
 
         var sprite1 = $Painter.add({
-            img: G,
-
-            rotate: 0,
-            locate: 'lt',
-
+            content: {
+                img: G,
+            },
+            style: {
+                rotate: 0,
+                locate: 'lt',
+            },
             events: {
                 click: function (e) {
-                    sprite1.rotate = Math.random() * 360;
-                    this.opacity = Math.random() + 0.5;
-                    $Painter.paintList[0].tx = Math.random() * 50;
+                    sprite1.style.rotate = Math.random() * 360;
+                    this.style.opacity = Math.random() + 0.5;
+                    $Painter.paintList[0].style.tx = Math.random() * 50;
+                    return true;
                 },
             },
         });
@@ -33,7 +36,7 @@
             setTimeout(function () {
                 console.log($Painter.paintList);
             }, 50);
-        }, 3000);
+        }, 2000);
     </script>
 </body>
 

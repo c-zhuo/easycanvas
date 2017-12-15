@@ -1,0 +1,32 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="500" height="700"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        var G = Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/G.png?raw=true');
+
+        var sprite1 = $Painter.add({
+            content: {
+                img: G,
+            },
+            style: {
+                rx: 250, ry: 200,
+                tx: 250, ty: 200,
+            },
+            drag: {
+                dragable: true,
+            },
+            events: {
+                click: function () {console.log('click');}
+            }
+        });
+    </script>
+</body>
+
