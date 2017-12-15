@@ -8,7 +8,3 @@ const rAF = window.requestAnimationFrame  ||
     };
 
 module.exports = rAF;
-
-// module.exports = function (callback) {
-//     window.setTimeout(callback, 1000 / 8);
-// };

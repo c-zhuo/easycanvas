@@ -6,51 +6,29 @@
     <canvas id="foo" width="500" height="400"></canvas>
 
     <script>
-        var $Painter = new EasyCanvas.painter();
+        var $Painter = new Easycanvas.painter();
         $Painter.register(document.getElementById('foo'));
         $Painter.start();
 
-        EasyCanvas.imgLoader('./G.png', function (img) {
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/G.png?raw=true', function (img) {
             // create a sprite
             var sprite1 = $Painter.add({
-                img: img,
+                content: {
+                    img: img,
+                },
 
-                sx: 0, sy: 0,
-
-                // tx: EasyCanvas.transition.oneByOne(
-                //     [
-                //         EasyCanvas.transition.linear(10, 50, 400),
-                //         EasyCanvas.transition.linear(50, 400, 500),
-                //         EasyCanvas.transition.linear(400, 10, 2000),
-                //     ]
-                // ).loop(),
-                // ty: EasyCanvas.transition.pendulum(
-                //         EasyCanvas.transition.linear(10, 55, 9000),
-                //         EasyCanvas.transition.linear(100, 55, 9000)
-                // , 1000),
-
-                // tx: EasyCanvas.transition.pendulum(50, 400, 500).stay(),
-
-                tx: EasyCanvas.transition.oneByOne(
+                style: {
+                    sx: 0, sy: 0,
+                    tx: Easycanvas.transition.oneByOne(
                         [
-                            EasyCanvas.transition.linear(10, 50, 400),
-                            EasyCanvas.transition.halfPendulum(50, 400, 500).stay(),
+                            Easycanvas.transition.linear(10, 50, 400),
+                            Easycanvas.transition.pendulum(50, 400, 500).stay(),
+                            // Easycanvas.transition.pendulum(50, 400, 500),
                         ]
                     ).loop(),
+                    ty: 0,
 
-                ty: 0,
-
-                locate: 'lt', // default center
-
-                zIndex: 1, // z-index of this image
-                eIndex: 2, // event-index of this image
-                visible: true, // like "display: none;" in css
-
-                dragable: { // means this is dragable and which area works
-                    x1: 0,
-                    x2: function () {return this.img.width;},
-                    y1: 0,
-                    y2: function () {return this.img.height;},
+                    locate: 'lt', // default center
                 },
             });
         });

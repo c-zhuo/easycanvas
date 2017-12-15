@@ -1,22 +1,23 @@
 import utils from './utils.js';
 
-var transitions = [];
+const transitions = [];
 
-var PI = 3.141593;
+// Math.PI wastes some performace
+const PI = 3.141593;
 
-var second2frame = function (second) {
+const second2frame = function (second) {
     return second / 1000 * 60;
 };
 
-var transFuncs = {
+let transFuncs = {
     linear: function (a, b, duration) {
-        var l = transitions.length;
+        let l = transitions.length;
         transitions.push(a);
 
-        var loop = false;
+        let loop = false;
 
-        var resFunc = function () {
-            var current = transitions[l];
+        let resFunc = function () {
+            let current = transitions[l];
             if ((current >= a && current < b) || (current > b && current <= a)) {
                 transitions[l] += (b - a) / second2frame(duration);
             } else {
@@ -47,19 +48,19 @@ var transFuncs = {
     },
 
     pendulum: function (a, b, duration, _config) {
-        var config = _config || {};
+        let config = _config || {};
         config.start = utils.firstValuable(config.start, -PI);
         config.end = utils.firstValuable(config.end, PI);
         config.cycle = utils.firstValuable(config.cycle, 2 * PI);
 
-        var l = transitions.length;
+        let l = transitions.length;
         transitions.push(config.start);
 
-        var loop = false;
-        var stay = false;
+        let loop = false;
+        let stay = false;
 
-        var resFunc = function () {
-            var current = Math.cos(transitions[l]) + 1; // 0 ~ 2
+        let resFunc = function () {
+            let current = Math.cos(transitions[l]) + 1; // 0 ~ 2
             transitions[l] += PI / second2frame(duration);
 
             if (transitions[l] > config.end) {
@@ -100,12 +101,12 @@ var transFuncs = {
     },
 
     oneByOne: function (_arr) {
-        var arr = _arr;
-        var loop = false;
+        let arr = _arr;
+        let loop = false;
 
-        var resFunc = function () {
-            for (var i = 0; i < arr.length; i++) {
-                var res = arr[i]();
+        let resFunc = function () {
+            for (let i = 0; i < arr.length; i++) {
+                let res = arr[i]();
                 if (typeof res === 'object') {
                     if (!res.$$over) {
                         return res.$$value;
@@ -116,9 +117,9 @@ var transFuncs = {
             }
 
             if (loop) {
-                var res;
-                for (var i = 0; i < arr.length; i++) {
-                    var tmp = arr[i]();
+                let res;
+                for (let i = 0; i < arr.length; i++) {
+                    let tmp = arr[i]();
                     if (tmp && tmp.$$loop) {
                         tmp.$$loop();
                         res = res || arr[i]();

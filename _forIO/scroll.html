@@ -1,0 +1,65 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="800" height="1600"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/G.png?raw=true', function (img) {
+            // create a sprite
+            var sprite1 = $Painter.add({
+                style: {
+                    tx: 10,
+                    ty: 10,
+                    tw: 500,
+                    th: 800,
+                    locate: 'lt', // default center
+                },
+                scroll: {
+                    scrollable: true,
+                    minScrollX: 0,
+                    maxScrollX: 500,
+                    minScrollY: 0,
+                    maxScrollY: 500,
+                },
+                children: [{
+                    content: {
+                        img: img,
+                    },
+                    drag: {
+                        dragable: true,
+                        x1: 0, x2: 999,
+                        y1: 0, y2: 999,
+                    },
+                    events: {
+                        eIndex: 2,
+                    },
+                    style: {
+                        tx: 500, ty: 500,
+                        tw: 250, th: 250,
+                    },
+                }, {
+                    content: {
+                        img: img,
+                    },
+                    style: {
+                        tx: 200, ty: 500,
+                        tw: 50, th: 50,
+                    },
+                }],
+                events: {
+                    eIndex: 999,
+                    click () {
+                        console.log(1);
+                    }
+                },
+            });
+        });
+    </script>
+</body>
+
