@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Button - Hilo Example</title>
+    <script type="text/javascript" src="http://hiloteam.github.io/Hilo/build/standalone/hilo-standalone.min.js"></script>
+    <script type="text/javascript" src="http://hiloteam.github.io/Hilo/build/flash/hilo-flash.min.js" data-auto="true"></script>
+</head>
+<body onload="init();">
+    <div style="height: 0" id="header">
+        <h1>Button</h1>
+        <p>Button类表示简单按钮类。它有up、over、down和disabled等四种状态。</p>
+    </div>
+    <div id="game-container"></div>
+    <script type="text/javascript" src="http://hiloteam.github.io/Hilo/examples/js/demo.js"></script>
+    <script type="text/javascript">
+        var rAF = window.requestAnimationFrame  ||
+            window.webkitRequestAnimationFrame  ||
+            window.mozRequestAnimationFrame     ||
+            window.oRequestAnimationFrame       ||
+            window.msRequestAnimationFrame      ||
+            function (callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+
+        var fps = 0;
+        var timeStamp = new Date().getTime();
+        var loop = function () {
+            fps++;
+            var t = new Date().getTime();
+            if (t - timeStamp > 1000) {
+                timeStamp = t;
+                console.log(fps);
+                fps = 0;
+            }
+            rAF(loop);
+        };
+        loop();
+
+        function init(){
+            //init stage
+            window.stage = new Hilo.Stage({
+                renderType:renderType,
+                container: gameContainer,
+                width: 800,
+                height: 1800
+            });
+            //start stage ticker
+            var ticker = new Hilo.Ticker(60);
+            ticker.addTick(stage);
+            ticker.start();
+            stage.enableDOMEvent([Hilo.event.POINTER_START, Hilo.event.POINTER_MOVE, Hilo.event.POINTER_END]);
+            for (var i = 0; i <= 5000; i++)
+                var test = new Hilo.Button({
+                    id: 'blueBtn',
+                    image: 'https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/G.png?raw=true',
+                    width: Math.random() * 200,
+                    height: Math.random() * 200,
+                    upState: {rect:[0, 0, 330, 330]},
+                    overState: {rect:[64, 0, 64, 64]},
+                    downState: {rect:[128, 0, 64, 64]},
+                    disabledState: {rect:[192, 0, 64, 64]},
+                    x: Math.random() * 500,
+                    y: Math.random() * 500
+                }).addTo(stage);
+        }
+    </script>
+</body>
+</html>

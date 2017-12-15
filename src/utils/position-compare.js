@@ -1,5 +1,5 @@
-var num = function (x, y, sx, sy, diff) {
-    var _diff = diff || 1;
+const num = function (x, y, sx, sy, diff) {
+    let _diff = diff || 1;
 
     if (x - sx >= _diff) {
         if (y - sy >= _diff) {
@@ -30,7 +30,7 @@ var num = function (x, y, sx, sy, diff) {
     return 5;
 };
 
-var NUM2XAY = {
+let NUM2XAY = {
     '1': {x: -1, y: 1},
     '2': {x: 0, y: 1},
     '3': {x: 1, y: 1},
@@ -46,7 +46,7 @@ module.exports = {
     num: num,
 
     xy: function () {
-        var _num = num.apply(this, arguments);
+        let _num = num.apply(this, arguments);
         return JSON.parse(JSON.stringify(NUM2XAY[_num] || {}));
     },
 
