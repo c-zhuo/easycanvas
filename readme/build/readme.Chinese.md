@@ -170,6 +170,7 @@ Easycanvas中所有的动画都是通过`style`的变换实现的。比如，可
                 ty: 100,
             },
             events: {
+                eIndex: 1,
                 click: function (e) {
                     this.style.tx = e.canvasX;
                     this.style.ty = e.event.layerY;
@@ -195,7 +196,7 @@ Easycanvas中所有的动画都是通过`style`的变换实现的。比如，可
 
 ## 状态钩子
 
-Easycanvas支持的状态钩子包括：`ticked`、`removed`。
+Easycanvas支持的状态钩子包括：`ticked`、`removed`、`beforeTick`。
 
 ```
     var box = new Easycanvas.class.sprite({
@@ -340,14 +341,15 @@ Easycanvas可以通过`children`属性设置子元素，从而实现元素嵌套
     var createFire = function (initX, initY) {
         return {
             content: {
-                // 'sequenceDiagram'可以将一个多帧拼成的图片拆成多帧播放
-                img: Easycanvas.sequenceDiagram(Fire, {
-                    // 指定每帧在图片文件上的尺寸，-9代表图片宽度的1/9，相当于'Fire.width / 9'
+                img: Fire,
+                // 'sequence'可以将一个多帧拼成的图片拆成多帧播放
+                // 指定每帧在图片文件上的尺寸，-9代表图片宽度的1/9，相当于'Fire.width / 9'
+                sequence: {
                     w: -9,
                     h: -1,
                     interval: 50,
                     loop: false
-                }),
+                }
             },
 
             style: {
