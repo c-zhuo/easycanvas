@@ -1,12 +1,13 @@
 #### Easycanvas > plugin > webgl
 
-[Chinese]### webgl
-[English]### work in progress
+[Chinese]### WebGL渲染
+[English]### WebGL rendering
 
-[Chinese]
-[English]
+[Chinese]在注册实例时，传入webgl为true即可。
+[English]Set `webgl` to `true` in `register` function.
 
 ```
-    import EasyCanvas from 'easycanvas';
-    import EasyCanvasPluginShuttle from 'easycanvas/build/plugin.shuttle.js';
+    $Painter.register(document.getElementById('foo'), {
+        webgl: true
+    });
 ```

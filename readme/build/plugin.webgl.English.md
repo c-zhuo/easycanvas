@@ -1,10 +1,11 @@
 #### Easycanvas > plugin > webgl
 
-### work in progress
+### WebGL rendering
 
-
+Set `webgl` to `true` in `register` function.
 
 ```
-    import EasyCanvas from 'easycanvas';
-    import EasyCanvasPluginShuttle from 'easycanvas/build/plugin.shuttle.js';
+    $Painter.register(document.getElementById('foo'), {
+        webgl: true
+    });
 ```
