@@ -1,0 +1,43 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.number.js"></script>
+    <style>body {margin: 0;}</style>
+</head>
+
+<body>
+    <canvas id="foo"></canvas>
+
+    <script>
+        var sprite1, sprite2, sprite3;
+        window.numbers = [sprite1, sprite2, sprite3];
+
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            fullScreen: true,
+            events: {
+                click: function () {
+                    numbers.forEach(function (n, index) {
+                        console.warn(index, n.getCurrentValue());
+                        n.stop();
+                        setTimeout(n.restart, 1000);
+                    });
+                }
+            }
+        });
+        $Painter.start();
+
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/number.png?raw=true', function (img) {
+            numbers.forEach(function (n, index) {
+                n = numbers[index] = new Easycanvas.class.number({
+                    style: {
+                        tx: 100 + 70 * index, ty: 200, sh: 123
+                    },
+                    number: img,
+                    interval: [1000, 100, 10][index],
+                });
+                $Painter.add(n);
+            });
+        });
+    </script>
+</body>
+

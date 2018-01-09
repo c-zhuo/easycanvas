@@ -48,12 +48,4 @@ const PROTOS = {
     },
 };
 
-if (process.env.NODE_ENV !== 'production') {
-    PROTOS.fpsHandler = function (fps) {
-        if (this.maxFps > 0 && fps < this.maxFps * 0.5) {
-            console.warn(`Low FPS detected(${fps}), max FPS in settings is ${this.maxFps}.`);
-        }
-    };
-}
-
 module.exports = PROTOS;

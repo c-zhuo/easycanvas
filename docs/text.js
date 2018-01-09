@@ -229,7 +229,7 @@ module.exports = {
         $s        $Painter.register(document.getElementById('foo'));
         $s        $Painter.start();
 
-        $s        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/G30x30.png?raw=true', function (img) {
+        $s        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G30x30.png?raw=true', function (img) {
         $s            // create a sprite
         $s            window.sprite1 = $Painter.add({
         $s                content: {

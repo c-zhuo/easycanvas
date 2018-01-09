@@ -1,0 +1,49 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="600" height="800"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true', function (img) {
+            // create a sprite
+            window.sprite1 = $Painter.add({
+                name: 'root',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 50, th: 50,
+                    sx: 0, sy: 0, // source position, default 0
+                    // tx: Easycanvas.transition.pendulum(111, 222, 1000).loop(),
+                    tx: 10,
+                    ty: 100,
+                    fh: Easycanvas.transition.pendulum(0.1, 0.2, 300).loop(),
+                    fv: Easycanvas.transition.pendulum(0.1, 0.2, 1000).loop(),
+                    fx: 0,
+                    fy: 125,
+                    opacity: 1,
+                    rotate: 0,
+                    locate: 'lt', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    click: function (e) {
+                        this.style.fh += 0.1;
+                        this.style.fh %= 1;
+                        console.log(this.style.fh);
+                        return true;
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+            });
+        });
+    </script>
+</body>
+

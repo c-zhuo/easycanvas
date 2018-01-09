@@ -78,17 +78,24 @@ export default {
 			},
 		},
 		canvas () {
-			this.activeCanvas = Object.keys(this.$state.elements)[0];
 			return Object.keys(this.$state.elements);
 		},
 		elements () {
 			return this.$state.elements[this.activeCanvas];
 		},
+		firstCanvas () {
+			return Object.keys(this.$state.elements).length > 0 ? Object.keys(this.$state.elements)[0] : '';
+		},
 	},
 	watch: {
 		activeCanvas (val) {
 			this.debuggerCanvas = false;
-		}
+		},
+		firstCanvas (val) {
+			if (val !== '') {
+				this.activeCanvas = val;
+			}
+		},
 	},
     components: {
         vToggle,

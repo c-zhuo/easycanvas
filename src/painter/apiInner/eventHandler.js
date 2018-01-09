@@ -37,8 +37,14 @@ const sortByIndex = function (arr) {
  * - Use $sprite.$cache to compare 
  * - Sprite in first frame will not captrue any event [?]
  */
+const isVisible = function ($sprite) {
+    if ($sprite.$parent && !isVisible($sprite.$parent)) {
+        return false;
+    }
+    return utils.funcOrValue($sprite.style.visible, $sprite) !== false;
+};
 const hitSprite = function ($sprite, e) {
-    if (utils.funcOrValue($sprite.style.visible, $sprite) === false) {
+    if (isVisible($sprite) === false) {
         return false;
     }
 

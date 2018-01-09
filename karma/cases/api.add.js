@@ -1,4 +1,4 @@
-import Easycanvas from 'src/index.lite.js';
+import Easycanvas from 'src/index.js';
 import constants from 'karma/case.constant.js';
 
 var $canvas = document.createElement('canvas');

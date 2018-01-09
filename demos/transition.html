@@ -1,0 +1,37 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="500" height="400"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true', function (img) {
+            // create a sprite
+            var sprite1 = $Painter.add({
+                content: {
+                    img: img,
+                },
+
+                style: {
+                    sx: 0, sy: 0,
+                    tx: Easycanvas.transition.oneByOne(
+                        [
+                            Easycanvas.transition.linear(10, 50, 400),
+                            Easycanvas.transition.pendulum(50, 400, 500).stay(),
+                            // Easycanvas.transition.pendulum(50, 400, 500),
+                        ]
+                    ).loop(),
+                    ty: 0,
+
+                    locate: 'lt', // default center
+                },
+            });
+        });
+    </script>
+</body>
+

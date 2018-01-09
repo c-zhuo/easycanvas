@@ -1,0 +1,48 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="1200" height="1600"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            events: {
+                click: function (e) {
+                    $Painter.add(createFire(e.canvasX, e.canvasY));
+                }
+            }
+        });
+
+        var Fire1 = Easycanvas.imgLoader('https://github.com/chenzhuo1992/Easycanvas/blob/master/demos/Fire.png?raw=true');
+        var Fire2 = Easycanvas.imgLoader('https://github.com/chenzhuo1992/Easycanvas/blob/master/demos/G.png?raw=true');
+        // var Fire = Easycanvas.imgLoader('./Fire.png');
+
+        var createFire = function (initX, initY) {
+            return {
+                content: {
+                    img: function () {
+                        return Fire1;
+                    },
+                    sequence: {
+                        w: -9,
+                        h: -1,
+                        // w: 323,
+                        // h: 360,
+                        interval: 50,
+                        loop: false
+                    },
+                },
+
+                style: {
+                    tx: initX, ty: initY,
+                    // tw: 120, th: 120,
+                },
+            };
+        };
+
+        $Painter.start();
+    </script>
+</body>
+

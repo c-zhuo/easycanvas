@@ -494,7 +494,7 @@ module.exports = __webpack_require__(4) ? function (object, key, value) {
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(11);
+var anObject = __webpack_require__(12);
 var IE8_DOM_DEFINE = __webpack_require__(34);
 var toPrimitive = __webpack_require__(26);
 var dP = Object.defineProperty;
@@ -545,7 +545,7 @@ $exports.store = store;
 /* 9 */
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.5.1' };
+var core = module.exports = { version: '2.5.3' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -564,21 +564,21 @@ module.exports = function (exec) {
 
 /***/ }),
 /* 11 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var isObject = __webpack_require__(12);
 module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+var isObject = __webpack_require__(11);
 module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
+  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+  return it;
 };
 
 
@@ -782,7 +782,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(12);
+var isObject = __webpack_require__(11);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 module.exports = function (it, S) {
@@ -864,7 +864,7 @@ module.exports = function (it) {
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(12);
+var isObject = __webpack_require__(11);
 var document = __webpack_require__(1).document;
 // typeof document.createElement is 'object' in old IE
 var is = isObject(document) && isObject(document.createElement);
@@ -919,7 +919,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
   var VALUES_BUG = false;
   var proto = Base.prototype;
   var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
+  var $default = (!BUGGY && $native) || getMethod(DEFAULT);
   var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
   var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
   var methods, key, IteratorPrototype;
@@ -964,7 +964,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = __webpack_require__(11);
+var anObject = __webpack_require__(12);
 var dPs = __webpack_require__(70);
 var enumBugKeys = __webpack_require__(17);
 var IE_PROTO = __webpack_require__(23)('IE_PROTO');
@@ -16536,16 +16536,23 @@ exports.default = {
 			}
 		},
 		canvas: function canvas() {
-			this.activeCanvas = (0, _keys2.default)(this.$state.elements)[0];
 			return (0, _keys2.default)(this.$state.elements);
 		},
 		elements: function elements() {
 			return this.$state.elements[this.activeCanvas];
+		},
+		firstCanvas: function firstCanvas() {
+			return (0, _keys2.default)(this.$state.elements).length > 0 ? (0, _keys2.default)(this.$state.elements)[0] : '';
 		}
 	},
 	watch: {
 		activeCanvas: function activeCanvas(val) {
 			this.debuggerCanvas = false;
+		},
+		firstCanvas: function firstCanvas(val) {
+			if (val !== '') {
+				this.activeCanvas = val;
+			}
 		}
 	},
 	components: {
@@ -18713,7 +18720,7 @@ module.exports = function (done, value) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var META = __webpack_require__(15)('meta');
-var isObject = __webpack_require__(12);
+var isObject = __webpack_require__(11);
 var has = __webpack_require__(3);
 var setDesc = __webpack_require__(6).f;
 var id = 0;
@@ -18772,7 +18779,7 @@ var meta = module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP = __webpack_require__(6);
-var anObject = __webpack_require__(11);
+var anObject = __webpack_require__(12);
 var getKeys = __webpack_require__(13);
 
 module.exports = __webpack_require__(4) ? Object.defineProperties : function defineProperties(O, Properties) {
@@ -19024,7 +19031,8 @@ var wksExt = __webpack_require__(28);
 var wksDefine = __webpack_require__(27);
 var enumKeys = __webpack_require__(63);
 var isArray = __webpack_require__(66);
-var anObject = __webpack_require__(11);
+var anObject = __webpack_require__(12);
+var isObject = __webpack_require__(11);
 var toIObject = __webpack_require__(7);
 var toPrimitive = __webpack_require__(26);
 var createDesc = __webpack_require__(14);
@@ -19217,15 +19225,14 @@ $JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
   return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
   stringify: function stringify(it) {
-    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
     var args = [it];
     var i = 1;
     var replacer, $replacer;
     while (arguments.length > i) args.push(arguments[i++]);
-    replacer = args[1];
-    if (typeof replacer == 'function') $replacer = replacer;
-    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
-      if ($replacer) value = $replacer.call(this, key, value);
+    $replacer = replacer = args[1];
+    if (!isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+    if (!isArray(replacer)) replacer = function (key, value) {
+      if (typeof $replacer == 'function') value = $replacer.call(this, key, value);
       if (!isSymbol(value)) return value;
     };
     args[1] = replacer;
@@ -19361,7 +19368,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "*[_v-1cd4eef0] {\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n\n.detail-section[_v-1cd4eef0] {\n  height: 100%; }\n\n.detail[_v-1cd4eef0] {\n  font-size: 14px;\n  height: 100%; }\n\n.notice[_v-1cd4eef0] {\n  width: 100%;\n  height: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  font-size: 14px;\n  font-weight: bold;\n  color: #DDDDDD; }\n\n.title[_v-1cd4eef0] {\n  font-size: 16px;\n  color: #3BA776;\n  width: 100%;\n  line-height: 25px;\n  box-sizing: border-box;\n  padding: 0 10px;\n  border-bottom: 1px solid #DDDDDD; }\n\n.content[_v-1cd4eef0] {\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n  padding: 20px;\n  overflow: scroll; }\n\n.type[_v-1cd4eef0] {\n  color: #486887;\n  padding-top: 10px; }\n\n.fields[_v-1cd4eef0] {\n  padding: 10px 20px 40px;\n  font-family: Menlo,Consolas,monospace; }\n  .fields .field[_v-1cd4eef0] {\n    font-size: 12px;\n    height: 20px;\n    line-height: 20px; }\n    .fields .field .key[_v-1cd4eef0] {\n      color: #881391; }\n    .fields .field .value[_v-1cd4eef0] {\n      display: inline-block;\n      color: #03c; }\n\n.edit[_v-1cd4eef0] {\n  display: inline-block;\n  z-index: 999; }\n  .edit input[_v-1cd4eef0] {\n    font-size: 12px;\n    width: 30px;\n    height: 18px;\n    line-height: 18px;\n    outline: none;\n    border: 1px solid #DDDDDD; }\n", ""]);
+exports.push([module.i, ".app[_v-06fc3a2e] {\n  font-family: Menlo, Consolas, monospace;\n  width: 100%;\n  height: 100%;\n  background-color: #FFFFFF;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column; }\n\n.toggle[_v-06fc3a2e] {\n  width: 100%;\n  box-sizing: border-box;\n  padding: 10px 20px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-bottom: 1px solid #DDDDDD;\n  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);\n  background-color: #FFFFFF; }\n  .toggle .toggle-text[_v-06fc3a2e] {\n    color: #999; }\n\n.container[_v-06fc3a2e] {\n  width: 100%;\n  height: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: stretch;\n      -ms-flex-align: stretch;\n          align-items: stretch; }\n  .container .left[_v-06fc3a2e], .container .right[_v-06fc3a2e] {\n    box-sizing: border-box;\n    width: 50%;\n    padding: 10px 0;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0; }\n  .container .left[_v-06fc3a2e] {\n    border-right: 1px solid #DDDDDD;\n    height: 100%; }\n  .container .content[_v-06fc3a2e] {\n    padding: 10px 6px;\n    height: calc(100% - 40px);\n    overflow: scroll; }\n\n.tabs[_v-06fc3a2e] {\n  width: 100%;\n  overflow-x: scroll;\n  border-bottom: 1px solid #DDDDDD; }\n  .tabs .tabs-tab[_v-06fc3a2e] {\n    display: inline-block;\n    padding: 6px;\n    width: 70px;\n    height: 12px;\n    line-height: 12px;\n    background: #f3f3f3;\n    margin-left: 6px;\n    border: 1px solid #DDDDDD;\n    border-bottom: 0;\n    text-align: center;\n    vertical-align: top;\n    cursor: pointer; }\n    .tabs .tabs-tab.active[_v-06fc3a2e] {\n      color: #3BA776; }\n    .tabs .tabs-tab.base64-selector[_v-06fc3a2e] {\n      width: 13px;\n      background-size: 100% 100%;\n      background-position: 1px 1px;\n      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAuCAAAAABLtcWwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfhCQ0PCybUE8MgAAAAtElEQVRIx+3UIQ6EMBAFUE48vqoGv76qjpXDEar2IDWVm3ABUgKkof9nS4IhyxgMr+kfhummk9U94PYgjb1UZYcvBaPAelPQC7qCWAoEA/lDcKxrwMuHeAr4PBMEQRC2QQIIglhO3wHh0LacPvP5DXzxvksNbQ3keAoiOZ6CPYS2tbUIoY1gCeEUCPKL5hAmTUCAJbCFyP2pBVgzawi3PCvBFlkwa0O1EcT9gym9Uls94KZgBgOms+vXRWTQAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE3LTA5LTEzVDE1OjExOjM4KzA4OjAwuTUEEwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNy0wOS0xM1QxNToxMTozOCswODowMMhovK8AAAAZdEVYdGV4aWY6TWFrZQBNT1NJbWFnZVNlcnZpY2VYRgD8AAAAAElFTkSuQmCC); }\n      .tabs .tabs-tab.base64-selector.active[_v-06fc3a2e] {\n        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAkCAYAAADl9UilAAABxUlEQVRYR+2XsUvDUBDGLyYxgot2cKkuRcTFVQcXiy4WwV0E/4IOLlJxcBS7iHRzd1I61kVxddGho7hJFwcVgqCm7ZMrpLbhveReckqV3NrH9ZfvvnfvznBdV8AAhpGCaVYlVUxTMPh7ij2/GXB6Y8JF3YSHJ0P3g6XnpzIClmbbUCp4YJvhKZWKVa4sqFxaLEDBJFuLLdhb80JzK8EKR05HqfuDd1a4md0RyI4LuN75iAeGCTB+AoySV6lYCqYoaKqYLwzVIr+uGPWK/1+wzZNhmMwImM+1YSHXhuwYz3iXWLHSuQ3V2+/3BZsnAiYFTQxWvTOhdGYrrRMXNDFY49WA/KFD9XTnOaIomhgMifJlBxovehNIZlTA/noTVuda0o9iAQv6LEo+hEEohFMFC1iUz/w/j1KpF5IFjOIzikrsYBSfFZebUFxpRlW5+zuLYpiN4jMdODYwmc+wfNMTAnBM94MKxzZaB32GRq9tf3ZuHu4OunCxlxHZyN3bz443vL4epQunBIta32Rgvs+whAgWDB041oUXfVauWd0Syq5gL1yY31jB0Gf1xyHlM+OD+vtqWPtgBSM3KcLBFIwgUt+RgVXsC8QsiJSdRWzMAAAAAElFTkSuQmCC);\n        background-size: 80% 80%;\n        background-repeat: no-repeat;\n        background-position: center; }\n    .tabs .tabs-tab.debugger-canvas[_v-06fc3a2e] {\n      height: 12px;\n      width: 13px;\n      display: inline-block;\n      position: relative; }\n      .tabs .tabs-tab.debugger-canvas[_v-06fc3a2e]:before, .tabs .tabs-tab.debugger-canvas[_v-06fc3a2e]:after {\n        content: '';\n        height: 12px;\n        width: 4px;\n        display: block;\n        background: #666;\n        position: absolute;\n        top: 7px;\n        left: 7px; }\n      .tabs .tabs-tab.debugger-canvas[_v-06fc3a2e]:after {\n        left: 15px; }\n    .tabs .tabs-tab.debugger-canvas-active[_v-06fc3a2e] {\n      height: 12px;\n      width: 13px;\n      display: inline-block;\n      position: relative; }\n      .tabs .tabs-tab.debugger-canvas-active[_v-06fc3a2e]:before {\n        content: '';\n        height: 0;\n        width: 0;\n        display: block;\n        border: 6px transparent solid;\n        border-right-width: 0;\n        border-left-color: #3BA776;\n        position: absolute;\n        top: 7px;\n        left: 14px; }\n      .tabs .tabs-tab.debugger-canvas-active[_v-06fc3a2e]:after {\n        content: '';\n        height: 12px;\n        width: 4px;\n        display: block;\n        background: #3BA776;\n        position: absolute;\n        top: 7px;\n        left: 7px; }\n", ""]);
 
 // exports
 
@@ -19375,7 +19382,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".instance.inactive[_v-22c5cfed] {\n  opacity: 0.5; }\n\n.self[_v-22c5cfed] {\n  cursor: pointer;\n  position: relative;\n  overflow: hidden;\n  z-index: 2;\n  background-color: #FFFFFF;\n  transition: background-color .1s ease;\n  border-radius: 3px;\n  font-size: 14px;\n  line-height: 22px;\n  height: 22px;\n  white-space: nowrap; }\n  .self[_v-22c5cfed]:hidden {\n    display: none; }\n  .self[_v-22c5cfed]:hover {\n    background-color: #E5F2FF; }\n  .self.selected[_v-22c5cfed] {\n    background-color: #3BA776; }\n    .self.selected .arrow[_v-22c5cfed] {\n      border-left-color: #fff; }\n    .self.selected .instance-name[_v-22c5cfed] {\n      color: #fff; }\n  .app.dark .self[_v-22c5cfed] {\n    background-color: #242424; }\n    .app.dark .self[_v-22c5cfed]:hover {\n      background-color: #444; }\n    .app.dark .self.selected[_v-22c5cfed] {\n      background-color: #3BA776; }\n\n.children[_v-22c5cfed] {\n  position: relative;\n  z-index: 1; }\n\n.content[_v-22c5cfed] {\n  position: relative;\n  padding-left: 22px; }\n\n.info[_v-22c5cfed] {\n  color: #fff;\n  font-size: 10px;\n  padding: 3px 5px 2px;\n  display: inline-block;\n  line-height: 10px;\n  border-radius: 3px;\n  position: relative;\n  top: -1px;\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n  .info.console[_v-22c5cfed] {\n    color: #fff;\n    background-color: transparent; }\n  .info.router-view[_v-22c5cfed] {\n    background-color: #ff8344; }\n  .info.fragment[_v-22c5cfed] {\n    background-color: #b3cbf7; }\n  .info.inactive[_v-22c5cfed] {\n    background-color: #aaa; }\n  .info[_v-22c5cfed]:not(.console) {\n    margin-left: 6px; }\n\n.render[_v-22c5cfed] {\n  font-size: 10px;\n  display: inline-block;\n  line-height: 10px;\n  border-radius: 3px;\n  position: relative;\n  top: 4px;\n  width: 18px;\n  height: 18px;\n  background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDI1Mi40MjIgMjUyLjQyMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjUyLjQyMiAyNTIuNDIyIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgogIDxnPgogICAgPHBhdGggZD0ibTI1MS42OTIsNzMuMTk4bC0xNi0zMi4yNDNjLTEuMTgyLTIuMzgyLTMuNjExLTMuODg5LTYuMjcxLTMuODg5aC0yMDUuNDIxYy0yLjU5NywwLTQuOTgsMS40MzgtNi4xOTIsMy43MzVsLTE3LDMyLjI0M2MtMS4xNDQsMi4xNy0xLjA2OCw0Ljc4IDAuMTk4LDYuODggMS4yNjcsMi4xMDIgMy41NDEsMy4zODUgNS45OTQsMy4zODVoMTkuODQ5djEyNS4wNDZjMCwzLjg2NiAzLjEzNCw3IDcsN2gxODQuNzI1YzMuODY2LDAgNy0zLjEzNCA3LTd2LTEyNS4wNDZoMTkuODQ5YzIuNDIyLDAgNC42NzMtMS4yNTIgNS45NDktMy4zMTFzMS4zOTctNC42MyAwLjMyLTYuOHptLTUzLjk5Ni0yMi4xMzJsOC4yNjIsMTguMjQzaC0xNjAuMjFsNy4zMDQtMTguMjQzaDE0NC42NDR6bS0xNjkuNDczLDBoOS43NDhsLTcuMzA0LDE4LjI0M2gtMTIuMDYzbDkuNjE5LTE4LjI0M3ptMTgzLjM1LDE1MC4yODloLTE3MC43MjR2LTExOC4wNDZoMTcwLjcyNXYxMTguMDQ2em05Ljc1My0xMzIuMDQ2bC04LjI2MS0xOC4yNDNoMTIuMDE1bDkuMDUzLDE4LjI0M2gtMTIuODA3eiIgZmlsbD0iIzY2NjY2NiIvPgogIDwvZz4KPC9zdmc+Cg==);\n  background-size: cover; }\n  .render.show[_v-22c5cfed] {\n    background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDQ4OC44NSA0ODguODUiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQ4OC44NSA0ODguODU7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgo8Zz4KCTxwYXRoIGQ9Ik0yNDQuNDI1LDk4LjcyNWMtOTMuNCwwLTE3OC4xLDUxLjEtMjQwLjYsMTM0LjFjLTUuMSw2LjgtNS4xLDE2LjMsMCwyMy4xYzYyLjUsODMuMSwxNDcuMiwxMzQuMiwyNDAuNiwxMzQuMiAgIHMxNzguMS01MS4xLDI0MC42LTEzNC4xYzUuMS02LjgsNS4xLTE2LjMsMC0yMy4xQzQyMi41MjUsMTQ5LjgyNSwzMzcuODI1LDk4LjcyNSwyNDQuNDI1LDk4LjcyNXogTTI1MS4xMjUsMzQ3LjAyNSAgIGMtNjIsMy45LTExMy4yLTQ3LjItMTA5LjMtMTA5LjNjMy4yLTUxLjIsNDQuNy05Mi43LDk1LjktOTUuOWM2Mi0zLjksMTEzLjIsNDcuMiwxMDkuMywxMDkuMyAgIEMzNDMuNzI1LDMwMi4yMjUsMzAyLjIyNSwzNDMuNzI1LDI1MS4xMjUsMzQ3LjAyNXogTTI0OC4wMjUsMjk5LjYyNWMtMzMuNCwyLjEtNjEtMjUuNC01OC44LTU4LjhjMS43LTI3LjYsMjQuMS00OS45LDUxLjctNTEuNyAgIGMzMy40LTIuMSw2MSwyNS40LDU4LjgsNTguOEMyOTcuOTI1LDI3NS42MjUsMjc1LjUyNSwyOTcuOTI1LDI0OC4wMjUsMjk5LjYyNXoiIGZpbGw9IiM2NjY2NjYiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K);\n    background-size: cover; }\n  .render.hide[_v-22c5cfed] {\n    background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU5LjA0OSA1OS4wNDkiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU5LjA0OSA1OS4wNDk7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgo8Zz4KCTxwYXRoIGQ9Ik0xMS4yODUsNDEuMzljMC4xODQsMC4xNDYsMC40MDQsMC4yMTgsMC42MjMsMC4yMThjMC4yOTQsMCwwLjU4NS0wLjEyOSwwLjc4My0wLjM3N2MwLjM0NC0wLjQzMiwwLjI3My0xLjA2MS0wLjE1OS0xLjQwNSAgIGMtMC44MDEtMC42MzgtMS41NzctMS4zMzEtMi4zMDUtMi4wNmwtNy4zOTgtNy4zOThsNy42MjktNy42MjljNy4zMzQtNy4zMzMsMTguMDAzLTkuODM2LDI3LjgzOS02LjUzNCAgIGMwLjUyMywwLjE3MywxLjA5LTAuMTA3LDEuMjY3LTAuNjNjMC4xNzUtMC41MjMtMC4xMDYtMS4wOTEtMC42My0xLjI2N2MtMTAuNTYyLTMuNTQ1LTIyLjAxNi0wLjg1Ny0yOS44OSw3LjAxNkwwLDMwLjM2OCAgIGw4LjgxMiw4LjgxMkM5LjU5MywzOS45NjIsMTAuNDI2LDQwLjcwNSwxMS4yODUsNDEuMzl6IiBmaWxsPSIjNjY2NjY2Ii8+Cgk8cGF0aCBkPSJNNTAuMjM3LDIxLjMyNWMtMS4zNDgtMS4zNDgtMi44MjYtMi41NjQtNC4zOTQtMy42MTZjLTAuNDU4LTAuMzA3LTEuMDgxLTAuMTg1LTEuMzg4LDAuMjczICAgYy0wLjMwOCwwLjQ1OC0wLjE4NSwxLjA4LDAuMjczLDEuMzg4YzEuNDYsMC45NzksMi44MzgsMi4xMTMsNC4wOTQsMy4zNjlsNy4zOTgsNy4zOThsLTcuNjI5LDcuNjI5ICAgYy03LjM4NSw3LjM4NS0xOC41MTMsOS44ODItMjguMzUyLDYuMzU2Yy0wLjUyLTAuMTg3LTEuMDkzLDAuMDg0LTEuMjc5LDAuNjA0Yy0wLjE4NiwwLjUyLDAuMDg0LDEuMDkyLDAuNjA0LDEuMjc5ICAgYzMuMTgyLDEuMTQsNi40OSwxLjY5Myw5Ljc3NiwxLjY5M2M3LjYyMSwwLDE1LjEyNC0yLjk3NywyMC42NjUtOC41MThsOS4wNDMtOS4wNDNMNTAuMjM3LDIxLjMyNXoiIGZpbGw9IiM2NjY2NjYiLz4KCTxwYXRoIGQ9Ik0zMC41MzksNDEuNzc0Yy0yLjE1MywwLTQuMjUxLTAuNTk4LTYuMDctMS43M2MtMC40NjctMC4yOS0xLjA4NC0wLjE0OC0xLjM3NywwLjMyMWMtMC4yOTIsMC40NjktMC4xNDgsMS4wODUsMC4zMjEsMS4zNzcgICBjMi4xMzUsMS4zMyw0LjYsMi4wMzIsNy4xMjYsMi4wMzJjNy40NDQsMCwxMy41LTYuMDU2LDEzLjUtMTMuNWMwLTIuNjg1LTAuNzg3LTUuMjc5LTIuMjc1LTcuNTAyICAgYy0wLjMwOC0wLjQ1OS0wLjkzLTAuNTgyLTEuMzg3LTAuMjc1Yy0wLjQ1OSwwLjMwOC0wLjU4MiwwLjkyOS0wLjI3NSwxLjM4N2MxLjI2NywxLjg5MywxLjkzNyw0LjEwMiwxLjkzNyw2LjM5ICAgQzQyLjAzOSwzNi42MTYsMzYuODgsNDEuNzc0LDMwLjUzOSw0MS43NzR6IiBmaWxsPSIjNjY2NjY2Ii8+Cgk8cGF0aCBkPSJNMzAuNTM5LDE4Ljc3NGMyLjA2NSwwLDQuMDg5LDAuNTUzLDUuODU1LDEuNmMwLjQ3NCwwLjI4MSwxLjA4OCwwLjEyNSwxLjM3LTAuMzUxYzAuMjgxLTAuNDc1LDAuMTI1LTEuMDg4LTAuMzUxLTEuMzcgICBjLTIuMDc0LTEuMjI5LTQuNDUxLTEuODc5LTYuODc1LTEuODc5Yy03LjQ0NCwwLTEzLjUsNi4wNTYtMTMuNSwxMy41YzAsMi4wODQsMC40NjIsNC4wODMsMS4zNzQsNS45NDEgICBjMC4xNzQsMC4zNTQsMC41MjksMC41NiwwLjg5OSwwLjU2YzAuMTQ3LDAsMC4yOTgtMC4wMzMsMC40MzktMC4xMDJjMC40OTYtMC4yNDQsMC43MDEtMC44NDMsMC40NTgtMS4zMzggICBjLTAuNzc2LTEuNTgyLTEuMTctMy4yODQtMS4xNy01LjA2QzE5LjAzOSwyMy45MzMsMjQuMTk4LDE4Ljc3NCwzMC41MzksMTguNzc0eiIgZmlsbD0iIzY2NjY2NiIvPgoJPHBhdGggZD0iTTU0LjYyMSw1LjU2N2MtMC4zOTEtMC4zOTEtMS4wMjMtMC4zOTEtMS40MTQsMGwtNDYuNSw0Ni41Yy0wLjM5MSwwLjM5MS0wLjM5MSwxLjAyMywwLDEuNDE0ICAgYzAuMTk1LDAuMTk1LDAuNDUxLDAuMjkzLDAuNzA3LDAuMjkzczAuNTEyLTAuMDk4LDAuNzA3LTAuMjkzbDQ2LjUtNDYuNUM1NS4wMTIsNi41OTEsNTUuMDEyLDUuOTU4LDU0LjYyMSw1LjU2N3oiIGZpbGw9IiM2NjY2NjYiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K);\n    background-size: cover; }\n\n.arrow-wrapper[_v-22c5cfed] {\n  position: absolute;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  top: 0;\n  left: 4px; }\n\n.arrow[_v-22c5cfed] {\n  position: absolute;\n  top: 5px;\n  left: 4px;\n  transition: border-left-color .1s ease, -webkit-transform .1s ease;\n  transition: transform .1s ease, border-left-color .1s ease;\n  transition: transform .1s ease, border-left-color .1s ease, -webkit-transform .1s ease; }\n  .arrow.rotated[_v-22c5cfed] {\n    -webkit-transform: rotate(90deg);\n            transform: rotate(90deg); }\n\n.arrow[_v-22c5cfed] {\n  display: inline-block;\n  width: 0;\n  height: 0; }\n  .arrow.up[_v-22c5cfed] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-bottom: 6px solid #444; }\n  .arrow.down[_v-22c5cfed] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-top: 6px solid #444; }\n  .arrow.right[_v-22c5cfed] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-left: 6px solid #444; }\n  .arrow.left[_v-22c5cfed] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-right: 6px solid #444; }\n\n.angle-bracket[_v-22c5cfed] {\n  color: #ccc; }\n\n.instance-name[_v-22c5cfed] {\n  color: #3BA776;\n  margin: 0 1px;\n  transition: color .1s ease; }\n", ""]);
+exports.push([module.i, ".instance.inactive[_v-20ac27fc] {\n  opacity: 0.5; }\n\n.self[_v-20ac27fc] {\n  cursor: pointer;\n  position: relative;\n  overflow: hidden;\n  z-index: 2;\n  background-color: #FFFFFF;\n  transition: background-color .1s ease;\n  border-radius: 3px;\n  font-size: 14px;\n  line-height: 22px;\n  height: 22px;\n  white-space: nowrap; }\n  .self[_v-20ac27fc]:hidden {\n    display: none; }\n  .self[_v-20ac27fc]:hover {\n    background-color: #E5F2FF; }\n  .self.selected[_v-20ac27fc] {\n    background-color: #3BA776; }\n    .self.selected .arrow[_v-20ac27fc] {\n      border-left-color: #fff; }\n    .self.selected .instance-name[_v-20ac27fc] {\n      color: #fff; }\n  .app.dark .self[_v-20ac27fc] {\n    background-color: #242424; }\n    .app.dark .self[_v-20ac27fc]:hover {\n      background-color: #444; }\n    .app.dark .self.selected[_v-20ac27fc] {\n      background-color: #3BA776; }\n\n.children[_v-20ac27fc] {\n  position: relative;\n  z-index: 1; }\n\n.content[_v-20ac27fc] {\n  position: relative;\n  padding-left: 22px; }\n\n.info[_v-20ac27fc] {\n  color: #fff;\n  font-size: 10px;\n  padding: 3px 5px 2px;\n  display: inline-block;\n  line-height: 10px;\n  border-radius: 3px;\n  position: relative;\n  top: -1px;\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n  .info.console[_v-20ac27fc] {\n    color: #fff;\n    background-color: transparent; }\n  .info.router-view[_v-20ac27fc] {\n    background-color: #ff8344; }\n  .info.fragment[_v-20ac27fc] {\n    background-color: #b3cbf7; }\n  .info.inactive[_v-20ac27fc] {\n    background-color: #aaa; }\n  .info[_v-20ac27fc]:not(.console) {\n    margin-left: 6px; }\n\n.render[_v-20ac27fc] {\n  font-size: 10px;\n  display: inline-block;\n  line-height: 10px;\n  border-radius: 3px;\n  position: relative;\n  top: 4px;\n  width: 18px;\n  height: 18px;\n  background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDI1Mi40MjIgMjUyLjQyMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjUyLjQyMiAyNTIuNDIyIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgogIDxnPgogICAgPHBhdGggZD0ibTI1MS42OTIsNzMuMTk4bC0xNi0zMi4yNDNjLTEuMTgyLTIuMzgyLTMuNjExLTMuODg5LTYuMjcxLTMuODg5aC0yMDUuNDIxYy0yLjU5NywwLTQuOTgsMS40MzgtNi4xOTIsMy43MzVsLTE3LDMyLjI0M2MtMS4xNDQsMi4xNy0xLjA2OCw0Ljc4IDAuMTk4LDYuODggMS4yNjcsMi4xMDIgMy41NDEsMy4zODUgNS45OTQsMy4zODVoMTkuODQ5djEyNS4wNDZjMCwzLjg2NiAzLjEzNCw3IDcsN2gxODQuNzI1YzMuODY2LDAgNy0zLjEzNCA3LTd2LTEyNS4wNDZoMTkuODQ5YzIuNDIyLDAgNC42NzMtMS4yNTIgNS45NDktMy4zMTFzMS4zOTctNC42MyAwLjMyLTYuOHptLTUzLjk5Ni0yMi4xMzJsOC4yNjIsMTguMjQzaC0xNjAuMjFsNy4zMDQtMTguMjQzaDE0NC42NDR6bS0xNjkuNDczLDBoOS43NDhsLTcuMzA0LDE4LjI0M2gtMTIuMDYzbDkuNjE5LTE4LjI0M3ptMTgzLjM1LDE1MC4yODloLTE3MC43MjR2LTExOC4wNDZoMTcwLjcyNXYxMTguMDQ2em05Ljc1My0xMzIuMDQ2bC04LjI2MS0xOC4yNDNoMTIuMDE1bDkuMDUzLDE4LjI0M2gtMTIuODA3eiIgZmlsbD0iIzY2NjY2NiIvPgogIDwvZz4KPC9zdmc+Cg==);\n  background-size: cover; }\n  .render.show[_v-20ac27fc] {\n    background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDQ4OC44NSA0ODguODUiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQ4OC44NSA0ODguODU7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgo8Zz4KCTxwYXRoIGQ9Ik0yNDQuNDI1LDk4LjcyNWMtOTMuNCwwLTE3OC4xLDUxLjEtMjQwLjYsMTM0LjFjLTUuMSw2LjgtNS4xLDE2LjMsMCwyMy4xYzYyLjUsODMuMSwxNDcuMiwxMzQuMiwyNDAuNiwxMzQuMiAgIHMxNzguMS01MS4xLDI0MC42LTEzNC4xYzUuMS02LjgsNS4xLTE2LjMsMC0yMy4xQzQyMi41MjUsMTQ5LjgyNSwzMzcuODI1LDk4LjcyNSwyNDQuNDI1LDk4LjcyNXogTTI1MS4xMjUsMzQ3LjAyNSAgIGMtNjIsMy45LTExMy4yLTQ3LjItMTA5LjMtMTA5LjNjMy4yLTUxLjIsNDQuNy05Mi43LDk1LjktOTUuOWM2Mi0zLjksMTEzLjIsNDcuMiwxMDkuMywxMDkuMyAgIEMzNDMuNzI1LDMwMi4yMjUsMzAyLjIyNSwzNDMuNzI1LDI1MS4xMjUsMzQ3LjAyNXogTTI0OC4wMjUsMjk5LjYyNWMtMzMuNCwyLjEtNjEtMjUuNC01OC44LTU4LjhjMS43LTI3LjYsMjQuMS00OS45LDUxLjctNTEuNyAgIGMzMy40LTIuMSw2MSwyNS40LDU4LjgsNTguOEMyOTcuOTI1LDI3NS42MjUsMjc1LjUyNSwyOTcuOTI1LDI0OC4wMjUsMjk5LjYyNXoiIGZpbGw9IiM2NjY2NjYiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K);\n    background-size: cover; }\n  .render.hide[_v-20ac27fc] {\n    background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU5LjA0OSA1OS4wNDkiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU5LjA0OSA1OS4wNDk7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgo8Zz4KCTxwYXRoIGQ9Ik0xMS4yODUsNDEuMzljMC4xODQsMC4xNDYsMC40MDQsMC4yMTgsMC42MjMsMC4yMThjMC4yOTQsMCwwLjU4NS0wLjEyOSwwLjc4My0wLjM3N2MwLjM0NC0wLjQzMiwwLjI3My0xLjA2MS0wLjE1OS0xLjQwNSAgIGMtMC44MDEtMC42MzgtMS41NzctMS4zMzEtMi4zMDUtMi4wNmwtNy4zOTgtNy4zOThsNy42MjktNy42MjljNy4zMzQtNy4zMzMsMTguMDAzLTkuODM2LDI3LjgzOS02LjUzNCAgIGMwLjUyMywwLjE3MywxLjA5LTAuMTA3LDEuMjY3LTAuNjNjMC4xNzUtMC41MjMtMC4xMDYtMS4wOTEtMC42My0xLjI2N2MtMTAuNTYyLTMuNTQ1LTIyLjAxNi0wLjg1Ny0yOS44OSw3LjAxNkwwLDMwLjM2OCAgIGw4LjgxMiw4LjgxMkM5LjU5MywzOS45NjIsMTAuNDI2LDQwLjcwNSwxMS4yODUsNDEuMzl6IiBmaWxsPSIjNjY2NjY2Ii8+Cgk8cGF0aCBkPSJNNTAuMjM3LDIxLjMyNWMtMS4zNDgtMS4zNDgtMi44MjYtMi41NjQtNC4zOTQtMy42MTZjLTAuNDU4LTAuMzA3LTEuMDgxLTAuMTg1LTEuMzg4LDAuMjczICAgYy0wLjMwOCwwLjQ1OC0wLjE4NSwxLjA4LDAuMjczLDEuMzg4YzEuNDYsMC45NzksMi44MzgsMi4xMTMsNC4wOTQsMy4zNjlsNy4zOTgsNy4zOThsLTcuNjI5LDcuNjI5ICAgYy03LjM4NSw3LjM4NS0xOC41MTMsOS44ODItMjguMzUyLDYuMzU2Yy0wLjUyLTAuMTg3LTEuMDkzLDAuMDg0LTEuMjc5LDAuNjA0Yy0wLjE4NiwwLjUyLDAuMDg0LDEuMDkyLDAuNjA0LDEuMjc5ICAgYzMuMTgyLDEuMTQsNi40OSwxLjY5Myw5Ljc3NiwxLjY5M2M3LjYyMSwwLDE1LjEyNC0yLjk3NywyMC42NjUtOC41MThsOS4wNDMtOS4wNDNMNTAuMjM3LDIxLjMyNXoiIGZpbGw9IiM2NjY2NjYiLz4KCTxwYXRoIGQ9Ik0zMC41MzksNDEuNzc0Yy0yLjE1MywwLTQuMjUxLTAuNTk4LTYuMDctMS43M2MtMC40NjctMC4yOS0xLjA4NC0wLjE0OC0xLjM3NywwLjMyMWMtMC4yOTIsMC40NjktMC4xNDgsMS4wODUsMC4zMjEsMS4zNzcgICBjMi4xMzUsMS4zMyw0LjYsMi4wMzIsNy4xMjYsMi4wMzJjNy40NDQsMCwxMy41LTYuMDU2LDEzLjUtMTMuNWMwLTIuNjg1LTAuNzg3LTUuMjc5LTIuMjc1LTcuNTAyICAgYy0wLjMwOC0wLjQ1OS0wLjkzLTAuNTgyLTEuMzg3LTAuMjc1Yy0wLjQ1OSwwLjMwOC0wLjU4MiwwLjkyOS0wLjI3NSwxLjM4N2MxLjI2NywxLjg5MywxLjkzNyw0LjEwMiwxLjkzNyw2LjM5ICAgQzQyLjAzOSwzNi42MTYsMzYuODgsNDEuNzc0LDMwLjUzOSw0MS43NzR6IiBmaWxsPSIjNjY2NjY2Ii8+Cgk8cGF0aCBkPSJNMzAuNTM5LDE4Ljc3NGMyLjA2NSwwLDQuMDg5LDAuNTUzLDUuODU1LDEuNmMwLjQ3NCwwLjI4MSwxLjA4OCwwLjEyNSwxLjM3LTAuMzUxYzAuMjgxLTAuNDc1LDAuMTI1LTEuMDg4LTAuMzUxLTEuMzcgICBjLTIuMDc0LTEuMjI5LTQuNDUxLTEuODc5LTYuODc1LTEuODc5Yy03LjQ0NCwwLTEzLjUsNi4wNTYtMTMuNSwxMy41YzAsMi4wODQsMC40NjIsNC4wODMsMS4zNzQsNS45NDEgICBjMC4xNzQsMC4zNTQsMC41MjksMC41NiwwLjg5OSwwLjU2YzAuMTQ3LDAsMC4yOTgtMC4wMzMsMC40MzktMC4xMDJjMC40OTYtMC4yNDQsMC43MDEtMC44NDMsMC40NTgtMS4zMzggICBjLTAuNzc2LTEuNTgyLTEuMTctMy4yODQtMS4xNy01LjA2QzE5LjAzOSwyMy45MzMsMjQuMTk4LDE4Ljc3NCwzMC41MzksMTguNzc0eiIgZmlsbD0iIzY2NjY2NiIvPgoJPHBhdGggZD0iTTU0LjYyMSw1LjU2N2MtMC4zOTEtMC4zOTEtMS4wMjMtMC4zOTEtMS40MTQsMGwtNDYuNSw0Ni41Yy0wLjM5MSwwLjM5MS0wLjM5MSwxLjAyMywwLDEuNDE0ICAgYzAuMTk1LDAuMTk1LDAuNDUxLDAuMjkzLDAuNzA3LDAuMjkzczAuNTEyLTAuMDk4LDAuNzA3LTAuMjkzbDQ2LjUtNDYuNUM1NS4wMTIsNi41OTEsNTUuMDEyLDUuOTU4LDU0LjYyMSw1LjU2N3oiIGZpbGw9IiM2NjY2NjYiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K);\n    background-size: cover; }\n\n.arrow-wrapper[_v-20ac27fc] {\n  position: absolute;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  top: 0;\n  left: 4px; }\n\n.arrow[_v-20ac27fc] {\n  position: absolute;\n  top: 5px;\n  left: 4px;\n  transition: border-left-color .1s ease, -webkit-transform .1s ease;\n  transition: transform .1s ease, border-left-color .1s ease;\n  transition: transform .1s ease, border-left-color .1s ease, -webkit-transform .1s ease; }\n  .arrow.rotated[_v-20ac27fc] {\n    -webkit-transform: rotate(90deg);\n            transform: rotate(90deg); }\n\n.arrow[_v-20ac27fc] {\n  display: inline-block;\n  width: 0;\n  height: 0; }\n  .arrow.up[_v-20ac27fc] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-bottom: 6px solid #444; }\n  .arrow.down[_v-20ac27fc] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-top: 6px solid #444; }\n  .arrow.right[_v-20ac27fc] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-left: 6px solid #444; }\n  .arrow.left[_v-20ac27fc] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-right: 6px solid #444; }\n\n.angle-bracket[_v-20ac27fc] {\n  color: #ccc; }\n\n.instance-name[_v-20ac27fc] {\n  color: #3BA776;\n  margin: 0 1px;\n  transition: color .1s ease; }\n", ""]);
 
 // exports
 
@@ -19389,7 +19396,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".app[_v-29812758] {\n  font-family: Menlo, Consolas, monospace;\n  width: 100%;\n  height: 100%;\n  background-color: #FFFFFF;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column; }\n\n.toggle[_v-29812758] {\n  width: 100%;\n  box-sizing: border-box;\n  padding: 10px 20px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-bottom: 1px solid #DDDDDD;\n  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);\n  background-color: #FFFFFF; }\n  .toggle .toggle-text[_v-29812758] {\n    color: #999; }\n\n.container[_v-29812758] {\n  width: 100%;\n  height: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: stretch;\n      -ms-flex-align: stretch;\n          align-items: stretch; }\n  .container .left[_v-29812758], .container .right[_v-29812758] {\n    box-sizing: border-box;\n    width: 50%;\n    padding: 10px 0;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0; }\n  .container .left[_v-29812758] {\n    border-right: 1px solid #DDDDDD;\n    height: 100%; }\n  .container .content[_v-29812758] {\n    padding: 10px 6px;\n    height: calc(100% - 40px);\n    overflow: scroll; }\n\n.tabs[_v-29812758] {\n  width: 100%;\n  overflow-x: scroll;\n  border-bottom: 1px solid #DDDDDD; }\n  .tabs .tabs-tab[_v-29812758] {\n    display: inline-block;\n    padding: 6px;\n    width: 70px;\n    height: 12px;\n    line-height: 12px;\n    background: #f3f3f3;\n    margin-left: 6px;\n    border: 1px solid #DDDDDD;\n    border-bottom: 0;\n    text-align: center;\n    vertical-align: top;\n    cursor: pointer; }\n    .tabs .tabs-tab.active[_v-29812758] {\n      color: #3BA776; }\n    .tabs .tabs-tab.base64-selector[_v-29812758] {\n      width: 13px;\n      background-size: 100% 100%;\n      background-position: 1px 1px;\n      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAuCAAAAABLtcWwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfhCQ0PCybUE8MgAAAAtElEQVRIx+3UIQ6EMBAFUE48vqoGv76qjpXDEar2IDWVm3ABUgKkof9nS4IhyxgMr+kfhummk9U94PYgjb1UZYcvBaPAelPQC7qCWAoEA/lDcKxrwMuHeAr4PBMEQRC2QQIIglhO3wHh0LacPvP5DXzxvksNbQ3keAoiOZ6CPYS2tbUIoY1gCeEUCPKL5hAmTUCAJbCFyP2pBVgzawi3PCvBFlkwa0O1EcT9gym9Uls94KZgBgOms+vXRWTQAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE3LTA5LTEzVDE1OjExOjM4KzA4OjAwuTUEEwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNy0wOS0xM1QxNToxMTozOCswODowMMhovK8AAAAZdEVYdGV4aWY6TWFrZQBNT1NJbWFnZVNlcnZpY2VYRgD8AAAAAElFTkSuQmCC); }\n      .tabs .tabs-tab.base64-selector.active[_v-29812758] {\n        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAkCAYAAADl9UilAAABxUlEQVRYR+2XsUvDUBDGLyYxgot2cKkuRcTFVQcXiy4WwV0E/4IOLlJxcBS7iHRzd1I61kVxddGho7hJFwcVgqCm7ZMrpLbhveReckqV3NrH9ZfvvnfvznBdV8AAhpGCaVYlVUxTMPh7ij2/GXB6Y8JF3YSHJ0P3g6XnpzIClmbbUCp4YJvhKZWKVa4sqFxaLEDBJFuLLdhb80JzK8EKR05HqfuDd1a4md0RyI4LuN75iAeGCTB+AoySV6lYCqYoaKqYLwzVIr+uGPWK/1+wzZNhmMwImM+1YSHXhuwYz3iXWLHSuQ3V2+/3BZsnAiYFTQxWvTOhdGYrrRMXNDFY49WA/KFD9XTnOaIomhgMifJlBxovehNIZlTA/noTVuda0o9iAQv6LEo+hEEohFMFC1iUz/w/j1KpF5IFjOIzikrsYBSfFZebUFxpRlW5+zuLYpiN4jMdODYwmc+wfNMTAnBM94MKxzZaB32GRq9tf3ZuHu4OunCxlxHZyN3bz443vL4epQunBIta32Rgvs+whAgWDB041oUXfVauWd0Syq5gL1yY31jB0Gf1xyHlM+OD+vtqWPtgBSM3KcLBFIwgUt+RgVXsC8QsiJSdRWzMAAAAAElFTkSuQmCC);\n        background-size: 80% 80%;\n        background-repeat: no-repeat;\n        background-position: center; }\n    .tabs .tabs-tab.debugger-canvas[_v-29812758] {\n      height: 12px;\n      width: 13px;\n      display: inline-block;\n      position: relative; }\n      .tabs .tabs-tab.debugger-canvas[_v-29812758]:before, .tabs .tabs-tab.debugger-canvas[_v-29812758]:after {\n        content: '';\n        height: 12px;\n        width: 4px;\n        display: block;\n        background: #666;\n        position: absolute;\n        top: 7px;\n        left: 7px; }\n      .tabs .tabs-tab.debugger-canvas[_v-29812758]:after {\n        left: 15px; }\n    .tabs .tabs-tab.debugger-canvas-active[_v-29812758] {\n      height: 12px;\n      width: 13px;\n      display: inline-block;\n      position: relative; }\n      .tabs .tabs-tab.debugger-canvas-active[_v-29812758]:before {\n        content: '';\n        height: 0;\n        width: 0;\n        display: block;\n        border: 6px transparent solid;\n        border-right-width: 0;\n        border-left-color: #3BA776;\n        position: absolute;\n        top: 7px;\n        left: 14px; }\n      .tabs .tabs-tab.debugger-canvas-active[_v-29812758]:after {\n        content: '';\n        height: 12px;\n        width: 4px;\n        display: block;\n        background: #3BA776;\n        position: absolute;\n        top: 7px;\n        left: 7px; }\n", ""]);
+exports.push([module.i, "*[_v-2787160c] {\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n\n.fields[_v-2787160c] {\n  display: inline-block;\n  padding: 10px 20px 40px;\n  font-family: Menlo,Consolas,monospace; }\n  .fields .field[_v-2787160c] {\n    font-size: 12px;\n    height: 20px;\n    line-height: 20px; }\n    .fields .field.no-editable[_v-2787160c] {\n      position: relative;\n      cursor: pointer; }\n    .fields .field .key[_v-2787160c] {\n      color: #881391; }\n    .fields .field .value[_v-2787160c] {\n      color: #03c; }\n\n.no-editable .arrow[_v-2787160c] {\n  position: absolute;\n  top: 6px;\n  left: -12px;\n  transition: border-left-color .1s ease, -webkit-transform .1s ease;\n  transition: transform .1s ease, border-left-color .1s ease;\n  transition: transform .1s ease, border-left-color .1s ease, -webkit-transform .1s ease; }\n  .no-editable .arrow.rotated[_v-2787160c] {\n    -webkit-transform: rotate(90deg);\n            transform: rotate(90deg); }\n\n.arrow[_v-2787160c] {\n  display: inline-block;\n  width: 0;\n  height: 0; }\n  .arrow.up[_v-2787160c] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-bottom: 6px solid #444; }\n  .arrow.down[_v-2787160c] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-top: 6px solid #444; }\n  .arrow.right[_v-2787160c] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-left: 6px solid #444; }\n  .arrow.left[_v-2787160c] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-right: 6px solid #444; }\n", ""]);
 
 // exports
 
@@ -19403,7 +19410,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "*[_v-7fd1652b] {\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n\n.fields[_v-7fd1652b] {\n  display: inline-block;\n  padding: 10px 20px 40px;\n  font-family: Menlo,Consolas,monospace; }\n  .fields .field[_v-7fd1652b] {\n    font-size: 12px;\n    height: 20px;\n    line-height: 20px; }\n    .fields .field.no-editable[_v-7fd1652b] {\n      position: relative;\n      cursor: pointer; }\n    .fields .field .key[_v-7fd1652b] {\n      color: #881391; }\n    .fields .field .value[_v-7fd1652b] {\n      color: #03c; }\n\n.no-editable .arrow[_v-7fd1652b] {\n  position: absolute;\n  top: 6px;\n  left: -12px;\n  transition: border-left-color .1s ease, -webkit-transform .1s ease;\n  transition: transform .1s ease, border-left-color .1s ease;\n  transition: transform .1s ease, border-left-color .1s ease, -webkit-transform .1s ease; }\n  .no-editable .arrow.rotated[_v-7fd1652b] {\n    -webkit-transform: rotate(90deg);\n            transform: rotate(90deg); }\n\n.arrow[_v-7fd1652b] {\n  display: inline-block;\n  width: 0;\n  height: 0; }\n  .arrow.up[_v-7fd1652b] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-bottom: 6px solid #444; }\n  .arrow.down[_v-7fd1652b] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-top: 6px solid #444; }\n  .arrow.right[_v-7fd1652b] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-left: 6px solid #444; }\n  .arrow.left[_v-7fd1652b] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-right: 6px solid #444; }\n", ""]);
+exports.push([module.i, "*[_v-3dcbd901] {\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n\n.detail-section[_v-3dcbd901] {\n  height: 100%; }\n\n.detail[_v-3dcbd901] {\n  font-size: 14px;\n  height: 100%; }\n\n.notice[_v-3dcbd901] {\n  width: 100%;\n  height: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  font-size: 14px;\n  font-weight: bold;\n  color: #DDDDDD; }\n\n.title[_v-3dcbd901] {\n  font-size: 16px;\n  color: #3BA776;\n  width: 100%;\n  line-height: 25px;\n  box-sizing: border-box;\n  padding: 0 10px;\n  border-bottom: 1px solid #DDDDDD; }\n\n.content[_v-3dcbd901] {\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n  padding: 20px;\n  overflow: scroll; }\n\n.type[_v-3dcbd901] {\n  color: #486887;\n  padding-top: 10px; }\n\n.fields[_v-3dcbd901] {\n  padding: 10px 20px 40px;\n  font-family: Menlo,Consolas,monospace; }\n  .fields .field[_v-3dcbd901] {\n    font-size: 12px;\n    height: 20px;\n    line-height: 20px; }\n    .fields .field .key[_v-3dcbd901] {\n      color: #881391; }\n    .fields .field .value[_v-3dcbd901] {\n      display: inline-block;\n      color: #03c; }\n\n.edit[_v-3dcbd901] {\n  display: inline-block;\n  z-index: 999; }\n  .edit input[_v-3dcbd901] {\n    font-size: 12px;\n    width: 30px;\n    height: 18px;\n    line-height: 18px;\n    outline: none;\n    border: 1px solid #DDDDDD; }\n", ""]);
 
 // exports
 
@@ -19771,8 +19778,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-1cd4eef0&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./detail.vue", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-1cd4eef0&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./detail.vue");
+		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/vue-loader/lib/style-rewriter.js?id=_v-06fc3a2e&scoped=true!../node_modules/sass-loader/lib/loader.js!../node_modules/vue-loader/lib/selector.js?type=style&index=1!./index.vue", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/vue-loader/lib/style-rewriter.js?id=_v-06fc3a2e&scoped=true!../node_modules/sass-loader/lib/loader.js!../node_modules/vue-loader/lib/selector.js?type=style&index=1!./index.vue");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -19797,8 +19804,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-22c5cfed&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./element.vue", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-22c5cfed&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./element.vue");
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-20ac27fc&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./element.vue", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-20ac27fc&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./element.vue");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -19823,8 +19830,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/vue-loader/lib/style-rewriter.js?id=_v-29812758&scoped=true!../node_modules/sass-loader/lib/loader.js!../node_modules/vue-loader/lib/selector.js?type=style&index=1!./index.vue", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/vue-loader/lib/style-rewriter.js?id=_v-29812758&scoped=true!../node_modules/sass-loader/lib/loader.js!../node_modules/vue-loader/lib/selector.js?type=style&index=1!./index.vue");
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-2787160c&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./field.vue", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-2787160c&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./field.vue");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -19849,8 +19856,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7fd1652b&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./field.vue", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7fd1652b&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./field.vue");
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-3dcbd901&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./detail.vue", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-3dcbd901&scoped=true!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./detail.vue");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -19869,25 +19876,25 @@ module.exports = "\n\n\n\n\n<div class=\"vue-component-toggle\">\n    <div class
 /* 108 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<section class=\"detail-section\" _v-1cd4eef0=\"\">\n    <div clsss=\"detail\" v-if=\"instanceId &amp;&amp; showDetail\" _v-1cd4eef0=\"\">\n        <div class=\"title\" _v-1cd4eef0=\"\">\n            &lt;{{instance.name}}&gt;\n        </div>\n        <div class=\"content\" _v-1cd4eef0=\"\">\n            <template v-for=\"item in detailTypes\">\n                <div class=\"type\" v-if=\"instance[item.name]\" _v-1cd4eef0=\"\">\n                    {{item.name}}\n                </div>\n                <div class=\"fields\" _v-1cd4eef0=\"\">\n                    <template v-if=\"item.editable\">\n                        <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-for=\"field in instance[item.name]\" _v-1cd4eef0=\"\">\n                            <span class=\"key\" _v-1cd4eef0=\"\">{{$key}}</span>\n                            <span class=\"colon\" _v-1cd4eef0=\"\">: </span>\n                            <span class=\"value\" @click.stop=\"editValue(item.name, $key, $event)\" _v-1cd4eef0=\"\">{{field}}</span>\n                            <div class=\"edit\" v-if=\"detailType === item.name &amp;&amp; detailTypeKey === $key &amp;&amp; instanceId &amp;&amp; showDetail\" _v-1cd4eef0=\"\">\n                                <input id=\"editInput\" type=\"text\" v-model=\"editInputValue\" :style=\"{width: editInputWidth + 'px', marginLeft: -editInputWidth + 'px'}\" @keyup.enter=\"updateValue\" @keyup.up=\"editInputValueUp\" @keyup.down=\"editInputValueDown\" _v-1cd4eef0=\"\">\n                            </div>\n                        </div>\n                    </template>\n                    <template v-else=\"\">\n                        <v-field v-for=\"field in instance[item.name]\" :depth=\"0\" :item=\"item\" :field=\"{name: $key, value: field}\" _v-1cd4eef0=\"\"></v-field>\n                    </template>\n                </div>\n            </template>\n        </div>\n    </div>\n    <div class=\"notice\" v-else=\"\" _v-1cd4eef0=\"\">\n        Select a component instance to inspect.\n    </div>\n</section>\n";
+module.exports = "\n    <section class=\"app\" @click=\"clickDocument($event)\" _v-06fc3a2e=\"\">\n        <div class=\"toggle\" _v-06fc3a2e=\"\">\n            <div class=\"toggle-component\" _v-06fc3a2e=\"\">\n                <v-toggle :change.sync=\"isPaintRecording\" :disabled=\"false\" _v-06fc3a2e=\"\"></v-toggle>\n            </div>\n            <div class=\"toggle-text\" _v-06fc3a2e=\"\">\n                Debug Mode (may reduce fps)\n            </div>\n        </div>\n\t\t<section v-if=\"isPaintRecording\" class=\"container\" _v-06fc3a2e=\"\">\n\t\t\t<div class=\"left\" _v-06fc3a2e=\"\">\n\t\t\t\t<div class=\"tabs\" _v-06fc3a2e=\"\">\n\t\t\t\t\t<div class=\"tabs-tab base64-selector\" title=\"Select an element in the page to inspect it\" :class=\"{ active: selectorActive }\" @click=\"chooseSelector\" _v-06fc3a2e=\"\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"tabs-tab\" :title=\"!debuggerCanvas ? 'Pause canvas' : 'Resume canvas'\" :class=\"{ 'debugger-canvas': !debuggerCanvas, 'debugger-canvas-active': debuggerCanvas }\" @click=\"toggleDebuggerCanvas\" _v-06fc3a2e=\"\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"tabs-tab\" v-for=\"(index, item) in canvas\" :key=\"index\" :class=\"{ active: item === activeCanvas }\" @click=\"chooseCanvas(item)\" _v-06fc3a2e=\"\">\n\t\t\t\t\t\tcanvas{{index}}\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"content\" _v-06fc3a2e=\"\">\n\t\t\t\t\t<template v-for=\"element in elements\">\n\t\t\t\t\t\t<v-element v-if=\"!element.parent\" :key=\"$key\" :canvas-id=\"activeCanvas\" :instance-id=\"$key\" :depth=\"0\" _v-06fc3a2e=\"\">\n\t\t\t\t\t\t</v-element>\n\t\t\t\t\t</template>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"right\" _v-06fc3a2e=\"\">\n\t\t\t\t<v-detail _v-06fc3a2e=\"\"></v-detail>\n\t\t\t</div>\n\t\t</section>\n    </section>\n";
 
 /***/ }),
 /* 109 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"instance\" :class=\"{\n        selected: selected\n    }\" _v-22c5cfed=\"\">\n    <div class=\"self\" @click.stop=\"select\" @mouseenter=\"enter\" @mouseleave=\"leave\" :class=\"{ selected: selected }\" :style=\"{ paddingLeft: depth * 15 + 'px' }\" _v-22c5cfed=\"\">\n        <span class=\"content\" _v-22c5cfed=\"\">\n            <!-- arrow wrapper for better hit box -->\n            <span class=\"arrow-wrapper\" v-if=\"instance.children.length\" @click.stop=\"toggle\" _v-22c5cfed=\"\">\n                <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-22c5cfed=\"\"></span>\n            </span>\n            <span class=\"render\" :title=\"instance.rendered ? '已渲染元素' : (instance.rendered === false ? '未渲染元素' : '容器元素')\" :class=\"{show: instance.rendered === true, hide: instance.rendered === false}\" _v-22c5cfed=\"\"></span>                \n            <span class=\"angle-bracket\" _v-22c5cfed=\"\">&lt;</span><span class=\"instance-name\" _v-22c5cfed=\"\">{{ instance.name }}</span><span class=\"angle-bracket\" _v-22c5cfed=\"\">&gt;</span>\n            <span class=\"info console\" v-if=\"selected\" _v-22c5cfed=\"\">\n                id: {{ instanceId }}\n            </span>\n        </span>\n    </div>\n    <div v-if=\"expanded\" _v-22c5cfed=\"\">\n        <v-element v-for=\"childId in instance.children\" :key=\"childId\" :canvas-id=\"canvasId\" :instance-id=\"childId\" :depth=\"depth + 1\" _v-22c5cfed=\"\">\n        </v-element>\n    </div>\n</div>\n";
+module.exports = "\n<div class=\"instance\" :class=\"{\n        selected: selected\n    }\" _v-20ac27fc=\"\">\n    <div class=\"self\" @click.stop=\"select\" @mouseenter=\"enter\" @mouseleave=\"leave\" :class=\"{ selected: selected }\" :style=\"{ paddingLeft: depth * 15 + 'px' }\" _v-20ac27fc=\"\">\n        <span class=\"content\" _v-20ac27fc=\"\">\n            <!-- arrow wrapper for better hit box -->\n            <span class=\"arrow-wrapper\" v-if=\"instance.children.length\" @click.stop=\"toggle\" _v-20ac27fc=\"\">\n                <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-20ac27fc=\"\"></span>\n            </span>\n            <span class=\"render\" :title=\"instance.rendered ? '已渲染元素' : (instance.rendered === false ? '未渲染元素' : '容器元素')\" :class=\"{show: instance.rendered === true, hide: instance.rendered === false}\" _v-20ac27fc=\"\"></span>                \n            <span class=\"angle-bracket\" _v-20ac27fc=\"\">&lt;</span><span class=\"instance-name\" _v-20ac27fc=\"\">{{ instance.name }}</span><span class=\"angle-bracket\" _v-20ac27fc=\"\">&gt;</span>\n            <span class=\"info console\" v-if=\"selected\" _v-20ac27fc=\"\">\n                id: {{ instanceId }}\n            </span>\n        </span>\n    </div>\n    <div v-if=\"expanded\" _v-20ac27fc=\"\">\n        <v-element v-for=\"childId in instance.children\" :key=\"childId\" :canvas-id=\"canvasId\" :instance-id=\"childId\" :depth=\"depth + 1\" _v-20ac27fc=\"\">\n        </v-element>\n    </div>\n</div>\n";
 
 /***/ }),
 /* 110 */
 /***/ (function(module, exports) {
 
-module.exports = "\n    <section class=\"app\" @click=\"clickDocument($event)\" _v-29812758=\"\">\n        <div class=\"toggle\" _v-29812758=\"\">\n            <div class=\"toggle-component\" _v-29812758=\"\">\n                <v-toggle :change.sync=\"isPaintRecording\" :disabled=\"false\" _v-29812758=\"\"></v-toggle>\n            </div>\n            <div class=\"toggle-text\" _v-29812758=\"\">\n                Debug Mode (may reduce fps)\n            </div>\n        </div>\n\t\t<section v-if=\"isPaintRecording\" class=\"container\" _v-29812758=\"\">\n\t\t\t<div class=\"left\" _v-29812758=\"\">\n\t\t\t\t<div class=\"tabs\" _v-29812758=\"\">\n\t\t\t\t\t<div class=\"tabs-tab base64-selector\" title=\"Select an element in the page to inspect it\" :class=\"{ active: selectorActive }\" @click=\"chooseSelector\" _v-29812758=\"\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"tabs-tab\" :title=\"!debuggerCanvas ? 'Pause canvas' : 'Resume canvas'\" :class=\"{ 'debugger-canvas': !debuggerCanvas, 'debugger-canvas-active': debuggerCanvas }\" @click=\"toggleDebuggerCanvas\" _v-29812758=\"\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"tabs-tab\" v-for=\"(index, item) in canvas\" :key=\"index\" :class=\"{ active: item === activeCanvas }\" @click=\"chooseCanvas(item)\" _v-29812758=\"\">\n\t\t\t\t\t\tcanvas{{index}}\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"content\" _v-29812758=\"\">\n\t\t\t\t\t<template v-for=\"element in elements\">\n\t\t\t\t\t\t<v-element v-if=\"!element.parent\" :key=\"$key\" :canvas-id=\"activeCanvas\" :instance-id=\"$key\" :depth=\"0\" _v-29812758=\"\">\n\t\t\t\t\t\t</v-element>\n\t\t\t\t\t</template>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"right\" _v-29812758=\"\">\n\t\t\t\t<v-detail _v-29812758=\"\"></v-detail>\n\t\t\t</div>\n\t\t</section>\n    </section>\n";
+module.exports = "\n<div :style=\"{ marginLeft: depth * 14 + 'px' }\" _v-2787160c=\"\">\n    <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-if=\"isArray(field.value)\" @click=\"toggle\" _v-2787160c=\"\">\n        <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-2787160c=\"\">\n        </span>\n        <span class=\"key\" _v-2787160c=\"\">{{field.name}}</span>\n        <span class=\"colon\" _v-2787160c=\"\">: </span>\n        <span v-if=\"!item.editable\" _v-2787160c=\"\">Array[{{field.value.length}}]</span>\n    </div>\n    <template v-else=\"\">\n        <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-if=\"isObject(field.value)\" @click=\"toggle\" _v-2787160c=\"\">\n            <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-2787160c=\"\">\n            </span>\n            <span class=\"key\" _v-2787160c=\"\">{{field.name}}</span>\n            <span class=\"colon\" _v-2787160c=\"\">: </span>\n            <span v-if=\"!item.editable\" _v-2787160c=\"\">Object</span>\n        </div>\n        <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-else=\"\" _v-2787160c=\"\">\n            <span class=\"key\" _v-2787160c=\"\">{{field.name}}</span>\n            <span class=\"colon\" _v-2787160c=\"\">: </span>\n            <span class=\"value\" v-if=\"!item.editable\" _v-2787160c=\"\">\n                <span _v-2787160c=\"\">\n                    {{field.value}}\n                </span>\n            </span>\n        </div>\n    </template>\n    <template v-if=\"expanded &amp;&amp; (isArray(field.value) || isObject(field.value))\">\n        <v-field v-for=\"(index, f) in field.value\" track-by=\"$index\" :depth=\"depth + 1\" :item=\"item\" :field=\"{name: index, value: f}\" _v-2787160c=\"\"></v-field>\n    </template>\n</div>\n";
 
 /***/ }),
 /* 111 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div :style=\"{ marginLeft: depth * 14 + 'px' }\" _v-7fd1652b=\"\">\n    <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-if=\"isArray(field.value)\" @click=\"toggle\" _v-7fd1652b=\"\">\n        <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-7fd1652b=\"\">\n        </span>\n        <span class=\"key\" _v-7fd1652b=\"\">{{field.name}}</span>\n        <span class=\"colon\" _v-7fd1652b=\"\">: </span>\n        <span v-if=\"!item.editable\" _v-7fd1652b=\"\">Array[{{field.value.length}}]</span>\n    </div>\n    <template v-else=\"\">\n        <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-if=\"isObject(field.value)\" @click=\"toggle\" _v-7fd1652b=\"\">\n            <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-7fd1652b=\"\">\n            </span>\n            <span class=\"key\" _v-7fd1652b=\"\">{{field.name}}</span>\n            <span class=\"colon\" _v-7fd1652b=\"\">: </span>\n            <span v-if=\"!item.editable\" _v-7fd1652b=\"\">Object</span>\n        </div>\n        <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-else=\"\" _v-7fd1652b=\"\">\n            <span class=\"key\" _v-7fd1652b=\"\">{{field.name}}</span>\n            <span class=\"colon\" _v-7fd1652b=\"\">: </span>\n            <span class=\"value\" v-if=\"!item.editable\" _v-7fd1652b=\"\">\n                <span _v-7fd1652b=\"\">\n                    {{field.value}}\n                </span>\n            </span>\n        </div>\n    </template>\n    <template v-if=\"expanded &amp;&amp; (isArray(field.value) || isObject(field.value))\">\n        <v-field v-for=\"(index, f) in field.value\" track-by=\"$index\" :depth=\"depth + 1\" :item=\"item\" :field=\"{name: index, value: f}\" _v-7fd1652b=\"\"></v-field>\n    </template>\n</div>\n";
+module.exports = "\n<section class=\"detail-section\" _v-3dcbd901=\"\">\n    <div clsss=\"detail\" v-if=\"instanceId &amp;&amp; showDetail\" _v-3dcbd901=\"\">\n        <div class=\"title\" _v-3dcbd901=\"\">\n            &lt;{{instance.name}}&gt;\n        </div>\n        <div class=\"content\" _v-3dcbd901=\"\">\n            <template v-for=\"item in detailTypes\">\n                <div class=\"type\" v-if=\"instance[item.name]\" _v-3dcbd901=\"\">\n                    {{item.name}}\n                </div>\n                <div class=\"fields\" _v-3dcbd901=\"\">\n                    <template v-if=\"item.editable\">\n                        <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-for=\"field in instance[item.name]\" _v-3dcbd901=\"\">\n                            <span class=\"key\" _v-3dcbd901=\"\">{{$key}}</span>\n                            <span class=\"colon\" _v-3dcbd901=\"\">: </span>\n                            <span class=\"value\" @click.stop=\"editValue(item.name, $key, $event)\" _v-3dcbd901=\"\">{{field}}</span>\n                            <div class=\"edit\" v-if=\"detailType === item.name &amp;&amp; detailTypeKey === $key &amp;&amp; instanceId &amp;&amp; showDetail\" _v-3dcbd901=\"\">\n                                <input id=\"editInput\" type=\"text\" v-model=\"editInputValue\" :style=\"{width: editInputWidth + 'px', marginLeft: -editInputWidth + 'px'}\" @keyup.enter=\"updateValue\" @keyup.up=\"editInputValueUp\" @keyup.down=\"editInputValueDown\" _v-3dcbd901=\"\">\n                            </div>\n                        </div>\n                    </template>\n                    <template v-else=\"\">\n                        <v-field v-for=\"field in instance[item.name]\" :depth=\"0\" :item=\"item\" :field=\"{name: $key, value: field}\" _v-3dcbd901=\"\"></v-field>\n                    </template>\n                </div>\n            </template>\n        </div>\n    </div>\n    <div class=\"notice\" v-else=\"\" _v-3dcbd901=\"\">\n        Select a component instance to inspect.\n    </div>\n</section>\n";
 
 /***/ }),
 /* 112 */
@@ -19915,7 +19922,7 @@ if (false) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), false)
   if (!hotAPI.compatible) return
-  var id = "_v-2defa645/index.vue"
+  var id = "_v-99bafd58/index.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -19929,11 +19936,11 @@ if (false) {(function () {  module.hot.accept()
 
 var __vue_script__, __vue_template__
 var __vue_styles__ = {}
-__webpack_require__(103)
+__webpack_require__(106)
 __vue_script__ = __webpack_require__(47)
 if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
   console.warn("[vue-loader] panel/components/detail.vue: named exports in *.vue files are ignored.")}
-__vue_template__ = __webpack_require__(108)
+__vue_template__ = __webpack_require__(111)
 module.exports = __vue_script__ || {}
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -19949,7 +19956,7 @@ if (false) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), false)
   if (!hotAPI.compatible) return
-  var id = "_v-1cd4eef0/detail.vue"
+  var id = "_v-3dcbd901/detail.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -19983,7 +19990,7 @@ if (false) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), false)
   if (!hotAPI.compatible) return
-  var id = "_v-22c5cfed/element.vue"
+  var id = "_v-20ac27fc/element.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -19997,45 +20004,10 @@ if (false) {(function () {  module.hot.accept()
 
 var __vue_script__, __vue_template__
 var __vue_styles__ = {}
-__webpack_require__(106)
+__webpack_require__(105)
 __vue_script__ = __webpack_require__(49)
 if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
   console.warn("[vue-loader] panel/components/field.vue: named exports in *.vue files are ignored.")}
-__vue_template__ = __webpack_require__(111)
-module.exports = __vue_script__ || {}
-if (module.exports.__esModule) module.exports = module.exports.default
-var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
-if (__vue_template__) {
-__vue_options__.template = __vue_template__
-}
-if (!__vue_options__.computed) __vue_options__.computed = {}
-Object.keys(__vue_styles__).forEach(function (key) {
-var module = __vue_styles__[key]
-__vue_options__.computed[key] = function () { return module }
-})
-if (false) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  var id = "_v-7fd1652b/field.vue"
-  if (!module.hot.data) {
-    hotAPI.createRecord(id, module.exports)
-  } else {
-    hotAPI.update(id, module.exports, __vue_template__)
-  }
-})()}
-
-/***/ }),
-/* 116 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __vue_script__, __vue_template__
-var __vue_styles__ = {}
-__webpack_require__(102)
-__webpack_require__(105)
-__vue_script__ = __webpack_require__(50)
-if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
-  console.warn("[vue-loader] panel/index.vue: named exports in *.vue files are ignored.")}
 __vue_template__ = __webpack_require__(110)
 module.exports = __vue_script__ || {}
 if (module.exports.__esModule) module.exports = module.exports.default
@@ -20052,7 +20024,42 @@ if (false) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), false)
   if (!hotAPI.compatible) return
-  var id = "_v-29812758/index.vue"
+  var id = "_v-2787160c/field.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, __vue_template__)
+  }
+})()}
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __vue_script__, __vue_template__
+var __vue_styles__ = {}
+__webpack_require__(102)
+__webpack_require__(103)
+__vue_script__ = __webpack_require__(50)
+if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
+  console.warn("[vue-loader] panel/index.vue: named exports in *.vue files are ignored.")}
+__vue_template__ = __webpack_require__(108)
+module.exports = __vue_script__ || {}
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
+if (__vue_template__) {
+__vue_options__.template = __vue_template__
+}
+if (!__vue_options__.computed) __vue_options__.computed = {}
+Object.keys(__vue_styles__).forEach(function (key) {
+var module = __vue_styles__[key]
+__vue_options__.computed[key] = function () { return module }
+})
+if (false) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  var id = "_v-06fc3a2e/index.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {

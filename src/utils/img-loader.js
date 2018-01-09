@@ -29,11 +29,12 @@ const loader = function (url, callback, option) {
         }, option);
         return;
     }
+
     let cacheNamespace = url;
 
-    if (_option.alphaColor) cacheNamespace += alphaColor;
+    if (_option.alphaColor) cacheNamespace += _option.alphaColor;
 
-    if (Cache[cacheNamespace] && Cache[cacheNamespace] !== ProcessingFlag) {
+    if (Cache[cacheNamespace]) {
         setTimeout(function () {
             if (callback) {
                 callback(Cache[cacheNamespace]);
@@ -56,19 +57,14 @@ const loader = function (url, callback, option) {
         });
     }
 
-    Cache[cacheNamespace] = ProcessingFlag;
+    Cache[cacheNamespace] = i;
 
-    // Use canvas (no different in performance on my test)
-    // if (_option.cache || true) {
-    //     let tempCavas = document.createElement('canvas');
-    //     let cts = tempCavas.getContext('2d');
-    //     i.onload = function () {
-    //         tempCavas.width = i.width;
-    //         tempCavas.height = i.height;
-    //         cts.drawImage(i, 0, 0);
-    //     };
-    //     return tempCavas;
-    // }
+    let tempCavas;
+    if (_option.canvas || _option.alphaColor) {
+        tempCavas = document.createElement('canvas');
+        tempCavas.width = tempCavas.height || 0;
+        Cache[cacheNamespace] = tempCavas;
+    }
 
     i.onload = function () {
         if (_option.block) {
@@ -81,11 +77,10 @@ const loader = function (url, callback, option) {
             }
         }
 
-        if (_option.cache) {
-            let tempCavas = document.createElement('canvas');
+        if (_option.canvas || _option.alphaColor) {
             let cts = tempCavas.getContext('2d');
-            tempCavas.width = i.width;
-            tempCavas.height = i.height;
+            tempCavas.$width = tempCavas.width = i.width;
+            tempCavas.$height = tempCavas.height = i.height;
             cts.drawImage(i, 0, 0);
 
             if (_option.alphaColor) {
@@ -104,7 +99,6 @@ const loader = function (url, callback, option) {
 
             i = tempCavas;
         }
-        Cache[cacheNamespace] = i;
 
         if (callback) {
             callback(i);
@@ -115,7 +109,7 @@ const loader = function (url, callback, option) {
         Cache[cacheNamespace] = i;
     };
 
-    return i;
+    return tempCavas || i;
 };
 
 module.exports = loader;

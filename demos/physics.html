@@ -1,0 +1,140 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.physics.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="400" height="800"></canvas>
+</body>
+
+<script>
+    var $Painter = new Easycanvas.painter();
+    $Painter.register(document.getElementById('foo'));
+    $Painter.start();
+
+    var G = Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true');
+    var Btn = Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/btn.png?raw=true');
+    var Hotel = Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/block.jpg?raw=true');
+
+    // 创建一个物理对象，内部重力为1（“内部”的意思是这个东西本身不受重力影响，不会掉下去，作为容器）
+    window.$space = new Easycanvas.class.physics({
+        physics: {
+            gravity: 1,
+        },
+    });
+
+    $Painter.add($space);
+
+    // 创建一个球体
+    window.ballSprite = new Easycanvas.class.physics({
+        name: 'ball',
+        content: {
+            // 这个图是个字母G，形状类似一个球。（为什么不用字母O呢？因为字母O太圆了，看不出来旋转）
+            img: G,
+        },
+        physics: {
+            // 形状是一个以(10,10)为圆心的，半径10的圆
+            shape: [
+                [10, 10, 10]
+            ],
+            mass: 0.1, // 质量
+            friction: 0.6, // 摩擦，如果摩擦为0，他会在地上滚个不停
+            elasticity: 0.8, // 弹性，如果弹性为0，掉地上了就再也弹不起来了（1的话就弹个不停）
+        },
+        style: {
+            tw: 20, th: 20, // 图片宽高都是20，确保了图片大小和物理形状是吻合的（看起来才逼真）
+            sx: 0, sy: 0,
+            tx: 150,
+            ty: 20,
+            locate: 'lt',
+            zIndex: 1,
+        },
+    });
+
+    $space.add(ballSprite);
+
+    // 创建一个方形物体（是个酒店的床型照片）
+    window.sqSprite = $space.add(new Easycanvas.class.physics({
+        name: 'square',
+        content: {
+            img: Hotel,
+        },
+        physics: {
+            // 形状是这4个坐标点围成的矩形（因为这个图片是矩形，为了看起来吻合）
+            shape: [
+                [0, 0], [61, 0], [61, 38], [0, 38]
+            ],
+            mass: 1, // 质量比球大
+            friction: 0.5,
+            elasticity: 0.4,
+        },
+        style: {
+            tw: 61, th: 38,
+            tx: 60,
+            ty: 10,
+            locate: 'lt',
+            zIndex: 4,
+        },
+    }));
+
+    // 创建一个静态的东西，做障碍，给球撞的，我随便找了一个“快领红包”的按钮
+    window.staticSprite = $space.add(new Easycanvas.class.physics({
+        name: 'line-static',
+        content: {
+            img: Btn,
+        },
+        physics: {
+            // 形状是一个线段（只弄了一条边（上面的边），毕竟另外几条没用到，因为没撞到其他物体）
+            shape: [
+                [[30, 30], [170, 30]],
+            ],
+            friction: 0.1,
+            elasticity: 0.4,
+            // 这个元素是静态的（不受重力影响，不会被撞飞）
+            static: true
+        },
+        style: {
+            tw: 200, th: 120,
+            sx: 0, sy: 0,
+            tx: 100,
+            ty: 300,
+            rx: 200, ry: 360,
+            rotate: -10,
+            locate: 'center',
+            zIndex: 2,
+        },
+    }));
+
+    // 这个是边界（不然球会掉到屏幕外）
+    window.borderSprite = $space.add(new Easycanvas.class.physics({
+        name: 'border-static',
+        content: {
+        },
+        physics: {
+            // 围成了一个矩形（4个线段组成的形状，是个空心的，用来做边界）
+            shape: [
+                [[0, 0], [300, 0]],
+                [[0, 0], [0, 600]],
+                [[300, 0], [300, 600]],
+                [[0, 600], [300, 600]]
+            ],
+            friction: 0.1,
+            elasticity: 0.8,
+            // 这个元素是静态的（不受重力影响，不会被撞飞）
+            static: true
+        },
+        style: {
+            tx: 0, ty: 0, tw: 300, th: 600,
+            locate: 'lt',
+            zIndex: -1,
+        },
+    }));
+
+    borderSprite.physicsOn();
+    staticSprite.physicsOn();
+    sqSprite.physicsOn();
+    ballSprite.physicsOn();
+    $space.launch();
+
+    // ballSprite.$physics.space.addConstraint(new cp.PinJoint(ballSprite.$physics.body, sqSprite.$physics.body, cp.v(15,0), cp.v(15,0)));
+</script>
