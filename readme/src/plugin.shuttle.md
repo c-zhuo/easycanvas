@@ -3,9 +3,6 @@
 [Chinese]### “穿梭”效果背景
 [English]### 'Shuttle' background effect
 
-[Chinese]
-[English]
-
 ```
     import EasyCanvas from 'easycanvas';
     import EasyCanvasPluginShuttle from 'easycanvas/build/plugin.shuttle.js';

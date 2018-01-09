@@ -1,10 +1,11 @@
 #### Easycanvas > plugin > webgl
 
-### webgl
+### WebGL渲染
 
-
+在注册实例时，传入webgl为true即可。
 
 ```
-    import EasyCanvas from 'easycanvas';
-    import EasyCanvasPluginShuttle from 'easycanvas/build/plugin.shuttle.js';
+    $Painter.register(document.getElementById('foo'), {
+        webgl: true
+    });
 ```
