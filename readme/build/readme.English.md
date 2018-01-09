@@ -170,6 +170,7 @@ Almost all events in browsers are supported in Easycanvas, including wheel event
                 ty: 100,
             },
             events: {
+                eIndex: 1,
                 click: function (e) {
                     this.style.tx = e.canvasX;
                     this.style.ty = e.event.layerY;
@@ -195,7 +196,7 @@ Events will pass from higher `eIndex`, and stop when a handler 'return true', Or
 
 ## Hooks
 
-Hooks supported in Easycanvas include: `ticked`, `removed`.
+Hooks supported in Easycanvas include: `ticked`, `removed`, `beforeTick`.
 
 ```
     var box = new Easycanvas.class.sprite({
@@ -340,14 +341,15 @@ The following case created a sprite when a global clicking occur to the canvas i
     var createFire = function (initX, initY) {
         return {
             content: {
-                // 'sequenceDiagram' can split an image into frames
-                img: Easycanvas.sequenceDiagram(Fire, {
-                    // size of each frame, -9 means 1/9 of image width, like 'Fire.width / 9'
+                img: Fire,
+                // 'sequence' can split an image into frames
+                // size of each frame, -9 means 1/9 of image width, like 'Fire.width / 9'
+                sequence: {
                     w: -9,
                     h: -1,
                     interval: 50,
                     loop: false
-                }),
+                }
             },
 
             style: {
