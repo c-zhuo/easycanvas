@@ -8,7 +8,10 @@
 import chipmunk from 'lib/chipmunk.js';
 
 import utils from 'utils/utils.js';
+import mathPointRotate from 'utils/math.point-rotate.js';
+
 const or = utils.firstValuable;
+const PI = 3.141593;
 
 let cp = window.cp = chipmunk;
 let _ec;
@@ -105,21 +108,6 @@ let physics = function (opt) {
 	return sprite;
 };
 
-let transformer = function (x, y, rx0, ry0, d, returnArr) {
-    let deg = d ? -d / 180 * Math.PI : 0;
-    let _x = (x - rx0) * Math.cos(deg) - (y - ry0) * Math.sin(deg) + rx0;
-    let _y = (x - rx0) * Math.sin(deg) + (y - ry0) * Math.cos(deg) + ry0;
-
-    if (returnArr) {
-        return [_x, _y];
-    }
-
-    return {
-        x: _x,
-        y: _y  
-    };
-};
-
 let xy2Vect = function (pos) {
     // make a mark for debugging
     // $Painter.add({
@@ -145,7 +133,7 @@ let chip2ec = function (body, sprite) {
     let pos = body.getPos();
     let vel = body.getVel();
     // sprite.style.rotate = body.a;
-    sprite.style.rotate = body.a * 180 / Math.PI;
+    sprite.style.rotate = body.a * 180 / PI;
     sprite.style.tx = pos.x;
     sprite.style.ty = -pos.y;
 
@@ -244,10 +232,10 @@ function spritePhysicsOn (child) {
         childShape.forEach((s, i) => {
             let shape = new cp.SegmentShape(
                 space.staticBody,
-                xy2Vect(transformer(
+                xy2Vect(mathPointRotate(
                     s[0][0] + child.$cache.tx, s[0][1] + child.$cache.ty, child.style.rx || 0, child.style.ry || 0, child.style.rotate || 0
                 )),
-                xy2Vect(transformer(
+                xy2Vect(mathPointRotate(
                     s[1][0] + child.$cache.tx, s[1][1] + child.$cache.ty, child.style.rx || 0, child.style.ry || 0, child.style.rotate || 0
                 )),
                 1 // width

@@ -98,33 +98,18 @@ module.exports = function () {
                         });
                     }
 
-                    // Has NOT decided which is better
-                    // for (let key in $sprite.style) {
-                    //     (function (_key) {
-                    //         $selectMask.style[_key] = function () {
-                    //             return $sprite.style[_key] || 0;
-                    //         };
-                    //         // $selectMask.style[_key] = $sprite.style[_key] || 0;
-                    //     })(key);
-                    // }
-                    // $sprite.inherit.forEach((key) => {
-                    //     (function (_key) {
-                    //         $selectMask.style[_key] = function () {
-                    //             return $sprite.$cache[_key] || 0;
-                    //         };
-                    //         // $selectMask.style[_key] = $sprite.$cache[_key] || 0;
-                    //     })(key);
-                    // });
-                    for (let key in $sprite.$cache) {
+                    // for (let key in $sprite.$cache) {
+                    ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
                         (function (_key) {
-                            if (constants.sxywh.indexOf(key) >= 0) {
+                            if (constants.sxywh.indexOf(_key) >= 0) {
                                 return;
                             }
                             $selectMask.style[_key] = function () {
                                 return $sprite.$cache[_key] || 0;
                             };
                         })(key);
-                    }
+                    });
+                    // }
 
                     // $sprite.$cache has calculated the 'scale' and 'locate'
                     // Here uses the default values

@@ -15,7 +15,7 @@ var js = glob.sync('./src/**/*.js').reduce(function (prev, curr) {
     return prev;
 }, {});
 
-var html = glob.sync('./_forIO/*.html').map(function (item) {
+var html = glob.sync('./demos/*.html').map(function (item) {
     return new HtmlWebpackPlugin({
         data: {
             env: env

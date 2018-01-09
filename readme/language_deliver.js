@@ -1,12 +1,14 @@
 var fs = require('fs');
-var source = fs.readFileSync('./readme/readme.md', 'utf8');
 
 var support = ['Chinese', 'English'];
 
 var commonRegExp = '^\\[' + 'All' + '\\]';
 commonRegExp = new RegExp(commonRegExp, 'g');
 
-var filter = function (lan) {
+const distPath = './readme/build/';
+const srcPath = './readme/src/';
+
+var filter = function (source, lan, filename) {
 	var currentRegExp = '^\\[' + lan + '\\]';
 	currentRegExp = new RegExp(currentRegExp, 'g');
 
@@ -26,9 +28,20 @@ var filter = function (lan) {
 		return line.substr(0, 1) === '[' ? null : line;
 	});
 
-	fs.writeFileSync('./readme/build/' + lan + '.md', current.filter(function (line) {
+	fs.writeFileSync('./readme/build/' + filename.replace(/\.md/ig, '') + '.' + lan + '.md', current.filter(function (line) {
 		return line !== null;
 	}).join('\n'));
 };
 
-support.forEach(filter);
+// remove all file in build
+fs.readdirSync(distPath).forEach(function (file) {
+	fs.unlinkSync(distPath + file);
+});
+
+var dirList = fs.readdirSync(srcPath);
+dirList.forEach(function (item) {
+	var source = fs.readFileSync(srcPath + item, 'utf8');
+	support.forEach(function (lan) {
+		filter(source, lan, item);
+	});
+});

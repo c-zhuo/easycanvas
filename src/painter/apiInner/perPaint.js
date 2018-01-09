@@ -2,7 +2,7 @@
  *
  * CORE painting function
  * - Calculates props of every sprite in paintList, then puts to $paintList.
- * - Includes inheriting, optimization.
+ * - Includes optimization.
  * - NOT connecting to canvas's prototype functions.
  *
  * ********** **/
@@ -14,9 +14,12 @@ import getComputedStyle from './perPaint.getComputedStyle.js';
 
 module.exports = function (i, index) {
     if (utils.funcOrValue(i.style.visible, i) === false) {
+        utils.execFuncs(i.hooks.beforeTick, i);
         utils.execFuncs(i.hooks.ticked, i);
         return;
     }
+    
+    utils.execFuncs(i.hooks.beforeTick, i);
 
     let $canvas = this;
 
@@ -25,27 +28,6 @@ module.exports = function (i, index) {
     let _props = getComputedStyle(i, $canvas);
     let _text = _props.text;
     let _img = _props.img;
-
-    let inherits = i.inherit || [];
-    if (i.$parent) {
-        i.inherit.forEach(function (key) {
-            if (constants.xywh.indexOf(key) >= 0 || ['rotate'].indexOf(key) >= 0) {
-                _props[key] = _props[key] || 0;
-                // inherit from parent's style
-                _props[key] += utils.funcOrValue(i.$parent.style[key] || 0, i.$parent) || 0;
-            } else if (['opacity', 'scale'].indexOf(key) >= 0) {
-                _props[key] = utils.firstValuable(_props[key], 1);
-                if (!isNaN(i.$parent.$cache[key])) {
-                    _props[key] *= i.$parent.$cache[key];
-                }
-            // } else if (key === 'scroll') {
-            //     _props.ty -= $canvas.scroll.scrollY;
-            }
-        });
-
-        _props.ty -= i.$parent.scroll.scrollY;
-        _props.tx -= i.$parent.scroll.scrollX;
-    }
 
     let _children = utils.funcOrValue(i.children, i);
 
@@ -71,6 +53,10 @@ module.exports = function (i, index) {
     }
 
     if (_props.fh || _props.fv) {
+        _props.fh = _props.fh || 0;
+        _props.fv = _props.fv || 0;
+        _props.fx = _props.fx || 0;
+        _props.fy = _props.fy || 0;
         settings.transform = {
             fh: _props.fh,
             fv: _props.fv,
@@ -115,7 +101,7 @@ module.exports = function (i, index) {
 
     /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
     // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
-    if (!_props.rotate && !_text) {
+    if (!_props.rotate && !_text && _imgWidth) {
         if (_props.sx < 0 && _props.sw) {
             let cutRate = (-_props.sx / _props.sw);
             _props.tx += _props.tw * cutRate;
@@ -195,21 +181,23 @@ module.exports = function (i, index) {
         }
     }
 
-    if (process.env.NODE_ENV !== 'production') {
-        if (!i.$cache.base64 && _img && _img.src) {
-            i.$cache.base64 = 'processing';
-            img2base64(_img.src, function (data) {
-                i.$cache.base64 = data;
-            });
-        }
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    //     if (!i.$cache.base64 && _img && _img.src) {
+    //         i.$cache.base64 = 'processing';
+    //         img2base64(_img.src, function (data) {
+    //             i.$cache.base64 = data;
+    //         });
+    //     }
+    // }
 
     if (_children) {
         _children.filter(function (item) {
-            return item.style.zIndex < 0;
+            return utils.funcOrValue(item.style.zIndex, item) < 0;
         }).sort(function (a, b) {
-            if (a.style.zIndex === b.style.zIndex) return 0;
-            return a.style.zIndex > b.style.zIndex ? 1 : -1;
+            var za = utils.funcOrValue(a.style.zIndex, a);
+            var zb = utils.funcOrValue(b.style.zIndex, b);
+            if (za === zb) return 0;
+            return za > zb ? 1 : -1;
         }).forEach(function (c, _index) {
             $canvas.$perPaint.call($canvas, c, _index);
         });
@@ -235,6 +223,7 @@ module.exports = function (i, index) {
             props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
         });
     }
+
     if (_text) {
         let textTx = _props.tx;
         let textTy = _props.ty;
@@ -255,7 +244,7 @@ module.exports = function (i, index) {
             textTy += textFontsize + (textLineHeight - textFontsize) / 2;
         } else if (i.style.textVerticalAlign === 'bottom') {
             textTy += _props.th - (textLineHeight - textFontsize) / 2;
-        } else {
+        } else if (i.style.textVerticalAlign === 'middle') {
             textTy += _props.th / 2 + textFontsize / 2;
         }
 
@@ -275,6 +264,25 @@ module.exports = function (i, index) {
                     color: i.style.color || 'white',
                     type: i.style.textType || 'fillText',
                 }
+            });
+        } else if (_text.length) {
+            _text.forEach(function (t) {
+                $canvas.$paintList.push({
+                    $id: i.$id,
+                    type: 'text',
+                    settings: settings,
+                    props: {
+                        tx: textTx + utils.funcOrValue(t.tx, i),
+                        ty: textTy + utils.funcOrValue(t.ty, i),
+                        // tw: _props.tw,
+                        // th: _props.th,
+                        content: utils.funcOrValue(t.content, i),
+                        align: textAlign || 'left',
+                        font: textFont,
+                        color: i.style.color || 'white',
+                        type: i.style.textType || 'fillText',
+                    }
+                });
             });
         } else if (_text.type === 'multline-text') {
             let textArr = _text.text.split(/\t|\n/);
@@ -330,10 +338,12 @@ module.exports = function (i, index) {
 
     if (_children) {
         _children.filter(function (item) {
-            return !(item.style.zIndex < 0);
+            return !(utils.funcOrValue(item.style.zIndex, item) < 0);
         }).sort(function (a, b) {
-            if (a.style.zIndex === b.style.zIndex) return 0;
-            return a.style.zIndex > b.style.zIndex ? 1 : -1;
+            var za = utils.funcOrValue(a.style.zIndex, a);
+            var zb = utils.funcOrValue(b.style.zIndex, b);
+            if (za === zb) return 0;
+            return za > zb ? 1 : -1;
         }).forEach(function (c, _index) {
             $canvas.$perPaint.call($canvas, c, _index);
         });

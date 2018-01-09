@@ -55,7 +55,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(45);
+	module.exports = __webpack_require__(43);
 
 
 /***/ }),
@@ -117,7 +117,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 43:
+/***/ 5:
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	var PI = 3.141593;
+
+	module.exports = function (x, y, rx0, ry0, d, returnArr) {
+	    var deg = d ? -d / 180 * PI : 0;
+	    var _x = (x - rx0) * Math.cos(deg) - (y - ry0) * Math.sin(deg) + rx0;
+	    var _y = (x - rx0) * Math.sin(deg) + (y - ry0) * Math.cos(deg) + ry0;
+
+	    if (returnArr) {
+	        return [_x, _y];
+	    }
+
+	    return {
+	        x: _x,
+	        y: _y
+	    };
+	};
+
+/***/ }),
+
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5937,12 +5961,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 45:
+/***/ 43:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _chipmunk = __webpack_require__(43);
+	var _chipmunk = __webpack_require__(17);
 
 	var _chipmunk2 = _interopRequireDefault(_chipmunk);
 
@@ -5950,16 +5974,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
+	var _mathPointRotate = __webpack_require__(5);
+
+	var _mathPointRotate2 = _interopRequireDefault(_mathPointRotate);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/** ********** *
-	 *
-	 * Connect chipmunk.js physics lib with Easycanvas.js
-	 * - Standalone, as a plugin.
-	 *
-	 * ********** **/
+	var or = _utils2.default.firstValuable; /** ********** *
+	                                         *
+	                                         * Connect chipmunk.js physics lib with Easycanvas.js
+	                                         * - Standalone, as a plugin.
+	                                         *
+	                                         * ********** **/
 
-	var or = _utils2.default.firstValuable;
+	var PI = 3.141593;
 
 	var cp = window.cp = _chipmunk2.default;
 	var _ec = void 0;
@@ -6048,21 +6076,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return sprite;
 	};
 
-	var transformer = function transformer(x, y, rx0, ry0, d, returnArr) {
-	    var deg = d ? -d / 180 * Math.PI : 0;
-	    var _x = (x - rx0) * Math.cos(deg) - (y - ry0) * Math.sin(deg) + rx0;
-	    var _y = (x - rx0) * Math.sin(deg) + (y - ry0) * Math.cos(deg) + ry0;
-
-	    if (returnArr) {
-	        return [_x, _y];
-	    }
-
-	    return {
-	        x: _x,
-	        y: _y
-	    };
-	};
-
 	var xy2Vect = function xy2Vect(pos) {
 	    // make a mark for debugging
 	    // $Painter.add({
@@ -6085,7 +6098,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var pos = body.getPos();
 	    var vel = body.getVel();
 	    // sprite.style.rotate = body.a;
-	    sprite.style.rotate = body.a * 180 / Math.PI;
+	    sprite.style.rotate = body.a * 180 / PI;
 	    sprite.style.tx = pos.x;
 	    sprite.style.ty = -pos.y;
 
@@ -6176,7 +6189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	        // static
 	        childShape.forEach(function (s, i) {
-	            var shape = new cp.SegmentShape(space.staticBody, xy2Vect(transformer(s[0][0] + child.$cache.tx, s[0][1] + child.$cache.ty, child.style.rx || 0, child.style.ry || 0, child.style.rotate || 0)), xy2Vect(transformer(s[1][0] + child.$cache.tx, s[1][1] + child.$cache.ty, child.style.rx || 0, child.style.ry || 0, child.style.rotate || 0)), 1 // width
+	            var shape = new cp.SegmentShape(space.staticBody, xy2Vect((0, _mathPointRotate2.default)(s[0][0] + child.$cache.tx, s[0][1] + child.$cache.ty, child.style.rx || 0, child.style.ry || 0, child.style.rotate || 0)), xy2Vect((0, _mathPointRotate2.default)(s[1][0] + child.$cache.tx, s[1][1] + child.$cache.ty, child.style.rx || 0, child.style.ry || 0, child.style.rotate || 0)), 1 // width
 	            );
 	            shape.setFriction(childPhysics.friction);
 	            shape.setElasticity(childPhysics.elasticity);

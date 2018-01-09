@@ -1,0 +1,40 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="500" height="400"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true&a=0', null, {
+            block: true
+        });
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true&a=1');
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true&a=2', null, {
+            block: true
+        });
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true&a=3', function () {
+            console.log('a=3 loaded 1st');
+        });
+        setTimeout(function () {
+            for (var i = 0; i <= 20; i++) {
+                Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true&a=3', function () {
+                    console.log('a=3 loaded again');
+                });
+            }
+        }, 0);
+
+        Easycanvas.imgLoader([
+            'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true&a=4',
+            'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true&a=5',
+            'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true&a=6'
+        ], function (arr) {
+            console.log(arr);
+        });
+    </script>
+</body>
+

@@ -15,7 +15,17 @@ module.exports = function () {
 
     utils.execFuncs($canvas.hooks.ticked, $canvas, [$canvas.$rafTime]);
 
-    $canvas.$paintContext.clearRect(0, 0, this.contextWidth, this.contextHeight);
+    if (this.$isWebgl) {
+        let gl = this.$gl;
+        webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+        // Tell WebGL how to convert from clip space to pixels
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+        // gl.colorMask(true, false, false, true);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+    } else {
+        $canvas.$paintContext.clearRect(0, 0, this.contextWidth, this.contextHeight);
+    }
 
     if (!$canvas.$freezing) {
         $canvas.$paintList = [];

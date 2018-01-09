@@ -1,6 +1,6 @@
 {
   "name": "easycanvas-plugin",
-  "version": "null",
+  "version": "1.0",
   "description": "A cute canvas framework. See https://chenzhuo1992.github.io/easycanvas",
   "keywords": "canvas, framework, animation",
   "main": "",
