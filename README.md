@@ -13,6 +13,10 @@ Expandable: Support highly decoupled components and custom API/events.
 - [English](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
 - [中文](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.Chinese.md).
 
+### See demos
+
+- `npm run dev`, then `localhost:8080/demos/demo1.html`.
+
 ### Chrome Plugin
 
 Throw `./plugin/dist` to `Chrome://extensions`.
@@ -35,10 +39,10 @@ Throw `./plugin/dist` to `Chrome://extensions`.
 
 - `build/plugin.physics[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.physics.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.physics.Chinese.md)): Expanded physics to sprites.
 
-- `build/plugin.number[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.number.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.number.Chinese.md)): A component of numbers countdown effect.
+- `build/plugin.number[.*].js`: A component of numbers countdown effect.
 
 - `build/plugin.shuttle[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.shuttle.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.shuttle.Chinese.md)): A component of background effect, likes shuttle.
 
-- `build/plugin.webgl[.*].js`: Support webgl rendering.
+- `build/plugin.webgl[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.webgl.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.webgl.Chinese.md)): Support webgl rendering.
 
 - `美团点评`前端研发岗位招聘，地点北京/成都，请联系`chenzhuo04@meituan.com`

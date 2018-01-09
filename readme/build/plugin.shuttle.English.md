@@ -2,8 +2,6 @@
 
 ### 'Shuttle' background effect
 
-
-
 ```
     import EasyCanvas from 'easycanvas';
     import EasyCanvasPluginShuttle from 'easycanvas/build/plugin.shuttle.js';
