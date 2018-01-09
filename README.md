@@ -1,16 +1,17 @@
 ## Easycanvas
 
-![https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/index.html](https://github.com/chenzhuo1992/easycanvas/blob/master/_forIO/index.gif?raw=true)
+![https://github.com/chenzhuo1992/easycanvas/blob/master/demos/index.html](https://github.com/chenzhuo1992/easycanvas/blob/master/demos/index.gif?raw=true)
 
 ### Introduction
 
-A lite(20kb+) canvas library, includes a Chrome plugin for debugging. Support physics and animations with high performace. Suits mobile and PC(including IE).
+A lite(20kb+) canvas library, includes a Chrome plugin for debugging. Support physics and animations with high performace. Suits mobile, PC(including IE) and Chinese '微信小程序/小游戏'.
 
+Expandable: Support highly decoupled components and custom API/events.
 
 ### More Information
 
-- [English](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/English.md).
-- [中文](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/Chinese.md).
+- [English](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
+- [中文](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.Chinese.md).
 
 ### Chrome Plugin
 
@@ -18,13 +19,26 @@ Throw `./plugin/dist` to `Chrome://extensions`.
 
 ### Build files
 
-Base:
+#### Base:
 
-`build/easycanvas.js`: Node module, with gif2canvas supports.
-`build/easycanvas.lite.js`: Node module, 30kb+.
-`build/easycanvas.standalone.dev.js`: Standalone version, support chrome develop tools.
-`build/easycanvas.standalone.prod.js`: Standalone version for production mode.
+- `build/easycanvas.js`: Node module.
 
-Plugin:
+- `build/easycanvas.standalone.dev.js`: Standalone version, support chrome develop tools.
 
-`build/plugin.physics[.*].js`: Node module, support physics.
+- `build/easycanvas.standalone.prod.js`: Standalone version for production mode, 20kb+.
+
+#### Plugins(Components):
+
+`Following plugins support node version, 'standalone.dev' and 'standalone.prod' version.`
+
+- `build/plugin.gif[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.gif.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.gif.Chinese.md)): Support gif rendering.
+
+- `build/plugin.physics[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.physics.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.physics.Chinese.md)): Expanded physics to sprites.
+
+- `build/plugin.number[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.number.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.number.Chinese.md)): A component of numbers countdown effect.
+
+- `build/plugin.shuttle[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.shuttle.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.shuttle.Chinese.md)): A component of background effect, likes shuttle.
+
+- `build/plugin.webgl[.*].js`: Support webgl rendering.
+
+- `美团点评`前端研发岗位招聘，地点北京/成都，请联系`chenzhuo04@meituan.com`

@@ -1,15 +1,28 @@
-import lite from './index.lite.js';
+import painter from './painter/index.js';
+import tick from './utils/tick.js';
+import mirror from './utils/mirror.js';
+import utils from './utils/utils.js';
+import transition from './utils/transition.js';
+import imgLoader from './utils/img-loader.js';
+import posCompare from './utils/position-compare.js';
+import multlineText from './utils/multline-text';
 
-import gif2canvas from './utils/gif2canvas.js';
+import classes from './class/main.js';
 
-let supplements = {
-    gif2canvas,
+import chromeDevtoolBridge from './bridge/chrome-devtool.js';
+
+let Easycanvas = {
+    painter,
+    imgLoader,
+    multlineText,
+    posCompare,
+    transition,
+    tick,
+    utils,
+    mirror,
+    class: classes,
+    $version: '0.2.0',
 };
 
-for (let i in supplements) {
-    if (Object.prototype.hasOwnProperty.call(supplements, i)) {
-        lite[i] = supplements[i];
-    }
-}
-
-module.exports = lite;
+window.Easycanvas = Easycanvas;
+module.exports = Easycanvas;

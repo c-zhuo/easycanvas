@@ -1,0 +1,48 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="800" height="1400"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        var box1 = new Easycanvas.class.sprite({name: 'Box-1'});
+        $Painter.add(box1);
+        box1.style.tw = 1000;
+        box1.style.th = 1000;
+
+        var box2 = box1.add({
+            name: 'Box-2',
+            style: {
+                tx: 300, ty: 100,
+                tw: 300, th: 800,
+            }
+        });
+
+        var letterG = new Easycanvas.class.sprite({
+            name: 'An Visible Image',
+            content: {
+                img: Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true')
+            },
+        });
+        box2.add(letterG);
+        letterG.style.ty = Easycanvas.transition.pendulum(100, 200, 1000).loop();
+
+        var text = new Easycanvas.class.sprite({
+            name: 'An Invisible Text',
+            content: {
+                text: 'Can not see me',
+            },
+            style: {
+                color: 'red'
+            }
+        });
+        text.style.visible = false;
+        box2.add(text);
+    </script>
+</body>
+

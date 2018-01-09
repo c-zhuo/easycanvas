@@ -12,8 +12,9 @@
  *         mirrX, mirrY, // visible false equals inexistence
  *     },
  *     content: {
- *         img, // rich type eg: sequenceDiagram(img, {config})
+ *         img,
  *         text,
+ *         sequence: {} // for animate sprite
  *     },
  *     events: {
  *         eIndex,
