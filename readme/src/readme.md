@@ -220,6 +220,9 @@
     });
 ```
 
+[Chinese]此外，可以设置`through`为false来关闭某个元素的事件透传。这样相当于为所有事件增加'return true'。
+[English]You can set `through` to false to hold up all events. This is equal to 'return true' in every event handler.
+
 [Chinese]## 状态钩子
 [English]## Hooks
 
