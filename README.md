@@ -8,10 +8,16 @@ A lite(20kb+) canvas library, includes a Chrome plugin for debugging. Support ph
 
 Expandable: Support highly decoupled components and custom API/events.
 
+[Here](https://github.com/chenzhuo1992/Mir2) is a Canvas MMORPG Game demo based on this lib.
+
 ### More Information
 
-- [English](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
-- [中文](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.Chinese.md).
+- [English Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
+- [中文介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.Chinese.md).
+
+### Changelog
+
+- [Changelog](https://github.com/chenzhuo1992/easycanvas/blob/master/README.md).
 
 ### See demos
 
