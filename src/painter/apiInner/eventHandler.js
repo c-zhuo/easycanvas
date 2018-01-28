@@ -108,6 +108,8 @@ const looper = function (arr, e, caughts) {
 };
 
 module.exports = function (e) {
+    let $canvas = this;
+
     if (!e.layerX && e.touches && e.touches[0]) {
         e.layerX = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
         e.layerY = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
@@ -130,7 +132,9 @@ module.exports = function (e) {
         event: e
     };
 
-    let $canvas = this;
+    if ($canvas.events.interceptor) {
+        $e = $canvas.events.interceptor($e);
+    }
 
     let caughts = [];
     looper(sortByIndex($canvas.paintList), $e, caughts);
@@ -151,19 +155,19 @@ module.exports = function (e) {
     }
 
     // Create a new event: 'hold' (suits both mobile and pc)
-    if (!$canvas.eHoldingFlag && (e.type === 'mousedown' || e.type === 'touchstart')) {
+    if (!$canvas.eHoldingFlag && ($e.type === 'mousedown' || $e.type === 'touchstart')) {
         $canvas.eHoldingFlag = e;
-    } else if ($canvas.eHoldingFlag && (e.type === 'mouseup' || e.type === 'touchend')) {
+    } else if ($canvas.eHoldingFlag && ($e.type === 'mouseup' || $e.type === 'touchend')) {
         $canvas.eHoldingFlag = false;
         eventScroll.stop();
-    } else if ($canvas.eHoldingFlag && (e.type === 'mousemove' || e.type === 'touchmove')) {
+    } else if ($canvas.eHoldingFlag && ($e.type === 'mousemove' || $e.type === 'touchmove')) {
         $canvas.eHoldingFlag = e;
     }// else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {
 
     for (let i = 0; i < caughts.length; i++) {
         // trigger 'mouseout' or 'touchout' event 
         if (
-            (e.type === 'mousemove' || e.type === 'touchmove') &&
+            ($e.type === 'mousemove' || $e.type === 'touchmove') &&
             $canvas.eLastMouseHover && $canvas.eLastMouseHover !== caughts[i] &&
             caughts.indexOf($canvas.eLastMouseHover) === -1
         ) {
@@ -174,16 +178,16 @@ module.exports = function (e) {
         }
 
         if ($e.type === 'mousewheel') {
-            eventScroll.wheel(caughts[i], e);
-        } else if ($canvas.eHoldingFlag && e.type === 'touchmove') {
+            eventScroll.wheel(caughts[i], $e);
+        } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
             if (eventScroll.touch(caughts[i], $e)) {
                 return;
             }
         }
 
-        if (!caughts[i]['events']) continue;
+        if (!caughts[i]['events']) continue; // TODO to remove
 
-        let handler = caughts[i]['events'][e.type];
+        let handler = caughts[i]['events'][$e.type];
         if (handler) {
             $canvas.eLastMouseHover = caughts[i];
             let result = handler.call(caughts[i], $e);
@@ -197,7 +201,7 @@ module.exports = function (e) {
             }
         }
 
-        if (caughts[i].through === false) {
+        if (caughts[i].events.through === false) {
             return;
         }
     }
@@ -211,7 +215,7 @@ module.exports = function (e) {
         $canvas.eLastMouseHover = null;
     }
 
-    let handler = $canvas.events[e.type];
+    let handler = $canvas.events[$e.type];
     if (handler) {
         if (handler($e)) {
             $canvas.eHoldingFlag = false;

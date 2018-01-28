@@ -33,6 +33,15 @@ module.exports = function (dom, option) {
         dom.height = dom.style.height = document.body.clientHeight || document.documentElement.clientHeight;
     }
 
+    if (process.env.NODE_ENV !== 'production') {
+        if (
+            (_option.width && dom.width && _option.width !== dom.width) ||
+            (_option.height && dom.height && _option.height !== dom.height)
+        ) {
+            console.warn('[Easycanvas] Canvas size mismatched in "register" function.');
+        }
+    }
+
     this.width = this.contextWidth = _option.width || dom.width;
     this.height = this.contextHeight = _option.height || dom.height;
 
@@ -154,6 +163,10 @@ module.exports = function (dom, option) {
 
                     return textureInfo;
                 }
+            }
+        } else {
+            if (process.env.NODE_ENV !== 'production') {
+                console.warn('[Easycanvas] Webgl is not supported in current browser, using canvas2d instead.');
             }
         }
     }

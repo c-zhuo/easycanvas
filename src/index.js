@@ -24,5 +24,15 @@ let Easycanvas = {
     $version: '0.2.0',
 };
 
+if (process.env.NODE_ENV !== 'production') {
+    if (window.Easycanvas) {
+        console.warn('[Easycanvas] You are importing multiple versions of "Easycanvas".');
+    }
+}
+
+if (process.env.NODE_ENV !== 'production') {
+    console.warn('[Easycanvas] You are using the develop version.');
+}
+
 window.Easycanvas = Easycanvas;
 module.exports = Easycanvas;

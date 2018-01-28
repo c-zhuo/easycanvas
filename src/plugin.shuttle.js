@@ -11,8 +11,6 @@ let shuttle = function (opt) {
 
     sprite.style = opt.style;
 
-    sprite.children = [];
-
     var center = opt.center || {
         x: opt.style.tw / 2,
         y: opt.style.th / 2,
@@ -53,7 +51,7 @@ let shuttle = function (opt) {
 
             var deg = Math.random() * 360;
             var result = getResultPoint(deg);
-            var randomImg = opt.passBy[parseInt(deg) % opt.passBy.length];
+            var randomImg = opt.passBy[Math.floor(deg) % opt.passBy.length];
 
             if (randomImg) {
                 var child = new _ec.class.sprite({

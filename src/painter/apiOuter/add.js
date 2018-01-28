@@ -11,7 +11,9 @@ import sprite from 'class/sprite.js';
 import bindDrag from '../apiInner/bindDrag.js';
 
 let add = function (item) {
-    if (!item) return;
+    if (!item) {
+        return;
+    }
 
     let $canvas = this;
 
