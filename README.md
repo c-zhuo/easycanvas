@@ -17,7 +17,7 @@ Expandable: Support highly decoupled components and custom API/events.
 
 ### Changelog
 
-- [Changelog](https://github.com/chenzhuo1992/easycanvas/blob/master/README.md).
+- [Changelog](https://github.com/chenzhuo1992/easycanvas/blob/master/CHANGELOG.md).
 
 ### See demos
 
