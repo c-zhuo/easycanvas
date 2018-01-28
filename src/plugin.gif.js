@@ -1,8 +1,8 @@
 /** ********** *
  *
- * Load remove gif and change to an active canvas object
+ * Load gif and change to an active canvas object
  * - The canvas is in animating.
- * - This will use 84kb, so it only exsits in full version.
+ * - 84kb larger.
  *
  * ********** **/
 
