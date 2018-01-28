@@ -43,6 +43,10 @@ module.exports = function ($sprite, $canvas) {
         _props[i] = utils.funcOrValue($sprite.content[i], $sprite);
     }
 
+    if (typeof _props.img === 'string') {
+        _props.img = $sprite.content.img = $canvas.imgLoader(_props.img);
+    }
+
     for (let i in $sprite.style) {
         _props[i] = getFinalStyle($sprite, $canvas, i);
     }
@@ -75,12 +79,12 @@ module.exports = function ($sprite, $canvas) {
                 ph = _img.height;
             }
 
-            let wTimes = parseInt(_img.width / pw);
-            let hTimes = parseInt(_img.height / ph);
+            let wTimes = Math.floor(_img.width / pw);
+            let hTimes = Math.floor(_img.height / ph);
 
             if (config.h) {
                 _props.sx = index % wTimes * pw;
-                _props.sy = parseInt(index / wTimes) % hTimes * ph;
+                _props.sy = Math.floor(index / wTimes) % hTimes * ph;
             }
         }
         if (!config.loop && index > 0 && _props.sx === 0 && _props.sy === 0) {

@@ -68,45 +68,51 @@ let scrollFuncs = {
         scrollFuncs.tick();
     },
 
-    touch: function ($sprite, e) {
+    touch: function ($sprite, $e) {
         if (!$sprite.scroll.scrollable) return false;
 
         if (!scrolling) {
             // start scroll
             scrolling = +new Date();
-            startPos.x = e.canvasX;
-            startPos.y = e.canvasY;
+            startPos.x = $e.canvasX;
+            startPos.y = $e.canvasY;
         } else {
             if (tickPool.indexOf($sprite) === -1) {
                 tickPool.push($sprite);
             }
 
-            let absX = Math.abs(e.canvasX - startPos.x);
-            let absY = Math.abs(e.canvasY - startPos.y);
+            let absX = Math.abs($e.canvasX - startPos.x);
+            let absY = Math.abs($e.canvasY - startPos.y);
             let deltaTime = +new Date() - scrolling;
             scrolling = +new Date();
             deltaTime /= 10;
             if (absX / deltaTime > 1 && deltaTime > 1) {
-                $sprite.$scroll.speedX += (e.canvasX - startPos.x) / deltaTime;
+                $sprite.$scroll.speedX += ($e.canvasX - startPos.x) / deltaTime;
             }
             if (absY / deltaTime > 1 && deltaTime > 1) {
-                $sprite.$scroll.speedY += (e.canvasY - startPos.y) / deltaTime;
+                $sprite.$scroll.speedY += ($e.canvasY - startPos.y) / deltaTime;
             }
 
-            startPos.x = e.canvasX;
-            startPos.y = e.canvasY;
+            startPos.x = $e.canvasX;
+            startPos.y = $e.canvasY;
 
+            $e.event.preventDefault();
             return true;
         }
     },
 
-    wheel: function ($sprite, e) {
+    wheel: function ($sprite, $e) {
+        if (!$sprite.scroll.scrollable) return false;
+
         if (tickPool.indexOf($sprite) === -1) {
             tickPool.push($sprite);
         }
 
-        $sprite.$scroll.speedX = e.wheelDeltaX;
-        $sprite.$scroll.speedY = e.wheelDeltaY;
+        $sprite.$scroll.speedX = $e.event.wheelDeltaX;
+        $sprite.$scroll.speedY = $e.event.wheelDeltaY;
+
+        $e.event.preventDefault();
+        return true;
     }
 };
 

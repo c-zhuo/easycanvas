@@ -48,6 +48,16 @@ import broadcast from '../painter/apiOuter/broadcast.js';
 import bindDrag from '../painter/apiInner/bindDrag.js';
 
 const preAdd = function (item) {
+    if (process.env.NODE_ENV !== 'production') {
+        if (item.events && typeof item.events.eIndex === 'undefined') {
+            console.warn('[Easycanvas] This sprite has no "eIndex", 0 is set by default.');
+        }
+
+        // if (item.content && item.style && typeof item.style.zIndex === 'undefined') {
+        //     console.warn('[Easycanvas] This sprite has no "zIndex", 0 is set by default.');
+        // }
+    }
+
     let $canvas = item.$canvas;
 
     if (!item.$id) {
@@ -84,7 +94,7 @@ const preAdd = function (item) {
 
     item.events = item.events || {};
     item.events.eIndex = item.events.eIndex || 0;
-    item.events.through = !!item.events.through;
+    // item.events.through = !!item.events.through;
 
     item.scroll = item.scroll || {};
     item.scroll.scrollX = item.scroll.scrollX || 0;
@@ -92,14 +102,16 @@ const preAdd = function (item) {
 
     item.hooks = item.hooks || {};
 
-    item.name = item.name;
-    if (!item.name && item.content.img && item.content.img.src) {
-        let fileName = item.content.img.src.match(/.*\/([^\/]*)$/);
-        if (fileName && fileName[1]) {
-            item.name = fileName[1];
+
+    if (process.env.NODE_ENV !== 'production') {
+        if (!item.name && item.content.img && item.content.img.src) {
+            let fileName = item.content.img.src.match(/.*\/([^\/]*)$/);
+            if (fileName && fileName[1]) {
+                item.name = fileName[1];
+            }
         }
+        item.name = item.name || 'Unnamed Easycanvas Object';
     }
-    item.name = item.name || 'Unnamed Easycanvas Object';
 
     item.children = item.children || [];
     item.children.forEach(function (c) {

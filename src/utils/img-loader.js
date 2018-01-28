@@ -1,6 +1,7 @@
 /** ********** *
  *
  * Load images
+ * - Easycanvas.imgLoader.cacheCanvas
  *
  * ********** **/
 
@@ -60,7 +61,7 @@ const loader = function (url, callback, option) {
     Cache[cacheNamespace] = i;
 
     let tempCavas;
-    if (_option.canvas || _option.alphaColor) {
+    if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
         tempCavas = document.createElement('canvas');
         tempCavas.width = tempCavas.height || 0;
         Cache[cacheNamespace] = tempCavas;
@@ -77,7 +78,7 @@ const loader = function (url, callback, option) {
             }
         }
 
-        if (_option.canvas || _option.alphaColor) {
+        if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
             let cts = tempCavas.getContext('2d');
             tempCavas.$width = tempCavas.width = i.width;
             tempCavas.$height = tempCavas.height = i.height;
@@ -91,7 +92,7 @@ const loader = function (url, callback, option) {
                     let colorWeight = data.data[d] + data.data[d + 1] + data.data[d + 2];
                     let blackLike = 1;
                     if (data.data[d] < blackLike && data.data[d + 1] < blackLike && data.data[d + 2] < blackLike) {
-                        data.data[d + 3] = parseInt(colorWeight / 255);
+                        data.data[d + 3] = Math.floor(colorWeight / 255);
                     }
                 }
                 cts.putImageData(data, 0, 0);
@@ -111,5 +112,7 @@ const loader = function (url, callback, option) {
 
     return tempCavas || i;
 };
+
+loader.cacheCanvas = false;
 
 module.exports = loader;

@@ -78,8 +78,8 @@ module.exports = function (i, index) {
     }
 
     if (_props.scale !== 1) {
-        _props.tx -= (_props.scale - 1) * 0.5 * _props.tw;
-        _props.ty -= (_props.scale - 1) * 0.5 * _props.th;
+        _props.tx -= (_props.scale - 1) * _props.tw * 0.5;
+        _props.ty -= (_props.scale - 1) * _props.th * 0.5;
         _props.tw *= _props.scale;
         _props.th *= _props.scale;
     }
@@ -101,7 +101,7 @@ module.exports = function (i, index) {
 
     /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
     // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
-    if (!_props.rotate && !_text && _imgWidth) {
+    if (!_props.rotate && !_text && _imgWidth && !_props.fh && !_props.fv) {
         if (_props.sx < 0 && _props.sw) {
             let cutRate = (-_props.sx / _props.sw);
             _props.tx += _props.tw * cutRate;
@@ -152,17 +152,15 @@ module.exports = function (i, index) {
     if (typeof i.$cache.tx !== 'undefined') {
         constants.xywh.forEach(function (key) {
             // 如果元素每帧移动距离小于1像素，那么认为对象在缓动，此时不取整（避免引起抖动）
-            if (Math.abs(i.$cache[key] - _props[key]) > 1) {
-                _props[key] = parseInt(_props[key]);
-            // } else {
-            //     _props[key] = parseInt(_props[key]);
-            //     _props[key] = Number(_props[key].toFixed(1));
-            }
+            // remove? TODO
+            // if (Math.abs(i.$cache[key] - _props[key]) > 1) {
+                _props[key] = _props[key] << 1 >> 1;
+            // }
         });
     } else {
         constants.xywh.forEach(function (key) {
             // 首帧可以取整；不在forEach里进行if是为了降低每帧进行的判断次数，节约性能
-            _props[key] = parseInt(_props[key]);
+            _props[key] = _props[key] << 1 >> 1;
         });
     }
 
@@ -248,7 +246,7 @@ module.exports = function (i, index) {
             textTy += _props.th / 2 + textFontsize / 2;
         }
 
-        if (typeof _text === 'string') {
+        if (typeof _text === 'string' || typeof _text === 'number') {
             $canvas.$paintList.push({
                 $id: i.$id,
                 type: 'text',

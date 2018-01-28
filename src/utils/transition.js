@@ -118,15 +118,18 @@ let transFuncs = {
 
             if (loop) {
                 let res;
+                let tmp;
                 for (let i = 0; i < arr.length; i++) {
-                    let tmp = arr[i]();
-                    if (tmp && tmp.$$loop) {
+                    tmp = arr[i]();
+                    if (typeof tmp !== 'undefined' && tmp.$$loop) {
                         tmp.$$loop();
                         res = res || arr[i]();
                     }
                 }
-                return res;
+                return res || 0;
             }
+
+            return 0;
         };
 
         resFunc.loop = function () {
