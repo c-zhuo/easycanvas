@@ -194,6 +194,8 @@ Easycanvas中所有的动画都是通过`style`的变换实现的。比如，可
     });
 ```
 
+此外，可以设置`through`为false来关闭某个元素的事件透传。这样相当于为所有事件增加'return true'。
+
 ## 状态钩子
 
 Easycanvas支持的状态钩子包括：`ticked`、`removed`、`beforeTick`。
