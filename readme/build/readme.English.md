@@ -194,6 +194,8 @@ Events will pass from higher `eIndex`, and stop when a handler 'return true', Or
     });
 ```
 
+You can set `through` to false to hold up all events. This is equal to 'return true' in every event handler.
+
 ## Hooks
 
 Hooks supported in Easycanvas include: `ticked`, `removed`, `beforeTick`.
