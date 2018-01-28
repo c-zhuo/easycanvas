@@ -351,6 +351,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var preAdd = function preAdd(item) {
+	    if (process.env.NODE_ENV !== 'production') {
+	        if (item.events && typeof item.events.eIndex === 'undefined') {
+	            console.warn('[Easycanvas] This sprite has no "eIndex", 0 is set by default.');
+	        }
+
+	        // if (item.content && item.style && typeof item.style.zIndex === 'undefined') {
+	        //     console.warn('[Easycanvas] This sprite has no "zIndex", 0 is set by default.');
+	        // }
+	    }
+
 	    var $canvas = item.$canvas;
 
 	    if (!item.$id) {
@@ -387,7 +397,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    item.events = item.events || {};
 	    item.events.eIndex = item.events.eIndex || 0;
-	    item.events.through = !!item.events.through;
+	    // item.events.through = !!item.events.through;
 
 	    item.scroll = item.scroll || {};
 	    item.scroll.scrollX = item.scroll.scrollX || 0;
@@ -395,14 +405,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    item.hooks = item.hooks || {};
 
-	    item.name = item.name;
-	    if (!item.name && item.content.img && item.content.img.src) {
-	        var fileName = item.content.img.src.match(/.*\/([^\/]*)$/);
-	        if (fileName && fileName[1]) {
-	            item.name = fileName[1];
+	    if (process.env.NODE_ENV !== 'production') {
+	        if (!item.name && item.content.img && item.content.img.src) {
+	            var fileName = item.content.img.src.match(/.*\/([^\/]*)$/);
+	            if (fileName && fileName[1]) {
+	                item.name = fileName[1];
+	            }
 	        }
+	        item.name = item.name || 'Unnamed Easycanvas Object';
 	    }
-	    item.name = item.name || 'Unnamed Easycanvas Object';
 
 	    item.children = item.children || [];
 	    item.children.forEach(function (c) {
@@ -599,45 +610,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	        scrollFuncs.tick();
 	    },
 
-	    touch: function touch($sprite, e) {
+	    touch: function touch($sprite, $e) {
 	        if (!$sprite.scroll.scrollable) return false;
 
 	        if (!scrolling) {
 	            // start scroll
 	            scrolling = +new Date();
-	            startPos.x = e.canvasX;
-	            startPos.y = e.canvasY;
+	            startPos.x = $e.canvasX;
+	            startPos.y = $e.canvasY;
 	        } else {
 	            if (tickPool.indexOf($sprite) === -1) {
 	                tickPool.push($sprite);
 	            }
 
-	            var absX = Math.abs(e.canvasX - startPos.x);
-	            var absY = Math.abs(e.canvasY - startPos.y);
+	            var absX = Math.abs($e.canvasX - startPos.x);
+	            var absY = Math.abs($e.canvasY - startPos.y);
 	            var deltaTime = +new Date() - scrolling;
 	            scrolling = +new Date();
 	            deltaTime /= 10;
 	            if (absX / deltaTime > 1 && deltaTime > 1) {
-	                $sprite.$scroll.speedX += (e.canvasX - startPos.x) / deltaTime;
+	                $sprite.$scroll.speedX += ($e.canvasX - startPos.x) / deltaTime;
 	            }
 	            if (absY / deltaTime > 1 && deltaTime > 1) {
-	                $sprite.$scroll.speedY += (e.canvasY - startPos.y) / deltaTime;
+	                $sprite.$scroll.speedY += ($e.canvasY - startPos.y) / deltaTime;
 	            }
 
-	            startPos.x = e.canvasX;
-	            startPos.y = e.canvasY;
+	            startPos.x = $e.canvasX;
+	            startPos.y = $e.canvasY;
 
+	            $e.event.preventDefault();
 	            return true;
 	        }
 	    },
 
-	    wheel: function wheel($sprite, e) {
+	    wheel: function wheel($sprite, $e) {
+	        if (!$sprite.scroll.scrollable) return false;
+
 	        if (tickPool.indexOf($sprite) === -1) {
 	            tickPool.push($sprite);
 	        }
 
-	        $sprite.$scroll.speedX = e.wheelDeltaX;
-	        $sprite.$scroll.speedY = e.wheelDeltaY;
+	        $sprite.$scroll.speedX = $e.event.wheelDeltaX;
+	        $sprite.$scroll.speedY = $e.event.wheelDeltaY;
+
+	        $e.event.preventDefault();
+	        return true;
 	    }
 	};
 
@@ -1054,6 +1071,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    $version: '0.2.0'
 	};
 
+	if (process.env.NODE_ENV !== 'production') {
+	    if (window.Easycanvas) {
+	        console.warn('[Easycanvas] You are importing multiple versions of "Easycanvas".');
+	    }
+	}
+
+	if (process.env.NODE_ENV !== 'production') {
+	    console.warn('[Easycanvas] You are using the develop version.');
+	}
+
 	window.Easycanvas = Easycanvas;
 	module.exports = Easycanvas;
 
@@ -1241,6 +1268,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = function (e) {
+	    var $canvas = this;
+
 	    if (!e.layerX && e.touches && e.touches[0]) {
 	        e.layerX = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
 	        e.layerY = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
@@ -1263,7 +1292,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        event: e
 	    };
 
-	    var $canvas = this;
+	    if ($canvas.events.interceptor) {
+	        $e = $canvas.events.interceptor($e);
+	    }
 
 	    var caughts = [];
 	    looper(sortByIndex($canvas.paintList), $e, caughts);
@@ -1284,18 +1315,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    // Create a new event: 'hold' (suits both mobile and pc)
-	    if (!$canvas.eHoldingFlag && (e.type === 'mousedown' || e.type === 'touchstart')) {
+	    if (!$canvas.eHoldingFlag && ($e.type === 'mousedown' || $e.type === 'touchstart')) {
 	        $canvas.eHoldingFlag = e;
-	    } else if ($canvas.eHoldingFlag && (e.type === 'mouseup' || e.type === 'touchend')) {
+	    } else if ($canvas.eHoldingFlag && ($e.type === 'mouseup' || $e.type === 'touchend')) {
 	        $canvas.eHoldingFlag = false;
 	        _eventHandlerScroll2.default.stop();
-	    } else if ($canvas.eHoldingFlag && (e.type === 'mousemove' || e.type === 'touchmove')) {
+	    } else if ($canvas.eHoldingFlag && ($e.type === 'mousemove' || $e.type === 'touchmove')) {
 	        $canvas.eHoldingFlag = e;
 	    } // else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {
 
 	    for (var i = 0; i < caughts.length; i++) {
 	        // trigger 'mouseout' or 'touchout' event 
-	        if ((e.type === 'mousemove' || e.type === 'touchmove') && $canvas.eLastMouseHover && $canvas.eLastMouseHover !== caughts[i] && caughts.indexOf($canvas.eLastMouseHover) === -1) {
+	        if (($e.type === 'mousemove' || $e.type === 'touchmove') && $canvas.eLastMouseHover && $canvas.eLastMouseHover !== caughts[i] && caughts.indexOf($canvas.eLastMouseHover) === -1) {
 	            var eMouseout = $canvas.eLastMouseHover['events']['mouseout'] || $canvas.eLastMouseHover['events']['touchout'];
 	            if (eMouseout) {
 	                eMouseout.call($canvas.eLastMouseHover, $e);
@@ -1303,16 +1334,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        if ($e.type === 'mousewheel') {
-	            _eventHandlerScroll2.default.wheel(caughts[i], e);
-	        } else if ($canvas.eHoldingFlag && e.type === 'touchmove') {
+	            _eventHandlerScroll2.default.wheel(caughts[i], $e);
+	        } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
 	            if (_eventHandlerScroll2.default.touch(caughts[i], $e)) {
 	                return;
 	            }
 	        }
 
-	        if (!caughts[i]['events']) continue;
+	        if (!caughts[i]['events']) continue; // TODO to remove
 
-	        var _handler = caughts[i]['events'][e.type];
+	        var _handler = caughts[i]['events'][$e.type];
 	        if (_handler) {
 	            $canvas.eLastMouseHover = caughts[i];
 	            var result = _handler.call(caughts[i], $e);
@@ -1326,7 +1357,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 
-	        if (caughts[i].through === false) {
+	        if (caughts[i].events.through === false) {
 	            return;
 	        }
 	    }
@@ -1340,7 +1371,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        $canvas.eLastMouseHover = null;
 	    }
 
-	    var handler = $canvas.events[e.type];
+	    var handler = $canvas.events[$e.type];
 	    if (handler) {
 	        if (handler($e)) {
 	            $canvas.eHoldingFlag = false;
@@ -1641,6 +1672,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _props[i] = _utils2.default.funcOrValue($sprite.content[i], $sprite);
 	    }
 
+	    if (typeof _props.img === 'string') {
+	        _props.img = $sprite.content.img = $canvas.imgLoader(_props.img);
+	    }
+
 	    for (var _i in $sprite.style) {
 	        _props[_i] = getFinalStyle($sprite, $canvas, _i);
 	    }
@@ -1674,12 +1709,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                ph = _img.height;
 	            }
 
-	            var wTimes = parseInt(_img.width / pw);
-	            var hTimes = parseInt(_img.height / ph);
+	            var wTimes = Math.floor(_img.width / pw);
+	            var hTimes = Math.floor(_img.height / ph);
 
 	            if (config.h) {
 	                _props.sx = index % wTimes * pw;
-	                _props.sy = parseInt(index / wTimes) % hTimes * ph;
+	                _props.sy = Math.floor(index / wTimes) % hTimes * ph;
 	            }
 	        }
 	        if (!config.loop && index > 0 && _props.sx === 0 && _props.sy === 0) {
@@ -1802,8 +1837,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (_props.scale !== 1) {
-	        _props.tx -= (_props.scale - 1) * 0.5 * _props.tw;
-	        _props.ty -= (_props.scale - 1) * 0.5 * _props.th;
+	        _props.tx -= (_props.scale - 1) * _props.tw * 0.5;
+	        _props.ty -= (_props.scale - 1) * _props.th * 0.5;
 	        _props.tw *= _props.scale;
 	        _props.th *= _props.scale;
 	    }
@@ -1825,7 +1860,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
 	    // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
-	    if (!_props.rotate && !_text && _imgWidth) {
+	    if (!_props.rotate && !_text && _imgWidth && !_props.fh && !_props.fv) {
 	        if (_props.sx < 0 && _props.sw) {
 	            var cutRate = -_props.sx / _props.sw;
 	            _props.tx += _props.tw * cutRate;
@@ -1876,17 +1911,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof i.$cache.tx !== 'undefined') {
 	        _constants2.default.xywh.forEach(function (key) {
 	            // 如果元素每帧移动距离小于1像素，那么认为对象在缓动，此时不取整（避免引起抖动）
-	            if (Math.abs(i.$cache[key] - _props[key]) > 1) {
-	                _props[key] = parseInt(_props[key]);
-	                // } else {
-	                //     _props[key] = parseInt(_props[key]);
-	                //     _props[key] = Number(_props[key].toFixed(1));
-	            }
+	            // remove? TODO
+	            // if (Math.abs(i.$cache[key] - _props[key]) > 1) {
+	            _props[key] = _props[key] << 1 >> 1;
+	            // }
 	        });
 	    } else {
 	        _constants2.default.xywh.forEach(function (key) {
 	            // 首帧可以取整；不在forEach里进行if是为了降低每帧进行的判断次数，节约性能
-	            _props[key] = parseInt(_props[key]);
+	            _props[key] = _props[key] << 1 >> 1;
 	        });
 	    }
 
@@ -1972,7 +2005,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            textTy += _props.th / 2 + textFontsize / 2;
 	        }
 
-	        if (typeof _text === 'string') {
+	        if (typeof _text === 'string' || typeof _text === 'number') {
 	            $canvas.$paintList.push({
 	                $id: i.$id,
 	                type: 'text',
@@ -2233,7 +2266,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var add = function add(item) {
-	    if (!item) return;
+	    if (!item) {
+	        return;
+	    }
 
 	    var $canvas = this;
 
@@ -2441,6 +2476,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        dom.height = dom.style.height = document.body.clientHeight || document.documentElement.clientHeight;
 	    }
 
+	    if (process.env.NODE_ENV !== 'production') {
+	        if (_option.width && dom.width && _option.width !== dom.width || _option.height && dom.height && _option.height !== dom.height) {
+	            console.warn('[Easycanvas] Canvas size mismatched in "register" function.');
+	        }
+	    }
+
 	    this.width = this.contextWidth = _option.width || dom.width;
 	    this.height = this.contextHeight = _option.height || dom.height;
 
@@ -2542,6 +2583,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                    return textureInfo;
 	                };
+	            }
+	        } else {
+	            if (process.env.NODE_ENV !== 'production') {
+	                console.warn('[Easycanvas] Webgl is not supported in current browser, using canvas2d instead.');
 	            }
 	        }
 	    }
@@ -2947,6 +2992,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/** ********** *
 	 *
 	 * Load images
+	 * - Easycanvas.imgLoader.cacheCanvas
 	 *
 	 * ********** **/
 
@@ -3006,7 +3052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Cache[cacheNamespace] = i;
 
 	    var tempCavas = void 0;
-	    if (_option.canvas || _option.alphaColor) {
+	    if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
 	        tempCavas = document.createElement('canvas');
 	        tempCavas.width = tempCavas.height || 0;
 	        Cache[cacheNamespace] = tempCavas;
@@ -3023,7 +3069,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 
-	        if (_option.canvas || _option.alphaColor) {
+	        if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
 	            var cts = tempCavas.getContext('2d');
 	            tempCavas.$width = tempCavas.width = i.width;
 	            tempCavas.$height = tempCavas.height = i.height;
@@ -3037,7 +3083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    var colorWeight = data.data[d] + data.data[d + 1] + data.data[d + 2];
 	                    var blackLike = 1;
 	                    if (data.data[d] < blackLike && data.data[d + 1] < blackLike && data.data[d + 2] < blackLike) {
-	                        data.data[d + 3] = parseInt(colorWeight / 255);
+	                        data.data[d + 3] = Math.floor(colorWeight / 255);
 	                    }
 	                }
 	                cts.putImageData(data, 0, 0);
@@ -3057,6 +3103,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return tempCavas || i;
 	};
+
+	loader.cacheCanvas = false;
 
 	module.exports = loader;
 
@@ -3232,15 +3280,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (loop) {
 	                var _res = void 0;
+	                var tmp = void 0;
 	                for (var _i = 0; _i < arr.length; _i++) {
-	                    var tmp = arr[_i]();
-	                    if (tmp && tmp.$$loop) {
+	                    tmp = arr[_i]();
+	                    if (typeof tmp !== 'undefined' && tmp.$$loop) {
 	                        tmp.$$loop();
 	                        _res = _res || arr[_i]();
 	                    }
 	                }
-	                return _res;
+	                return _res || 0;
 	            }
+
+	            return 0;
 	        };
 
 	        resFunc.loop = function () {

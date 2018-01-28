@@ -75,12 +75,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    sprite.style.sx = 0;
 	    sprite.style.sw = sprite.style.sw || opt.number.width;
-	    sprite.style.sh = parseInt(sprite.style.sh || opt.number.height / 10);
+	    sprite.style.sh = Math.floor(sprite.style.sh || opt.number.height / 10);
 
 	    var tick = 0;
 
 	    var data = {
-	        tick: parseInt((opt.interval || 1000) / 16.6),
+	        tick: Math.floor((opt.interval || 1000) / 16.6),
 	        heightRate: 1,
 	        numberHeight: sprite.style.sh,
 	        current: 0,
@@ -95,6 +95,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    sprite.getCurrentValue = function () {
 	        return data.current;
+	    };
+
+	    sprite.setCurrentValue = function (value) {
+	        data.current = value;
+	        sprite.style.sy = data.current * data.heightRate * data.numberHeight;
+	    };
+
+	    sprite.scrollToValue = function (value, time) {
+	        data.current = value;
+	        sprite.style.sy = _ec.transition.linear(sprite.$cache.sy, data.current * data.heightRate * data.numberHeight, time || 200);
 	    };
 
 	    sprite.stop = function () {
