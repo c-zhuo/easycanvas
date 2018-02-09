@@ -31,13 +31,8 @@ module.exports = function (i, index) {
 
     let _children = utils.funcOrValue(i.children, i);
 
-    let _imgWidth = _img ? _img.$width || _img.width || 0 : 0;
-    let _imgHeight = _img ? _img.$height || _img.height || 0 : 0;
-
-    if (_img && !_img.$width) {
-        _img.$width = _imgWidth;
-        _img.$height = _imgHeight;
-    }
+    let _imgWidth = _img ? _img.width || 0 : 0;
+    let _imgHeight = _img ? _img.height || 0 : 0;
 
     _props.tw = _props.tw || _props.sw || _imgWidth;
     _props.th = _props.th || _props.sh || _imgHeight;
@@ -99,6 +94,21 @@ module.exports = function (i, index) {
         _props.ty = $canvas.contextHeight - _props.ty - _props.th;
     }
 
+    /*
+     * 性能浪费检测
+     * 拿到最大的“绘制/源尺寸”比值，如果这个值过低，那么显然存在资源浪费
+     * 由于对象可能处于动画中，因此选用最大的绘制比
+     */
+    if (process.env.NODE_ENV !== 'production') {
+        if (_imgWidth && _imgHeight && _props.sw && _props.sh) {
+            let paintRate = _props.tw * _props.th / (_props.sw * _props.sh);
+            if (!i.$perf.paintRate || paintRate > i.$perf.paintRate) {
+                i.$perf.paintRate = paintRate;
+                // i.$perf.paintProps = JSON.stringify(_props);
+            }
+        }
+    }
+
     /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
     // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
     if (!_props.rotate && !_text && _imgWidth && !_props.fh && !_props.fv) {
@@ -149,20 +159,9 @@ module.exports = function (i, index) {
         }
     }
 
-    if (typeof i.$cache.tx !== 'undefined') {
-        constants.xywh.forEach(function (key) {
-            // 如果元素每帧移动距离小于1像素，那么认为对象在缓动，此时不取整（避免引起抖动）
-            // remove? TODO
-            // if (Math.abs(i.$cache[key] - _props[key]) > 1) {
-                _props[key] = _props[key] << 1 >> 1;
-            // }
-        });
-    } else {
-        constants.xywh.forEach(function (key) {
-            // 首帧可以取整；不在forEach里进行if是为了降低每帧进行的判断次数，节约性能
-            _props[key] = _props[key] << 1 >> 1;
-        });
-    }
+    constants.xywh.forEach(function (key) {
+        _props[key] = _props[key] >> 0;
+    });
 
     for (let key in _props) {
         i.$cache[key] = _props[key];
@@ -226,7 +225,7 @@ module.exports = function (i, index) {
         let textTx = _props.tx;
         let textTy = _props.ty;
         let textAlign = i.style.align;
-        let textFont = utils.funcOrValue(i.style.font, i) || '14px Arial';
+        let textFont = utils.funcOrValue(i.style.textFont, i) || '14px Arial';
         let textFontsize = parseInt(textFont);
         let textLineHeight = i.style.lineHeight || textFontsize;
 

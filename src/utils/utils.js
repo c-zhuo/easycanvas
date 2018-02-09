@@ -8,6 +8,7 @@ module.exports = {
         return funcOrValue;
     },
 
+    // 执行钩子函数或者钩子函数队列
     execFuncs: function (funcOrArray, _this, _arg) {
         if (typeof funcOrArray === 'function') {
             funcOrArray.apply(_this, _arg);

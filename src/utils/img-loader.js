@@ -80,8 +80,8 @@ const loader = function (url, callback, option) {
 
         if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
             let cts = tempCavas.getContext('2d');
-            tempCavas.$width = tempCavas.width = i.width;
-            tempCavas.$height = tempCavas.height = i.height;
+            tempCavas.width = i.width;
+            tempCavas.height = i.height;
             cts.drawImage(i, 0, 0);
 
             if (_option.alphaColor) {
