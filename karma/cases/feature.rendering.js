@@ -90,7 +90,7 @@ Easycanvas.imgLoader(constants.img30px, function (img) {
     });
 });
 
-describe('Featrue.rendering Test.', function () {
+describe('Feature.rendering Test.', function () {
     it('Basic props inherit correctly.', function (done) {
         setTimeout(() => {
             expect($Painter.$paintList.length).toBe(4);
