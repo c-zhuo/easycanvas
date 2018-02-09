@@ -2,6 +2,8 @@
 
 #### 0.2.3
 
+- Change: Float numbers will change to integer when painting, for avoiding blurry rendering.
+
 - Change: API `style.font` changes to `style.textFont`.
 
 - Bugfix: Typos in document.
