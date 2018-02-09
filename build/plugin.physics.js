@@ -55,7 +55,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(43);
+	module.exports = __webpack_require__(44);
 
 
 /***/ }),
@@ -75,6 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _funcOrValue;
 	    },
 
+	    // 执行钩子函数或者钩子函数队列
 	    execFuncs: function execFuncs(funcOrArray, _this, _arg) {
 	        if (typeof funcOrArray === 'function') {
 	            funcOrArray.apply(_this, _arg);
@@ -5961,7 +5962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 43:
+/***/ 44:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';

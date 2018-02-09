@@ -73,6 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _funcOrValue;
 	    },
 
+	    // 执行钩子函数或者钩子函数队列
 	    execFuncs: function execFuncs(funcOrArray, _this, _arg) {
 	        if (typeof funcOrArray === 'function') {
 	            funcOrArray.apply(_this, _arg);
@@ -404,6 +405,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    item.scroll.scrollY = item.scroll.scrollY || 0;
 
 	    item.hooks = item.hooks || {};
+
+	    if (process.env.NODE_ENV !== 'production') {
+	        item.$perf = {};
+	    }
 
 	    if (process.env.NODE_ENV !== 'production') {
 	        if (!item.name && item.content.img && item.content.img.src) {
@@ -889,6 +894,8 @@ return /******/ (function(modules) { // webpackBootstrap
 						if (item.children) {
 							item.children.forEach(pusher);
 						}
+
+						res[item.$id].$perf = item.$perf;
 					};
 
 					paintList.forEach(pusher);
@@ -1024,7 +1031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _mirror = __webpack_require__(47);
+	var _mirror = __webpack_require__(48);
 
 	var _mirror2 = _interopRequireDefault(_mirror);
 
@@ -1032,11 +1039,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _transition = __webpack_require__(49);
+	var _transition = __webpack_require__(50);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
-	var _imgLoader = __webpack_require__(46);
+	var _imgLoader = __webpack_require__(47);
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
@@ -1044,7 +1051,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _positionCompare2 = _interopRequireDefault(_positionCompare);
 
-	var _multlineText = __webpack_require__(48);
+	var _multlineText = __webpack_require__(49);
 
 	var _multlineText2 = _interopRequireDefault(_multlineText);
 
@@ -1790,13 +1797,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var _children = _utils2.default.funcOrValue(i.children, i);
 
-	    var _imgWidth = _img ? _img.$width || _img.width || 0 : 0;
-	    var _imgHeight = _img ? _img.$height || _img.height || 0 : 0;
-
-	    if (_img && !_img.$width) {
-	        _img.$width = _imgWidth;
-	        _img.$height = _imgHeight;
-	    }
+	    var _imgWidth = _img ? _img.width || 0 : 0;
+	    var _imgHeight = _img ? _img.height || 0 : 0;
 
 	    _props.tw = _props.tw || _props.sw || _imgWidth;
 	    _props.th = _props.th || _props.sh || _imgHeight;
@@ -1858,6 +1860,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _props.ty = $canvas.contextHeight - _props.ty - _props.th;
 	    }
 
+	    /*
+	     * 性能浪费检测
+	     * 拿到最大的“绘制/源尺寸”比值，如果这个值过低，那么显然存在资源浪费
+	     * 由于对象可能处于动画中，因此选用最大的绘制比
+	     */
+	    if (process.env.NODE_ENV !== 'production') {
+	        if (_imgWidth && _imgHeight && _props.sw && _props.sh) {
+	            var paintRate = _props.tw * _props.th / (_props.sw * _props.sh);
+	            if (!i.$perf.paintRate || paintRate > i.$perf.paintRate) {
+	                i.$perf.paintRate = paintRate;
+	                // i.$perf.paintProps = JSON.stringify(_props);
+	            }
+	        }
+	    }
+
 	    /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
 	    // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
 	    if (!_props.rotate && !_text && _imgWidth && !_props.fh && !_props.fv) {
@@ -1908,20 +1925,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 
-	    if (typeof i.$cache.tx !== 'undefined') {
-	        _constants2.default.xywh.forEach(function (key) {
-	            // 如果元素每帧移动距离小于1像素，那么认为对象在缓动，此时不取整（避免引起抖动）
-	            // remove? TODO
-	            // if (Math.abs(i.$cache[key] - _props[key]) > 1) {
-	            _props[key] = _props[key] << 1 >> 1;
-	            // }
-	        });
-	    } else {
-	        _constants2.default.xywh.forEach(function (key) {
-	            // 首帧可以取整；不在forEach里进行if是为了降低每帧进行的判断次数，节约性能
-	            _props[key] = _props[key] << 1 >> 1;
-	        });
-	    }
+	    _constants2.default.xywh.forEach(function (key) {
+	        _props[key] = _props[key] >> 0;
+	    });
 
 	    for (var key in _props) {
 	        i.$cache[key] = _props[key];
@@ -1985,7 +1991,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var textTx = _props.tx;
 	        var textTy = _props.ty;
 	        var textAlign = i.style.align;
-	        var textFont = _utils2.default.funcOrValue(i.style.font, i) || '14px Arial';
+	        var textFont = _utils2.default.funcOrValue(i.style.textFont, i) || '14px Arial';
 	        var textFontsize = parseInt(textFont);
 	        var textLineHeight = i.style.lineHeight || textFontsize;
 
@@ -2404,7 +2410,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.fps++;
 
 	    if ($canvas.hooks.nextTick) {
-	        _utils2.default.execFuncs($canvas.hooks.nextTick, $canvas, [$canvas.$rafTime]);
+	        _utils2.default.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
 	        delete $canvas.hooks.nextTick;
 	    }
 	}; /** ********** *
@@ -2848,8 +2854,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    //     value: _props
 	                    // });
 
-	                    window[_constants2.default.devFlag].peformance.area += _props.tw * _props.th;
-	                    window[_constants2.default.devFlag].peformance.times++;
+	                    $canvas.$perf.paintArea += _props.tw * _props.th;
+	                    $canvas.$perf.paintTimes++;
 	                },
 	                updateTree: function updateTree($canvas) {
 	                    if (!window[_constants2.default.devFlag].isPaintRecording) return;
@@ -2861,6 +2867,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	                },
 	                register: function register($canvas) {
 	                    $canvas.$id = Math.random().toString(36).substr(2);
+
+	                    // 性能打点
+	                    $canvas.$perf = {
+	                        paintArea: 0,
+	                        paintTimes: 0
+	                    };
+	                    setInterval(function () {
+	                        $canvas.$perf = {
+	                            paintArea: 0,
+	                            paintTimes: 0
+	                        };
+	                    }, 1000);
 
 	                    if (!$canvas.$flags.devtoolHanged) {
 	                        if (!window[_constants2.default.devFlag].$canvas[$canvas.$id]) {
@@ -2884,7 +2902,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        });
 	                    }
 
-	                    // for (let key in $sprite.$cache) {
 	                    ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
 	                        (function (_key) {
 	                            if (_constants2.default.sxywh.indexOf(_key) >= 0) {
@@ -2895,7 +2912,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            };
 	                        })(key);
 	                    });
-	                    // }
 
 	                    // $sprite.$cache has calculated the 'scale' and 'locate'
 	                    // Here uses the default values
@@ -2982,7 +2998,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 43 */,
 /* 44 */,
 /* 45 */,
-/* 46 */
+/* 46 */,
+/* 47 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3071,8 +3088,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
 	            var cts = tempCavas.getContext('2d');
-	            tempCavas.$width = tempCavas.width = i.width;
-	            tempCavas.$height = tempCavas.height = i.height;
+	            tempCavas.width = i.width;
+	            tempCavas.height = i.height;
 	            cts.drawImage(i, 0, 0);
 
 	            if (_option.alphaColor) {
@@ -3109,7 +3126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = loader;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3135,7 +3152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3149,7 +3166,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
