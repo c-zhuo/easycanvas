@@ -57,8 +57,8 @@ module.exports = function () {
                     //     value: _props
                     // });
 
-                    window[constants.devFlag].peformance.area += _props.tw * _props.th;
-                    window[constants.devFlag].peformance.times++;
+                    $canvas.$perf.paintArea += _props.tw * _props.th;
+                    $canvas.$perf.paintTimes ++;
                 },
 
                 updateTree ($canvas) {
@@ -72,6 +72,18 @@ module.exports = function () {
 
                 register ($canvas) {
                     $canvas.$id = Math.random().toString(36).substr(2);
+
+                    // 性能打点
+                    $canvas.$perf = {
+                        paintArea: 0,
+                        paintTimes: 0,
+                    };
+                    setInterval(() => {
+                        $canvas.$perf = {
+                            paintArea: 0,
+                            paintTimes: 0,
+                        };
+                    }, 1000);
 
                     if (!$canvas.$flags.devtoolHanged) {
                         if (!window[constants.devFlag].$canvas[$canvas.$id]) {
@@ -92,13 +104,10 @@ module.exports = function () {
                             content: {
                                 img: maskCanvas,
                             },
-                            style: {
-
-                            }
+                            style: {}
                         });
                     }
 
-                    // for (let key in $sprite.$cache) {
                     ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
                         (function (_key) {
                             if (constants.sxywh.indexOf(_key) >= 0) {
@@ -109,7 +118,6 @@ module.exports = function () {
                             };
                         })(key);
                     });
-                    // }
 
                     // $sprite.$cache has calculated the 'scale' and 'locate'
                     // Here uses the default values

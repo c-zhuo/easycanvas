@@ -56,7 +56,7 @@ module.exports = function () {
     this.fps++;
 
     if ($canvas.hooks.nextTick) {
-        utils.execFuncs($canvas.hooks.nextTick, $canvas, [$canvas.$rafTime]);
+        utils.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
         delete $canvas.hooks.nextTick;
     }
 };

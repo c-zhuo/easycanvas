@@ -102,6 +102,9 @@ const preAdd = function (item) {
 
     item.hooks = item.hooks || {};
 
+    if (process.env.NODE_ENV !== 'production') {
+        item.$perf = {};
+    }
 
     if (process.env.NODE_ENV !== 'production') {
         if (!item.name && item.content.img && item.content.img.src) {
