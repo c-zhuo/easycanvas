@@ -40,12 +40,13 @@ describe('Api.add Test.', function () {
         }, constants.waitForUpdateTime);
     });
 
-    it('Paintlist to $Paintlist fine.', function (done) {
+    it('PaintList to $PaintList fine.', function (done) {
         setTimeout(() => {
             let $paintList = $Painter.$paintList
             expect($paintList.length).toBe(1);
             expect($paintList[0].type).toBe('img');
-            expect($paintList[0].props[0].$width).toBe(10);
+            expect($paintList[0].props[0].tagName).toBe('IMG');
+            expect($paintList[0].props[0].width).toBe(10);
             expect($paintList[0].props[7]).toBe(10);
             expect($paintList[0].props[5]).toBe(0);
             expect($paintList[0].props[6]).toBe(77);

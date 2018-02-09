@@ -72,7 +72,7 @@ Easycanvas.imgLoader(constants.img30px, function (img) {
     });
 });
 
-describe('Featrue.scale Test.', function () {
+describe('Feature.scale Test.', function () {
     it('Scale inherit correctly.', function (done) {
         setTimeout(() => {
             // tx/ty 100~130  ==>  tx/ty (100+130)/2 - 30*5/2 = 40
@@ -86,7 +86,8 @@ describe('Featrue.scale Test.', function () {
             // scale 5 ==> size 750, 215 - 375 = -160
             // result is -160,-160,750,750 ==> 0,0,590,590
             expect($Painter.$paintList[3].props.slice(1).join(',')).toBe('0,0,30,30,140,140,150,150');
-            expect($Painter.$paintList[4].props.slice(1).join(',')).toBe('6.4,6.4,23.6,23.6,0,0,590,590');
+            // expect($Painter.$paintList[4].props.slice(1).join(',')).toBe('6.4,6.4,23.6,23.6,0,0,590,590');
+            expect($Painter.$paintList[4].props.slice(1).join(',')).toBe('6,6,23,23,0,0,590,590');
             done();
         }, constants.waitForUpdateTime);
     });
