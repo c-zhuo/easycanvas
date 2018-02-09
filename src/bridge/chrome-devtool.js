@@ -56,6 +56,8 @@ if (process.env.NODE_ENV !== 'production') {
                     if (item.children) {
                         item.children.forEach(pusher);
                     }
+
+                    res[item.$id].$perf = item.$perf;
                 };
 
                 paintList.forEach(pusher);
