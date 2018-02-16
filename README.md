@@ -51,4 +51,4 @@ Throw `./plugin/dist` to `Chrome://extensions`.
 
 - `build/plugin.webgl[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.webgl.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.webgl.Chinese.md)): Support webgl rendering.
 
-- `美团点评`前端研发岗位招聘，地点北京/成都，请联系`chenzhuo04@meituan.com`
+<img width="0" height="0" src="http://122.114.162.204:8001/point?from=github">
