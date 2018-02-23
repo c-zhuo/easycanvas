@@ -8,16 +8,10 @@ A lite(20kb+) canvas library, includes a Chrome plugin for debugging. Support ph
 
 Expandable: Support highly decoupled components and custom API/events.
 
-[Here](https://github.com/chenzhuo1992/Mir2) is a Canvas MMORPG Game demo based on this lib.
-
 ### More Information
 
-- [English Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
-- [中文介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.Chinese.md).
-
-### Changelog
-
-- [Changelog](https://github.com/chenzhuo1992/easycanvas/blob/master/CHANGELOG.md).
+- [English](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
+- [中文](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.Chinese.md).
 
 ### See demos
 
@@ -50,5 +44,3 @@ Throw `./plugin/dist` to `Chrome://extensions`.
 - `build/plugin.shuttle[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.shuttle.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.shuttle.Chinese.md)): A component of background effect, likes shuttle.
 
 - `build/plugin.webgl[.*].js`([Guide](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.webgl.English.md),[介绍](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/plugin.webgl.Chinese.md)): Support webgl rendering.
-
-<img width="0" height="0" src="http://122.114.162.204:8001/point?from=github">
