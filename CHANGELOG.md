@@ -1,5 +1,9 @@
 ## Easycanvas Changelog
 
+#### 0.2.4
+
+- Bugfix: Fix `Number` not rendered in `content.text` in old version.
+
 #### 0.2.3
 
 - Change: Float numbers will change to integer when painting, for avoiding blurry rendering.
