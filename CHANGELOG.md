@@ -1,8 +1,12 @@
 ## Easycanvas Changelog
 
-#### 0.2.4
+#### 0.2.8
 
 - Bugfix: Fix `Number` not rendered in `content.text` in old version.
+
+#### 0.2.4-0.2.7
+
+- Typos in code/readme/demos.
 
 #### 0.2.3
 
