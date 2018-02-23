@@ -4,7 +4,7 @@
 
 ### Introduction
 
-A lite(20kb+) canvas library, includes a Chrome plugin for debugging. Support physics and animations with high performace. Suits mobile, PC(including IE) and Chinese '微信小程序/小游戏'.
+A lite(30kb) canvas library, includes a Chrome plugin for debugging. Support physics and animations with high performace. Suits mobile, PC(including IE) and Chinese '微信小程序/小游戏'.
 
 Expandable: Support highly decoupled components and custom API/events.
 
