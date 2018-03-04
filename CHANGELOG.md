@@ -1,6 +1,24 @@
 ## Easycanvas Changelog
 
+#### 0.3.0 (30kb to 31kb)
+
+- Developing, 31kb of size.
+
+- Bugfix: Rewrite `Easycanvas.transition`. In old versions(0.2.x), transitions are played incorrectly if the fps is lower than 60. And, the value in `style` in the Chrome development tools are incorrectly if it is set by `Easycanvas.transition`.
+
+- Bugfix: In old versions(0.2.x), if you set `Easycanvas.imgLoader.cacheCanvas = true`, render optimization(jump the rendering of a sprite which is covered by others) will lose efficacy by mistake.
+
+- Bugfix: Remove unused codes, optimize code style.
+
+- Feature: Add `blend`(from 0 to 24) in `style`, controlling compositing type of a canvas context(by setting `globalCompositeOperation`).
+
+- Feature: Add a `fade` plugin, including some animations of a disappearing sprite.
+
+- Feature: Add `Easycanvas.imgPretreat`, using for loading images and pretreating, such as color editing.
+
 #### 0.2.8
+
+- Published in 2018.2.24, 30kb of size.
 
 - Bugfix: Fix `Number` not rendered in `content.text` in old version.
 

@@ -84,33 +84,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    },
 
-	    getMinFromArray: function getMinFromArray(arr) {
-	        var res = arr[0];
-	        arr.forEach(function (item) {
-	            if (item < res) {
-	                res = item;
-	            }
-	        });
-	        return res;
-	    },
+	    blend: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'copy', 'xor', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'],
 
-	    getCharFromKey: function getCharFromKey(k) {
-	        return k.key || String.fromCharCode(k.keyCode);
+	    pointInRect: function pointInRect(x, y, x1, x2, y1, y2) {
+	        return !(x < x1 || x > x2 || y < y1 || y > y2);
 	    },
-
-	    noop: function noop() {},
 
 	    firstValuable: function firstValuable(a, b) {
 	        return typeof a === 'undefined' ? b : a;
-	    },
-
-	    assign: function assign(target, source) {
-	        for (var i in source) {
-	            if (Object.prototype.hasOwnProperty.call(source, i)) {
-	                target[i] = source[i];
-	            }
-	        }
-	        return target;
 	    }
 	};
 
@@ -129,81 +110,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	var num = function num(x, y, sx, sy, diff) {
-	    var _diff = diff || 1;
-
-	    if (x - sx >= _diff) {
-	        if (y - sy >= _diff) {
-	            return 3;
-	        } else if (y - sy <= -_diff) {
-	            return 9;
-	        }
-
-	        return 6;
-	    }
-
-	    if (x - sx <= -_diff) {
-	        if (y - sy >= _diff) {
-	            return 1;
-	        } else if (y - sy <= -_diff) {
-	            return 7;
-	        }
-
-	        return 4;
-	    }
-
-	    if (y - sy >= _diff) {
-	        return 2;
-	    } else if (y - sy <= -_diff) {
-	        return 8;
-	    }
-
-	    return 5;
-	};
-
-	var _NUM2XAY = {
-	    '1': { x: -1, y: 1 },
-	    '2': { x: 0, y: 1 },
-	    '3': { x: 1, y: 1 },
-	    '4': { x: -1, y: 0 },
-	    '5': { x: 0, y: 0 },
-	    '6': { x: 1, y: 0 },
-	    '7': { x: -1, y: -1 },
-	    '8': { x: 0, y: -1 },
-	    '9': { x: 1, y: -1 }
-	};
-
-	module.exports = {
-	    num: num,
-
-	    xy: function xy() {
-	        var _num = num.apply(this, arguments);
-	        return JSON.parse(JSON.stringify(_NUM2XAY[_num] || {}));
-	    },
-
-	    NUM2XAY: function NUM2XAY(val) {
-	        return JSON.parse(JSON.stringify(_NUM2XAY[val]));
-	    },
-
-	    pointInRect: function pointInRect(x, y, x1, x2, y1, y2) {
-	        return !(x < x1 || x > x2 || y < y1 || y > y2);
-	    },
-
-	    getDistanceSq: function getDistanceSq(x1, y1, x2, y2) {
-	        return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
-	    },
-
-	    enoughNear: function enoughNear(x1, y1, x2, y2, r) {
-	        return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) <= r * r;
-	    }
-	};
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -212,22 +118,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _positionCompare = __webpack_require__(3);
-
-	var _positionCompare2 = _interopRequireDefault(_positionCompare);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/** ********** *
-	 *
-	 * Bind drag events to EVERY SPRITE.
-	 * - Whether to trigger handlers, is decided by '$Sprite.scroll.scrollable'.
-	 * - Drag events FISRT, scroll events FOLLOWING. Drags will stop events' bubbling.
-	 * - TODO: Move 'bindings' to event handlers
-	 *
-	 * ********** **/
-
-	var draggingFlag = false;
+	var draggingFlag = false; /** ********** *
+	                           *
+	                           * Bind drag events to EVERY SPRITE.
+	                           * - Whether to trigger handlers, is decided by '$Sprite.scroll.scrollable'.
+	                           * - Drag events FISRT, scroll events FOLLOWING. Drags will stop events' bubbling.
+	                           * - TODO: Move 'bindings' to event handlers
+	                           *
+	                           * ********** **/
 
 	var setFlag = function setFlag($sprite, value) {
 	    $sprite.drag.draggingFlag = value;
@@ -245,6 +145,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            y: 0
 	        };
 	        $sprite.drag.draggingFlag = false;
+
 	        var oMousedown = $sprite.events.mousedown || $sprite.events.touchstart;
 	        $sprite.events.touchstart = $sprite.events.mousedown = function (e) {
 	            // if dragable is a object, it means the range of dragable area
@@ -259,22 +160,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            return dragHandler(oMousedown, $sprite, e, $sprite.drag.dragable);
 	        }.bind($sprite);
+
 	        var oMousehold = $sprite.events.hold || $sprite.events.mousemove; //TODO 不规范？
 	        $sprite.events.touchmove = $sprite.events.mousemove = function (e) {
 	            var worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
 	            if (worked) {
 	                this.style.tx += e.canvasX - startDragPosition.x;
 	                this.style.ty += e.canvasY - startDragPosition.y;
-	                // if (utils.funcOrValue(this.style.locate, this) === 'center') {
-	                //     this.style.tx += (this.style.tw || this.content.img.width || 0) / 2;
-	                //     this.style.ty += (this.style.th || this.content.img.height || 0) / 2;
-	                // }
 
 	                startDragPosition.x = e.canvasX;
 	                startDragPosition.y = e.canvasY;
 	            }
 	            return dragHandler(oMousehold, $sprite, e, worked);
 	        }.bind($sprite);
+
 	        var oMouseup = $sprite.events.mouseup || $sprite.events.touchend;
 	        $sprite.events.touchend = $sprite.events.mouseup = function (e) {
 	            var worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
@@ -283,12 +182,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return dragHandler(oMouseup, $sprite, e, worked);
 	        };
+
 	        var oMouseout = $sprite.events.mouseout;
 	        $sprite.events.mouseout = function (e) {
 	            var worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
 	            setFlag($sprite, false);
 	            return dragHandler(oMouseout, $sprite, e, worked);
 	        };
+
 	        var oClick = $sprite.events.click;
 	        $sprite.events.click = function (e) {
 	            var worked = $sprite.drag.dragable;
@@ -301,6 +202,50 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	    }
 	};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	var ProcessingFlag = 'processing';
+	var ProcessingPool = {};
+
+	function toDataUR(url, callback) {
+	    if (url && url.match(/^data:/)) {
+	        callback && callback(url);
+	        return;
+	    }
+
+	    if (ProcessingPool[url]) {
+	        if (ProcessingPool[url] !== ProcessingFlag) {
+	            callback(ProcessingPool[url]);
+	        } else {
+	            setTimeout(function () {
+	                toDataUR(url, callback);
+	            }, 100);
+	        }
+	        return;
+	    }
+
+	    ProcessingPool[url] = ProcessingFlag;
+
+	    var xhr = new XMLHttpRequest();
+	    xhr.onload = function () {
+	        var reader = new FileReader();
+	        reader.onloadend = function () {
+	            ProcessingPool[url] = reader.result;
+	            callback && callback(reader.result);
+	        };
+	        reader.readAsDataURL(xhr.response);
+	    };
+	    xhr.open('GET', url);
+	    xhr.responseType = 'blob';
+	    xhr.send();
+	}
+
+	module.exports = toDataUR;
 
 /***/ }),
 /* 5 */,
@@ -320,6 +265,46 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /** ********** *
+	                                                                                                                                                                                                                                                                               *
+	                                                                                                                                                                                                                                                                               * Sprite Structure
+	                                                                                                                                                                                                                                                                               * {
+	                                                                                                                                                                                                                                                                               *     style: {
+	                                                                                                                                                                                                                                                                               *         tx, ty, tw, th,
+	                                                                                                                                                                                                                                                                               *         zIndex, opacity, scale, rotate, rx, ry,
+	                                                                                                                                                                                                                                                                               *         sx, sy, sw, sh, locate, // useless for content.text
+	                                                                                                                                                                                                                                                                               *         fh, fv, fx, fy, // transfrom
+	                                                                                                                                                                                                                                                                               *         align, font, color, // useless for content.img
+	                                                                                                                                                                                                                                                                               *         visible, // visible false equals inexistence
+	                                                                                                                                                                                                                                                                               *         mirrX, mirrY, // visible false equals inexistence
+	                                                                                                                                                                                                                                                                               *     },
+	                                                                                                                                                                                                                                                                               *     content: {
+	                                                                                                                                                                                                                                                                               *         img,
+	                                                                                                                                                                                                                                                                               *         text,
+	                                                                                                                                                                                                                                                                               *         sequence: {} // for animate sprite
+	                                                                                                                                                                                                                                                                               *     },
+	                                                                                                                                                                                                                                                                               *     events: {
+	                                                                                                                                                                                                                                                                               *         eIndex,
+	                                                                                                                                                                                                                                                                               *         click / touchstart / contextmenu / ... / hold / touchout,
+	                                                                                                                                                                                                                                                                               *         through,
+	                                                                                                                                                                                                                                                                               *     },
+	                                                                                                                                                                                                                                                                               *     children: [
+	                                                                                                                                                                                                                                                                               *         { Sprite }, { Sprite } ...
+	                                                                                                                                                                                                                                                                               *     ],
+	                                                                                                                                                                                                                                                                               *     inherit: ['tx', 'ty', ...] // inherit from parent, default is ['tx', 'ty', 'scale']
+	                                                                                                                                                                                                                                                                               *     hooks: {
+	                                                                                                                                                                                                                                                                               *         created, mounted, painted, ticked
+	                                                                                                                                                                                                                                                                               *     },
+	                                                                                                                                                                                                                                                                               *
+	                                                                                                                                                                                                                                                                               *     $parent: { Sprite },
+	                                                                                                                                                                                                                                                                               *     $cache: {
+	                                                                                                                                                                                                                                                                               *         tx, ty, tw, th, ...
+	                                                                                                                                                                                                                                                                               *     },
+	                                                                                                                                                                                                                                                                               *
+	                                                                                                                                                                                                                                                                               * }
+	                                                                                                                                                                                                                                                                               *
+	                                                                                                                                                                                                                                                                               * ********** **/
 
 	var _utils = __webpack_require__(1);
 
@@ -345,7 +330,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _broadcast2 = _interopRequireDefault(_broadcast);
 
-	var _bindDrag = __webpack_require__(4);
+	var _bindDrag = __webpack_require__(3);
 
 	var _bindDrag2 = _interopRequireDefault(_bindDrag);
 
@@ -435,45 +420,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    return item;
-	}; /** ********** *
-	    *
-	    * Sprite Structure
-	    * {
-	    *     style: {
-	    *         tx, ty, tw, th,
-	    *         zIndex, opacity, scale, rotate, rx, ry,
-	    *         sx, sy, sw, sh, locate, // useless for content.text
-	    *         fh, fv, fx, fy, // transfrom
-	    *         align, font, color, // useless for content.img
-	    *         visible, // visible false equals inexistence
-	    *         mirrX, mirrY, // visible false equals inexistence
-	    *     },
-	    *     content: {
-	    *         img,
-	    *         text,
-	    *         sequence: {} // for animate sprite
-	    *     },
-	    *     events: {
-	    *         eIndex,
-	    *         click / touchstart / contextmenu / ... / hold / touchout,
-	    *         through,
-	    *     },
-	    *     children: [
-	    *         { Sprite }, { Sprite } ...
-	    *     ],
-	    *     inherit: ['tx', 'ty', ...] // inherit from parent, default is ['tx', 'ty', 'scale']
-	    *     hooks: {
-	    *         created, mounted, painted, ticked
-	    *     },
-	    *
-	    *     $parent: { Sprite },
-	    *     $cache: {
-	    *         tx, ty, tw, th, ...
-	    *     },
-	    *
-	    * }
-	    *
-	    * ********** **/
+	};
 
 	var sprite = function sprite(opt) {
 	    var _opt = preAdd(opt);
@@ -523,6 +470,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.$canvas.remove(this);
 	    }
 	    _utils2.default.execFuncs(this.hooks.removed, this);
+	};
+
+	sprite.prototype.update = function (opt) {
+	    if (!opt) return;
+
+	    for (var i in opt) {
+	        if (_typeof(opt[i]) === 'object') {
+	            for (var j in opt[i]) {
+	                this[i][j] = opt[i][j];
+	            }
+	        } else {
+	            this[i] = opt[i];
+	        }
+	    }
 	};
 
 	sprite.prototype.on = _on2.default;
@@ -787,43 +748,124 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	/** ********** *
+	 *
+	 * Load images
+	 * - Easycanvas.imgLoader.cacheCanvas
+	 *
+	 * ********** **/
+
+	var Cache = {};
+	var BlockingImgs = [];
 	var ProcessingFlag = 'processing';
-	var ProcessingPool = {};
 
-	function toDataUR(url, callback) {
-	    if (url && url.match(/^data:/)) {
-	        callback && callback(url);
+	var blockingAmount = 0;
+
+	var loader = function loader(url, callback, option) {
+	    var _option = option || {};
+
+	    if ((typeof url === 'undefined' ? 'undefined' : _typeof(url)) === 'object') {
+	        var imgs = url;
+	        _option.callbackArgs = _option.callbackArgs || [];
+	        loader(imgs.shift(), function (perImg) {
+	            _option.callbackArgs.push(perImg);
+	            if (imgs.length > 1) {
+	                loader(imgs, callback, _option);
+	            } else {
+	                loader(imgs[0], function (lastImg) {
+	                    _option.callbackArgs.push(lastImg);
+	                    callback(_option.callbackArgs);
+	                }, _option);
+	            }
+	        }, option);
 	        return;
 	    }
 
-	    if (ProcessingPool[url]) {
-	        if (ProcessingPool[url] !== ProcessingFlag) {
-	            callback(ProcessingPool[url]);
-	        } else {
-	            setTimeout(function () {
-	                toDataUR(url, callback);
-	            }, 100);
+	    var cacheNamespace = url + JSON.stringify(option);
+
+	    if (Cache[cacheNamespace]) {
+	        setTimeout(function () {
+	            if (callback) {
+	                callback(Cache[cacheNamespace]);
+	            }
+	        });
+	        return Cache[cacheNamespace];
+	    }
+	    // todo: 多个loader加载同一图片，目前只触发一个callback；待补充
+
+	    var i = new Image();
+	    if (_option.block) {
+	        i.src = url;
+	        blockingAmount++;
+	    } else if (blockingAmount === 0) {
+	        i.src = url;
+	    } else {
+	        BlockingImgs.push({
+	            imgObj: i,
+	            src: url
+	        });
+	    }
+
+	    Cache[cacheNamespace] = i;
+
+	    var tempCavas = void 0;
+	    if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
+	        tempCavas = document.createElement('canvas');
+	        tempCavas.width = tempCavas.height || 0;
+	        Cache[cacheNamespace] = tempCavas;
+	    }
+
+	    i.onload = function () {
+	        if (_option.block) {
+	            blockingAmount--;
+	            if (blockingAmount === 0) {
+	                BlockingImgs.forEach(function (blockingImg) {
+	                    blockingImg.imgObj.src = blockingImg.src;
+	                });
+	                BlockingImgs.splice(0);
+	            }
 	        }
-	        return;
-	    }
 
-	    ProcessingPool[url] = ProcessingFlag;
+	        if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
+	            var cts = tempCavas.getContext('2d');
+	            tempCavas.width = i.width;
+	            tempCavas.height = i.height;
+	            cts.drawImage(i, 0, 0);
 
-	    var xhr = new XMLHttpRequest();
-	    xhr.onload = function () {
-	        var reader = new FileReader();
-	        reader.onloadend = function () {
-	            ProcessingPool[url] = reader.result;
-	            callback && callback(reader.result);
-	        };
-	        reader.readAsDataURL(xhr.response);
+	            if (_option.alphaColor) {
+	                var data = cts.getImageData(0, 0, i.width, i.height);
+	                var pixel = [];
+
+	                for (var d = 0; d < data.data.length; d += 4) {
+	                    var colorWeight = data.data[d] + data.data[d + 1] + data.data[d + 2];
+	                    var blackLike = 1;
+	                    if (data.data[d] < blackLike && data.data[d + 1] < blackLike && data.data[d + 2] < blackLike) {
+	                        data.data[d + 3] = Math.floor(colorWeight / 255);
+	                    }
+	                }
+	                cts.putImageData(data, 0, 0);
+	            }
+
+	            i = tempCavas;
+	        }
+
+	        if (callback) {
+	            callback(i);
+	        }
 	    };
-	    xhr.open('GET', url);
-	    xhr.responseType = 'blob';
-	    xhr.send();
-	}
 
-	module.exports = toDataUR;
+	    i.onerror = function () {
+	        Cache[cacheNamespace] = i;
+	    };
+
+	    return tempCavas || i;
+	};
+
+	loader.cacheCanvas = false;
+
+	module.exports = loader;
 
 /***/ }),
 /* 14 */
@@ -831,7 +873,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ********** *
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * Send data to devtool.
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * ********** **/
 
 	var _constants = __webpack_require__(2);
 
@@ -840,165 +886,165 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	if (process.env.NODE_ENV !== 'production') {
-		var PLUGIN_BRIDGE = {
-			getSprite: function getSprite($canvasId) {
-				if (!window[_constants2.default.devFlag].isPaintRecording) return [];
+	    if (!window[_constants2.default.devFlag]) {
+	        // init
+	        var devData = window[_constants2.default.devFlag] = {
+	            isPaintRecording: false,
+	            selectMode: false,
+	            current: {},
 
-				var res = {};
+	            $canvas: {},
+	            $plugin: null
+	        };
 
-				if ($canvasId) {
-					var paintList = window[_constants2.default.devFlag].$canvas[$canvasId].$canvas.paintList;
-					var $paintList = window[_constants2.default.devFlag].$canvas[$canvasId].$canvas.$paintList;
+	        var BRIDGE = {
+	            getSprite: function getSprite($canvasId) {
+	                if (!devData.isPaintRecording) return [];
 
-					var pusher = function pusher(item) {
-						// Skip $mask in select mode
-						if (item.name === _constants2.default.devFlag) return;
+	                var res = {};
 
-						res[item.$id] = {
-							name: item.name,
-							parent: item.$parent && item.$parent.$id,
-							style: {},
-							children: item.children && item.children.map(function (child) {
-								return child.$id;
-							})
-						};
+	                if ($canvasId) {
+	                    var paintList = devData.$canvas[$canvasId].$canvas.paintList;
+	                    var $paintList = devData.$canvas[$canvasId].$canvas.$paintList;
 
-						if (item.content.img || item.content.text) {
-							res[item.$id].rendered = false;
-							for (var i = 0, l = $paintList.length; i < l; i++) {
-								if ($paintList[i].$id === item.$id) {
-									res[item.$id].rendered = true;
-									break;
-								}
-							}
-						} else {
-							// res[item.$id].rendered = undefined;
-						}
+	                    var pusher = function pusher(item) {
+	                        // Skip $mask in select mode
+	                        if (item.name === _constants2.default.devFlag) return;
 
-						for (var _i in item.style) {
-							if (typeof item.style[_i] === 'function') {
-								res[item.$id].style[_i] = item.$cache[_i];
+	                        res[item.$id] = {
+	                            name: item.name,
+	                            parent: item.$parent && item.$parent.$id,
+	                            style: {},
+	                            children: item.children && item.children.map(function (child) {
+	                                return child.$id;
+	                            })
+	                        };
 
-								if (typeof item.$cache[_i] === 'function') {
-									res[item.$id].style[_i] = 'function';
-								}
-							} else {
-								res[item.$id].style[_i] = item.style[_i];
-							}
-						}
+	                        if (item.content.img || item.content.text) {
+	                            res[item.$id].rendered = false;
+	                            for (var i = 0, l = $paintList.length; i < l; i++) {
+	                                if ($paintList[i].$id === item.$id) {
+	                                    res[item.$id].rendered = true;
+	                                    break;
+	                                }
+	                            }
+	                        }
 
-						if (item.physics) {
-							res[item.$id].physics = item.physics;
-						}
+	                        for (var _i in item.style) {
+	                            if (typeof item.style[_i] === 'function') {
+	                                if (item.$parent && ~item.inherit.indexOf(_i)) {
+	                                    res[item.$id].style[_i] = item.$cache[_i] - item.$parent.$cache[_i];
+	                                } else {
+	                                    res[item.$id].style[_i] = item.$cache[_i];
+	                                }
+	                            } else {
+	                                res[item.$id].style[_i] = item.style[_i];
+	                            }
+	                        }
 
-						if (item.children) {
-							item.children.forEach(pusher);
-						}
+	                        var attachList = ['blend', 'physics', '$perf'];
 
-						res[item.$id].$perf = item.$perf;
-					};
+	                        attachList.forEach(function (key) {
+	                            res[item.$id][key] = item[key];
+	                        });
 
-					paintList.forEach(pusher);
-				} else {
-					for (var c in window[_constants2.default.devFlag].$canvas) {
-						res = _extends(res, window[_constants2.default.devFlag].$plugin.getSprite(c));
-					}
-				}
+	                        if (item.children) {
+	                            item.children.forEach(pusher);
+	                        }
+	                    };
 
-				return res;
-			},
+	                    paintList.forEach(pusher);
+	                } else {
+	                    for (var c in devData.$canvas) {
+	                        res = _extends(res, devData.$plugin.getSprite(c));
+	                    }
+	                }
 
-			selectSpriteById: function selectSpriteById($spriteId, $canvasId) {
-				if (!$canvasId) {
-					for (var i in window[_constants2.default.devFlag].$canvas) {
-						var _res = PLUGIN_BRIDGE.selectSpriteById($spriteId, i);
-						if (_res) return {
-							$sprite: _res.$sprite || _res,
-							$canvas: window[_constants2.default.devFlag].$canvas[i].$canvas
-						};
-					}
+	                return res;
+	            },
 
-					return false;
-				}
+	            selectSpriteById: function selectSpriteById($spriteId, $canvasId) {
+	                if (!$canvasId) {
+	                    for (var i in devData.$canvas) {
+	                        var _res = BRIDGE.selectSpriteById($spriteId, i);
+	                        if (_res) {
+	                            return {
+	                                $sprite: _res.$sprite || _res,
+	                                $canvas: devData.$canvas[i].$canvas
+	                            };
+	                        }
+	                    }
 
-				var paintList = window[_constants2.default.devFlag].$canvas[$canvasId].$canvas.paintList;
+	                    return false;
+	                }
 
-				var looper = function looper(array) {
-					for (var _i2 = 0; _i2 < array.length; _i2++) {
-						if (array[_i2].$id === $spriteId) return array[_i2];
+	                var looper = function looper(array) {
+	                    for (var _i2 = 0; _i2 < array.length; _i2++) {
+	                        if (array[_i2].$id === $spriteId) return array[_i2];
 
-						var _res2 = looper(array[_i2].children);
-						if (_res2) {
-							return {
-								$sprite: _res2.$sprite || _res2,
-								$canvas: window[_constants2.default.devFlag].$canvas[$canvasId].$canvas
-							};
-						}
-					}
+	                        var _res2 = looper(array[_i2].children);
+	                        if (_res2) {
+	                            return {
+	                                $sprite: _res2.$sprite || _res2,
+	                                $canvas: devData.$canvas[$canvasId].$canvas
+	                            };
+	                        }
+	                    }
 
-					return false;
-				};
+	                    return false;
+	                };
 
-				var res = looper(paintList);
-				if (res) return {
-					$sprite: res.$sprite || res,
-					$canvas: window[_constants2.default.devFlag].$canvas[$canvasId].$canvas
-				};
-			},
+	                var paintList = devData.$canvas[$canvasId].$canvas.paintList;
+	                var res = looper(paintList);
+	                if (res) {
+	                    return {
+	                        $sprite: res.$sprite || res,
+	                        $canvas: devData.$canvas[$canvasId].$canvas
+	                    };
+	                }
+	            },
 
-			updateSprite: function updateSprite($spriteId, map, $canvasId) {
-				var $sprite = PLUGIN_BRIDGE.selectSpriteById($spriteId, $canvasId).$sprite;
-				if (!$sprite) console.warn('Sprite ' + spriteId + ' Not Found.');
+	            updateSprite: function updateSprite($spriteId, map, $canvasId) {
+	                var $sprite = BRIDGE.selectSpriteById($spriteId, $canvasId).$sprite;
+	                if (!$sprite) console.warn('Sprite ' + spriteId + ' Not Found.');
 
-				_extends($sprite.style, map);
-			},
+	                _extends($sprite.style, map);
+	            },
 
-			highlightSprite: function highlightSprite($spriteId, opt, $canvasId) {
-				window[_constants2.default.devFlag].selectMode = Boolean(opt);
+	            highlightSprite: function highlightSprite($spriteId, opt, $canvasId) {
+	                devData.selectMode = Boolean(opt);
 
-				var tmp = PLUGIN_BRIDGE.selectSpriteById($spriteId, $canvasId);
-				var $sprite = tmp.$sprite;
-				var $canvas = tmp.$canvas;
+	                var tmp = BRIDGE.selectSpriteById($spriteId, $canvasId);
+	                var $sprite = tmp.$sprite;
+	                var $canvas = tmp.$canvas;
 
-				if (opt && $canvas && $sprite) {
-					$canvas.$plugin.hook.selectSprite(false, $canvas, $sprite);
-				} else if ($canvas) {
-					$canvas.$plugin.hook.cancelSelectSprite($canvas);
-				}
-			},
+	                if (opt && $canvas && $sprite) {
+	                    $canvas.$plugin.hook.selectSprite(false, $canvas, $sprite);
+	                } else if ($canvas) {
+	                    $canvas.$plugin.hook.cancelSelectSprite($canvas);
+	                }
+	            },
 
-			sendGlobalHook: function sendGlobalHook($spriteId, $canvasId) {
-				var tmp = PLUGIN_BRIDGE.selectSpriteById($spriteId, $canvasId);
-				var $sprite = tmp.$sprite;
-				var $canvas = tmp.$canvas;
+	            sendGlobalHook: function sendGlobalHook($spriteId, $canvasId) {
+	                var tmp = BRIDGE.selectSpriteById($spriteId, $canvasId);
+	                var $sprite = tmp.$sprite;
+	                var $canvas = tmp.$canvas;
 
-				if (window.$ec === $canvas.$id && window.$es === $sprite.$id) return;
+	                if (window.$ec === $canvas.$id && window.$es === $sprite.$id) return;
 
-				console.warn('window.$ec = [Easycanvas ' + $canvas.$id + '], window.$es = [Easycanvas ' + $sprite.$id + ']');
-				window.$ec = $canvas;
-				window.$es = $sprite;
-			},
+	                console.warn('window.$ec = [Easycanvas ' + $canvas.$id + '], window.$es = [Easycanvas ' + $sprite.$id + ']');
+	                window.$ec = $canvas;
+	                window.$es = $sprite;
+	            },
 
-			pause: function pause($canvasId, opt) {
-				var $canvas = window[_constants2.default.devFlag].$canvas[$canvasId].$canvas;
-				$canvas.$pausing = typeof opt !== 'undefined' ? opt : !$canvas.$pausing;
-			}
-		};
+	            pause: function pause($canvasId, opt) {
+	                var $canvas = devData.$canvas[$canvasId].$canvas;
+	                $canvas.$pausing = typeof opt !== 'undefined' ? opt : !$canvas.$pausing;
+	            }
+	        };
 
-		window[_constants2.default.devFlag] = window[_constants2.default.devFlag] || {
-			isPaintRecording: false,
-			selectMode: false,
-
-			peformance: {
-				area: 0,
-				times: 0
-			},
-
-			$plugin: PLUGIN_BRIDGE,
-
-			$canvas: {},
-			current: {}
-		};
+	        devData.$plugin = BRIDGE;
+	    }
 	}
 
 /***/ }),
@@ -1023,7 +1069,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _index = __webpack_require__(40);
+	var _index = __webpack_require__(42);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -1031,7 +1077,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _mirror = __webpack_require__(48);
+	var _mirror = __webpack_require__(51);
 
 	var _mirror2 = _interopRequireDefault(_mirror);
 
@@ -1039,19 +1085,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _transition = __webpack_require__(50);
+	var _transition = __webpack_require__(53);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
-	var _imgLoader = __webpack_require__(47);
+	var _imgLoader = __webpack_require__(13);
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
-	var _positionCompare = __webpack_require__(3);
+	var _imgPretreat = __webpack_require__(50);
 
-	var _positionCompare2 = _interopRequireDefault(_positionCompare);
+	var _imgPretreat2 = _interopRequireDefault(_imgPretreat);
 
-	var _multlineText = __webpack_require__(49);
+	var _multlineText = __webpack_require__(52);
 
 	var _multlineText2 = _interopRequireDefault(_multlineText);
 
@@ -1068,14 +1114,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Easycanvas = {
 	    painter: _index2.default,
 	    imgLoader: _imgLoader2.default,
+	    imgPretreat: _imgPretreat2.default,
 	    multlineText: _multlineText2.default,
-	    posCompare: _positionCompare2.default,
 	    transition: _transition2.default,
 	    tick: _tick2.default,
 	    utils: _utils2.default,
 	    mirror: _mirror2.default,
 	    class: _main2.default,
-	    $version: '0.2.0'
+	    $version: '0.2.10'
 	};
 
 	if (process.env.NODE_ENV !== 'production') {
@@ -1101,7 +1147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _perPaint = __webpack_require__(25);
+	var _perPaint = __webpack_require__(27);
 
 	var _perPaint2 = _interopRequireDefault(_perPaint);
 
@@ -1113,15 +1159,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _eventHandler2 = _interopRequireDefault(_eventHandler);
 
-	var _bindDrag = __webpack_require__(4);
+	var _bindDrag = __webpack_require__(3);
 
 	var _bindDrag2 = _interopRequireDefault(_bindDrag);
 
-	var _rAFer = __webpack_require__(26);
+	var _rAFer = __webpack_require__(28);
 
 	var _rAFer2 = _interopRequireDefault(_rAFer);
 
-	var _apiPlugin = __webpack_require__(39);
+	var _apiPlugin = __webpack_require__(41);
 
 	var _apiPlugin2 = _interopRequireDefault(_apiPlugin);
 
@@ -1165,10 +1211,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _positionCompare = __webpack_require__(3);
-
-	var _positionCompare2 = _interopRequireDefault(_positionCompare);
-
 	var _eventHandlerScroll = __webpack_require__(8);
 
 	var _eventHandlerScroll2 = _interopRequireDefault(_eventHandlerScroll);
@@ -1180,17 +1222,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * - Order by eIndex dev-tool's in events' triggering
 	 * - Order by zIndex in dev-tool's select mode
 	 */
-	/** ********** *
-	 *
-	 * Handle events on canvas (Includes both user's events and debugging events)
-	 * - Compare event's coordinate and the coordinate of every sprite in
-	 *   Easycanvas.paintList, and check sprite's handlers one by one.
-	 * - Events: mousedown, mousemove, mouseup, touchstart, touchmove, touchend,
-	 *   click, contextmenu
-	 * - Expanded events: hold, touchout
-	 *
-	 * ********** **/
-
 	var sortByIndex = function sortByIndex(arr) {
 	    return arr.sort(function (a, b) {
 	        if (process.env.NODE_ENV !== 'production') {
@@ -1208,6 +1239,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * - Use $sprite.$cache to compare 
 	 * - Sprite in first frame will not captrue any event [?]
 	 */
+	/** ********** *
+	 *
+	 * Handle events on canvas (Includes both user's events and debugging events)
+	 * - Compare event's coordinate and the coordinate of every sprite in
+	 *   Easycanvas.paintList, and check sprite's handlers one by one.
+	 * - Events: mousedown, mousemove, mouseup, touchstart, touchmove, touchend,
+	 *   click, contextmenu
+	 * - Expanded events: hold, touchout
+	 *
+	 * ********** **/
+
 	var isVisible = function isVisible($sprite) {
 	    if ($sprite.$parent && !isVisible($sprite.$parent)) {
 	        return false;
@@ -1231,8 +1273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // 第一帧没有$cache
 	    if (typeof _tx === 'undefined') return false;
 
-	    // 兼容 !!TODO!!
-	    return _positionCompare2.default.pointInRect(e.canvasX, e.canvasY, _tx, _tx + _tw, _ty, _ty + _th);
+	    return _utils2.default.pointInRect(e.canvasX, e.canvasY, _tx, _tx + _tw, _ty, _ty + _th);
 	};
 
 	/**
@@ -1286,8 +1327,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        e.layerY = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
 	    }
 
-	    var scaleX = parseInt(this.$dom.style.width) / this.contextWidth;
-	    var scaleY = parseInt(this.$dom.style.height) / this.contextHeight;
+	    var scaleX = Math.floor(this.$dom.style.width) / this.contextWidth;
+	    var scaleY = Math.floor(this.$dom.style.height) / this.contextHeight;
 
 	    scaleX = scaleX || 1;
 	    scaleY = scaleY || 1;
@@ -1397,22 +1438,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _positionCompare = __webpack_require__(3);
-
-	var _positionCompare2 = _interopRequireDefault(_positionCompare);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Unlike images, textures do not have a width and height associated
 	// with them so we'll pass in the width and height of the texture
-	/** ********** *
-	 *
-	 * CORE painting function
-	 * - Controlling canvas context, Transfer $paintList to rendered sprite.
-	 * - Includes some optimization.
-	 *
-	 * ********** **/
-
 	var glDrawImage = function glDrawImage($canvas, texture, texWidth, texHeight, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight, settings) {
 
 	    var gl = $canvas.$gl;
@@ -1434,9 +1463,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // We'll move to the middle, rotate, then move back
 	    if (settings.rotate) {
-	        matrix = m4.translate(matrix, -dstX + settings.translateBeforeRotate[0] || 0, -dstY + settings.translateBeforeRotate[1] || 0, 0);
+	        matrix = m4.translate(matrix, -dstX + settings.beforeRotate[0] || 0, -dstY + settings.beforeRotate[1] || 0, 0);
 	        matrix = m4.zRotate(matrix, settings.rotate);
-	        matrix = m4.translate(matrix, dstX + settings.translateAfterRotate[0] || 0, dstY + settings.translateAfterRotate[1] || 0, 0);
+	        matrix = m4.translate(matrix, dstX + settings.afterRotate[0] || 0, dstY + settings.afterRotate[1] || 0, 0);
 	    }
 
 	    // this matrix will scale our 1 unit quad
@@ -1462,7 +1491,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // draw the quad (2 triangles, 6 vertices)
 	    // gl.drawArrays(gl.TRIANGLES, 0, 6);
 	    gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
-	};
+	}; /** ********** *
+	    *
+	    * CORE painting function
+	    * - Controlling canvas context, Transfer $paintList to rendered sprite.
+	    * - Includes some optimization.
+	    *
+	    * ********** **/
 
 	var render = function render($sprite, i) {
 	    var $canvas = this;
@@ -1505,7 +1540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                var tmpProps = $tmpSprite.props;
 
-	                if (_positionCompare2.default.pointInRect(props[5], props[6], tmpProps[5], tmpProps[5] + tmpProps[7], tmpProps[6], tmpProps[6] + tmpProps[8]) && _positionCompare2.default.pointInRect(props[5] + props[7], props[6] + props[8], tmpProps[5], tmpProps[5] + tmpProps[7], tmpProps[6], tmpProps[6] + tmpProps[8])) {
+	                if (_utils2.default.pointInRect(props[5], props[6], tmpProps[5], tmpProps[5] + tmpProps[7], tmpProps[6], tmpProps[6] + tmpProps[8]) && _utils2.default.pointInRect(props[5] + props[7], props[6] + props[8], tmpProps[5], tmpProps[5] + tmpProps[7], tmpProps[6], tmpProps[6] + tmpProps[8])) {
 	                    isUseless = true;
 	                    return;
 	                }
@@ -1514,37 +1549,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // } else if ($sprite.type === 'text') {
 	        // 文本绘制消耗性能较少，毋需优化
 	    }
-
-	    // DOM渲染 - 由于Hilo.js有专利，此处只调研实现，不开放
-	    // {
-	    //     let newSprite = false;
-	    //     if (!document.getElementById($sprite.$id)) {
-	    //         newSprite = true;
-	    //         let $dom = document.createElement('div');
-	    //         $dom.style.position = 'fixed';
-	    //         $dom.id = $sprite.$id;
-	    //         $dom.className = 'XXXXX';
-	    //         $dom.style['-webkit-transform'] = 'translateZ(0)';
-	    //         $dom.style['transform'] = 'translateZ(0)';
-	    //     } else {
-	    //         let $dom = document.getElementById($sprite.$id);
-	    //         $dom.toDelete = 0;
-	    //     }
-	    //     $dom.style.left = props[5] / $canvas.contextWidth * 100 + '%';
-	    //     $dom.style.top = props[6] / $canvas.contextHeight * 100 + '%';
-	    //     $dom.style.width = props[7] / $canvas.contextWidth * 100 + '%';
-	    //     $dom.style.height = props[8] / $canvas.contextHeight * 100 + '%';
-	    //     $dom.style['background-repeat'] = 'no-repeat';
-	    //     $dom.style['background-image'] = 'url(' + props[0].src + ')';
-	    //     $dom.style['background-position'] = (props[1] / props[0].$width * 100 + '%') + ' ' + (props[2] / $sprite.props[0].$height * 100 + '%')
-	    //     $dom.style['background-position'] = -(props[1] / props[0].$width * ($sprite.props[0].$width / props[3] * props[7]) + 'px') + ' ' +
-	    //         (-(props[2] / props[0].$height * ($sprite.props[0].$height / props[4] * props[8]) + 'px'));
-	    //     $dom.style['background-size'] = ($sprite.props[0].$width / props[3] * props[7] + 'px') + ' ' + ($sprite.props[0].$height / props[4] * props[8] + 'px');
-	    //     if (newSprite) {
-	    //         document.body.appendChild($dom);
-	    //     }
-	    //     return;
-	    // }
 
 	    if ($canvas.$isWebgl) {
 	        props[0] && props[0].texture && glDrawImage($canvas, props[0].texture, props[0].width, props[0].height, props[1], props[2], props[3], props[4], props[5], props[6], props[7], props[8], settings);
@@ -1556,6 +1560,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    */
 	    var saved = false;
 	    var cxt = $canvas.$paintContext;
+
+	    if (settings.globalCompositeOperation) {
+	        if (!saved) {
+	            cxt.save();
+	            saved = true;
+	        }
+	        cxt.globalCompositeOperation = settings.globalCompositeOperation;
+	    }
 
 	    if (settings.globalAlpha !== 1 && !isNaN(settings.globalAlpha)) {
 	        if (!saved) {
@@ -1577,9 +1589,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            cxt.save();
 	            saved = true;
 	        }
-	        cxt.translate(settings.translateBeforeRotate[0] || 0, settings.translateBeforeRotate[1] || 0);
+	        cxt.translate(settings.beforeRotate[0] || 0, settings.beforeRotate[1] || 0);
 	        cxt.rotate(settings.rotate || 0);
-	        cxt.translate(settings.translateAfterRotate[0] || 0, settings.translateAfterRotate[1] || 0);
+	        cxt.translate(settings.afterRotate[0] || 0, settings.afterRotate[1] || 0);
 	    }
 	    if (settings.scale) {
 	        if (!saved) {
@@ -1628,6 +1640,99 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	/** ********** *
+	 *
+	 * Fix border to improve performance
+	 *
+	 * ********** **/
+
+	module.exports = function ($canvas, props, imgWidth, imgHeight) {
+	    // source
+	    if (props.sx < 0 && props.sw) {
+	        var cutRate = -props.sx / props.sw;
+	        props.tx += props.tw * cutRate;
+	        props.sx = 0;
+	    }
+	    if (props.sy < 0 && props.sh) {
+	        var _cutRate = -props.sy / props.sh;
+	        props.ty += props.th * _cutRate;
+	        props.sy = 0;
+	    }
+	    if (imgWidth && props.sx + props.sw > imgWidth) {
+	        var _cutRate2 = (props.sx + props.sw - imgWidth) / props.sw;
+	        props.sw -= props.sw * _cutRate2;
+	        props.tw -= props.tw * _cutRate2;
+	    }
+	    if (imgHeight && props.sy + props.sh > imgHeight) {
+	        var _cutRate3 = (props.sy + props.sh - imgHeight) / props.sh;
+	        props.sh -= props.sh * _cutRate3;
+	        props.th -= props.th * _cutRate3;
+	    }
+
+	    // target
+	    if (props.tx < 0 && props.tw) {
+	        var _cutRate4 = -props.tx / props.tw;
+	        props.sx += props.sw * _cutRate4;
+	        props.sw -= props.sw * _cutRate4;
+	        props.tw = props.tw + props.tx;
+	        props.tx = 0;
+	    }
+	    if (props.ty < 0 && props.th) {
+	        var _cutRate5 = -props.ty / props.th;
+	        props.sy += props.sh * _cutRate5;
+	        props.sh -= props.sh * _cutRate5;
+	        props.th = props.th + props.ty;
+	        props.ty = 0;
+	    }
+	    if (props.tx + props.tw > $canvas.contextWidth && props.tw) {
+	        var _cutRate6 = (props.tx + props.tw - $canvas.contextWidth) / props.tw;
+	        props.tw -= props.tw * _cutRate6;
+	        props.sw -= props.sw * _cutRate6;
+	    }
+	    if (props.ty + props.th > $canvas.contextHeight && props.th) {
+	        var _cutRate7 = (props.ty + props.th - $canvas.contextHeight) / props.th;
+	        props.th -= props.th * _cutRate7;
+	        props.sh -= props.sh * _cutRate7;
+	    }
+	};
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _utils = __webpack_require__(1);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = function ($canvas, children, part) {
+	    if (children) {
+	        children.filter(function (item) {
+	            var zIndex = _utils2.default.funcOrValue(item.style.zIndex, item);
+	            if (part < 0) {
+	                return zIndex < 0;
+	            }
+	            return zIndex >= 0;
+	        }).sort(function (a, b) {
+	            var za = _utils2.default.funcOrValue(a.style.zIndex, a);
+	            var zb = _utils2.default.funcOrValue(b.style.zIndex, b);
+	            if (za === zb) return 0;
+	            return za > zb ? 1 : -1;
+	        }).forEach(function (c, _index) {
+	            $canvas.$perPaint.call($canvas, c, _index);
+	        });
+	    }
+	};
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1746,7 +1851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1755,7 +1860,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _img2base = __webpack_require__(13);
+	var _img2base = __webpack_require__(4);
 
 	var _img2base2 = _interopRequireDefault(_img2base);
 
@@ -1763,9 +1868,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _perPaintGetComputedStyle = __webpack_require__(24);
+	var _perPaintGetComputedStyle = __webpack_require__(26);
 
 	var _perPaintGetComputedStyle2 = _interopRequireDefault(_perPaintGetComputedStyle);
+
+	var _perPaintCutOutside = __webpack_require__(24);
+
+	var _perPaintCutOutside2 = _interopRequireDefault(_perPaintCutOutside);
+
+	var _perPaintDeliverChildren = __webpack_require__(25);
+
+	var _perPaintDeliverChildren2 = _interopRequireDefault(_perPaintDeliverChildren);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1777,6 +1890,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * - NOT connecting to canvas's prototype functions.
 	 *
 	 * ********** **/
+
+	var blend = _utils2.default.blend;
 
 	module.exports = function (i, index) {
 	    if (_utils2.default.funcOrValue(i.style.visible, i) === false) {
@@ -1828,14 +1943,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	    }
 
+	    if (_props.blend) {
+	        if (typeof _props.blend === 'string') {
+	            settings.globalCompositeOperation = _props.blend;
+	        } else {
+	            settings.globalCompositeOperation = blend[_props.blend];
+	        }
+	    }
+
 	    if (_props.rotate) {
 	        // 定点旋转
 	        var transX = _props.rx !== undefined ? _props.rx : _props.tx + 0.5 * _props.tw;
 	        var transY = _props.ry !== undefined ? _props.ry : _props.ty + 0.5 * _props.th;
-	        settings.translateBeforeRotate = [transX, transY];
+	        settings.beforeRotate = [transX, transY];
 	        settings.rotate = -_props.rotate * Math.PI / 180;
 	        settings.rotate = Number(settings.rotate.toFixed(4));
-	        settings.translateAfterRotate = [-transX, -transY];
+	        settings.afterRotate = [-transX, -transY];
 	    }
 
 	    if (_props.scale !== 1) {
@@ -1878,55 +2001,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
 	    // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
 	    if (!_props.rotate && !_text && _imgWidth && !_props.fh && !_props.fv) {
-	        if (_props.sx < 0 && _props.sw) {
-	            var cutRate = -_props.sx / _props.sw;
-	            _props.tx += _props.tw * cutRate;
-	            _props.sx = 0;
-	        }
-	        if (_props.sy < 0 && _props.sh) {
-	            var _cutRate = -_props.sy / _props.sh;
-	            _props.ty += _props.th * _cutRate;
-	            _props.sy = 0;
-	        }
-	        if (_imgWidth && _props.sx + _props.sw > _imgWidth) {
-	            var _cutRate2 = (_props.sx + _props.sw - _imgWidth) / _props.sw;
-	            _props.sw -= _props.sw * _cutRate2;
-	            _props.tw -= _props.tw * _cutRate2;
-	        }
-	        if (_imgHeight && _props.sy + _props.sh > _imgHeight) {
-	            var _cutRate3 = (_props.sy + _props.sh - _imgHeight) / _props.sh;
-	            _props.sh -= _props.sh * _cutRate3;
-	            _props.th -= _props.th * _cutRate3;
-	        }
-
-	        if (_props.tx < 0 && _props.tw) {
-	            var _cutRate4 = -_props.tx / _props.tw;
-	            _props.sx += _props.sw * _cutRate4;
-	            _props.sw -= _props.sw * _cutRate4;
-	            _props.tw = _props.tw + _props.tx;
-	            _props.tx = 0;
-	        }
-	        if (_props.ty < 0 && _props.th) {
-	            var _cutRate5 = -_props.ty / _props.th;
-	            _props.sy += _props.sh * _cutRate5;
-	            _props.sh -= _props.sh * _cutRate5;
-	            _props.th = _props.th + _props.ty;
-	            _props.ty = 0;
-	        }
-	        if (_props.tx + _props.tw > $canvas.contextWidth && _props.tw) {
-	            var _cutRate6 = (_props.tx + _props.tw - $canvas.contextWidth) / _props.tw;
-	            _props.tw -= _props.tw * _cutRate6;
-	            _props.sw -= _props.sw * _cutRate6;
-	        }
-	        if (_props.ty + _props.th > $canvas.contextHeight && _props.th) {
-	            var _cutRate7 = (_props.ty + _props.th - $canvas.contextHeight) / _props.th;
-	            _props.th -= _props.th * _cutRate7;
-	            _props.sh -= _props.sh * _cutRate7;
-	        }
+	        (0, _perPaintCutOutside2.default)($canvas, _props, _imgWidth, _imgHeight);
 	    }
 
 	    _constants2.default.xywh.forEach(function (key) {
-	        _props[key] = _props[key] >> 0;
+	        _props[key] >>= 0;
 	    });
 
 	    for (var key in _props) {
@@ -1953,18 +2032,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    //     }
 	    // }
 
-	    if (_children) {
-	        _children.filter(function (item) {
-	            return _utils2.default.funcOrValue(item.style.zIndex, item) < 0;
-	        }).sort(function (a, b) {
-	            var za = _utils2.default.funcOrValue(a.style.zIndex, a);
-	            var zb = _utils2.default.funcOrValue(b.style.zIndex, b);
-	            if (za === zb) return 0;
-	            return za > zb ? 1 : -1;
-	        }).forEach(function (c, _index) {
-	            $canvas.$perPaint.call($canvas, c, _index);
-	        });
-	    }
+	    (0, _perPaintDeliverChildren2.default)($canvas, _children, -1);
 
 	    if (typeof _props.opacity !== 'undefined') {
 	        settings.globalAlpha = _props.opacity;
@@ -1974,10 +2042,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // $canvas.$paintContext.fillRect(_props.tx, _props.ty, _props.tw, _props.th);
 	    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh && _props.tx < $canvas.contextWidth && _props.ty < $canvas.contextHeight) {
-	        // // cache computed w/h
-	        // i.style.tw = i.style.tw || _props.tw || _imgWidth;
-	        // i.style.th = i.style.th || _props.th || _imgHeight;
-
 	        $canvas.$paintList.push({
 	            $id: i.$id,
 	            type: 'img',
@@ -2099,24 +2163,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 
-	    if (_children) {
-	        _children.filter(function (item) {
-	            return !(_utils2.default.funcOrValue(item.style.zIndex, item) < 0);
-	        }).sort(function (a, b) {
-	            var za = _utils2.default.funcOrValue(a.style.zIndex, a);
-	            var zb = _utils2.default.funcOrValue(b.style.zIndex, b);
-	            if (za === zb) return 0;
-	            return za > zb ? 1 : -1;
-	        }).forEach(function (c, _index) {
-	            $canvas.$perPaint.call($canvas, c, _index);
-	        });
-	    }
+	    (0, _perPaintDeliverChildren2.default)($canvas, _children, 1);
 
 	    _utils2.default.execFuncs(i.hooks.ticked, i);
 	};
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2161,32 +2214,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _add = __webpack_require__(28);
+	var _add = __webpack_require__(30);
 
 	var _add2 = _interopRequireDefault(_add);
 
-	var _remove = __webpack_require__(35);
+	var _remove = __webpack_require__(37);
 
 	var _remove2 = _interopRequireDefault(_remove);
 
-	var _start = __webpack_require__(38);
+	var _start = __webpack_require__(40);
 
 	var _start2 = _interopRequireDefault(_start);
 
-	var _paint = __webpack_require__(31);
+	var _paint = __webpack_require__(33);
 
 	var _paint2 = _interopRequireDefault(_paint);
 
-	var _clear = __webpack_require__(29);
+	var _clear = __webpack_require__(31);
 
 	var _clear2 = _interopRequireDefault(_clear);
 
-	var _pause = __webpack_require__(32);
+	var _pause = __webpack_require__(34);
 
 	var _pause2 = _interopRequireDefault(_pause);
 
@@ -2206,19 +2259,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _broadcast2 = _interopRequireDefault(_broadcast);
 
-	var _nextTick = __webpack_require__(30);
+	var _nextTick = __webpack_require__(32);
 
 	var _nextTick2 = _interopRequireDefault(_nextTick);
 
-	var _register = __webpack_require__(33);
+	var _register = __webpack_require__(35);
 
 	var _register2 = _interopRequireDefault(_register);
 
-	var _setFpsHandler = __webpack_require__(36);
+	var _setFpsHandler = __webpack_require__(38);
 
 	var _setFpsHandler2 = _interopRequireDefault(_setFpsHandler);
 
-	var _setMaxFps = __webpack_require__(37);
+	var _setMaxFps = __webpack_require__(39);
 
 	var _setMaxFps2 = _interopRequireDefault(_setMaxFps);
 
@@ -2252,7 +2305,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiOuter;
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2265,7 +2318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _sprite2 = _interopRequireDefault(_sprite);
 
-	var _bindDrag = __webpack_require__(4);
+	var _bindDrag = __webpack_require__(3);
 
 	var _bindDrag2 = _interopRequireDefault(_bindDrag);
 
@@ -2312,7 +2365,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = add;
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2329,7 +2382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2350,7 +2403,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2362,8 +2415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = function () {
-	    if (this.$pausing) return;
-	    if (document.hidden) return;
+	    if (this.$pausing || document.hidden) return;
 
 	    var $canvas = this;
 
@@ -2379,6 +2431,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        gl.clear(gl.COLOR_BUFFER_BIT);
 	    } else {
 	        $canvas.$paintContext.clearRect(0, 0, this.contextWidth, this.contextHeight);
+	        // $canvas.$paintContext.fillStyle = 'rgba(255, 0, 0, 0.1)';
+	        // $canvas.$paintContext.fillRect(0, 0, this.contextWidth, this.contextHeight);
 	    }
 
 	    if (!$canvas.$freezing) {
@@ -2394,18 +2448,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    }
 
-	    // let xxxx = document.getElementsByClassName('XXXXX');
-	    // for (let i = 0; i < xxxx.length; i++) {
-	    //     xxxx[i].toDelete = 1;
-	    //     // xxxx[i].remove();
-	    // }
-
 	    $canvas.$paint();
-
-	    // for (let i = 0; i < xxxx.length; i++) {
-	    //     if (xxxx[i].toDelete)
-	    //         xxxx[i].remove();
-	    // }
 
 	    this.fps++;
 
@@ -2421,7 +2464,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2437,12 +2480,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _registerProtoData = __webpack_require__(34);
+	var _registerProtoData = __webpack_require__(36);
 
 	var _registerProtoData2 = _interopRequireDefault(_registerProtoData);
 
@@ -2450,7 +2493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _eventHandlerScroll2 = _interopRequireDefault(_eventHandlerScroll);
 
-	var _img2base = __webpack_require__(13);
+	var _img2base = __webpack_require__(4);
 
 	var _img2base2 = _interopRequireDefault(_img2base);
 
@@ -2637,7 +2680,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2695,7 +2738,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PROTOS;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2734,7 +2777,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2751,7 +2794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2768,7 +2811,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2786,7 +2829,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2954,12 +2997,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _apiOuter = __webpack_require__(27);
+	var _apiOuter = __webpack_require__(29);
 
 	var _apiOuter2 = _interopRequireDefault(_apiOuter);
 
@@ -2993,140 +3036,71 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = painter;
 
 /***/ }),
-/* 41 */,
-/* 42 */,
 /* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
-/* 47 */
-/***/ (function(module, exports) {
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _imgLoader = __webpack_require__(13);
 
-	/** ********** *
-	 *
-	 * Load images
-	 * - Easycanvas.imgLoader.cacheCanvas
-	 *
-	 * ********** **/
+	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
-	var Cache = {};
-	var BlockingImgs = [];
-	var ProcessingFlag = 'processing';
+	var _img2base = __webpack_require__(4);
 
-	var blockingAmount = 0;
+	var _img2base2 = _interopRequireDefault(_img2base);
 
-	var loader = function loader(url, callback, option) {
-	    var _option = option || {};
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	    if ((typeof url === 'undefined' ? 'undefined' : _typeof(url)) === 'object') {
-	        var imgs = url;
-	        _option.callbackArgs = _option.callbackArgs || [];
-	        loader(imgs.shift(), function (perImg) {
-	            _option.callbackArgs.push(perImg);
-	            if (imgs.length > 1) {
-	                loader(imgs, callback, _option);
-	            } else {
-	                loader(imgs[0], function (lastImg) {
-	                    _option.callbackArgs.push(lastImg);
-	                    callback(_option.callbackArgs);
-	                }, _option);
-	            }
-	        }, option);
-	        return;
-	    }
+	module.exports = function (url, option) {
+	    var result = undefined;
 
-	    var cacheNamespace = url;
+	    (0, _img2base2.default)(url, function (base64) {
+	        return (0, _imgLoader2.default)(base64, function (canvas) {
+	            // let t0 = new Date() * 1;
+	            var cw = canvas.width,
+	                ch = canvas.height;
+	            var imageData = canvas.getContext('2d').getImageData(0, 0, cw, ch);
+	            var data = imageData.data;
 
-	    if (_option.alphaColor) cacheNamespace += _option.alphaColor;
-
-	    if (Cache[cacheNamespace]) {
-	        setTimeout(function () {
-	            if (callback) {
-	                callback(Cache[cacheNamespace]);
-	            }
-	        });
-	        return Cache[cacheNamespace];
-	    }
-	    // todo: 多个loader加载同一图片，目前只触发一个callback；待补充
-
-	    var i = new Image();
-	    if (_option.block) {
-	        i.src = url;
-	        blockingAmount++;
-	    } else if (blockingAmount === 0) {
-	        i.src = url;
-	    } else {
-	        BlockingImgs.push({
-	            imgObj: i,
-	            src: url
-	        });
-	    }
-
-	    Cache[cacheNamespace] = i;
-
-	    var tempCavas = void 0;
-	    if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
-	        tempCavas = document.createElement('canvas');
-	        tempCavas.width = tempCavas.height || 0;
-	        Cache[cacheNamespace] = tempCavas;
-	    }
-
-	    i.onload = function () {
-	        if (_option.block) {
-	            blockingAmount--;
-	            if (blockingAmount === 0) {
-	                BlockingImgs.forEach(function (blockingImg) {
-	                    blockingImg.imgObj.src = blockingImg.src;
-	                });
-	                BlockingImgs.splice(0);
-	            }
-	        }
-
-	        if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
-	            var cts = tempCavas.getContext('2d');
-	            tempCavas.width = i.width;
-	            tempCavas.height = i.height;
-	            cts.drawImage(i, 0, 0);
-
-	            if (_option.alphaColor) {
-	                var data = cts.getImageData(0, 0, i.width, i.height);
-	                var pixel = [];
-
-	                for (var d = 0; d < data.data.length; d += 4) {
-	                    var colorWeight = data.data[d] + data.data[d + 1] + data.data[d + 2];
-	                    var blackLike = 1;
-	                    if (data.data[d] < blackLike && data.data[d + 1] < blackLike && data.data[d + 2] < blackLike) {
-	                        data.data[d + 3] = Math.floor(colorWeight / 255);
-	                    }
+	            for (var i = data.length - 1; i >= 0; i -= 4) {
+	                if (option && option.conversion) {
+	                    var pixel = option.conversion({
+	                        r: data[i - 3],
+	                        g: data[i - 2],
+	                        b: data[i - 1],
+	                        a: data[i]
+	                    }, (i + 1 >> 2) % cw, Math.floor((i + 1 >> 2) / cw));
+	                    data[i - 3] = pixel.r;
+	                    data[i - 2] = pixel.g;
+	                    data[i - 1] = pixel.b;
+	                    data[i - 0] = pixel.a;
 	                }
-	                cts.putImageData(data, 0, 0);
 	            }
 
-	            i = tempCavas;
-	        }
+	            canvas.getContext('2d').clearRect(0, 0, cw, ch);
+	            canvas.getContext('2d').putImageData(imageData, 0, 0);
+	            result = canvas;
+	            // console.log(new Date() * 1 - t0);
+	        }, {
+	            canvas: true,
+	            cacheFlag: Math.random()
+	        });
+	    });
 
-	        if (callback) {
-	            callback(i);
-	        }
+	    return function () {
+	        return result;
 	    };
-
-	    i.onerror = function () {
-	        Cache[cacheNamespace] = i;
-	    };
-
-	    return tempCavas || i;
 	};
 
-	loader.cacheCanvas = false;
-
-	module.exports = loader;
-
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3152,7 +3126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3166,7 +3140,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';

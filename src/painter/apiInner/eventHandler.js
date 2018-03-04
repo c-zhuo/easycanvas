@@ -11,7 +11,6 @@
 
 import utils from 'utils/utils.js';
 import constants from 'constants';
-import positionCompare from 'utils/position-compare.js';
 
 import eventScroll from './eventHandler.scroll.js';
 
@@ -60,8 +59,7 @@ const hitSprite = function ($sprite, e) {
     // 第一帧没有$cache
     if (typeof _tx === 'undefined') return false;
 
-    // 兼容 !!TODO!!
-    return positionCompare.pointInRect(
+    return utils.pointInRect(
         e.canvasX, e.canvasY,
         _tx, _tx + _tw,
         _ty, _ty + _th
@@ -119,8 +117,8 @@ module.exports = function (e) {
         e.layerY = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
     }
 
-    let scaleX = parseInt(this.$dom.style.width) / this.contextWidth;
-    let scaleY = parseInt(this.$dom.style.height) / this.contextHeight;
+    let scaleX = Math.floor(this.$dom.style.width) / this.contextWidth;
+    let scaleY = Math.floor(this.$dom.style.height) / this.contextHeight;
 
     scaleX = scaleX || 1;
     scaleY = scaleY || 1;

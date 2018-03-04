@@ -7,7 +7,6 @@
  * ********** **/
 
 import utils from 'utils/utils.js';
-import positionCompare from 'utils/position-compare.js';
 
 // Unlike images, textures do not have a width and height associated
 // with them so we'll pass in the width and height of the texture
@@ -36,9 +35,9 @@ let glDrawImage = function ($canvas,
 
     // We'll move to the middle, rotate, then move back
     if (settings.rotate) {
-        matrix = m4.translate(matrix, -dstX + settings.translateBeforeRotate[0] || 0, -dstY + settings.translateBeforeRotate[1] || 0, 0);
+        matrix = m4.translate(matrix, -dstX + settings.beforeRotate[0] || 0, -dstY + settings.beforeRotate[1] || 0, 0);
         matrix = m4.zRotate(matrix, settings.rotate);
-        matrix = m4.translate(matrix, dstX +settings.translateAfterRotate[0] || 0, dstY + settings.translateAfterRotate[1] || 0, 0);
+        matrix = m4.translate(matrix, dstX + settings.afterRotate[0] || 0, dstY + settings.afterRotate[1] || 0, 0);
     }
 
     // this matrix will scale our 1 unit quad
@@ -88,10 +87,10 @@ let render = function ($sprite, i) {
             for (let j = i + 1, l = $canvas.$paintList.length; j < l; j++) {
                 let $tmpSprite = $canvas.$paintList[j];
 
-                if ($tmpSprite.type !== 'img') continue;
+                let tmpProps = $tmpSprite.props;
 
-                if ($tmpSprite.imgType !== '*') {
-                    // PNG元素不能作为是否跳过绘制的优化参考对象
+                if (!tmpProps[0].$noAlpha) {
+                    // 带头alpha通道的图片不会遮挡当前图片，不能跳过当前图片的绘制
                     continue;
                 }
 
@@ -100,62 +99,36 @@ let render = function ($sprite, i) {
                     continue;
                 }
 
-                if ($tmpSprite.settings.rotate) {
-                    // 带rotate的元素暂时不考虑，需要复杂的计算
+                if ($tmpSprite.settings.globalCompositeOperation) {
+                    // 带混合的元素
                     continue;
                 }
 
-                let tmpProps = $tmpSprite.props;
+                if ($tmpSprite.settings.rotate) {
+                    // 带rotate的元素（暂时不考虑，需要复杂的计算）
+                    continue;
+                }
 
-                if (positionCompare.pointInRect(
+                if (utils.pointInRect(
                         props[5], props[6],
                         tmpProps[5], tmpProps[5] + tmpProps[7],
                         tmpProps[6], tmpProps[6] + tmpProps[8],
-                    ) && positionCompare.pointInRect(
+                    ) && utils.pointInRect(
                         props[5] + props[7], props[6] + props[8],
                         tmpProps[5], tmpProps[5] + tmpProps[7],
                         tmpProps[6], tmpProps[6] + tmpProps[8],
                     )
                 ) {
                     isUseless = true;
+                    // console.log('useless');
                     return;
                 }
+                // console.log('useful');
             }
         }
     // } else if ($sprite.type === 'text') {
         // 文本绘制消耗性能较少，毋需优化
     }
-
-    // DOM渲染 - 由于Hilo.js有专利，此处只调研实现，不开放
-    // {
-    //     let newSprite = false;
-    //     if (!document.getElementById($sprite.$id)) {
-    //         newSprite = true;
-    //         let $dom = document.createElement('div');
-    //         $dom.style.position = 'fixed';
-    //         $dom.id = $sprite.$id;
-    //         $dom.className = 'XXXXX';
-    //         $dom.style['-webkit-transform'] = 'translateZ(0)';
-    //         $dom.style['transform'] = 'translateZ(0)';
-    //     } else {
-    //         let $dom = document.getElementById($sprite.$id);
-    //         $dom.toDelete = 0;
-    //     }
-    //     $dom.style.left = props[5] / $canvas.contextWidth * 100 + '%';
-    //     $dom.style.top = props[6] / $canvas.contextHeight * 100 + '%';
-    //     $dom.style.width = props[7] / $canvas.contextWidth * 100 + '%';
-    //     $dom.style.height = props[8] / $canvas.contextHeight * 100 + '%';
-    //     $dom.style['background-repeat'] = 'no-repeat';
-    //     $dom.style['background-image'] = 'url(' + props[0].src + ')';
-    //     $dom.style['background-position'] = (props[1] / props[0].$width * 100 + '%') + ' ' + (props[2] / $sprite.props[0].$height * 100 + '%')
-    //     $dom.style['background-position'] = -(props[1] / props[0].$width * ($sprite.props[0].$width / props[3] * props[7]) + 'px') + ' ' +
-    //         (-(props[2] / props[0].$height * ($sprite.props[0].$height / props[4] * props[8]) + 'px'));
-    //     $dom.style['background-size'] = ($sprite.props[0].$width / props[3] * props[7] + 'px') + ' ' + ($sprite.props[0].$height / props[4] * props[8] + 'px');
-    //     if (newSprite) {
-    //         document.body.appendChild($dom);
-    //     }
-    //     return;
-    // }
 
     if ($canvas.$isWebgl) {
         props[0] && props[0].texture && glDrawImage(
@@ -175,6 +148,14 @@ let render = function ($sprite, i) {
     let saved = false;
     let cxt = $canvas.$paintContext;
 
+    if (settings.globalCompositeOperation) {
+        if (!saved) {
+            cxt.save();
+            saved = true;
+        }
+        cxt.globalCompositeOperation = settings.globalCompositeOperation;
+    }
+
     if (settings.globalAlpha !== 1 && !isNaN(settings.globalAlpha)) {
         if (!saved) {
             cxt.save();
@@ -190,15 +171,17 @@ let render = function ($sprite, i) {
         }
         cxt.translate(settings.translate[0] || 0, settings.translate[1] || 0);
     }
+
     if (settings.rotate) {
         if (!saved) {
             cxt.save();
             saved = true;
         }
-        cxt.translate(settings.translateBeforeRotate[0] || 0, settings.translateBeforeRotate[1] || 0);
+        cxt.translate(settings.beforeRotate[0] || 0, settings.beforeRotate[1] || 0);
         cxt.rotate(settings.rotate || 0);
-        cxt.translate(settings.translateAfterRotate[0] || 0, settings.translateAfterRotate[1] || 0);
+        cxt.translate(settings.afterRotate[0] || 0, settings.afterRotate[1] || 0);
     }
+
     if (settings.scale) {
         if (!saved) {
             cxt.save();
@@ -206,6 +189,7 @@ let render = function ($sprite, i) {
         }
         cxt.scale(settings.scale[0] || 1, settings.scale[1] || 1);
     }
+
     if (settings.transform) {
         if (!saved) {
             cxt.save();

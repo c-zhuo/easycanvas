@@ -183,6 +183,20 @@ sprite.prototype.remove = function (child) {
     utils.execFuncs(this.hooks.removed, this);
 };
 
+sprite.prototype.update = function (opt) {
+    if (!opt) return;
+
+    for (var i in opt) {
+        if (typeof opt[i] === 'object') {
+            for (var j in opt[i]) {
+                this[i][j] = opt[i][j];
+            }
+        } else {
+            this[i] = opt[i];
+        }
+    }
+}
+
 sprite.prototype.on = on;
 sprite.prototype.off = off;
 sprite.prototype.trigger = trigger;

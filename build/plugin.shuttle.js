@@ -55,7 +55,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(45);
+	module.exports = __webpack_require__(48);
 
 
 /***/ }),
@@ -86,33 +86,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    },
 
-	    getMinFromArray: function getMinFromArray(arr) {
-	        var res = arr[0];
-	        arr.forEach(function (item) {
-	            if (item < res) {
-	                res = item;
-	            }
-	        });
-	        return res;
-	    },
+	    blend: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'copy', 'xor', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'],
 
-	    getCharFromKey: function getCharFromKey(k) {
-	        return k.key || String.fromCharCode(k.keyCode);
+	    pointInRect: function pointInRect(x, y, x1, x2, y1, y2) {
+	        return !(x < x1 || x > x2 || y < y1 || y > y2);
 	    },
-
-	    noop: function noop() {},
 
 	    firstValuable: function firstValuable(a, b) {
 	        return typeof a === 'undefined' ? b : a;
-	    },
-
-	    assign: function assign(target, source) {
-	        for (var i in source) {
-	            if (Object.prototype.hasOwnProperty.call(source, i)) {
-	                target[i] = source[i];
-	            }
-	        }
-	        return target;
 	    }
 	};
 
@@ -142,7 +123,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 45:
+/***/ 48:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
