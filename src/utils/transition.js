@@ -11,6 +11,7 @@ const second2frame = function (second) {
 
 let transFuncs = {
     linear: function (a, b, duration) {
+        // let startTime = this.$lastPaintTime;
         let l = transitions.length;
         transitions.push(a);
 
@@ -48,6 +49,7 @@ let transFuncs = {
     },
 
     pendulum: function (a, b, duration, _config) {
+        // let startTime = this.$lastPaintTime;
         let config = _config || {};
         config.start = utils.firstValuable(config.start, -PI);
         config.end = utils.firstValuable(config.end, PI);

@@ -39,7 +39,9 @@
 Tips: html中的宽高代表Canvas的像素尺寸，css中的宽高代表Canvas的展示尺寸。一些屏幕下，让像素尺寸二倍于展示尺寸，可以有效避免文字模糊。如果你的Canvas只渲染图片，那么没有必要这么做。
 
 这样就得到了一个空白的实例，它不包含任何容器、可绘制的图像和文本。
-    
+
+可以通过`register(dom, {fullScreen: true}`参数来快速创建全屏尺寸的画布。
+
 ## 添加图片元素
 
 Easycanvas最常用的API就是`add`方法，用于向实例添加一个元素。元素的样式、内容、事件、滚动等属性全部可以在`add`时设置，也可以之后后设置。例如：
@@ -109,6 +111,8 @@ Easycanvas最常用的API就是`add`方法，用于向实例添加一个元素�
         locate: 'lt'
     }
 ```
+
+通过`Easycanvas.imgLoader.cacheCanvas = true`可以开启canvas的离屏绘制，当存在大量图片时，可以显著提升性能。
 
 ## 设置动画
 
@@ -194,8 +198,6 @@ Easycanvas中所有的动画都是通过`style`的变换实现的。比如，可
     });
 ```
 
-此外，可以设置`through`为false来关闭某个元素的事件透传。这样相当于为所有事件增加'return true'。
-
 ## 状态钩子
 
 Easycanvas支持的状态钩子包括：`ticked`、`removed`、`beforeTick`。
@@ -234,6 +236,7 @@ Easycanvas支持的状态钩子包括：`ticked`、`removed`、`beforeTick`。
     scale: 目标矩形的缩放尺寸（类似css的scale）
     opacity: 目标矩形的透明度（类似css的opacity）
     zIndex: 目标矩形的渲染层次（类似css的zIndex）
+    mirrX, mirrY: 水平垂直翻转
 
     // 下列属性仅当content内存在text内容时生效
     textAlign: 代表文字水平对齐方式（类似css的text-align）
