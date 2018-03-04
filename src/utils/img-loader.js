@@ -31,9 +31,7 @@ const loader = function (url, callback, option) {
         return;
     }
 
-    let cacheNamespace = url;
-
-    if (_option.alphaColor) cacheNamespace += _option.alphaColor;
+    let cacheNamespace = url + JSON.stringify(option);
 
     if (Cache[cacheNamespace]) {
         setTimeout(function () {
@@ -68,6 +66,10 @@ const loader = function (url, callback, option) {
     }
 
     i.onload = function () {
+        if (i.src.substr(-3) === 'jpg' || i.src.substr(-3) === 'jpeg' || i.src.substr(-3) === 'bmp') {
+            i.$noAlpha = true;
+        }
+
         if (_option.block) {
             blockingAmount--;
             if (blockingAmount === 0) {
@@ -82,6 +84,7 @@ const loader = function (url, callback, option) {
             let cts = tempCavas.getContext('2d');
             tempCavas.width = i.width;
             tempCavas.height = i.height;
+            tempCavas.$noAlpha = i.$noAlpha;
             cts.drawImage(i, 0, 0);
 
             if (_option.alphaColor) {
@@ -96,6 +99,7 @@ const loader = function (url, callback, option) {
                     }
                 }
                 cts.putImageData(data, 0, 0);
+                tempCavas.$noAlpha = false;
             }
 
             i = tempCavas;

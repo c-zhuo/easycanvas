@@ -8,7 +8,6 @@
  * ********** **/
 
 import utils from 'utils/utils.js';
-import positionCompare from 'utils/position-compare.js';
 
 let draggingFlag = false;
 
@@ -28,6 +27,7 @@ module.exports = {
             y: 0
         };
         $sprite.drag.draggingFlag = false;
+
         let oMousedown = $sprite.events.mousedown || $sprite.events.touchstart;
         $sprite.events.touchstart = $sprite.events.mousedown = function (e) {
             // if dragable is a object, it means the range of dragable area
@@ -42,22 +42,20 @@ module.exports = {
 
             return dragHandler(oMousedown, $sprite, e, $sprite.drag.dragable);
         }.bind($sprite);
+
         let oMousehold = $sprite.events.hold || $sprite.events.mousemove; //TODO 不规范？
         $sprite.events.touchmove = $sprite.events.mousemove = function (e) {
             let worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
             if (worked) {
                 this.style.tx += e.canvasX - startDragPosition.x;
                 this.style.ty += e.canvasY - startDragPosition.y;
-                // if (utils.funcOrValue(this.style.locate, this) === 'center') {
-                //     this.style.tx += (this.style.tw || this.content.img.width || 0) / 2;
-                //     this.style.ty += (this.style.th || this.content.img.height || 0) / 2;
-                // }
 
                 startDragPosition.x = e.canvasX;
                 startDragPosition.y = e.canvasY;
             }
             return dragHandler(oMousehold, $sprite, e, worked);
         }.bind($sprite);
+
         let oMouseup = $sprite.events.mouseup || $sprite.events.touchend;
         $sprite.events.touchend = $sprite.events.mouseup = function (e) {
             let worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
@@ -66,12 +64,14 @@ module.exports = {
             }
             return dragHandler(oMouseup, $sprite, e, worked);
         };
+
         let oMouseout = $sprite.events.mouseout;
         $sprite.events.mouseout = function (e) {
             let worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
             setFlag($sprite, false);
             return dragHandler(oMouseout, $sprite, e, worked);
         };
+
         let oClick = $sprite.events.click;
         $sprite.events.click = function (e) {
             let worked = $sprite.drag.dragable;

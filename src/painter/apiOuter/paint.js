@@ -8,8 +8,7 @@
 import utils from 'utils/utils.js';
 
 module.exports = function () {
-    if (this.$pausing) return;
-    if (document.hidden) return;
+    if (this.$pausing || document.hidden) return;
 
     let $canvas = this;
 
@@ -25,6 +24,8 @@ module.exports = function () {
         gl.clear(gl.COLOR_BUFFER_BIT);
     } else {
         $canvas.$paintContext.clearRect(0, 0, this.contextWidth, this.contextHeight);
+        // $canvas.$paintContext.fillStyle = 'rgba(255, 0, 0, 0.1)';
+        // $canvas.$paintContext.fillRect(0, 0, this.contextWidth, this.contextHeight);
     }
 
     if (!$canvas.$freezing) {
@@ -40,18 +41,7 @@ module.exports = function () {
         });
     }
 
-    // let xxxx = document.getElementsByClassName('XXXXX');
-    // for (let i = 0; i < xxxx.length; i++) {
-    //     xxxx[i].toDelete = 1;
-    //     // xxxx[i].remove();
-    // }
-
     $canvas.$paint();
-
-    // for (let i = 0; i < xxxx.length; i++) {
-    //     if (xxxx[i].toDelete)
-    //         xxxx[i].remove();
-    // }
 
     this.fps++;
 
