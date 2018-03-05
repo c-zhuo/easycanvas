@@ -15,9 +15,7 @@ Expandable: Support highly decoupled components and custom API/events.
 - [English](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
 - [中文](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.Chinese.md).
 
-### See demos
-
-- [Code of gif](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
+### More demos
 
 - `npm run dev`, then `localhost:8080/demos/demo1.html`.
 
