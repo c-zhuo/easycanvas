@@ -2,6 +2,8 @@
 
 ![https://github.com/chenzhuo1992/easycanvas/blob/master/demos/index.html](https://github.com/chenzhuo1992/easycanvas/blob/master/demos/index.gif?raw=true)
 
+See demo code [here](https://github.com/chenzhuo1992/easycanvas/blob/master/demos/index.html), 30 lines only!
+
 ### Introduction
 
 A lite(30kb) canvas library, includes a Chrome plugin for debugging. Support physics and animations with high performace. Suits mobile, PC(including IE) and Chinese '微信小程序/小游戏'.
