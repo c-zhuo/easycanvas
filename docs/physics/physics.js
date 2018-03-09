@@ -11,7 +11,6 @@ module.exports = {
 	        },
 	    });
 	    $Doc.add($Space);
-	    $Space.launch();
 
     	const STATIC_LETTER_WIDTH = window.w * 2 / 13;
     	const STATIC_LETTER_WIDTH_PHYSICS = STATIC_LETTER_WIDTH / 2;
@@ -46,7 +45,7 @@ module.exports = {
 			            tw: STATIC_LETTER_WIDTH_PHYSICS, th: STATIC_LETTER_WIDTH_PHYSICS,
 			            sx: 0, sy: 0,
 			            tx: STATIC_LETTER_WIDTH * (index + 1),
-			            ty: window.h * 2 - 200,
+			            ty: window.h - 200,
 		            	locate: 'lt',
 			            zIndex: 1,
 			            opacity: 0.2
@@ -104,5 +103,7 @@ module.exports = {
     			l.remove();
     		}, 10000);
 	    }, 50);
+
+	    $Space.launch();
 	},
 };

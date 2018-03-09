@@ -8,7 +8,7 @@
 module.exports = function (func) {
 	let _func = function () {
 	    func.apply(this, arguments);
-	    this.off('nextTick', _func);
+	    this.off('ticked', _func);
 	}
-	this.on('nextTick', _func.bind(this));
+	this.on('ticked', _func);
 };

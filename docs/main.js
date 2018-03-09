@@ -1,7 +1,5 @@
-import Easycanvas from 'src/index.lite.js';
+import Easycanvas from 'src/index.js';
 import EasycanvasPhysics from 'src/plugin.physics.js';
-import Sidebar from './sidebar.js';
-import Content from './content.js';
 import Physics from './physics/physics.js';
 
 window.w = document.body.clientWidth;
@@ -13,8 +11,8 @@ window.onresize = function () {
 let $app = document.getElementById('app');
 $app.style.width = w;
 $app.style.height = h;
-$app.width = w * 2;
-$app.height = h * 2;
+$app.width = w;
+$app.height = h;
 
 window.$Doc = new Easycanvas.painter();
 
@@ -32,6 +30,4 @@ $Doc.start();
 
 // window.__EASYCANVAS_DEVTOOL__ = false;
 
-Content.start();
-Sidebar.start();
 Physics.start();
