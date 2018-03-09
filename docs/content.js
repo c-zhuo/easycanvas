@@ -1,18 +1,9 @@
-import Text from './text.js';
-
 const Fontsize = 28;
 
 let page = '创建实例';
 let $content;
 
 module.exports = {
-    setPage (p) {
-        page = p;
-    },
-
-    getContent () {
-        return $content;
-    },
 
     start () {
         let $Doc = window.$Doc;
