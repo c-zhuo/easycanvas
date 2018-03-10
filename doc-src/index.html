@@ -1,0 +1,160 @@
+<html>
+<head>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        header {
+            display: block;
+            width: 100%;
+            height: 32px;
+            padding: 10px 24px;
+            font-size: 18px;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+            color: #003379;
+        }
+
+        div.sidebar {
+            position: fixed;
+            width: 200px;
+            overflow-y: scroll;
+            top: 52px;
+            bottom: 0;
+            padding: 0 10px;
+        }
+
+        ul {
+            padding: 5px;
+            margin: 5px;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        li.sidebar-folder {
+            font-size: 16px;
+            color: #001763;
+            padding: 10px 0 5px;
+            cursor: -webkit-grabbing;
+        }
+        li.sidebar-title {
+            font-size: 14px;
+            color: #8c8c8c;
+            padding: 5px 0 5px 10px;
+            cursor: pointer;
+        }
+        li.sidebar-active {
+            color: #009245;
+        }
+        span.sidebar-text:hover {
+            border-bottom: 1px solid #009245;
+        }
+
+        div.content {
+            position: fixed;
+            top: 52px;
+            left: 220px;
+            right: 0;
+            overflow-y: auto;
+            bottom: 0;
+            padding: 0 30px;
+            font-size: 12px;
+            color: #445566;
+        }
+
+        h1 {
+            margin: 30px 0 5px;
+            padding-bottom: 10px;
+            width: 100%;
+            font-size: 1.6em;
+        }
+        h2 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin: 30px 0 0;
+            font-size: 1.4em;
+            font-weight: 500;
+        }
+        h3 {
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+        h4 {
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        h5 {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        strong {
+            font-weight: 500;
+            color: #f13a00;
+            background: #f5f5f5;
+            padding: 0 4px;
+        }
+        a {
+            font-weight: 500;
+            color: #009245;
+            text-decoration: none;
+        }
+        img.article-img {
+            width: 98%;
+            margin: 10px 0 10px 1%;
+            max-width: 600px;
+            box-shadow: #e2e2e2 0px 0px 20px 4px;
+        }
+        code {
+            display: inline-block;
+            margin: 5px 20px;
+            padding: 16px;
+            overflow: auto;
+            font-size: 85%;
+            line-height: 1.45;
+            background-color: #f6f8fa;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="bgCanvas" width="400" height="800"></canvas>
+    <section id="docApp"></section>
+
+    <script id="docApp-template" type="javascript/template">
+        <section>
+            <header><img :src="headerImg" width="348" height="32"></header>
+            <div class="sidebar">
+                <ul>
+                    <li :class="{
+                        'sidebar-folder': item.type === 'folder',
+                        'sidebar-title': item.type === 'title',
+                        'sidebar-active': item.name === currentTitle,
+                    }" v-for="item in sidebar" @click="chooseTitle(item)">
+                        <span class="sidebar-text">{{ item.name }}</span>
+                    </li>
+                <ul>
+            </div>
+            <div class="content">
+                <div v-html="content"></div>
+            </div>
+        </section>
+    </script>
+</body>
+
+<script src="./main.js"></script>
+
+</html>
