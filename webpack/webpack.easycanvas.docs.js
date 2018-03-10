@@ -10,12 +10,12 @@ var env = 'development';
 
 var mkdirp = require('mkdirp');
 
-var js = glob.sync('./docs/**/*.js').reduce(function (prev, curr) {
-    prev[curr.slice(2, -3).replace('src', 'build')] = [curr];
+var js = glob.sync('./doc-src/**/*.js').reduce(function (prev, curr) {
+    prev[curr.slice(2, -3).replace('src', 'src')] = [curr];
     return prev;
 }, {});
 
-var html = glob.sync('./docs/*.html').map(function (item) {
+var html = glob.sync('./doc-src/*.html').map(function (item) {
     return new HtmlWebpackPlugin({
         data: {
             env: env
