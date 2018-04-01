@@ -5,6 +5,7 @@
  * ********** **/
 
 import constants from 'constants';
+import utils from 'utils/utils.js';
 
 if (process.env.NODE_ENV !== 'production') {
     if (!window[constants.devFlag]) {
@@ -25,8 +26,8 @@ if (process.env.NODE_ENV !== 'production') {
                 let res = {};
 
                 if ($canvasId) {
-                    let paintList = devData.$canvas[$canvasId].$canvas.paintList;
-                    let $paintList = devData.$canvas[$canvasId].$canvas.$paintList;
+                    let children = devData.$canvas[$canvasId].$canvas.children;
+                    let $children = devData.$canvas[$canvasId].$canvas.$children;
 
                     let pusher = function (item) {
                         // Skip $mask in select mode
@@ -43,26 +44,21 @@ if (process.env.NODE_ENV !== 'production') {
 
                         if (item.content.img || item.content.text) {
                             res[item.$id].rendered = false;
-                            for (let i = 0, l = $paintList.length; i < l; i++) {
-                                if ($paintList[i].$id === item.$id) {
+                            for (let i = 0, l = $children.length; i < l; i++) {
+                                if ($children[i].$id === item.$id) {
                                     res[item.$id].rendered = true;
                                     break;
                                 }
                             }
                         }
 
-                        // 如果脱离内置的transition，这里可以放在attachList
                         for (let i in item.style) {
-                            if (typeof item.style[i] === 'function') {
-                                if (item.$parent && ~item.inherit.indexOf(i)) {
-                                    res[item.$id].style[i] = item.$cache[i] - item.$parent.$cache[i];
-                                } else {
-                                    res[item.$id].style[i] = item.$cache[i];
-                                }
-                            } else {
-                                res[item.$id].style[i] = item.style[i];
-                            }
+                            res[item.$id].style[i] = utils.funcOrValue(item.style[i], item);
                         }
+
+                        constants.xywh.forEach(function (key) {
+                            res[item.$id].style[key] = Math.round(res[item.$id].style[key]);
+                        });
 
                         const attachList = ['blend', 'physics', '$perf'];
 
@@ -75,7 +71,7 @@ if (process.env.NODE_ENV !== 'production') {
                         }
                     };
 
-                    paintList.forEach(pusher);
+                    children.forEach(pusher);
 
                 } else {
                     for (let c in devData.$canvas) {
@@ -117,8 +113,8 @@ if (process.env.NODE_ENV !== 'production') {
                     return false;
                 };
 
-                let paintList = devData.$canvas[$canvasId].$canvas.paintList;
-                let res = looper(paintList);
+                let children = devData.$canvas[$canvasId].$canvas.children;
+                let res = looper(children);
                 if (res) {
                     return {
                         $sprite: res.$sprite || res,

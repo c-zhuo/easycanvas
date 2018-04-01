@@ -1,3 +1,12 @@
+/** ********** *
+ *
+ * Send children to be painted
+ * - Children will be rendered above the parent, if zIndex >= 0
+ * - Even the same zIndex, chilren will be render in differrent orders
+ *   in different environments, like Chrome and PhantomJs.
+ *
+ * ********** **/
+
 import utils from 'utils/utils.js';
 
 module.exports = function ($canvas, children, part) {

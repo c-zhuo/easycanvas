@@ -21,18 +21,17 @@ let Easycanvas = {
     utils,
     mirror,
     class: classes,
-    $version: '0.2.10',
+    $version: '0.3.0-beta.2',
+    env: process.env.NODE_ENV,
 };
 
-if (process.env.NODE_ENV !== 'production') {
-    if (window.Easycanvas) {
-        console.warn('[Easycanvas] You are importing multiple versions of "Easycanvas".');
+if (window.Easycanvas) {
+    console.warn('[Easycanvas] already loaded.');
+} else {
+    if (process.env.NODE_ENV !== 'production') {
+        console.warn('[Easycanvas] You are using the develop version.');
     }
+    window.Easycanvas = Easycanvas;
 }
 
-if (process.env.NODE_ENV !== 'production') {
-    console.warn('[Easycanvas] You are using the develop version.');
-}
-
-window.Easycanvas = Easycanvas;
 module.exports = Easycanvas;

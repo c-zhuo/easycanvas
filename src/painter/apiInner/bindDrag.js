@@ -20,16 +20,21 @@ const dragHandler = function (originHandler, item, e, dragEnabled) {
     return originHandler ? originHandler.call(item, e) : (dragEnabled ? 'drag' : false);
 };
 
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 module.exports = {
     bind: function ($sprite) {
         let startDragPosition = {
             x: 0,
             y: 0
         };
+
+        $sprite.drag = $sprite.drag || {};
+
         $sprite.drag.draggingFlag = false;
 
         let oMousedown = $sprite.events.mousedown || $sprite.events.touchstart;
-        $sprite.events.touchstart = $sprite.events.mousedown = function (e) {
+        $sprite.events[isMobile ? 'touchstart' : 'mousedown'] = function (e) {
             // if dragable is a object, it means the range of dragable area
             if ($sprite.drag.dragable) {
                 setFlag($sprite, true);
@@ -44,7 +49,7 @@ module.exports = {
         }.bind($sprite);
 
         let oMousehold = $sprite.events.hold || $sprite.events.mousemove; //TODO 不规范？
-        $sprite.events.touchmove = $sprite.events.mousemove = function (e) {
+        $sprite.events[isMobile ? 'touchmove' : 'mousemove'] = function (e) {
             let worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
             if (worked) {
                 this.style.tx += e.canvasX - startDragPosition.x;
@@ -57,7 +62,7 @@ module.exports = {
         }.bind($sprite);
 
         let oMouseup = $sprite.events.mouseup || $sprite.events.touchend;
-        $sprite.events.touchend = $sprite.events.mouseup = function (e) {
+        $sprite.events[isMobile ? 'touchend' : 'mouseup'] = function (e) {
             let worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
             if ($sprite.drag.draggingFlag && $sprite.drag.dragable) {
                 setFlag($sprite, false);

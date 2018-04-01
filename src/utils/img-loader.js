@@ -13,6 +13,7 @@ let blockingAmount = 0;
 
 const loader = function (url, callback, option) {
     let _option = option || {};
+    let cacheCanvas = loader.cacheCanvas;
 
     if (typeof url === 'object') {
         let imgs = url;
@@ -31,14 +32,14 @@ const loader = function (url, callback, option) {
         return;
     }
 
-    let cacheNamespace = url + JSON.stringify(option);
+    let cacheNamespace = url + '_' + JSON.stringify(option) + '_' + cacheCanvas;
 
     if (Cache[cacheNamespace]) {
-        setTimeout(function () {
+        // setTimeout(function () {
             if (callback) {
                 callback(Cache[cacheNamespace]);
             }
-        });
+        // });
         return Cache[cacheNamespace];
     }
     // todo: 多个loader加载同一图片，目前只触发一个callback；待补充
@@ -58,15 +59,17 @@ const loader = function (url, callback, option) {
 
     Cache[cacheNamespace] = i;
 
-    let tempCavas;
-    if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
-        tempCavas = document.createElement('canvas');
-        tempCavas.width = tempCavas.height || 0;
-        Cache[cacheNamespace] = tempCavas;
+    let tempCanvas;
+    if (_option.canvas || _option.alphaColor || cacheCanvas) {
+        tempCanvas = document.createElement('canvas');
+        tempCanvas.width = tempCanvas.height || 0;
+        Cache[cacheNamespace] = tempCanvas;
     }
 
     i.onload = function () {
         if (i.src.substr(-3) === 'jpg' || i.src.substr(-3) === 'jpeg' || i.src.substr(-3) === 'bmp') {
+            i.$noAlpha = true;
+        } else if (i.src.indexOf('data:image/jpg;') === 0) {
             i.$noAlpha = true;
         }
 
@@ -80,11 +83,11 @@ const loader = function (url, callback, option) {
             }
         }
 
-        if (_option.canvas || _option.alphaColor || loader.cacheCanvas) {
-            let cts = tempCavas.getContext('2d');
-            tempCavas.width = i.width;
-            tempCavas.height = i.height;
-            tempCavas.$noAlpha = i.$noAlpha;
+        if (tempCanvas && (_option.canvas || _option.alphaColor || cacheCanvas)) {
+            let cts = tempCanvas.getContext('2d');
+            tempCanvas.width = i.width;
+            tempCanvas.height = i.height;
+            tempCanvas.$noAlpha = i.$noAlpha;
             cts.drawImage(i, 0, 0);
 
             if (_option.alphaColor) {
@@ -99,10 +102,10 @@ const loader = function (url, callback, option) {
                     }
                 }
                 cts.putImageData(data, 0, 0);
-                tempCavas.$noAlpha = false;
+                tempCanvas.$noAlpha = false;
             }
 
-            i = tempCavas;
+            i = tempCanvas;
         }
 
         if (callback) {
@@ -114,7 +117,7 @@ const loader = function (url, callback, option) {
         Cache[cacheNamespace] = i;
     };
 
-    return tempCavas || i;
+    return tempCanvas || i;
 };
 
 loader.cacheCanvas = false;

@@ -11,25 +11,31 @@
 import utils from 'utils/utils.js';
 import constants from 'constants';
 
-const getFinalStyle = window.getFinalStyle = function ($sprite, $canvas, key) {
-	let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
+const getFinalStyle = function ($sprite, $canvas, key) {
+    let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
 
     if ($sprite.$parent && $sprite.inherit.indexOf(key) >= 0) {
-    	if (key === 'tx') {
-    		currentValue -= $sprite.$parent.scroll.scrollX;
-    	} else if (key === 'ty') {
-    		currentValue -= $sprite.$parent.scroll.scrollY;
-    	}
+        // 额外处理滚动
+        if (key === 'tx') {
+            currentValue -= $sprite.$parent.scroll.scrollX || 0;
+        }
+        else if (key === 'ty') {
+            currentValue -= $sprite.$parent.scroll.scrollY || 0;
+        }
 
-    	if (key === 'opacity' || key === 'scale') {
-	    	return (
-	    		utils.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 1)
-    		) * (currentValue || 1);
-    	}
+        if (key === 'tw' || key === 'th') {
+            return utils.firstValuable(currentValue, getFinalStyle($sprite.$parent, $canvas, key));
+        }
+        else if (key === 'opacity' || key === 'scale') {
+            return (
+                utils.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 1)
+            ) * (currentValue || 1);
+        } else {
+            return (
+                utils.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 0)
+            ) + (currentValue || 0);
+        }
 
-    	return (
-    		utils.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 0)
-		) + (currentValue || 0);
     }
 
     return currentValue;
@@ -43,6 +49,8 @@ module.exports = function ($sprite, $canvas) {
         _props[i] = utils.funcOrValue($sprite.content[i], $sprite);
     }
 
+    // 正常情况下，add阶段会进行string2object的转换
+    // 此处是防止动态修改了某个img为string
     if (typeof _props.img === 'string') {
         _props.img = $sprite.content.img = $canvas.imgLoader(_props.img);
     }
@@ -84,7 +92,7 @@ module.exports = function ($sprite, $canvas) {
 
             if (config.h) {
                 _props.sx = index % wTimes * pw;
-                _props.sy = Math.floor(index / wTimes) % hTimes * ph;
+                _props.sy = utils.firstValuable(config.y * ph, Math.floor(index / wTimes) % hTimes * ph);
             }
         }
         if (!config.loop && index > 0 && _props.sx === 0 && _props.sy === 0) {
