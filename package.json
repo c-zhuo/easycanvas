@@ -1,6 +1,6 @@
 {
   "name": "easycanvas",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "description": "A cute canvas framework. See https://chenzhuo1992.github.io/easycanvas",
   "keywords": "canvas, framework, animation",
   "main": "build/easycanvas.js",
@@ -19,6 +19,8 @@
     "babel-preset-es2015": "6",
     "babel-runtime": "6",
     "concurrently": "2.2.0",
+    "copy-webpack-plugin": "^4.5.1",
+    "css-loader": "^0.28.11",
     "ejs-compiled-loader": "2",
     "html-webpack-plugin": "^2.30.1",
     "jasmine": "^2.8.0",
@@ -43,19 +45,19 @@
     "build"
   ],
   "scripts": {
-    "b": "npm run ec:build",
-    "d": "npm run ec:dist",
+    "d": "npm run ec:build",
     "g": "npm run ec:debug",
     "u": "npm run karma:unit",
     "r": "npm run readme",
     "dev": "npm run ec:dev",
-    "doc": "npm run ec:doc",
+    "doc": "npm run ec:docs",
+    "docprod": "npm run ec:docsprod",
     "readme": "node ./readme/language_deliver.js",
     "ec:build": "rm -rf ./build && (concurrently 'webpack --config ./webpack/webpack.easycanvas.min.js' 'webpack --config ./webpack/webpack.easycanvas.standalone.dev.js' 'webpack --config ./webpack/webpack.easycanvas.standalone.prod.js') && echo done.",
-    "ec:debug": "webpack --config ./webpack/webpack.easycanvas.local.js",
-    "ec:dist": "npm run ec:build",
+    "ec:debug": "webpack --config ./webpack/webpack.easycanvas.dist.js",
     "ec:dev": "webpack-dev-server --config ./webpack/webpack.easycanvas.dev.js",
-    "ec:doc": "webpack-dev-server --config ./webpack/webpack.easycanvas.docs.js",
-    "karma:unit": "karma start ./karma/karma.conf.js"
+    "ec:docs": "webpack-dev-server --config ./webpack/webpack.easycanvas.docs.dev.js",
+    "ec:docsprod": "rm -rf ./doc && webpack --config ./webpack/webpack.easycanvas.docs.prod.js",
+    "karma:unit": "karma start ./test/karma.conf.js"
   }
 }

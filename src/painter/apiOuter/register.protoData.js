@@ -17,12 +17,12 @@ const PROTOS = {
     lastFps: 0,
     fpsCalculateTime: 0,
     fpsHandler: null,
-    contextWidth: 0,
-    contextHeight: 0,
+    width: 0,
+    height: 0,
     events: {
         click: null
     },
-    paintList: [],
+    children: [],
     eHoldingFlag: false,
     eLastMouseHover: null,
 

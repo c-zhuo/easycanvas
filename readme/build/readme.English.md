@@ -39,7 +39,9 @@ Once `register` is called, width and height of the dom will be cached, so you ca
 Tips: Size in html means the pixel size, in css means the display size. In some condition, let the pixel twice larger than the display size will avoid the word from being blurry. If only images in canvas, it is no need.
 
 Now we have an empty instance, with no container, no image and no text inside.
-    
+
+A full screen canvas is created easily by `register(dom, {fullScreen: true}`.
+
 ## Add images
 
 The most useful API is `add`, which can add a sprite to the instance. Style, content, events and scrolling can be set within `add`, or later. Examples:
@@ -109,6 +111,8 @@ The image center is `(200, 100)` by default. You can set 'lt' to `locate` in `st
         locate: 'lt'
     }
 ```
+
+By setting `Easycanvas.imgLoader.cacheCanvas = true`, offscreen canvas is enabled, which will impove the performance if there are VERY many images painted.
 
 ## Animation
 
@@ -194,8 +198,6 @@ Events will pass from higher `eIndex`, and stop when a handler 'return true', Or
     });
 ```
 
-You can set `through` to false to hold up all events. This is equal to 'return true' in every event handler.
-
 ## Hooks
 
 Hooks supported in Easycanvas include: `ticked`, `removed`, `beforeTick`.
@@ -234,6 +236,7 @@ Hooks supported in Easycanvas include: `ticked`, `removed`, `beforeTick`.
     scale: scale size(like scale in css)
     opacity: transparency(like opacity in css)
     zIndex: layout level(like zIndex in css)
+    mirrX, mirrY: Horizontal and vertical flip
 
     // the following works only if the content has texts
     textAlign: horizontal align(like text-align in css)

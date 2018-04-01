@@ -8,8 +8,7 @@
 import utils from 'utils/utils.js';
 
 module.exports = function () {
-    if (this.$pausing) return;
-    if (document.hidden) return;
+    if (this.$pausing || document.hidden) return;
 
     let $canvas = this;
 
@@ -24,13 +23,15 @@ module.exports = function () {
         // gl.colorMask(true, false, false, true);
         gl.clear(gl.COLOR_BUFFER_BIT);
     } else {
-        $canvas.$paintContext.clearRect(0, 0, this.contextWidth, this.contextHeight);
+        $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
+        // $canvas.$paintContext.fillStyle = 'rgba(255, 0, 0, 0.1)';
+        // $canvas.$paintContext.fillRect(0, 0, this.width, this.height);
     }
 
     if (!$canvas.$freezing) {
-        $canvas.$paintList = [];
+        $canvas.$children = [];
 
-        this.paintList.sort(function (a, b) {
+        this.children.sort(function (a, b) {
             let za = utils.funcOrValue(a.style.zIndex, a);
             let zb = utils.funcOrValue(b.style.zIndex, b);
             if (za === zb) return 0;
@@ -40,18 +41,7 @@ module.exports = function () {
         });
     }
 
-    // let xxxx = document.getElementsByClassName('XXXXX');
-    // for (let i = 0; i < xxxx.length; i++) {
-    //     xxxx[i].toDelete = 1;
-    //     // xxxx[i].remove();
-    // }
-
     $canvas.$paint();
-
-    // for (let i = 0; i < xxxx.length; i++) {
-    //     if (xxxx[i].toDelete)
-    //         xxxx[i].remove();
-    // }
 
     this.fps++;
 

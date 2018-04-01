@@ -1,0 +1,132 @@
+<head>
+    <script src="../build/index.js"></script>
+    <style>
+        canvas {
+            width: 500;
+            height: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="app" style="width: 100%"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter({
+            el: '#app',
+            width: 5000,
+            height: 500
+        });
+
+        var sprite = new Easycanvas.class.sprite();
+
+        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true', function (img) {
+            // create a sprite
+            var ch1 = sprite.add({
+                name: 'p1',
+                style: {
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    touchend: function (e) {
+                        console.log(this.name);
+                        return true;
+                    },
+                },
+            });
+            ch1.add({
+                name: 'c1',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 800, th: 300,
+                    sx: 0, sy: 0, // source position, default 0
+                    tx: 200,
+                    ty: $Painter.height / 10,
+                    opacity: Easycanvas.transition.linear(0.1, 1, 3000),
+                    // rotate: 20,
+                    locate: 'lt',
+                },
+                events: {
+                    touchend: function (e) {
+                        console.log(this.name);
+                        return true;
+                    },
+                },
+            });
+
+            var ch2 = sprite.add({
+                name: 'p2',
+                style: {
+                    zIndex: 2, // z-index of this image
+                },
+                events: {
+                    touchend: function (e) {
+                        console.log(this.name);
+                    },
+                },
+            });
+            ch2.add({
+                name: 'c2',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 800, th: 300,
+                    sx: 0, sy: 0, // source position, default 0
+                    tx: 200,
+                    ty: $Painter.height / 10,
+                    opacity: Easycanvas.transition.linear(0.1, 1, 3000),
+                    // rotate: 20,
+                    locate: 'lt',
+                },
+                events: {
+                    touchend: function (e) {
+                        console.log(this.name);
+                        ch3.style.visible = true;
+                    },
+                },
+            });
+
+            var ch3 = sprite.add({
+                name: 'p3',
+                style: {
+                    visible: false,
+                    zIndex: 2, // z-index of this image
+                },
+                events: {
+                    touchend: function (e) {
+                        console.log(this.name);
+                    },
+                },
+            });
+            ch3.add({
+                name: 'c3',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 800, th: 300,
+                    sx: 0, sy: 0, // source position, default 0
+                    tx: 200,
+                    ty: $Painter.height / 10,
+                    opacity: Easycanvas.transition.linear(0.1, 1, 3000),
+                    // rotate: 20,
+                    locate: 'lt',
+                },
+                events: {
+                    touchend: function (e) {
+                        console.log(this.name);
+                        console.log('I am IN-visible !');
+                    },
+                },
+            });
+
+            $Painter.add(sprite);
+
+            $Painter.start();
+        });
+    </script>
+</body>
+

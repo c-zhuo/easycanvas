@@ -47,45 +47,78 @@ import trigger from '../painter/apiOuter/trigger.js';
 import broadcast from '../painter/apiOuter/broadcast.js';
 import bindDrag from '../painter/apiInner/bindDrag.js';
 
-const preAdd = function (item) {
-    if (process.env.NODE_ENV !== 'production') {
-        if (item.events && typeof item.events.eIndex === 'undefined') {
-            console.warn('[Easycanvas] This sprite has no "eIndex", 0 is set by default.');
-        }
+const ChangeChildrenToSprite = function ($parent) {
+    if ($parent.children) {
+        $parent.children.forEach((child, i) => {
+            if (!child.$id) {
+                $parent.children[i] = new sprite(child);
+            }
+            if ($parent.$id && !$parent.$dom) {
+                $parent.children[i].$canvas = $parent.$canvas;
+                $parent.children[i].$parent = $parent;
+            } else {
+                $parent.children[i].$canvas = $parent;
+            }
 
-        // if (item.content && item.style && typeof item.style.zIndex === 'undefined') {
-        //     console.warn('[Easycanvas] This sprite has no "zIndex", 0 is set by default.');
-        // }
+            // if (typeof $parent.children[i].content.img === 'string') {
+            //     $parent.children[i].content.img = $parent.children[i].$canvas.imgLoader($parent.children[i].content.img);
+            // }
+
+            ChangeChildrenToSprite($parent.children[i]);
+        });
     }
+};
 
-    let $canvas = item.$canvas;
+const preAdd = function (item) {
+    item = item || {};
+
+    // let $canvas = item.$canvas;
 
     if (!item.$id) {
         item.$id = Math.random().toString(36).substr(2);
     }
 
     item.content = item.content || {};
+    // if (typeof item.content.img === 'string') {
+    //     item.content.img = $canvas.imgLoader(item.content.img);
+    // }
 
     item.style = item.style || {};
 
     item.style.zIndex = item.style.zIndex || 0;
     item.style.mirrX = item.style.mirrX || 0;
 
-    item.style.opacity = item.style.opacity === undefined ? 1 : item.style.opacity;
+    item.style.opacity = utils.firstValuable(item.style.opacity, 1);
     item.style.locate = item.style.locate || 'center';
     // item.style.rotate = item.style.rotate || 0;
     item.style.scale = item.style.scale || 1;
     // item.style.display = item.style.display;
 
+    let _img = utils.funcOrValue(item.content.img);
+    if (_img === undefined) {
+        _img = {
+            width: 0,
+            height: 0,
+        };
+    }
+
     constants.xywh.forEach(function (key) {
         item.style[key] = item.style[key] || 0;
     });
 
-    item.inherit = item.inherit || ['tx', 'ty', 'scale'];
+    item.inherit = item.inherit || ['tx', 'ty', 'scale', 'opacity'];
     item.drag = item.drag || {};
 
     item.events = item.events || {};
-    item.events.eIndex = item.events.eIndex || 0;
+    if (process.env.NODE_ENV !== 'production') {
+        for (var i in item.events) {
+            if (typeof item.events[i] !== 'function' && i !== 'eIndex') {
+                console.warn(`[Easycanvas] Handler ${i} is not a function.`, item.events[i]);
+            }
+        }
+    }
+
+    item.events.eIndex = item.events.eIndex;
     // item.events.through = !!item.events.through;
 
     item.scroll = item.scroll || {};
@@ -109,12 +142,14 @@ const preAdd = function (item) {
     }
 
     item.children = item.children || [];
-    item.children.forEach(function (c) {
-        c.$canvas = item.$canvas;
-        c.$parent = item;
 
-        c = new sprite(c);
-    });
+    ChangeChildrenToSprite(item);
+    // item.children.forEach(function (c) {
+    //     // c.$canvas = item.$canvas;
+    //     c.$parent = item;
+
+    //     c = new sprite(c);
+    // });
 
     item.$cache = {};
     item.$scroll = {
@@ -128,51 +163,27 @@ const preAdd = function (item) {
 let sprite = function (opt) {
     let _opt = preAdd(opt);
 
-    for (let i in _opt) {
-        if (Object.prototype.hasOwnProperty.call(_opt, i)) {
-            this[i] = _opt[i];
-        }
-    }
+	for (let i in _opt) {
+    	if (Object.prototype.hasOwnProperty.call(_opt, i)) {
+    		this[i] = _opt[i];
+    	}
+	}
 
-    return this;
+	return this;
 };
 
 sprite.prototype.add = function (child) {
-    this.children = this.children || [];
-
-    child.$canvas = this.$canvas;
-    child.$parent = this;
-
-    if (!child.$id) {
-        child = new sprite(child);
-    }
-
-    bindDrag.bind(child);
-
-    child.children.forEach(function (c, i) {
-        child.children[i] = new sprite(c);
-        child.children[i].$canvas = child.$canvas;
-        child.children[i].$parent = child;
-    });
-
-    this.children.push(child);
-
-    return child;
-};
-
-sprite.prototype.remove = function (child) {
-    if (child) {
-        this.$canvas.remove(child);
-        utils.execFuncs(child.hooks.removed, child);
+    if (!child) {
         return;
     }
 
-    if (this.$parent) {
-        this.$parent.remove(this);
-    } else {
-        this.$canvas.remove(this);
-    }
-    utils.execFuncs(this.hooks.removed, this);
+    this.children.push(child);
+
+    ChangeChildrenToSprite(this);
+
+    bindDrag.bind(this.children[this.children.length - 1]);
+
+    return this.children[this.children.length - 1];
 };
 
 sprite.prototype.rect = function () {
@@ -181,10 +192,39 @@ sprite.prototype.rect = function () {
 
 sprite.prototype.self = function () {
     let res = {};
-    for (let key in this.style) {
+    for (var key in this.style) {
         res[key] = utils.funcOrValue(this.style[key], this);
     }
     return res;
+};
+
+sprite.prototype.remove = function (child) {
+	if (child) {
+		this.$canvas.remove(child);
+        utils.execFuncs(child.hooks.removed, child);
+        return;
+	}
+
+    if (this.$parent) {
+		this.$parent.remove(this);
+	} else {
+		this.$canvas.remove(this);
+	}
+    utils.execFuncs(this.hooks.removed, this);
+};
+
+sprite.prototype.update = function (opt) {
+    if (!opt) return;
+
+    for (var i in opt) {
+        if (typeof opt[i] === 'object') {
+            for (var j in opt[i]) {
+                this[i][j] = opt[i][j];
+            }
+        } else {
+            this[i] = opt[i];
+        }
+    }
 };
 
 sprite.prototype.on = on;
