@@ -2,7 +2,7 @@
 
 var webpack = require('webpack');
 
-var config = require('./webpack.easycanvas.local.js');
+var config = require('./webpack.easycanvas.dist.js');
 
 config.output.filename = '[name].standalone.prod.js';
 
@@ -12,8 +12,8 @@ config.plugins = config.plugins.concat([
         compress: {
             pure_getters: true,
             screw_ie8: true,
-            unsafe: true,
-            unsafe_comps: true,
+            // unsafe: true,
+            // unsafe_comps: true,
             warnings: false
         },
         output: {

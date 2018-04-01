@@ -49,7 +49,10 @@
 
 [Chinese]这样就得到了一个空白的实例，它不包含任何容器、可绘制的图像和文本。
 [English]Now we have an empty instance, with no container, no image and no text inside.
-    
+
+[Chinese]可以通过`register(dom, {fullScreen: true}`参数来快速创建全屏尺寸的画布。
+[English]A full screen canvas is created easily by `register(dom, {fullScreen: true}`.
+
 [Chinese]## 添加图片元素
 [English]## Add images
 
@@ -125,6 +128,9 @@
         locate: 'lt'
     }
 ```
+
+[Chinese]通过`Easycanvas.imgLoader.cacheCanvas = true`可以开启canvas的离屏绘制，当存在大量图片时，可以显著提升性能。
+[English]By setting `Easycanvas.imgLoader.cacheCanvas = true`, offscreen canvas is enabled, which will impove the performance if there are VERY many images painted.
 
 [Chinese]## 设置动画
 [English]## Animation
@@ -220,9 +226,6 @@
     });
 ```
 
-[Chinese]此外，可以设置`through`为false来关闭某个元素的事件透传。这样相当于为所有事件增加'return true'。
-[English]You can set `through` to false to hold up all events. This is equal to 'return true' in every event handler.
-
 [Chinese]## 状态钩子
 [English]## Hooks
 
@@ -277,6 +280,8 @@
 [English]    scale: scale size(like scale in css)
 [English]    opacity: transparency(like opacity in css)
 [English]    zIndex: layout level(like zIndex in css)
+[Chinese]    mirrX, mirrY: 水平垂直翻转
+[English]    mirrX, mirrY: Horizontal and vertical flip
 
 [Chinese]    // 下列属性仅当content内存在text内容时生效
 [Chinese]    textAlign: 代表文字水平对齐方式（类似css的text-align）

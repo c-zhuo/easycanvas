@@ -1,29 +1,39 @@
 <head>
     <script src="../build/index.js"></script>
+    <style>
+        canvas {
+            width: 500;
+            height: 500;
+        }
+    </style>
 </head>
 
 <body>
-    <canvas id="foo" width="400" height="800"></canvas>
+    <canvas id="app" style="width: 100%"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        var $Painter = new Easycanvas.painter({
+            el: '#app',
+            width: 5000,
+            height: 500
+        });
+
+        var sprite = new Easycanvas.class.sprite();
 
         Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true', function (img) {
             // create a sprite
-            window.sprite1 = $Painter.add({
+            var ch = sprite.add({
                 name: 'root',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 250, th: 130,
+                    tw: 300, th: 100,
                     sx: 0, sy: 0, // source position, default 0
-                    tx: Easycanvas.transition.pendulum(111, 222, 1000).loop(),
+                    tx: 200,
                     ty: $Painter.height / 10,
-                    opacity: 1,
-                    rotate: 20,
+                    opacity: Easycanvas.transition.linear(0.1, 1, 3000),
+                    // rotate: 20,
                     locate: 'center', // default center
                     zIndex: 1, // z-index of this image
                 },
@@ -39,6 +49,14 @@
                     // others: mousehold, mousedown, mouseout and touch events
                 },
             });
+
+            sprite.children[0].add({
+                name: 'empty',
+            });
+
+            $Painter.add(sprite);
+
+            $Painter.start();
         });
     </script>
 </body>
