@@ -10,6 +10,7 @@
   },
   "author": "chenzhuo04",
   "license": "MIT",
+  "homepage": "https://chenzhuo1992.github.io/easycanvas/",
   "devDependencies": {
     "babel-core": "6",
     "babel-loader": "6",
