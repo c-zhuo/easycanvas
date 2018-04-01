@@ -13,7 +13,8 @@ Expandable: Support highly decoupled components and custom API/events.
 ### More Information
 
 - [English](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
-- [中文](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.Chinese.md).
+- [中文](https://chenzhuo1992.github.io/easycanvas/).
+- [资料：Easycanvas实现高仿热血传奇游戏](https://github.com/chenzhuo1992/Mir2/wiki/%E3%80%8AJS%E5%AE%9E%E7%8E%B0%E7%83%AD%E8%A1%80%E4%BC%A0%E5%A5%87%E3%80%8B1.%E5%BC%80%E5%8F%91%E5%89%8D%E7%9A%84%E5%87%86%E5%A4%87).
 
 ### More demos
 

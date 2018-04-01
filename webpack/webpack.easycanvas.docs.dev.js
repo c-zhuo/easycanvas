@@ -1,5 +1,5 @@
 'use strict';
-
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 var glob = require('glob');
 var webpack = require('webpack');
@@ -10,7 +10,7 @@ var env = 'development';
 
 var mkdirp = require('mkdirp');
 
-var js = glob.sync('./doc-src/**/*.js').reduce(function (prev, curr) {
+var js = glob.sync('./doc-src/main.js').reduce(function (prev, curr) {
     prev[curr.slice(2, -3).replace('src', 'src')] = [curr];
     return prev;
 }, {});
@@ -31,16 +31,25 @@ var config = {
     resolve: base.resolve,
     output: {
         path: path.resolve('./dev/'),
-        filename: '[name].js'
+        filename: '[name].js',
     },
     module: {
-        loaders: base.loaders
+        loaders: base.loaders.concat([{
+            test: /\.scss$/,
+            loaders: ['css', 'sass']
+        }])
     },
     babel: base.babel,
     plugins: ([
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(env)
-        })
+        }),
+        new CopyWebpackPlugin([
+            {
+                from: './doc-src/lib/',
+                to: './doc-src/lib/'
+            }
+        ]),
     ]).concat(html),
     node: base.node,
     debug: false,

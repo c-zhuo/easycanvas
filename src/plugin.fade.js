@@ -4,34 +4,78 @@ const particleBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCA
 const particleImage = new Image();
 particleImage.src = particleBase64;
 
-let _ec;
+const transitions = {
+    drip: function (transition, ctx, ctx2) {
+        // ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        // ctx.fillRect(0, 0, this.style.tw, this.style.th);
+        ctx.clearRect(0, 0, this.style.tw, this.style.th);
 
-let fade = function (opt) {
-	let sprite = new _ec.class.sprite(opt);
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = 1;
+        ctx.drawImage(particleImage,
+            (this.style.tw >> 1) - (this.style.tw >> 1) * transition.progress * 2,
+            (this.style.th >> 1) - (this.style.th >> 1) * transition.progress * 2,
+            this.style.tw * transition.progress * 2,
+            this.style.th * transition.progress * 2,
+        );
 
-    sprite.content = {
-        img: () => opt.content.img,
-    };
+        ctx.globalCompositeOperation = 'source-out';
+        ctx.globalAlpha = Math.max(1 - transition.progress, 0);
+        ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0, this.style.tw, this.style.th);
+    },
 
-    var canvas = document.createElement('canvas');
-    canvas.width = opt.style.tw;
-    canvas.height = opt.style.th;
-    var canvas2 = document.createElement('canvas');
-    canvas2.width = opt.style.tw;
-    canvas2.height = opt.style.th;
+    flow: function (transition, ctx, ctx2) {
+        if (!transition.particleData.length) {
+            for (var i = 0; i < this.style.tw / 50; i++) {
+                transition.particleData.push({
+                    x: -100 + i * 50 + Math.random() * 40 - 20,
+                    y: -Math.random() * 200 - 300,
+                    extra: Math.random() * 20
+                });
+            }
+        }
 
-    var ctx = canvas.getContext('2d');
-    var ctx2 = canvas2.getContext('2d');
+        ctx2.fillStyle = 'rgba(0, 0, 0, 0.01)';
+        ctx2.fillRect(0, 0, this.style.tw, this.style.th);
+        transition.particleData.forEach((p) => {
+            ctx2.drawImage(particleImage,
+                p.x,
+                p.y,
+                200,
+                200,
+            );
+            p.y += 1 / transition.ticks * this.style.th + p.extra;
+        });
 
-    // ctx.fillStyle = 'rgba(0, 255, 0, 0.2)';
-    // for (var i = 0; i <= opt.style.tw / 200; i++) {
-    //     for (var j = 0; j <= opt.style.th / 100; j++) {
-    //         ctx.fillRect(i * 200 + j % 2 * 100, j * 100, 100, 100);
-    //     }
-    // }
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.clearRect(0, 0, this.style.tw, this.style.th);
+        ctx.drawImage(ctx2.$canvas, 0, 0);
+        ctx.globalCompositeOperation = 'source-out';
+        ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0, this.style.tw, this.style.th);
+    },
+};
 
-    if (typeof opt.content.img === 'string') {
-        opt.content.img = Easycanvas.imgLoader(opt.content.img);
+window.Easycanvas.class.sprite.prototype.fade = function ({type, ticks}) {
+    let sprite = this;
+
+    if (!sprite.$fade) {
+        sprite.$fade = {
+            originImg: sprite.content.img,
+            filterCanvas: document.createElement('canvas'),
+            middlewareCanvas: document.createElement('canvas'),
+        };
+
+        // if (typeof sprite.$fade.originImg === 'string') {
+        //     sprite.$fade.originImg = Easycanvas.imgLoader(sprite.$fade.originImg);
+        // }
+
+        sprite.$fade.filterCanvas.width = sprite.$fade.middlewareCanvas.width = sprite.style.tw;
+        sprite.$fade.filterCanvas.height = sprite.$fade.middlewareCanvas.height = sprite.style.th;
+        sprite.$fade.filterCxt = sprite.$fade.filterCanvas.getContext('2d');
+        sprite.$fade.middlewareCxt = sprite.$fade.middlewareCanvas.getContext('2d');
+
+        sprite.$fade.filterCxt.$canvas = sprite.$fade.filterCanvas;
+        sprite.$fade.middlewareCxt.$canvas = sprite.$fade.middlewareCanvas;
     }
 
     const transition = {
@@ -41,101 +85,48 @@ let fade = function (opt) {
         particleData: [],
     };
 
-    const transitions = {
-        drip: function (ctx) {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, opt.style.tw, opt.style.th);
-            // ctx.clearRect(0, 0, opt.style.tw, opt.style.th);
+    transition.ticks = ticks || 60;
 
-            ctx.globalCompositeOperation = 'source-over';
-            ctx.globalAlpha = 1;
-            ctx.drawImage(particleImage,
-                (opt.style.tw >> 1) - (opt.style.tw >> 1) * transition.progress * 2,
-                (opt.style.th >> 1) - (opt.style.th >> 1) * transition.progress * 2,
-                opt.style.tw * transition.progress * 2,
-                opt.style.th * transition.progress * 2,
-            );
+    // screenshot
+    {
+        var screenshot = document.createElement('canvas');
+        screenshot.width = utils.funcOrValue(sprite.style.tw, sprite);
+        screenshot.height = utils.funcOrValue(sprite.style.th, sprite);
+        var scrctx = screenshot.getContext('2d');
+        scrctx.drawImage(sprite.$canvas.$dom, sprite.$cache.tx, sprite.$cache.ty);
+        sprite.$fade.originImg = screenshot;
+        sprite.children = [];
+    }
 
-            ctx.globalCompositeOperation = 'source-out';
-            ctx.globalAlpha = Math.max(1 - transition.progress, 0);
-            ctx.drawImage(utils.funcOrValue(opt.content.img, sprite), 0, 0, opt.style.tw, opt.style.th);
-        },
+    sprite.content.img = sprite.$fade.filterCanvas;
 
-        flow: function (ctx) {
-            if (!transition.particleData.length) {
-                for (var i = 0; i < opt.style.tw / 100; i++) {
-                    transition.particleData.push({
-                        x: -100 + i * 100 + Math.random() * 40 - 20,
-                        y: -Math.random() * 200 - 300,
-                        extra: Math.random() * 20
-                    });
-                }
-            }
-
-            ctx2.fillStyle = 'rgba(0, 0, 0, 0.01)';
-            ctx2.fillRect(0, 0, opt.style.tw, opt.style.th);
-            transition.particleData.forEach((p) => {
-                ctx2.drawImage(particleImage,
-                    p.x,
-                    p.y,
-                    300,
-                    300,
-                );
-                p.y += 1 / transition.ticks * opt.style.th + p.extra;
-            });
-
-            ctx.globalCompositeOperation = 'source-over';
-            ctx.clearRect(0, 0, opt.style.tw, opt.style.th);
-            ctx.drawImage(canvas2, 0, 0);
-            ctx.globalCompositeOperation = 'source-out';
-            ctx.drawImage(utils.funcOrValue(opt.content.img, sprite), 0, 0, opt.style.tw, opt.style.th);
-        },
-    };
-
-    sprite.fade = function ({type, ticks}) {
-        transition.ticks = ticks || 60;
-
-        sprite.content = {
-            img: () => {
-                return canvas;
-            },
-        };
-
-        sprite.on('beforeTick', function beforeTick () {
-            transitions[type || 'drip'](ctx);
-
-            if (transition.progress > 1) {
-                sprite.off('beforeTick', beforeTick);
-                delete sprite.content.img;
-                canvas = null;
-                ctx = null;
-
-                if (transition.callback) {
-                    transition.callback(sprite);
-                }
-
-                return;
-            }
-
-            transition.progress += 1 / (ticks || 100);
-        });
-
-        return {
-            then: function (callback) {
-                transition.callback = callback;
-            },
+    sprite.on('beforeTick', function beforeTick () {
+        if (!sprite.$fade) {
+            return;
         }
-    };
 
-    return sprite;
-};
+        transitions[type || 'drip'].call(sprite, transition, sprite.$fade.filterCxt, sprite.$fade.middlewareCxt);
 
-if (window && window.Easycanvas) {
-	_ec = window.Easycanvas;
-	_ec.class.fade = fade;
-}
+        if (transition.progress > 1) {
+            sprite.off('beforeTick', beforeTick);
+            // delete sprite.content.img;
+            delete sprite.$fade;
 
-module.exports = function (ec) {
-	_ec = ec;
-	ec.class.fade = fade;
+            if (transition.callback) {
+                sprite.$canvas.nextTick(() => {
+                    transition.callback(sprite);
+                });
+            }
+
+            return;
+        }
+
+        transition.progress += 1 / (ticks || 100);
+    });
+
+    return {
+        then: function (callback) {
+            transition.callback = callback;
+        },
+    }
 };
