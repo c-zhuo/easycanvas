@@ -15,18 +15,13 @@ module.exports = function (item, del) {
                 return c.removing !== true;
             });
         } else {
-            this.paintList = this.paintList.filter(function (c) {
+            this.children = this.children.filter(function (c) {
                 return c.removing !== true;
             });
         }
     }.bind(this));
 
     if (del) {
-        this.paintList.splice(this.paintList.indexOf(item), 1);
-    }
-
-    if (process.env.NODE_ENV !== 'production') {
-        let $canvas = this;
-        $canvas.$plugin.hook.updateTree($canvas);
+        this.children.splice(this.children.indexOf(item), 1);
     }
 };
