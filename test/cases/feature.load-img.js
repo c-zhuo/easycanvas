@@ -10,6 +10,8 @@ var $Painter = new Easycanvas.painter();
 $Painter.register($canvas);
 $Painter.start();
 
+Easycanvas.imgLoader.cacheCanvas = false;
+
 var $sp1 = $Painter.add({
     content: {
         img: constants.img10px,
@@ -43,13 +45,17 @@ Easycanvas.imgLoader(constants.img30px, function (img) {
     });
 });
 
+// 最后改成canvas，并不影响之前$sp1的类型为<img>，$sp3用的还是<img>标签
+// 需要注意的是，$sp1是在add阶段进行string2img的替换，此时已经替换完毕
+Easycanvas.imgLoader.cacheCanvas = true;
+
 describe('Feature.load-img Test.', function () {
     it('All images loaded correctly.', function (done) {
         setTimeout(() => {
-            expect($Painter.$paintList.length).toBe(3);
-            expect($Painter.$paintList[0].type).toBe('img');
-            expect($Painter.$paintList[1].type).toBe('img');
-            expect($Painter.$paintList[2].type).toBe('img');
+            expect($Painter.$children.length).toBe(3);
+            expect($Painter.$children[0].type).toBe('img');
+            expect($Painter.$children[1].type).toBe('img');
+            expect($Painter.$children[2].type).toBe('img');
             expect($sp1.content.img.tagName).toBe('IMG');
             expect($sp2.content.img.tagName).toBe('CANVAS');
             expect($sp3.content.img.tagName).toBe('IMG');

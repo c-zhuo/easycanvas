@@ -9,7 +9,7 @@ var base = require('../webpack/webpack.config.base.js');
 var webpackConfig = {
     resolve: {
         alias: Object.assign(base.resolve.alias, {
-            karma: path.join(__dirname, '../karma/'),
+            karma: path.join(__dirname, '../test/'),
         }),
     },
     module: {
@@ -79,12 +79,12 @@ module.exports = function(config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
-
+    // autoWatch和singleRun需要有一个true
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Safari', 'PhantomJS'],
-    // browsers: ['Chrome'],
+    // browsers: ['Chrome', 'Safari', 'PhantomJS'],
+    browsers: ['Chrome'],
     // browsers: ['PhantomJS'],
 
     // Continuous Integration mode
@@ -103,13 +103,14 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
         {
-            pattern: './karma/cases/**.js', included: true
+            pattern: './test/cases/**.js', included: true
         }
     ],
     preprocessors: {
-        './karma/cases/**.js': ['webpack', 'sourcemap']
+        './test/cases/**.js': ['webpack', 'sourcemap']
     },
 
+    processKillTimeout: 5000,
 
     plugins: [
         'karma-jasmine',

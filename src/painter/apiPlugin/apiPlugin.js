@@ -61,15 +61,6 @@ module.exports = function () {
                     $canvas.$perf.paintTimes ++;
                 },
 
-                updateTree ($canvas) {
-                    if (!window[constants.devFlag].isPaintRecording) return;
-
-                    $emit({
-                        name: 'updateTree',
-                        id: $canvas.$id,
-                    });
-                },
-
                 register ($canvas) {
                     $canvas.$id = Math.random().toString(36).substr(2);
 
