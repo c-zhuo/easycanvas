@@ -22,7 +22,7 @@ module.exports = function () {
 		child.broadcast.apply(child, arg);
 	});
 
-	this.paintList && this.paintList.forEach((child) => {
+	this.children && this.children.forEach((child) => {
 		child.broadcast.apply(child, arg);
 	});
 };

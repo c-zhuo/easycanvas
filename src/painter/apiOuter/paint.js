@@ -23,15 +23,15 @@ module.exports = function () {
         // gl.colorMask(true, false, false, true);
         gl.clear(gl.COLOR_BUFFER_BIT);
     } else {
-        $canvas.$paintContext.clearRect(0, 0, this.contextWidth, this.contextHeight);
+        $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
         // $canvas.$paintContext.fillStyle = 'rgba(255, 0, 0, 0.1)';
-        // $canvas.$paintContext.fillRect(0, 0, this.contextWidth, this.contextHeight);
+        // $canvas.$paintContext.fillRect(0, 0, this.width, this.height);
     }
 
     if (!$canvas.$freezing) {
-        $canvas.$paintList = [];
+        $canvas.$children = [];
 
-        this.paintList.sort(function (a, b) {
+        this.children.sort(function (a, b) {
             let za = utils.funcOrValue(a.style.zIndex, a);
             let zb = utils.funcOrValue(b.style.zIndex, b);
             if (za === zb) return 0;

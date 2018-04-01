@@ -2,7 +2,7 @@
  *
  * Handle events on canvas (Includes both user's events and debugging events)
  * - Compare event's coordinate and the coordinate of every sprite in
- *   Easycanvas.paintList, and check sprite's handlers one by one.
+ *   Easycanvas.children, and check sprite's handlers one by one.
  * - Events: mousedown, mousemove, mouseup, touchstart, touchmove, touchend,
  *   click, contextmenu
  * - Expanded events: hold, touchout
@@ -27,7 +27,7 @@ const sortByIndex = function (arr) {
             }
         }
 
-        return utils.funcOrValue(a.events.eIndex, a) < utils.funcOrValue(b.events.eIndex, b) ? 1 : -1;
+        return utils.funcOrValue(utils.firstValuable(a.events.eIndex, a.style.zIndex), a) < utils.funcOrValue(utils.firstValuable(b.events.eIndex, b.style.zIndex), b) ? 1 : -1;
     });
 };
 
@@ -84,7 +84,7 @@ const looper = function (arr, e, caughts) {
                     }
                 }
 
-                return utils.funcOrValue(a.events.eIndex, a) >= 0;
+                return utils.funcOrValue(utils.firstValuable(a.events.eIndex, a.style.zIndex), a) >= 0;
             })), e, caughts);
         }
         if (hitSprite(item, e)) {
@@ -99,7 +99,7 @@ const looper = function (arr, e, caughts) {
                     }
                 }
 
-                return utils.funcOrValue(a.events.eIndex, a) < 0;
+                return !(utils.funcOrValue(utils.firstValuable(a.events.eIndex, a.style.zIndex), a) >= 0);
             })), e, caughts);
         }
     }
@@ -117,8 +117,8 @@ module.exports = function (e) {
         e.layerY = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
     }
 
-    let scaleX = Math.floor(this.$dom.style.width) / this.contextWidth;
-    let scaleY = Math.floor(this.$dom.style.height) / this.contextHeight;
+    let scaleX = Math.floor(this.$dom.getBoundingClientRect().width) / this.width;
+    let scaleY = Math.floor(this.$dom.getBoundingClientRect().height) / this.height;
 
     scaleX = scaleX || 1;
     scaleY = scaleY || 1;
@@ -135,7 +135,8 @@ module.exports = function (e) {
     }
 
     let caughts = [];
-    looper(sortByIndex($canvas.paintList), $e, caughts);
+
+    looper(sortByIndex($canvas.children), $e, caughts);
 
     if (process.env.NODE_ENV !== 'production') {
         // 开发者工具select模式下为选取元素

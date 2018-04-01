@@ -2,7 +2,7 @@ module.exports = {
     funcOrValue: function (funcOrValue, _this) {
         if (typeof funcOrValue === 'function') {
             let res = funcOrValue.call(_this);
-            return res && typeof res.$$value !== 'undefined' ? res.$$value : res;
+            return res;
         }
 
         return funcOrValue;

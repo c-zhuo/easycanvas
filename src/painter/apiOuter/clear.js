@@ -1,10 +1,10 @@
 /** ********** *
  *
- * Clear paintList
+ * Clear children
  *
  * ********** **/
 
 module.exports = function () {
-    this.paintList = [];
-    // this.paintList.splice(0);
+    this.children = [];
+    // this.children.splice(0);
 };

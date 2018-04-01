@@ -42,13 +42,13 @@ module.exports = function ($canvas, props, imgWidth, imgHeight) {
         props.th = props.th + props.ty;
         props.ty = 0;
     }
-    if (props.tx + props.tw > $canvas.contextWidth && props.tw) {
-        let cutRate = (props.tx + props.tw - $canvas.contextWidth) / props.tw;
+    if (props.tx + props.tw > $canvas.width && props.tw) {
+        let cutRate = (props.tx + props.tw - $canvas.width) / props.tw;
         props.tw -= props.tw * cutRate;
         props.sw -= props.sw * cutRate;
     }
-    if (props.ty + props.th > $canvas.contextHeight && props.th) {
-        let cutRate = (props.ty + props.th - $canvas.contextHeight) / props.th;
+    if (props.ty + props.th > $canvas.height && props.th) {
+        let cutRate = (props.ty + props.th - $canvas.height) / props.th;
         props.th -= props.th * cutRate;
         props.sh -= props.sh * cutRate;
     }
