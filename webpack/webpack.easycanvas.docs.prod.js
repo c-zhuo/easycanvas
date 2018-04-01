@@ -25,7 +25,7 @@ var config = {
     entry: js,
     resolve: base.resolve,
     output: {
-        path: path.resolve('./doc'),
+        path: path.resolve('./docs'),
         filename: '[name].js',
         libraryTarget: 'umd'
     },

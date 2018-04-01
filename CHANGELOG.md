@@ -1,8 +1,8 @@
 ## Easycanvas Changelog
 
-#### 0.3.0 (30kb to 31kb)
+#### 0.3.0 (30kb to 29kb)
 
-- DEVELOPING.
+- Docs: Add Chinese guide site.
 
 - Change: Removed `./build/easycanvas.min.js`. The `./build/easycanvas.js` file is already compressed.
 
