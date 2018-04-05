@@ -263,8 +263,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 
-	var preAdd = function preAdd(item) {
-	    item = item || {};
+	var preAdd = function preAdd(_item) {
+	    var item = _item || {};
 
 	    // let $canvas = item.$canvas;
 
@@ -1419,6 +1419,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    for (var i = 0; i < caughts.length; i++) {
 	        // trigger 'mouseout' or 'touchout' event 
 	        if (($e.type === 'mousemove' || $e.type === 'touchmove') && $canvas.eLastMouseHover && $canvas.eLastMouseHover !== caughts[i] && caughts.indexOf($canvas.eLastMouseHover) === -1) {
+	            // touchout待移除（目前可能不触发）
 	            var eMouseout = $canvas.eLastMouseHover['events']['mouseout'] || $canvas.eLastMouseHover['events']['touchout'];
 	            if (eMouseout) {
 	                eMouseout.call($canvas.eLastMouseHover, $e);

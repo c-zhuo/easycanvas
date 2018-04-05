@@ -69,8 +69,8 @@ const ChangeChildrenToSprite = function ($parent) {
     }
 };
 
-const preAdd = function (item) {
-    item = item || {};
+const preAdd = function (_item) {
+    let item = _item || {};
 
     // let $canvas = item.$canvas;
 

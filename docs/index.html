@@ -4,26 +4,6 @@
     <title>Doc</title>
     <link href="./lib/sidebar/css/jquery-accordion-menu.css" rel="stylesheet" type="text/css" />
     <link href="./lib/sidebar/css/font-awesome.css" rel="stylesheet" type="text/css" />
-    <style type="text/css">
-        /**{box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}*/
-        .filterinput{
-            background-color:rgba(249, 244, 244, 0);
-            border-radius:15px;
-            width:90%;
-            height:30px;
-            border:thin solid #FFF;
-            text-indent:0.5em;
-            font-weight:bold;
-            color:#FFF;
-        }
-        #menu-list a{
-            overflow:hidden;
-            text-overflow:ellipsis;
-            -o-text-overflow:ellipsis;
-            white-space:nowrap;
-            width:100%;
-        }
-    </style>
     <script src="./lib/sidebar/js/jquery-1.11.2.min.js" type="text/javascript"></script>
     <script src="./lib/sidebar/js/jquery-accordion-menu.js" type="text/javascript"></script>
 </head>
@@ -48,12 +28,14 @@
                             <span class="sidebar-text">{{ item.name }}</span>
                         </a>
                         <ul class="submenu">
+                            <!-- 不绑定touchstart不生效，应该是和jQuery的特效冲突 -->
                             <li
                                 :class="{
                                     'active': currentTitle === subitem.name
                                 }"
                                 v-for="subitem in item.children"
-                                @click.stop.prevent="chooseTitle(subitem)">
+                                @click.stop.prevent="chooseTitle(subitem)"
+                                @touchstart.stop.prevent="chooseTitle(subitem)">
                                 <a href="#">{{ subitem.name }}</a>
                             </li>
                         </ul>

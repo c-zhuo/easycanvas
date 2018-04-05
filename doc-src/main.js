@@ -3,7 +3,6 @@
 // import Physics from './physics/physics.js';
 
 import Vue from './lib/vue-2.4.0.min.js';
-import base64 from './constant/base64.js';
 import sidebar from './constant/sidebar.js';
 import content from './constant/content.js';
 
@@ -50,7 +49,6 @@ const DemoableCodeClassName = 'code-2-demo';
         el: '#docApp',
         template: document.getElementById('docApp-template').innerHTML,
         data: {
-            headerImg: base64.headerImg,
             sidebar: sidebar,
             currentTitle: '',
             contentDom: (function () {

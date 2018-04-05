@@ -1,6 +1,7 @@
 import quickstart from './contents/quickstart.js';
 import inherit from './contents/inherit.js';
-import cut from './contents/cut.js';
+import image from './contents/image.js';
+import events from './contents/events.js';
 
 let content = `
     <article id="概述">
@@ -25,7 +26,8 @@ let content = `
 
     ${quickstart}
     ${inherit}
-    ${cut}
+    ${image}
+    ${events}
 `;
 
 let splits = content.split(/<\/*code>/);
