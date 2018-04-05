@@ -170,6 +170,7 @@ module.exports = function (e) {
             $canvas.eLastMouseHover && $canvas.eLastMouseHover !== caughts[i] &&
             caughts.indexOf($canvas.eLastMouseHover) === -1
         ) {
+            // touchout待移除（目前可能不触发）
             let eMouseout = $canvas.eLastMouseHover['events']['mouseout'] || $canvas.eLastMouseHover['events']['touchout'];
             if (eMouseout) {
                 eMouseout.call($canvas.eLastMouseHover, $e);

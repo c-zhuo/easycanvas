@@ -17,6 +17,8 @@ html, body {
     z-index: -1;
 }
 
+/*定义滚动条高宽及背景
+ 高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar
 {
     width: 4px;
@@ -76,8 +78,15 @@ div.sidebar {
     padding: 0;
     border-right: 1px solid #eee;
 
-    /*定义滚动条高宽及背景
-     高宽分别对应横竖滚动条的尺寸*/
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: 2;
+        left: 0;
+        width: 176px;
+        /*border-bottom: 1px solid #8ac6ef;*/
+        box-shadow: 0px 0px 2px 1px #8ac7ef;
+    }
 }
 
 /*div.demos {
