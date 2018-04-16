@@ -9,7 +9,7 @@
 import tick from 'utils/tick.js';
 
 module.exports = function (f) {
-    let time = new Date().getTime();
+    let time = Date.now();
     window.Easycanvas.transition.$lastPaintTime = this.$nextTickTime = time;
 
     if (time - this.fpsCalculateTime >= 1000) {
@@ -28,6 +28,8 @@ module.exports = function (f) {
             if (time - this.$lastPaintTime <= 1000 / this.maxFps) {
                 return;
             }
+
+            // 让$lastPaintTime不带有小尾巴（101，199，202，298这种变成100，200，300，400）
             // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
             this.$lastPaintTime = time - (time - this.$lastPaintTime) % (1000 / this.maxFps);
         }

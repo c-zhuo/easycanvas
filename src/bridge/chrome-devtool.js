@@ -37,20 +37,21 @@ if (process.env.NODE_ENV !== 'production') {
                             name: item.name,
                             parent: item.$parent && item.$parent.$id,
                             style: {},
-                            children: item.children && item.children.map(function (child) {
+                            children: item.children && item.children.map((child) => {
                                 return child.$id;
                             }),
+                            rendered: item.$rendered,
                         };
 
-                        if (item.content.img || item.content.text) {
-                            res[item.$id].rendered = false;
-                            for (let i = 0, l = $children.length; i < l; i++) {
-                                if ($children[i].$id === item.$id) {
-                                    res[item.$id].rendered = true;
-                                    break;
-                                }
-                            }
-                        }
+                        // if (item.content.img || item.content.text) {
+                        //     res[item.$id].rendered = false;
+                        //     for (let i = 0, l = $children.length; i < l; i++) {
+                        //         if ($children[i].$id === item.$id) {
+                        //             res[item.$id].rendered = true;
+                        //             break;
+                        //         }
+                        //     }
+                        // }
 
                         for (let i in item.style) {
                             res[item.$id].style[i] = utils.funcOrValue(item.style[i], item);

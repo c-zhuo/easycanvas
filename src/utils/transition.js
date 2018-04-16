@@ -8,7 +8,7 @@ const second2frame = function (second) {
 };
 
 const getLastPaintTime = function (transitions) {
-    return transitions.$lastPaintTime || +new Date();
+    return transitions.$lastPaintTime || Date.now();
 };
 
 const transFuncs = {
@@ -39,7 +39,7 @@ const transFuncs = {
                     result = b;
                 } else if (b < a && result < b) {
                     resFunc.$done = true;
-                    result = a;
+                    result = b;
                 }
             }
 

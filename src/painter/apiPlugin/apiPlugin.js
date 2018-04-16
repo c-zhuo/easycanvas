@@ -42,9 +42,12 @@ module.exports = function () {
             });
         });
 
+        const MaskCanvas = document.createElement('img');
+        MaskCanvas.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
+
         let $selectMask = null;
-        let maskCanvas = document.createElement('img');
-        maskCanvas.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
+
+        const PerSecondCollects = ['paintArea', 'loadArea', 'paintTimes', 'paintTimeSpend'];
 
         return {
             hook: {
@@ -57,23 +60,28 @@ module.exports = function () {
                     //     value: _props
                     // });
 
-                    $canvas.$perf.paintArea += _props.tw * _props.th;
-                    $canvas.$perf.paintTimes ++;
+                    $canvas.$perf.$paintArea += _props[7] * _props[8];
+                    $canvas.$perf.$loadArea += _props[3] * _props[4];
+                    $canvas.$perf.$paintTimes++;
                 },
 
                 register ($canvas) {
                     $canvas.$id = Math.random().toString(36).substr(2);
 
                     // 性能打点
-                    $canvas.$perf = {
-                        paintArea: 0,
-                        paintTimes: 0,
-                    };
+                    // 带$是临时值，否则为每秒的快照值；临时值每秒快照一次
+                    // 因此开发工具只需要使用快照进行分析即可
+                    $canvas.$perf = {};
+                    PerSecondCollects.forEach((key) => {
+                        $canvas.$perf[key] = 0;
+                        $canvas.$perf['$' + key] = 0;
+                    });
+
                     setInterval(() => {
-                        $canvas.$perf = {
-                            paintArea: 0,
-                            paintTimes: 0,
-                        };
+                        PerSecondCollects.forEach((key) => {
+                            $canvas.$perf[key] = $canvas.$perf['$' + key];
+                            $canvas.$perf['$' + key] = 0;
+                        });
                     }, 1000);
 
                     if (!$canvas.$flags.devtoolHanged) {
@@ -86,6 +94,10 @@ module.exports = function () {
                     }
                 },
 
+                timeCollect ($canvas, {type, value}) {
+                    $canvas.$perf.$paintTimeSpend += value;
+                },
+
                 selectSprite (isChoosing, $canvas, $sprite) {
                     if (!$sprite || !window[constants.devFlag].selectMode) return false;
 
@@ -93,9 +105,10 @@ module.exports = function () {
                         $selectMask = $canvas.add({
                             name: constants.devFlag,
                             content: {
-                                img: maskCanvas,
+                                img: MaskCanvas,
                             },
-                            style: {}
+                            style: {
+                            }
                         });
                     }
 
@@ -105,7 +118,7 @@ module.exports = function () {
                                 return;
                             }
                             $selectMask.style[_key] = function () {
-                                return $sprite.$cache[_key] || 0;
+                                return $sprite.$cache[_key];
                             };
                         })(key);
                     });

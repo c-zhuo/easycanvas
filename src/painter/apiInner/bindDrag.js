@@ -4,6 +4,7 @@
  * - Whether to trigger handlers, is decided by '$Sprite.scroll.scrollable'.
  * - Drag events FISRT, scroll events FOLLOWING. Drags will stop events' bubbling.
  * - TODO: Move 'bindings' to event handlers
+ * - WARN: Hold will not trigger on draging
  *
  * ********** **/
 
@@ -48,22 +49,28 @@ module.exports = {
             return dragHandler(oMousedown, $sprite, e, $sprite.drag.dragable);
         }.bind($sprite);
 
-        let oMousehold = $sprite.events.hold || $sprite.events.mousemove; //TODO 不规范？
+        let oMousemove = $sprite.events.mousemove || $sprite.events.touchmove;
         $sprite.events[isMobile ? 'touchmove' : 'mousemove'] = function (e) {
             let worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
             if (worked) {
                 this.style.tx += e.canvasX - startDragPosition.x;
                 this.style.ty += e.canvasY - startDragPosition.y;
 
+                // 立即更新cache，否则拖拽太快可能触发跟不上
+                this.$canvas.$flags.dragging = this;
+
                 startDragPosition.x = e.canvasX;
                 startDragPosition.y = e.canvasY;
             }
-            return dragHandler(oMousehold, $sprite, e, worked);
+            return dragHandler(oMousemove, $sprite, e, worked);
         }.bind($sprite);
 
         let oMouseup = $sprite.events.mouseup || $sprite.events.touchend;
         $sprite.events[isMobile ? 'touchend' : 'mouseup'] = function (e) {
             let worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
+
+            this.$canvas.$flags.dragging = undefined;
+
             if ($sprite.drag.draggingFlag && $sprite.drag.dragable) {
                 setFlag($sprite, false);
             }

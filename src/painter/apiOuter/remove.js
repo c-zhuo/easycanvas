@@ -9,7 +9,7 @@ module.exports = function (item, del) {
     item.style.visible = false;
     item.removing = true;
 
-    setTimeout(function () {
+    setTimeout(() => {
         if (item.$parent) {
             item.$parent.children = item.$parent.children.filter(function (c) {
                 return c.removing !== true;
@@ -19,7 +19,7 @@ module.exports = function (item, del) {
                 return c.removing !== true;
             });
         }
-    }.bind(this));
+    });
 
     if (del) {
         this.children.splice(this.children.indexOf(item), 1);
