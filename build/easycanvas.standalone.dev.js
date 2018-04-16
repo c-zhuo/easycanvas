@@ -63,7 +63,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	module.exports = {
+	var utils = {
+	    isArray: Array.isArray || function (arg) {
+	        return Object.prototype.toString.call(arg) === '[object Array]';
+	    },
+
 	    funcOrValue: function funcOrValue(_funcOrValue, _this) {
 	        if (typeof _funcOrValue === 'function') {
 	            var res = _funcOrValue.call(_this);
@@ -75,11 +79,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // 执行钩子函数或者钩子函数队列
 	    execFuncs: function execFuncs(funcOrArray, _this, _arg) {
+	        if (funcOrArray) {
+	            if (!utils.isArray(_arg)) {
+	                _arg = [_arg];
+	            }
+	        }
+
 	        if (typeof funcOrArray === 'function') {
 	            funcOrArray.apply(_this, _arg);
-	        } else if (Array.prototype.isPrototypeOf(funcOrArray)) {
+	        } else if (utils.isArray(funcOrArray)) {
 	            funcOrArray.forEach(function (f) {
-	                f && f.apply(_this);
+	                f && f.apply(_this, _arg);
 	            });
 	        }
 	    },
@@ -94,6 +104,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return typeof a === 'undefined' ? b : a;
 	    }
 	};
+
+	module.exports = utils;
 
 /***/ }),
 /* 2 */
@@ -272,6 +284,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        item.$id = Math.random().toString(36).substr(2);
 	    }
 
+	    item.$tickedTimes = item.$tickedTimes || 0;
+
 	    item.content = item.content || {};
 	    // if (typeof item.content.img === 'string') {
 	    //     item.content.img = $canvas.imgLoader(item.content.img);
@@ -289,12 +303,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // item.style.display = item.style.display;
 
 	    var _img = _utils2.default.funcOrValue(item.content.img);
-	    if (_img === undefined) {
-	        _img = {
-	            width: 0,
-	            height: 0
-	        };
-	    }
+	    // if (_img === undefined) {
+	    //     _img = {
+	    //         width: 0,
+	    //         height: 0,
+	    //     };
+	    // }
 
 	    _constants2.default.xywh.forEach(function (key) {
 	        item.style[key] = item.style[key] || 0;
@@ -338,12 +352,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    item.children = item.children || [];
 
 	    ChangeChildrenToSprite(item);
-	    // item.children.forEach(function (c) {
-	    //     // c.$canvas = item.$canvas;
-	    //     c.$parent = item;
-
-	    //     c = new sprite(c);
-	    // });
 
 	    item.$cache = {};
 	    item.$scroll = {
@@ -446,6 +454,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                           * - Whether to trigger handlers, is decided by '$Sprite.scroll.scrollable'.
 	                           * - Drag events FISRT, scroll events FOLLOWING. Drags will stop events' bubbling.
 	                           * - TODO: Move 'bindings' to event handlers
+	                           * - WARN: Hold will not trigger on draging
 	                           *
 	                           * ********** **/
 
@@ -486,22 +495,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return dragHandler(oMousedown, $sprite, e, $sprite.drag.dragable);
 	        }.bind($sprite);
 
-	        var oMousehold = $sprite.events.hold || $sprite.events.mousemove; //TODO 不规范？
+	        var oMousemove = $sprite.events.mousemove || $sprite.events.touchmove;
 	        $sprite.events[isMobile ? 'touchmove' : 'mousemove'] = function (e) {
 	            var worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
 	            if (worked) {
 	                this.style.tx += e.canvasX - startDragPosition.x;
 	                this.style.ty += e.canvasY - startDragPosition.y;
 
+	                // 立即更新cache，否则拖拽太快可能触发跟不上
+	                this.$canvas.$flags.dragging = this;
+
 	                startDragPosition.x = e.canvasX;
 	                startDragPosition.y = e.canvasY;
 	            }
-	            return dragHandler(oMousehold, $sprite, e, worked);
+	            return dragHandler(oMousemove, $sprite, e, worked);
 	        }.bind($sprite);
 
 	        var oMouseup = $sprite.events.mouseup || $sprite.events.touchend;
 	        $sprite.events[isMobile ? 'touchend' : 'mouseup'] = function (e) {
 	            var worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
+
+	            this.$canvas.$flags.dragging = undefined;
+
 	            if ($sprite.drag.draggingFlag && $sprite.drag.dragable) {
 	                setFlag($sprite, false);
 	            }
@@ -715,7 +730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (this.hooks[event] === func || !func) {
 	        delete this.hooks[event];
-	    } else if (Array.prototype.isPrototypeOf(this.hooks[event])) {
+	    } else if (_utils2.default.isArray(this.hooks[event])) {
 	        this.hooks[event][this.hooks[event].indexOf(func)] = undefined;
 	    }
 	}; /** ********** *
@@ -739,7 +754,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = function (event, func) {
 		if (!this.hooks[event]) {
 			this.hooks[event] = func;
-		} else if (Array.prototype.isPrototypeOf(this.hooks[event])) {
+		} else if (_utils2.default.isArray(this.hooks[event])) {
 			this.hooks[event].push(func);
 		} else {
 			this.hooks[event] = [this.hooks[event], func];
@@ -965,21 +980,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            style: {},
 	                            children: item.children && item.children.map(function (child) {
 	                                return child.$id;
-	                            })
+	                            }),
+	                            rendered: item.$rendered
 	                        };
 
-	                        if (item.content.img || item.content.text) {
-	                            res[item.$id].rendered = false;
-	                            for (var i = 0, l = $children.length; i < l; i++) {
-	                                if ($children[i].$id === item.$id) {
-	                                    res[item.$id].rendered = true;
-	                                    break;
-	                                }
-	                            }
-	                        }
+	                        // if (item.content.img || item.content.text) {
+	                        //     res[item.$id].rendered = false;
+	                        //     for (let i = 0, l = $children.length; i < l; i++) {
+	                        //         if ($children[i].$id === item.$id) {
+	                        //             res[item.$id].rendered = true;
+	                        //             break;
+	                        //         }
+	                        //     }
+	                        // }
 
-	                        for (var _i in item.style) {
-	                            res[item.$id].style[_i] = _utils2.default.funcOrValue(item.style[_i], item);
+	                        for (var i in item.style) {
+	                            res[item.$id].style[i] = _utils2.default.funcOrValue(item.style[i], item);
 	                        }
 
 	                        _constants2.default.xywh.forEach(function (key) {
@@ -1023,10 +1039,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 
 	                var looper = function looper(array) {
-	                    for (var _i2 = 0; _i2 < array.length; _i2++) {
-	                        if (array[_i2].$id === $spriteId) return array[_i2];
+	                    for (var _i = 0; _i < array.length; _i++) {
+	                        if (array[_i].$id === $spriteId) return array[_i];
 
-	                        var _res2 = looper(array[_i2].children);
+	                        var _res2 = looper(array[_i].children);
 	                        if (_res2) {
 	                            return {
 	                                $sprite: _res2.$sprite || _res2,
@@ -1165,9 +1181,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	    utils: _utils2.default,
 	    mirror: _mirror2.default,
 	    class: _main2.default,
-	    $version: '0.3.0-beta.2',
+	    $version: '0.3.1',
 	    env: ("develop")
 	};
+
+	if (true) {
+	    Easycanvas.$warn = function () {
+	        var lastConsoleTime = 0;
+	        return function () {
+	            var now = Date.now();
+	            if (now - lastConsoleTime < 1000) {
+	                // 防止连续警告
+	                return;
+	            }
+
+	            var args = Array.prototype.slice.call(arguments);
+
+	            lastConsoleTime = now;
+	            console.warn.apply(this, args);
+	        };
+	    }();
+	}
 
 	if (window.Easycanvas) {
 	    console.warn('[Easycanvas] already loaded.');
@@ -1388,6 +1422,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var caughts = [];
+
+	    if ($canvas.$flags.dragging && $canvas.$flags.dragging.$id) {
+	        caughts.push($canvas.$flags.dragging);
+	    }
 
 	    looper(sortByIndex($canvas.children), $e, caughts);
 
@@ -1620,13 +1658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if ($sprite.type === 'img') {
 	        cxt.drawImage(props[0], props[1], props[2], props[3], props[4], props[5], props[6], props[7], props[8]);
 	        if (true) {
-	            $canvas.$plugin.hook.drawImage($canvas, {
-	                img: props[0],
-	                tx: props[1],
-	                ty: props[2],
-	                tw: props[3],
-	                th: props[4]
-	            });
+	            $canvas.$plugin.hook.drawImage($canvas, props);
 	        }
 	    } else if ($sprite.type === 'text' && props.content) {
 	        cxt.font = props.font;
@@ -1792,9 +1824,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (key === 'tw' || key === 'th') {
 	            return _utils2.default.firstValuable(currentValue, getFinalStyle($sprite.$parent, $canvas, key));
 	        } else if (key === 'opacity' || key === 'scale') {
-	            return _utils2.default.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 1) * (currentValue || 1);
+	            return _utils2.default.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 1) * _utils2.default.firstValuable(currentValue, 1);
 	        } else {
-	            return _utils2.default.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 0) + (currentValue || 0);
+	            return _utils2.default.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 0) + _utils2.default.firstValuable(currentValue, 0);
 	        }
 	    }
 
@@ -1852,7 +1884,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (config.h) {
 	                _props.sx = index % wTimes * pw;
-	                _props.sy = _utils2.default.firstValuable(config.y * ph, Math.floor(index / wTimes) % hTimes * ph);
+	                _props.sy = Math.floor(index / wTimes) % hTimes * ph;
 	            }
 	        }
 	        if (!config.loop && index > 0 && _props.sx === 0 && _props.sy === 0) {
@@ -1926,12 +1958,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = function (i, index) {
 	    if (_utils2.default.funcOrValue(i.style.visible, i) === false) {
-	        _utils2.default.execFuncs(i.hooks.beforeTick, i);
-	        _utils2.default.execFuncs(i.hooks.ticked, i);
+	        _utils2.default.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
+	        _utils2.default.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
 	        return;
 	    }
 
-	    _utils2.default.execFuncs(i.hooks.beforeTick, i);
+	    _utils2.default.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
 
 	    var $canvas = this;
 
@@ -1954,6 +1986,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (_props.locate === 'center') {
 	        _props.tx = _props.tx - 0.5 * _props.tw;
 	        _props.ty = _props.ty - 0.5 * _props.th;
+	    } else if (_props.locate === 'ld') {
+	        _props.tx = _props.tx;
+	        _props.ty = _props.ty - 1 * _props.th;
+	    } else if (_props.locate === 'rt') {
+	        _props.tx = _props.tx - 1 * _props.tw;
+	        _props.ty = _props.ty;
 	    } else if (_props.locate === 'rd') {
 	        _props.tx = _props.tx - 1 * _props.tw;
 	        _props.ty = _props.ty - 1 * _props.th;
@@ -2059,6 +2097,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    settings.globalAlpha = _utils2.default.firstValuable(_props.opacity, 1);
 
 	    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh && _props.tx < $canvas.width && _props.ty < $canvas.height) {
+	        i.$rendered = true;
+
 	        var $paintSprite = {
 	            $id: i.$id,
 	            type: 'img',
@@ -2072,13 +2112,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 
 	        $canvas.$children.push($paintSprite);
+	    } else {
+	        i.$rendered = false;
 	    }
 
 	    // TODO: rewrite
 	    if (_text) {
 	        var textTx = _props.tx;
 	        var textTy = _props.ty;
-	        var textAlign = _props.align || props.textAlign || 'left';
+	        var textAlign = _props.align || _props.textAlign || 'left';
 	        var textFont = _props.textFont || '14px Arial';
 	        var textFontsize = parseInt(textFont);
 	        var textLineHeight = _props.lineHeight || textFontsize;
@@ -2181,7 +2223,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    (0, _perPaintDeliverChildren2.default)($canvas, _children, 1);
 
-	    _utils2.default.execFuncs(i.hooks.ticked, i);
+	    _utils2.default.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
 	};
 
 /***/ }),
@@ -2197,7 +2239,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = function (f) {
-	    var time = new Date().getTime();
+	    var time = Date.now();
 	    window.Easycanvas.transition.$lastPaintTime = this.$nextTickTime = time;
 
 	    if (time - this.fpsCalculateTime >= 1000) {
@@ -2216,6 +2258,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (time - this.$lastPaintTime <= 1000 / this.maxFps) {
 	                return;
 	            }
+
+	            // 让$lastPaintTime不带有小尾巴（101，199，202，298这种变成100，200，300，400）
 	            // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
 	            this.$lastPaintTime = time - (time - this.$lastPaintTime) % (1000 / this.maxFps);
 	        }
@@ -2424,7 +2468,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    }
 
+	    if (true) {
+	        var t0 = Date.now();
+	    }
 	    $canvas.$paint();
+	    if (true) {
+	        var paintTime = Date.now() - t0;
+	        $canvas.$plugin.hook.timeCollect($canvas, {
+	            type: 'paint',
+	            value: paintTime
+	        });
+	    }
 
 	    this.fps++;
 
@@ -2472,8 +2526,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (true) {
 	        this.fpsHandler = this.fpsHandler || function (fps) {
-	            if (this.maxFps > 0 && fps < this.maxFps * 0.5) {
-	                console.warn('Low FPS detected(' + fps + '), max FPS in settings is ' + this.maxFps + '.');
+	            if (this.maxFps > 0 && fps < this.maxFps - 5 && fps < 40) {
+	                console.warn('[Easycanvas] Low FPS detected (' + fps + '/' + this.maxFps + ').');
 	            }
 	        };
 	    }
@@ -2559,7 +2613,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    $dom: null,
 	    $paintContext: null,
 	    $nextTickTime: 0,
-	    $lastPaintTime: 0,
+	    $lastPaintTime: 0, // 只有当maxFps位于1～59时才不为0
 	    $pausing: false,
 	    $freezing: false,
 
@@ -2614,6 +2668,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * ********** **/
 
 	module.exports = function (item, del) {
+	    var _this = this;
+
 	    item.style.visible = false;
 	    item.removing = true;
 
@@ -2623,11 +2679,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return c.removing !== true;
 	            });
 	        } else {
-	            this.children = this.children.filter(function (c) {
+	            _this.children = _this.children.filter(function (c) {
 	                return c.removing !== true;
 	            });
 	        }
-	    }.bind(this));
+	    });
 
 	    if (del) {
 	        this.children.splice(this.children.indexOf(item), 1);
@@ -2684,7 +2740,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = function () {
 	    var _this = this;
 
-	    this.fpsCalculateTime = new Date().getTime();
+	    this.fpsCalculateTime = Date.now();
 	    this.$rAFer(this.paint.bind(this));
 
 	    setInterval(function () {
@@ -2755,9 +2811,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        });
 
+	        var MaskCanvas = document.createElement('img');
+	        MaskCanvas.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
+
 	        var $selectMask = null;
-	        var maskCanvas = document.createElement('img');
-	        maskCanvas.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
+
+	        var PerSecondCollects = ['paintArea', 'loadArea', 'paintTimes', 'paintTimeSpend'];
 
 	        return {
 	            hook: {
@@ -2770,22 +2829,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    //     value: _props
 	                    // });
 
-	                    $canvas.$perf.paintArea += _props.tw * _props.th;
-	                    $canvas.$perf.paintTimes++;
+	                    $canvas.$perf.$paintArea += _props[7] * _props[8];
+	                    $canvas.$perf.$loadArea += _props[3] * _props[4];
+	                    $canvas.$perf.$paintTimes++;
 	                },
 	                register: function register($canvas) {
 	                    $canvas.$id = Math.random().toString(36).substr(2);
 
 	                    // 性能打点
-	                    $canvas.$perf = {
-	                        paintArea: 0,
-	                        paintTimes: 0
-	                    };
+	                    // 带$是临时值，否则为每秒的快照值；临时值每秒快照一次
+	                    // 因此开发工具只需要使用快照进行分析即可
+	                    $canvas.$perf = {};
+	                    PerSecondCollects.forEach(function (key) {
+	                        $canvas.$perf[key] = 0;
+	                        $canvas.$perf['$' + key] = 0;
+	                    });
+
 	                    setInterval(function () {
-	                        $canvas.$perf = {
-	                            paintArea: 0,
-	                            paintTimes: 0
-	                        };
+	                        PerSecondCollects.forEach(function (key) {
+	                            $canvas.$perf[key] = $canvas.$perf['$' + key];
+	                            $canvas.$perf['$' + key] = 0;
+	                        });
 	                    }, 1000);
 
 	                    if (!$canvas.$flags.devtoolHanged) {
@@ -2797,6 +2861,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        }
 	                    }
 	                },
+	                timeCollect: function timeCollect($canvas, _ref) {
+	                    var type = _ref.type,
+	                        value = _ref.value;
+
+	                    $canvas.$perf.$paintTimeSpend += value;
+	                },
 	                selectSprite: function selectSprite(isChoosing, $canvas, $sprite) {
 	                    if (!$sprite || !window[_constants2.default.devFlag].selectMode) return false;
 
@@ -2804,7 +2874,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        $selectMask = $canvas.add({
 	                            name: _constants2.default.devFlag,
 	                            content: {
-	                                img: maskCanvas
+	                                img: MaskCanvas
 	                            },
 	                            style: {}
 	                        });
@@ -2816,7 +2886,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                return;
 	                            }
 	                            $selectMask.style[_key] = function () {
-	                                return $sprite.$cache[_key] || 0;
+	                                return $sprite.$cache[_key];
 	                            };
 	                        })(key);
 	                    });
@@ -3047,7 +3117,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	var getLastPaintTime = function getLastPaintTime(transitions) {
-	    return transitions.$lastPaintTime || +new Date();
+	    return transitions.$lastPaintTime || Date.now();
 	};
 
 	var transFuncs = {
@@ -3078,7 +3148,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    result = b;
 	                } else if (b < a && result < b) {
 	                    resFunc.$done = true;
-	                    result = a;
+	                    result = b;
 	                }
 	            }
 

@@ -6,7 +6,7 @@
  * ********** **/
 
 module.exports = function () {
-	this.fpsCalculateTime = new Date().getTime();
+	this.fpsCalculateTime = Date.now();
     this.$rAFer(this.paint.bind(this));
 
     setInterval(() => {

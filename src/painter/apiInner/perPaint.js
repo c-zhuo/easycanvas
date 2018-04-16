@@ -23,12 +23,12 @@ const isChineseChar = function (temp) {
 
 module.exports = function (i, index) {
     if (utils.funcOrValue(i.style.visible, i) === false) {
-        utils.execFuncs(i.hooks.beforeTick, i);
-        utils.execFuncs(i.hooks.ticked, i);
+        utils.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
+        utils.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
         return;
     }
     
-    utils.execFuncs(i.hooks.beforeTick, i);
+    utils.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
 
     let $canvas = this;
 
@@ -51,6 +51,12 @@ module.exports = function (i, index) {
     if (_props.locate === 'center') {
         _props.tx = _props.tx - 0.5 * _props.tw;
         _props.ty = _props.ty - 0.5 * _props.th;
+    } else if (_props.locate === 'ld') {
+        _props.tx = _props.tx;
+        _props.ty = _props.ty - 1 * _props.th;
+    } else if (_props.locate === 'rt') {
+        _props.tx = _props.tx - 1 * _props.tw;
+        _props.ty = _props.ty;
     } else if (_props.locate === 'rd') {
         _props.tx = _props.tx - 1 * _props.tw;
         _props.ty = _props.ty - 1 * _props.th;
@@ -156,6 +162,8 @@ module.exports = function (i, index) {
     settings.globalAlpha = utils.firstValuable(_props.opacity, 1)
 
     if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh && _props.tx < $canvas.width && _props.ty < $canvas.height) {
+        i.$rendered = true;
+
         let $paintSprite = {
             $id: i.$id,
             type: 'img',
@@ -169,13 +177,15 @@ module.exports = function (i, index) {
         };
 
         $canvas.$children.push($paintSprite);
+    } else {
+        i.$rendered = false;
     }
 
     // TODO: rewrite
     if (_text) {
         let textTx = _props.tx;
         let textTy = _props.ty;
-        let textAlign = _props.align || props.textAlign || 'left';
+        let textAlign = _props.align || _props.textAlign || 'left';
         let textFont = _props.textFont || '14px Arial';
         let textFontsize = parseInt(textFont);
         let textLineHeight = _props.lineHeight || textFontsize;
@@ -278,5 +288,5 @@ module.exports = function (i, index) {
 
     deliverChildren($canvas, _children, 1);
 
-    utils.execFuncs(i.hooks.ticked, i);
+    utils.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
 };

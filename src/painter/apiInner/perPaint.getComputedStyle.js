@@ -10,7 +10,6 @@
 
 import utils from 'utils/utils.js';
 import constants from 'constants';
-
 const getFinalStyle = function ($sprite, $canvas, key) {
     let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
 
@@ -29,18 +28,17 @@ const getFinalStyle = function ($sprite, $canvas, key) {
         else if (key === 'opacity' || key === 'scale') {
             return (
                 utils.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 1)
-            ) * (currentValue || 1);
+            ) * utils.firstValuable(currentValue, 1);
         } else {
             return (
                 utils.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 0)
-            ) + (currentValue || 0);
+            ) + utils.firstValuable(currentValue, 0);
         }
 
     }
 
     return currentValue;
 };
-
 
 module.exports = function ($sprite, $canvas) {
     let _props = {};
@@ -92,7 +90,7 @@ module.exports = function ($sprite, $canvas) {
 
             if (config.h) {
                 _props.sx = index % wTimes * pw;
-                _props.sy = utils.firstValuable(config.y * ph, Math.floor(index / wTimes) % hTimes * ph);
+                _props.sy = Math.floor(index / wTimes) % hTimes * ph;
             }
         }
         if (!config.loop && index > 0 && _props.sx === 0 && _props.sy === 0) {

@@ -9,7 +9,7 @@ const PROTOS = {
     $dom: null,
     $paintContext: null,
     $nextTickTime: 0,
-    $lastPaintTime: 0,
+    $lastPaintTime: 0, // 只有当maxFps位于1～59时才不为0
     $pausing: false,
     $freezing: false,
 

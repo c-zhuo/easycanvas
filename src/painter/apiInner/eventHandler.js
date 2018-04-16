@@ -136,6 +136,10 @@ module.exports = function (e) {
 
     let caughts = [];
 
+    if ($canvas.$flags.dragging && $canvas.$flags.dragging.$id) {
+        caughts.push($canvas.$flags.dragging);
+    }
+
     looper(sortByIndex($canvas.children), $e, caughts);
 
     if (process.env.NODE_ENV !== 'production') {
