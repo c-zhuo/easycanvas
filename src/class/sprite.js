@@ -78,6 +78,8 @@ const preAdd = function (_item) {
         item.$id = Math.random().toString(36).substr(2);
     }
 
+    item.$tickedTimes = item.$tickedTimes || 0;
+
     item.content = item.content || {};
     // if (typeof item.content.img === 'string') {
     //     item.content.img = $canvas.imgLoader(item.content.img);
@@ -95,14 +97,14 @@ const preAdd = function (_item) {
     // item.style.display = item.style.display;
 
     let _img = utils.funcOrValue(item.content.img);
-    if (_img === undefined) {
-        _img = {
-            width: 0,
-            height: 0,
-        };
-    }
+    // if (_img === undefined) {
+    //     _img = {
+    //         width: 0,
+    //         height: 0,
+    //     };
+    // }
 
-    constants.xywh.forEach(function (key) {
+    constants.xywh.forEach((key) => {
         item.style[key] = item.style[key] || 0;
     });
 
@@ -144,12 +146,6 @@ const preAdd = function (_item) {
     item.children = item.children || [];
 
     ChangeChildrenToSprite(item);
-    // item.children.forEach(function (c) {
-    //     // c.$canvas = item.$canvas;
-    //     c.$parent = item;
-
-    //     c = new sprite(c);
-    // });
 
     item.$cache = {};
     item.$scroll = {

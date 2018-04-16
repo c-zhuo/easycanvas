@@ -109,14 +109,16 @@ Easycanvas.imgLoader(constants.img30px, function (img) {
     }
 });
 
+// 由于回调里给元素设置的img可能为string，所以会有一个替换为<img>或者<canvas>的过程
+// 注意：可能导致延迟1、2帧绘制，所以constants.waitForUpdateTime延长了100毫秒
 describe('Featrue.perf-jump-render Test.', function () {
     it('Jump some renderings correctly.', function (done) {
         setTimeout(() => {
             // 提出$useless参数
             for (var type in sprites) {
-                // console.log(sprites[type].map((s) => {
-                //     return s.$useless;
-                // }));
+                console.log(sprites[type].map((s) => {
+                    return s.$useless;
+                }));
                 sprites[type] = sprites[type].map((s) => {
                     return s.$useless;
                 });
@@ -134,6 +136,6 @@ describe('Featrue.perf-jump-render Test.', function () {
             expect(jumps.join(',')).toBe('0,4,7,0,0');
 
             done();
-        }, constants.waitForUpdateTime);
+        }, constants.waitForUpdateTime + 100);
     });
 });

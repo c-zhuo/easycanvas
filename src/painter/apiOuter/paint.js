@@ -41,7 +41,17 @@ module.exports = function () {
         });
     }
 
+    if (process.env.NODE_ENV !== 'production') {
+        var t0 = Date.now();
+    }
     $canvas.$paint();
+    if (process.env.NODE_ENV !== 'production') {
+        var paintTime = Date.now() - t0;
+        $canvas.$plugin.hook.timeCollect($canvas, {
+            type: 'paint',
+            value: paintTime,
+        });
+    }
 
     this.fps++;
 

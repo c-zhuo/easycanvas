@@ -165,13 +165,7 @@ let render = function ($sprite, i) {
     if ($sprite.type === 'img') {
         cxt.drawImage(props[0],props[1],props[2],props[3],props[4],props[5],props[6],props[7],props[8]);
         if (process.env.NODE_ENV !== 'production') {
-            $canvas.$plugin.hook.drawImage($canvas, {
-                img: props[0],
-                tx: props[1],
-                ty: props[2],
-                tw: props[3],
-                th: props[4],
-            });
+            $canvas.$plugin.hook.drawImage($canvas, props);
         }
     } else if ($sprite.type === 'text' && props.content) {
         cxt.font = props.font;

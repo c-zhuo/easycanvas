@@ -1,5 +1,17 @@
 ## Easycanvas Changelog
 
+#### 0.3.1 (29kb)
+
+- Bugfix: `text` without align throw an error in 0.3.0.
+
+- Bugfix: `Drag` works better now.
+
+- Bugfix: Fixed sprite renders with `opacity: 0` in some special cases.
+
+- Bugfix: Fixed event `touchmove` not working.
+
+- Feature: Add `$perf` to each painter instance, using for analyze performance.
+
 #### 0.3.0 (30kb to 29kb)
 
 - Docs: Add Chinese guide site.

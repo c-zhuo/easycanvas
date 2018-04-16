@@ -65,7 +65,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	module.exports = {
+	var utils = {
+	    isArray: Array.isArray || function (arg) {
+	        return Object.prototype.toString.call(arg) === '[object Array]';
+	    },
+
 	    funcOrValue: function funcOrValue(_funcOrValue, _this) {
 	        if (typeof _funcOrValue === 'function') {
 	            var res = _funcOrValue.call(_this);
@@ -77,11 +81,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // 执行钩子函数或者钩子函数队列
 	    execFuncs: function execFuncs(funcOrArray, _this, _arg) {
+	        if (funcOrArray) {
+	            if (!utils.isArray(_arg)) {
+	                _arg = [_arg];
+	            }
+	        }
+
 	        if (typeof funcOrArray === 'function') {
 	            funcOrArray.apply(_this, _arg);
-	        } else if (Array.prototype.isPrototypeOf(funcOrArray)) {
+	        } else if (utils.isArray(funcOrArray)) {
 	            funcOrArray.forEach(function (f) {
-	                f && f.apply(_this);
+	                f && f.apply(_this, _arg);
 	            });
 	        }
 	    },
@@ -96,6 +106,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return typeof a === 'undefined' ? b : a;
 	    }
 	};
+
+	module.exports = utils;
 
 /***/ }),
 

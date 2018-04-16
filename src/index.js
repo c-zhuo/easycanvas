@@ -21,9 +21,27 @@ let Easycanvas = {
     utils,
     mirror,
     class: classes,
-    $version: '0.3.0-beta.2',
+    $version: '0.3.1',
     env: process.env.NODE_ENV,
 };
+
+if (process.env.NODE_ENV !== 'production') {
+    Easycanvas.$warn = (() => {
+        let lastConsoleTime = 0;
+        return function () {
+            let now = Date.now();
+            if (now - lastConsoleTime < 1000) {
+                // 防止连续警告
+                return;
+            }
+
+            let args = Array.prototype.slice.call(arguments);
+
+            lastConsoleTime = now;
+            console.warn.apply(this, args);
+        };
+    })();
+}
 
 if (window.Easycanvas) {
     console.warn('[Easycanvas] already loaded.');
