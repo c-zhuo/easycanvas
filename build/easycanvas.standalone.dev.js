@@ -751,14 +751,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	module.exports = function (event, func) {
-		if (!this.hooks[event]) {
-			this.hooks[event] = func;
-		} else if (_utils2.default.isArray(this.hooks[event])) {
-			this.hooks[event].push(func);
-		} else {
-			this.hooks[event] = [this.hooks[event], func];
-		}
+	module.exports = function (name, func, debounce) {
+	    var handle = func;
+
+	    if (debounce) {
+	        func.$lastTriggerTime = -1;
+
+	        handle = function handle() {
+	            var now = Date.now();
+
+	            if (now > func.$lastTriggerTime + debounce) {
+	                func.$lastTriggerTime = now;
+	                var args = Array.prototype.slice.call(arguments);
+	                args.shift();
+	                func.apply(this, args);
+	            }
+	        };
+	    }
+
+	    if (!this.hooks[name]) {
+	        this.hooks[name] = handle;
+	    } else if (_utils2.default.isArray(this.hooks[name])) {
+	        this.hooks[name].push(handle);
+	    } else {
+	        this.hooks[name] = [this.hooks[name], handle];
+	    }
 	}; /** ********** *
 	    *
 	    * Add current hook
@@ -934,7 +951,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ********** *
 	                                                                                                                                                                                                                                                                   *
-	                                                                                                                                                                                                                                                                   * Send data to devtool.
+	                                                                                                                                                                                                                                                                   * Preparing data for devtool.
 	                                                                                                                                                                                                                                                                   *
 	                                                                                                                                                                                                                                                                   * ********** **/
 
@@ -967,8 +984,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var res = {};
 
 	                if ($canvasId) {
-	                    var children = devData.$canvas[$canvasId].$canvas.children;
-	                    var $children = devData.$canvas[$canvasId].$canvas.$children;
+	                    var children = devData.$canvas[$canvasId].children;
+	                    var $children = devData.$canvas[$canvasId].$children;
 
 	                    var pusher = function pusher(item) {
 	                        // Skip $mask in select mode
@@ -1030,7 +1047,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        if (_res) {
 	                            return {
 	                                $sprite: _res.$sprite || _res,
-	                                $canvas: devData.$canvas[i].$canvas
+	                                $canvas: devData.$canvas[i]
 	                            };
 	                        }
 	                    }
@@ -1046,7 +1063,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        if (_res2) {
 	                            return {
 	                                $sprite: _res2.$sprite || _res2,
-	                                $canvas: devData.$canvas[$canvasId].$canvas
+	                                $canvas: devData.$canvas[$canvasId]
 	                            };
 	                        }
 	                    }
@@ -1054,12 +1071,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    return false;
 	                };
 
-	                var children = devData.$canvas[$canvasId].$canvas.children;
+	                var children = devData.$canvas[$canvasId].children;
 	                var res = looper(children);
 	                if (res) {
 	                    return {
 	                        $sprite: res.$sprite || res,
-	                        $canvas: devData.$canvas[$canvasId].$canvas
+	                        $canvas: devData.$canvas[$canvasId]
 	                    };
 	                }
 	            },
@@ -1079,9 +1096,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var $canvas = tmp.$canvas;
 
 	                if (opt && $canvas && $sprite) {
-	                    $canvas.$plugin.hook.selectSprite(false, $canvas, $sprite);
+	                    $canvas.$plugin.selectSprite(false, $canvas, $sprite);
 	                } else if ($canvas) {
-	                    $canvas.$plugin.hook.cancelSelectSprite($canvas);
+	                    $canvas.$plugin.cancelSelectSprite($canvas);
 	                }
 	            },
 
@@ -1090,16 +1107,44 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var $sprite = tmp.$sprite;
 	                var $canvas = tmp.$canvas;
 
-	                if (window.$ec === $canvas.$id && window.$es === $sprite.$id) return;
-
-	                console.warn('window.$ec = [Easycanvas ' + $canvas.$id + '], window.$es = [Easycanvas ' + $sprite.$id + ']');
+	                console.info('window.$ec = [Easycanvas ' + $canvas.$id + '], window.$es = [Easycanvas ' + $sprite.$id + ']');
 	                window.$ec = $canvas;
 	                window.$es = $sprite;
 	            },
 
 	            pause: function pause($canvasId, opt) {
-	                var $canvas = devData.$canvas[$canvasId].$canvas;
+	                var $canvas = devData.$canvas[$canvasId];
 	                $canvas.$pausing = typeof opt !== 'undefined' ? opt : !$canvas.$pausing;
+	            },
+
+	            getPerf: function getPerf() {
+	                var perfData = {
+	                    canvas: [],
+	                    navigator: {
+	                        clientWidth: document.body.clientWidth,
+	                        clientHeight: document.body.clientHeight,
+	                        devicePixelRatio: window.devicePixelRatio
+	                    }
+	                };
+
+	                if (!devData.isPaintRecording) return perfData;
+
+	                for (var c in devData.$canvas) {
+	                    perfData.canvas.push({
+	                        $id: c,
+	                        name: devData.$canvas[c].name,
+	                        perf: devData.$canvas[c].$perf,
+	                        fps: devData.$canvas[c].lastFps,
+	                        size: {
+	                            styleWidth: devData.$canvas[c].$dom.getBoundingClientRect().width || parseInt(devData.$canvas[c].$dom.style.width) || devData.$canvas[c].$dom.width,
+	                            styleHeight: devData.$canvas[c].$dom.getBoundingClientRect().height || parseInt(devData.$canvas[c].$dom.style.height) || devData.$canvas[c].$dom.height,
+	                            canvasWidth: devData.$canvas[c].$dom.width,
+	                            canvasHeight: devData.$canvas[c].$dom.height
+	                        }
+	                    });
+	                }
+
+	                return perfData;
 	            }
 	        };
 
@@ -1404,8 +1449,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        e.layerY = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
 	    }
 
-	    var scaleX = Math.floor(this.$dom.getBoundingClientRect().width) / this.width;
-	    var scaleY = Math.floor(this.$dom.getBoundingClientRect().height) / this.height;
+	    var isRotated = this.$dom.getBoundingClientRect().width > this.$dom.getBoundingClientRect().height !== this.width > this.height;
+
+	    var scaleX = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'height' : 'width']) / this.width;
+	    var scaleY = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'width' : 'height']) / this.height;
 
 	    scaleX = scaleX || 1;
 	    scaleY = scaleY || 1;
@@ -1438,7 +1485,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                chooseSprite = caughts[1];
 	            }
 
-	            if (chooseSprite && $canvas.$plugin.hook.selectSprite(e.type === 'click', $canvas, chooseSprite)) {
+	            if (chooseSprite && $canvas.$plugin.selectSprite(e.type === 'click' || e.type === 'touchend', $canvas, chooseSprite)) {
 	                return;
 	            }
 	        }
@@ -1504,7 +1551,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var handler = $canvas.events[$e.type];
 	    if (handler) {
-	        if (handler($e)) {
+	        if (handler.call($canvas, $e)) {
 	            $canvas.eHoldingFlag = false;
 	            return true;
 	        }
@@ -1539,44 +1586,55 @@ return /******/ (function(modules) { // webpackBootstrap
 	    */
 	    var isUseless = false;
 	    if ($sprite.type === 'img') {
-	        // jump checking，if too many elements and it is a small image
+	        // 当前图层不太小的时候，判断是否可以跳过绘制
 	        var currentImgSize = props[7] * props[8];
-	        if ($canvas.$children.length < 200 || currentImgSize > 200 * 200) {
-	            for (var j = $canvas.$children.length - 1; j > i; j--) {
-	                var $tmpSprite = $canvas.$children[j];
+	        var $children = $canvas.$children;
+	        if (currentImgSize > 200 * 200) {
+	            for (var j = $children.length - 1; j > i; j--) {
+	                var $tmpSprite = $children[j];
+
+	                if ($tmpSprite.$cannotCover) {
+	                    // 被判断为不能遮挡当前绘制的直接跳过
+	                    continue;
+	                }
 
 	                var tmpProps = $tmpSprite.props;
 
 	                if (!tmpProps[0]) {
 	                    // 不是图片
+	                    $tmpSprite.$cannotCover = true;
 	                    continue;
 	                }
 
 	                if (tmpProps[7] * tmpProps[8] < currentImgSize) {
-	                    // 太小的图片不认为可以遮挡当前图片
+	                    // 太小的图片不认为可以遮挡当前图片，不能跳过当前图片的绘制
+	                    // 只是对于当前图片来说cannotCover，对其它图片有可能，所以不设置$cannotCover
 	                    continue;
 	                }
 
 	                if (!tmpProps[0].$noAlpha) {
 	                    // 带alpha通道的图片不会遮挡当前图片，不能跳过当前图片的绘制
+	                    $tmpSprite.$cannotCover = true;
 	                    continue;
 	                }
 
 	                var tmpSpriteSettings = $tmpSprite.settings;
 
-	                // 带alpha、混合的元素不能作为是否跳过绘制的优化参考对象
 	                // 带rotate的元素暂时不考虑，需要复杂的计算
 	                if (tmpSpriteSettings.globalAlpha !== 1 || tmpSpriteSettings.globalCompositeOperation || tmpSpriteSettings.rotate) {
+	                    $tmpSprite.$cannotCover = true;
 	                    continue;
 	                }
 
 	                if (_utils2.default.pointInRect(props[5], props[6], tmpProps[5], tmpProps[5] + tmpProps[7], tmpProps[6], tmpProps[6] + tmpProps[8]) && _utils2.default.pointInRect(props[5] + props[7], props[6] + props[8], tmpProps[5], tmpProps[5] + tmpProps[7], tmpProps[6], tmpProps[6] + tmpProps[8])) {
 	                    if (true) {
 	                        $sprite.$origin.$useless = true;
+	                        $canvas.$plugin.jumpRender($canvas, props);
 	                    }
 
 	                    isUseless = true;
 	                    // console.log('useless');
+
 	                    return;
 	                }
 	            }
@@ -1658,7 +1716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if ($sprite.type === 'img') {
 	        cxt.drawImage(props[0], props[1], props[2], props[3], props[4], props[5], props[6], props[7], props[8]);
 	        if (true) {
-	            $canvas.$plugin.hook.drawImage($canvas, props);
+	            $canvas.$plugin.drawImage($canvas, props);
 	        }
 	    } else if ($sprite.type === 'text' && props.content) {
 	        cxt.font = props.font;
@@ -1854,13 +1912,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 
 	    // Maybe a plgin is better ?
+	    // @interval 可以是function，其它的必须常量
 	    if (_props.sequence) {
 	        var _img = _props.img;
 	        var config = _props.sequence;
+
+	        // 确立index
 	        _props.sequence.index = _props.sequence.index || 0;
 	        var index = _props.sequence.index || 0;
 	        if (index < 0) index = 0;
 
+	        // 计算每帧的宽高
 	        var pw = void 0,
 	            ph = void 0;
 	        if (config.w || config.h) {
@@ -1882,16 +1944,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var wTimes = Math.floor(_img.width / pw);
 	            var hTimes = Math.floor(_img.height / ph);
 
-	            if (config.h) {
-	                _props.sx = index % wTimes * pw;
-	                _props.sy = Math.floor(index / wTimes) % hTimes * ph;
-	            }
-	        }
-	        if (!config.loop && index > 0 && _props.sx === 0 && _props.sy === 0) {
-	            _props.img = undefined;
-	            $sprite.remove();
+	            _props.sx = index % wTimes * pw;
+	            _props.sy = Math.floor(index / wTimes) % hTimes * ph;
 	        }
 
+	        // 不循环的精灵动画自动移除
+	        if (!config.loop && index > 0 && _props.sx === 0 && _props.sy === 0) {
+	            _props.img = undefined;
+	            if (config.onOver) {
+	                config.onOver.call($sprite);
+	            } else {
+	                $sprite.remove();
+	            }
+	        }
+
+	        // 判断是否应该下一帧
 	        _props.sequence.lastTickTime = _props.sequence.lastTickTime || 0;
 	        if ($canvas.$nextTickTime - _props.sequence.lastTickTime >= _utils2.default.funcOrValue(_props.sequence.interval, $sprite)) {
 	            config.lastTickTime = $canvas.$nextTickTime;
@@ -1899,6 +1966,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _props.sequence.lastTickTime = $canvas.$nextTickTime;
 	        }
 
+	        // 默认的读取和绘制尺寸等于每帧尺寸
 	        _props.sw = _props.sw || pw;
 	        _props.sh = _props.sh || ph;
 	        _props.tw = _props.tw || pw;
@@ -2458,6 +2526,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!$canvas.$freezing) {
 	        $canvas.$children = [];
 
+	        if (true) {
+	            $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'START');
+	        }
+
 	        this.children.sort(function (a, b) {
 	            var za = _utils2.default.funcOrValue(a.style.zIndex, a);
 	            var zb = _utils2.default.funcOrValue(b.style.zIndex, b);
@@ -2466,18 +2538,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }).forEach(function (perItem, index) {
 	            $canvas.$perPaint(perItem, index);
 	        });
+
+	        if (true) {
+	            $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'END');
+	        }
 	    }
 
 	    if (true) {
-	        var t0 = Date.now();
+	        $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'START');
 	    }
+
 	    $canvas.$paint();
+
 	    if (true) {
-	        var paintTime = Date.now() - t0;
-	        $canvas.$plugin.hook.timeCollect($canvas, {
-	            type: 'paint',
-	            value: paintTime
-	        });
+	        $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'END');
 	    }
 
 	    this.fps++;
@@ -2536,6 +2610,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.$dom = dom || this.$dom;
 
+	    this.name = _option.name || 'Unnamed';
+
 	    if (_option.fullScreen) {
 	        dom.width = dom.style.width = document.body.clientWidth || document.documentElement.clientWidth;
 	        dom.height = dom.style.height = document.body.clientHeight || document.documentElement.clientHeight;
@@ -2574,7 +2650,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.$paintContext = this.$paintContext || dom.getContext('2d');
 
 	    if (true) {
-	        this.$plugin.hook.register(this);
+	        this.$plugin.register(this);
 	    }
 
 	    this.events = _option.events || this.events || {};
@@ -2600,7 +2676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 36 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	/** ********** *
 	 *
@@ -2617,6 +2693,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    $pausing: false,
 	    $freezing: false,
 
+	    name: '',
 	    fps: 0,
 	    lastFps: 0,
 	    fpsCalculateTime: 0,
@@ -2656,26 +2733,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 37 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	/** ********** *
-	 *
-	 * Remove a sprite (async)
-	 * - In develop mode, fps will throw warnings in low performance.
-	 *
-	 * ********** **/
+	var _utils = __webpack_require__(1);
 
-	module.exports = function (item, del) {
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = function ($sprite, del) {
 	    var _this = this;
 
-	    item.style.visible = false;
-	    item.removing = true;
+	    _utils2.default.execFuncs($sprite.hooks.beforeRemove, $sprite, $sprite.$tickedTimes++);
+
+	    $sprite.style.visible = false;
+	    $sprite.removing = true;
 
 	    setTimeout(function () {
-	        if (item.$parent) {
-	            item.$parent.children = item.$parent.children.filter(function (c) {
+	        if ($sprite.$parent) {
+	            $sprite.$parent.children = $sprite.$parent.children.filter(function (c) {
 	                return c.removing !== true;
 	            });
 	        } else {
@@ -2683,12 +2761,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return c.removing !== true;
 	            });
 	        }
+
+	        $sprite.$canvas = undefined;
+	        $sprite.$parent = undefined;
+	        $sprite.$tickedTimes = undefined;
+	        $sprite.$cache = undefined;
+	        $sprite.$rendered = false;
+	        if (true) {
+	            $sprite.$perf = undefined;
+	        }
+
+	        _utils2.default.execFuncs($sprite.hooks.removed, $sprite, $sprite.$tickedTimes);
 	    });
 
 	    if (del) {
-	        this.children.splice(this.children.indexOf(item), 1);
+	        this.children.splice(this.children.indexOf($sprite), 1);
 	    }
-	};
+	}; /** ********** *
+	    *
+	    * Remove a sprite (async)
+	    * - In develop mode, fps will throw warnings in low performance.
+	    *
+	    * ********** **/
 
 /***/ }),
 /* 38 */
@@ -2775,24 +2869,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/** ********** *
 	 *
-	 * Send message to chrome devtools, by emitting events to the document
+	 * Plugined to each canvas instance
 	 * - Will add a 'mask' sprite to show the active sprite.
 	 * - Only works in develop mode.
-	 * - The handlers are in /plugin/index.js file.
+	 * - The handlers are in /plugin/panel/index.js file.
 	 *
 	 * ********** **/
 
 	module.exports = function () {
 	    if (true) {
 	        var TO_PANEL_EVENT_NAME = '__EASYCANVAS_BRIDGE_TOPANEL__';
-	        window.document.addEventListener('__EASYCANVAS_BRIDGE_TODOC__', function (recieveData) {
-	            var data = recieveData.detail;
 
-	            if (data.action = 'code') {
-	                console.log(data.content);
-	                eval(data.content);
-	            }
-	        });
+	        // 不再通过事件来监听了devTool了，直接从devTool来inspectedWindow.eval
+	        // window.document.addEventListener('__EASYCANVAS_BRIDGE_TODOC__', function (recieveData) {
+	        //     let data = recieveData.detail;
+
+	        //     if (data.action = 'code') {
+	        //         // console.log(data.content);
+	        //         eval(data.content);
+	        //     }
+	        // });
 
 	        var $emit = function $emit(passData) {
 	            passData.tabId = window[_constants2.default.devFlag].tabId;
@@ -2816,118 +2912,113 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        var $selectMask = null;
 
-	        var PerSecondCollects = ['paintArea', 'loadArea', 'paintTimes', 'paintTimeSpend'];
+	        var PerSecondCollects = ['paintArea', 'paintTimes', 'paintTimeSpend', 'preprocessTimeSpend', 'loadArea', 'jumpArea'];
 
-	        return {
-	            hook: {
-	                drawImage: function drawImage($canvas, _props) {
-	                    if (!window[_constants2.default.devFlag].isPaintRecording) return;
+	        var ApiPlugin = {
+	            drawImage: function drawImage($canvas, _props) {
+	                if (!window[_constants2.default.devFlag].isPaintRecording) return;
 
-	                    // $emit({
-	                    //     name: 'drawImage',
-	                    //     id: $canvas.$id,
-	                    //     value: _props
-	                    // });
+	                $canvas.$perf.$paintArea += _props[7] * _props[8];
+	                $canvas.$perf.$loadArea += _props[3] * _props[4];
+	                $canvas.$perf.$paintTimes++;
+	            },
+	            jumpRender: function jumpRender($canvas, _props) {
+	                $canvas.$perf.$jumpArea += _props[7] * _props[8];
+	            },
+	            register: function register($canvas) {
+	                $canvas.$id = Math.random().toString(36).substr(2);
 
-	                    $canvas.$perf.$paintArea += _props[7] * _props[8];
-	                    $canvas.$perf.$loadArea += _props[3] * _props[4];
-	                    $canvas.$perf.$paintTimes++;
-	                },
-	                register: function register($canvas) {
-	                    $canvas.$id = Math.random().toString(36).substr(2);
+	                // 性能打点
+	                // 带$是临时值，否则为每秒的快照值；临时值每秒快照一次
+	                // 因此开发工具只需要使用快照进行分析即可
+	                $canvas.$perf = {};
+	                PerSecondCollects.forEach(function (key) {
+	                    $canvas.$perf[key] = 0;
+	                    $canvas.$perf['$' + key] = 0;
+	                });
 
-	                    // 性能打点
-	                    // 带$是临时值，否则为每秒的快照值；临时值每秒快照一次
-	                    // 因此开发工具只需要使用快照进行分析即可
-	                    $canvas.$perf = {};
+	                setInterval(function () {
 	                    PerSecondCollects.forEach(function (key) {
-	                        $canvas.$perf[key] = 0;
+	                        $canvas.$perf[key] = $canvas.$perf['$' + key];
 	                        $canvas.$perf['$' + key] = 0;
 	                    });
+	                }, 1000);
 
-	                    setInterval(function () {
-	                        PerSecondCollects.forEach(function (key) {
-	                            $canvas.$perf[key] = $canvas.$perf['$' + key];
-	                            $canvas.$perf['$' + key] = 0;
-	                        });
-	                    }, 1000);
+	                if (!$canvas.$flags.devtoolHanged) {
+	                    window[_constants2.default.devFlag].$canvas[$canvas.$id] = $canvas;
+	                    $canvas.$flags.devtoolHanged = true;
+	                }
+	            },
+	            timeCollect: function timeCollect($canvas, type, startOrEnd) {
+	                $canvas.$perf['$' + type] += (startOrEnd === 'START' ? -1 : 1) * Date.now();
+	            },
+	            selectSprite: function selectSprite(isChoosing, $canvas, $sprite) {
+	                if (!$sprite || !window[_constants2.default.devFlag].selectMode) {
+	                    ApiPlugin.cancelSelectSprite($canvas);
+	                    return false;
+	                }
 
-	                    if (!$canvas.$flags.devtoolHanged) {
-	                        if (!window[_constants2.default.devFlag].$canvas[$canvas.$id]) {
-	                            window[_constants2.default.devFlag].$canvas[$canvas.$id] = {
-	                                $canvas: $canvas
-	                            };
-	                            $canvas.$flags.devtoolHanged = true;
-	                        }
-	                    }
-	                },
-	                timeCollect: function timeCollect($canvas, _ref) {
-	                    var type = _ref.type,
-	                        value = _ref.value;
-
-	                    $canvas.$perf.$paintTimeSpend += value;
-	                },
-	                selectSprite: function selectSprite(isChoosing, $canvas, $sprite) {
-	                    if (!$sprite || !window[_constants2.default.devFlag].selectMode) return false;
-
-	                    if (!$selectMask) {
-	                        $selectMask = $canvas.add({
-	                            name: _constants2.default.devFlag,
-	                            content: {
-	                                img: MaskCanvas
-	                            },
-	                            style: {}
-	                        });
-	                    }
-
-	                    ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
-	                        (function (_key) {
-	                            if (_constants2.default.sxywh.indexOf(_key) >= 0) {
-	                                return;
-	                            }
-	                            $selectMask.style[_key] = function () {
-	                                return $sprite.$cache[_key];
-	                            };
-	                        })(key);
+	                if (!$selectMask) {
+	                    $selectMask = $canvas.add({
+	                        name: _constants2.default.devFlag,
+	                        content: {
+	                            img: MaskCanvas
+	                        },
+	                        style: {}
 	                    });
+	                }
 
-	                    // $sprite.$cache has calculated the 'scale' and 'locate'
-	                    // Here uses the default values
-	                    $selectMask.style.scale = 1;
-	                    $selectMask.style.locate = 'lt';
-
-	                    $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
-	                    $selectMask.style.visible = function () {
-	                        return window[_constants2.default.devFlag].selectMode;
-	                    };
-	                    $selectMask.style.opacity = 0.8;
-
-	                    if (isChoosing) {
-	                        $canvas.remove($selectMask);
-	                        $selectMask = null;
-	                        $emit({
-	                            name: 'selectSprite',
-	                            id: $canvas.$id,
-	                            value: {
-	                                sprite: $sprite.$id,
-	                                canvas: $canvas.$id
-	                            }
-	                        });
-	                        window[_constants2.default.devFlag].current = {
-	                            $sprite: $sprite,
-	                            $canvas: $canvas
+	                ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
+	                    (function (_key) {
+	                        if (_constants2.default.sxywh.indexOf(_key) >= 0) {
+	                            return;
+	                        }
+	                        $selectMask.style[_key] = function () {
+	                            return $sprite.$cache[_key];
 	                        };
-	                        window[_constants2.default.devFlag].selectMode = false;
-	                    }
+	                    })(key);
+	                });
 
-	                    return true;
-	                },
-	                cancelSelectSprite: function cancelSelectSprite($canvas) {
+	                // $sprite.$cache has calculated the 'scale' and 'locate'
+	                // Here uses the default values
+	                $selectMask.style.scale = 1;
+	                $selectMask.style.locate = 'lt';
+
+	                $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
+	                $selectMask.style.visible = function () {
+	                    return window[_constants2.default.devFlag].selectMode;
+	                };
+	                $selectMask.style.opacity = 0.8;
+
+	                if (isChoosing) {
 	                    $canvas.remove($selectMask);
 	                    $selectMask = null;
+	                    $emit({
+	                        name: 'selectSprite',
+	                        id: $canvas.$id,
+	                        value: {
+	                            sprite: $sprite.$id,
+	                            canvas: $canvas.$id
+	                        }
+	                    });
+	                    window[_constants2.default.devFlag].current = {
+	                        $sprite: $sprite,
+	                        $canvas: $canvas
+	                    };
+	                    window[_constants2.default.devFlag].selectMode = false;
 	                }
+
+	                return true;
+	            },
+	            cancelSelectSprite: function cancelSelectSprite($canvas) {
+	                if (!$selectMask) return;
+
+	                $canvas.remove($selectMask);
+	                $selectMask = null;
 	            }
 	        };
+
+	        return ApiPlugin;
 	    }
 	};
 

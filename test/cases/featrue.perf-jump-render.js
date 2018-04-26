@@ -23,8 +23,9 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
                 img: img,
             },
             style: {
-                tx: Math.random() * 200, ty: Math.random() * 200,
-                tw: 105, th: Math.random() * 100 + 50,
+                tx: 200, ty: 200,
+                tw: 400, th: 300,
+                opacity: 0.5,
                 zIndex: 1,
             },
         });
@@ -32,8 +33,8 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
     }
 });
 
-Easycanvas.imgLoader.cacheCanvas = Math.random() < 0.5;
-Easycanvas.imgLoader(constants.img30px, function (img) {
+Easycanvas.imgLoader.cacheCanvas = false;
+Easycanvas.imgLoader(constants.png30px, function (img) {
     // 跳过绘制4个
     sprites.type2 = [];
     for (var i = 0; i < 4; i++) {
@@ -42,8 +43,8 @@ Easycanvas.imgLoader(constants.img30px, function (img) {
                 img: img,
             },
             style: {
-                tx: 100, ty: 100,
-                tw: 100, th: 100,
+                tx: 200, ty: 200,
+                tw: 200, th: 300,
                 zIndex: 2,
             },
         });
@@ -51,7 +52,7 @@ Easycanvas.imgLoader(constants.img30px, function (img) {
     }
 });
 
-Easycanvas.imgLoader.cacheCanvas = Math.random() < 0.5;
+Easycanvas.imgLoader.cacheCanvas = false;
 Easycanvas.imgLoader(constants.jpg100px, function (img) {
     // 跳过绘制8-1=7个
     sprites.type3 = [];
@@ -61,8 +62,8 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
                 img: img,
             },
             style: {
-                tx: 100, ty: 100,
-                tw: 100, th: 100,
+                tx: 200, ty: 200,
+                tw: 200, th: 300,
                 zIndex: 3,
             },
         });
@@ -70,7 +71,7 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
     }
 });
 
-Easycanvas.imgLoader.cacheCanvas = Math.random() < 0.5;
+Easycanvas.imgLoader.cacheCanvas = false;
 Easycanvas.imgLoader(constants.jpg100px, function (img) {
     // 跳过绘制0个
     sprites.type4 = [];
@@ -80,8 +81,8 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
                 img: i % 2 ? img : constants.jpg100px,
             },
             style: {
-                tx: 100, ty: 100,
-                tw: 100, th: 100,
+                tx: 200, ty: 200,
+                tw: 200, th: 300,
                 opacity: 0.6,
                 zIndex: 4,
             },
@@ -90,18 +91,18 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
     }
 });
 
-Easycanvas.imgLoader.cacheCanvas = Math.random() < 0.5;
-Easycanvas.imgLoader(constants.img30px, function (img) {
+Easycanvas.imgLoader.cacheCanvas = false;
+Easycanvas.imgLoader(constants.png30px, function (img) {
     // 跳过绘制0个
     sprites.type5 = [];
     for (var i = 0; i < 32; i++) {
         var sprite = $Painter.add({
             content: {
-                img: i % 2 ? img : constants.img30px,
+                img: i % 2 ? img : constants.png30px,
             },
             style: {
-                tx: 100, ty: 100,
-                tw: 100, th: 100,
+                tx: 200, ty: 200,
+                tw: 200, th: 300,
                 zIndex: 5,
             },
         });
@@ -136,6 +137,6 @@ describe('Featrue.perf-jump-render Test.', function () {
             expect(jumps.join(',')).toBe('0,4,7,0,0');
 
             done();
-        }, constants.waitForUpdateTime + 100);
+        }, constants.waitForUpdateTime + 200);
     });
 });

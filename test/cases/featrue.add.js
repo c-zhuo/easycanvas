@@ -10,7 +10,7 @@ $Painter.register($canvas);
 $Painter.start();
 
 var sprite1, obj;
-Easycanvas.imgLoader(constants.img10px, function (img) {
+Easycanvas.imgLoader(constants.png10px, function (img) {
     obj = {
         name: 'root',
         content: {

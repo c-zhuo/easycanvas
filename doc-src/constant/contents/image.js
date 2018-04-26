@@ -24,7 +24,7 @@ module.exports = `
 
                     var $letterG = new Easycanvas.class.sprite({
                         content: {
-                            img: 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true',
+                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
                         },
                         style: {
                             tx: 50, ty: 50, th: 150,
@@ -133,7 +133,7 @@ module.exports = `
 
         <p>传入的imgPretreat.conversion是一个修改像素点的方法，参数为像素点的rgba值以及像素的坐标。</p>
 
-        <p class="tip">Tips：大面积的像素处理对性能的消耗较大，移动端设备请不要频繁使用。</p>
+        <p class="tip">Tips：大面积的像素处理的性能开销较大，移动端设备下不建议对大图片频繁使用imgPretreat，尤其要避免在状态钩子的每帧钩子函数中调用imgPretreat来编辑色值。</p>
     </article>
 
 `;

@@ -1,0 +1,52 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="1200" height="2400"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        var img = Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G30x30.png?raw=true');
+
+        window.sprite1 = $Painter.add({
+        });
+
+        window.sprite2 = sprite1.add({
+            style: {
+                tw: 10, th: 20
+            },
+        });
+
+        window.sprite3 = sprite2.add({
+            name: 'sprite3',
+            style: {
+                tx: 500, ty: 500,
+            },
+            events: {
+                click: function () {
+                    console.log('Cannot trigger.');
+                }
+            },
+        });
+
+        window.sprite4 = sprite3.add({
+            name: 'sprite3',
+            content: {
+                img: img,
+            },
+            style: {
+                locate: 'lt',
+            },
+            events: {
+                click: function () {
+                    console.log('Can trigger.');
+                }
+            },
+        });
+    </script>
+</body>
+

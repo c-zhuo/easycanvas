@@ -106,9 +106,9 @@ const DemoableCodeClassName = 'code-2-demo';
 
             document.body.onclick = function (e) {
                 if (~e.target.className.indexOf(DemoableCodeClassName)) {
-                    let code = e.target.nextElementSibling.innerText;
-                    code = code.replace(new RegExp(String.fromCharCode(160), 'g'), String.fromCharCode(32))
-                    this.debug(code);
+                    let demoCode = e.target.nextElementSibling.innerText;
+                    demoCode = demoCode.replace(new RegExp(String.fromCharCode(160), 'g'), String.fromCharCode(32))
+                    this.debug(demoCode);
                     this.showDemo();
                 }
             }.bind(this);
@@ -173,22 +173,35 @@ const DemoableCodeClassName = 'code-2-demo';
                 this.$ace.clearSelection();
                 this.$ace.moveCursorTo(0, 0);
 
-                let finalCode = `
-                    <script src="./lib/easycanvas.standalone.prod.js"></script>
-                    ${code}
+                let iframeHtmlCodes = `
+                    <html>
+                    <head>
+                        <style>canvas {border:1px solid #eee;}</style>
+                        <script src="./lib/easycanvas.standalone.prod.js"></script>
+                    </head>
+                    <body>
+                        ${code}
+                    </body>
+                    </html>
                 `;
 
-                this.$iframe.contentWindow.document.open();
-                this.$iframe.contentWindow.document.write(finalCode);
-                this.$iframe.contentWindow.document.close();
+                // 清除之前的interval等
+                this.$iframe.contentWindow.location.href = 'about:blank';
+
+                // 不延迟的话上面的那行不生效
+                setTimeout(() => {
+                    this.$iframe.contentWindow.document.open();
+                    this.$iframe.contentWindow.document.write(iframeHtmlCodes);
+                    this.$iframe.contentWindow.document.close();
+                }, 100);
             },
         },
-        watch: {
-            demoVisible (val) {
-                if (val) {
+        // watch: {
+        //     demoVisible (val) {
+        //         if (val) {
 
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
     })
 })();
