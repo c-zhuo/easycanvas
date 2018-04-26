@@ -105,7 +105,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>这些属性中，text可以是动态的，而color、textFont、textAlign、textVerticalAlign这四个需要是</p>
+        <p>这些属性中，text可以是一个function类型，返回要渲染的字符串，如下例。但是color、textFont、textAlign、textVerticalAlign这四个属性不能是function。</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -155,5 +155,4 @@ module.exports = `
             </code>
         </section>
     </article>
-
 `;
