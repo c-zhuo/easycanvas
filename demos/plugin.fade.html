@@ -1,0 +1,74 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.fade.js"></script>
+    <style>body {margin: 0;}</style>
+</head>
+
+<body>
+    <canvas id="foo"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            fullScreen: true
+        });
+        $Painter.start();
+        $Painter.setMaxFps(40);
+
+        var $above, $below;
+        var imgIndex = 0;
+        var imgList = [
+            'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/btn.png',
+        ];
+        var fadeTypes = window.Easycanvas.class.sprite.prototype.fade.types;
+
+        $above = new Easycanvas.class.sprite({
+            name: 'init',
+            content: {
+                img: imgList[imgIndex % imgList.length],
+            },
+            style: {
+                locate: 'lt',
+                zIndex: 1,
+                tw: document.body.clientWidth,
+                th: document.body.clientHeight
+            },
+        });
+        $Painter.add($above);
+
+        var once = function () {
+            imgIndex++;
+            $above
+                .fade({
+                    // type: 'rotate',
+                    type: fadeTypes[Math.floor(Math.random() * 100) % fadeTypes.length],
+                    // subtype: 4,
+                    subtype: imgIndex % 4 + 1,
+                    ticks: 20,
+                })
+                .then(function () {
+                    this.remove();
+                    once();
+                });
+
+            $below = new Easycanvas.class.sprite({
+                name: 'added',
+                content: {
+                    img: imgList[imgIndex % imgList.length],
+                },
+                style: {
+                    locate: 'lt',
+                    zIndex: $above.style.zIndex - 1,
+                    tw: document.body.clientWidth,
+                    th: document.body.clientHeight
+                },
+            });
+            $Painter.add($below);
+            $above = $below;
+        };
+
+        setTimeout(once, 1000);
+    </script>
+</body>
+

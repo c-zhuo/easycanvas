@@ -15,24 +15,19 @@
             }
         });
 
-        var Fire1 = Easycanvas.imgLoader('https://github.com/chenzhuo1992/Easycanvas/blob/master/demos/Fire.png?raw=true');
-        var Fire2 = Easycanvas.imgLoader('https://github.com/chenzhuo1992/Easycanvas/blob/master/demos/G.png?raw=true');
-        // var Fire = Easycanvas.imgLoader('./Fire.png');
+        var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/Easycanvas/master/demos/Fire.png');
 
         var createFire = function (initX, initY) {
             return {
                 content: {
-                    img: function () {
-                        return Fire1;
-                    },
+                    img: Fire,
                     sequence: {
                         w: -9,
-                        h: -10,
-                        // y: 3,
+                        h: -1,
                         // w: 323,
                         // h: 360,
                         interval: 50,
-                        loop: false
+                        loop: false,
                     },
                 },
 

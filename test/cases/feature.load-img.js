@@ -14,7 +14,7 @@ Easycanvas.imgLoader.cacheCanvas = false;
 
 var $sp1 = $Painter.add({
     content: {
-        img: constants.img10px,
+        img: constants.png10px,
     },
     style: {
         tx: 10, ty: 0,
@@ -24,7 +24,7 @@ var $sp1 = $Painter.add({
 
 var $sp2 = $Painter.add({
     content: {
-        img: $Painter.imgLoader(constants.img10px + '   ', null, {canvas: true}),
+        img: $Painter.imgLoader(constants.png10px + '   ', null, {canvas: true}),
     },
     style: {
         tx: 20, ty: 0,
@@ -33,7 +33,7 @@ var $sp2 = $Painter.add({
 });
 
 var $sp3;
-Easycanvas.imgLoader(constants.img30px, function (img) {
+Easycanvas.imgLoader(constants.png30px, function (img) {
     $sp3 = $Painter.add({
         content: {
             img: img,

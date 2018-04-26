@@ -12,7 +12,7 @@ $Painter.start();
 
 var sprite1;
 
-Easycanvas.imgLoader(constants.img30px, function (img) {
+Easycanvas.imgLoader(constants.png30px, function (img) {
     sprite1 = $Painter.add({
         content: {
             img: img,

@@ -1,0 +1,95 @@
+<head>
+    <style>
+        body {margin: 0; padding: 0;}
+    </style>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="400" height="800"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        var dom = document.getElementById('foo');
+
+        var h = document.body.clientHeight;
+        var w = document.body.clientWidth;
+        var longer = Math.max(h, w);
+        var shorter = Math.min(h, w);
+
+        window.onresize = function () {
+            window.location.href = window.location.href;
+        };
+
+        dom.style.width = longer;
+        dom.width = longer;
+        dom.style.height = shorter;
+        dom.height = shorter;
+
+        var option = {};
+
+        if (window.orientation === 0 || window.orientation === 180 || w < h) {
+            var transform_distance = (document.body.clientHeight - document.body.clientWidth) / 2;
+            dom.style.transform = 'rotate(90deg) translateX(' + transform_distance + 'px) translateY(' + transform_distance + 'px)';
+            option.events = {
+                // 横屏转换
+                interceptor: function ($e) {
+                    var x = $e.canvasX;
+                    $e.canvasX = $e.canvasY;
+                    $e.canvasY = document.body.clientWidth - x;
+                    console.log($e)
+                    return $e;
+                }
+            };
+        }
+
+        $Painter.register(dom, option);
+        $Painter.start();
+
+        Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
+            // create a sprite
+            window.sprite1 = $Painter.add({
+                name: 'root',
+                content: {
+                    img: img,
+                },
+                // scroll: {
+                //     scrollable: true
+                // },
+                style: {
+                    tw: $Painter.width, th: $Painter.height,
+                    sx: 0, sy: 0, // source position, default 0
+                    tx: 0, ty: 0,
+                    opacity: 1,
+                    locate: 'lt', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    click: function (e) {
+                        console.log(1, e);
+                        return true;
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+            });
+
+            sprite1.add({
+                content: {
+                    img: Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png'),
+                },
+                style: {
+                    tx: 0.28 * longer, ty: 0.2 * shorter,
+                    tw: 0.1 * longer, th: 0.04 * shorter,
+                },
+                events: {
+                    click: function (e) {
+                        console.log(2, e);
+                        this.style.tx += 10;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+

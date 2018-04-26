@@ -2,6 +2,9 @@ import quickstart from './contents/quickstart.js';
 import inherit from './contents/inherit.js';
 import image from './contents/image.js';
 import events from './contents/events.js';
+import text from './contents/text.js';
+import sequence from './contents/sequence.js';
+import hooks from './contents/hooks.js';
 
 let content = `
     <article id="概述">
@@ -28,6 +31,9 @@ let content = `
     ${inherit}
     ${image}
     ${events}
+    ${text}
+    ${sequence}
+    ${hooks}
 `;
 
 let splits = content.split(/<\/*code>/);

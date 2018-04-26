@@ -1,0 +1,96 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            fullScreen: true
+        });
+        $Painter.start();
+
+        Easycanvas.imgLoader.cacheCanvas = true;
+
+        window.sprite1 = $Painter.add({
+            name: 'house1',
+            content: {
+                img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            },
+            style: {
+                tw: 300 * 1.5, th: 450 * 1.5,
+                sx: 0, sy: 0, // source position, default 0
+                tx: 200,
+                ty: 100,
+                opacity: 1,
+                locate: 'center', // default center
+                zIndex: 1, // z-index of this image
+            },
+        });
+        window.sprite2 = $Painter.add({
+            name: 'cloud1',
+            content: {
+                img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            },
+            style: {
+                tw: 400 * 1.5, th: 250 * 1.5,
+                sx: 0, sy: 0, // source position, default 0
+                tx: Easycanvas.transition.pendulum(0, 500, 5000).loop(),
+                ty: 100,
+                opacity: 0.9,
+                blend: 12,
+                locate: 'center', // default center
+                zIndex: 2, // z-index of this image
+            },
+        });
+
+        window.sprite3 = $Painter.add({
+            name: 'house2',
+            content: {
+                img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            },
+            style: {
+                tw: 300 * 1.5, th: 450 * 1.5,
+                sx: 0, sy: 0, // source position, default 0
+                tx: 200,
+                ty: 400 * 1.5,
+                opacity: 1,
+                locate: 'center', // default center
+                zIndex: 1, // z-index of this image
+            },
+        });
+        window.sprite4 = $Painter.add({
+            name: 'cloud2',
+            content: {
+                img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            },
+            style: {
+                tw: 400 * 1.5, th: 250 * 1.5,
+                sx: 0, sy: 0, // source position, default 0
+                tx: Easycanvas.transition.pendulum(0, 500, 5000).loop(),
+                ty: 400 * 1.5,
+                opacity: 0.9,
+                locate: 'center', // default center
+                zIndex: 2, // z-index of this image
+            },
+        });
+
+
+        $Painter.add({
+            name: 'bg',
+            content: {
+                img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            },
+            style: {
+                locate: 'lt', // default center
+                zIndex: -1, // z-index of this image
+                tw: document.body.clientWidth,
+                th: document.body.clientHeight
+            },
+        });
+        
+    </script>
+</body>
+
