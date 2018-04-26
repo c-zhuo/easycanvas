@@ -13,6 +13,7 @@ const PROTOS = {
     $pausing: false,
     $freezing: false,
 
+    name: '',
     fps: 0,
     lastFps: 0,
     fpsCalculateTime: 0,

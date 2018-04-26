@@ -11,15 +11,18 @@ const handlers =  {
         }
     },
 
-    drawImage: function (id, value) {
+    // drawImage: function (id, value) {
         
-    },
+    // },
 
     selectSprite: function (id, value) {
         window.$app.$actions.setSelectorActive(false);
+
         const spriteId = value.sprite;
         const canvasId = value.canvas;
         window.$app.$actions.setInspectedInstance(spriteId, canvasId);
+
+        // 展开树形结构
         const pusher = (id) => {
             const index = window.$app.$state.treeElements.expansionMap.indexOf(id);
             if (index < 0) {
@@ -54,12 +57,14 @@ Vue.use(require('easy-vuex'), {
     state: {
         isPaintRecording: true, // 监听
         selectorActive: false, // 元素选择
+        menu: 'tree', // 右上角选择了哪个面板
         snapshoot: {}, // 元素快照
         treeElements: {
             expansionMap: [],
             inspectedInstance: {},
         },
         elements: {},
+        perf: {}
     },
     getters: {
 
@@ -70,42 +75,44 @@ Vue.use(require('easy-vuex'), {
         },
         setIsPaintRecording (status, app = window.$app) {
             app.$state.isPaintRecording = status;
-            app.$actions.orderContent(
-                `
-                    window.__EASYCANVAS_DEVTOOL__.isPaintRecording = ${app.$state.isPaintRecording};
-                `
-            );
+            // app.$actions.orderContent(
+            //     `
+            //         window.__EASYCANVAS_DEVTOOL__.isPaintRecording = ${app.$state.isPaintRecording};
+            //     `
+            // );
+            window.inspectedWindow.eval(`window.__EASYCANVAS_DEVTOOL__.isPaintRecording = ${app.$state.isPaintRecording};`);
         },
         setSelectorActive (status, app = window.$app) {
             app.$state.selectorActive = status;
-            app.$actions.orderContent(
-                `
-                    window.__EASYCANVAS_DEVTOOL__.selectMode = ${app.$state.selectorActive};
-                `
-            );
+            // app.$actions.orderContent(
+            //     `
+            //         window.__EASYCANVAS_DEVTOOL__.selectMode = ${app.$state.selectorActive};
+            //     `
+            // );
+            window.inspectedWindow.eval(`window.__EASYCANVAS_DEVTOOL__.selectMode = ${app.$state.selectorActive};`);
         },
-        orderContent (code, callback, app = window.$app) {
-            let command = `
-                document.dispatchEvent(new CustomEvent(
-                        '__EASYCANVAS_BRIDGE_TODOC__',
-                        {
-                            detail: {
-                                action: 'code',
-                                content: \`${code}\`,
-                            },
-                        }
-                    ));
-            `;
+        // orderContent (code, callback, app = window.$app) {
+        //     let command = `
+        //         document.dispatchEvent(new CustomEvent(
+        //                 '__EASYCANVAS_BRIDGE_TODOC__',
+        //                 {
+        //                     detail: {
+        //                         action: 'code',
+        //                         content: \`${code}\`,
+        //                     },
+        //                 }
+        //             ));
+        //     `;
 
-            if (window.respond) {
-                window.respond(command, callback);
-            } else {
-                // extensionPanel.onShown还未触发，respond未初始化
-                setTimeout(() => {
-                    app.$actions.orderContent(code, callback);
-                }, 100);
-            }
-        },
+        //     if (window.respond) {
+        //         window.respond(command, callback);
+        //     } else {
+        //         // extensionPanel.onShown还未触发，respond未初始化
+        //         setTimeout(() => {
+        //             app.$actions.orderContent(code, callback);
+        //         }, 100);
+        //     }
+        // },
         setInspectedInstance (spriteId, canvasId, app = window.$app) {
             app.$state.treeElements.inspectedInstance = {
                 id: spriteId,
@@ -151,6 +158,21 @@ Vue.use(require('easy-vuex'), {
                 });
             }
         },
+        getPerf (callback, app = window.$app) {
+            if (window.inspectedWindow && app.$state.isPaintRecording) {
+                const getPerfCOde = `
+                    (function () {
+                        const perfData = window['${constants.devFlag}'].$plugin.getPerf();
+                        return perfData;
+                    })();
+                `;
+
+                window.inspectedWindow.eval(getPerfCOde, (value) => {
+                    app.$state.perf = value || {};
+                    callback && callback();
+                });
+            }
+        },
     }
 });
 
@@ -165,7 +187,12 @@ window.$app = new Vue({
         setInterval(() => {
             if (Date.now() - timeStamp >= 1000) {
 
-                this.$actions.getElements();
+                if (this.$state.menu === 'tree') {
+                    this.$actions.getElements();
+                }
+                else if (this.$state.menu === 'graph') {
+                    this.$actions.getPerf();
+                }
 
                 timeStamp = Date.now();
             }

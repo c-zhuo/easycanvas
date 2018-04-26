@@ -57,7 +57,7 @@
     "ec:build": "rm -rf ./build && (concurrently 'webpack --config ./webpack/webpack.easycanvas.min.js' 'webpack --config ./webpack/webpack.easycanvas.standalone.dev.js' 'webpack --config ./webpack/webpack.easycanvas.standalone.prod.js') && echo done.",
     "ec:debug": "webpack --config ./webpack/webpack.easycanvas.dist.js",
     "ec:dev": "webpack-dev-server --config ./webpack/webpack.easycanvas.dev.js",
-    "ec:docs": "webpack-dev-server --config ./webpack/webpack.easycanvas.docs.dev.js",
+    "ec:docs": "rm ./doc-src/lib/easycanvas.standalone.prod.js & cp ./build/easycanvas.standalone.prod.js ./doc-src/lib/easycanvas.standalone.prod.js & webpack-dev-server --config ./webpack/webpack.easycanvas.docs.dev.js",
     "ec:docsprod": "rm -rf ./doc && webpack --config ./webpack/webpack.easycanvas.docs.prod.js",
     "karma:unit": "karma start ./test/karma.conf.js"
   }
