@@ -20,6 +20,8 @@ module.exports = function (dom, option) {
 
     this.$dom = dom || this.$dom;
 
+    this.name = _option.name || 'Unnamed';
+
     if (_option.fullScreen) {
         dom.width = dom.style.width = document.body.clientWidth || document.documentElement.clientWidth;
         dom.height = dom.style.height = document.body.clientHeight || document.documentElement.clientHeight;
@@ -61,7 +63,7 @@ module.exports = function (dom, option) {
     this.$paintContext = this.$paintContext || dom.getContext('2d');
 
     if (process.env.NODE_ENV !== 'production') {
-        this.$plugin.hook.register(this);
+        this.$plugin.register(this);
     }
 
     this.events = _option.events || this.events || {};

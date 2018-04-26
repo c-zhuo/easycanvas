@@ -5,13 +5,17 @@
  *
  * ********** **/
 
-module.exports = function (item, del) {
-    item.style.visible = false;
-    item.removing = true;
+import utils from 'utils/utils.js';
+
+module.exports = function ($sprite, del) {
+    utils.execFuncs($sprite.hooks.beforeRemove, $sprite, $sprite.$tickedTimes++);
+
+    $sprite.style.visible = false;
+    $sprite.removing = true;
 
     setTimeout(() => {
-        if (item.$parent) {
-            item.$parent.children = item.$parent.children.filter(function (c) {
+        if ($sprite.$parent) {
+            $sprite.$parent.children = $sprite.$parent.children.filter(function (c) {
                 return c.removing !== true;
             });
         } else {
@@ -19,9 +23,20 @@ module.exports = function (item, del) {
                 return c.removing !== true;
             });
         }
+
+        $sprite.$canvas = undefined;
+        $sprite.$parent = undefined;
+        $sprite.$tickedTimes = undefined;
+        $sprite.$cache = undefined;
+        $sprite.$rendered = false;
+        if (process.env.NODE_ENV !== 'production') {
+            $sprite.$perf = undefined;
+        }
+
+        utils.execFuncs($sprite.hooks.removed, $sprite, $sprite.$tickedTimes);
     });
 
     if (del) {
-        this.children.splice(this.children.indexOf(item), 1);
+        this.children.splice(this.children.indexOf($sprite), 1);
     }
 };

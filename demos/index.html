@@ -26,7 +26,7 @@
         var letterG = new Easycanvas.class.sprite({
             name: 'An Visible Image',
             content: {
-                img: Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true')
+                img: Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png')
             },
         });
         box2.add(letterG);
@@ -38,7 +38,8 @@
                 text: 'Can not see me',
             },
             style: {
-                color: 'red'
+                color: 'red',
+                align: 'right',
             }
         });
         text.style.visible = false;
