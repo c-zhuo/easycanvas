@@ -1,6 +1,6 @@
 /** ********** *
  *
- * Send data to devtool.
+ * Preparing data for devtool.
  *
  * ********** **/
 
@@ -26,8 +26,8 @@ if (process.env.NODE_ENV !== 'production') {
                 let res = {};
 
                 if ($canvasId) {
-                    let children = devData.$canvas[$canvasId].$canvas.children;
-                    let $children = devData.$canvas[$canvasId].$canvas.$children;
+                    let children = devData.$canvas[$canvasId].children;
+                    let $children = devData.$canvas[$canvasId].$children;
 
                     let pusher = function (item) {
                         // Skip $mask in select mode
@@ -90,7 +90,7 @@ if (process.env.NODE_ENV !== 'production') {
                         if (res) {
                             return {
                                 $sprite: res.$sprite || res,
-                                $canvas: devData.$canvas[i].$canvas,
+                                $canvas: devData.$canvas[i],
                             };
                         }
                     }
@@ -106,7 +106,7 @@ if (process.env.NODE_ENV !== 'production') {
                         if (res) {
                             return {
                                 $sprite: res.$sprite || res,
-                                $canvas: devData.$canvas[$canvasId].$canvas,
+                                $canvas: devData.$canvas[$canvasId],
                             };
                         }
                     }
@@ -114,12 +114,12 @@ if (process.env.NODE_ENV !== 'production') {
                     return false;
                 };
 
-                let children = devData.$canvas[$canvasId].$canvas.children;
+                let children = devData.$canvas[$canvasId].children;
                 let res = looper(children);
                 if (res) {
                     return {
                         $sprite: res.$sprite || res,
-                        $canvas: devData.$canvas[$canvasId].$canvas,
+                        $canvas: devData.$canvas[$canvasId],
                     };
                 }
             },
@@ -139,9 +139,9 @@ if (process.env.NODE_ENV !== 'production') {
                 let $canvas = tmp.$canvas;
 
                 if (opt && $canvas && $sprite) {
-                    $canvas.$plugin.hook.selectSprite(false, $canvas, $sprite);
+                    $canvas.$plugin.selectSprite(false, $canvas, $sprite);
                 } else if ($canvas) {
-                    $canvas.$plugin.hook.cancelSelectSprite($canvas);
+                    $canvas.$plugin.cancelSelectSprite($canvas);
                 }
             },
 
@@ -150,16 +150,44 @@ if (process.env.NODE_ENV !== 'production') {
                 let $sprite = tmp.$sprite;
                 let $canvas = tmp.$canvas;
 
-                if (window.$ec === $canvas.$id && window.$es === $sprite.$id) return;
-
-                console.warn(`window.$ec = [Easycanvas ${$canvas.$id}], window.$es = [Easycanvas ${$sprite.$id}]`);
+                console.info(`window.$ec = [Easycanvas ${$canvas.$id}], window.$es = [Easycanvas ${$sprite.$id}]`);
                 window.$ec = $canvas;
                 window.$es = $sprite;
             },
 
             pause: function ($canvasId, opt) {
-                let $canvas = devData.$canvas[$canvasId].$canvas;
+                let $canvas = devData.$canvas[$canvasId];
                 $canvas.$pausing = typeof opt !== 'undefined' ? opt : !$canvas.$pausing;
+            },
+
+            getPerf: function () {
+                let perfData = {
+                    canvas: [],
+                    navigator: {
+                        clientWidth: document.body.clientWidth,
+                        clientHeight: document.body.clientHeight,
+                        devicePixelRatio: window.devicePixelRatio,
+                    }
+                };
+
+                if (!devData.isPaintRecording) return perfData;
+
+                for (let c in devData.$canvas) {
+                    perfData.canvas.push({
+                        $id: c,
+                        name: devData.$canvas[c].name,
+                        perf: devData.$canvas[c].$perf,
+                        fps: devData.$canvas[c].lastFps,
+                        size: {
+                            styleWidth: devData.$canvas[c].$dom.getBoundingClientRect().width || parseInt(devData.$canvas[c].$dom.style.width) || devData.$canvas[c].$dom.width,
+                            styleHeight: devData.$canvas[c].$dom.getBoundingClientRect().height || parseInt(devData.$canvas[c].$dom.style.height) || devData.$canvas[c].$dom.height,
+                            canvasWidth: devData.$canvas[c].$dom.width,
+                            canvasHeight: devData.$canvas[c].$dom.height,
+                        },
+                    });
+                }
+
+                return perfData;
             },
         };
 

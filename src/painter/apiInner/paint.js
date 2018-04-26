@@ -24,36 +24,45 @@ let render = function ($sprite, i) {
     */
     let isUseless = false;
     if ($sprite.type === 'img') {
-        // jump checking，if too many elements and it is a small image
+        // 当前图层不太小的时候，判断是否可以跳过绘制
         let currentImgSize = props[7] * props[8];
-        if ($canvas.$children.length < 200 || currentImgSize > 200 * 200) {
-            for (let j = $canvas.$children.length - 1; j > i; j--) {
-                let $tmpSprite = $canvas.$children[j];
+        let $children = $canvas.$children;
+        if (currentImgSize > 200 * 200) {
+            for (let j = $children.length - 1; j > i; j--) {
+                let $tmpSprite = $children[j];
+
+                if ($tmpSprite.$cannotCover) {
+                    // 被判断为不能遮挡当前绘制的直接跳过
+                    continue;
+                }
 
                 let tmpProps = $tmpSprite.props;
 
                 if (!tmpProps[0]) {
                     // 不是图片
+                    $tmpSprite.$cannotCover = true;
                     continue;
                 }
 
                 if (tmpProps[7] * tmpProps[8] < currentImgSize) {
-                    // 太小的图片不认为可以遮挡当前图片
+                    // 太小的图片不认为可以遮挡当前图片，不能跳过当前图片的绘制
+                    // 只是对于当前图片来说cannotCover，对其它图片有可能，所以不设置$cannotCover
                     continue;
                 }
 
                 if (!tmpProps[0].$noAlpha) {
                     // 带alpha通道的图片不会遮挡当前图片，不能跳过当前图片的绘制
+                    $tmpSprite.$cannotCover = true;
                     continue;
                 }
 
                 let tmpSpriteSettings = $tmpSprite.settings;
 
-                // 带alpha、混合的元素不能作为是否跳过绘制的优化参考对象
                 // 带rotate的元素暂时不考虑，需要复杂的计算
                 if (tmpSpriteSettings.globalAlpha !== 1 ||
                     tmpSpriteSettings.globalCompositeOperation ||
                     tmpSpriteSettings.rotate) {
+                    $tmpSprite.$cannotCover = true;
                     continue;
                 }
 
@@ -69,10 +78,12 @@ let render = function ($sprite, i) {
                 ) {
                     if (process.env.NODE_ENV !== 'production') {
                         $sprite.$origin.$useless = true;
+                        $canvas.$plugin.jumpRender($canvas, props);
                     }
 
                     isUseless = true;
                     // console.log('useless');
+
                     return;
                 }
             }
@@ -165,7 +176,7 @@ let render = function ($sprite, i) {
     if ($sprite.type === 'img') {
         cxt.drawImage(props[0],props[1],props[2],props[3],props[4],props[5],props[6],props[7],props[8]);
         if (process.env.NODE_ENV !== 'production') {
-            $canvas.$plugin.hook.drawImage($canvas, props);
+            $canvas.$plugin.drawImage($canvas, props);
         }
     } else if ($sprite.type === 'text' && props.content) {
         cxt.font = props.font;

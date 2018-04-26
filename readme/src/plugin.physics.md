@@ -66,4 +66,4 @@
 [English]`mass` means mass :), `friction` and `elasticity` set from 0 to 1. If two sprite with zero friction impact each other, the speed never slow down. If elasticities are zero, they will not separate after a face-to-face collision. `moment` is also supported. If not declared, a default value will be set by calculating the shapes and mass.
 
 [Chinese]调用`launch`和`physicsOn`之后，box中的元素将开始按物理学进行运动：ball将落下。其中，`launch`代表对某个“物理容器”进行初始化；`physicsOn`代表某个“物理对象”开始在容器中运动，必须在上游的某个节点执行过`launch`之后才可以使用。通过`physicsOff`可以暂时关闭它的物理特性。
-[English]Ater `launch` and `physicsOn`, calculating of physic starts and the ball falls down. `launch` is used to a container, and `physicsOn` to a sprite which is in a physical container. `physicsOff` is used to temporarily remove the physics.
+[English]Ater `launch` and `physicsOn`, calculating of physic starts and the ball falls down. `launch` is used for a container, and `physicsOn` for a sprite which is in a physical container. `physicsOff` is used for temporarily removing the physics effect of a sprite.
