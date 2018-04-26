@@ -117,8 +117,10 @@ module.exports = function (e) {
         e.layerY = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
     }
 
-    let scaleX = Math.floor(this.$dom.getBoundingClientRect().width) / this.width;
-    let scaleY = Math.floor(this.$dom.getBoundingClientRect().height) / this.height;
+    let isRotated = this.$dom.getBoundingClientRect().width > this.$dom.getBoundingClientRect().height !== this.width > this.height
+
+    let scaleX = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'height' : 'width']) / this.width;
+    let scaleY = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'width' : 'height']) / this.height;
 
     scaleX = scaleX || 1;
     scaleY = scaleY || 1;
@@ -151,7 +153,7 @@ module.exports = function (e) {
                 chooseSprite = caughts[1];
             }
 
-            if (chooseSprite && $canvas.$plugin.hook.selectSprite(e.type === 'click', $canvas, chooseSprite)) {
+            if (chooseSprite && $canvas.$plugin.selectSprite(e.type === 'click' || e.type === 'touchend', $canvas, chooseSprite)) {
                 return;
             }
         }
@@ -221,7 +223,7 @@ module.exports = function (e) {
 
     let handler = $canvas.events[$e.type];
     if (handler) {
-        if (handler($e)) {
+        if (handler.call($canvas, $e)) {
             $canvas.eHoldingFlag = false;
             return true;
         }

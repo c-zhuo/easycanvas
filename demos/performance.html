@@ -1,21 +1,56 @@
-<!-- <script src="../build/plugin.webgl.js"></script> -->
-
 <body>
     <script src="../build/index.js"></script>
-    <canvas id="foo" width="800" height="1800"></canvas>
+    <script src="../build/plugin.webgl.js"></script>
+    <canvas id="foo" width="800" height="1800" style="width: 800px; height: 1800px;"></canvas>
 
     <script>
+        var COUNT = 800;
+
         var $Painter = new Easycanvas.painter();
         $Painter.register(document.getElementById('foo'), {
+            name: 'main',
             webgl: !true
         });
         $Painter.start();
         $Painter.fpsHandler = console.log;
 
-        $Painter.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true', function (img) {
+        var demoPicUrl = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/block.jpg';
+
+        // demoPicUrl = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
+
+        Easycanvas.imgLoader(demoPicUrl, function (img) {
             // create a sprite
-            for (var i = 0; i <= 2000; i++)
+            for (var i = 0; i <= COUNT; i++)
                 $Painter.add({
+                    content: {
+                        img: img,
+                    },
+                    style: {
+                        tx: Easycanvas.transition.pendulum(Math.random() * 500, Math.random() * 500, 9000).loop(),
+                        ty: (Math.random() * 500),
+                        tw: (100 + Math.random() * 500),
+                        th: (100 + Math.random() * 500),
+                        zIndex: Math.random(),
+                        locate: 'lt',
+                        opacity: 1,
+                        // rotate: 40,
+                    },
+
+                });
+        });
+
+        var $Temp = new Easycanvas.painter();
+        $Temp.register(document.createElement('canvas'), {
+            name: 'temp',
+            fullScreen: true
+        });
+        $Temp.start();
+
+        Easycanvas.imgLoader(demoPicUrl, function (img) {
+            // create a sprite
+            for (var i = 0; i <= COUNT / 2; i++)
+                $Temp.add({
+                    name: 'spriteOfTemp',
                     content: {
                         img: img,
                     },
@@ -26,78 +61,12 @@
                         th: (Math.random() * 200),
                         zIndex: Math.random(),
                         locate: 'lt',
-                        // opacity: 0.5,
+                        opacity: 0.1,
                         // rotate: 40,
                     },
-
-                    // children: [
-                    //     {
-                    //         content: {
-                    //             img: img,
-                    //         },
-                    //         inherit: ['opacity'],
-                    //         style: {
-                    //             tw: (Math.random() * 200),
-                    //             th: (Math.random() * 200),
-                    //             tx: 500, ty: 0,
-                    //             zIndex: 1,
-                    //             opacity: 0.5,
-                    //             locate: 'center',
-                    //         },
-                    //         events: {
-                    //             eIndex: -3,
-                    //             click: function () {
-                    //                 console.log(1);
-                    //             }
-                    //         }
-                    //     },
-                    //     {
-                    //         // inherit: ['opacity'],
-                    //         content: {
-                    //             img: img,
-                    //         },
-                    //         style: {
-                    //             tw: (Math.random() * 200),
-                    //             th: (Math.random() * 200),
-                    //             tx: 0, ty: 500,
-                    //             opacity: 1,
-                    //             zIndex: 1,
-                    //             locate: 'lt',
-                    //             scale: 1
-                    //         },
-                    //         events: {
-                    //             eIndex: -31,
-                    //             click: function () {
-                    //                 console.log(2);
-                    //             }
-                    //         }
-                    //     },
-                    //     {
-                    //         inherit: ['tx', 'ty', 'rotate'],
-                    //         content: {
-                    //             img: img,
-                    //         },
-                    //         style: {
-                    //             tw: (Math.random() * 200),
-                    //             th: (Math.random() * 200),
-                    //             tx: 500, ty: 500,
-                    //             opacity: 0.7,
-                    //             zIndex: 1,
-                    //             locate: 'center',
-                    //         },
-                    //         events: {
-                    //             eIndex: -31,
-                    //             click: function () {
-                    //                 console.log(3);
-                    //                 this.style.opacity = 0;
-                    //             }
-                    //         }
-                    //     },
-                    // ],
                 });
-        }, {
-            canvas: 1,
         });
+
         window.__EASYCANVAS_DEVTOOL__.isPaintRecording = false;
     </script>
 </body>

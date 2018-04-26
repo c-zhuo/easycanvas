@@ -31,6 +31,10 @@ module.exports = function () {
     if (!$canvas.$freezing) {
         $canvas.$children = [];
 
+        if (process.env.NODE_ENV !== 'production') {
+            $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'START');
+        }
+
         this.children.sort(function (a, b) {
             let za = utils.funcOrValue(a.style.zIndex, a);
             let zb = utils.funcOrValue(b.style.zIndex, b);
@@ -39,18 +43,20 @@ module.exports = function () {
         }).forEach(function (perItem, index) {
             $canvas.$perPaint(perItem, index);
         });
+
+        if (process.env.NODE_ENV !== 'production') {
+            $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'END');
+        }
     }
 
     if (process.env.NODE_ENV !== 'production') {
-        var t0 = Date.now();
+        $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'START');
     }
+
     $canvas.$paint();
+
     if (process.env.NODE_ENV !== 'production') {
-        var paintTime = Date.now() - t0;
-        $canvas.$plugin.hook.timeCollect($canvas, {
-            type: 'paint',
-            value: paintTime,
-        });
+        $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'END');
     }
 
     this.fps++;

@@ -10,9 +10,9 @@
         $Painter.register(document.getElementById('foo'));
         $Painter.start();
 
-        Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true', function (img) {
+        Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
-            window.sprite1 = $Painter.add({
+            window.sprite1 = {
                 name: 'sprite1',
                 content: {
                     img: img,
@@ -69,28 +69,34 @@
                             }
                         }
                     },
-                    {
-                        name: 'child3',
-                        inherit: ['tx', 'ty', 'rotate'],
-                        content: {
-                            img: img,
-                        },
-                        style: {
-                            tx: 500, ty: 500,
-                            opacity: 0.7,
-                            zIndex: 1,
-                            locate: 'center',
-                        },
-                        events: {
-                            eIndex: -31,
-                            click: function () {
-                                console.log(3);
-                                this.style.opacity = 0;
-                            }
-                        }
-                    },
                 ],
-            });
+            };
+
+            window.child3 = {
+                name: 'child3',
+                inherit: ['tx', 'ty', 'rotate'],
+                content: {
+                    img: img,
+                },
+                style: {
+                    tx: 500, ty: 500,
+                    opacity: 0.7,
+                    zIndex: 1,
+                    locate: 'center',
+                },
+                events: {
+                    eIndex: -31,
+                    click: function () {
+                        console.log(3);
+                        this.style.opacity = 0;
+                    }
+                }
+            };
+
+            window.sprite1.children.push(child3);
+
+            window.sprite1 = $Painter.add(window.sprite1);
+
             window.sprite2 = $Painter.add({
                 name: 'sprite2',
             });

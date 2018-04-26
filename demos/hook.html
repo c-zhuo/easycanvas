@@ -8,9 +8,6 @@
     <script>
         var $Painter = new Easycanvas.painter();
 
-        // $Painter.register(document.getElementById('foo'));
-        // $Painter.start();
-
         Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
             window.sprite1 = $Painter.add({
@@ -28,13 +25,12 @@
                     locate: 'center', // default center
                     zIndex: 1, // z-index of this image
                 },
-                events: {
-                    eIndex: 2, // event-index of this image
-                    mousemove: function (e) {
-                        // "this" means this sprite, as sprite1
-                        console.log(this, e);
+                hooks: {
+                    ticked: function (t) {
+                        if (!(t % 30)) {
+                            console.log('每30个tick执行一次')
+                        }
                     },
-                    // others: mousehold, mousedown, mouseout and touch events
                 },
             });
 

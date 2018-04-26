@@ -58,4 +58,4 @@ If it contains other sprites, they will fall down because of the gravity. Now we
 
 `mass` means mass :), `friction` and `elasticity` set from 0 to 1. If two sprite with zero friction impact each other, the speed never slow down. If elasticities are zero, they will not separate after a face-to-face collision. `moment` is also supported. If not declared, a default value will be set by calculating the shapes and mass.
 
-Ater `launch` and `physicsOn`, calculating of physic starts and the ball falls down. `launch` is used to a container, and `physicsOn` to a sprite which is in a physical container. `physicsOff` is used to temporarily remove the physics.
+Ater `launch` and `physicsOn`, calculating of physic starts and the ball falls down. `launch` is used for a container, and `physicsOn` for a sprite which is in a physical container. `physicsOff` is used for temporarily removing the physics effect of a sprite.

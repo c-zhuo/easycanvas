@@ -1,0 +1,93 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.fade.js"></script>
+    <style>body {margin: 0;}</style>
+</head>
+
+<body>
+    <canvas id="foo"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            fullScreen: true
+        });
+        $Painter.start();
+
+        var $below = Easycanvas.class.sprite({
+            name: 'bgbelow',
+            content: {
+                img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            },
+            style: {
+                locate: 'lt',
+                zIndex: 1,
+                tw: document.body.clientWidth,
+                th: document.body.clientHeight
+            },
+        });
+
+        $Painter.add($below);
+        
+        var $mid = Easycanvas.class.fade({
+            name: 'bgbelow',
+            content: {
+                img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            },
+            style: {
+                locate: 'lt',
+                zIndex: 2,
+                tw: document.body.clientWidth,
+                th: document.body.clientHeight
+            },
+        });
+
+        $Painter.add($mid);
+        
+        var $above = Easycanvas.class.fade({
+            name: 'bgabove',
+            content: {
+                img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            },
+            style: {
+                locate: 'lt',
+                zIndex: 3,
+                tw: document.body.clientWidth,
+                th: document.body.clientHeight
+            },
+            // children: [{
+            //     content: {
+            //         img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            //     },
+            //     style: {
+            //         locate: 'lt',
+            //         zIndex: 1,
+            //         tw: 200,
+            //         th: 200,
+            //     },
+            // }]
+        });
+
+        $Painter.add($above);
+
+        setTimeout(() => {
+            $above
+                .fade({
+                    type: 'flow',
+                    ticks: 90,
+                })
+                .then(() => {
+                    console.log('1 done.');
+                    $mid
+                        .fade({
+                            type: 'drip',
+                            ticks: 30,
+                        })
+                        .then(() => {
+                            console.log('2 done.');
+                        });
+                });
+        }, 500);
+    </script>
+</body>
+

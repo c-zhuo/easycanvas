@@ -3,14 +3,16 @@
 </head>
 
 <body>
-    <canvas id="foo" width="500" height="700"></canvas>
+    <canvas id="foo"></canvas>
 
     <script>
         var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
+        $Painter.register(document.getElementById('foo'), {
+            fullScreen: true
+        });
         $Painter.start();
 
-        var G = Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true');
+        var G = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
 
         var sprite1 = $Painter.add({
             content: {
@@ -24,7 +26,10 @@
                 dragable: true,
             },
             events: {
-                click: function () {console.log('click');}
+                mousemove: function ($e) {
+                    $e.event.preventDefault();
+                    $e.event.stopPropagation();
+                }
             }
         });
     </script>

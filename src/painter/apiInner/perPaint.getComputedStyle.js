@@ -61,13 +61,17 @@ module.exports = function ($sprite, $canvas) {
     });
 
     // Maybe a plgin is better ?
+    // @interval 可以是function，其它的必须常量
     if (_props.sequence) {
         let _img = _props.img;
         let config = _props.sequence;
+
+        // 确立index
         _props.sequence.index = _props.sequence.index || 0;
         let index = _props.sequence.index || 0;
         if (index < 0) index = 0;
 
+        // 计算每帧的宽高
         let pw, ph;
         if (config.w || config.h) {
             if (config.w < 0) {
@@ -88,16 +92,21 @@ module.exports = function ($sprite, $canvas) {
             let wTimes = Math.floor(_img.width / pw);
             let hTimes = Math.floor(_img.height / ph);
 
-            if (config.h) {
-                _props.sx = index % wTimes * pw;
-                _props.sy = Math.floor(index / wTimes) % hTimes * ph;
-            }
-        }
-        if (!config.loop && index > 0 && _props.sx === 0 && _props.sy === 0) {
-            _props.img = undefined;
-            $sprite.remove();
+            _props.sx = index % wTimes * pw;
+            _props.sy = Math.floor(index / wTimes) % hTimes * ph;
         }
 
+        // 不循环的精灵动画自动移除
+        if (!config.loop && index > 0 && _props.sx === 0 && _props.sy === 0) {
+            _props.img = undefined;
+            if (config.onOver) {
+                config.onOver.call($sprite);
+            } else {
+                $sprite.remove();
+            }
+        }
+
+        // 判断是否应该下一帧
         _props.sequence.lastTickTime = _props.sequence.lastTickTime || 0;
         if ($canvas.$nextTickTime - _props.sequence.lastTickTime >= utils.funcOrValue(_props.sequence.interval, $sprite)) {
             config.lastTickTime = $canvas.$nextTickTime;
@@ -105,6 +114,7 @@ module.exports = function ($sprite, $canvas) {
             _props.sequence.lastTickTime = $canvas.$nextTickTime;
         }
 
+        // 默认的读取和绘制尺寸等于每帧尺寸
         _props.sw = _props.sw || pw;
         _props.sh = _props.sh || ph;
         _props.tw = _props.tw || pw;
