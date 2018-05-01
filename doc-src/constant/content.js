@@ -5,6 +5,8 @@ import events from './contents/events.js';
 import text from './contents/text.js';
 import sequence from './contents/sequence.js';
 import hooks from './contents/hooks.js';
+import customEvent from './contents/customEvent.js';
+import sprite from './contents/sprite.js';
 
 let content = `
     <article id="概述">
@@ -34,6 +36,8 @@ let content = `
     ${text}
     ${sequence}
     ${hooks}
+    ${customEvent}
+    ${sprite}
 `;
 
 let splits = content.split(/<\/*code>/);

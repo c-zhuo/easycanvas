@@ -13,6 +13,7 @@ module.exports = function () {
     let name = arg.shift();
 
 	if (this.hooks[name]) {
-		this.hooks[name].apply(this, arg);
+    	utils.execFuncs(this.hooks[name], this, arg);
+		// this.hooks[name].apply(this, arg);
 	}
 };

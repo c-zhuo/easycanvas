@@ -10,18 +10,17 @@ module.exports = function (name, func, debounce) {
     var handle = func;
 
     if (debounce) {
-        func.$lastTriggerTime = -1;
-
+        var that = this;
         handle = function () {
             let now = Date.now();
 
-            if (now > func.$lastTriggerTime + debounce) {
-                func.$lastTriggerTime = now;
+            if (now > handle.$lastTriggerTime + debounce) {
+                handle.$lastTriggerTime = now;
                 let args = Array.prototype.slice.call(arguments);
-                args.shift();
-                func.apply(this, args);
+                func.apply(that, args);
             }
         };
+        handle.$lastTriggerTime = -1;
     }
 
     if (!this.hooks[name]) {

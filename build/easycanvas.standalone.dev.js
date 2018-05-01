@@ -389,7 +389,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	sprite.prototype.rect = function () {
-	    return this.$cache;
+	    var res = {};
+	    for (var key in this.style) {
+	        res[key] = this.$cache[key];
+	    }
+	    return res;
 	};
 
 	sprite.prototype.self = function () {
@@ -689,22 +693,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = function () {
-		var arg = Array.prototype.slice.call(arguments);
-		var name = arg.shift();
+	  var arg = Array.prototype.slice.call(arguments);
+	  var name = arg.shift();
 
-		if (this.hooks[name]) {
-			this.hooks[name].apply(this, arg);
-		}
+	  if (this.hooks[name]) {
+	    _utils2.default.execFuncs(this.hooks[name], this, arg);
+	    // this.hooks[name].apply(this, arg);
+	  }
 
-		arg.unshift(name);
+	  arg.unshift(name);
 
-		this.children && this.children.forEach(function (child) {
-			child.broadcast.apply(child, arg);
-		});
-
-		this.children && this.children.forEach(function (child) {
-			child.broadcast.apply(child, arg);
-		});
+	  this.children && this.children.forEach(function (child) {
+	    child.broadcast.apply(child, arg);
+	  });
 	}; /** ********** *
 	    *
 	    * Trigger event on current sprite and its children
@@ -752,29 +753,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = function (name, func, debounce) {
-	    var handle = func;
+	    var _handle = func;
 
 	    if (debounce) {
-	        func.$lastTriggerTime = -1;
-
-	        handle = function handle() {
+	        var that = this;
+	        _handle = function handle() {
 	            var now = Date.now();
 
-	            if (now > func.$lastTriggerTime + debounce) {
-	                func.$lastTriggerTime = now;
+	            if (now > _handle.$lastTriggerTime + debounce) {
+	                _handle.$lastTriggerTime = now;
 	                var args = Array.prototype.slice.call(arguments);
-	                args.shift();
-	                func.apply(this, args);
+	                func.apply(that, args);
 	            }
 	        };
+	        _handle.$lastTriggerTime = -1;
 	    }
 
 	    if (!this.hooks[name]) {
-	        this.hooks[name] = handle;
+	        this.hooks[name] = _handle;
 	    } else if (_utils2.default.isArray(this.hooks[name])) {
-	        this.hooks[name].push(handle);
+	        this.hooks[name].push(_handle);
 	    } else {
-	        this.hooks[name] = [this.hooks[name], handle];
+	        this.hooks[name] = [this.hooks[name], _handle];
 	    }
 	}; /** ********** *
 	    *
@@ -799,7 +799,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var name = arg.shift();
 
 	  if (this.hooks[name]) {
-	    this.hooks[name].apply(this, arg);
+	    _utils2.default.execFuncs(this.hooks[name], this, arg);
+	    // this.hooks[name].apply(this, arg);
 	  }
 	}; /** ********** *
 	    *
