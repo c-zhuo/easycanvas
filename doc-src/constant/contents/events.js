@@ -270,7 +270,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>在这个例子中，$parent2的eIndex比$parent1高，因此$parent2以及它的child都会比$parent1先触发事件。而$parent1没有宽高（只是一个点），不会被点击到，所以无法触发事件。</p>
+        <p>在这个例子中，$parent2的eIndex比$parent1高，因此$parent2以及它的child都会比$parent1先触发事件。而$parent1没有宽高（只是一个点），不会被点击到，所以无法触发事件。这一点与HTML的事件不同。</p>
 
         <p class="tip">Tips：由于有eIndex属性，因此无论zIndex是多少都不影响事件的顺序。如果这里$parent2的child的eIndex是负值，那么触发顺序将是$parent2、$parent2的child、$parent1的child.触发顺序和javascript在DOM上的规则是一致的。</p>
     </article>

@@ -183,7 +183,11 @@ sprite.prototype.add = function (child) {
 };
 
 sprite.prototype.rect = function () {
-    return this.$cache;
+    let res = {};
+    for (var key in this.style) {
+        res[key] = this.$cache[key];
+    }
+    return res;
 };
 
 sprite.prototype.self = function () {

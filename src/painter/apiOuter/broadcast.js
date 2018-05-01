@@ -13,14 +13,11 @@ module.exports = function () {
     let name = arg.shift();
 
 	if (this.hooks[name]) {
-		this.hooks[name].apply(this, arg);
+    	utils.execFuncs(this.hooks[name], this, arg);
+		// this.hooks[name].apply(this, arg);
 	}
 
 	arg.unshift(name);
-
-	this.children && this.children.forEach((child) => {
-		child.broadcast.apply(child, arg);
-	});
 
 	this.children && this.children.forEach((child) => {
 		child.broadcast.apply(child, arg);
