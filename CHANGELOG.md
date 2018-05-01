@@ -1,5 +1,13 @@
 ## Easycanvas Changelog
 
+#### 0.3.2 (30kb)
+
+- Bugfix: `broadcast` triggers event twice errorly.
+
+- Bugfix: Debounce of hooks works errorly.
+
+- Docs: Update.
+
 #### 0.3.1 (29kb)
 
 - Bugfix: `text` without align throw an error in 0.3.0.
