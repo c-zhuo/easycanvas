@@ -12,14 +12,14 @@ module.exports = function () {
     let arg = Array.prototype.slice.call(arguments);
     let name = arg.shift();
 
-	if (this.hooks[name]) {
-    	utils.execFuncs(this.hooks[name], this, arg);
-		// this.hooks[name].apply(this, arg);
-	}
+    if (this.hooks[name]) {
+        utils.execFuncs(this.hooks[name], this, arg);
+        // this.hooks[name].apply(this, arg);
+    }
 
-	arg.unshift(name);
+    arg.unshift(name);
 
-	this.children && this.children.forEach((child) => {
-		child.broadcast.apply(child, arg);
-	});
+    this.children && this.children.forEach((child) => {
+        child.broadcast.apply(child, arg);
+    });
 };

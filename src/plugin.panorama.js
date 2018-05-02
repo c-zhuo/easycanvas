@@ -84,11 +84,11 @@ let panorama = (opt) => {
 };
 
 if (window && window.Easycanvas) {
-	_ec = window.Easycanvas;
-	_ec.class.panorama = panorama;
+    _ec = window.Easycanvas;
+    _ec.class.panorama = panorama;
 }
 
 module.exports = function (ec) {
-	_ec = ec;
-	ec.class.panorama = panorama;
+    _ec = ec;
+    ec.class.panorama = panorama;
 };

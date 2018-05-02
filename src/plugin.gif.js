@@ -62,11 +62,11 @@ const gif2canvas = function (url, callback) {
 };
 
 if (window && window.Easycanvas) {
-	_ec = window.Easycanvas;
-	_ec.gif2canvas = gif2canvas;
+    _ec = window.Easycanvas;
+    _ec.gif2canvas = gif2canvas;
 }
 
 module.exports = function (ec) {
-	_ec = ec;
-	ec.gif2canvas = gif2canvas;
+    _ec = ec;
+    ec.gif2canvas = gif2canvas;
 };
