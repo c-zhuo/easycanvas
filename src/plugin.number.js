@@ -1,7 +1,7 @@
 let _ec;
 
 let number = function (opt) {
-	let sprite = new _ec.class.sprite(opt);
+    let sprite = new _ec.class.sprite(opt);
 
     sprite.style = opt.style;
     sprite.content.img = opt.number;
@@ -69,11 +69,11 @@ let number = function (opt) {
 };
 
 if (window && window.Easycanvas) {
-	_ec = window.Easycanvas;
-	_ec.class.number = number;
+    _ec = window.Easycanvas;
+    _ec.class.number = number;
 }
 
 module.exports = function (ec) {
-	_ec = ec;
-	ec.class.number = number;
+    _ec = ec;
+    ec.class.number = number;
 };

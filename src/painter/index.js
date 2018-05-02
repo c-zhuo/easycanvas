@@ -19,23 +19,23 @@ let painter = function (config) {
     }
 
 
-	if (!config) {
-		return;
-	}
+    if (!config) {
+        return;
+    }
 
-	if (!config.el) {
-		config = {
-			el: config,
-		};
-	}
+    if (!config.el) {
+        config = {
+            el: config,
+        };
+    }
 
-	if (config.el) {
-		this.register(
-			typeof config.el === 'string' ?
-				document.querySelector(config.el) : config.el,
-			config
-		);
-	}
+    if (config.el) {
+        this.register(
+            typeof config.el === 'string' ?
+                document.querySelector(config.el) : config.el,
+            config
+        );
+    }
 };
 
 for (let i in apiInner) {

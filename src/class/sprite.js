@@ -72,8 +72,6 @@ const ChangeChildrenToSprite = function ($parent) {
 const preAdd = function (_item) {
     let item = _item || {};
 
-    // let $canvas = item.$canvas;
-
     if (!item.$id) {
         item.$id = Math.random().toString(36).substr(2);
     }
@@ -81,9 +79,6 @@ const preAdd = function (_item) {
     item.$tickedTimes = item.$tickedTimes || 0;
 
     item.content = item.content || {};
-    // if (typeof item.content.img === 'string') {
-    //     item.content.img = $canvas.imgLoader(item.content.img);
-    // }
 
     item.style = item.style || {};
 
@@ -94,15 +89,8 @@ const preAdd = function (_item) {
     item.style.locate = item.style.locate || 'center';
     // item.style.rotate = item.style.rotate || 0;
     item.style.scale = item.style.scale || 1;
-    // item.style.display = item.style.display;
 
     let _img = utils.funcOrValue(item.content.img);
-    // if (_img === undefined) {
-    //     _img = {
-    //         width: 0,
-    //         height: 0,
-    //     };
-    // }
 
     constants.xywh.forEach((key) => {
         item.style[key] = item.style[key] || 0;
@@ -159,13 +147,13 @@ const preAdd = function (_item) {
 let sprite = function (opt) {
     let _opt = preAdd(opt);
 
-	for (let i in _opt) {
-    	if (Object.prototype.hasOwnProperty.call(_opt, i)) {
-    		this[i] = _opt[i];
-    	}
-	}
+    for (let i in _opt) {
+        if (Object.prototype.hasOwnProperty.call(_opt, i)) {
+            this[i] = _opt[i];
+        }
+    }
 
-	return this;
+    return this;
 };
 
 sprite.prototype.add = function (child) {
@@ -199,17 +187,17 @@ sprite.prototype.self = function () {
 };
 
 sprite.prototype.remove = function (child) {
-	if (child) {
-		this.$canvas.remove(child);
+    if (child) {
+        this.$canvas.remove(child);
         utils.execFuncs(child.hooks.removed, child);
         return;
-	}
+    }
 
     if (this.$parent) {
-		this.$parent.remove(this);
-	} else {
-		this.$canvas.remove(this);
-	}
+        this.$parent.remove(this);
+    } else {
+        this.$canvas.remove(this);
+    }
     utils.execFuncs(this.hooks.removed, this);
 };
 

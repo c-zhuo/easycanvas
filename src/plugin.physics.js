@@ -17,49 +17,49 @@ let cp = window.cp = chipmunk;
 let _ec;
 
 let physics = function (opt) {
-	let sprite = new _ec.class.sprite(opt);
+    let sprite = new _ec.class.sprite(opt);
 
-	sprite.physics = sprite.physics || {};
+    sprite.physics = sprite.physics || {};
 
-	// sprite.physics.static = sprite.physics.static; // bool
+    // sprite.physics.static = sprite.physics.static; // bool
 
-	sprite.physics.shape = sprite.physics.shape || [];
-	sprite.physics.gravity = or(sprite.physics.gravity, 1);
-	sprite.physics.friction = or(sprite.physics.friction, 0);
-	sprite.physics.elasticity = or(sprite.physics.elasticity, 0);
-	sprite.physics.group = or(sprite.physics.group, 0);
+    sprite.physics.shape = sprite.physics.shape || [];
+    sprite.physics.gravity = or(sprite.physics.gravity, 1);
+    sprite.physics.friction = or(sprite.physics.friction, 0);
+    sprite.physics.elasticity = or(sprite.physics.elasticity, 0);
+    sprite.physics.group = or(sprite.physics.group, 0);
 
-	if (!sprite.physics.static && sprite.physics.shape.length) {
-		sprite.physics.mass = or(sprite.physics.mass, 0);
+    if (!sprite.physics.static && sprite.physics.shape.length) {
+        sprite.physics.mass = or(sprite.physics.mass, 0);
 
-		let defaultMoment;
-		if (sprite.physics.shape[0].length === 3) {
-			// circle shape
-			defaultMoment = cp.momentForCircle(
-				sprite.physics.mass,
-				0, // r1
-				sprite.physics.shape[0][2], // r2
-				cp.vzero // offset
-			);
-		} else {
-			// poly shape
-			let verts = sprite.physics.shape.join(',').split(',').map((_num, index) => {
+        let defaultMoment;
+        if (sprite.physics.shape[0].length === 3) {
+            // circle shape
+            defaultMoment = cp.momentForCircle(
+                sprite.physics.mass,
+                0, // r1
+                sprite.physics.shape[0][2], // r2
+                cp.vzero // offset
+            );
+        } else {
+            // poly shape
+            let verts = sprite.physics.shape.join(',').split(',').map((_num, index) => {
                 let num = Number(_num);
                 // num += index % 2 ? sqSprite.$cache.ty : sqSprite.$cache.tx;
                 let res = index % 2 ? -num : num;
                 return res ? res : 0;
             });
 
-			defaultMoment = cp.momentForPoly(
-				sprite.physics.mass,
-				verts,
-				cp.vzero // offset
-			);
-		}
-		sprite.physics.moment = or(sprite.physics.moment, defaultMoment);
-	}
+            defaultMoment = cp.momentForPoly(
+                sprite.physics.mass,
+                verts,
+                cp.vzero // offset
+            );
+        }
+        sprite.physics.moment = or(sprite.physics.moment, defaultMoment);
+    }
 
-	sprite.launch = launch.bind(sprite);
+    sprite.launch = launch.bind(sprite);
 
     sprite.physicsOff = function () {
         if (!sprite.$physics) return;
@@ -108,7 +108,7 @@ let physics = function (opt) {
         sprite.$cache && sprite.$physics.body && chip2ec(sprite.$physics.body, sprite);
     });
 
-	return sprite;
+    return sprite;
 };
 
 let xy2Vect = function (pos) {
@@ -268,15 +268,15 @@ function spritePhysicsOn (child) {
 }
 
 function launch () {
-	physicsStart.call(this);
+    physicsStart.call(this);
 }
 
 if (window && window.Easycanvas) {
-	_ec = window.Easycanvas;
-	_ec.class.physics = physics;
+    _ec = window.Easycanvas;
+    _ec.class.physics = physics;
 }
 
 module.exports = function (ec) {
-	_ec = ec;
-	ec.class.physics = physics;
+    _ec = ec;
+    ec.class.physics = physics;
 };

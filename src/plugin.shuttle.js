@@ -7,7 +7,7 @@ const or = utils.firstValuable;
 let _ec;
 
 let shuttle = function (opt) {
-	let sprite = new _ec.class.sprite(opt);
+    let sprite = new _ec.class.sprite(opt);
 
     sprite.style = opt.style;
 
@@ -105,11 +105,11 @@ let shuttle = function (opt) {
 };
 
 if (window && window.Easycanvas) {
-	_ec = window.Easycanvas;
-	_ec.class.shuttle = shuttle;
+    _ec = window.Easycanvas;
+    _ec.class.shuttle = shuttle;
 }
 
 module.exports = function (ec) {
-	_ec = ec;
-	ec.class.shuttle = shuttle;
+    _ec = ec;
+    ec.class.shuttle = shuttle;
 };
