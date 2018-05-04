@@ -1,5 +1,13 @@
 ## Easycanvas Changelog
 
+#### 0.4.0 (30kb)
+
+- Bugfix: Add forces to physics plugin.
+
+- Bugfix: Change `rect/self` API to `getRect/getSelfStyle`, add `getStyle` api.
+
+- Docs: Update.
+
 #### 0.3.2 (30kb)
 
 - Bugfix: `broadcast` triggers event twice errorly.

@@ -53,7 +53,7 @@ module.exports = function () {
         $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'START');
     }
 
-    $canvas.$paint();
+    $canvas.$render();
 
     if (process.env.NODE_ENV !== 'production') {
         $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'END');

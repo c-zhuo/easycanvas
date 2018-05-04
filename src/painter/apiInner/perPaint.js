@@ -48,18 +48,21 @@ module.exports = function (i, index) {
     _props.sw = _props.sw || _imgWidth;
     _props.sh = _props.sh || _imgHeight;
 
-    if (_props.locate === 'center') {
-        _props.tx = _props.tx - 0.5 * _props.tw;
-        _props.ty = _props.ty - 0.5 * _props.th;
+    if (_props.locate === 'lt') {
+        // _props.tx = _props.tx;
+        // _props.ty = _props.ty;
     } else if (_props.locate === 'ld') {
-        _props.tx = _props.tx;
-        _props.ty = _props.ty - 1 * _props.th;
+        // _props.tx = _props.tx;
+        _props.ty -= _props.th;
     } else if (_props.locate === 'rt') {
-        _props.tx = _props.tx - 1 * _props.tw;
-        _props.ty = _props.ty;
+        _props.tx -= _props.tw;
+        // _props.ty = _props.ty;
     } else if (_props.locate === 'rd') {
-        _props.tx = _props.tx - 1 * _props.tw;
-        _props.ty = _props.ty - 1 * _props.th;
+        _props.tx -= _props.tw;
+        _props.ty -= _props.th;
+    } else { // center
+        _props.tx -= _props.tw >> 1;
+        _props.ty -= _props.th >> 1;
     }
 
     if (_props.fh || _props.fv) {

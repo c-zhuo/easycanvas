@@ -177,7 +177,7 @@ const DemoableCodeClassName = 'code-2-demo';
                     <html>
                     <head>
                         <style>canvas {border:1px solid #eee;}</style>
-                        <script src="./lib/easycanvas.standalone.prod.js"></script>
+                        <script src="./lib/easycanvas/easycanvas.standalone.prod.js"></script>
                     </head>
                     <body>
                         ${code}
