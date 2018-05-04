@@ -7,6 +7,7 @@ import sequence from './contents/sequence.js';
 import hooks from './contents/hooks.js';
 import customEvent from './contents/customEvent.js';
 import sprite from './contents/sprite.js';
+import pluginPhysics from './contents/plugin.physics.js';
 
 let content = `
     <article id="概述">
@@ -38,6 +39,8 @@ let content = `
     ${hooks}
     ${customEvent}
     ${sprite}
+
+    ${pluginPhysics}
 `;
 
 let splits = content.split(/<\/*code>/);

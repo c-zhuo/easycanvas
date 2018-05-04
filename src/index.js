@@ -25,6 +25,10 @@ let Easycanvas = {
     env: process.env.NODE_ENV,
 };
 
+Easycanvas.extend = function (pluginHook) {
+    Easycanvas.class.sprite.prototype.$extendList.push(pluginHook);
+};
+
 if (process.env.NODE_ENV !== 'production') {
     Easycanvas.$warn = (() => {
         let lastConsoleTime = 0;

@@ -69,6 +69,7 @@ const ChangeChildrenToSprite = function ($parent) {
     }
 };
 
+// Set default values to sprite
 const preAdd = function (_item) {
     let item = _item || {};
 
@@ -144,6 +145,12 @@ const preAdd = function (_item) {
     return item;
 };
 
+const extend = function (opt) {
+    this.$extendList.forEach((plugin) => {
+        plugin.call(this, opt);
+    });
+};
+
 let sprite = function (opt) {
     let _opt = preAdd(opt);
 
@@ -153,8 +160,12 @@ let sprite = function (opt) {
         }
     }
 
+    extend.call(this, _opt);
+
     return this;
 };
+
+sprite.prototype.$extendList = [];
 
 sprite.prototype.add = function (child) {
     if (!child) {
@@ -170,7 +181,7 @@ sprite.prototype.add = function (child) {
     return this.children[this.children.length - 1];
 };
 
-sprite.prototype.rect = function () {
+sprite.prototype.getRect = function () {
     let res = {};
     for (var key in this.style) {
         res[key] = this.$cache[key];
@@ -178,12 +189,44 @@ sprite.prototype.rect = function () {
     return res;
 };
 
-sprite.prototype.self = function () {
+sprite.prototype.getSelfStyle = function ({locate}) {
     let res = {};
     for (var key in this.style) {
         res[key] = utils.funcOrValue(this.style[key], this);
     }
+
     return res;
+};
+
+sprite.prototype.getStyle = function (key) {
+    let $sprite = this;
+    let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
+
+    if ($sprite.$parent && $sprite.inherit.indexOf(key) >= 0) {
+        // 额外处理滚动
+        if (key === 'tx') {
+            currentValue -= $sprite.$parent.scroll.scrollX || 0;
+        }
+        else if (key === 'ty') {
+            currentValue -= $sprite.$parent.scroll.scrollY || 0;
+        }
+
+        if (key === 'tw' || key === 'th') {
+            return utils.firstValuable(currentValue, $sprite.$parent.getStyle(key));
+        }
+        else if (key === 'opacity' || key === 'scale') {
+            return (
+                utils.firstValuable($sprite.$parent.getStyle(key), 1)
+            ) * utils.firstValuable(currentValue, 1);
+        } else {
+            return (
+                utils.firstValuable($sprite.$parent.getStyle(key), 0)
+            ) + utils.firstValuable(currentValue, 0);
+        }
+
+    }
+
+    return currentValue;
 };
 
 sprite.prototype.remove = function (child) {

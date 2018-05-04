@@ -1,3 +1,5 @@
+// Some lines modified by chenzhuo04, fixing some bugs.
+
 (function(){
 /* Copyright (c) 2007 Scott Lembcke
  *
@@ -26,7 +28,7 @@ Object.create = Object.create || function(o) {
     return new F();
 };
 
-//var VERSION = CP_VERSION_MAJOR + "." + CP_VERSION_MINOR + "." + CP_VERSION_RELEASE;
+// var VERSION = CP_VERSION_MAJOR + "." + CP_VERSION_MINOR + "." + CP_VERSION_RELEASE;
 
 var cp;
 if(typeof exports === 'undefined'){
@@ -3005,6 +3007,7 @@ var unthreadHelper = function(arb, body, prev, next)
         }
     // origin chipmunk
     // } else {
+    // chenzhuo04:
     // https://github.com/josephg/Chipmunk-js/pull/34/files and https://github.com/josephg/Chipmunk-js/issues/29
     } else if(body.arbiterList === arb){
         body.arbiterList = next;
@@ -6111,7 +6114,7 @@ GearJoint.prototype.applyImpulse = function()
     b.w += j*b.i_inv;
 };
 
-GearJoint.prototype.getImpulseÂ = function()
+GearJoint.prototype.getImpulse = function()
 {
     return Math.abs(this.jAcc);
 };

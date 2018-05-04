@@ -10,35 +10,6 @@
 
 import utils from 'utils/utils.js';
 import constants from 'constants';
-const getFinalStyle = function ($sprite, $canvas, key) {
-    let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
-
-    if ($sprite.$parent && $sprite.inherit.indexOf(key) >= 0) {
-        // 额外处理滚动
-        if (key === 'tx') {
-            currentValue -= $sprite.$parent.scroll.scrollX || 0;
-        }
-        else if (key === 'ty') {
-            currentValue -= $sprite.$parent.scroll.scrollY || 0;
-        }
-
-        if (key === 'tw' || key === 'th') {
-            return utils.firstValuable(currentValue, getFinalStyle($sprite.$parent, $canvas, key));
-        }
-        else if (key === 'opacity' || key === 'scale') {
-            return (
-                utils.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 1)
-            ) * utils.firstValuable(currentValue, 1);
-        } else {
-            return (
-                utils.firstValuable(getFinalStyle($sprite.$parent, $canvas, key), 0)
-            ) + utils.firstValuable(currentValue, 0);
-        }
-
-    }
-
-    return currentValue;
-};
 
 module.exports = function ($sprite, $canvas) {
     let _props = {};
@@ -54,10 +25,10 @@ module.exports = function ($sprite, $canvas) {
     }
 
     for (let i in $sprite.style) {
-        _props[i] = getFinalStyle($sprite, $canvas, i);
+        _props[i] = $sprite.getStyle(i);
     }
     $sprite.inherit.forEach(function (i) {
-        _props[i] = getFinalStyle($sprite, $canvas, i);
+        _props[i] = $sprite.getStyle(i);
     });
 
     // Maybe a plgin is better ?
