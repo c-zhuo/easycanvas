@@ -6,7 +6,7 @@ module.exports = `
         
         <h2>样式获取</h2>
 
-        <p>sprite的rect和self这两个API可以获取当前的样式。例如：</p>
+        <p>sprite的getRect、getSelfStyle、getStyle这三个API可以获取当前的样式。例如：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -47,10 +47,10 @@ module.exports = `
                         events: {
                             click: function (e) {
                                 this.style.tx = Easycanvas.transition.pendulum(
-                                    this.self().tx, Math.random() * 350, 3000
+                                    this.getStyle().tx, Math.random() * 350, 3000
                                 ).loop();
                                 this.style.ty = Easycanvas.transition.pendulum(
-                                    this.self().ty, Math.random() * 350, 4000
+                                    this.getStyle().ty, Math.random() * 350, 4000
                                 ).loop();
                             },
                         },
@@ -66,15 +66,18 @@ module.exports = `
 
         <p class="tip">Tips：在这个例子中，this.style.tx()这种写法也可以取到当前的实际值。</p>
 
-        <p>这个例子是有一个层级，因此rect和self的效果相同。<strong>rect获取的是实际渲染（受到父级sprite继承影响的）的样式，而self获取的是当前自身的样式</strong>。例如：</p>
+        <p><strong>getRect获取的是实际渲染的位置，左上角为tx、ty对应的顶点（这一点和HTML5的getBoundingClientRect是相同的），getStyle获取的是实际计算的样式（tx、ty对应哪个点是和locate相关的），而getSelfStyle获取的是当前自身的样式（用来获取一些函数形式的动态属性的当前值）</strong>。有关locate的介绍，请参阅“图片渲染与处理”。</p>
+
+        <p>这个例子是有一个层级，因此getStyle和getSelfStyle的效果相同。下面这个例子存在两个层级，所以这两个API的结果不同：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
             <code>
                 <body>
                     <canvas id="app"></canvas>
-                    <p id="rect"></p>
-                    <p id="self"></p>
+                    <p id="getSelfStyle">点击第二个字母G</p>
+                    <p id="getStyle"></p>
+                    <p id="getRect"></p>
                 </body>
 
                 <script>
@@ -102,15 +105,16 @@ module.exports = `
                             img: 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true',
                         },
                         style: {
-                            tw: 100,
+                            tw: function () {return 100;},
                             th: 100,
                             tx: 100,
                             ty: 100,
                         },
                         events: {
                             click: function () {
-                                document.getElementById('rect').innerHTML = 'rect: ' + JSON.stringify(this.rect());
-                                document.getElementById('self').innerHTML = 'self: ' + JSON.stringify(this.self());
+                                document.getElementById('getSelfStyle').innerHTML = 'getSelfStyle: ' + JSON.stringify(this.getSelfStyle());
+                                document.getElementById('getStyle').innerHTML = 'getStyle tx: ' + this.getStyle('tx');
+                                document.getElementById('getRect').innerHTML = 'getRect: ' + JSON.stringify(this.getRect());
                             }
                         }
                     });
@@ -122,7 +126,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>需要注意的是，<strong>rect()获取的样式，tx和ty对应的一定是sprite的左上角的顶点</strong>（这一点和HTML5的getBoundingClientRect是相同的）。而self获取的样式，tx和ty是与定位方式locate相关的。有关locate的介绍，请参阅“图片渲染与处理”。</p>
+        <p>在这个例子中，child的样式的结果都是100，所以getSelfStyle返回的都是整数100。用getStyle获取tx或者ty的值时，会计算它本身和它的所有父级的最终结果，因此时100加100，结果为200。而getRect获取的是绘制位置，因为图片的宽高都是100，以(200,200)为中心的话，需要从(150,150)开始绘制宽高都是100的面积。并且这个API会补齐sx、sy、sw、sh等参数。</p>
 
         <h2>样式更新</h2>
 
@@ -133,8 +137,8 @@ module.exports = `
             <code>
                 <body>
                     <canvas id="app"></canvas>
-                    <p id="rect"></p>
-                    <p id="self"></p>
+                    <p id="getRect"></p>
+                    <p id="getSelfStyle"></p>
                 </body>
 
                 <script>
@@ -172,6 +176,6 @@ module.exports = `
             </code>
         </section>
 
-        <p>update除了批量修改style外，也可以用于修改eIndex、conent等属性。</p>
+        <p>update除了批量修改style外，也可以用于修改event、conent等属性。未指明的参数将保持不变。</p>
     </article>
 `;

@@ -12,6 +12,7 @@ module.exports = function (f) {
     let time = Date.now();
     window.Easycanvas.transition.$lastPaintTime = this.$nextTickTime = time;
 
+    // calculating fps
     if (time - this.fpsCalculateTime >= 1000) {
         this.fpsCalculateTime = time;
         if (this.fpsHandler) {
@@ -32,6 +33,8 @@ module.exports = function (f) {
             // 让$lastPaintTime不带有小尾巴（101，199，202，298这种变成100，200，300，400）
             // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
             this.$lastPaintTime = time - (time - this.$lastPaintTime) % (1000 / this.maxFps);
+        } else {
+            this.$lastPaintTime = Date.now();
         }
         f();
     }.bind(this));

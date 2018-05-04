@@ -7,7 +7,7 @@
  * ********** **/
 
 import $perPaint from './apiInner/perPaint.js';
-import $paint from './apiInner/paint.js';
+import $render from './apiInner/render.js';
 import $eventHandler from './apiInner/eventHandler.js';
 import $bindDrag from './apiInner/bindDrag.js';
 import $rAFer from './apiInner/rAFer.js';
@@ -17,7 +17,7 @@ import $apiPlugin from './apiPlugin/apiPlugin.js';
 import utils from 'utils/utils.js';
 
 let apiInner = {
-    $paint,
+    $render,
     $eventHandler,
     $perPaint,
     $bindDrag,
