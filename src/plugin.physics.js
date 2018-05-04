@@ -168,8 +168,6 @@ function physicsStart () {
 
     space.gravity = new cp.Vect(0, this.physics.gravity * -500);
 
-    let timeStep = 0.002;
-
     if (process.env.NODE_ENV !== 'production') {
         if (!this.$canvas) {
             console.error('[Easycanvas] sprite must be added to an instance before lanuching physics.');
