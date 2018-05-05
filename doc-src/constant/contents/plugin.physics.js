@@ -6,7 +6,7 @@ module.exports = `
         
         <h2>一个复杂的例子</h2>
 
-        <p></p>
+        <p>未完待续</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
