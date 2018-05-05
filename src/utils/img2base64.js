@@ -1,7 +1,7 @@
 const ProcessingFlag = 'processing';
 const ProcessingPool = {};
 
-function toDataUR (url, callback) {
+function toDataURL (url, callback) {
     if (url && url.match(/^data:/)) {
         callback && callback(url);
         return;
@@ -12,7 +12,7 @@ function toDataUR (url, callback) {
             callback(ProcessingPool[url]);
         } else {
             setTimeout(function () {
-                toDataUR(url, callback);
+                toDataURL(url, callback);
             }, 100);
         }
         return;        
@@ -34,4 +34,4 @@ function toDataUR (url, callback) {
     xhr.send();
 }
 
-module.exports = toDataUR;
+module.exports = toDataURL;
