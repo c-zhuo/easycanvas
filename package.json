@@ -1,8 +1,8 @@
 {
   "name": "easycanvas",
-  "version": "0.4.0",
+  "version": "0.4.0-beta.3",
   "description": "A cute canvas framework. See https://chenzhuo1992.github.io/easycanvas/",
-  "keywords": "canvas, framework, animation",
+  "keywords": ["canvas"],
   "main": "build/easycanvas.js",
   "repository": {
     "type": "git",

@@ -9,15 +9,20 @@ import chipmunk from 'lib/chipmunk.js';
 
 import utils from 'utils/utils.js';
 import mathPointRotate from 'utils/math.point-rotate.js';
-window.mathPointRotate = mathPointRotate;
-const or = utils.firstValuable;
-const PI = 3.141593;
 
-let cp = window.cp = chipmunk;
-let _ec;
+const or = utils.firstValuable;
+const getValueFromArrayOrStatic = function (physics, key, index) {
+    return or(physics[key][index], physics[key]);
+};
+
+const err = function (msg) {
+    console.error('[Easycanvas-physics] ' + msg);
+};
+
+let cp = chipmunk;
 
 Easycanvas.extend(function (opt) {
-    if (!opt.physics) return
+    if (!opt.physics) return;
 
     let sprite = this;
 
@@ -26,7 +31,8 @@ Easycanvas.extend(function (opt) {
     // sprite.physics.static = sprite.physics.static; // bool
 
     sprite.physics.shape = sprite.physics.shape || [];
-    sprite.physics.gravity = or(sprite.physics.gravity, 1);
+    sprite.physics.gravity = or(sprite.physics.gravity, 2);
+    sprite.physics.accuracy = or(sprite.physics.accuracy, 2);
     sprite.physics.friction = or(sprite.physics.friction, 0);
     sprite.physics.elasticity = or(sprite.physics.elasticity, 0);
     sprite.physics.group = or(sprite.physics.group, 0);
@@ -36,6 +42,7 @@ Easycanvas.extend(function (opt) {
         sprite.physics.mass = or(sprite.physics.mass, 0);
 
         let defaultMoment;
+
         if (sprite.physics.shape[0].length === 3) {
             // circle shape
             defaultMoment = cp.momentForCircle(
@@ -48,7 +55,7 @@ Easycanvas.extend(function (opt) {
             // poly shape
             let verts = sprite.physics.shape.join(',').split(',').map((_num, index) => {
                 let num = Number(_num);
-                // num += index % 2 ? sqSprite.$cache.ty : sqSprite.$cache.tx;
+                // num += index % 2 ? sqSprite.getRect().ty : sqSprite.getRect().tx;
                 let res = index % 2 ? -num : num;
                 return res ? res : 0;
             });
@@ -59,13 +66,14 @@ Easycanvas.extend(function (opt) {
                 cp.vzero // offset
             );
         }
+
         sprite.physics.moment = or(sprite.physics.moment, defaultMoment);
     }
 
     sprite.launch = launch.bind(sprite);
 
     sprite.physicsOff = function () {
-        if (!sprite.$physics) return;
+        if (!sprite.$physics) return this;
 
         sprite.$physics.inSpace = false;
         if (sprite.$physics.body) {
@@ -76,44 +84,146 @@ Easycanvas.extend(function (opt) {
         });
 
         sprite.$physics = null;
+
+        return this;
     };
 
     sprite.physicsOn = function () {
-        sprite.$canvas.nextTick(() => {
-            // 第一帧没有$cache
-            sprite.$canvas.nextTick(() => {
-                if (!sprite.$physics) {
-                    spritePhysicsOn(sprite);
-                }
+        if (!this.$physics) {
+            spritePhysicsOn(this);
+        }
 
-                sprite.$physics.inSpace = true;
+        // 可能不是物理对象
+        if (!this.$physics) return this;
 
-                if (sprite.$physics.body) {
-                    sprite.$physics.body.setPos(new cp.Vect(
-                        sprite.$cache.tx + sprite.$cache.tw / 2,
-                        -sprite.$cache.ty - sprite.$cache.th / 2
-                    ));
-                }
+        this.$physics.inSpace = true;
 
-                sprite.$physics.body && sprite.$physics.space.addBody(sprite.$physics.body);
-                sprite.$physics.shape && sprite.$physics.shape.forEach((s) => {
-                    sprite.$physics.space[sprite.physics.static ? 'addStaticShape' : 'addShape'](s);
-                });
-            });
+        if (this.$physics.body) {
+            this.$physics.body.setPos(new cp.Vect(
+                this.getRect().tx + this.getRect().tw / 2,
+                -this.getRect().ty - this.getRect().th / 2
+            ));
+        }
+
+        this.$physics.body && this.$physics.space.addBody(this.$physics.body);
+        this.$physics.shape && this.$physics.shape.forEach((s) => {
+            this.$physics.space[this.physics.static ? 'addStaticShape' : 'addShape'](s);
         });
+
+        // debug TODO !
+        this.children.forEach((child) => {
+            this.physicsOn.call(child);
+        });
+
+        return this;
     };
 
-    // sprite.remove = function () {
-    //     this.physicsOff();
-    //     this.__proto__.remove.call(this);
-    // };
+    sprite.physicsSetVelocity = function (v) {
+        if (!sprite.$physics) return;
+
+        if (!sprite.$physics.body) {
+            if (process.env.NODE_ENV !== 'production') {
+                err('Can not set velocity to static sprite.');
+            }
+            return this;
+        }
+
+        sprite.$physics.body.setVel({
+            x: v.x,
+            y: -v.y,
+        });
+
+        return this;
+    };
+
+    sprite.physicsGetVelocity = function () {
+        if (!sprite.$physics) return;
+
+        if (!sprite.$physics.body) {
+            if (process.env.NODE_ENV !== 'production') {
+                err('Can not get velocity of static sprite.');
+            }
+            return this;
+        }
+
+        let result = sprite.$physics.body.getVel();
+        result.y = -result.y;
+        return result;
+    };
+
+    sprite.physicsApplyImpulse = function (j = {x: 0, y: 0}, r = {x: 0, y: 0}) {
+        if (!sprite.$physics) return;
+
+        if (!sprite.$physics.body) {
+            if (process.env.NODE_ENV !== 'production') {
+                err('Can not apply impulse to static sprite.');
+            }
+            return this;
+        }
+
+        j.y = -j.y;
+        r.y = -r.y;
+
+        sprite.$physics.body.applyImpulse(j, r);
+        return this;
+    };
+
+    sprite.physicsGetAngelVelocity = function () {
+        if (!sprite.$physics) return;
+
+        if (!sprite.$physics.body) {
+            if (process.env.NODE_ENV !== 'production') {
+                err('Can not get angel velocity of static sprite.');
+            }
+            return this;
+        }
+
+        return sprite.$physics.body.getAngVel();
+    };
+
+    sprite.physicsSetAngelVelocity = function (w) {
+        if (!sprite.$physics) return;
+
+        if (!sprite.$physics.body) {
+            if (process.env.NODE_ENV !== 'production') {
+                err('Can not set angel velocity to static sprite.');
+            }
+            return this;
+        }
+
+        sprite.$physics.body.setVel(w);
+
+        return this;
+    };
+
+    sprite.physicsApplyForce = function (f, p = {x: 0, y: 0}) {
+        if (!sprite.$physics) return this;
+
+        if (!sprite.$physics.body) return this;
+
+        sprite.$physics.body.applyForce({
+            x: f.x,
+            y: -f.y
+        }, {
+            x: f.x,
+            y: f.y
+        });
+
+        return this;
+    };
+
+    sprite.physicsResetForces = function () {
+        sprite.$physics.body.resetForces();
+
+        return this;
+    };
 
     sprite.on('beforeTick', function (_time) {
         if (!sprite.$physics || !sprite.physics) return;
         if (sprite.physics.static) return;
         if (sprite.$physics.inSpace === false) return;
 
-        sprite.$cache && sprite.$physics.body && chip2ec(sprite.$physics.body, sprite);
+        sprite.$physics.body && cp2ec(sprite.$physics.body, sprite);
     });
 });
 
@@ -138,54 +248,60 @@ let xy2Vect = function (pos) {
     );
 };
 
-let chip2ec = function (body, sprite) {
+let cp2ec = function (body, sprite) {
     let pos = body.getPos();
     let vel = body.getVel();
-    // sprite.style.rotate = body.a;
-    sprite.style.rotate = body.a * 180 / PI;
+
+    sprite.style.rotate = body.a * 180 / Math.PI;
     sprite.style.tx = pos.x;
     sprite.style.ty = -pos.y;
 
     if (sprite.style.locate === 'lt') {
-        sprite.style.tx -= sprite.$cache.tw / 2;
-        sprite.style.ty -= sprite.$cache.th / 2;
+        sprite.style.tx -= sprite.getRect().tw / 2;
+        sprite.style.ty -= sprite.getRect().th / 2;
     } else if (sprite.style.locate === 'ld') {
-        sprite.style.tx -= sprite.$cache.tw / 2;
-        sprite.style.ty += sprite.$cache.th / 2;
+        sprite.style.tx -= sprite.getRect().tw / 2;
+        sprite.style.ty += sprite.getRect().th / 2;
     } else if (sprite.style.locate === 'rd') {
-        sprite.style.tx += sprite.$cache.tw / 2;
-        sprite.style.ty += sprite.$cache.th / 2;
+        sprite.style.tx += sprite.getRect().tw / 2;
+        sprite.style.ty += sprite.getRect().th / 2;
     } else if (sprite.style.locate === 'rt') {
-        sprite.style.tx += sprite.$cache.tw / 2;
-        sprite.style.ty -= sprite.$cache.th / 2;
+        sprite.style.tx += sprite.getRect().tw / 2;
+        sprite.style.ty -= sprite.getRect().th / 2;
     }
 };
 
-function physicsStart () {
+function launch () {
     let space = new cp.Space();
-
-    this.physics.accuracy = this.physics.accuracy || 1;
 
     space.gravity = new cp.Vect(0, this.physics.gravity * -500);
 
     if (process.env.NODE_ENV !== 'production') {
         if (!this.$canvas) {
-            console.error('[Easycanvas] sprite must be added to an instance before lanuching physics.');
+            err('Sprite must be added to an instance before lanuching physics.');
         }
     }
 
-    var lastPhysicsTime = Date.now();
     this.on('beforeTick', function (_time) {
-        let step = this.$canvas.$lastPaintTime - lastPhysicsTime;
+        let step = 0.01 * (this.$canvas.maxFps > 0 ? this.$canvas.maxFps : 60) / 60;
         for (var i = 0; i < this.physics.accuracy; i ++) {
-            space.step(step / (1000 * this.physics.accuracy));
+            space.step(step);
         }
-        lastPhysicsTime = this.$canvas.$lastPaintTime;
     });
 
     this.$physics = {
         space: space
     };
+
+    space.setDefaultCollisionHandler(function (cp) {
+        return or(cp.a.$sprite.trigger('physicsCollisionBegin', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+    }, function (cp) {
+        return or(cp.a.$sprite.trigger('physicsCollisionPreSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+    }, function (cp) {
+        return or(cp.a.$sprite.trigger('physicsCollisionPostSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+    }, function (cp) {
+        return or(cp.a.$sprite.trigger('physicsCollisionSeparate', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+    });
 
     return space;
 };
@@ -195,101 +311,97 @@ function getSpacedParent (child) {
         if (child.$parent.$physics && child.$parent.$physics.space) {
             return child.$parent;
         }
-        return getSpacedParent(child.$parent)
+        return getSpacedParent(child.$parent);
     }
     return null;
 }
 
-function spritePhysicsOn (child) {
-    let childPhysics = child.physics;
-    if (childPhysics) {
-        let space = getSpacedParent(child).$physics.space;
-        if (!space) return;
+function spritePhysicsOn ($sprite) {
+    let physics = $sprite.physics;
+    if (physics) {
+        let space = getSpacedParent($sprite).$physics.space;
+        if (!space) {
+            err('No physics container found launched.');
+            return;
+        }
 
-        child.$physics = {
+        $sprite.$physics = {
             space: space
         };
 
-        if (!childPhysics.shape.length) return;
+        if (!physics.shape.length) return;
 
-        let childShape = childPhysics.shape;
+        let spriteShape = physics.shape;
         let body;
         let shapes = [];
-        let shape;
 
-        if (!childPhysics.static) {
-            if (childShape.length === 1 && childShape[0].length === 3) {
-                // circle
-                let radius = childShape[0][2];
-                body = new cp.Body(childPhysics.mass, childPhysics.moment);
-                body.setPos(new cp.Vect(
-                    child.$cache.tx + child.$cache.tw / 2,
-                    - child.$cache.ty - child.$cache.th / 2
-                ));
-                shape = new cp.CircleShape(body, radius, cp.vzero);
-            } else {
-                let verts = childShape.join(',').split(',').map((_num, index) => {
+        if (!physics.static) {
+            body = new cp.Body(physics.mass, physics.moment);
+        }
+
+        spriteShape.forEach((s, index) => {
+            let shape;
+
+            // [a, b, r]代表一个圆
+            // [[a1, b1], [a2, b2], [a3, b4]]代表多边形各个顶点
+            // [[a1, b1], [a2, b2]]代表一条线
+            if (s.length === 3 && !s[0].length) {
+                let offset = body ? cp.vzero : {
+                    x: $sprite.getRect().tx + $sprite.getRect().tw / 2,
+                    y: -$sprite.getRect().ty - $sprite.getRect().th / 2
+                };
+                shape = new cp.CircleShape(body || space.staticBody, s[2], offset);
+            } else if (s.length >= 3) {
+                let verts = s.join(',').split(',').map((_num, _index) => {
                     let num = Number(_num);
-                    let res = index % 2 ? -num : num;
+                    let res = _index % 2 ? -num : num;
                     return res ? res : 0;
                 });
+
                 let offset = {
-                    x: -child.$cache.tw / 2,
-                    y: child.$cache.th / 2
+                    x: -$sprite.getRect().tw / 2,
+                    y: $sprite.getRect().th / 2
                 };
-                // offset = cp.vzero;
-                body = new cp.Body(childPhysics.mass, childPhysics.moment);
-                body.setPos(new cp.Vect(
-                    child.$cache.tx + child.$cache.tw / 2,
-                    - child.$cache.ty - child.$cache.th / 2
-                ));
 
                 shape = new cp.PolyShape(body, verts, offset);
-            }
-
-            shape.setFriction(childPhysics.friction);
-            shape.setElasticity(childPhysics.elasticity);
-            shape.setCollisionType(childPhysics.collisionType);
-            shape.group = childPhysics.group || 0;
-            shapes.push(shape);
-        } else {
-            childShape.forEach((s, i) => {
+            } else if (s.length === 2) {
                 // 线段构成
-                // debugger;
-                let rx = child.style.rx || (child.$cache.tx + child.$cache.tw / 2);
-                let ry = child.style.ry || (child.$cache.ty + child.$cache.th / 2);
-                let shape = new cp.SegmentShape(
+                let rx = $sprite.style.rx || ($sprite.getRect().tx + $sprite.getRect().tw / 2);
+                let ry = $sprite.style.ry || ($sprite.getRect().ty + $sprite.getRect().th / 2);
+
+                shape = new cp.SegmentShape(
                     space.staticBody,
                     xy2Vect(mathPointRotate(
-                        s[0][0] + child.$cache.tx, s[0][1] + child.$cache.ty, rx, ry, child.style.rotate || 0
+                        s[0][0] + $sprite.getRect().tx, s[0][1] + $sprite.getRect().ty, rx, ry, $sprite.style.rotate || 0
                     )),
                     xy2Vect(mathPointRotate(
-                        s[1][0] + child.$cache.tx, s[1][1] + child.$cache.ty, rx, ry, child.style.rotate || 0
+                        s[1][0] + $sprite.getRect().tx, s[1][1] + $sprite.getRect().ty, rx, ry, $sprite.style.rotate || 0
                     )),
                     0 // width
                 );
-                shape.setFriction(childPhysics.friction);
-                shape.setElasticity(childPhysics.elasticity);
-                shape.setCollisionType(childPhysics.collisionType);
-                shape.group = childPhysics.group || 0;
-                shapes.push(shape);
-            });
-        }
+            }
 
-        child.$physics.body = body;
-        child.$physics.shape = shapes;
+            shape.setFriction(
+                getValueFromArrayOrStatic(physics, 'friction', index)
+            );
+            shape.setElasticity(
+                getValueFromArrayOrStatic(physics, 'elasticity', index)
+            );
+            shape.setCollisionType(
+                getValueFromArrayOrStatic(physics, 'collisionType', index)
+            );
+            shape.group = getValueFromArrayOrStatic(physics, 'group', index);
+            shapes.push(shape);
+        });
+
+        $sprite.$physics.body = body;
+        $sprite.$physics.shape = shapes;
 
         if (body) {
-            body.$sprite = child;
+            body.$sprite = $sprite;
         }
         shapes.forEach((shape) => {
-            shape.$sprite = child;
+            shape.$sprite = $sprite;
         });
     }
-
-    child.children.forEach(spritePhysicsOn);
-}
-
-function launch () {
-    return physicsStart.call(this);
 }

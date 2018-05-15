@@ -43,6 +43,7 @@ import constants from 'constants';
 
 import on from '../painter/apiOuter/on.js';
 import off from '../painter/apiOuter/off.js';
+import nextTick from '../painter/apiOuter/nextTick.js';
 import trigger from '../painter/apiOuter/trigger.js';
 import broadcast from '../painter/apiOuter/broadcast.js';
 import bindDrag from '../painter/apiInner/bindDrag.js';
@@ -183,9 +184,25 @@ sprite.prototype.add = function (child) {
 
 sprite.prototype.getRect = function () {
     let res = {};
-    for (var key in this.style) {
-        res[key] = this.$cache[key];
+
+    constants.txywh.forEach((key) => {
+        res[key] = this.getStyle(key);
+    });
+
+    let locate = this.getStyle('locate');
+    if (locate === 'lt') {
+    } else if (locate === 'ld') {
+        res.ty -= res.th;
+    } else if (locate === 'rt') {
+        res.tx -= res.tw;
+    } else if (locate === 'rd') {
+        res.tx -= res.tw;
+        res.ty -= res.th;
+    } else { // center
+        res.tx -= res.tw >> 1;
+        res.ty -= res.th >> 1;
     }
+
     return res;
 };
 
@@ -206,15 +223,13 @@ sprite.prototype.getStyle = function (key) {
         // 额外处理滚动
         if (key === 'tx') {
             currentValue -= $sprite.$parent.scroll.scrollX || 0;
-        }
-        else if (key === 'ty') {
+        } else if (key === 'ty') {
             currentValue -= $sprite.$parent.scroll.scrollY || 0;
         }
 
         if (key === 'tw' || key === 'th') {
             return utils.firstValuable(currentValue, $sprite.$parent.getStyle(key));
-        }
-        else if (key === 'opacity' || key === 'scale') {
+        } else if (key === 'opacity' || key === 'scale') {
             return (
                 utils.firstValuable($sprite.$parent.getStyle(key), 1)
             ) * utils.firstValuable(currentValue, 1);
@@ -223,7 +238,6 @@ sprite.prototype.getStyle = function (key) {
                 utils.firstValuable($sprite.$parent.getStyle(key), 0)
             ) + utils.firstValuable(currentValue, 0);
         }
-
     }
 
     return currentValue;
@@ -258,6 +272,7 @@ sprite.prototype.update = function (opt) {
     }
 };
 
+sprite.prototype.nextTick = nextTick;
 sprite.prototype.on = on;
 sprite.prototype.off = off;
 sprite.prototype.trigger = trigger;

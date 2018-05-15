@@ -83,27 +83,6 @@ const DemoableCodeClassName = 'code-2-demo';
             this.$iframe = document.querySelector('#demo-iframe');
             this.$ace = editor;
 
-            // editor.getSession().setMode
-            // debugger;
-            // that.ACE_editor = ace.edit("codeBox");
-            // that.ShortACE_editor = ace.edit("codeBoxShort");
-            // that.ACE_editor.getSession().setMode("ace/mode/html");
-            // that.ShortACE_editor.getSession().setMode("ace/mode/html");
-
-            // use setOptions method to set several options at once
-            // editor.setOptions({
-            //     autoScrollEditorIntoView: true,
-            //     copyWithEmptySelection: true,
-            // });
-            // // use setOptions method
-            // editor.setOption("mergeUndoDeltas", "always");
-
-            // // some options are also available as methods e.g. 
-            // // editor.setTheme("ace/theme/twilight");
-
-            // // to get the value of the option use
-            // editor.getOption("optionName");
-
             document.body.onclick = function (e) {
                 if (~e.target.className.indexOf(DemoableCodeClassName)) {
                     let demoCode = e.target.nextElementSibling.innerText;
@@ -116,9 +95,11 @@ const DemoableCodeClassName = 'code-2-demo';
             setInterval(() => {
                 // 反复重绘，绕过部分浏览器sticky元素滚动后渲染位置不再触发事件的bug
                 var demos = document.querySelectorAll('.' + DemoableCodeClassName);
-                demos.forEach((dom) => {
-                    dom.style.width = 20 + Number(Math.random().toFixed(2)) + 'px';
-                });
+                if (!document.hidden) {
+                    demos.forEach((dom) => {
+                        dom.style.width = 20 + Number(Math.random().toFixed(2)) + 'px';
+                    });
+                }
             }, 800);
 
             let prefetchImg = new Image().src = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
@@ -176,7 +157,7 @@ const DemoableCodeClassName = 'code-2-demo';
                 let iframeHtmlCodes = `
                     <html>
                     <head>
-                        <style>canvas {border:1px solid #eee;}</style>
+                        <style>canvas {border:1px solid #ddd;}</style>
                         <script src="./lib/easycanvas/easycanvas.standalone.prod.js"></script>
                     </head>
                     <body>
