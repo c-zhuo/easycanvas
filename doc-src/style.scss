@@ -145,7 +145,8 @@ div.content {
     overflow-y: auto;
     bottom: 0;
     padding: 0 30px;
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 22.4px;
     color: #445566;
 
     & > .content-inner {
@@ -320,6 +321,7 @@ code {
     line-height: 1.45;
     background-color: #f6f8fa;
     border-radius: 3px;
+    font-size: 13px;
 }
 div.code-2-demo {
     position: static;
@@ -344,3 +346,37 @@ div.code-2-demo {
     background-size: 20px 20px;
     background-repeat: no-repeat;
 }
+
+table {
+    display: table;
+    border-collapse: collapse;
+    margin: 20px 0;
+    width: 0;
+    border-spacing: 2px;
+    border-color: grey;
+    font-size: 13px;
+    line-height: 20px;
+
+    & > thead {
+        display: table-header-group;
+        vertical-align: middle;
+        border-color: inherit;
+        border-collapse: collapse;
+    }
+
+    & > thead > tr, & > tbody > tr {
+        border-bottom: 1px solid #ccc;
+
+        & > td, th {
+            padding: 7px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+    }
+}
+
+
+
+
+
+

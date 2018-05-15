@@ -88,11 +88,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        if (typeof funcOrArray === 'function') {
-	            funcOrArray.apply(_this, _arg);
+	            return funcOrArray.apply(_this, _arg);
 	        } else if (utils.isArray(funcOrArray)) {
+	            var res = [];
 	            funcOrArray.forEach(function (f) {
-	                f && f.apply(_this, _arg);
+	                res.push(f && f.apply(_this, _arg));
 	            });
+	            return res;
 	        }
 	    },
 
