@@ -68,7 +68,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ProcessingFlag = 'processing';
 	var ProcessingPool = {};
 
-	function toDataUR(url, callback) {
+	function toDataURL(url, callback) {
 	    if (url && url.match(/^data:/)) {
 	        callback && callback(url);
 	        return;
@@ -79,7 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            callback(ProcessingPool[url]);
 	        } else {
 	            setTimeout(function () {
-	                toDataUR(url, callback);
+	                toDataURL(url, callback);
 	            }, 100);
 	        }
 	        return;
@@ -101,11 +101,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    xhr.send();
 	}
 
-	module.exports = toDataUR;
+	module.exports = toDataURL;
 
 /***/ }),
 
-/***/ 19:
+/***/ 20:
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -1311,7 +1311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 20:
+/***/ 21:
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2588,11 +2588,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _webglUtils2 = __webpack_require__(20);
+	var _webglUtils2 = __webpack_require__(21);
 
 	var _webglUtils3 = _interopRequireDefault(_webglUtils2);
 
-	var _m = __webpack_require__(19);
+	var _m = __webpack_require__(20);
 
 	var _m2 = _interopRequireDefault(_m);
 
