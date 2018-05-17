@@ -294,13 +294,19 @@ function launch () {
     };
 
     space.setDefaultCollisionHandler(function (cp) {
-        return or(cp.a.$sprite.trigger('physicsCollisionBegin', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+        let a = cp.a.$sprite.trigger('physicsCollisionBegin', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
+        let b = cp.b.$sprite.trigger('physicsCollisionBegin', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
+        return !(a || b);
     }, function (cp) {
-        return or(cp.a.$sprite.trigger('physicsCollisionPreSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+        let a = cp.a.$sprite.trigger('physicsCollisionPreSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
+        let b = cp.b.$sprite.trigger('physicsCollisionPreSolve', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
+        return !(a || b);
     }, function (cp) {
-        return or(cp.a.$sprite.trigger('physicsCollisionPostSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+        cp.a.$sprite.trigger('physicsCollisionPostSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
+        cp.b.$sprite.trigger('physicsCollisionPostSolve', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
     }, function (cp) {
-        return or(cp.a.$sprite.trigger('physicsCollisionSeparate', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+        cp.a.$sprite.trigger('physicsCollisionSeparate', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
+        cp.b.$sprite.trigger('physicsCollisionSeparate', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
     });
 
     return space;
@@ -358,12 +364,12 @@ function spritePhysicsOn ($sprite) {
                     return res ? res : 0;
                 });
 
-                let offset = {
-                    x: -$sprite.getRect().tw / 2,
-                    y: $sprite.getRect().th / 2
+                let offset = body ? cp.vzero : {
+                    x: $sprite.getStyle('tx'),
+                    y: -$sprite.getStyle('ty')
                 };
 
-                shape = new cp.PolyShape(body, verts, offset);
+                shape = new cp.PolyShape(body || space.staticBody, verts, offset);
             } else if (s.length === 2) {
                 // 线段构成
                 let rx = $sprite.style.rx || ($sprite.getRect().tx + $sprite.getRect().tw / 2);
@@ -372,10 +378,10 @@ function spritePhysicsOn ($sprite) {
                 shape = new cp.SegmentShape(
                     space.staticBody,
                     xy2Vect(mathPointRotate(
-                        s[0][0] + $sprite.getRect().tx, s[0][1] + $sprite.getRect().ty, rx, ry, $sprite.style.rotate || 0
+                        s[0][0] + $sprite.getStyle('tx'), s[0][1] + $sprite.getStyle('ty'), rx, ry, $sprite.style.rotate || 0
                     )),
                     xy2Vect(mathPointRotate(
-                        s[1][0] + $sprite.getRect().tx, s[1][1] + $sprite.getRect().ty, rx, ry, $sprite.style.rotate || 0
+                        s[1][0] + $sprite.getStyle('tx'), s[1][1] + $sprite.getStyle('ty'), rx, ry, $sprite.style.rotate || 0
                     )),
                     0 // width
                 );

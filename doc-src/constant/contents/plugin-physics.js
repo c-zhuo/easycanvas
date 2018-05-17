@@ -318,11 +318,11 @@ module.exports = `
             <tbody>
                 <tr>
                     <td align="left">physicsCollisionBegin(b, type, cp, space)</td>
-                    <td align="left">碰撞开始的钩子；如果返回false，将忽略这次碰撞（即物体将会重叠，不会触发physicsCollisionPreSolve和physicsCollisionPostSolve）</td>
+                    <td align="left">碰撞开始的钩子；发生碰撞的两个物体各触发一次（如果其中一个是静态物体，那么静态物体后触发）；任一返回true，都将取消物理计算（即物体将会重叠，弹性、摩擦等不起作用，不会触发physicsCollisionPreSolve和physicsCollisionPostSolve）；物体分离之前不会再次触发这个钩子</td>
                 </tr>
                 <tr>
                     <td align="left">physicsCollisionPreSolve(b, type, cp, space)</td>
-                    <td align="left">碰撞处理前的钩子；如果返回false，将不再进行真实的物理计算（弹性、摩擦等不起作用，不会触发physicsCollisionPostSolve）；在物体分离前会连续调用（每帧调用accuracy次）</td>
+                    <td align="left">碰撞处理前的钩子；发生碰撞的两个物体各触发一次（如果其中一个是静态物体，那么静态物体后触发）；任一返回true，都将取消物理计算（不会出发physicsCollisionPostSolve）；在物体分离前会连续调用（每帧调用accuracy次）</td>
                 </tr>
                 <tr>
                     <td align="left">physicsCollisionPostSolve(b, type, cp, space)</td>
@@ -383,5 +383,6 @@ module.exports = `
             </tbody>
         </table>
 
+        <p>需要注意的是，如果</p>
     </article>
 `;
