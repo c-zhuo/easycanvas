@@ -349,15 +349,21 @@ function spritePhysicsOn ($sprite) {
         spriteShape.forEach((s, index) => {
             let shape;
 
+            let spriteX = $sprite.getStyle('tx'),
+                spriteY = $sprite.getStyle('ty'),
+                spaceX = $space.getStyle('tx'),
+                spaceY = $space.getStyle('ty');
+
             // [a, b, r]代表一个圆
             // [[a1, b1], [a2, b2], [a3, b4]]代表多边形各个顶点
             // [[a1, b1], [a2, b2]]代表一条线
 
             if (s.length === 3 && !s[0].length) {
                 let offset = body ? cp.vzero : {
-                    x: $sprite.getStyle('tx') - $space.getStyle('tx'),
-                    y: -$sprite.getStyle('ty') + $space.getStyle('ty')
+                    x: spriteX - spaceX,
+                    y: -spriteY + spaceY
                 };
+
                 shape = new cp.CircleShape(body || space.staticBody, s[2], offset);
             } else if (s.length >= 3) {
                 let verts = s.join(',').split(',').map((_num, _index) => {
@@ -367,8 +373,8 @@ function spritePhysicsOn ($sprite) {
                 });
 
                 let offset = body ? cp.vzero : {
-                    x: $sprite.getStyle('tx') - $space.getStyle('tx'),
-                    y: -$sprite.getStyle('ty') + $space.getStyle('ty')
+                    x: spriteX - spaceX,
+                    y: -spriteY + spaceY
                 };
 
                 shape = new cp.PolyShape(body || space.staticBody, verts, offset);
@@ -380,14 +386,18 @@ function spritePhysicsOn ($sprite) {
                 shape = new cp.SegmentShape(
                     space.staticBody,
                     xy2Vect(mathPointRotate(
-                        s[0][0] + $sprite.getStyle('tx') - $space.getStyle('tx'),
-                        s[0][1] + $sprite.getStyle('ty') + $space.getStyle('ty'),
-                        rx - $space.getStyle('tx'), ry + $space.getStyle('ty'), $sprite.style.rotate || 0
+                        s[0][0] + spriteX - spaceX,
+                        s[0][1] + spriteY + spaceY,
+                        rx - spaceX,
+                        ry + spaceY,
+                        $sprite.style.rotate || 0
                     )),
                     xy2Vect(mathPointRotate(
-                        s[1][0] + $sprite.getStyle('tx') - $space.getStyle('tx'),
-                        s[1][1] + $sprite.getStyle('ty') + $space.getStyle('ty'),
-                        rx - $space.getStyle('tx'), ry + $space.getStyle('ty'), $sprite.style.rotate || 0
+                        s[1][0] + spriteX - spaceX,
+                        s[1][1] + spriteY + spaceY,
+                        rx - spaceX,
+                        ry + spaceY,
+                        $sprite.style.rotate || 0
                     )),
                     0 // width
                 );
@@ -403,6 +413,9 @@ function spritePhysicsOn ($sprite) {
                 getValueFromArrayOrStatic(physics, 'collisionType', index)
             );
             shape.group = getValueFromArrayOrStatic(physics, 'group', index);
+
+            shape.$sprite = $sprite;
+
             shapes.push(shape);
         });
 
@@ -412,8 +425,5 @@ function spritePhysicsOn ($sprite) {
         if (body) {
             body.$sprite = $sprite;
         }
-        shapes.forEach((shape) => {
-            shape.$sprite = $sprite;
-        });
     }
 }

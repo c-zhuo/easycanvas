@@ -104,8 +104,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return !(x < x1 || x > x2 || y < y1 || y > y2);
 	    },
 
-	    firstValuable: function firstValuable(a, b) {
-	        return typeof a === 'undefined' ? b : a;
+	    firstValuable: function firstValuable(a, b, c) {
+	        // 效率低
+	        // for (let i = 0; i < arguments.length; i++) {
+	        //     if (typeof arguments[i] !== 'undefined') {
+	        //         return arguments[i];
+	        //     }
+	        // }
+	        return typeof a === 'undefined' ? typeof b === 'undefined' ? c : b : a;
 	    }
 	};
 
@@ -6186,11 +6192,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this;
 	    };
 
-	    sprite.physicsResetForces = function (f, p) {
+	    sprite.physicsResetForces = function () {
 	        sprite.$physics.body.resetForces();
-	        if (f) {
-	            sprite.physicsApplyForce(f, p);
-	        }
 
 	        return this;
 	    };
@@ -6268,13 +6271,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    space.setDefaultCollisionHandler(function (cp) {
-	        return or(cp.a.$sprite.trigger('physicsCollisionBegin', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+	        var a = cp.a.$sprite.trigger('physicsCollisionBegin', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
+	        var b = cp.b.$sprite.trigger('physicsCollisionBegin', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
+	        return !(a || b);
 	    }, function (cp) {
-	        return or(cp.a.$sprite.trigger('physicsCollisionPreSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+	        var a = cp.a.$sprite.trigger('physicsCollisionPreSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
+	        var b = cp.b.$sprite.trigger('physicsCollisionPreSolve', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
+	        return !(a || b);
 	    }, function (cp) {
-	        return or(cp.a.$sprite.trigger('physicsCollisionPostSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+	        cp.a.$sprite.trigger('physicsCollisionPostSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
+	        cp.b.$sprite.trigger('physicsCollisionPostSolve', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
 	    }, function (cp) {
-	        return or(cp.a.$sprite.trigger('physicsCollisionSeparate', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space), true);
+	        cp.a.$sprite.trigger('physicsCollisionSeparate', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
+	        cp.b.$sprite.trigger('physicsCollisionSeparate', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
 	    });
 
 	    return space;
@@ -6293,8 +6302,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	function spritePhysicsOn($sprite) {
 	    var physics = $sprite.physics;
 	    if (physics) {
-	        var space = getSpacedParent($sprite).$physics.space;
-	        if (!space) return;
+	        var $space = getSpacedParent($sprite);
+	        var space = $space.$physics.space;
+	        if (!space) {
+	            err('No physics container found launched.');
+	            return;
+	        }
 
 	        $sprite.$physics = {
 	            space: space
@@ -6316,10 +6329,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // [a, b, r]代表一个圆
 	            // [[a1, b1], [a2, b2], [a3, b4]]代表多边形各个顶点
 	            // [[a1, b1], [a2, b2]]代表一条线
+
 	            if (s.length === 3 && !s[0].length) {
 	                var offset = body ? cp.vzero : {
-	                    x: $sprite.getRect().tx + $sprite.getRect().tw / 2,
-	                    y: -$sprite.getRect().ty - $sprite.getRect().th / 2
+	                    x: $sprite.getStyle('tx') - $space.getStyle('tx'),
+	                    y: -$sprite.getStyle('ty') + $space.getStyle('ty')
 	                };
 	                shape = new cp.CircleShape(body || space.staticBody, s[2], offset);
 	            } else if (s.length >= 3) {
@@ -6329,18 +6343,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    return res ? res : 0;
 	                });
 
-	                var _offset = {
-	                    x: -$sprite.getRect().tw / 2,
-	                    y: $sprite.getRect().th / 2
+	                var _offset = body ? cp.vzero : {
+	                    x: $sprite.getStyle('tx') - $space.getStyle('tx'),
+	                    y: -$sprite.getStyle('ty') + $space.getStyle('ty')
 	                };
 
-	                shape = new cp.PolyShape(body, verts, _offset);
+	                shape = new cp.PolyShape(body || space.staticBody, verts, _offset);
 	            } else if (s.length === 2) {
 	                // 线段构成
 	                var rx = $sprite.style.rx || $sprite.getRect().tx + $sprite.getRect().tw / 2;
 	                var ry = $sprite.style.ry || $sprite.getRect().ty + $sprite.getRect().th / 2;
 
-	                shape = new cp.SegmentShape(space.staticBody, xy2Vect((0, _mathPointRotate2.default)(s[0][0] + $sprite.getRect().tx, s[0][1] + $sprite.getRect().ty, rx, ry, $sprite.style.rotate || 0)), xy2Vect((0, _mathPointRotate2.default)(s[1][0] + $sprite.getRect().tx, s[1][1] + $sprite.getRect().ty, rx, ry, $sprite.style.rotate || 0)), 0 // width
+	                shape = new cp.SegmentShape(space.staticBody, xy2Vect((0, _mathPointRotate2.default)(s[0][0] + $sprite.getStyle('tx') - $space.getStyle('tx'), s[0][1] + $sprite.getStyle('ty') + $space.getStyle('ty'), rx - $space.getStyle('tx'), ry + $space.getStyle('ty'), $sprite.style.rotate || 0)), xy2Vect((0, _mathPointRotate2.default)(s[1][0] + $sprite.getStyle('tx') - $space.getStyle('tx'), s[1][1] + $sprite.getStyle('ty') + $space.getStyle('ty'), rx - $space.getStyle('tx'), ry + $space.getStyle('ty'), $sprite.style.rotate || 0)), 0 // width
 	                );
 	            }
 
