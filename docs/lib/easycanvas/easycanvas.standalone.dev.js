@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(16);
+	module.exports = __webpack_require__(17);
 
 
 /***/ }),
@@ -86,11 +86,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        if (typeof funcOrArray === 'function') {
-	            funcOrArray.apply(_this, _arg);
+	            return funcOrArray.apply(_this, _arg);
 	        } else if (utils.isArray(funcOrArray)) {
+	            var res = [];
 	            funcOrArray.forEach(function (f) {
-	                f && f.apply(_this, _arg);
+	                res.push(f && f.apply(_this, _arg));
 	            });
+	            return res;
 	        }
 	    },
 
@@ -100,8 +102,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return !(x < x1 || x > x2 || y < y1 || y > y2);
 	    },
 
-	    firstValuable: function firstValuable(a, b) {
-	        return typeof a === 'undefined' ? b : a;
+	    firstValuable: function firstValuable(a, b, c) {
+	        // 效率低
+	        // for (let i = 0; i < arguments.length; i++) {
+	        //     if (typeof arguments[i] !== 'undefined') {
+	        //         return arguments[i];
+	        //     }
+	        // }
+	        return typeof a === 'undefined' ? typeof b === 'undefined' ? c : b : a;
 	    }
 	};
 
@@ -129,7 +137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ProcessingFlag = 'processing';
 	var ProcessingPool = {};
 
-	function toDataUR(url, callback) {
+	function toDataURL(url, callback) {
 	    if (url && url.match(/^data:/)) {
 	        callback && callback(url);
 	        return;
@@ -140,7 +148,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            callback(ProcessingPool[url]);
 	        } else {
 	            setTimeout(function () {
-	                toDataUR(url, callback);
+	                toDataURL(url, callback);
 	            }, 100);
 	        }
 	        return;
@@ -162,7 +170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    xhr.send();
 	}
 
-	module.exports = toDataUR;
+	module.exports = toDataURL;
 
 /***/ }),
 /* 4 */,
@@ -231,15 +239,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _on = __webpack_require__(11);
+	var _on = __webpack_require__(12);
 
 	var _on2 = _interopRequireDefault(_on);
 
-	var _off = __webpack_require__(10);
+	var _off = __webpack_require__(11);
 
 	var _off2 = _interopRequireDefault(_off);
 
-	var _trigger = __webpack_require__(12);
+	var _nextTick = __webpack_require__(10);
+
+	var _nextTick2 = _interopRequireDefault(_nextTick);
+
+	var _trigger = __webpack_require__(13);
 
 	var _trigger2 = _interopRequireDefault(_trigger);
 
@@ -390,10 +402,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	sprite.prototype.getRect = function () {
+	    var _this2 = this;
+
 	    var res = {};
-	    for (var key in this.style) {
-	        res[key] = this.$cache[key];
+
+	    _constants2.default.txywh.forEach(function (key) {
+	        res[key] = _this2.getStyle(key);
+	    });
+
+	    var locate = this.getStyle('locate');
+	    if (locate === 'lt') {} else if (locate === 'ld') {
+	        res.ty -= res.th;
+	    } else if (locate === 'rt') {
+	        res.tx -= res.tw;
+	    } else if (locate === 'rd') {
+	        res.tx -= res.tw;
+	        res.ty -= res.th;
+	    } else {
+	        // center
+	        res.tx -= res.tw >> 1;
+	        res.ty -= res.th >> 1;
 	    }
+
 	    return res;
 	};
 
@@ -461,6 +491,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 
+	sprite.prototype.nextTick = _nextTick2.default;
 	sprite.prototype.on = _on2.default;
 	sprite.prototype.off = _off2.default;
 	sprite.prototype.trigger = _trigger2.default;
@@ -744,6 +775,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	/** ********** *
+	 *
+	 * Trigger event only once on next painting-tick
+	 * - Removed after triggering.
+	 *
+	 * ********** **/
+
+	module.exports = function (func) {
+	    var _func = function _func() {
+	        func.apply(this, arguments);
+	        this.off('ticked', _func);
+	    };
+	    this.on('ticked', _func);
+	};
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -769,7 +821,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -811,7 +863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -827,7 +879,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var name = arg.shift();
 
 	    if (this.hooks[name]) {
-	        _utils2.default.execFuncs(this.hooks[name], this, arg);
+	        return _utils2.default.execFuncs(this.hooks[name], this, arg);
 	        // this.hooks[name].apply(this, arg);
 	    }
 	}; /** ********** *
@@ -839,7 +891,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -973,7 +1025,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = loader;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1182,7 +1234,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1198,7 +1250,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1223,7 +1275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _transition2 = _interopRequireDefault(_transition);
 
-	var _imgLoader = __webpack_require__(13);
+	var _imgLoader = __webpack_require__(14);
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
@@ -1235,11 +1287,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _multlineText2 = _interopRequireDefault(_multlineText);
 
-	var _main = __webpack_require__(15);
+	var _main = __webpack_require__(16);
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _chromeDevtool = __webpack_require__(14);
+	var _chromeDevtool = __webpack_require__(15);
 
 	var _chromeDevtool2 = _interopRequireDefault(_chromeDevtool);
 
@@ -1255,7 +1307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    utils: _utils2.default,
 	    mirror: _mirror2.default,
 	    class: _main2.default,
-	    $version: '0.3.2',
+	    $version: '0.4.2',
 	    env: ("develop")
 	};
 
@@ -1293,24 +1345,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Easycanvas;
 
 /***/ }),
-/* 17 */,
 /* 18 */,
 /* 19 */,
 /* 20 */,
-/* 21 */
+/* 21 */,
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _perPaint = __webpack_require__(26);
+	var _perPaint = __webpack_require__(27);
 
 	var _perPaint2 = _interopRequireDefault(_perPaint);
 
-	var _render = __webpack_require__(28);
+	var _render = __webpack_require__(29);
 
 	var _render2 = _interopRequireDefault(_render);
 
-	var _eventHandler = __webpack_require__(22);
+	var _eventHandler = __webpack_require__(23);
 
 	var _eventHandler2 = _interopRequireDefault(_eventHandler);
 
@@ -1318,7 +1370,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _bindDrag2 = _interopRequireDefault(_bindDrag);
 
-	var _rAFer = __webpack_require__(27);
+	var _rAFer = __webpack_require__(28);
 
 	var _rAFer2 = _interopRequireDefault(_rAFer);
 
@@ -1353,7 +1405,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiInner;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1592,7 +1644,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -1654,7 +1706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1692,7 +1744,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1803,7 +1855,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1820,15 +1872,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _perPaintGetComputedStyle = __webpack_require__(25);
+	var _perPaintGetComputedStyle = __webpack_require__(26);
 
 	var _perPaintGetComputedStyle2 = _interopRequireDefault(_perPaintGetComputedStyle);
 
-	var _perPaintCutOutside = __webpack_require__(23);
+	var _perPaintCutOutside = __webpack_require__(24);
 
 	var _perPaintCutOutside2 = _interopRequireDefault(_perPaintCutOutside);
 
-	var _perPaintDeliverChildren = __webpack_require__(24);
+	var _perPaintDeliverChildren = __webpack_require__(25);
 
 	var _perPaintDeliverChildren2 = _interopRequireDefault(_perPaintDeliverChildren);
 
@@ -2125,7 +2177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2175,7 +2227,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2359,12 +2411,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _add = __webpack_require__(30);
+	var _add = __webpack_require__(31);
 
 	var _add2 = _interopRequireDefault(_add);
 
@@ -2380,7 +2432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _paint2 = _interopRequireDefault(_paint);
 
-	var _clear = __webpack_require__(31);
+	var _clear = __webpack_require__(32);
 
 	var _clear2 = _interopRequireDefault(_clear);
 
@@ -2388,15 +2440,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _pause2 = _interopRequireDefault(_pause);
 
-	var _on = __webpack_require__(11);
+	var _on = __webpack_require__(12);
 
 	var _on2 = _interopRequireDefault(_on);
 
-	var _off = __webpack_require__(10);
+	var _off = __webpack_require__(11);
 
 	var _off2 = _interopRequireDefault(_off);
 
-	var _trigger = __webpack_require__(12);
+	var _trigger = __webpack_require__(13);
 
 	var _trigger2 = _interopRequireDefault(_trigger);
 
@@ -2404,7 +2456,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _broadcast2 = _interopRequireDefault(_broadcast);
 
-	var _nextTick = __webpack_require__(32);
+	var _nextTick = __webpack_require__(10);
 
 	var _nextTick2 = _interopRequireDefault(_nextTick);
 
@@ -2450,7 +2502,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiOuter;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2470,7 +2522,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                  * ********** **/
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2484,27 +2536,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = function () {
 	  this.children = [];
 	  // this.children.splice(0);
-	};
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	/** ********** *
-	 *
-	 * Trigger event only once on next painting-tick
-	 * - Removed after triggering.
-	 *
-	 * ********** **/
-
-	module.exports = function (func) {
-	    var _func = function _func() {
-	        func.apply(this, arguments);
-	        this.off('ticked', _func);
-	    };
-	    this.on('ticked', _func);
 	};
 
 /***/ }),
@@ -2760,38 +2791,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	module.exports = function ($sprite, del) {
+	module.exports = function ($sprite, sync) {
 	    var _this = this;
 
 	    _utils2.default.execFuncs($sprite.hooks.beforeRemove, $sprite, $sprite.$tickedTimes++);
 
 	    $sprite.style.visible = false;
-	    $sprite.removing = true;
+	    $sprite.$removing = true;
 
 	    setTimeout(function () {
 	        if ($sprite.$parent) {
 	            $sprite.$parent.children = $sprite.$parent.children.filter(function (c) {
-	                return c.removing !== true;
+	                return c.$removing !== true;
 	            });
 	        } else {
 	            _this.children = _this.children.filter(function (c) {
-	                return c.removing !== true;
+	                return c.$removing !== true;
 	            });
 	        }
 
-	        $sprite.$canvas = undefined;
-	        $sprite.$parent = undefined;
-	        $sprite.$tickedTimes = undefined;
-	        $sprite.$cache = undefined;
-	        $sprite.$rendered = false;
-	        if (true) {
-	            $sprite.$perf = undefined;
+	        if ($sprite.$canvas) {
+	            $sprite.$canvas = undefined;
+	            $sprite.$parent = undefined;
+	            $sprite.$tickedTimes = undefined;
+	            $sprite.$cache = undefined;
+	            $sprite.$rendered = false;
+	            if (true) {
+	                $sprite.$perf = undefined;
+	            }
+	            _utils2.default.execFuncs($sprite.hooks.removed, $sprite, $sprite.$tickedTimes);
 	        }
-
-	        _utils2.default.execFuncs($sprite.hooks.removed, $sprite, $sprite.$tickedTimes);
 	    });
 
-	    if (del) {
+	    if (sync) {
 	        this.children.splice(this.children.indexOf($sprite), 1);
 	    }
 	}; /** ********** *
@@ -3045,11 +3077,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _apiOuter = __webpack_require__(29);
+	var _apiOuter = __webpack_require__(30);
 
 	var _apiOuter2 = _interopRequireDefault(_apiOuter);
 
-	var _apiInner = __webpack_require__(21);
+	var _apiInner = __webpack_require__(22);
 
 	var _apiInner2 = _interopRequireDefault(_apiInner);
 
@@ -3114,7 +3146,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _imgLoader = __webpack_require__(13);
+	var _imgLoader = __webpack_require__(14);
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 

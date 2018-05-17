@@ -60,7 +60,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 18:
+/***/ 19:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var require;var require;var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {"use strict";
@@ -2159,7 +2159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _gifler = __webpack_require__(18);
+	var _gifler = __webpack_require__(19);
 
 	var _gifler2 = _interopRequireDefault(_gifler);
 
