@@ -1,6 +1,7 @@
 <head>
     <script src="../build/index.js"></script>
     <script src="../build/plugin.physics.js"></script>
+    <script src="../build/plugin.webgl.js"></script>
 </head>
 
 <style>
@@ -38,9 +39,9 @@
     var blockArray = [];
 
     // 图片
-    var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/ball.png');
-    var BLOCK = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/block.jpg');
-    var TRIANGLE = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/triangle.png');
+    var BALL = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/ball.png';
+    var BLOCK = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/block.jpg';
+    var TRIANGLE = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/triangle.png';
 
     // 用于碰撞检测
     var BALL_TYPE = 1, BLOCK_TYPE = 2, BORDER_TYPE = 3, BOTTOM_TYPE = 4, BONUS_TYPE = 5;
@@ -48,6 +49,7 @@
     // 初始化easycanvas实例
     var $Painter = new Easycanvas.painter();
     $Painter.register(el, {
+        // webgl: true,
         width: width,
         height: height,
         events: {
@@ -213,9 +215,9 @@
                                     } else {
                                         startAim();
                                         addBlock(5 + score / 10, true);
-                                        Math.random() < 0.5 && addBlock(5 + score / 9, true);
-                                        Math.random() < 0.3 && addBlock(5 + score / 8, true);
-                                        Math.random() < 0.2 && addBlock(5 + score / 7, true);
+                                        Math.random() < 0.5 && addBlock(5 + score / 10, true);
+                                        Math.random() < 0.3 && addBlock(5 + score / 9, true);
+                                        Math.random() < 0.2 && addBlock(5 + score / 8, true);
                                         Math.random() < 0.3 && addBonus();
                                         Math.random() < 0.3 && addBonus();
                                     }
@@ -317,11 +319,11 @@
             },
             physics: {
                 shape: [
-                    // [[0, 0], [30, 0], [30, 30], [0, 30], [0, 0]],
-                    [[0, 0], [0, 30]],
-                    [[0, 30], [30, 30]],
-                    [[30, 30], [30, 0]],
-                    [[30, 0], [0, 0]]
+                    [[0, 0], [30, 0], [30, 30], [0, 30], [0, 0]],
+                    // [[0, 0], [0, 30]],
+                    // [[0, 30], [30, 30]],
+                    // [[30, 30], [30, 0]],
+                    // [[30, 0], [0, 0]]
                 ],
                 mass: 1,
                 friction: 0.1,

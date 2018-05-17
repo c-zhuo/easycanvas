@@ -293,21 +293,22 @@ function launch () {
         space: space
     };
 
-    space.setDefaultCollisionHandler(function (cp) {
-        let a = cp.a.$sprite.trigger('physicsCollisionBegin', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
-        let b = cp.b.$sprite.trigger('physicsCollisionBegin', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
-        return !(a || b);
-    }, function (cp) {
-        let a = cp.a.$sprite.trigger('physicsCollisionPreSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
-        let b = cp.b.$sprite.trigger('physicsCollisionPreSolve', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
-        return !(a || b);
-    }, function (cp) {
-        cp.a.$sprite.trigger('physicsCollisionPostSolve', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
-        cp.b.$sprite.trigger('physicsCollisionPostSolve', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
-    }, function (cp) {
-        cp.a.$sprite.trigger('physicsCollisionSeparate', cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
-        cp.b.$sprite.trigger('physicsCollisionSeparate', cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
-    });
+    let handlerFactory = function (hookName) {
+        return function (cp) {
+            let a = cp.a.$sprite.trigger(hookName, cp.b.$sprite, cp.b.$sprite.physics.collisionType, cp, space);
+            let b = cp.b.$sprite.trigger(hookName, cp.a.$sprite, cp.a.$sprite.physics.collisionType, cp, space);
+            return !(a || b);
+        };
+    };
+
+    space.setDefaultCollisionHandler(
+        handlerFactory('physicsCollisionBegin'),
+        handlerFactory('physicsCollisionPreSolve'),
+        handlerFactory('physicsCollisionPostSolve'),
+        handlerFactory('physicsCollisionSeparate')
+    );
+
+    space.$sprite = this;
 
     return space;
 };
