@@ -37,8 +37,14 @@ const utils = {
         return !(x < x1 || x > x2 || y < y1 || y > y2);
     },
 
-    firstValuable: (a, b) => {
-        return typeof a === 'undefined' ? b : a;
+    firstValuable: (a, b, c) => {
+        // 效率低
+        // for (let i = 0; i < arguments.length; i++) {
+        //     if (typeof arguments[i] !== 'undefined') {
+        //         return arguments[i];
+        //     }
+        // }
+        return typeof a === 'undefined' ? (typeof b === 'undefined' ? c : b) : a;
     },
 };
 

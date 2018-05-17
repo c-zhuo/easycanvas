@@ -90,6 +90,9 @@
             gravity: 2,
             accuracy: 2,
         },
+        style: {
+            tx: 100
+        }
     });
     $Painter.add($space);
     $space.launch();
@@ -170,12 +173,12 @@
                 physicsCollisionBegin: function ($other, collisionType) {
                     switch (collisionType) {
                         case BALL_TYPE:
-                            return false;
+                            return true;
                         case BOTTOM_TYPE:
                             var ball = this;
                             var block = $other;
                             if (ball.toRemove) {
-                                return true;
+                                return;
                             }
 
                             ball.toRemove = true;
@@ -218,7 +221,7 @@
                                     }
                                 }
                             }, 500);
-                            return true;
+                            return;
                     }
                 },
                 physicsCollisionPreSolve: function ($other, collisionType) {
@@ -234,7 +237,7 @@
                                     y: -300,
                                 });
                             }
-                            return true;
+                            return;
                     }
                 },
                 physicsCollisionPostSolve: function ($other, collisionType) {
@@ -261,14 +264,9 @@
                             score++;
                             if (!block.children[0].content.text) {
                                 // 把方块撞成0了，先隐藏
-                                block.style.visible = false;
-
-                                // 异步删除这个方块（为啥异步？因为要在碰撞处理之后再删，不然就透过去了）
-                                $Painter.nextTick(function () {
-                                    block.physicsOff();
-                                    block.remove();
-                                    blockArray.splice(blockArray.indexOf(block), 1);
-                                });
+                                block.physicsOff();
+                                block.remove();
+                                blockArray.splice(blockArray.indexOf(block), 1);
                             }
                             return;
                         case BONUS_TYPE:
@@ -278,13 +276,10 @@
                             if (bonus.used) return false;
                             bonus.used = 1;
 
-                            // 异步删除
-                            $Painter.nextTick(function () {
-                                bonus.physicsOff();
-                                bonus.remove();
-                                blockArray.splice(blockArray.indexOf(bonus), 1);
-                                ballCount++;
-                            });
+                            bonus.physicsOff();
+                            bonus.remove();
+                            blockArray.splice(blockArray.indexOf(bonus), 1);
+                            ballCount++;
                             return;
                     }
                 }
@@ -322,10 +317,11 @@
             },
             physics: {
                 shape: [
-                    [[0, 0], [0, 30]],
-                    [[0, 30], [30, 30]],
-                    [[30, 30], [30, 0]],
-                    [[30, 0], [0, 0]]
+                    [[0, 0], [30, 0], [30, 30], [0, 30], [0, 0]],
+                    // [[0, 0], [0, 30]],
+                    // [[0, 30], [30, 30]],
+                    // [[30, 30], [30, 0]],
+                    // [[30, 0], [0, 0]]
                 ],
                 mass: 1,
                 friction: 0.1,
@@ -387,7 +383,7 @@
                 tw: 30, th: 30,
                 tx: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
                 ty: 500,
-                locate: 'lt',
+                locate: 'center',
                 zIndex: 2,
                 fv: Easycanvas.transition.pendulum(0, 0.2, 200).loop(),
                 fh: Easycanvas.transition.pendulum(0.2, 0, 200).loop(),
