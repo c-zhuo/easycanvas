@@ -354,35 +354,15 @@ module.exports = `
                 </tr>
                 <tr>
                     <td align="left">cp</td>
-                    <td align="left">碰撞的全部细节，包括方向、2个shape等http://wingedrobin.github.io/Chipmunk-js/cp.CollisionHandler.html#begin</td>
+                    <td align="left">碰撞的全部细节，是一个chipmunk对象。包括方向、2个shape等，详情参考<a target="_blank" href="http://wingedrobin.github.io/Chipmunk-js/cp.CollisionHandler.html#begin">这里</a></td>
                 </tr>
                 <tr>
-                    <td align="left">physicsGetVelocity()</td>
-                    <td align="left">查询物体的速度，返回 {x: Number, y: Number}</td>
-                </tr>
-                <tr>
-                    <td align="left">physicsSetAngelVelocity(Number)</td>
-                    <td align="left">设置物体的角速度</td>
-                </tr>
-                <tr>
-                    <td align="left">physicsGetAngelVelocity()</td>
-                    <td align="left">查询物体的角速度，返回 Number</td>
-                </tr>
-                <tr>
-                    <td align="left">physicsApplyImpulse({x, y}, {x, y})</td>
-                    <td align="left">给某个物体一个冲量（可以理解为瞬时的力，会立即改变物体的速度），参数分别为冲量矢量及作用点（作用点默认为{x: 0, y: 0}，代表中心）</td>
-                </tr>
-                <tr>
-                    <td align="left">physicsApplyForce({x, y}, {x, y})</td>
-                    <td align="left">给某个物体施加一个力（持续施加），参数分别为力矢量及作用点（作用点默认为{x: 0, y: 0}，代表中心）</td>
-                </tr>
-                <tr>
-                    <td align="left">physicsResetForces()</td>
-                    <td align="left">移除某个物体受到的全部力（重力除外）</td>
+                    <td align="left">space</td>
+                    <td align="left">物理空间，是一个chipmunk的Space对象。space.$sprite将指向物理容器的sprite实例。更多的API见<a target="_blank" href="http://wingedrobin.github.io/Chipmunk-js/cp.Space.html">这里</a></td>
                 </tr>
             </tbody>
         </table>
 
-        <p>需要注意的是，如果</p>
+        <p class="tip">Tips：此外，launch方法也会返回chipmunk物理引擎的Space对象，可以用于<a target="_blank" href="http://wingedrobin.github.io/Chipmunk-js/cp.CollisionHandler.html#begin">设置全局的监听函数</a>、遍历所有<a target="_blank" href="http://wingedrobin.github.io/Chipmunk-js/cp.Space.html#eachBody">物体</a>或者<a target="_blank" href="http://wingedrobin.github.io/Chipmunk-js/cp.Space.html#eachShape">形状</a>等。</p>
     </article>
 `;

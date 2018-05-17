@@ -4,7 +4,7 @@
     <canvas id="foo" width="800" height="1800" style="width: 800px; height: 1800px;"></canvas>
 
     <script>
-        var COUNT = 800;
+        var COUNT = 80;
 
         var $Painter = new Easycanvas.painter();
         $Painter.register(document.getElementById('foo'), {
@@ -18,7 +18,7 @@
 
         // demoPicUrl = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
-        Easycanvas.imgLoader(demoPicUrl, function (img) {
+        $Painter.imgLoader(demoPicUrl, function (img) {
             // create a sprite
             for (var i = 0; i <= COUNT; i++)
                 $Painter.add({
