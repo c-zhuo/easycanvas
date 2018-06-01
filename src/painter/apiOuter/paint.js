@@ -16,9 +16,9 @@ module.exports = function () {
 
     if (this.$isWebgl) {
         let gl = this.$gl;
-        webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+        // webglUtils.resizeCanvasToDisplaySize(gl.canvas);
         // Tell WebGL how to convert from clip space to pixels
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
         // gl.colorMask(true, false, false, true);
         gl.clear(gl.COLOR_BUFFER_BIT);

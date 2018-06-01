@@ -27,8 +27,7 @@ const config = {
         rules: [{
             enforce: 'pre',
             test: /\.jsx?$/,
-            exclude: /node_modules/,
-            loader: 'eslint-loader',
+            exclude: /node_modules/
         }, {
             test: /\.jsx?$/,
             exclude: /node_modules/,

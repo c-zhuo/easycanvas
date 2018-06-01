@@ -24,15 +24,19 @@
                 </div>
             </div>
             <div class="content">
-                <template v-for="element in elements">
+                <template v-for="element in rootElement">
                     <v-element
-                        v-if="!element.parent"
+                        v-if="$index < maxVisibleElementsCount"
                         :key="$key"
                         :canvas-id="activeCanvas"
                         :instance-id="$key"
                         :depth="0">
                     </v-element>
                 </template>
+                <div
+                    class="content-showMore"
+                    v-if="visibleShowMore"
+                    @click="maxVisibleElementsCount += 10">Show more</div>
             </div>
         </div>
         <div class="right">
@@ -49,12 +53,30 @@ import Bus from '../bus.js';
 
 export default {
     data () {
+        window.A = this;
         return {
             activeCanvas: null,
             debuggerCanvas: false,
+
+            maxVisibleElementsCount: 10,
         };
     },
     computed: {
+        visibleShowMore () {
+            return this.elements && (this.maxVisibleElementsCount < Object.keys(this.rootElement).length);
+        },
+        rootElement () {
+            if (!this.elements) return [];
+
+            let roots = {};
+            for (var i in this.elements) {
+                if (!this.elements[i].parent) {
+                    roots[i] = this.elements[i];
+                }
+            }
+
+            return roots;
+        },
         selectorActive () {
             return this.$state.selectorActive;
         },
@@ -124,9 +146,25 @@ export default {
     height: 100%;
 }
 .content {
-    padding: 10px 6px;
+    padding: 10px 6px 40px;
     height: calc(100% - 40px);
     overflow: scroll;
+
+    .content-showMore {
+        padding: 2px;
+        width: 80px;
+        text-align: center;
+        margin: 10px 30px;
+        background: #eee;
+        border: 1px solid #aaa;
+        border-radius: 3px;
+        color: #999;
+        box-shadow: 1px 1px #a7a3a3;
+
+        &:hover {
+            box-shadow: 1px 1px 6px 0px #a7a3a3;
+        }
+    }
 }
 
 .tabs {

@@ -119,7 +119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -5979,7 +5979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _mathPointRotate = __webpack_require__(4);
+	var _mathPointRotate = __webpack_require__(3);
 
 	var _mathPointRotate2 = _interopRequireDefault(_mathPointRotate);
 
@@ -6299,11 +6299,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var physics = $sprite.physics;
 	    if (physics) {
 	        var $space = getSpacedParent($sprite);
-	        var space = $space.$physics.space;
-	        if (!space) {
+	        if (!$space) {
 	            err('No physics container found launched.');
 	            return;
 	        }
+
+	        var space = $space.$physics.space;
 
 	        $sprite.$physics = {
 	            space: space
@@ -6332,6 +6333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // [[a1, b1], [a2, b2]]代表一条线
 
 	            if (s.length === 3 && !s[0].length) {
+	                // 圆
 	                var offset = body ? cp.vzero : {
 	                    x: spriteX - spaceX,
 	                    y: -spriteY + spaceY
@@ -6339,7 +6341,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                shape = new cp.CircleShape(body || space.staticBody, s[2], offset);
 	            } else if (s.length >= 3) {
-	                var verts = s.join(',').split(',').map(function (_num, _index) {
+	                // 多边形
+	                var rx = $sprite.style.rx || $sprite.getRect().tx + $sprite.getRect().tw / 2;
+	                var ry = $sprite.style.ry || $sprite.getRect().ty + $sprite.getRect().th / 2;
+
+	                var verts = s.map(function (point) {
+	                    var newPoint = (0, _mathPointRotate2.default)(point[0] + spriteX - spaceX, point[1] + spriteY + spaceY, rx - spaceX, ry + spaceY, $sprite.style.rotate || 0);
+
+	                    // 多边形的shape是相对于物体坐标的相对定位，所以和sprite位置相减
+	                    return [newPoint.x - spriteX, newPoint.y - spriteY];
+	                }).join(',').split(',').map(function (_num, _index) {
 	                    var num = Number(_num);
 	                    var res = _index % 2 ? -num : num;
 	                    return res ? res : 0;
@@ -6353,10 +6364,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	                shape = new cp.PolyShape(body || space.staticBody, verts, _offset);
 	            } else if (s.length === 2) {
 	                // 线段构成
-	                var rx = $sprite.style.rx || $sprite.getRect().tx + $sprite.getRect().tw / 2;
-	                var ry = $sprite.style.ry || $sprite.getRect().ty + $sprite.getRect().th / 2;
+	                var _rx = $sprite.style.rx || $sprite.getRect().tx + $sprite.getRect().tw / 2;
+	                var _ry = $sprite.style.ry || $sprite.getRect().ty + $sprite.getRect().th / 2;
 
-	                shape = new cp.SegmentShape(space.staticBody, xy2Vect((0, _mathPointRotate2.default)(s[0][0] + spriteX - spaceX, s[0][1] + spriteY + spaceY, rx - spaceX, ry + spaceY, $sprite.style.rotate || 0)), xy2Vect((0, _mathPointRotate2.default)(s[1][0] + spriteX - spaceX, s[1][1] + spriteY + spaceY, rx - spaceX, ry + spaceY, $sprite.style.rotate || 0)), 0 // width
+	                var point1 = (0, _mathPointRotate2.default)(s[0][0] + spriteX - spaceX, s[0][1] + spriteY + spaceY, _rx - spaceX, _ry + spaceY, $sprite.style.rotate || 0);
+	                var point2 = (0, _mathPointRotate2.default)(s[1][0] + spriteX - spaceX, s[1][1] + spriteY + spaceY, _rx - spaceX, _ry + spaceY, $sprite.style.rotate || 0);
+	                point1.x -= spriteX;
+	                point1.y -= spriteY;
+	                point2.x -= spriteX;
+	                point2.y -= spriteY;
+
+	                shape = new cp.SegmentShape(space.staticBody, xy2Vect(point1), xy2Vect(point2), 0 // width
 	                );
 	            }
 

@@ -26,11 +26,16 @@
         <div v-if="expanded">
             <v-element
                 v-for="childId in instance.children"
+                v-show="$index < maxVisibleElementsCount"
                 :key="childId"
                 :canvas-id="canvasId"
                 :instance-id="childId"
                 :depth="depth + 1">
             </v-element>
+            <div
+                class="content-showMore"
+                v-if="visibleShowMore"
+                @click="maxVisibleElementsCount += 10">Show more</div>
         </div>
     </div>
 </template>
@@ -45,10 +50,18 @@ export default {
     },
     created () {
         if (this.depth === 0) {
-            this.expand()
+            this.expand();
+        }
+    },
+    data () {
+        return {
+            maxVisibleElementsCount: 10,
         }
     },
     computed: {
+        visibleShowMore () {
+            return this.maxVisibleElementsCount < this.instance.children.length;
+        },
         instance () {
             return this.$state.elements[this.canvasId][this.instanceId] || {};
         },
@@ -160,8 +173,23 @@ export default {
 .content {
     position: relative;
     padding-left: 22px;
+
+    .content-showMore {
+        padding: 2px;
+        width: 80px;
+        text-align: center;
+        margin: 10px 30px;
+        background: #eee;
+        border: 1px solid #aaa;
+        border-radius: 3px;
+        color: #999;
+        box-shadow: 1px 1px #a7a3a3;
+
+        &:hover {
+            box-shadow: 1px 1px 6px 0px #a7a3a3;
+        }
+    }
 }
-  
 
 .info {
     color: #fff;

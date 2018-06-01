@@ -327,11 +327,12 @@ function spritePhysicsOn ($sprite) {
     let physics = $sprite.physics;
     if (physics) {
         let $space = getSpacedParent($sprite);
-        let space = $space.$physics.space;
-        if (!space) {
+        if (!$space) {
             err('No physics container found launched.');
             return;
         }
+
+        let space = $space.$physics.space;
 
         $sprite.$physics = {
             space: space
@@ -360,6 +361,7 @@ function spritePhysicsOn ($sprite) {
             // [[a1, b1], [a2, b2]]代表一条线
 
             if (s.length === 3 && !s[0].length) {
+                // 圆
                 let offset = body ? cp.vzero : {
                     x: spriteX - spaceX,
                     y: -spriteY + spaceY
@@ -367,7 +369,21 @@ function spritePhysicsOn ($sprite) {
 
                 shape = new cp.CircleShape(body || space.staticBody, s[2], offset);
             } else if (s.length >= 3) {
-                let verts = s.join(',').split(',').map((_num, _index) => {
+                // 多边形
+                let rx = $sprite.style.rx || ($sprite.getRect().tx + $sprite.getRect().tw / 2);
+                let ry = $sprite.style.ry || ($sprite.getRect().ty + $sprite.getRect().th / 2);
+
+                let verts = s.map((point) => {
+                    var newPoint = mathPointRotate(
+                        point[0] + spriteX - spaceX,
+                        point[1] + spriteY + spaceY,
+                        rx - spaceX,
+                        ry + spaceY,
+                        $sprite.style.rotate || 0);
+
+                    // 多边形的shape是相对于物体坐标的相对定位，所以和sprite位置相减
+                    return [newPoint.x - spriteX, newPoint.y - spriteY];
+                }).join(',').split(',').map((_num, _index) => {
                     let num = Number(_num);
                     let res = _index % 2 ? -num : num;
                     return res ? res : 0;
@@ -384,22 +400,29 @@ function spritePhysicsOn ($sprite) {
                 let rx = $sprite.style.rx || ($sprite.getRect().tx + $sprite.getRect().tw / 2);
                 let ry = $sprite.style.ry || ($sprite.getRect().ty + $sprite.getRect().th / 2);
 
+                let point1 = mathPointRotate(
+                    s[0][0] + spriteX - spaceX,
+                    s[0][1] + spriteY + spaceY,
+                    rx - spaceX,
+                    ry + spaceY,
+                    $sprite.style.rotate || 0
+                );
+                let point2 = mathPointRotate(
+                    s[1][0] + spriteX - spaceX,
+                    s[1][1] + spriteY + spaceY,
+                    rx - spaceX,
+                    ry + spaceY,
+                    $sprite.style.rotate || 0
+                );
+                point1.x -= spriteX;
+                point1.y -= spriteY;
+                point2.x -= spriteX;
+                point2.y -= spriteY;
+
                 shape = new cp.SegmentShape(
                     space.staticBody,
-                    xy2Vect(mathPointRotate(
-                        s[0][0] + spriteX - spaceX,
-                        s[0][1] + spriteY + spaceY,
-                        rx - spaceX,
-                        ry + spaceY,
-                        $sprite.style.rotate || 0
-                    )),
-                    xy2Vect(mathPointRotate(
-                        s[1][0] + spriteX - spaceX,
-                        s[1][1] + spriteY + spaceY,
-                        rx - spaceX,
-                        ry + spaceY,
-                        $sprite.style.rotate || 0
-                    )),
+                    xy2Vect(point1),
+                    xy2Vect(point2),
                     0 // width
                 );
             }
