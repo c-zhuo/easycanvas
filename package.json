@@ -1,6 +1,6 @@
 {
   "name": "easycanvas",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "A cute canvas framework. See https://chenzhuo1992.github.io/easycanvas/",
   "keywords": ["canvas"],
   "main": "build/easycanvas.js",

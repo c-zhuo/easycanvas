@@ -129,7 +129,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 3 */
+/* 3 */,
+/* 4 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -173,7 +174,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toDataURL;
 
 /***/ }),
-/* 4 */,
 /* 5 */
 /***/ (function(module, exports) {
 
@@ -1263,7 +1263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _mirror = __webpack_require__(51);
+	var _mirror = __webpack_require__(52);
 
 	var _mirror2 = _interopRequireDefault(_mirror);
 
@@ -1271,7 +1271,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _transition = __webpack_require__(53);
+	var _transition = __webpack_require__(54);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
@@ -1283,7 +1283,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _imgPretreat2 = _interopRequireDefault(_imgPretreat);
 
-	var _multlineText = __webpack_require__(52);
+	var _multlineText = __webpack_require__(53);
 
 	var _multlineText2 = _interopRequireDefault(_multlineText);
 
@@ -1307,7 +1307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    utils: _utils2.default,
 	    mirror: _mirror2.default,
 	    class: _main2.default,
-	    $version: '0.4.2',
+	    $version: '0.5.0',
 	    env: ("develop")
 	};
 
@@ -1864,7 +1864,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _img2base = __webpack_require__(3);
+	var _img2base = __webpack_require__(4);
 
 	var _img2base2 = _interopRequireDefault(_img2base);
 
@@ -1903,6 +1903,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = function (i, index) {
+	    i.$rendered = false;
+
 	    if (_utils2.default.funcOrValue(i.style.visible, i) === false) {
 	        _utils2.default.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
 	        _utils2.default.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
@@ -1945,6 +1947,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // center
 	        _props.tx -= _props.tw >> 1;
 	        _props.ty -= _props.th >> 1;
+	    }
+
+	    if (i.webgl) {
+	        i.$rendered = true;
+
+	        var _webgl = {
+	            tx: i.getStyle('tx'),
+	            ty: i.getStyle('ty'),
+	            tz: _utils2.default.funcOrValue(i.webgl.tz, i) || 0
+	        };
+	        for (var key in i.webgl) {
+	            _webgl[key] = _utils2.default.funcOrValue(i.webgl[key], i) || 0;
+	        }
+
+	        var $paintSprite = {
+	            $id: i.$id,
+	            type: '3d',
+	            webgl: _webgl
+	        };
+
+	        if (true) {
+	            // 开发环境下，将元素挂载到$children里以供标记
+	            $paintSprite.$origin = i;
+	        };
+
+	        $canvas.$children.push($paintSprite);
 	    }
 
 	    if (_props.fh || _props.fv) {
@@ -2016,20 +2044,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 
-	    for (var key in _props) {
-	        i.$cache[key] = _props[key];
+	    for (var _key in _props) {
+	        i.$cache[_key] = _props[_key];
 	    }
 
 	    /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
 	    // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
-	    if (!_props.rotate && !_text && _imgWidth && !_props.fh && !_props.fv) {
+	    if (!_props.rotate && !_text && _imgWidth) {
 	        (0, _perPaintCutOutside2.default)($canvas, _props, _imgWidth, _imgHeight);
 	    }
 
-	    _constants2.default.xywh.forEach(function (key) {
-	        _props[key] = Math.round(_props[key]);
-	        // _props[key] >>= 0;
-	    });
+	    if (_imgWidth > 10 && _imgHeight > 10) {
+	        // 太小的图不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”
+	        _constants2.default.xywh.forEach(function (key) {
+	            _props[key] = Math.round(_props[key]);
+	            // _props[key] >>= 0;
+	        });
+	    }
 
 	    delete i.$cache.textBottom;
 
@@ -2046,10 +2077,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    settings.globalAlpha = _utils2.default.firstValuable(_props.opacity, 1);
 
-	    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh && _props.tx < $canvas.width && _props.ty < $canvas.height) {
+	    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh && _props.tx >= 0 && _props.tx < $canvas.width && _props.ty >= 0 && _props.ty < $canvas.height) {
 	        i.$rendered = true;
 
-	        var $paintSprite = {
+	        var _$paintSprite = {
 	            $id: i.$id,
 	            type: 'img',
 	            settings: settings,
@@ -2058,16 +2089,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (true) {
 	            // 开发环境下，将元素挂载到$children里以供标记
-	            $paintSprite.$origin = i;
+	            _$paintSprite.$origin = i;
 	        };
 
-	        $canvas.$children.push($paintSprite);
-	    } else {
-	        i.$rendered = false;
+	        $canvas.$children.push(_$paintSprite);
 	    }
 
 	    // TODO: rewrite
 	    if (_text) {
+	        i.$rendered = true;
+
 	        var textTx = _props.tx;
 	        var textTy = _props.ty;
 	        var textAlign = _props.align || _props.textAlign || 'left';
@@ -2099,7 +2130,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                props: {
 	                    tx: textTx,
 	                    ty: textTy,
-	                    content: _text,
+	                    content: String(_text),
 	                    align: textAlign,
 	                    font: textFont,
 	                    color: _props.color,
@@ -2268,7 +2299,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                var tmpProps = $tmpSprite.props;
 
-	                if (!tmpProps[0]) {
+	                if (!tmpProps || !tmpProps[0]) {
 	                    // 不是图片
 	                    $tmpSprite.$cannotCover = true;
 	                    continue;
@@ -2318,10 +2349,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    // console.log('useful');
 
-	    var settings = $sprite.settings;
+	    var settings = $sprite.settings || {};
 
 	    if ($canvas.$isWebgl && window.Easycanvas.$webglPainter) {
-	        props[0] && props[0].texture && window.Easycanvas.$webglPainter($canvas, props[0].texture, props[0].width, props[0].height, props[1], props[2], props[3], props[4], props[5], props[6], props[7], props[8], settings);
+	        window.Easycanvas.$webglPainter($sprite, settings, $canvas);
 	        return;
 	    }
 
@@ -2559,9 +2590,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (this.$isWebgl) {
 	        var gl = this.$gl;
-	        webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+	        // webglUtils.resizeCanvasToDisplaySize(gl.canvas);
 	        // Tell WebGL how to convert from clip space to pixels
-	        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+	        // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
 	        // gl.colorMask(true, false, false, true);
 	        gl.clear(gl.COLOR_BUFFER_BIT);
@@ -2658,6 +2689,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.$dom = dom || this.$dom;
 
+	    for (var i in _option) {
+	        this[i] = _option[i];
+	    }
+
 	    this.name = _option.name || 'Unnamed';
 
 	    if (_option.fullScreen) {
@@ -2676,8 +2711,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (_option.webgl) {
 	        this.$paintContext = dom.getContext('webgl', {
-	            alpha: true
+	            alpha: true,
+	            premultipliedAlpha: false
 	        });
+
 	        if (this.$paintContext) {
 	            this.$isWebgl = true;
 
@@ -2687,7 +2724,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            window.Easycanvas.$webglRegister(this);
+	            window.Easycanvas.$webglRegister(this, _option);
 	        } else {
 	            if (true) {
 	                console.warn('[Easycanvas] Webgl is not supported in current browser, using canvas2d instead.');
@@ -2956,8 +2993,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        });
 
-	        var MaskCanvas = document.createElement('img');
-	        MaskCanvas.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
+	        var MaskCanvasBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
 
 	        var $selectMask = null;
 
@@ -3011,7 +3047,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    $selectMask = $canvas.add({
 	                        name: _constants2.default.devFlag,
 	                        content: {
-	                            img: MaskCanvas
+	                            img: $canvas.imgLoader(MaskCanvasBase64)
 	                        },
 	                        style: {}
 	                    });
@@ -3019,14 +3055,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
 	                    (function (_key) {
-	                        if (_constants2.default.sxywh.indexOf(_key) >= 0) {
-	                            return;
-	                        }
 	                        $selectMask.style[_key] = function () {
 	                            return $sprite.$cache[_key];
 	                        };
 	                    })(key);
 	                });
+
+	                // mask of webgl
+	                $selectMask.webgl = $sprite.webgl ? {} : false;
+	                if ($selectMask.webgl) {
+	                    for (var key in $sprite.webgl) {
+	                        $selectMask.webgl[key] = $sprite.webgl[key];
+	                    }
+	                    $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);
+	                }
 
 	                // $sprite.$cache has calculated the 'scale' and 'locate'
 	                // Here uses the default values
@@ -3150,7 +3192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
-	var _img2base = __webpack_require__(3);
+	var _img2base = __webpack_require__(4);
 
 	var _img2base2 = _interopRequireDefault(_img2base);
 
@@ -3198,7 +3240,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 51 */
+/* 51 */,
+/* 52 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3224,7 +3267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3238,7 +3281,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';

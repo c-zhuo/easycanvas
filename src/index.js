@@ -21,7 +21,7 @@ let Easycanvas = {
     utils,
     mirror,
     class: classes,
-    $version: '0.4.2',
+    $version: '0.5.0',
     env: process.env.NODE_ENV,
 };
 

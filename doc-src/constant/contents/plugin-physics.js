@@ -322,7 +322,7 @@ module.exports = `
                 </tr>
                 <tr>
                     <td align="left">physicsCollisionPreSolve(b, type, cp, space)</td>
-                    <td align="left">碰撞处理前的钩子；发生碰撞的两个物体各触发一次（如果其中一个是静态物体，那么静态物体后触发）；任一返回true，都将取消物理计算（不会出发physicsCollisionPostSolve）；在物体分离前会连续调用（每帧调用accuracy次）</td>
+                    <td align="left">碰撞处理前的钩子；发生碰撞的两个物体各触发一次（如果其中一个是静态物体，那么静态物体后触发）；任一返回true，都将取消物理计算（不会触发physicsCollisionPostSolve）；在物体分离前会连续调用（每帧调用accuracy次）</td>
                 </tr>
                 <tr>
                     <td align="left">physicsCollisionPostSolve(b, type, cp, space)</td>

@@ -468,6 +468,14 @@ module.exports = function (it, key) {
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+var core = module.exports = { version: '2.5.7' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
@@ -477,12 +485,12 @@ module.exports = !__webpack_require__(10)(function () {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(6);
-var createDesc = __webpack_require__(16);
-module.exports = __webpack_require__(4) ? function (object, key, value) {
+var dP = __webpack_require__(7);
+var createDesc = __webpack_require__(17);
+module.exports = __webpack_require__(5) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
   object[key] = value;
@@ -491,7 +499,7 @@ module.exports = __webpack_require__(4) ? function (object, key, value) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject = __webpack_require__(14);
@@ -499,7 +507,7 @@ var IE8_DOM_DEFINE = __webpack_require__(34);
 var toPrimitive = __webpack_require__(29);
 var dP = Object.defineProperty;
 
-exports.f = __webpack_require__(4) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = __webpack_require__(5) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
@@ -513,23 +521,23 @@ exports.f = __webpack_require__(4) ? Object.defineProperty : function defineProp
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = __webpack_require__(67);
-var defined = __webpack_require__(19);
+var defined = __webpack_require__(20);
 module.exports = function (it) {
   return IObject(defined(it));
 };
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var store = __webpack_require__(27)('wks');
-var uid = __webpack_require__(17);
+var uid = __webpack_require__(18);
 var Symbol = __webpack_require__(2).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
@@ -539,14 +547,6 @@ var $exports = module.exports = function (name) {
 };
 
 $exports.store = store;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-var core = module.exports = { version: '2.5.5' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
 /***/ }),
@@ -573,10 +573,7 @@ module.exports = function (it) {
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = {
     xywh: ['sx', 'sy', 'sw', 'sh', 'tx', 'ty', 'tw', 'th'],
@@ -610,11 +607,18 @@ module.exports = function (it) {
 
 /***/ }),
 /* 15 */
+/***/ (function(module, exports) {
+
+module.exports = true;
+
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys = __webpack_require__(39);
-var enumBugKeys = __webpack_require__(20);
+var enumBugKeys = __webpack_require__(21);
 
 module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
@@ -622,7 +626,7 @@ module.exports = Object.keys || function keys(O) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = function (bitmap, value) {
@@ -636,7 +640,7 @@ module.exports = function (bitmap, value) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 var id = 0;
@@ -647,13 +651,13 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = { "default": __webpack_require__(58), __esModule: true };
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 // 7.2.1 RequireObjectCoercible(argument)
@@ -664,7 +668,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 // IE 8- don't enum bug keys
@@ -674,13 +678,13 @@ module.exports = (
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(2);
-var core = __webpack_require__(9);
+var core = __webpack_require__(4);
 var ctx = __webpack_require__(64);
-var hide = __webpack_require__(5);
+var hide = __webpack_require__(6);
 var has = __webpack_require__(3);
 var PROTOTYPE = 'prototype';
 
@@ -742,17 +746,10 @@ module.exports = $export;
 
 
 /***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = true;
+module.exports = {};
 
 
 /***/ }),
@@ -766,9 +763,9 @@ exports.f = {}.propertyIsEnumerable;
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var def = __webpack_require__(6).f;
+var def = __webpack_require__(7).f;
 var has = __webpack_require__(3);
-var TAG = __webpack_require__(8)('toStringTag');
+var TAG = __webpack_require__(9)('toStringTag');
 
 module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
@@ -780,7 +777,7 @@ module.exports = function (it, tag, stat) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var shared = __webpack_require__(27)('keys');
-var uid = __webpack_require__(17);
+var uid = __webpack_require__(18);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
@@ -790,12 +787,18 @@ module.exports = function (key) {
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var core = __webpack_require__(4);
 var global = __webpack_require__(2);
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
-module.exports = function (key) {
-  return store[key] || (store[key] = {});
-};
+
+(module.exports = function (key, value) {
+  return store[key] || (store[key] = value !== undefined ? value : {});
+})('versions', []).push({
+  version: core.version,
+  mode: __webpack_require__(15) ? 'pure' : 'global',
+  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+});
 
 
 /***/ }),
@@ -833,10 +836,10 @@ module.exports = function (it, S) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(2);
-var core = __webpack_require__(9);
-var LIBRARY = __webpack_require__(23);
+var core = __webpack_require__(4);
+var LIBRARY = __webpack_require__(15);
 var wksExt = __webpack_require__(31);
-var defineProperty = __webpack_require__(6).f;
+var defineProperty = __webpack_require__(7).f;
 module.exports = function (name) {
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
@@ -847,7 +850,7 @@ module.exports = function (name) {
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports.f = __webpack_require__(8);
+exports.f = __webpack_require__(9);
 
 
 /***/ }),
@@ -878,7 +881,7 @@ module.exports = function (it) {
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(4) && !__webpack_require__(10)(function () {
+module.exports = !__webpack_require__(5) && !__webpack_require__(10)(function () {
   return Object.defineProperty(__webpack_require__(33)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -889,15 +892,15 @@ module.exports = !__webpack_require__(4) && !__webpack_require__(10)(function ()
 
 "use strict";
 
-var LIBRARY = __webpack_require__(23);
-var $export = __webpack_require__(21);
+var LIBRARY = __webpack_require__(15);
+var $export = __webpack_require__(22);
 var redefine = __webpack_require__(40);
-var hide = __webpack_require__(5);
-var Iterators = __webpack_require__(22);
+var hide = __webpack_require__(6);
+var Iterators = __webpack_require__(23);
 var $iterCreate = __webpack_require__(69);
 var setToStringTag = __webpack_require__(25);
 var getPrototypeOf = __webpack_require__(75);
-var ITERATOR = __webpack_require__(8)('iterator');
+var ITERATOR = __webpack_require__(9)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
 var FF_ITERATOR = '@@iterator';
 var KEYS = 'keys';
@@ -966,7 +969,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = __webpack_require__(14);
 var dPs = __webpack_require__(72);
-var enumBugKeys = __webpack_require__(20);
+var enumBugKeys = __webpack_require__(21);
 var IE_PROTO = __webpack_require__(26)('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE = 'prototype';
@@ -1012,7 +1015,7 @@ module.exports = Object.create || function create(O, Properties) {
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var $keys = __webpack_require__(39);
-var hiddenKeys = __webpack_require__(20).concat('length', 'prototype');
+var hiddenKeys = __webpack_require__(21).concat('length', 'prototype');
 
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
@@ -1031,7 +1034,7 @@ exports.f = Object.getOwnPropertySymbols;
 /***/ (function(module, exports, __webpack_require__) {
 
 var has = __webpack_require__(3);
-var toIObject = __webpack_require__(7);
+var toIObject = __webpack_require__(8);
 var arrayIndexOf = __webpack_require__(63)(false);
 var IE_PROTO = __webpack_require__(26)('IE_PROTO');
 
@@ -1053,7 +1056,7 @@ module.exports = function (object, names) {
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(5);
+module.exports = __webpack_require__(6);
 
 
 /***/ }),
@@ -1061,7 +1064,7 @@ module.exports = __webpack_require__(5);
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.13 ToObject(argument)
-var defined = __webpack_require__(19);
+var defined = __webpack_require__(20);
 module.exports = function (it) {
   return Object(defined(it));
 };
@@ -16245,7 +16248,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _keys = __webpack_require__(18);
+var _keys = __webpack_require__(19);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -16387,8 +16390,16 @@ exports.default = {
             this.expand();
         }
     },
+    data: function data() {
+        return {
+            maxVisibleElementsCount: 10
+        };
+    },
 
     computed: {
+        visibleShowMore: function visibleShowMore() {
+            return this.maxVisibleElementsCount < this.instance.children.length;
+        },
         instance: function instance() {
             return this.$state.elements[this.canvasId][this.instanceId] || {};
         },
@@ -16531,7 +16542,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _keys = __webpack_require__(18);
+var _keys = __webpack_require__(19);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -16555,13 +16566,31 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     data: function data() {
+        window.A = this;
         return {
             activeCanvas: null,
-            debuggerCanvas: false
+            debuggerCanvas: false,
+
+            maxVisibleElementsCount: 10
         };
     },
 
     computed: {
+        visibleShowMore: function visibleShowMore() {
+            return this.elements && this.maxVisibleElementsCount < (0, _keys2.default)(this.rootElement).length;
+        },
+        rootElement: function rootElement() {
+            if (!this.elements) return [];
+
+            var roots = {};
+            for (var i in this.elements) {
+                if (!this.elements[i].parent) {
+                    roots[i] = this.elements[i];
+                }
+            }
+
+            return roots;
+        },
         selectorActive: function selectorActive() {
             return this.$state.selectorActive;
         },
@@ -16620,7 +16649,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _keys = __webpack_require__(18);
+var _keys = __webpack_require__(19);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -16753,65 +16782,97 @@ for (var i = 0, len = code.length; i < len; ++i) {
 revLookup['-'.charCodeAt(0)] = 62
 revLookup['_'.charCodeAt(0)] = 63
 
-function placeHoldersCount (b64) {
+function getLens (b64) {
   var len = b64.length
+
   if (len % 4 > 0) {
     throw new Error('Invalid string. Length must be a multiple of 4')
   }
 
-  // the number of equal signs (place holders)
-  // if there are two placeholders, than the two characters before it
-  // represent one byte
-  // if there is only one, then the three characters before it represent 2 bytes
-  // this is just a cheap hack to not do indexOf twice
-  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+  // Trim off extra bytes after placeholder bytes are found
+  // See: https://github.com/beatgammit/base64-js/issues/42
+  var validLen = b64.indexOf('=')
+  if (validLen === -1) validLen = len
+
+  var placeHoldersLen = validLen === len
+    ? 0
+    : 4 - (validLen % 4)
+
+  return [validLen, placeHoldersLen]
 }
 
+// base64 is 4/3 + up to two characters of the original data
 function byteLength (b64) {
-  // base64 is 4/3 + up to two characters of the original data
-  return (b64.length * 3 / 4) - placeHoldersCount(b64)
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function _byteLength (b64, validLen, placeHoldersLen) {
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
 }
 
 function toByteArray (b64) {
-  var i, l, tmp, placeHolders, arr
-  var len = b64.length
-  placeHolders = placeHoldersCount(b64)
+  var tmp
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
 
-  arr = new Arr((len * 3 / 4) - placeHolders)
+  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+  var curByte = 0
 
   // if there are placeholders, only get up to the last complete 4 chars
-  l = placeHolders > 0 ? len - 4 : len
+  var len = placeHoldersLen > 0
+    ? validLen - 4
+    : validLen
 
-  var L = 0
-
-  for (i = 0; i < l; i += 4) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
-    arr[L++] = (tmp >> 16) & 0xFF
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
+  for (var i = 0; i < len; i += 4) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 18) |
+      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+      revLookup[b64.charCodeAt(i + 3)]
+    arr[curByte++] = (tmp >> 16) & 0xFF
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
   }
 
-  if (placeHolders === 2) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
-    arr[L++] = tmp & 0xFF
-  } else if (placeHolders === 1) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
+  if (placeHoldersLen === 2) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 2) |
+      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 1) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 10) |
+      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
   }
 
   return arr
 }
 
 function tripletToBase64 (num) {
-  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
+  return lookup[num >> 18 & 0x3F] +
+    lookup[num >> 12 & 0x3F] +
+    lookup[num >> 6 & 0x3F] +
+    lookup[num & 0x3F]
 }
 
 function encodeChunk (uint8, start, end) {
   var tmp
   var output = []
   for (var i = start; i < end; i += 3) {
-    tmp = ((uint8[i] << 16) & 0xFF0000) + ((uint8[i + 1] << 8) & 0xFF00) + (uint8[i + 2] & 0xFF)
+    tmp =
+      ((uint8[i] << 16) & 0xFF0000) +
+      ((uint8[i + 1] << 8) & 0xFF00) +
+      (uint8[i + 2] & 0xFF)
     output.push(tripletToBase64(tmp))
   }
   return output.join('')
@@ -16821,30 +16882,33 @@ function fromByteArray (uint8) {
   var tmp
   var len = uint8.length
   var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-  var output = ''
   var parts = []
   var maxChunkLength = 16383 // must be multiple of 3
 
   // go through the array every three bytes, we'll deal with trailing stuff later
   for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+    parts.push(encodeChunk(
+      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+    ))
   }
 
   // pad the end with zeros, but make sure to not forget the extra bytes
   if (extraBytes === 1) {
     tmp = uint8[len - 1]
-    output += lookup[tmp >> 2]
-    output += lookup[(tmp << 4) & 0x3F]
-    output += '=='
+    parts.push(
+      lookup[tmp >> 2] +
+      lookup[(tmp << 4) & 0x3F] +
+      '=='
+    )
   } else if (extraBytes === 2) {
-    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
-    output += lookup[tmp >> 10]
-    output += lookup[(tmp >> 4) & 0x3F]
-    output += lookup[(tmp << 2) & 0x3F]
-    output += '='
+    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 10] +
+      lookup[(tmp >> 4) & 0x3F] +
+      lookup[(tmp << 2) & 0x3F] +
+      '='
+    )
   }
-
-  parts.push(output)
 
   return parts.join('')
 }
@@ -18652,7 +18716,7 @@ function isnan (val) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(81);
-module.exports = __webpack_require__(9).Object.keys;
+module.exports = __webpack_require__(4).Object.keys;
 
 
 /***/ }),
@@ -18663,7 +18727,7 @@ __webpack_require__(84);
 __webpack_require__(82);
 __webpack_require__(85);
 __webpack_require__(86);
-module.exports = __webpack_require__(9).Symbol;
+module.exports = __webpack_require__(4).Symbol;
 
 
 /***/ }),
@@ -18698,7 +18762,7 @@ module.exports = function () { /* empty */ };
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(7);
+var toIObject = __webpack_require__(8);
 var toLength = __webpack_require__(79);
 var toAbsoluteIndex = __webpack_require__(78);
 module.exports = function (IS_INCLUDES) {
@@ -18752,7 +18816,7 @@ module.exports = function (fn, that, length) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // all enumerable object keys, includes symbols
-var getKeys = __webpack_require__(15);
+var getKeys = __webpack_require__(16);
 var gOPS = __webpack_require__(38);
 var pIE = __webpack_require__(24);
 module.exports = function (it) {
@@ -18806,12 +18870,12 @@ module.exports = Array.isArray || function isArray(arg) {
 "use strict";
 
 var create = __webpack_require__(36);
-var descriptor = __webpack_require__(16);
+var descriptor = __webpack_require__(17);
 var setToStringTag = __webpack_require__(25);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__webpack_require__(5)(IteratorPrototype, __webpack_require__(8)('iterator'), function () { return this; });
+__webpack_require__(6)(IteratorPrototype, __webpack_require__(9)('iterator'), function () { return this; });
 
 module.exports = function (Constructor, NAME, next) {
   Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
@@ -18832,10 +18896,10 @@ module.exports = function (done, value) {
 /* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var META = __webpack_require__(17)('meta');
+var META = __webpack_require__(18)('meta');
 var isObject = __webpack_require__(11);
 var has = __webpack_require__(3);
-var setDesc = __webpack_require__(6).f;
+var setDesc = __webpack_require__(7).f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
   return true;
@@ -18891,11 +18955,11 @@ var meta = module.exports = {
 /* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(6);
+var dP = __webpack_require__(7);
 var anObject = __webpack_require__(14);
-var getKeys = __webpack_require__(15);
+var getKeys = __webpack_require__(16);
 
-module.exports = __webpack_require__(4) ? Object.defineProperties : function defineProperties(O, Properties) {
+module.exports = __webpack_require__(5) ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
   var keys = getKeys(Properties);
   var length = keys.length;
@@ -18911,14 +18975,14 @@ module.exports = __webpack_require__(4) ? Object.defineProperties : function def
 /***/ (function(module, exports, __webpack_require__) {
 
 var pIE = __webpack_require__(24);
-var createDesc = __webpack_require__(16);
-var toIObject = __webpack_require__(7);
+var createDesc = __webpack_require__(17);
+var toIObject = __webpack_require__(8);
 var toPrimitive = __webpack_require__(29);
 var has = __webpack_require__(3);
 var IE8_DOM_DEFINE = __webpack_require__(34);
 var gOPD = Object.getOwnPropertyDescriptor;
 
-exports.f = __webpack_require__(4) ? gOPD : function getOwnPropertyDescriptor(O, P) {
+exports.f = __webpack_require__(5) ? gOPD : function getOwnPropertyDescriptor(O, P) {
   O = toIObject(O);
   P = toPrimitive(P, true);
   if (IE8_DOM_DEFINE) try {
@@ -18933,7 +18997,7 @@ exports.f = __webpack_require__(4) ? gOPD : function getOwnPropertyDescriptor(O,
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = __webpack_require__(7);
+var toIObject = __webpack_require__(8);
 var gOPN = __webpack_require__(37).f;
 var toString = {}.toString;
 
@@ -18977,8 +19041,8 @@ module.exports = Object.getPrototypeOf || function (O) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // most Object methods by ES6 should accept primitives
-var $export = __webpack_require__(21);
-var core = __webpack_require__(9);
+var $export = __webpack_require__(22);
+var core = __webpack_require__(4);
 var fails = __webpack_require__(10);
 module.exports = function (KEY, exec) {
   var fn = (core.Object || {})[KEY] || Object[KEY];
@@ -18993,7 +19057,7 @@ module.exports = function (KEY, exec) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(28);
-var defined = __webpack_require__(19);
+var defined = __webpack_require__(20);
 // true  -> String#at
 // false -> String#codePointAt
 module.exports = function (TO_STRING) {
@@ -19044,8 +19108,8 @@ module.exports = function (it) {
 
 var addToUnscopables = __webpack_require__(62);
 var step = __webpack_require__(70);
-var Iterators = __webpack_require__(22);
-var toIObject = __webpack_require__(7);
+var Iterators = __webpack_require__(23);
+var toIObject = __webpack_require__(8);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
@@ -19083,7 +19147,7 @@ addToUnscopables('entries');
 
 // 19.1.2.14 Object.keys(O)
 var toObject = __webpack_require__(41);
-var $keys = __webpack_require__(15);
+var $keys = __webpack_require__(16);
 
 __webpack_require__(76)('keys', function () {
   return function keys(it) {
@@ -19131,29 +19195,29 @@ __webpack_require__(35)(String, 'String', function (iterated) {
 // ECMAScript 6 symbols shim
 var global = __webpack_require__(2);
 var has = __webpack_require__(3);
-var DESCRIPTORS = __webpack_require__(4);
-var $export = __webpack_require__(21);
+var DESCRIPTORS = __webpack_require__(5);
+var $export = __webpack_require__(22);
 var redefine = __webpack_require__(40);
 var META = __webpack_require__(71).KEY;
 var $fails = __webpack_require__(10);
 var shared = __webpack_require__(27);
 var setToStringTag = __webpack_require__(25);
-var uid = __webpack_require__(17);
-var wks = __webpack_require__(8);
+var uid = __webpack_require__(18);
+var wks = __webpack_require__(9);
 var wksExt = __webpack_require__(31);
 var wksDefine = __webpack_require__(30);
 var enumKeys = __webpack_require__(65);
 var isArray = __webpack_require__(68);
 var anObject = __webpack_require__(14);
 var isObject = __webpack_require__(11);
-var toIObject = __webpack_require__(7);
+var toIObject = __webpack_require__(8);
 var toPrimitive = __webpack_require__(29);
-var createDesc = __webpack_require__(16);
+var createDesc = __webpack_require__(17);
 var _create = __webpack_require__(36);
 var gOPNExt = __webpack_require__(74);
 var $GOPD = __webpack_require__(73);
-var $DP = __webpack_require__(6);
-var $keys = __webpack_require__(15);
+var $DP = __webpack_require__(7);
+var $keys = __webpack_require__(16);
 var gOPD = $GOPD.f;
 var dP = $DP.f;
 var gOPN = gOPNExt.f;
@@ -19280,7 +19344,7 @@ if (!USE_NATIVE) {
   __webpack_require__(24).f = $propertyIsEnumerable;
   __webpack_require__(38).f = $getOwnPropertySymbols;
 
-  if (DESCRIPTORS && !__webpack_require__(23)) {
+  if (DESCRIPTORS && !__webpack_require__(15)) {
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
@@ -19354,7 +19418,7 @@ $JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
 });
 
 // 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
-$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(5)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
+$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(6)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
 // 19.4.3.5 Symbol.prototype[@@toStringTag]
 setToStringTag($Symbol, 'Symbol');
 // 20.2.1.9 Math[@@toStringTag]
@@ -19383,9 +19447,9 @@ __webpack_require__(30)('observable');
 
 __webpack_require__(80);
 var global = __webpack_require__(2);
-var hide = __webpack_require__(5);
-var Iterators = __webpack_require__(22);
-var TO_STRING_TAG = __webpack_require__(8)('toStringTag');
+var hide = __webpack_require__(6);
+var Iterators = __webpack_require__(23);
+var TO_STRING_TAG = __webpack_require__(9)('toStringTag');
 
 var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
   'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
@@ -19495,7 +19559,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".instance.inactive[_v-22c5cfed] {\n  opacity: 0.5; }\n\n.self[_v-22c5cfed] {\n  cursor: pointer;\n  position: relative;\n  overflow: hidden;\n  z-index: 2;\n  background-color: #FFFFFF;\n  transition: background-color .1s ease;\n  border-radius: 3px;\n  font-size: 14px;\n  line-height: 22px;\n  height: 22px;\n  white-space: nowrap; }\n  .self[_v-22c5cfed]:hidden {\n    display: none; }\n  .self[_v-22c5cfed]:hover {\n    background-color: #E5F2FF; }\n  .self.selected[_v-22c5cfed] {\n    background-color: #3BA776; }\n    .self.selected .arrow[_v-22c5cfed] {\n      border-left-color: #fff; }\n    .self.selected .instance-name[_v-22c5cfed] {\n      color: #fff; }\n  .app.dark .self[_v-22c5cfed] {\n    background-color: #242424; }\n    .app.dark .self[_v-22c5cfed]:hover {\n      background-color: #444; }\n    .app.dark .self.selected[_v-22c5cfed] {\n      background-color: #3BA776; }\n\n.children[_v-22c5cfed] {\n  position: relative;\n  z-index: 1; }\n\n.content[_v-22c5cfed] {\n  position: relative;\n  padding-left: 22px; }\n\n.info[_v-22c5cfed] {\n  color: #fff;\n  font-size: 10px;\n  padding: 3px 5px 2px;\n  display: inline-block;\n  line-height: 10px;\n  border-radius: 3px;\n  position: relative;\n  top: -1px;\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n  .info.console[_v-22c5cfed] {\n    color: #fff;\n    background-color: transparent; }\n  .info.router-view[_v-22c5cfed] {\n    background-color: #ff8344; }\n  .info.fragment[_v-22c5cfed] {\n    background-color: #b3cbf7; }\n  .info.inactive[_v-22c5cfed] {\n    background-color: #aaa; }\n  .info[_v-22c5cfed]:not(.console) {\n    margin-left: 6px; }\n\n.render[_v-22c5cfed] {\n  font-size: 10px;\n  display: inline-block;\n  line-height: 10px;\n  border-radius: 3px;\n  position: relative;\n  top: 4px;\n  width: 18px;\n  height: 18px;\n  background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDI1Mi40MjIgMjUyLjQyMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjUyLjQyMiAyNTIuNDIyIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgogIDxnPgogICAgPHBhdGggZD0ibTI1MS42OTIsNzMuMTk4bC0xNi0zMi4yNDNjLTEuMTgyLTIuMzgyLTMuNjExLTMuODg5LTYuMjcxLTMuODg5aC0yMDUuNDIxYy0yLjU5NywwLTQuOTgsMS40MzgtNi4xOTIsMy43MzVsLTE3LDMyLjI0M2MtMS4xNDQsMi4xNy0xLjA2OCw0Ljc4IDAuMTk4LDYuODggMS4yNjcsMi4xMDIgMy41NDEsMy4zODUgNS45OTQsMy4zODVoMTkuODQ5djEyNS4wNDZjMCwzLjg2NiAzLjEzNCw3IDcsN2gxODQuNzI1YzMuODY2LDAgNy0zLjEzNCA3LTd2LTEyNS4wNDZoMTkuODQ5YzIuNDIyLDAgNC42NzMtMS4yNTIgNS45NDktMy4zMTFzMS4zOTctNC42MyAwLjMyLTYuOHptLTUzLjk5Ni0yMi4xMzJsOC4yNjIsMTguMjQzaC0xNjAuMjFsNy4zMDQtMTguMjQzaDE0NC42NDR6bS0xNjkuNDczLDBoOS43NDhsLTcuMzA0LDE4LjI0M2gtMTIuMDYzbDkuNjE5LTE4LjI0M3ptMTgzLjM1LDE1MC4yODloLTE3MC43MjR2LTExOC4wNDZoMTcwLjcyNXYxMTguMDQ2em05Ljc1My0xMzIuMDQ2bC04LjI2MS0xOC4yNDNoMTIuMDE1bDkuMDUzLDE4LjI0M2gtMTIuODA3eiIgZmlsbD0iIzY2NjY2NiIvPgogIDwvZz4KPC9zdmc+Cg==);\n  background-size: cover; }\n  .render.show[_v-22c5cfed] {\n    background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDQ4OC44NSA0ODguODUiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQ4OC44NSA0ODguODU7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgo8Zz4KCTxwYXRoIGQ9Ik0yNDQuNDI1LDk4LjcyNWMtOTMuNCwwLTE3OC4xLDUxLjEtMjQwLjYsMTM0LjFjLTUuMSw2LjgtNS4xLDE2LjMsMCwyMy4xYzYyLjUsODMuMSwxNDcuMiwxMzQuMiwyNDAuNiwxMzQuMiAgIHMxNzguMS01MS4xLDI0MC42LTEzNC4xYzUuMS02LjgsNS4xLTE2LjMsMC0yMy4xQzQyMi41MjUsMTQ5LjgyNSwzMzcuODI1LDk4LjcyNSwyNDQuNDI1LDk4LjcyNXogTTI1MS4xMjUsMzQ3LjAyNSAgIGMtNjIsMy45LTExMy4yLTQ3LjItMTA5LjMtMTA5LjNjMy4yLTUxLjIsNDQuNy05Mi43LDk1LjktOTUuOWM2Mi0zLjksMTEzLjIsNDcuMiwxMDkuMywxMDkuMyAgIEMzNDMuNzI1LDMwMi4yMjUsMzAyLjIyNSwzNDMuNzI1LDI1MS4xMjUsMzQ3LjAyNXogTTI0OC4wMjUsMjk5LjYyNWMtMzMuNCwyLjEtNjEtMjUuNC01OC44LTU4LjhjMS43LTI3LjYsMjQuMS00OS45LDUxLjctNTEuNyAgIGMzMy40LTIuMSw2MSwyNS40LDU4LjgsNTguOEMyOTcuOTI1LDI3NS42MjUsMjc1LjUyNSwyOTcuOTI1LDI0OC4wMjUsMjk5LjYyNXoiIGZpbGw9IiM2NjY2NjYiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K);\n    background-size: cover; }\n  .render.hide[_v-22c5cfed] {\n    background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU5LjA0OSA1OS4wNDkiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU5LjA0OSA1OS4wNDk7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgo8Zz4KCTxwYXRoIGQ9Ik0xMS4yODUsNDEuMzljMC4xODQsMC4xNDYsMC40MDQsMC4yMTgsMC42MjMsMC4yMThjMC4yOTQsMCwwLjU4NS0wLjEyOSwwLjc4My0wLjM3N2MwLjM0NC0wLjQzMiwwLjI3My0xLjA2MS0wLjE1OS0xLjQwNSAgIGMtMC44MDEtMC42MzgtMS41NzctMS4zMzEtMi4zMDUtMi4wNmwtNy4zOTgtNy4zOThsNy42MjktNy42MjljNy4zMzQtNy4zMzMsMTguMDAzLTkuODM2LDI3LjgzOS02LjUzNCAgIGMwLjUyMywwLjE3MywxLjA5LTAuMTA3LDEuMjY3LTAuNjNjMC4xNzUtMC41MjMtMC4xMDYtMS4wOTEtMC42My0xLjI2N2MtMTAuNTYyLTMuNTQ1LTIyLjAxNi0wLjg1Ny0yOS44OSw3LjAxNkwwLDMwLjM2OCAgIGw4LjgxMiw4LjgxMkM5LjU5MywzOS45NjIsMTAuNDI2LDQwLjcwNSwxMS4yODUsNDEuMzl6IiBmaWxsPSIjNjY2NjY2Ii8+Cgk8cGF0aCBkPSJNNTAuMjM3LDIxLjMyNWMtMS4zNDgtMS4zNDgtMi44MjYtMi41NjQtNC4zOTQtMy42MTZjLTAuNDU4LTAuMzA3LTEuMDgxLTAuMTg1LTEuMzg4LDAuMjczICAgYy0wLjMwOCwwLjQ1OC0wLjE4NSwxLjA4LDAuMjczLDEuMzg4YzEuNDYsMC45NzksMi44MzgsMi4xMTMsNC4wOTQsMy4zNjlsNy4zOTgsNy4zOThsLTcuNjI5LDcuNjI5ICAgYy03LjM4NSw3LjM4NS0xOC41MTMsOS44ODItMjguMzUyLDYuMzU2Yy0wLjUyLTAuMTg3LTEuMDkzLDAuMDg0LTEuMjc5LDAuNjA0Yy0wLjE4NiwwLjUyLDAuMDg0LDEuMDkyLDAuNjA0LDEuMjc5ICAgYzMuMTgyLDEuMTQsNi40OSwxLjY5Myw5Ljc3NiwxLjY5M2M3LjYyMSwwLDE1LjEyNC0yLjk3NywyMC42NjUtOC41MThsOS4wNDMtOS4wNDNMNTAuMjM3LDIxLjMyNXoiIGZpbGw9IiM2NjY2NjYiLz4KCTxwYXRoIGQ9Ik0zMC41MzksNDEuNzc0Yy0yLjE1MywwLTQuMjUxLTAuNTk4LTYuMDctMS43M2MtMC40NjctMC4yOS0xLjA4NC0wLjE0OC0xLjM3NywwLjMyMWMtMC4yOTIsMC40NjktMC4xNDgsMS4wODUsMC4zMjEsMS4zNzcgICBjMi4xMzUsMS4zMyw0LjYsMi4wMzIsNy4xMjYsMi4wMzJjNy40NDQsMCwxMy41LTYuMDU2LDEzLjUtMTMuNWMwLTIuNjg1LTAuNzg3LTUuMjc5LTIuMjc1LTcuNTAyICAgYy0wLjMwOC0wLjQ1OS0wLjkzLTAuNTgyLTEuMzg3LTAuMjc1Yy0wLjQ1OSwwLjMwOC0wLjU4MiwwLjkyOS0wLjI3NSwxLjM4N2MxLjI2NywxLjg5MywxLjkzNyw0LjEwMiwxLjkzNyw2LjM5ICAgQzQyLjAzOSwzNi42MTYsMzYuODgsNDEuNzc0LDMwLjUzOSw0MS43NzR6IiBmaWxsPSIjNjY2NjY2Ii8+Cgk8cGF0aCBkPSJNMzAuNTM5LDE4Ljc3NGMyLjA2NSwwLDQuMDg5LDAuNTUzLDUuODU1LDEuNmMwLjQ3NCwwLjI4MSwxLjA4OCwwLjEyNSwxLjM3LTAuMzUxYzAuMjgxLTAuNDc1LDAuMTI1LTEuMDg4LTAuMzUxLTEuMzcgICBjLTIuMDc0LTEuMjI5LTQuNDUxLTEuODc5LTYuODc1LTEuODc5Yy03LjQ0NCwwLTEzLjUsNi4wNTYtMTMuNSwxMy41YzAsMi4wODQsMC40NjIsNC4wODMsMS4zNzQsNS45NDEgICBjMC4xNzQsMC4zNTQsMC41MjksMC41NiwwLjg5OSwwLjU2YzAuMTQ3LDAsMC4yOTgtMC4wMzMsMC40MzktMC4xMDJjMC40OTYtMC4yNDQsMC43MDEtMC44NDMsMC40NTgtMS4zMzggICBjLTAuNzc2LTEuNTgyLTEuMTctMy4yODQtMS4xNy01LjA2QzE5LjAzOSwyMy45MzMsMjQuMTk4LDE4Ljc3NCwzMC41MzksMTguNzc0eiIgZmlsbD0iIzY2NjY2NiIvPgoJPHBhdGggZD0iTTU0LjYyMSw1LjU2N2MtMC4zOTEtMC4zOTEtMS4wMjMtMC4zOTEtMS40MTQsMGwtNDYuNSw0Ni41Yy0wLjM5MSwwLjM5MS0wLjM5MSwxLjAyMywwLDEuNDE0ICAgYzAuMTk1LDAuMTk1LDAuNDUxLDAuMjkzLDAuNzA3LDAuMjkzczAuNTEyLTAuMDk4LDAuNzA3LTAuMjkzbDQ2LjUtNDYuNUM1NS4wMTIsNi41OTEsNTUuMDEyLDUuOTU4LDU0LjYyMSw1LjU2N3oiIGZpbGw9IiM2NjY2NjYiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K);\n    background-size: cover; }\n\n.arrow-wrapper[_v-22c5cfed] {\n  position: absolute;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  top: 0;\n  left: 4px; }\n\n.arrow[_v-22c5cfed] {\n  position: absolute;\n  top: 5px;\n  left: 4px;\n  transition: transform .1s ease, border-left-color .1s ease; }\n  .arrow.rotated[_v-22c5cfed] {\n    transform: rotate(90deg); }\n\n.arrow[_v-22c5cfed] {\n  display: inline-block;\n  width: 0;\n  height: 0; }\n  .arrow.up[_v-22c5cfed] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-bottom: 6px solid #444; }\n  .arrow.down[_v-22c5cfed] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-top: 6px solid #444; }\n  .arrow.right[_v-22c5cfed] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-left: 6px solid #444; }\n  .arrow.left[_v-22c5cfed] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-right: 6px solid #444; }\n\n.angle-bracket[_v-22c5cfed] {\n  color: #ccc; }\n\n.instance-name[_v-22c5cfed] {\n  color: #3BA776;\n  margin: 0 1px;\n  transition: color .1s ease; }\n", ""]);
+exports.push([module.i, ".instance.inactive[_v-22c5cfed] {\n  opacity: 0.5; }\n\n.self[_v-22c5cfed] {\n  cursor: pointer;\n  position: relative;\n  overflow: hidden;\n  z-index: 2;\n  background-color: #FFFFFF;\n  transition: background-color .1s ease;\n  border-radius: 3px;\n  font-size: 14px;\n  line-height: 22px;\n  height: 22px;\n  white-space: nowrap; }\n  .self[_v-22c5cfed]:hidden {\n    display: none; }\n  .self[_v-22c5cfed]:hover {\n    background-color: #E5F2FF; }\n  .self.selected[_v-22c5cfed] {\n    background-color: #3BA776; }\n    .self.selected .arrow[_v-22c5cfed] {\n      border-left-color: #fff; }\n    .self.selected .instance-name[_v-22c5cfed] {\n      color: #fff; }\n  .app.dark .self[_v-22c5cfed] {\n    background-color: #242424; }\n    .app.dark .self[_v-22c5cfed]:hover {\n      background-color: #444; }\n    .app.dark .self.selected[_v-22c5cfed] {\n      background-color: #3BA776; }\n\n.children[_v-22c5cfed] {\n  position: relative;\n  z-index: 1; }\n\n.content[_v-22c5cfed] {\n  position: relative;\n  padding-left: 22px; }\n  .content .content-showMore[_v-22c5cfed] {\n    padding: 2px;\n    width: 80px;\n    text-align: center;\n    margin: 10px 30px;\n    background: #eee;\n    border: 1px solid #aaa;\n    border-radius: 3px;\n    color: #999;\n    box-shadow: 1px 1px #a7a3a3; }\n    .content .content-showMore[_v-22c5cfed]:hover {\n      box-shadow: 1px 1px 6px 0px #a7a3a3; }\n\n.info[_v-22c5cfed] {\n  color: #fff;\n  font-size: 10px;\n  padding: 3px 5px 2px;\n  display: inline-block;\n  line-height: 10px;\n  border-radius: 3px;\n  position: relative;\n  top: -1px;\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n  .info.console[_v-22c5cfed] {\n    color: #fff;\n    background-color: transparent; }\n  .info.router-view[_v-22c5cfed] {\n    background-color: #ff8344; }\n  .info.fragment[_v-22c5cfed] {\n    background-color: #b3cbf7; }\n  .info.inactive[_v-22c5cfed] {\n    background-color: #aaa; }\n  .info[_v-22c5cfed]:not(.console) {\n    margin-left: 6px; }\n\n.render[_v-22c5cfed] {\n  font-size: 10px;\n  display: inline-block;\n  line-height: 10px;\n  border-radius: 3px;\n  position: relative;\n  top: 4px;\n  width: 18px;\n  height: 18px;\n  background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDI1Mi40MjIgMjUyLjQyMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjUyLjQyMiAyNTIuNDIyIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgogIDxnPgogICAgPHBhdGggZD0ibTI1MS42OTIsNzMuMTk4bC0xNi0zMi4yNDNjLTEuMTgyLTIuMzgyLTMuNjExLTMuODg5LTYuMjcxLTMuODg5aC0yMDUuNDIxYy0yLjU5NywwLTQuOTgsMS40MzgtNi4xOTIsMy43MzVsLTE3LDMyLjI0M2MtMS4xNDQsMi4xNy0xLjA2OCw0Ljc4IDAuMTk4LDYuODggMS4yNjcsMi4xMDIgMy41NDEsMy4zODUgNS45OTQsMy4zODVoMTkuODQ5djEyNS4wNDZjMCwzLjg2NiAzLjEzNCw3IDcsN2gxODQuNzI1YzMuODY2LDAgNy0zLjEzNCA3LTd2LTEyNS4wNDZoMTkuODQ5YzIuNDIyLDAgNC42NzMtMS4yNTIgNS45NDktMy4zMTFzMS4zOTctNC42MyAwLjMyLTYuOHptLTUzLjk5Ni0yMi4xMzJsOC4yNjIsMTguMjQzaC0xNjAuMjFsNy4zMDQtMTguMjQzaDE0NC42NDR6bS0xNjkuNDczLDBoOS43NDhsLTcuMzA0LDE4LjI0M2gtMTIuMDYzbDkuNjE5LTE4LjI0M3ptMTgzLjM1LDE1MC4yODloLTE3MC43MjR2LTExOC4wNDZoMTcwLjcyNXYxMTguMDQ2em05Ljc1My0xMzIuMDQ2bC04LjI2MS0xOC4yNDNoMTIuMDE1bDkuMDUzLDE4LjI0M2gtMTIuODA3eiIgZmlsbD0iIzY2NjY2NiIvPgogIDwvZz4KPC9zdmc+Cg==);\n  background-size: cover; }\n  .render.show[_v-22c5cfed] {\n    background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDQ4OC44NSA0ODguODUiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQ4OC44NSA0ODguODU7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgo8Zz4KCTxwYXRoIGQ9Ik0yNDQuNDI1LDk4LjcyNWMtOTMuNCwwLTE3OC4xLDUxLjEtMjQwLjYsMTM0LjFjLTUuMSw2LjgtNS4xLDE2LjMsMCwyMy4xYzYyLjUsODMuMSwxNDcuMiwxMzQuMiwyNDAuNiwxMzQuMiAgIHMxNzguMS01MS4xLDI0MC42LTEzNC4xYzUuMS02LjgsNS4xLTE2LjMsMC0yMy4xQzQyMi41MjUsMTQ5LjgyNSwzMzcuODI1LDk4LjcyNSwyNDQuNDI1LDk4LjcyNXogTTI1MS4xMjUsMzQ3LjAyNSAgIGMtNjIsMy45LTExMy4yLTQ3LjItMTA5LjMtMTA5LjNjMy4yLTUxLjIsNDQuNy05Mi43LDk1LjktOTUuOWM2Mi0zLjksMTEzLjIsNDcuMiwxMDkuMywxMDkuMyAgIEMzNDMuNzI1LDMwMi4yMjUsMzAyLjIyNSwzNDMuNzI1LDI1MS4xMjUsMzQ3LjAyNXogTTI0OC4wMjUsMjk5LjYyNWMtMzMuNCwyLjEtNjEtMjUuNC01OC44LTU4LjhjMS43LTI3LjYsMjQuMS00OS45LDUxLjctNTEuNyAgIGMzMy40LTIuMSw2MSwyNS40LDU4LjgsNTguOEMyOTcuOTI1LDI3NS42MjUsMjc1LjUyNSwyOTcuOTI1LDI0OC4wMjUsMjk5LjYyNXoiIGZpbGw9IiM2NjY2NjYiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K);\n    background-size: cover; }\n  .render.hide[_v-22c5cfed] {\n    background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU5LjA0OSA1OS4wNDkiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU5LjA0OSA1OS4wNDk7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTI4cHgiIGhlaWdodD0iMTI4cHgiPgo8Zz4KCTxwYXRoIGQ9Ik0xMS4yODUsNDEuMzljMC4xODQsMC4xNDYsMC40MDQsMC4yMTgsMC42MjMsMC4yMThjMC4yOTQsMCwwLjU4NS0wLjEyOSwwLjc4My0wLjM3N2MwLjM0NC0wLjQzMiwwLjI3My0xLjA2MS0wLjE1OS0xLjQwNSAgIGMtMC44MDEtMC42MzgtMS41NzctMS4zMzEtMi4zMDUtMi4wNmwtNy4zOTgtNy4zOThsNy42MjktNy42MjljNy4zMzQtNy4zMzMsMTguMDAzLTkuODM2LDI3LjgzOS02LjUzNCAgIGMwLjUyMywwLjE3MywxLjA5LTAuMTA3LDEuMjY3LTAuNjNjMC4xNzUtMC41MjMtMC4xMDYtMS4wOTEtMC42My0xLjI2N2MtMTAuNTYyLTMuNTQ1LTIyLjAxNi0wLjg1Ny0yOS44OSw3LjAxNkwwLDMwLjM2OCAgIGw4LjgxMiw4LjgxMkM5LjU5MywzOS45NjIsMTAuNDI2LDQwLjcwNSwxMS4yODUsNDEuMzl6IiBmaWxsPSIjNjY2NjY2Ii8+Cgk8cGF0aCBkPSJNNTAuMjM3LDIxLjMyNWMtMS4zNDgtMS4zNDgtMi44MjYtMi41NjQtNC4zOTQtMy42MTZjLTAuNDU4LTAuMzA3LTEuMDgxLTAuMTg1LTEuMzg4LDAuMjczICAgYy0wLjMwOCwwLjQ1OC0wLjE4NSwxLjA4LDAuMjczLDEuMzg4YzEuNDYsMC45NzksMi44MzgsMi4xMTMsNC4wOTQsMy4zNjlsNy4zOTgsNy4zOThsLTcuNjI5LDcuNjI5ICAgYy03LjM4NSw3LjM4NS0xOC41MTMsOS44ODItMjguMzUyLDYuMzU2Yy0wLjUyLTAuMTg3LTEuMDkzLDAuMDg0LTEuMjc5LDAuNjA0Yy0wLjE4NiwwLjUyLDAuMDg0LDEuMDkyLDAuNjA0LDEuMjc5ICAgYzMuMTgyLDEuMTQsNi40OSwxLjY5Myw5Ljc3NiwxLjY5M2M3LjYyMSwwLDE1LjEyNC0yLjk3NywyMC42NjUtOC41MThsOS4wNDMtOS4wNDNMNTAuMjM3LDIxLjMyNXoiIGZpbGw9IiM2NjY2NjYiLz4KCTxwYXRoIGQ9Ik0zMC41MzksNDEuNzc0Yy0yLjE1MywwLTQuMjUxLTAuNTk4LTYuMDctMS43M2MtMC40NjctMC4yOS0xLjA4NC0wLjE0OC0xLjM3NywwLjMyMWMtMC4yOTIsMC40NjktMC4xNDgsMS4wODUsMC4zMjEsMS4zNzcgICBjMi4xMzUsMS4zMyw0LjYsMi4wMzIsNy4xMjYsMi4wMzJjNy40NDQsMCwxMy41LTYuMDU2LDEzLjUtMTMuNWMwLTIuNjg1LTAuNzg3LTUuMjc5LTIuMjc1LTcuNTAyICAgYy0wLjMwOC0wLjQ1OS0wLjkzLTAuNTgyLTEuMzg3LTAuMjc1Yy0wLjQ1OSwwLjMwOC0wLjU4MiwwLjkyOS0wLjI3NSwxLjM4N2MxLjI2NywxLjg5MywxLjkzNyw0LjEwMiwxLjkzNyw2LjM5ICAgQzQyLjAzOSwzNi42MTYsMzYuODgsNDEuNzc0LDMwLjUzOSw0MS43NzR6IiBmaWxsPSIjNjY2NjY2Ii8+Cgk8cGF0aCBkPSJNMzAuNTM5LDE4Ljc3NGMyLjA2NSwwLDQuMDg5LDAuNTUzLDUuODU1LDEuNmMwLjQ3NCwwLjI4MSwxLjA4OCwwLjEyNSwxLjM3LTAuMzUxYzAuMjgxLTAuNDc1LDAuMTI1LTEuMDg4LTAuMzUxLTEuMzcgICBjLTIuMDc0LTEuMjI5LTQuNDUxLTEuODc5LTYuODc1LTEuODc5Yy03LjQ0NCwwLTEzLjUsNi4wNTYtMTMuNSwxMy41YzAsMi4wODQsMC40NjIsNC4wODMsMS4zNzQsNS45NDEgICBjMC4xNzQsMC4zNTQsMC41MjksMC41NiwwLjg5OSwwLjU2YzAuMTQ3LDAsMC4yOTgtMC4wMzMsMC40MzktMC4xMDJjMC40OTYtMC4yNDQsMC43MDEtMC44NDMsMC40NTgtMS4zMzggICBjLTAuNzc2LTEuNTgyLTEuMTctMy4yODQtMS4xNy01LjA2QzE5LjAzOSwyMy45MzMsMjQuMTk4LDE4Ljc3NCwzMC41MzksMTguNzc0eiIgZmlsbD0iIzY2NjY2NiIvPgoJPHBhdGggZD0iTTU0LjYyMSw1LjU2N2MtMC4zOTEtMC4zOTEtMS4wMjMtMC4zOTEtMS40MTQsMGwtNDYuNSw0Ni41Yy0wLjM5MSwwLjM5MS0wLjM5MSwxLjAyMywwLDEuNDE0ICAgYzAuMTk1LDAuMTk1LDAuNDUxLDAuMjkzLDAuNzA3LDAuMjkzczAuNTEyLTAuMDk4LDAuNzA3LTAuMjkzbDQ2LjUtNDYuNUM1NS4wMTIsNi41OTEsNTUuMDEyLDUuOTU4LDU0LjYyMSw1LjU2N3oiIGZpbGw9IiM2NjY2NjYiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K);\n    background-size: cover; }\n\n.arrow-wrapper[_v-22c5cfed] {\n  position: absolute;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  top: 0;\n  left: 4px; }\n\n.arrow[_v-22c5cfed] {\n  position: absolute;\n  top: 5px;\n  left: 4px;\n  transition: transform .1s ease, border-left-color .1s ease; }\n  .arrow.rotated[_v-22c5cfed] {\n    transform: rotate(90deg); }\n\n.arrow[_v-22c5cfed] {\n  display: inline-block;\n  width: 0;\n  height: 0; }\n  .arrow.up[_v-22c5cfed] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-bottom: 6px solid #444; }\n  .arrow.down[_v-22c5cfed] {\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-top: 6px solid #444; }\n  .arrow.right[_v-22c5cfed] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-left: 6px solid #444; }\n  .arrow.left[_v-22c5cfed] {\n    border-top: 4px solid transparent;\n    border-bottom: 4px solid transparent;\n    border-right: 6px solid #444; }\n\n.angle-bracket[_v-22c5cfed] {\n  color: #ccc; }\n\n.instance-name[_v-22c5cfed] {\n  color: #3BA776;\n  margin: 0 1px;\n  transition: color .1s ease; }\n", ""]);
 
 // exports
 
@@ -19551,7 +19615,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".left[_v-cf1d4c06], .right[_v-cf1d4c06] {\n  box-sizing: border-box;\n  width: 50%;\n  padding: 10px 0;\n  -ms-flex-positive: 0;\n      flex-grow: 0; }\n\n.left[_v-cf1d4c06] {\n  border-right: 1px solid #DDDDDD;\n  height: 100%; }\n\n.content[_v-cf1d4c06] {\n  padding: 10px 6px;\n  height: calc(100% - 40px);\n  overflow: scroll; }\n\n.tabs[_v-cf1d4c06] {\n  width: 100%;\n  overflow-x: scroll;\n  border-bottom: 1px solid #DDDDDD; }\n  .tabs .tabs-tab[_v-cf1d4c06] {\n    display: inline-block;\n    padding: 6px;\n    width: 70px;\n    height: 12px;\n    line-height: 12px;\n    background: #f3f3f3;\n    margin-left: 6px;\n    border: 1px solid #DDDDDD;\n    border-bottom: 0;\n    text-align: center;\n    vertical-align: top;\n    cursor: pointer; }\n    .tabs .tabs-tab.active[_v-cf1d4c06] {\n      color: #3BA776; }\n    .tabs .tabs-tab.base64-selector[_v-cf1d4c06] {\n      width: 13px;\n      background-size: 100% 100%;\n      background-position: 1px 1px;\n      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAuCAAAAABLtcWwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfhCQ0PCybUE8MgAAAAtElEQVRIx+3UIQ6EMBAFUE48vqoGv76qjpXDEar2IDWVm3ABUgKkof9nS4IhyxgMr+kfhummk9U94PYgjb1UZYcvBaPAelPQC7qCWAoEA/lDcKxrwMuHeAr4PBMEQRC2QQIIglhO3wHh0LacPvP5DXzxvksNbQ3keAoiOZ6CPYS2tbUIoY1gCeEUCPKL5hAmTUCAJbCFyP2pBVgzawi3PCvBFlkwa0O1EcT9gym9Uls94KZgBgOms+vXRWTQAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE3LTA5LTEzVDE1OjExOjM4KzA4OjAwuTUEEwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNy0wOS0xM1QxNToxMTozOCswODowMMhovK8AAAAZdEVYdGV4aWY6TWFrZQBNT1NJbWFnZVNlcnZpY2VYRgD8AAAAAElFTkSuQmCC); }\n      .tabs .tabs-tab.base64-selector.active[_v-cf1d4c06] {\n        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAkCAYAAADl9UilAAABxUlEQVRYR+2XsUvDUBDGLyYxgot2cKkuRcTFVQcXiy4WwV0E/4IOLlJxcBS7iHRzd1I61kVxddGho7hJFwcVgqCm7ZMrpLbhveReckqV3NrH9ZfvvnfvznBdV8AAhpGCaVYlVUxTMPh7ij2/GXB6Y8JF3YSHJ0P3g6XnpzIClmbbUCp4YJvhKZWKVa4sqFxaLEDBJFuLLdhb80JzK8EKR05HqfuDd1a4md0RyI4LuN75iAeGCTB+AoySV6lYCqYoaKqYLwzVIr+uGPWK/1+wzZNhmMwImM+1YSHXhuwYz3iXWLHSuQ3V2+/3BZsnAiYFTQxWvTOhdGYrrRMXNDFY49WA/KFD9XTnOaIomhgMifJlBxovehNIZlTA/noTVuda0o9iAQv6LEo+hEEohFMFC1iUz/w/j1KpF5IFjOIzikrsYBSfFZebUFxpRlW5+zuLYpiN4jMdODYwmc+wfNMTAnBM94MKxzZaB32GRq9tf3ZuHu4OunCxlxHZyN3bz443vL4epQunBIta32Rgvs+whAgWDB041oUXfVauWd0Syq5gL1yY31jB0Gf1xyHlM+OD+vtqWPtgBSM3KcLBFIwgUt+RgVXsC8QsiJSdRWzMAAAAAElFTkSuQmCC);\n        background-size: 80% 80%;\n        background-repeat: no-repeat;\n        background-position: center; }\n    .tabs .tabs-tab.debugger-canvas[_v-cf1d4c06] {\n      height: 12px;\n      width: 13px;\n      display: inline-block;\n      position: relative; }\n      .tabs .tabs-tab.debugger-canvas[_v-cf1d4c06]:before, .tabs .tabs-tab.debugger-canvas[_v-cf1d4c06]:after {\n        content: '';\n        height: 12px;\n        width: 4px;\n        display: block;\n        background: #666;\n        position: absolute;\n        top: 7px;\n        left: 7px; }\n      .tabs .tabs-tab.debugger-canvas[_v-cf1d4c06]:after {\n        left: 15px; }\n    .tabs .tabs-tab.debugger-canvas-active[_v-cf1d4c06] {\n      height: 12px;\n      width: 13px;\n      display: inline-block;\n      position: relative; }\n      .tabs .tabs-tab.debugger-canvas-active[_v-cf1d4c06]:before {\n        content: '';\n        height: 0;\n        width: 0;\n        display: block;\n        border: 6px transparent solid;\n        border-right-width: 0;\n        border-left-color: #3BA776;\n        position: absolute;\n        top: 7px;\n        left: 14px; }\n      .tabs .tabs-tab.debugger-canvas-active[_v-cf1d4c06]:after {\n        content: '';\n        height: 12px;\n        width: 4px;\n        display: block;\n        background: #3BA776;\n        position: absolute;\n        top: 7px;\n        left: 7px; }\n", ""]);
+exports.push([module.i, ".left[_v-cf1d4c06], .right[_v-cf1d4c06] {\n  box-sizing: border-box;\n  width: 50%;\n  padding: 10px 0;\n  -ms-flex-positive: 0;\n      flex-grow: 0; }\n\n.left[_v-cf1d4c06] {\n  border-right: 1px solid #DDDDDD;\n  height: 100%; }\n\n.content[_v-cf1d4c06] {\n  padding: 10px 6px 40px;\n  height: calc(100% - 40px);\n  overflow: scroll; }\n  .content .content-showMore[_v-cf1d4c06] {\n    padding: 2px;\n    width: 80px;\n    text-align: center;\n    margin: 10px 30px;\n    background: #eee;\n    border: 1px solid #aaa;\n    border-radius: 3px;\n    color: #999;\n    box-shadow: 1px 1px #a7a3a3; }\n    .content .content-showMore[_v-cf1d4c06]:hover {\n      box-shadow: 1px 1px 6px 0px #a7a3a3; }\n\n.tabs[_v-cf1d4c06] {\n  width: 100%;\n  overflow-x: scroll;\n  border-bottom: 1px solid #DDDDDD; }\n  .tabs .tabs-tab[_v-cf1d4c06] {\n    display: inline-block;\n    padding: 6px;\n    width: 70px;\n    height: 12px;\n    line-height: 12px;\n    background: #f3f3f3;\n    margin-left: 6px;\n    border: 1px solid #DDDDDD;\n    border-bottom: 0;\n    text-align: center;\n    vertical-align: top;\n    cursor: pointer; }\n    .tabs .tabs-tab.active[_v-cf1d4c06] {\n      color: #3BA776; }\n    .tabs .tabs-tab.base64-selector[_v-cf1d4c06] {\n      width: 13px;\n      background-size: 100% 100%;\n      background-position: 1px 1px;\n      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAuCAAAAABLtcWwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfhCQ0PCybUE8MgAAAAtElEQVRIx+3UIQ6EMBAFUE48vqoGv76qjpXDEar2IDWVm3ABUgKkof9nS4IhyxgMr+kfhummk9U94PYgjb1UZYcvBaPAelPQC7qCWAoEA/lDcKxrwMuHeAr4PBMEQRC2QQIIglhO3wHh0LacPvP5DXzxvksNbQ3keAoiOZ6CPYS2tbUIoY1gCeEUCPKL5hAmTUCAJbCFyP2pBVgzawi3PCvBFlkwa0O1EcT9gym9Uls94KZgBgOms+vXRWTQAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE3LTA5LTEzVDE1OjExOjM4KzA4OjAwuTUEEwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNy0wOS0xM1QxNToxMTozOCswODowMMhovK8AAAAZdEVYdGV4aWY6TWFrZQBNT1NJbWFnZVNlcnZpY2VYRgD8AAAAAElFTkSuQmCC); }\n      .tabs .tabs-tab.base64-selector.active[_v-cf1d4c06] {\n        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAkCAYAAADl9UilAAABxUlEQVRYR+2XsUvDUBDGLyYxgot2cKkuRcTFVQcXiy4WwV0E/4IOLlJxcBS7iHRzd1I61kVxddGho7hJFwcVgqCm7ZMrpLbhveReckqV3NrH9ZfvvnfvznBdV8AAhpGCaVYlVUxTMPh7ij2/GXB6Y8JF3YSHJ0P3g6XnpzIClmbbUCp4YJvhKZWKVa4sqFxaLEDBJFuLLdhb80JzK8EKR05HqfuDd1a4md0RyI4LuN75iAeGCTB+AoySV6lYCqYoaKqYLwzVIr+uGPWK/1+wzZNhmMwImM+1YSHXhuwYz3iXWLHSuQ3V2+/3BZsnAiYFTQxWvTOhdGYrrRMXNDFY49WA/KFD9XTnOaIomhgMifJlBxovehNIZlTA/noTVuda0o9iAQv6LEo+hEEohFMFC1iUz/w/j1KpF5IFjOIzikrsYBSfFZebUFxpRlW5+zuLYpiN4jMdODYwmc+wfNMTAnBM94MKxzZaB32GRq9tf3ZuHu4OunCxlxHZyN3bz443vL4epQunBIta32Rgvs+whAgWDB041oUXfVauWd0Syq5gL1yY31jB0Gf1xyHlM+OD+vtqWPtgBSM3KcLBFIwgUt+RgVXsC8QsiJSdRWzMAAAAAElFTkSuQmCC);\n        background-size: 80% 80%;\n        background-repeat: no-repeat;\n        background-position: center; }\n    .tabs .tabs-tab.debugger-canvas[_v-cf1d4c06] {\n      height: 12px;\n      width: 13px;\n      display: inline-block;\n      position: relative; }\n      .tabs .tabs-tab.debugger-canvas[_v-cf1d4c06]:before, .tabs .tabs-tab.debugger-canvas[_v-cf1d4c06]:after {\n        content: '';\n        height: 12px;\n        width: 4px;\n        display: block;\n        background: #666;\n        position: absolute;\n        top: 7px;\n        left: 7px; }\n      .tabs .tabs-tab.debugger-canvas[_v-cf1d4c06]:after {\n        left: 15px; }\n    .tabs .tabs-tab.debugger-canvas-active[_v-cf1d4c06] {\n      height: 12px;\n      width: 13px;\n      display: inline-block;\n      position: relative; }\n      .tabs .tabs-tab.debugger-canvas-active[_v-cf1d4c06]:before {\n        content: '';\n        height: 0;\n        width: 0;\n        display: block;\n        border: 6px transparent solid;\n        border-right-width: 0;\n        border-left-color: #3BA776;\n        position: absolute;\n        top: 7px;\n        left: 14px; }\n      .tabs .tabs-tab.debugger-canvas-active[_v-cf1d4c06]:after {\n        content: '';\n        height: 12px;\n        width: 4px;\n        display: block;\n        background: #3BA776;\n        position: absolute;\n        top: 7px;\n        left: 7px; }\n", ""]);
 
 // exports
 
@@ -20075,7 +20139,7 @@ module.exports = "\n<section class=\"detail-section\" _v-1cd4eef0=\"\">\n    <di
 /* 115 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"instance\" :class=\"{\n        selected: selected\n    }\" _v-22c5cfed=\"\">\n    <div class=\"self\" @click.stop=\"select\" @mouseenter=\"enter\" @mouseleave=\"leave\" :class=\"{ selected: selected }\" :style=\"{ paddingLeft: depth * 15 + 'px' }\" _v-22c5cfed=\"\">\n        <span class=\"content\" _v-22c5cfed=\"\">\n            <!-- arrow wrapper for better hit box -->\n            <span class=\"arrow-wrapper\" v-if=\"instance.children.length\" @click.stop=\"toggle\" _v-22c5cfed=\"\">\n                <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-22c5cfed=\"\"></span>\n            </span>\n            <span class=\"render\" :title=\"instance.rendered ? '已渲染元素' : (instance.rendered === false ? '未渲染元素' : '容器元素')\" :class=\"{show: instance.rendered === true, hide: instance.rendered === false}\" _v-22c5cfed=\"\"></span>                \n            <span class=\"angle-bracket\" _v-22c5cfed=\"\">&lt;</span><span class=\"instance-name\" _v-22c5cfed=\"\">{{ instance.name }}</span><span class=\"angle-bracket\" _v-22c5cfed=\"\">&gt;</span>\n            <span class=\"info console\" v-if=\"selected\" _v-22c5cfed=\"\">\n                id: {{ instanceId }}\n            </span>\n        </span>\n    </div>\n    <div v-if=\"expanded\" _v-22c5cfed=\"\">\n        <v-element v-for=\"childId in instance.children\" :key=\"childId\" :canvas-id=\"canvasId\" :instance-id=\"childId\" :depth=\"depth + 1\" _v-22c5cfed=\"\">\n        </v-element>\n    </div>\n</div>\n";
+module.exports = "\n<div class=\"instance\" :class=\"{\n        selected: selected\n    }\" _v-22c5cfed=\"\">\n    <div class=\"self\" @click.stop=\"select\" @mouseenter=\"enter\" @mouseleave=\"leave\" :class=\"{ selected: selected }\" :style=\"{ paddingLeft: depth * 15 + 'px' }\" _v-22c5cfed=\"\">\n        <span class=\"content\" _v-22c5cfed=\"\">\n            <!-- arrow wrapper for better hit box -->\n            <span class=\"arrow-wrapper\" v-if=\"instance.children.length\" @click.stop=\"toggle\" _v-22c5cfed=\"\">\n                <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-22c5cfed=\"\"></span>\n            </span>\n            <span class=\"render\" :title=\"instance.rendered ? '已渲染元素' : (instance.rendered === false ? '未渲染元素' : '容器元素')\" :class=\"{show: instance.rendered === true, hide: instance.rendered === false}\" _v-22c5cfed=\"\"></span>                \n            <span class=\"angle-bracket\" _v-22c5cfed=\"\">&lt;</span><span class=\"instance-name\" _v-22c5cfed=\"\">{{ instance.name }}</span><span class=\"angle-bracket\" _v-22c5cfed=\"\">&gt;</span>\n            <span class=\"info console\" v-if=\"selected\" _v-22c5cfed=\"\">\n                id: {{ instanceId }}\n            </span>\n        </span>\n    </div>\n    <div v-if=\"expanded\" _v-22c5cfed=\"\">\n        <v-element v-for=\"childId in instance.children\" v-show=\"$index < maxVisibleElementsCount\" :key=\"childId\" :canvas-id=\"canvasId\" :instance-id=\"childId\" :depth=\"depth + 1\" _v-22c5cfed=\"\">\n        </v-element>\n        <div class=\"content-showMore\" v-if=\"visibleShowMore\" @click=\"maxVisibleElementsCount += 10\" _v-22c5cfed=\"\">Show more</div>\n    </div>\n</div>\n";
 
 /***/ }),
 /* 116 */
@@ -20099,7 +20163,7 @@ module.exports = "\n<div :style=\"{ marginLeft: depth * 14 + 'px' }\" _v-7fd1652
 /* 119 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<section _v-cf1d4c06=\"\">\n    <div class=\"left\" _v-cf1d4c06=\"\">\n        <div class=\"tabs\" _v-cf1d4c06=\"\">\n            <div class=\"tabs-tab base64-selector\" title=\"Select an element in the page to inspect it\" :class=\"{ active: selectorActive }\" @click=\"chooseSelector\" _v-cf1d4c06=\"\">\n            </div>\n            <div class=\"tabs-tab\" :title=\"!debuggerCanvas ? 'Pause canvas' : 'Resume canvas'\" :class=\"{ 'debugger-canvas': !debuggerCanvas, 'debugger-canvas-active': debuggerCanvas }\" @click=\"toggleDebuggerCanvas\" _v-cf1d4c06=\"\">\n            </div>\n            <div class=\"tabs-tab\" v-for=\"(index, item) in canvas\" :key=\"index\" :class=\"{ active: item === activeCanvas }\" @click=\"chooseCanvas(item)\" _v-cf1d4c06=\"\">\n                canvas{{index}}\n            </div>\n        </div>\n        <div class=\"content\" _v-cf1d4c06=\"\">\n            <template v-for=\"element in elements\">\n                <v-element v-if=\"!element.parent\" :key=\"$key\" :canvas-id=\"activeCanvas\" :instance-id=\"$key\" :depth=\"0\" _v-cf1d4c06=\"\">\n                </v-element>\n            </template>\n        </div>\n    </div>\n    <div class=\"right\" _v-cf1d4c06=\"\">\n        <v-detail _v-cf1d4c06=\"\"></v-detail>\n    </div>\n</section>\n";
+module.exports = "\n<section _v-cf1d4c06=\"\">\n    <div class=\"left\" _v-cf1d4c06=\"\">\n        <div class=\"tabs\" _v-cf1d4c06=\"\">\n            <div class=\"tabs-tab base64-selector\" title=\"Select an element in the page to inspect it\" :class=\"{ active: selectorActive }\" @click=\"chooseSelector\" _v-cf1d4c06=\"\">\n            </div>\n            <div class=\"tabs-tab\" :title=\"!debuggerCanvas ? 'Pause canvas' : 'Resume canvas'\" :class=\"{ 'debugger-canvas': !debuggerCanvas, 'debugger-canvas-active': debuggerCanvas }\" @click=\"toggleDebuggerCanvas\" _v-cf1d4c06=\"\">\n            </div>\n            <div class=\"tabs-tab\" v-for=\"(index, item) in canvas\" :key=\"index\" :class=\"{ active: item === activeCanvas }\" @click=\"chooseCanvas(item)\" _v-cf1d4c06=\"\">\n                canvas{{index}}\n            </div>\n        </div>\n        <div class=\"content\" _v-cf1d4c06=\"\">\n            <template v-for=\"element in rootElement\">\n                <v-element v-if=\"$index < maxVisibleElementsCount\" :key=\"$key\" :canvas-id=\"activeCanvas\" :instance-id=\"$key\" :depth=\"0\" _v-cf1d4c06=\"\">\n                </v-element>\n            </template>\n            <div class=\"content-showMore\" v-if=\"visibleShowMore\" @click=\"maxVisibleElementsCount += 10\" _v-cf1d4c06=\"\">Show more</div>\n        </div>\n    </div>\n    <div class=\"right\" _v-cf1d4c06=\"\">\n        <v-detail _v-cf1d4c06=\"\"></v-detail>\n    </div>\n</section>\n";
 
 /***/ }),
 /* 120 */

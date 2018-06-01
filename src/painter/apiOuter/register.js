@@ -20,6 +20,10 @@ module.exports = function (dom, option) {
 
     this.$dom = dom || this.$dom;
 
+    for (var i in _option) {
+        this[i] = _option[i];
+    }
+
     this.name = _option.name || 'Unnamed';
 
     if (_option.fullScreen) {
@@ -41,8 +45,10 @@ module.exports = function (dom, option) {
 
     if (_option.webgl) {
         this.$paintContext = dom.getContext('webgl', {
-            alpha: true
+            alpha: true,
+            premultipliedAlpha: false,
         });
+
         if (this.$paintContext) {
             this.$isWebgl = true;
 
@@ -52,7 +58,7 @@ module.exports = function (dom, option) {
                 }
             }
 
-            window.Easycanvas.$webglRegister(this);
+            window.Easycanvas.$webglRegister(this, _option);
         } else {
             if (process.env.NODE_ENV !== 'production') {
                 console.warn('[Easycanvas] Webgl is not supported in current browser, using canvas2d instead.');

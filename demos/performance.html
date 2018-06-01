@@ -9,14 +9,12 @@
         var $Painter = new Easycanvas.painter();
         $Painter.register(document.getElementById('foo'), {
             name: 'main',
-            webgl: !true
+            webgl: true
         });
         $Painter.start();
         $Painter.fpsHandler = console.log;
 
         var demoPicUrl = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/block.jpg';
-
-        // demoPicUrl = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
         $Painter.imgLoader(demoPicUrl, function (img) {
             // create a sprite
