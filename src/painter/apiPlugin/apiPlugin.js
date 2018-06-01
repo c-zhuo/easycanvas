@@ -44,8 +44,7 @@ module.exports = function () {
             });
         });
 
-        const MaskCanvas = document.createElement('img');
-        MaskCanvas.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
+        const MaskCanvasBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
 
         let $selectMask = null;
 
@@ -110,7 +109,7 @@ module.exports = function () {
                     $selectMask = $canvas.add({
                         name: constants.devFlag,
                         content: {
-                            img: MaskCanvas,
+                            img: $canvas.imgLoader(MaskCanvasBase64),
                         },
                         style: {
                         }
@@ -119,14 +118,20 @@ module.exports = function () {
 
                 ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
                     (function (_key) {
-                        if (constants.sxywh.indexOf(_key) >= 0) {
-                            return;
-                        }
                         $selectMask.style[_key] = function () {
                             return $sprite.$cache[_key];
                         };
                     })(key);
                 });
+
+                // mask of webgl
+                $selectMask.webgl = $sprite.webgl ? {} : false;
+                if ($selectMask.webgl) {
+                    for (var key in $sprite.webgl) {
+                        $selectMask.webgl[key] = $sprite.webgl[key];
+                    }
+                    $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);
+                }
 
                 // $sprite.$cache has calculated the 'scale' and 'locate'
                 // Here uses the default values

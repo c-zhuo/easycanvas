@@ -1,6 +1,12 @@
 ## Easycanvas Changelog
 
-#### 0.4.0 (30kb)
+#### 0.5.0 (30kb)
+
+- Featrue: Support webgl3d.
+
+- Featrue: Update chrome plugin.
+
+#### 0.4.0-0.4.2 (30kb)
 
 - Bugfix: Add forces to physics plugin.
 

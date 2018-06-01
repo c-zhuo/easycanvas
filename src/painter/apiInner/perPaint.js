@@ -22,6 +22,8 @@ const isChineseChar = function (temp) {
 };
 
 module.exports = function (i, index) {
+    i.$rendered = false;
+
     if (utils.funcOrValue(i.style.visible, i) === false) {
         utils.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
         utils.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
@@ -63,6 +65,32 @@ module.exports = function (i, index) {
     } else { // center
         _props.tx -= _props.tw >> 1;
         _props.ty -= _props.th >> 1;
+    }
+
+    if (i.webgl) {
+        i.$rendered = true;
+
+        let _webgl = {
+            tx: i.getStyle('tx'),
+            ty: i.getStyle('ty'),
+            tz: utils.funcOrValue(i.webgl.tz, i) || 0,
+        };
+        for (var key in i.webgl) {
+            _webgl[key] = utils.funcOrValue(i.webgl[key], i) || 0;
+        }
+
+        let $paintSprite = {
+            $id: i.$id,
+            type: '3d',
+            webgl: _webgl,
+        };
+
+        if (process.env.NODE_ENV !== 'production') {
+            // 开发环境下，将元素挂载到$children里以供标记
+            $paintSprite.$origin = i;
+        };
+
+        $canvas.$children.push($paintSprite);
     }
 
     if (_props.fh || _props.fv) {
@@ -140,14 +168,17 @@ module.exports = function (i, index) {
 
     /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
     // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
-    if (!_props.rotate && !_text && _imgWidth && !_props.fh && !_props.fv) {
+    if (!_props.rotate && !_text && _imgWidth) {
         cutOutside($canvas, _props, _imgWidth, _imgHeight)
     }
 
-    constants.xywh.forEach(function (key) {
-        _props[key] = Math.round(_props[key]);
-        // _props[key] >>= 0;
-    });
+    if (_imgWidth > 10 && _imgHeight > 10) {
+        // 太小的图不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”
+        constants.xywh.forEach(function (key) {
+            _props[key] = Math.round(_props[key]);
+            // _props[key] >>= 0;
+        });
+    }
 
     delete i.$cache.textBottom;
 
@@ -164,7 +195,7 @@ module.exports = function (i, index) {
 
     settings.globalAlpha = utils.firstValuable(_props.opacity, 1)
 
-    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh && _props.tx < $canvas.width && _props.ty < $canvas.height) {
+    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh && _props.tx >= 0 && _props.tx < $canvas.width && _props.ty >= 0 && _props.ty < $canvas.height) {
         i.$rendered = true;
 
         let $paintSprite = {
@@ -180,12 +211,12 @@ module.exports = function (i, index) {
         };
 
         $canvas.$children.push($paintSprite);
-    } else {
-        i.$rendered = false;
     }
 
     // TODO: rewrite
     if (_text) {
+        i.$rendered = true;
+
         let textTx = _props.tx;
         let textTy = _props.ty;
         let textAlign = _props.align || _props.textAlign || 'left';
@@ -217,7 +248,7 @@ module.exports = function (i, index) {
                 props: {
                     tx: textTx,
                     ty: textTy,
-                    content: _text,
+                    content: String(_text),
                     align: textAlign,
                     font: textFont,
                     color: _props.color,

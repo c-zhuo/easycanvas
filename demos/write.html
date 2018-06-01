@@ -1,39 +1,102 @@
 <head>
     <script src="../build/index.js"></script>
+    <script src="../build/plugin.webgl.js"></script>
+    <!-- <meta name="viewport" content="width=device-width, minimum-scale=1.0"> -->
 </head>
 
+<style>
+    canvas {
+        border: 1px solid grey;
+        background-color: #ccc;
+    }
+</style>
+
 <body>
-    <canvas id="foo" width="800" height="800"></canvas>
+    <canvas id="foo" width="600" height="600"></canvas>
 
     <script>
         var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
+        $Painter.register(document.getElementById('foo'), {
+            webgl: {
+                fudgeFactor: 1,
+            },
+            // {
+            //     // camera: {
+            //     //     // rx: 300,
+            //     //     // ry: 300,
+            //     //     rz: 1,
+            //     //     rx: Easycanvas.transition.pendulum(-180, 180, 1000).loop(),
+            //     //     ry: Easycanvas.transition.pendulum(-180, 180, 1000).loop(),
+            //     //     // ry: Easycanvas.transition.pendulum(100, 150, 1000).loop(),
+            //     //     // rz: Easycanvas.transition.pendulum(400, 500, 1000).loop(),
+            //     // }
+            // },
+        });
         $Painter.start();
 
-        var G = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
+        var G = $Painter.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
+        var jpg = $Painter.imgLoader('https://chenzhuo1992.github.io/tanyitan/flower1.jpg');
 
         var sprite = $Painter.add({
+            style: {
+                tx: 250, ty: 290,
+                tw: 160, th: 20,
+                locate: 'center',
+                textAlign: 'right',
+                textFont: '44px monospace',
+                color: 'rgba(255, 165, 0, 1)',
+                zIndex: 10,
+            },
+            content: {
+                img: G
+            },
+            webgl: window.Easycanvas.webglShapes.block({
+                a: 30, b: 50, c: 40,
+                img: G,
+                rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
+                rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 2000).loop(),
+                // colors: [
+                //     Math.random() * 255,
+                //     Math.random() * 255,
+                //     Math.random() * 255,
+                //     Math.random() * 255,
+                //     Math.random() * 255,
+                // ],
+            }),
+            children: [{
+                content: {
+                    text: 'llOOO啊.zxcv',
+                },
+                style: {
+                    tx: -100, ty: 100,
+                },
+            }]
+        });
+
+        sprite = $Painter.add({
             style: {
                 tx: 250, ty: 200,
                 tw: 160, th: 20,
                 locate: 'center',
-                align: 'right',
-                font: '44px Courier New',
+                textAlign: 'right',
+                textFont: '44px monospace',
                 color: 'rgba(255, 165, 0, 1)',
             },
             content: {
-                text: 'aaaa',
+                text: 'aiwo9啊.test',
                 img: G
-            }
+            },
         });
 
-        var sprite = $Painter.add({
+        sprite = $Painter.add({
             style: {
-                tx: 250, ty: 400,
+                tx: Easycanvas.transition.pendulum(-200, 200, 13000).loop(),
+                ty: Easycanvas.transition.pendulum(-200, 200, 16000).loop(),
                 tw: 160, th: 20,
                 locate: 'center',
-                align: 'right',
-                font: '44px Courier New',
+                textAlign: 'right',
+                textFont: '44px Courier New',
                 color: 'rgba(255, 165, 0, 1)',
             },
             content: {
@@ -44,9 +107,83 @@
                 `, {
 
                 }),
-                img: G
+                img: G,
             }
         });
+
+        var arrayRepeat = function (arr, n) {
+            let str = arr.join(',');
+            let tmp = '';
+            for (var i = 1; i <= n; i++) {
+                tmp += str;
+                if (i < n) {
+                    tmp += ',';
+                }
+            }
+            return tmp.split(',');
+        };
+
+        for (var i = 0; i <= -1; i++) {
+            // var ball = window.Easycanvas.webglShapes.ball({
+            //     r: 50,
+            //     // img: G,
+            //     tz: Easycanvas.transition.pendulum(-3000, 3000, 4000).loop(),
+            //     rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+            //     ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
+            //     rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 2000 + 2000).loop(),
+            //     colors: [
+            //         Math.random() * 255,
+            //         Math.random() * 255,
+            //         Math.random() * 255,
+            //         Math.random() * 255,
+            //         Math.random() * 255,
+            //     ],
+            // });
+            // // var r = 2000;
+            // // ball.vertices = new Float32Array(arrayRepeat(ball.vertices, r));
+            // // ball.indices = new Uint16Array(arrayRepeat(ball.indices, r));
+            // // ball.textures = new Float32Array(arrayRepeat(ball.textures, r));
+            // // ball.colors = new Uint8Array(arrayRepeat(ball.colors, r));
+
+            // sprite.add({
+            //     style: {
+            //         // tx: Math.random() * 500, ty: 500,
+            //         tx: Math.random() * 6000 - 3000,
+            //         ty: Math.random() * 6000 - 3000,
+            //         // tx: 300, ty: 300,
+            //         zIndex: 9,
+            //     },
+            //     content: {
+            //         // img: G
+            //     },
+            //     webgl: ball,
+            // });
+
+            $Painter.add({
+                style: {
+                    tx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                    ty: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                    zIndex: 10,
+                },
+                content: {
+                    // img: G
+                },
+                webgl: window.Easycanvas.webglShapes.block({
+                    a: 30, b: 50, c: 40,
+                    // img: G,
+                    rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                    ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
+                    rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 2000).loop(),
+                    colors: [
+                        Math.random() * 255,
+                        Math.random() * 255,
+                        Math.random() * 255,
+                        Math.random() * 255,
+                        Math.random() * 255,
+                    ],
+                }),
+            });
+        }
     </script>
 </body>
 

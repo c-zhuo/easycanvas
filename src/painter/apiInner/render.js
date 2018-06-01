@@ -10,7 +10,7 @@ import utils from 'utils/utils.js';
 
 let render = function ($sprite, i) {
     let $canvas = this;
-    
+
     /*
         props(Array)
         @0    image/canvas Object
@@ -38,7 +38,7 @@ let render = function ($sprite, i) {
 
                 let tmpProps = $tmpSprite.props;
 
-                if (!tmpProps[0]) {
+                if (!tmpProps || !tmpProps[0]) {
                     // 不是图片
                     $tmpSprite.$cannotCover = true;
                     continue;
@@ -99,17 +99,10 @@ let render = function ($sprite, i) {
     }
     // console.log('useful');
 
-    let settings = $sprite.settings;
+    let settings = $sprite.settings || {};
 
     if ($canvas.$isWebgl && window.Easycanvas.$webglPainter) {
-        props[0] && props[0].texture && window.Easycanvas.$webglPainter(
-            $canvas,
-            props[0].texture,
-            props[0].width,
-            props[0].height,
-            props[1], props[2], props[3], props[4],
-            props[5], props[6], props[7], props[8],
-            settings);
+        window.Easycanvas.$webglPainter($sprite, settings, $canvas);
         return;
     }
 
