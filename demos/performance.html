@@ -37,33 +37,33 @@
                 });
         });
 
-        var $Temp = new Easycanvas.painter();
-        $Temp.register(document.createElement('canvas'), {
-            name: 'temp',
-            fullScreen: true
-        });
-        $Temp.start();
+        // var $Temp = new Easycanvas.painter();
+        // $Temp.register(document.createElement('canvas'), {
+        //     name: 'temp',
+        //     fullScreen: true
+        // });
+        // $Temp.start();
 
-        Easycanvas.imgLoader(demoPicUrl, function (img) {
-            // create a sprite
-            for (var i = 0; i <= COUNT / 2; i++)
-                $Temp.add({
-                    name: 'spriteOfTemp',
-                    content: {
-                        img: img,
-                    },
-                    style: {
-                        tx: Easycanvas.transition.pendulum(Math.random() * 500, Math.random() * 500, 1000).loop(),
-                        ty: (Math.random() * 500),
-                        tw: (Math.random() * 200),
-                        th: (Math.random() * 200),
-                        zIndex: Math.random(),
-                        locate: 'lt',
-                        opacity: 0.1,
-                        // rotate: 40,
-                    },
-                });
-        });
+        // Easycanvas.imgLoader(demoPicUrl, function (img) {
+        //     // create a sprite
+        //     for (var i = 0; i <= COUNT / 2; i++)
+        //         $Temp.add({
+        //             name: 'spriteOfTemp',
+        //             content: {
+        //                 img: img,
+        //             },
+        //             style: {
+        //                 tx: Easycanvas.transition.pendulum(Math.random() * 500, Math.random() * 500, 1000).loop(),
+        //                 ty: (Math.random() * 500),
+        //                 tw: (Math.random() * 200),
+        //                 th: (Math.random() * 200),
+        //                 zIndex: Math.random(),
+        //                 locate: 'lt',
+        //                 opacity: 0.1,
+        //                 // rotate: 40,
+        //             },
+        //         });
+        // });
 
         window.__EASYCANVAS_DEVTOOL__.isPaintRecording = false;
     </script>
