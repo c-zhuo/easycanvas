@@ -2734,7 +2734,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        script1.innerHTML = Shader_Vertex_Textcoord;
 	        script2.innerHTML = Shader_Fragment_Textcoord;
 	    }
-
 	    gl.program = webglUtils.createProgramFromScripts(gl, ["drawImage-vertex-shader", "drawImage-fragment-shader"]);
 	    gl.useProgram(gl.program);
 
@@ -2810,11 +2809,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            // 2d
 	            gl.bindTexture(gl.TEXTURE_2D, props[0].texture);
-	            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, props[0].img);
+	            // gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, props[0].img);
 
-	            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-	            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	            // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+	            // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	            // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 	            webglRender2d($canvas, props[0].texture, props[0].width, props[0].height, props[1], props[2], props[3], props[4], props[5], props[6], props[7], props[8], settings);
 	        }
 	    } else if ($sprite.type === '3d' && (webgl.img || webgl.colors)) {
@@ -3062,11 +3061,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // and because our texture coordinates are already a unit quad
 	    // we can select an area of the texture by scaling the unit quad
 	    // down
-	    var texMatrix = m4.translation(srcX / texWidth, srcY / texHeight, 0);
-	    texMatrix = m4.scale(texMatrix, srcWidth / texWidth, srcHeight / texHeight, 1);
+	    if (srcX || srcY || srcWidth !== texWidth || srcHeight !== texHeight) {
+	        var texMatrix = m4.translation(srcX / texWidth, srcY / texHeight, 0);
+	        texMatrix = m4.scale(texMatrix, srcWidth / texWidth, srcHeight / texHeight, 1);
 
-	    // Set the texture matrix.
-	    gl.uniformMatrix4fv(gl.textureMatrixLocation, false, texMatrix);
+	        // Set the texture matrix.
+	        gl.uniformMatrix4fv(gl.textureMatrixLocation, false, texMatrix);
+	    }
 
 	    // Tell the shader to get the texture from texture unit 0
 	    // gl.uniform1i(gl.textureLocation, 0);
