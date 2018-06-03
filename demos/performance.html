@@ -4,12 +4,12 @@
     <canvas id="foo" width="800" height="1800" style="width: 800px; height: 1800px;"></canvas>
 
     <script>
-        var COUNT = 80;
+        var COUNT = 800;
 
         var $Painter = new Easycanvas.painter();
         $Painter.register(document.getElementById('foo'), {
             name: 'main',
-            webgl: true
+            webgl: !true
         });
         $Painter.start();
         $Painter.fpsHandler = console.log;
