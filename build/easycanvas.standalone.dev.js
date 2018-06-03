@@ -3056,7 +3056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
 	                    (function (_key) {
 	                        $selectMask.style[_key] = function () {
-	                            return $sprite.$cache[_key];
+	                            return $sprite.$cache && $sprite.$cache[_key];
 	                        };
 	                    })(key);
 	                });
