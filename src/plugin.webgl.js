@@ -135,6 +135,8 @@ var toggleShader = function (gl, type) {
 window.m4 = _webglM4();
 window.webglUtils = _webglUtils();
 
+const textCachePool = {};
+
 // Unlike images, textures do not have a width and height associated
 // with them so we'll pass in the width and height of the texture
 window.Easycanvas.$webglPainter = function ($sprite, settings, $canvas) {
@@ -151,36 +153,48 @@ window.Easycanvas.$webglPainter = function ($sprite, settings, $canvas) {
     if ($sprite.type !== '3d') {
 
         if (!props[0] && props.content) {
-            // text
-            var textCtx = document.createElement('canvas').getContext('2d');
-            textCtx.clearRect(0, 0, textCtx.canvas.width, textCtx.canvas.height);
-            
-            // Puts text in center of canvas.
-            textCtx.canvas.width  = props.content.length * parseInt(props.font) * 2;
-            textCtx.canvas.height = parseInt(props.font) + 5;
-            textCtx.font = props.font;
-            textCtx.textAlign = props.align;
-            // textCtx.textBaseline = "middle";
-            textCtx.fillStyle = props.color;
-            textCtx.fillText(props.content,
-                props.align === 'right' ? textCtx.canvas.width : (props.align === 'center' ? textCtx.canvas.width / 2 : 0),
-                textCtx.canvas.height - 5);
+            var cacheKey = props.content + props.font + props.align + props.color;
+            var cacheValue = textCachePool[cacheKey];
 
-            var tex = gl.createTexture();
-            // gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+            if (!cacheValue) {
+                // text
+                var tex = gl.createTexture();
+                var textCtx = document.createElement('canvas').getContext('2d');
+                textCtx.clearRect(0, 0, textCtx.canvas.width, textCtx.canvas.height);
+                
+                // Puts text in center of canvas.
+                textCtx.canvas.width  = props.content.length * parseInt(props.font) * 2;
+                textCtx.canvas.height = parseInt(props.font) + 5;
+                textCtx.font = props.font;
+                textCtx.textAlign = props.align;
+                // textCtx.textBaseline = "middle";
+                textCtx.fillStyle = props.color;
+                textCtx.fillText(props.content,
+                    props.align === 'right' ? textCtx.canvas.width : (props.align === 'center' ? textCtx.canvas.width / 2 : 0),
+                    textCtx.canvas.height - 5);
 
-            props = [
-                {
+                gl.bindTexture(gl.TEXTURE_2D, tex);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textCtx.canvas);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+                cacheValue = textCachePool[cacheKey] = {
                     texture: tex,
                     width: textCtx.canvas.width,
                     height: textCtx.canvas.height,
                     img: textCtx.canvas,
-                },
-                0, 0, textCtx.canvas.width, textCtx.canvas.height,
-                props.align === 'right' ? props.tx - textCtx.canvas.width :
-                (props.align === 'center' ? props.tx - textCtx.canvas.width / 2 : props.tx),
-                props.ty - textCtx.canvas.height + 5,
-                textCtx.canvas.width, textCtx.canvas.height,
+                    canvas: textCtx.canvas,
+                };
+            }
+
+            props = [
+                cacheValue,
+                0, 0, cacheValue.canvas.width, cacheValue.canvas.height,
+                props.align === 'right' ? props.tx - cacheValue.canvas.width :
+                (props.align === 'center' ? props.tx - cacheValue.canvas.width / 2 : props.tx),
+                props.ty - cacheValue.canvas.height + 5,
+                cacheValue.canvas.width, cacheValue.canvas.height,
             ];
         }
 
