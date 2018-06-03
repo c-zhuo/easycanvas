@@ -2752,6 +2752,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	        gl.textureMatrixLocation = gl.getUniformLocation(gl.program, "u_textureMatrix");
 	    }
+
+	    gl.enableVertexAttribArray(gl.positionLocation);
+	    gl.enableVertexAttribArray(gl.texcoordLocation);
+	    gl.enableVertexAttribArray(gl.colorLocation);
 	};
 
 	window.m4 = (0, _m2.default)();
@@ -2854,53 +2858,54 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return d * Math.PI / 180;
 	}
 
-	var lastVertices, lastTextures, lastIndices, lastColors;
-
 	var webglRender3d = function webglRender3d($canvas, webgl) {
 	    var gl = $canvas.$gl;
 
-	    if (lastVertices !== webgl.vertices) {
-	        lastVertices = webgl.vertices;
+	    var positionBuffer, colorBuffer, texcoordBuffer, indicesBuffer;
 
-	        gl.positionBuffer = gl.createBuffer();
+	    if (webgl.vertices.$cacheBuffer) {
+	        positionBuffer = webgl.vertices.$cacheBuffer;
+	    } else {
+	        positionBuffer = gl.createBuffer();
 	        // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
-	        gl.bindBuffer(gl.ARRAY_BUFFER, gl.positionBuffer);
+	        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 	        // Put the positions in the buffer
 	        gl.bufferData(gl.ARRAY_BUFFER, webgl.vertices, gl.STATIC_DRAW);
+	        webgl.vertices.$cacheBuffer = positionBuffer;
 	    }
 
-	    if (lastColors !== webgl.colors) {
-	        lastColors = webgl.colors;
-
-	        if (webgl.colors) {
-	            gl.colorBuffer = gl.createBuffer();
+	    if (webgl.colors) {
+	        if (webgl.colors.$cacheBuffer) {
+	            colorBuffer = webgl.colors.$cacheBuffer;
+	        } else {
+	            colorBuffer = gl.createBuffer();
 	            // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = colorBuffer)
-	            gl.bindBuffer(gl.ARRAY_BUFFER, gl.colorBuffer);
+	            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 	            // color buffer
 	            gl.bufferData(gl.ARRAY_BUFFER, webgl.colors, gl.STATIC_DRAW);
+	            webgl.colors.$cacheBuffer = colorBuffer;
 	        }
-	    }
-
-	    if (lastTextures !== webgl.textures) {
-	        lastTextures = webgl.textures;
-
-	        if (webgl.textures) {
-	            var indexBuffer = gl.createBuffer();
-	            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-
+	    } else {
+	        if (webgl.textures.$cacheBuffer) {
+	            texcoordBuffer = webgl.textures.$cacheBuffer;
+	        } else {
 	            // provide texture coordinates for the rectangle.
-	            gl.texcoordBuffer = gl.createBuffer();
-	            gl.bindBuffer(gl.ARRAY_BUFFER, gl.texcoordBuffer);
+	            texcoordBuffer = gl.createBuffer();
+	            gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 	            // Set Texcoords.
 	            gl.bufferData(gl.ARRAY_BUFFER, webgl.textures, gl.STATIC_DRAW);
+	            webgl.textures.$cacheBuffer = texcoordBuffer;
 	        }
 	    }
 
-	    if (lastIndices !== webgl.indices) {
-	        lastIndices = webgl.indices;
-
-	        if (webgl.indices) {
+	    if (webgl.indices) {
+	        if (webgl.indices.$cacheBuffer) {
+	            indicesBuffer = webgl.indices.$cacheBuffer;
+	        } else {
+	            indicesBuffer = gl.createBuffer();
+	            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
 	            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, webgl.indices, gl.STATIC_DRAW);
+	            webgl.indices.$cacheBuffer = indicesBuffer;
 	        }
 	    }
 
@@ -2909,10 +2914,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    gl.enable(gl.CULL_FACE);
 	    // gl.enable(gl.DEPTH_TEST); // 加了不透明了？
 
-	    if (lastColors) {
+	    if (colorBuffer) {
 	        toggleShader(gl, 0);
 	        // Turn on the color attribute
-	        gl.enableVertexAttribArray(gl.colorLocation);
+	        // gl.enableVertexAttribArray(gl.colorLocation);
 	        // Bind the color buffer.
 	        gl.bindBuffer(gl.ARRAY_BUFFER, gl.colorBuffer);
 	        // Tell the attribute how to get data out of colorBuffer (ARRAY_BUFFER)
@@ -2922,12 +2927,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var stride = 0; // 0 = move forward size * sizeof(type) each iteration to get the next position
 	        var offset = 0; // start at the beginning of the buffer
 	        gl.vertexAttribPointer(gl.colorLocation, size, type, normalize, stride, offset);
-	    } else if (lastTextures) {
+	    } else if (texcoordBuffer) {
 	        toggleShader(gl, 1);
 	        // Turn on the teccord attribute
-	        gl.enableVertexAttribArray(gl.texcoordLocation);
+	        // gl.enableVertexAttribArray(gl.texcoordLocation);
 	        // Bind the position buffer.
-	        gl.bindBuffer(gl.ARRAY_BUFFER, gl.texcoordBuffer);
+	        gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 	        // Tell the position attribute how to get data out of positionBuffer (ARRAY_BUFFER)
 	        var size = 2; // 2 components per iteration
 	        var type = gl.FLOAT; // the data is 32bit floats
@@ -2937,11 +2942,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        gl.vertexAttribPointer(gl.texcoordLocation, size, type, normalize, stride, offset);
 	    }
 
-	    if (lastVertices) {
+	    if (webgl.vertices) {
 	        // Turn on the position attribute
-	        gl.enableVertexAttribArray(gl.positionLocation);
+	        // gl.enableVertexAttribArray(gl.positionLocation);
 	        // Bind the position buffer.
-	        gl.bindBuffer(gl.ARRAY_BUFFER, gl.positionBuffer);
+	        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 	        // Tell the position attribute how to get data out of positionBuffer (ARRAY_BUFFER)
 	        var size = 3; // 3 components per iteration
 	        var type = gl.FLOAT; // the data is 32bit floats
@@ -3004,13 +3009,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Tell the shader to use texture unit 0 for u_texture
 	    gl.uniform1i(gl.textureLocation, 0);
 
-	    if (!webgl.indices) {
-	        gl.drawArrays(gl.TRIANGLES, 0, webgl.vertices.length / 3);
-	    } else {
+	    if (indicesBuffer) {
+	        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
 	        gl.drawElements(gl.TRIANGLES, webgl.indices.length, gl.UNSIGNED_SHORT, 0);
+	    } else {
+	        gl.drawArrays(gl.TRIANGLES, 0, webgl.vertices.length / 3);
 	    }
 	};
 
+	var cacheBuffer2d;
 	var webglRender2d = function webglRender2d($canvas, texture, texWidth, texHeight, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight, settings) {
 
 	    var gl = $canvas.$gl;
@@ -3022,18 +3029,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    toggleShader(gl, 1);
 
-	    if (lastVertices !== '2d') {
-	        lastVertices = '2d';
-	        lastTextures = lastIndices = undefined;
-
-	        // Create a buffer.
-	        gl.positionBuffer = gl.createBuffer();
-	        gl.bindBuffer(gl.ARRAY_BUFFER, gl.positionBuffer);
-	        gl.enableVertexAttribArray(gl.positionLocation);
-	        gl.vertexAttribPointer(gl.positionLocation, 2, gl.FLOAT, false, 0, 0);
-	        gl.enableVertexAttribArray(gl.texcoordLocation);
-	        gl.vertexAttribPointer(gl.texcoordLocation, 2, gl.FLOAT, false, 0, 0);
-
+	    // Create a buffer.
+	    if (!cacheBuffer2d) {
+	        cacheBuffer2d = gl.createBuffer();
+	        gl.bindBuffer(gl.ARRAY_BUFFER, cacheBuffer2d);
 	        // Put a unit quad in the buffer
 	        var textureCoordinates = [
 	        // 0, 0,
@@ -3041,14 +3040,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // 0, 1,
 	        // 1, 1,
 	        0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1];
+	        console.log('create');
 	        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
-	        // const indexBuffer = gl.createBuffer();
-	        // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-
-	        // Create a buffer for texture coords
-	        gl.texcoordBuffer = gl.createBuffer();
-	        gl.bindBuffer(gl.ARRAY_BUFFER, gl.texcoordBuffer);
 	    }
+
+	    gl.bindBuffer(gl.ARRAY_BUFFER, cacheBuffer2d);
+	    // gl.enableVertexAttribArray(gl.positionLocation);
+	    gl.vertexAttribPointer(gl.positionLocation, 2, gl.FLOAT, false, 0, 0);
+	    // gl.enableVertexAttribArray(gl.texcoordLocation);
+	    gl.vertexAttribPointer(gl.texcoordLocation, 2, gl.FLOAT, false, 0, 0);
+
+	    // Create a buffer for texture coords
+	    // gl.texcoordBuffer = gl.createBuffer();
+	    // gl.bindBuffer(gl.ARRAY_BUFFER, gl.texcoordBuffer);
 
 	    // this matirx will convert from pixels to clip space
 	    var matrix = gl.orthographic;

@@ -6,10 +6,11 @@
 </head>
 
 <style>
-    body {
+    body, html {
         margin: 0;
         text-align: center;
         background: black;
+        overflow: hidden;
     }
     canvas {
         border: 1px solid grey;
@@ -79,9 +80,9 @@
             }
         },
         style: {
-            tx: 5, ty: 5,
+            tx: 5, ty: 5, zIndex: 99,
             textAlign: 'left', textVerticalAlign: 'top',
-            color: 'black'
+            color: 'white'
         }
     });
     $Painter.add({
@@ -92,9 +93,9 @@
             }
         },
         style: {
-            tx: 395, ty: 5,
+            tx: 395, ty: 5, zIndex: 99,
             textAlign: 'right', textVerticalAlign: 'top',
-            color: 'black'
+            color: 'white'
         }
     });
 
