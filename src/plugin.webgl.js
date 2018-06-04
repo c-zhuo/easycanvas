@@ -329,7 +329,7 @@ var webglRender3d = function ($canvas, webgl) {
         // Turn on the color attribute
         // gl.enableVertexAttribArray(gl.colorLocation);
         // Bind the color buffer.
-        gl.bindBuffer(gl.ARRAY_BUFFER, gl.colorBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
         // Tell the attribute how to get data out of colorBuffer (ARRAY_BUFFER)
         var size = 3;                 // 3 components per iteration
         var type = gl.UNSIGNED_BYTE;  // the data is 8bit unsigned values
