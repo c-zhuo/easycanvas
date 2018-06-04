@@ -5,7 +5,6 @@
  *
  * ********** **/
 
-import _webglUtils from 'lib/webgl-utils.js';
 import _webglM4 from 'lib/m4.js';
 import utils from './utils/utils.js';
 import rectMeet from 'utils/math.rect-meet';
@@ -86,17 +85,54 @@ const Shader_Fragment_Color = `
     }
 `;
 
-var parentNode = document.body || document.head || document;
+// var parentNode = document.body || document.head || document;
 
-var script1 = document.createElement('script');
-script1.id = 'drawImage-vertex-shader';
-script1.type = 'x-shader/x-vertex';
-parentNode.appendChild(script1);
+// var script1 = document.createElement('script');
+// script1.id = 'drawImage-vertex-shader';
+// script1.type = 'x-shader/x-vertex';
+// parentNode.appendChild(script1);
 
-var script2 = document.createElement('script');
-script2.id = 'drawImage-fragment-shader';
-script2.type = 'x-shader/x-fragment';
-parentNode.appendChild(script2);
+// var script2 = document.createElement('script');
+// script2.id = 'drawImage-fragment-shader';
+// script2.type = 'x-shader/x-fragment';
+// parentNode.appendChild(script2);
+
+var shaderCachePool = {};
+function createShader (gl, sourceCode, type) {
+    if (shaderCachePool[sourceCode]) {
+        return shaderCachePool[sourceCode];
+    }
+
+    // Compiles either a shader of type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, sourceCode);
+    gl.compileShader(shader);
+
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        var info = gl.getShaderInfoLog(shader);
+        throw 'Could not compile WebGL program. \n\n' + info;
+    }
+
+    shaderCachePool[sourceCode] = shader;
+    return shader;
+}
+
+function createProgram (gl, vertexShader, fragmentShader) {
+    var program = gl.createProgram();
+
+    // Attach pre-existing shaders
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+
+    gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        var info = gl.getProgramInfoLog(program);
+        throw 'Could not compile WebGL program. \n\n' + info;
+    }
+
+    return program;
+}
 
 // 0-color 1-textcoord
 var lastType;
@@ -105,30 +141,33 @@ var toggleShader = function (gl, type) {
 
     lastType = type;
 
+    var shaderVertexColor, shaderFragmentColor;
     if (type === 0) {
-        script1.innerHTML = Shader_Vertex_Color;
-        script2.innerHTML = Shader_Fragment_Color;
+        shaderVertexColor = createShader(gl, Shader_Vertex_Color, gl.VERTEX_SHADER);
+        shaderFragmentColor = createShader(gl, Shader_Fragment_Color, gl.FRAGMENT_SHADER);
     } else {
-        script1.innerHTML = Shader_Vertex_Textcoord;
-        script2.innerHTML = Shader_Fragment_Textcoord;
+        shaderVertexColor = createShader(gl, Shader_Vertex_Textcoord, gl.VERTEX_SHADER);
+        shaderFragmentColor = createShader(gl, Shader_Fragment_Textcoord, gl.FRAGMENT_SHADER);
     }
-    gl.program = webglUtils.createProgramFromScripts(gl, ["drawImage-vertex-shader", "drawImage-fragment-shader"]);
+
+    gl.program = createProgram(gl, shaderVertexColor, shaderFragmentColor);
+
     gl.useProgram(gl.program);
 
     // look up where the vertex data needs to go.
-    gl.positionLocation = gl.getAttribLocation(gl.program, "a_position");
+    gl.positionLocation = gl.getAttribLocation(gl.program, 'a_position');
     if (type === 0) {
-        gl.colorLocation = gl.getAttribLocation(gl.program, "a_color");
+        gl.colorLocation = gl.getAttribLocation(gl.program, 'a_color');
     } else {
-        gl.texcoordLocation = gl.getAttribLocation(gl.program, "a_texcoord");
+        gl.texcoordLocation = gl.getAttribLocation(gl.program, 'a_texcoord');
     }
 
     // lookup uniforms
-    gl.matrixLocation = gl.getUniformLocation(gl.program, "u_matrix");
+    gl.matrixLocation = gl.getUniformLocation(gl.program, 'u_matrix');
     if (type === 0) {
-        gl.textureLocation = gl.getUniformLocation(gl.program, "u_texture");
+        gl.textureLocation = gl.getUniformLocation(gl.program, 'u_texture');
     } else {
-        gl.textureMatrixLocation = gl.getUniformLocation(gl.program, "u_textureMatrix");
+        gl.textureMatrixLocation = gl.getUniformLocation(gl.program, 'u_textureMatrix');
     }
 
     gl.enableVertexAttribArray(gl.positionLocation);
@@ -137,7 +176,6 @@ var toggleShader = function (gl, type) {
 };
 
 window.m4 = _webglM4();
-window.webglUtils = _webglUtils();
 
 const textCachePool = {};
 
