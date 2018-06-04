@@ -234,7 +234,6 @@
 
                                     blockArray.forEach(function (block) {
                                         block.physicsOff();
-                                        block.style.ty = Easycanvas.transition.linear(block.style.ty, block.style.ty - 50, 100 + Math.random() * 200);
                                         // block.style.ty -= 50;
 
                                         if (block.style.ty < 50) {
@@ -251,6 +250,8 @@
                                                 block.physicsOn();
                                             }, 300)
                                         }
+
+                                        block.style.ty = Easycanvas.transition.linear(block.style.ty, block.style.ty - 50, 100 + Math.random() * 200);
                                     });
 
                                     if (!canShoot) {
