@@ -8,7 +8,22 @@
 
 import utils from 'utils/utils.js';
 
-let render = function ($sprite, i) {
+const extend = function ($sprite, settings) {
+    let stopDefault = false;
+
+    this.$extendList.forEach((plugin) => {
+        if (plugin.onRender) {
+            let res = plugin.onRender.call(this, $sprite, settings);
+            if (res) {
+                stopDefault = res;
+            }
+        }
+    });
+
+    return stopDefault;
+};
+
+const render = function ($sprite, i) {
     let $canvas = this;
 
     /*
@@ -101,8 +116,7 @@ let render = function ($sprite, i) {
 
     let settings = $sprite.settings || {};
 
-    if ($canvas.$isWebgl && window.Easycanvas.$webglPainter) {
-        window.Easycanvas.$webglPainter($sprite, settings, $canvas);
+    if (extend.call($canvas, $sprite, settings)) {
         return;
     }
 

@@ -21,9 +21,9 @@
             'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
             'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/btn.png',
         ];
-        var fadeTypes = window.Easycanvas.class.sprite.prototype.fade.types;
+        var fadeTypes = window.Easycanvas.sprite.prototype.fade.types;
 
-        $above = new Easycanvas.class.sprite({
+        $above = new Easycanvas.sprite({
             name: 'init',
             content: {
                 img: imgList[imgIndex % imgList.length],
@@ -52,7 +52,7 @@
                     once();
                 });
 
-            $below = new Easycanvas.class.sprite({
+            $below = new Easycanvas.sprite({
                 name: 'added',
                 content: {
                     img: imgList[imgIndex % imgList.length],

@@ -1,3 +1,5 @@
+import constants from 'constants';
+
 import painter from './painter/index.js';
 import tick from './utils/tick.js';
 import mirror from './utils/mirror.js';
@@ -6,12 +8,11 @@ import transition from './utils/transition.js';
 import imgLoader from './utils/img-loader.js';
 import imgPretreat from './utils/img-pretreat.js';
 import multlineText from './utils/multline-text';
-
-import classes from './class/main.js';
+import sprite from './class/sprite.js';
 
 import chromeDevtoolBridge from './bridge/chrome-devtool.js';
 
-let Easycanvas = {
+const Easycanvas = {
     painter,
     imgLoader,
     imgPretreat,
@@ -20,32 +21,44 @@ let Easycanvas = {
     tick,
     utils,
     mirror,
-    class: classes,
-    $version: '0.5.1',
+    // 这个class只是为了兼容老版本写法“new Easycanvas.class.sprite(opt);”
+    class: {
+        sprite: sprite
+    },
+    sprite,
+    $version: constants.version,
     env: process.env.NODE_ENV,
 };
 
 Easycanvas.extend = function (pluginHook) {
-    Easycanvas.class.sprite.prototype.$extendList.push(pluginHook);
+    Easycanvas.sprite.prototype.$extendList.push(pluginHook);
 };
 
-if (process.env.NODE_ENV !== 'production') {
-    Easycanvas.$warn = (() => {
-        let lastConsoleTime = 0;
-        return function () {
-            let now = Date.now();
-            if (now - lastConsoleTime < 1000) {
-                // 防止连续警告
-                return;
-            }
+Easycanvas.use = function (pluginHook) {
+    if (pluginHook.onUse) {
+        pluginHook.onUse(Easycanvas);
+    }
 
-            let args = Array.prototype.slice.call(arguments);
+    Easycanvas.painter.prototype.$extendList.push(pluginHook);
+};
 
-            lastConsoleTime = now;
-            console.warn.apply(this, args);
-        };
-    })();
-}
+// if (process.env.NODE_ENV !== 'production') {
+//     Easycanvas.$warn = (() => {
+//         let lastConsoleTime = 0;
+//         return function () {
+//             let now = Date.now();
+//             if (now - lastConsoleTime < 1000) {
+//                 // 防止连续警告
+//                 return;
+//             }
+
+//             let args = Array.prototype.slice.call(arguments);
+
+//             lastConsoleTime = now;
+//             console.warn.apply(this, args);
+//         };
+//     })();
+// }
 
 if (window.Easycanvas) {
     console.warn('[Easycanvas] already loaded.');

@@ -68,7 +68,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _ec = void 0;
 
 	var number = function number(opt) {
-	    var sprite = new _ec.class.sprite(opt);
+	    var sprite = new _ec.sprite(opt);
 
 	    sprite.style = opt.style;
 	    sprite.content.img = opt.number;

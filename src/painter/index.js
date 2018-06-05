@@ -8,14 +8,14 @@
 import apiOuter from './apiOuter.js';
 import apiInner from './apiInner.js';
 
-import $protoData from './apiOuter/register.protoData.js';
+import $prototype from './prototype.js';
 
 let painter = function (config) {
     this.imgLoader = Easycanvas.imgLoader;
 
-    for (let i in $protoData) {
+    for (let i in $prototype) {
         // Avoid muti instances from sharing data
-        this[i] = this[i] || JSON.parse(JSON.stringify($protoData[i]));
+        this[i] = this[i] || JSON.parse(JSON.stringify($prototype[i]));
     }
 
 
@@ -37,6 +37,8 @@ let painter = function (config) {
         );
     }
 };
+
+painter.prototype.$extendList = [];
 
 for (let i in apiInner) {
     if (Object.prototype.hasOwnProperty.call(apiInner, i)) {

@@ -51,9 +51,9 @@ module.exports = `
                         height: 400
                     });
 
-                    var $letterG = new Easycanvas.class.sprite({
+                    var $letterG = new Easycanvas.sprite({
                         content: {
-                            img: 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true',
+                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
                         },
                         style: {
                             tw: 50,
@@ -79,7 +79,7 @@ module.exports = `
 
         <p class="tip">Tips：这里的尺寸其实是canvas包含的像素的尺寸。默认情况下，如果一个canvas画布的宽为400个像素，那么它在网页中渲染的宽也是400像素。但是我们可以通过style样式来指定渲染的实际宽度。这点和img标签相似：当css样式的尺寸大于图片文件的尺寸时，会因为拉伸而变得模糊。</p>
 
-        <p>接下来的<strong>new Easycanvas.class.sprite</strong>创建了一个新的sprite（精灵）对象。在这个例子中，我们向sprite填充一个图片（G.png），设置它的宽高都为50、y坐标为100。x坐标传入了一个Easycanvas提供的<strong>transition</strong>过渡：以50和150为端点进行钟摆变化。</p>
+        <p>接下来的<strong>new Easycanvas.sprite</strong>创建了一个新的sprite（精灵）对象。在这个例子中，我们向sprite填充一个图片（G.png），设置它的宽高都为50、y坐标为100。x坐标传入了一个Easycanvas提供的<strong>transition</strong>过渡：以50和150为端点进行钟摆变化。</p>
 
         <p>我们可以在events参数中指定一些事件监听函数，例如当点击了这个元素时，我们修改当前sprite的宽为100.</p>
 

@@ -17,7 +17,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -25,7 +25,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $parent = new Easycanvas.class.sprite({
+                    var $parent = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -73,7 +73,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>这上面例子中，如果频繁点击第二个按钮（在parent广播事件），可以看到child1会连续旋转，而child2不会。即使我们给parent也加上3秒的debounce，频繁触发broadcast的时候，child1仍然可以连续旋转。这是因为<strong>各个sprite对同一个事件的debounce是独立的</strong>。</p>
+        <p>这上面例子中，如果频繁点击第二个按钮（在parent广播事件），可以看到child1会连续旋转，而child2不会。即使我们给parent也加上3秒的throttle，频繁触发broadcast的时候，child1仍然可以连续旋转。这是因为<strong>各个sprite对同一个事件的throttle是独立的</strong>。</p>
 
         <p>自定义事件可以传递一些参数，例如下例：</p>
 
@@ -88,7 +88,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -96,7 +96,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $parent = new Easycanvas.class.sprite({
+                    var $parent = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },

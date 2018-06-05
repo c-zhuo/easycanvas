@@ -17,7 +17,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -33,7 +33,7 @@ module.exports = `
                         }) + '<br>' + document.getElementById('eventName').innerHTML;
                     };
 
-                    var $foo = new Easycanvas.class.sprite({
+                    var $foo = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -72,7 +72,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -80,7 +80,7 @@ module.exports = `
                         height: 200
                     });
 
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -95,7 +95,7 @@ module.exports = `
                             },
                         },
                     }));
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -110,7 +110,7 @@ module.exports = `
                             },
                         },
                     }));
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -144,7 +144,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -152,7 +152,7 @@ module.exports = `
                         height: 200
                     });
 
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -167,7 +167,7 @@ module.exports = `
                             },
                         },
                     }));
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -201,7 +201,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -209,7 +209,7 @@ module.exports = `
                         height: 200
                     });
 
-                    var $parent1 = $app.add(new Easycanvas.class.sprite({
+                    var $parent1 = $app.add(new Easycanvas.sprite({
                         style: {
                             tx: 100, ty: 100
                         },
@@ -220,7 +220,7 @@ module.exports = `
                             }
                         }
                     }));
-                    var $parent2 = $app.add(new Easycanvas.class.sprite({
+                    var $parent2 = $app.add(new Easycanvas.sprite({
                         style: {
                             tx: 100, ty: 100,
                             tw: 100, th: 100,
@@ -234,7 +234,7 @@ module.exports = `
                         }
                     }));
 
-                    $parent1.add(new Easycanvas.class.sprite({
+                    $parent1.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -249,7 +249,7 @@ module.exports = `
                             },
                         },
                     }));
-                    $parent2.add(new Easycanvas.class.sprite({
+                    $parent2.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },

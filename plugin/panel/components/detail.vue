@@ -90,11 +90,11 @@ export default {
         },
         instance () {
             if (this.canvasId && this.instanceId) {
-                if (!this.$state.elements[this.canvasId] || !this.$state.elements[this.canvasId][this.instanceId]) {
+                if (!this.$state.elements[this.canvasId] || !this.$state.elements[this.canvasId].sprites[this.instanceId]) {
                     this.$actions.setInspectedInstance(null, null);
                     return {};
                 }
-                return this.$state.elements[this.canvasId][this.instanceId];
+                return this.$state.elements[this.canvasId].sprites[this.instanceId];
             } else {
                 return {};
             }

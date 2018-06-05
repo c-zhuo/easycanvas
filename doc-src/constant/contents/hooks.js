@@ -12,7 +12,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -20,7 +20,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $foo = new Easycanvas.class.sprite({
+                    var $foo = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -58,7 +58,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -66,7 +66,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $foo = new Easycanvas.class.sprite({
+                    var $foo = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },

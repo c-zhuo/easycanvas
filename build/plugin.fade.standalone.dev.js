@@ -434,7 +434,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        screenshot.width = _utils2.default.funcOrValue(sprite.style.tw, sprite);
 	        screenshot.height = _utils2.default.funcOrValue(sprite.style.th, sprite);
 	        var scrctx = screenshot.getContext('2d');
-	        scrctx.drawImage(sprite.$canvas.$dom, sprite.$cache.tx, sprite.$cache.ty);
+	        scrctx.drawImage(sprite.$canvas.$dom, sprite.getStyle('tx'), sprite.getStyle('ty'));
 	        sprite.$fade.originImg = screenshot;
 	        sprite.children = [];
 	    }

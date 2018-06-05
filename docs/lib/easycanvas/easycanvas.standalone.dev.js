@@ -1312,7 +1312,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	Easycanvas.extend = function (pluginHook) {
-	    Easycanvas.class.sprite.prototype.$extendList.push(pluginHook);
+	    Easycanvas.sprite.prototype.$extendList.push(pluginHook);
 	};
 
 	if (true) {

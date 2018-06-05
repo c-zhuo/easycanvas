@@ -163,7 +163,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _ec = void 0;
 
 	var shuttle = function shuttle(opt) {
-	    var sprite = new _ec.class.sprite(opt);
+	    var sprite = new _ec.sprite(opt);
 
 	    sprite.style = opt.style;
 
@@ -183,7 +183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    };
 
-	    opt.background && sprite.add(new _ec.class.sprite({
+	    opt.background && sprite.add(new _ec.sprite({
 	        content: {
 	            img: opt.background
 	        },
@@ -210,7 +210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var randomImg = opt.passBy[Math.floor(deg) % opt.passBy.length];
 
 	            if (randomImg) {
-	                var child = new _ec.class.sprite({
+	                var child = new _ec.sprite({
 	                    content: {
 	                        img: randomImg
 	                    },
@@ -237,7 +237,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (Math.random() > data.passInRate) return;
 
-	            var circle = new _ec.class.sprite({
+	            var circle = new _ec.sprite({
 	                content: {
 	                    img: opt.passIn[0]
 	                },
