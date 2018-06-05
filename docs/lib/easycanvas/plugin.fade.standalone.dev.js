@@ -379,7 +379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 
-	window.Easycanvas.class.sprite.prototype.fade = function (_ref) {
+	window.Easycanvas.sprite.prototype.fade = function (_ref) {
 	    var type = _ref.type,
 	        ticks = _ref.ticks,
 	        subtype = _ref.subtype;
@@ -473,9 +473,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	};
 
-	window.Easycanvas.class.sprite.prototype.fade.types = [];
+	window.Easycanvas.sprite.prototype.fade.types = [];
 	for (var i in transitions) {
-	    window.Easycanvas.class.sprite.prototype.fade.types.push(i);
+	    window.Easycanvas.sprite.prototype.fade.types.push(i);
 	}
 
 /***/ })

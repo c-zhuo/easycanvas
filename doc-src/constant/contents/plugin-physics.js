@@ -6,6 +6,22 @@ module.exports = `
 
         <p>这里将介绍如何给sprite一些物理规则，产生重力、碰撞的效果，以及如何对他们施加力、自定义碰撞的处理等。</p>
         
+        <h2>引入方式</h2>
+
+        <code>
+            <!-- js文件方式引入 -->
+            <!-- 注意放在easycanvas.js后；prod为线上压缩版、dev为开发版；开发版带有调试、警告信息 -->
+
+            <script src="http://your-path/easycanvas.standalone.prod.js"></script>
+            <script src="http://your-path/plugin.physics.standalone.prod.js"></script>
+
+            <!-- node环境引入 -->
+
+            import Easycanvas from easycanvas;
+            import EasycanvasPhysics from easycanvas/build/plugin.physics.js;
+            Easycanvas.extend(EasycanvasPhysics);
+        </code>
+
         <h2>重力、弹力、摩擦</h2>
 
         <p>物理引擎插件是对Easycanvas的sprite类进行扩展。<strong>在创建一个sprite实例时，指定了physics属性，这个实例才可以使用下列由physics插件提供的物理API</strong>。</p>
@@ -34,7 +50,7 @@ module.exports = `
 
                     var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
 
-                    var $space = new Easycanvas.class.sprite({
+                    var $space = new Easycanvas.sprite({
                         physics: {
                             gravity: 1,
                             accuracy: 1,
@@ -45,7 +61,7 @@ module.exports = `
                     // 从这个时刻启，$space的物理规则生效
                     $space.launch();
 
-                    var $letterG = new Easycanvas.class.sprite({
+                    var $letterG = new Easycanvas.sprite({
                         name: 'ball',
                         content: {
                             img: BALL,
@@ -70,9 +86,10 @@ module.exports = `
                     // 从这个时刻启，$letterG的物理运算将开启（会开始下落）
                     $letterG.physicsOn();
 
-                    var $border = $space.add(new Easycanvas.class.sprite({
+                    var $border = $space.add(new Easycanvas.sprite({
                         physics: {
                             shape: [
+                                // 这里是由四条线段围成的方框，作为边界
                                 [[0, 0], [0, 400]],
                                 [[0, 0], [400, 0]],
                                 [[400, 400], [400, 0]],
@@ -119,7 +136,7 @@ module.exports = `
 
                     var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
 
-                    var $space = new Easycanvas.class.sprite({
+                    var $space = new Easycanvas.sprite({
                         physics: {
                             gravity: 1,
                             accuracy: 2,
@@ -129,7 +146,7 @@ module.exports = `
 
                     $space.launch();
 
-                    var $letterG = new Easycanvas.class.sprite({
+                    var $letterG = new Easycanvas.sprite({
                         name: 'ball',
                         content: {
                             img: BALL,
@@ -168,7 +185,7 @@ module.exports = `
                         $letterG.physicsResetForces();
                     }, 1000)
 
-                    var $border = $space.add(new Easycanvas.class.sprite({
+                    var $border = $space.add(new Easycanvas.sprite({
                         physics: {
                             shape: [
                                 [[0, 0], [0, 400]],
@@ -197,7 +214,7 @@ module.exports = `
 
         <h2>API</h2>
 
-        <p>物理容器和物理对象都通过new Easycanvas.class.sprite方法创建，创建时必须含有physics参数。</p>
+        <p>物理容器和物理对象都通过new Easycanvas.sprite方法创建，创建时必须含有physics参数。</p>
 
         <p>创建物理容器时，physics需要以下两个参数，之后可以通过launch方法启动内部物理规则。</p>
 

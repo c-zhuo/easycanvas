@@ -24,7 +24,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $letterG = new Easycanvas.class.sprite({
+                    var $letterG = new Easycanvas.sprite({
                         content: {
                             img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
                         },
@@ -69,9 +69,9 @@ module.exports = `
                     });
 
                     Easycanvas.imgLoader(
-                        'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true',
+                        'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
                         function (img) {
-                            var $letterG = new Easycanvas.class.sprite({
+                            var $letterG = new Easycanvas.sprite({
                                 content: {
                                     img: img,
                                 },
@@ -108,7 +108,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $letterG = new Easycanvas.class.sprite({
+                    var $letterG = new Easycanvas.sprite({
                         content: {
                             img: Easycanvas.imgPretreat(
                                 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',

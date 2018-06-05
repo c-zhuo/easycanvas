@@ -17,7 +17,7 @@ module.exports = {
     	const STATIC_LETTER_WIDTH_SMALL = STATIC_LETTER_WIDTH / 3;
 
 	    {
-	    	let $Statics = new Easycanvas.class.sprite({
+	    	let $Statics = new Easycanvas.sprite({
 	    		name: 'static-letters'
 	    	});
 	    	$Space.add($Statics);
@@ -56,7 +56,7 @@ module.exports = {
 	    	});
 	    }
 
-    	let $Fallings = new Easycanvas.class.sprite({
+    	let $Fallings = new Easycanvas.sprite({
     		name: 'falling-letters'
     	});
     	$Space.add($Fallings);

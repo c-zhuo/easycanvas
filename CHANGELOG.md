@@ -1,5 +1,9 @@
 ## Easycanvas Changelog
 
+#### 0.5.2
+
+- Featrue: Support .3ds files 3D model.
+
 #### 0.5.0 (30kb)
 
 - Featrue: Support webgl3d.

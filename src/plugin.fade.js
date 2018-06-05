@@ -326,7 +326,7 @@ window.Easycanvas.class.sprite.prototype.fade = function ({type, ticks, subtype}
         screenshot.width = utils.funcOrValue(sprite.style.tw, sprite);
         screenshot.height = utils.funcOrValue(sprite.style.th, sprite);
         var scrctx = screenshot.getContext('2d');
-        scrctx.drawImage(sprite.$canvas.$dom, sprite.$cache.tx, sprite.$cache.ty);
+        scrctx.drawImage(sprite.$canvas.$dom, sprite.getStyle('tx'), sprite.getStyle('ty'));
         sprite.$fade.originImg = screenshot;
         sprite.children = [];
     }
