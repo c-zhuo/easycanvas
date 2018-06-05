@@ -24,7 +24,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $text = new Easycanvas.class.sprite({
+                    var $text = new Easycanvas.sprite({
                         content: {
                             text: '单行text',
                         },
@@ -75,7 +75,7 @@ module.exports = `
                         height: 800
                     });
 
-                    var $text = new Easycanvas.class.sprite({
+                    var $text = new Easycanvas.sprite({
                         content: {
                             text: '单行text',
                         },
@@ -132,7 +132,7 @@ module.exports = `
                         height: 800
                     });
 
-                    var $text = new Easycanvas.class.sprite({
+                    var $text = new Easycanvas.sprite({
                         content: {
                             text: function () {
                                 return Date.now();

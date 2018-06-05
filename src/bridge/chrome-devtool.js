@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
             isPaintRecording: false,
             selectMode: false,
             current: {},
-
+            version: constants.version,
             $canvas: {},
             $plugin: null,
         };
@@ -37,7 +37,9 @@ if (process.env.NODE_ENV !== 'production') {
                             name: item.name,
                             parent: item.$parent && item.$parent.$id,
                             style: {},
-                            children: item.children && item.children.map((child) => {
+                            children: item.children.filter((child) => {
+                                return child.name !== constants.devFlag;
+                            }).map((child) => {
                                 return child.$id;
                             }),
                             rendered: item.$rendered,

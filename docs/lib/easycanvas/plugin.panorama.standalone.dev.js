@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        dx = _opt$dx === undefined ? 0.5 : _opt$dx;
 
 
-	    var sprite = new Easycanvas.class.sprite(opt);
+	    var sprite = new Easycanvas.sprite(opt);
 	    sprite.dx = dx;
 
 	    var xSize = opt.style.tw;
@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var x = 0;
 
-	    var img1 = new Easycanvas.class.sprite({
+	    var img1 = new Easycanvas.sprite({
 	        content: {
 	            img: img
 	        },
@@ -95,7 +95,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            th: ySize
 	        }
 	    });
-	    var img2 = new Easycanvas.class.sprite({
+	    var img2 = new Easycanvas.sprite({
 	        content: {
 	            img: img
 	        },

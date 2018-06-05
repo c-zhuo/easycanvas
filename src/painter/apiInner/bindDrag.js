@@ -39,8 +39,8 @@ module.exports = {
             // if dragable is a object, it means the range of dragable area
             if ($sprite.drag.dragable) {
                 setFlag($sprite, true);
-                let relativeX = e.canvasX - this.$cache.tx;
-                let relativeY = e.canvasY - this.$cache.ty;
+                let relativeX = e.canvasX - this.getStyle('tx');
+                let relativeY = e.canvasY - this.getStyle('ty');
 
                 startDragPosition.x = e.canvasX;
                 startDragPosition.y = e.canvasY;
@@ -88,8 +88,8 @@ module.exports = {
         $sprite.events.click = function (e) {
             let worked = $sprite.drag.dragable;
             if (worked) {
-                let relativeX = e.canvasX - $sprite.$cache.tx;
-                let relativeY = e.canvasY - $sprite.$cache.ty;
+                let relativeX = e.canvasX - $sprite.getStyle('tx');
+                let relativeY = e.canvasY - $sprite.getStyle('ty');
                 return oClick ? oClick.call($sprite, e) : true;
             }
             return dragHandler(oClick, $sprite, e, worked);

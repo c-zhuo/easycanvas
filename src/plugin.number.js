@@ -37,7 +37,7 @@ let number = function (opt) {
 
     sprite.scrollToValue = function (value, time) {
         data.current = value;
-        sprite.style.sy = _ec.transition.linear(sprite.$cache.sy, data.current * data.heightRate * data.numberHeight, time || 200);
+        sprite.style.sy = _ec.transition.linear(sprite.getStyle('sy'), data.current * data.heightRate * data.numberHeight, time || 200);
     };
 
     sprite.stop = function () {

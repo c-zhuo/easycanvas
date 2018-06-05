@@ -33,7 +33,6 @@ const sortByIndex = function (arr) {
 
 /**
  * Check whether the event hits certain sprite
- * - Use $sprite.$cache to compare 
  * - Sprite in first frame will not captrue any event [?]
  */
 const isVisible = function ($sprite) {
@@ -47,17 +46,10 @@ const hitSprite = function ($sprite, e) {
         return false;
     }
 
-    if (!$sprite.$cache) {
-        return;
-    }
-
-    let _tx = $sprite.$cache.tx;
-    let _ty = $sprite.$cache.ty;
-    let _tw = $sprite.$cache.tw;
-    let _th = $sprite.$cache.th;
-
-    // 第一帧没有$cache
-    if (typeof _tx === 'undefined') return false;
+    let _tx = $sprite.getStyle('tx');
+    let _ty = $sprite.getStyle('ty');
+    let _tw = $sprite.getStyle('tw');
+    let _th = $sprite.getStyle('th');
 
     return utils.pointInRect(
         e.canvasX, e.canvasY,
