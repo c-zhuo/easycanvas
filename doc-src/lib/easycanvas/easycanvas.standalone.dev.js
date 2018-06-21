@@ -3178,7 +3178,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        content: {
 	                            img: $canvas.imgLoader(MaskCanvasBase64)
 	                        },
-	                        style: {}
+	                        style: {},
+	                        webgl: undefined
 	                    });
 	                }
 
@@ -3195,12 +3196,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	                window.$selectMask = $selectMask;
 
 	                // mask of webgl
-	                $selectMask.webgl = $sprite.webgl ? {} : false;
+	                $selectMask.webgl = $sprite.webgl ? {} : undefined;
 	                if ($selectMask.webgl) {
 	                    for (var key in $sprite.webgl) {
-	                        $selectMask.webgl[key] = $sprite.webgl[key];
+	                        (function (_key) {
+	                            $selectMask.webgl[_key] = function () {
+	                                if (typeof $sprite.webgl[_key] === 'function') {
+	                                    return $sprite.webgl[_key].call($sprite);
+	                                }
+	                                return $sprite.webgl[_key];
+	                            };
+	                        })(key);
 	                    }
 	                    $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);
+	                    $selectMask.webgl.opacity = 1;
 	                }
 
 	                $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
