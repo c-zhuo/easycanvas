@@ -7,7 +7,7 @@
 <style>
     canvas {
         border: 1px solid grey;
-        background-color: #ccc;
+        background-color: #4caf50;
     }
 </style>
 
@@ -49,6 +49,7 @@
                         textures: model.textures,
                         ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
                         longSide: 99999,
+                        scaleX: 0.5, scaleY: 0.5, scaleZ: 0.5,
                         // colors: !textures.length ? colors : undefined,
                         colors2: [
                             Math.random() * 255,
@@ -61,10 +62,14 @@
             });
         });
 
-        window.Easycanvas.loader3ds('../resource/game_char/sunnvfashi.3DS', function (data) {
+        window.Easycanvas.loader3ds('../resource/game_char/sunnvfashi.3DS', function (data, o) {window.o=o;
 
             var woman = $Painter.add({
                 name: 'woman',
+                style: {
+                    tx: 200,
+                    ty: 350,
+                },
                 webgl: {
                     rx: 90, ry: 0, rz: Easycanvas.transition.linear(0, 360, 5000).loop(),
                 },
@@ -73,10 +78,6 @@
             data.forEach(function (model) {
                 woman.add({
                     name: model.img,
-                    style: {
-                        tx: Easycanvas.transition.pendulum(220, 360, 11112000).loop(),
-                        ty: Easycanvas.transition.pendulum(400, 460, 11112000).loop(),
-                    },
                     webgl: window.Easycanvas.webglShapes.custom({
                         vertices: model.vertices,
                         indices: model.indices,

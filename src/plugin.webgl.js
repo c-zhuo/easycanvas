@@ -302,7 +302,7 @@ var webglRender3d = function ($canvas, webgl) {
 
     let gl = $canvas.$gl;
 
-    gl.disable(gl.BLEND);
+    gl.enable(gl.BLEND);
     gl.enable(gl.DEPTH_TEST);
     if (webgl.opacity) {
         gl.disable(gl.DEPTH_TEST);
@@ -470,7 +470,6 @@ var webglRender2d = function ($canvas,
 
     // Create a buffer.
     if (!cacheBuffer2d) {
-    // if (1) {
         cacheBuffer2d = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, cacheBuffer2d);
         // Put a unit quad in the buffer
@@ -486,18 +485,6 @@ var webglRender2d = function ($canvas,
             0, 1,
             1, 1,
         ];
-        // const textureCoordinates = [
-        //     // 0, 0,
-        //     // 1, 0,
-        //     // 0, 1,
-        //     // 1, 1,
-        //     srcX / texWidth, srcY / texHeight,
-        //     srcX / texWidth, srcHeight / texHeight + srcY / texHeight,
-        //     srcWidth / texWidth + srcX / texWidth, srcY / texHeight,
-        //     srcWidth / texWidth + srcX / texWidth, srcY / texHeight,
-        //     srcX / texWidth, srcHeight / texHeight + srcY / texHeight,
-        //     srcWidth / texWidth + srcX / texWidth, srcHeight / texHeight + srcY / texHeight,
-        // ];
 
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates),
                     gl.STATIC_DRAW);
