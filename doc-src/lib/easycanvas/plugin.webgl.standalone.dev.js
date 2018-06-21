@@ -1622,6 +1622,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    gl.disable(gl.BLEND);
 	    gl.enable(gl.DEPTH_TEST);
+	    if (webgl.opacity) {
+	        gl.disable(gl.DEPTH_TEST);
+	    }
 
 	    var positionBuffer = webgl.vertices.$cacheBuffer,
 	        colorBuffer,
