@@ -31,9 +31,7 @@
         };
 
         window.Easycanvas.loader3ds('../resource/15sunflower/15sunflower.3DS', function (data) {
-            var rx = Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 52000).loop();
             var ry = Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 32000).loop();
-            var rz = Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 22000).loop();
 
             var flower = $Painter.add({
                 name: 'flower',
@@ -105,7 +103,6 @@
                 });
             });
         });
-
     </script>
 </body>
 
