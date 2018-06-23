@@ -9,7 +9,7 @@ Easycanvas是一个轻量、高效率的渐进式canvas渲染库，核心思路�
 - [在线Demo：Easycanvas实现3D版弹一弹小游戏](https://chenzhuo1992.github.io/tanyitan/).
 - [English Guide(will update soon)](https://github.com/chenzhuo1992/easycanvas/blob/master/readme/build/readme.English.md).
 
-#### Featrues
+#### Feature
 
 - ☑ 渐进式基础库
 - ☑ 2D渲染
@@ -20,6 +20,7 @@ Easycanvas是一个轻量、高效率的渐进式canvas渲染库，核心思路�
 - ☑ 基础文档
 - ☑ 基础功能的单元测试
 - ☑ 3D渲染（插件）
+- ☑ 2D、3D混合渲染	
 - ☑ 同一实例中2D、3D混合渲染
 - ☑ 3000个150x150的图片2D渲染时保持60fps
 - ☑ 1000个3D模型渲染时保持60fps
