@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
             isPaintRecording: false,
             selectMode: false,
             current: {},
-
+            version: constants.version,
             $canvas: {},
             $plugin: null,
         };
@@ -37,7 +37,9 @@ if (process.env.NODE_ENV !== 'production') {
                             name: item.name,
                             parent: item.$parent && item.$parent.$id,
                             style: {},
-                            children: item.children && item.children.map((child) => {
+                            children: item.children.filter((child) => {
+                                return child.name !== constants.devFlag;
+                            }).map((child) => {
                                 return child.$id;
                             }),
                             rendered: item.$rendered,
@@ -150,9 +152,17 @@ if (process.env.NODE_ENV !== 'production') {
                 let $sprite = tmp.$sprite;
                 let $canvas = tmp.$canvas;
 
-                console.info(`window.$ec = [Easycanvas ${$canvas.$id}], window.$es = [Easycanvas ${$sprite.$id}]`);
-                window.$ec = $canvas;
-                window.$es = $sprite;
+                console.log(`%c window.$0 = %c Current Sprite(${$sprite.name}) %c `,
+                    "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff",
+                    "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff",
+                    "background:transparent");
+                // console.log(`%c window.$1 = %c Current Painter %c`,
+                //     "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff",
+                //     "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff",
+                //     "background:transparent");
+
+                window.$0 = $sprite;
+                window.$1 = $canvas;
             },
 
             pause: function ($canvasId, opt) {

@@ -16,11 +16,11 @@
                 </div>
                 <div 
                     class="tabs-tab"
-                    v-for="(index, item) in canvas"
+                    v-for="(key, item) in canvas"
                     :key="index"
-                    :class="{ active: item === activeCanvas }"
-                    @click="chooseCanvas(item)">
-                    canvas{{index}}
+                    :class="{ active: key === activeCanvas }"
+                    @click="chooseCanvas(key)">
+                    {{item.name}}
                 </div>
             </div>
             <div class="content">
@@ -89,10 +89,10 @@ export default {
             },
         },
         canvas () {
-            return Object.keys(this.$state.elements);
+            return this.$state.elements;
         },
         elements () {
-            return this.$state.elements[this.activeCanvas];
+            return this.$state.elements[this.activeCanvas] ? this.$state.elements[this.activeCanvas].sprites : [];
         },
         // firstCanvas () {
         //     return Object.keys().length > 0 ? Object.keys(this.$state.elements)[0] : '';
@@ -138,7 +138,7 @@ export default {
 .left, .right {
     box-sizing: border-box;
     width: 50%;
-    padding: 10px 0; 
+    padding: 8px 0; 
     flex-grow: 0;
 }
 .left {
@@ -168,6 +168,7 @@ export default {
 }
 
 .tabs {
+    padding-top: 2px;
     width: 100%;
     overflow-x: scroll;
     border-bottom: 1px solid $border-color;
@@ -183,11 +184,21 @@ export default {
         border: 1px solid $border-color;
         border-bottom: 0;
         text-align: center;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
         vertical-align: top;
         cursor: pointer;
 
         &.active {
             color: $active-color;
+
+            &:hover {
+                box-shadow: 0 0;
+            }
+        }
+
+        &:hover {
+            box-shadow: 1px 1px 6px 0px #a7a3a3;
         }
 
         &.base64-selector {

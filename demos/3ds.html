@@ -1,0 +1,109 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.webgl.js"></script>
+    <script src="../build/plugin.webgl.3ds.js"></script>
+</head>
+
+<style>
+    canvas {
+        border: 1px solid grey;
+        background-color: #4caf50;
+    }
+</style>
+
+<body>
+    <canvas id="foo" width="600" height="600"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            webgl: true,
+        });
+        $Painter.start();
+
+        var texture2img = {
+            'Flower Center': $Painter.imgLoader('../resource/15sunflower/center.jpg'),
+            'Petals': $Painter.imgLoader('../resource/15sunflower/petal.jpg'),
+            'Material #45': $Painter.imgLoader('../resource/game_char/4.jpg'),
+            'Material #46': $Painter.imgLoader('../resource/game_char/3.jpg'),
+            'Material #49': $Painter.imgLoader('../resource/game_char/6.jpg'),
+            'Material #51': $Painter.imgLoader('../resource/game_char/8.jpg'),
+        };
+
+        window.Easycanvas.loader3ds('../resource/15sunflower/15sunflower.3DS', function (data) {
+            var ry = Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 32000).loop();
+
+            var flower = $Painter.add({
+                name: 'flower',
+                style: {
+                    tx: 300, ty: 300,
+                },
+            });
+
+            data.forEach(function (model) {
+                flower.add({
+                    webgl: window.Easycanvas.webglShapes.custom({
+                        vertices: model.vertices,
+                        indices: model.indices,
+                        img: texture2img[model.img],
+                        textures: model.textures,
+                        ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                        longSide: 99999,
+                        scaleX: 0.5, scaleY: 0.5, scaleZ: 0.5,
+                        // colors: !textures.length ? colors : undefined,
+                        colors2: [
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            // Math.random() * 255,
+                        ],
+                    })
+                });
+            });
+        });
+
+        window.Easycanvas.loader3ds('../resource/game_char/sunnvfashi.3DS', function (data) {
+
+            var woman = $Painter.add({
+                name: 'woman',
+                style: {
+                    tx: 200,
+                    ty: 350,
+                },
+                webgl: {
+                    rx: 90, ry: 0, rz: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                },
+            });
+
+            data.forEach(function (model) {
+                woman.add({
+                    name: model.img,
+                    webgl: window.Easycanvas.webglShapes.custom({
+                        vertices: model.vertices,
+                        indices: model.indices,
+                        img: texture2img[model.img],
+                        textures: model.textures,
+                        rx: function () {
+                            return this.$parent.webgl.rx;
+                        },
+                        ry: function () {
+                            return this.$parent.webgl.ry;
+                        },
+                        rz: function () {
+                            return this.$parent.webgl.rz();
+                        },
+                        scaleX: 50, scaleY: 50, scaleZ: 50,
+                        longSide: 99999,
+                        colors2: [
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            // Math.random() * 255,
+                        ],
+                    })
+                });
+            });
+        });
+    </script>
+</body>
+

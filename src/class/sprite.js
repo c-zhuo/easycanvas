@@ -30,9 +30,6 @@
  *     },
  *
  *     $parent: { Sprite },
- *     $cache: {
- *         tx, ty, tw, th, ...
- *     },
  *
  * }
  *
@@ -137,11 +134,13 @@ const preAdd = function (_item) {
 
     ChangeChildrenToSprite(item);
 
-    item.$cache = {};
     item.$scroll = {
         speedX: 0,
         speedY: 0,
     };
+
+    // item.$cache = {};
+    // item.$styleCacheTime = {};
 
     return item;
 };
@@ -189,6 +188,12 @@ sprite.prototype.getRect = function () {
         res[key] = this.getStyle(key);
     });
 
+    if (res.tw === 0 && this.content.img) {
+        let img = utils.funcOrValue(this.content.img, this);
+        res.tw = img.width;
+        res.th = img.height;
+    }
+
     let locate = this.getStyle('locate');
     if (locate === 'lt') {
     } else if (locate === 'ld') {
@@ -206,6 +211,17 @@ sprite.prototype.getRect = function () {
     return res;
 };
 
+// sprite.prototype.getRender = function () {
+
+//     if (!this.$canvas) return {};
+
+//     let res = this.$canvas.$children.filter(($children) => {
+//         return $children.$id === this.$id;
+//     });
+
+//     return res && res[0];
+// };
+
 sprite.prototype.getSelfStyle = function ({locate}) {
     let res = {};
     for (var key in this.style) {
@@ -217,6 +233,13 @@ sprite.prototype.getSelfStyle = function ({locate}) {
 
 sprite.prototype.getStyle = function (key) {
     let $sprite = this;
+
+    // if ($sprite.$styleCacheTime[key] === $sprite.$canvas.$lastPaintTime && $sprite.$cache[key]) {
+    //     window.y++;
+    //     return $sprite.$cache[key];
+    // }
+    //     window.n++;
+
     let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
 
     if ($sprite.$parent && $sprite.inherit.indexOf(key) >= 0) {
@@ -239,6 +262,9 @@ sprite.prototype.getStyle = function (key) {
             ) + utils.firstValuable(currentValue, 0);
         }
     }
+
+    // $sprite.$styleCacheTime[key] = $sprite.$canvas.$lastPaintTime;
+    // $sprite.$cache[key] = currentValue;
 
     return currentValue;
 };

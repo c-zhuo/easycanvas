@@ -10,5 +10,6 @@ module.exports = function (func) {
         func.apply(this, arguments);
         this.off('ticked', _func);
     }
+
     this.on('ticked', _func);
 };

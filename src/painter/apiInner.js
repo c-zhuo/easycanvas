@@ -14,8 +14,6 @@ import $rAFer from './apiInner/rAFer.js';
 
 import $apiPlugin from './apiPlugin/apiPlugin.js';
 
-import utils from 'utils/utils.js';
-
 let apiInner = {
     $render,
     $eventHandler,

@@ -4,6 +4,7 @@ var path = require('path');
 var glob = require('glob');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var base = require('./webpack.config.base.js');
 
 var env = 'development';
@@ -40,7 +41,13 @@ var config = {
     plugins: ([
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(env)
-        })
+        }),
+        new CopyWebpackPlugin([
+            {
+                from: './demos/resource',
+                to: './resource'
+            }
+        ])
     ]).concat(html),
     node: base.node,
     debug: false,
