@@ -85,7 +85,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $human = new Easycanvas.class.sprite({
+                    var $human = new Easycanvas.sprite({
                         content: {
                             img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/human.png',
                             sequence: {
@@ -124,7 +124,7 @@ module.exports = `
                     var img = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/human.png';
                     var width = 166, height = 103;
 
-                    var $human = new Easycanvas.class.sprite({
+                    var $human = new Easycanvas.sprite({
                         content: {
                             img: img,
                             sequence: {

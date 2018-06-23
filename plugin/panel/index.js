@@ -147,7 +147,10 @@ Vue.use(require('easy-vuex'), {
                         const canvasIdList = Object.keys(window['${constants.devFlag}'].$canvas);
                         const elements = {};
                         for (let canvasId of canvasIdList) {
-                            elements[canvasId] = window['${constants.devFlag}'].$plugin.getSprite ? window['${constants.devFlag}'].$plugin.getSprite(canvasId) : {};
+                            elements[canvasId] = {
+                                name: window['${constants.devFlag}'].$canvas[canvasId].name,
+                                sprites: window['${constants.devFlag}'].$plugin.getSprite ? window['${constants.devFlag}'].$plugin.getSprite(canvasId) : {},
+                            }
                         }
                         return elements;
                     })();

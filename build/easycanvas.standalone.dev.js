@@ -125,7 +125,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    xywh: ['sx', 'sy', 'sw', 'sh', 'tx', 'ty', 'tw', 'th'],
 	    txywh: ['tx', 'ty', 'tw', 'th'],
 	    sxywh: ['sx', 'sy', 'sw', 'sh'],
-	    devFlag: '__EASYCANVAS_DEVTOOL__'
+	    devFlag: '__EASYCANVAS_DEVTOOL__',
+	    version: '0.5.2'
 	};
 
 /***/ }),
@@ -223,9 +224,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                               *     },
 	                                                                                                                                                                                                                                                                               *
 	                                                                                                                                                                                                                                                                               *     $parent: { Sprite },
-	                                                                                                                                                                                                                                                                               *     $cache: {
-	                                                                                                                                                                                                                                                                               *         tx, ty, tw, th, ...
-	                                                                                                                                                                                                                                                                               *     },
 	                                                                                                                                                                                                                                                                               *
 	                                                                                                                                                                                                                                                                               * }
 	                                                                                                                                                                                                                                                                               *
@@ -354,11 +352,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    ChangeChildrenToSprite(item);
 
-	    item.$cache = {};
 	    item.$scroll = {
 	        speedX: 0,
 	        speedY: 0
 	    };
+
+	    // item.$cache = {};
+	    // item.$styleCacheTime = {};
 
 	    return item;
 	};
@@ -410,6 +410,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        res[key] = _this2.getStyle(key);
 	    });
 
+	    if (res.tw === 0 && this.content.img) {
+	        var img = _utils2.default.funcOrValue(this.content.img, this);
+	        res.tw = img.width;
+	        res.th = img.height;
+	    }
+
 	    var locate = this.getStyle('locate');
 	    if (locate === 'lt') {} else if (locate === 'ld') {
 	        res.ty -= res.th;
@@ -427,6 +433,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return res;
 	};
 
+	// sprite.prototype.getRender = function () {
+
+	//     if (!this.$canvas) return {};
+
+	//     let res = this.$canvas.$children.filter(($children) => {
+	//         return $children.$id === this.$id;
+	//     });
+
+	//     return res && res[0];
+	// };
+
 	sprite.prototype.getSelfStyle = function (_ref) {
 	    var locate = _ref.locate;
 
@@ -440,6 +457,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	sprite.prototype.getStyle = function (key) {
 	    var $sprite = this;
+
+	    // if ($sprite.$styleCacheTime[key] === $sprite.$canvas.$lastPaintTime && $sprite.$cache[key]) {
+	    //     window.y++;
+	    //     return $sprite.$cache[key];
+	    // }
+	    //     window.n++;
+
 	    var currentValue = _utils2.default.funcOrValue($sprite.style[key], $sprite);
 
 	    if ($sprite.$parent && $sprite.inherit.indexOf(key) >= 0) {
@@ -458,6 +482,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return _utils2.default.firstValuable($sprite.$parent.getStyle(key), 0) + _utils2.default.firstValuable(currentValue, 0);
 	        }
 	    }
+
+	    // $sprite.$styleCacheTime[key] = $sprite.$canvas.$lastPaintTime;
+	    // $sprite.$cache[key] = currentValue;
 
 	    return currentValue;
 	};
@@ -548,8 +575,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // if dragable is a object, it means the range of dragable area
 	            if ($sprite.drag.dragable) {
 	                setFlag($sprite, true);
-	                var relativeX = e.canvasX - this.$cache.tx;
-	                var relativeY = e.canvasY - this.$cache.ty;
+	                var relativeX = e.canvasX - this.getStyle('tx');
+	                var relativeY = e.canvasY - this.getStyle('ty');
 
 	                startDragPosition.x = e.canvasX;
 	                startDragPosition.y = e.canvasY;
@@ -597,8 +624,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        $sprite.events.click = function (e) {
 	            var worked = $sprite.drag.dragable;
 	            if (worked) {
-	                var relativeX = e.canvasX - $sprite.$cache.tx;
-	                var relativeY = e.canvasY - $sprite.$cache.ty;
+	                var relativeX = e.canvasX - $sprite.getStyle('tx');
+	                var relativeY = e.canvasY - $sprite.getStyle('ty');
 	                return oClick ? oClick.call($sprite, e) : true;
 	            }
 	            return dragHandler(oClick, $sprite, e, worked);
@@ -791,6 +818,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        func.apply(this, arguments);
 	        this.off('ticked', _func);
 	    };
+
 	    this.on('ticked', _func);
 	};
 
@@ -832,15 +860,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	module.exports = function (name, func, debounce) {
+	module.exports = function (name, func, throttle) {
 	    var _handle = func;
 
-	    if (debounce) {
+	    if (throttle) {
 	        var that = this;
 	        _handle = function handle() {
 	            var now = Date.now();
 
-	            if (now > _handle.$lastTriggerTime + debounce) {
+	            if (now > _handle.$lastTriggerTime + throttle) {
 	                _handle.$lastTriggerTime = now;
 	                var args = Array.prototype.slice.call(arguments);
 	                func.apply(that, args);
@@ -1030,6 +1058,170 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var _utils = __webpack_require__(1);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// Math.PI wastes some performace
+	var PI = 3.141593;
+
+	var second2frame = function second2frame(second) {
+	    return second / 1000 * 60;
+	};
+
+	var getLastPaintTime = function getLastPaintTime(transitions) {
+	    return transitions.$lastPaintTime || Date.now();
+	};
+
+	var transFuncs = {
+	    linear: function linear(a, b, duration) {
+	        if (a === b) return a;
+
+	        var startTime = getLastPaintTime(this);
+
+	        var loop = false;
+
+	        var resFunc = function () {
+	            var currentTime = this.$lastPaintTime;
+	            var result = (b - a) * (currentTime - startTime) / duration + a;
+
+	            if (loop) {
+	                if (b > a) {
+	                    while (result > b) {
+	                        result -= b - a;
+	                    }
+	                } else {
+	                    while (result < b) {
+	                        result += b - a;
+	                    }
+	                }
+	            } else {
+	                if (b > a && result > b) {
+	                    resFunc.$done = true;
+	                    result = b;
+	                } else if (b < a && result < b) {
+	                    resFunc.$done = true;
+	                    result = b;
+	                }
+	            }
+
+	            return result;
+	        }.bind(this);
+
+	        resFunc.loop = function () {
+	            loop = true;
+	            return resFunc;
+	        };
+
+	        resFunc.restart = function () {
+	            startTime = getLastPaintTime(this);
+	        };
+
+	        return resFunc;
+	    },
+
+	    pendulum: function pendulum(a, b, duration, _config) {
+	        if (a === b) return a;
+
+	        var startTime = getLastPaintTime(this);
+
+	        var config = _config || {};
+	        config.start = config.start || 0;
+
+	        var loop = false;
+
+	        var resFunc = function () {
+	            var currentTime = getLastPaintTime(this);
+	            var passTime = (currentTime - startTime) / duration;
+
+	            if (!loop) {
+	                if (config.cycle) {
+	                    if (config.cycle < passTime) {
+	                        resFunc.$done = true;
+	                        passTime = config.cycle;
+	                    }
+	                } else if (passTime > 1) {
+	                    resFunc.$done = true;
+	                    passTime = 1;
+	                }
+	            } else {
+	                if (config.cycle) {
+	                    passTime %= config.cycle;
+	                }
+	            }
+
+	            var deg = passTime * PI * 2 - PI / 2 + config.start / 360 * PI;
+	            var result = (b - a) * (Math.sin(deg) + 1) / 2 + a;
+
+	            return result;
+	        }.bind(this);
+
+	        resFunc.loop = function () {
+	            loop = true;
+	            return resFunc;
+	        };
+
+	        resFunc.restart = function () {
+	            startTime = getLastPaintTime(this);
+	        };
+
+	        return resFunc;
+	    },
+
+	    ease: function ease(a, b, duration) {
+	        return this.pendulum(a, b, duration, {
+	            cycle: 0.5
+	        });
+	    },
+
+	    oneByOne: function oneByOne(_arr) {
+	        var arr = _arr;
+	        var loop = false;
+
+	        var resFunc = function resFunc() {
+	            for (var i = 0; i < arr.length; i++) {
+	                if (!arr[i].$done) {
+	                    return arr[i]();
+	                } else if (!arr[i].$nextRestart) {
+	                    arr[i].$nextRestart = true;
+	                    if (arr[i + 1]) {
+	                        arr[i + 1].restart();
+	                        return arr[i + 1]();
+	                    }
+	                }
+	            }
+
+	            if (loop) {
+	                for (var _i = 0; _i < arr.length; _i++) {
+	                    arr[_i].$done = false;
+	                    arr[_i].$nextRestart = false;
+	                    arr[_i].restart();
+	                }
+	                return arr[0]();
+	            }
+
+	            return arr[arr.length - 1]();
+	        };
+
+	        resFunc.loop = function () {
+	            loop = true;
+	            return resFunc;
+	        };
+
+	        return resFunc;
+	    }
+	};
+
+	module.exports = transFuncs;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ********** *
 	                                                                                                                                                                                                                                                                   *
 	                                                                                                                                                                                                                                                                   * Preparing data for devtool.
@@ -1053,7 +1245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            isPaintRecording: false,
 	            selectMode: false,
 	            current: {},
-
+	            version: _constants2.default.version,
 	            $canvas: {},
 	            $plugin: null
 	        };
@@ -1076,7 +1268,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            name: item.name,
 	                            parent: item.$parent && item.$parent.$id,
 	                            style: {},
-	                            children: item.children && item.children.map(function (child) {
+	                            children: item.children.filter(function (child) {
+	                                return child.name !== _constants2.default.devFlag;
+	                            }).map(function (child) {
 	                                return child.$id;
 	                            }),
 	                            rendered: item.$rendered
@@ -1188,9 +1382,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var $sprite = tmp.$sprite;
 	                var $canvas = tmp.$canvas;
 
-	                console.info('window.$ec = [Easycanvas ' + $canvas.$id + '], window.$es = [Easycanvas ' + $sprite.$id + ']');
-	                window.$ec = $canvas;
-	                window.$es = $sprite;
+	                console.log('%c window.$0 = %c Current Sprite(' + $sprite.name + ') %c ', "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff", "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff", "background:transparent");
+	                // console.log(`%c window.$1 = %c Current Painter %c`,
+	                //     "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff",
+	                //     "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff",
+	                //     "background:transparent");
+
+	                window.$0 = $sprite;
+	                window.$1 = $canvas;
 	            },
 
 	            pause: function pause($canvasId, opt) {
@@ -1234,28 +1433,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _sprite = __webpack_require__(6);
-
-	var _sprite2 = _interopRequireDefault(_sprite);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	module.exports = {
-	    sprite: _sprite2.default
-	};
-
-/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _index = __webpack_require__(42);
+	var _constants = __webpack_require__(2);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	var _index = __webpack_require__(40);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -1263,7 +1450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _mirror = __webpack_require__(52);
+	var _mirror = __webpack_require__(53);
 
 	var _mirror2 = _interopRequireDefault(_mirror);
 
@@ -1271,7 +1458,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _transition = __webpack_require__(54);
+	var _transition = __webpack_require__(15);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
@@ -1279,19 +1466,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
-	var _imgPretreat = __webpack_require__(50);
+	var _imgPretreat = __webpack_require__(51);
 
 	var _imgPretreat2 = _interopRequireDefault(_imgPretreat);
 
-	var _multlineText = __webpack_require__(53);
+	var _multlineText = __webpack_require__(54);
 
 	var _multlineText2 = _interopRequireDefault(_multlineText);
 
-	var _main = __webpack_require__(16);
+	var _sprite = __webpack_require__(6);
 
-	var _main2 = _interopRequireDefault(_main);
+	var _sprite2 = _interopRequireDefault(_sprite);
 
-	var _chromeDevtool = __webpack_require__(15);
+	var _chromeDevtool = __webpack_require__(16);
 
 	var _chromeDevtool2 = _interopRequireDefault(_chromeDevtool);
 
@@ -1306,38 +1493,52 @@ return /******/ (function(modules) { // webpackBootstrap
 	    tick: _tick2.default,
 	    utils: _utils2.default,
 	    mirror: _mirror2.default,
-	    class: _main2.default,
-	    $version: '0.5.1',
+	    // 这个class只是为了兼容老版本写法“new Easycanvas.class.sprite(opt);”
+	    class: {
+	        sprite: _sprite2.default
+	    },
+	    sprite: _sprite2.default,
+	    $version: _constants2.default.version,
 	    env: ("develop")
 	};
 
 	Easycanvas.extend = function (pluginHook) {
-	    Easycanvas.class.sprite.prototype.$extendList.push(pluginHook);
+	    Easycanvas.sprite.prototype.$extendList.push(pluginHook);
 	};
 
-	if (true) {
-	    Easycanvas.$warn = function () {
-	        var lastConsoleTime = 0;
-	        return function () {
-	            var now = Date.now();
-	            if (now - lastConsoleTime < 1000) {
-	                // 防止连续警告
-	                return;
-	            }
+	Easycanvas.use = function (pluginHook) {
+	    if (pluginHook.onUse) {
+	        pluginHook.onUse(Easycanvas);
+	    }
 
-	            var args = Array.prototype.slice.call(arguments);
+	    Easycanvas.painter.prototype.$extendList.push(pluginHook);
+	};
 
-	            lastConsoleTime = now;
-	            console.warn.apply(this, args);
-	        };
-	    }();
-	}
+	// if (process.env.NODE_ENV !== 'production') {
+	//     Easycanvas.$warn = (() => {
+	//         let lastConsoleTime = 0;
+	//         return function () {
+	//             let now = Date.now();
+	//             if (now - lastConsoleTime < 1000) {
+	//                 // 防止连续警告
+	//                 return;
+	//             }
+
+	//             let args = Array.prototype.slice.call(arguments);
+
+	//             lastConsoleTime = now;
+	//             console.warn.apply(this, args);
+	//         };
+	//     })();
+	// }
 
 	if (window.Easycanvas) {
 	    console.warn('[Easycanvas] already loaded.');
 	} else {
 	    if (true) {
-	        console.warn('[Easycanvas] You are using the develop version.');
+	        setTimeout(function () {
+	            console.log('%c Easycanvas %c You are using the develop version ' + _constants2.default.version + ' %c', "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff", "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff", "background:transparent");
+	        }, 500);
 	    }
 	    window.Easycanvas = Easycanvas;
 	}
@@ -1348,21 +1549,20 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 18 */,
 /* 19 */,
 /* 20 */,
-/* 21 */,
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _perPaint = __webpack_require__(27);
+	var _perPaint = __webpack_require__(26);
 
 	var _perPaint2 = _interopRequireDefault(_perPaint);
 
-	var _render = __webpack_require__(29);
+	var _render = __webpack_require__(28);
 
 	var _render2 = _interopRequireDefault(_render);
 
-	var _eventHandler = __webpack_require__(23);
+	var _eventHandler = __webpack_require__(22);
 
 	var _eventHandler2 = _interopRequireDefault(_eventHandler);
 
@@ -1370,19 +1570,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _bindDrag2 = _interopRequireDefault(_bindDrag);
 
-	var _rAFer = __webpack_require__(28);
+	var _rAFer = __webpack_require__(27);
 
 	var _rAFer2 = _interopRequireDefault(_rAFer);
 
-	var _apiPlugin = __webpack_require__(41);
+	var _apiPlugin = __webpack_require__(39);
 
 	var _apiPlugin2 = _interopRequireDefault(_apiPlugin);
 
-	var _utils = __webpack_require__(1);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/** ********** *
+	 *
+	 * Inner apis of an easycanvas instance
+	 * - Used for Easycanvas.js only normally.
+	 * - Will be added to Easycanvas instance's prototype.
+	 *
+	 * ********** **/
 
 	var apiInner = {
 	    $render: _render2.default,
@@ -1390,13 +1594,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    $perPaint: _perPaint2.default,
 	    $bindDrag: _bindDrag2.default,
 	    $rAFer: _rAFer2.default
-	}; /** ********** *
-	    *
-	    * Inner apis of an easycanvas instance
-	    * - Used for Easycanvas.js only normally.
-	    * - Will be added to Easycanvas instance's prototype.
-	    *
-	    * ********** **/
+	};
 
 	if (true) {
 	    apiInner.$plugin = (0, _apiPlugin2.default)();
@@ -1405,7 +1603,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiInner;
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1443,7 +1641,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * Check whether the event hits certain sprite
-	 * - Use $sprite.$cache to compare 
 	 * - Sprite in first frame will not captrue any event [?]
 	 */
 	/** ********** *
@@ -1468,17 +1665,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return false;
 	    }
 
-	    if (!$sprite.$cache) {
-	        return;
-	    }
-
-	    var _tx = $sprite.$cache.tx;
-	    var _ty = $sprite.$cache.ty;
-	    var _tw = $sprite.$cache.tw;
-	    var _th = $sprite.$cache.th;
-
-	    // 第一帧没有$cache
-	    if (typeof _tx === 'undefined') return false;
+	    var _tx = $sprite.getStyle('tx');
+	    var _ty = $sprite.getStyle('ty');
+	    var _tw = $sprite.getStyle('tw');
+	    var _th = $sprite.getStyle('th');
 
 	    return _utils2.default.pointInRect(e.canvasX, e.canvasY, _tx, _tx + _tw, _ty, _ty + _th);
 	};
@@ -1644,7 +1834,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -1706,7 +1896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1744,7 +1934,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1855,7 +2045,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1872,15 +2062,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _perPaintGetComputedStyle = __webpack_require__(26);
+	var _perPaintGetComputedStyle = __webpack_require__(25);
 
 	var _perPaintGetComputedStyle2 = _interopRequireDefault(_perPaintGetComputedStyle);
 
-	var _perPaintCutOutside = __webpack_require__(24);
+	var _perPaintCutOutside = __webpack_require__(23);
 
 	var _perPaintCutOutside2 = _interopRequireDefault(_perPaintCutOutside);
 
-	var _perPaintDeliverChildren = __webpack_require__(25);
+	var _perPaintDeliverChildren = __webpack_require__(24);
 
 	var _perPaintDeliverChildren2 = _interopRequireDefault(_perPaintDeliverChildren);
 
@@ -1902,6 +2092,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return !re.test(temp);
 	};
 
+	var extend = function extend() {
+	    var _this = this;
+
+	    this.$canvas.$extendList.forEach(function (plugin) {
+	        if (plugin.onPaint) {
+	            plugin.onPaint.call(_this);
+	        }
+	    });
+	};
+
 	module.exports = function (i, index) {
 	    i.$rendered = false;
 
@@ -1915,9 +2115,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var $canvas = this;
 
-	    var settings = {};
+	    extend.call(i);
 
 	    var _props = (0, _perPaintGetComputedStyle2.default)(i, $canvas);
+
+	    var settings = {
+	        globalAlpha: _utils2.default.firstValuable(_props.opacity, 1)
+	    };
+
 	    var _text = _props.text;
 	    var _img = _props.img;
 
@@ -1947,32 +2152,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // center
 	        _props.tx -= _props.tw >> 1;
 	        _props.ty -= _props.th >> 1;
-	    }
-
-	    if (i.webgl) {
-	        i.$rendered = true;
-
-	        var _webgl = {
-	            tx: i.getStyle('tx'),
-	            ty: i.getStyle('ty'),
-	            tz: _utils2.default.funcOrValue(i.webgl.tz, i) || 0
-	        };
-	        for (var key in i.webgl) {
-	            _webgl[key] = _utils2.default.funcOrValue(i.webgl[key], i) || 0;
-	        }
-
-	        var $paintSprite = {
-	            $id: i.$id,
-	            type: '3d',
-	            webgl: _webgl
-	        };
-
-	        if (true) {
-	            // 开发环境下，将元素挂载到$children里以供标记
-	            $paintSprite.$origin = i;
-	        };
-
-	        $canvas.$children.push($paintSprite);
 	    }
 
 	    if (_props.fh || _props.fv) {
@@ -2044,13 +2223,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 
-	    for (var _key in _props) {
-	        i.$cache[_key] = _props[_key];
-	    }
+	    // ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach((key) => {
+	    //     i.$cache[key] = _props[key];
+	    // });
+	    // for (let key in _props) {
+	    //     i.$cache[key] = _props[key];
+	    // }
 
 	    /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
 	    // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
-	    if (!_props.rotate && !_text && _imgWidth) {
+	    if (!_props.rotate && !_text && _imgWidth && _img.src) {
 	        (0, _perPaintCutOutside2.default)($canvas, _props, _imgWidth, _imgHeight);
 	    }
 
@@ -2061,8 +2243,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // _props[key] >>= 0;
 	        });
 	    }
-
-	    delete i.$cache.textBottom;
 
 	    // if (process.env.NODE_ENV !== 'production') {
 	    //     if (!i.$cache.base64 && _img && _img.src) {
@@ -2075,24 +2255,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    (0, _perPaintDeliverChildren2.default)($canvas, _children, -1);
 
-	    settings.globalAlpha = _utils2.default.firstValuable(_props.opacity, 1);
+	    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
+	        if (!_img.src || _props.tx >= 0 && _props.tx < $canvas.width && _props.ty >= 0 && _props.ty < $canvas.height) {
+	            i.$rendered = true;
 
-	    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh && _props.tx >= 0 && _props.tx < $canvas.width && _props.ty >= 0 && _props.ty < $canvas.height) {
-	        i.$rendered = true;
+	            var $paintSprite = {
+	                $id: i.$id,
+	                type: 'img',
+	                settings: settings,
+	                props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
+	            };
 
-	        var _$paintSprite = {
-	            $id: i.$id,
-	            type: 'img',
-	            settings: settings,
-	            props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
-	        };
+	            if (true) {
+	                // 开发环境下，将元素挂载到$children里以供标记
+	                $paintSprite.$origin = i;
+	            };
 
-	        if (true) {
-	            // 开发环境下，将元素挂载到$children里以供标记
-	            _$paintSprite.$origin = i;
-	        };
-
-	        $canvas.$children.push(_$paintSprite);
+	            $canvas.$children.push($paintSprite);
+	        }
 	    }
 
 	    // TODO: rewrite
@@ -2198,8 +2378,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                textTy += textLineHeight || textFontsize;
 	            });
 	            // Record last line of this text
-	            i.$cache.textBottom = textTy;
 	        }
+	    }
+
+	    if (!_img && !_text) {
+	        i.$rendered = undefined;
 	    }
 
 	    (0, _perPaintDeliverChildren2.default)($canvas, _children, 1);
@@ -2208,7 +2391,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2217,11 +2400,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _tick2 = _interopRequireDefault(_tick);
 
+	var _transition = __webpack_require__(15);
+
+	var _transition2 = _interopRequireDefault(_transition);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/** ********** *
+	 *
+	 * Execute function(@f) in each frame
+	 * - Limit by browsers, adjusting the time not being a multiple of RAF's interval (16.7ms).
+	 * - See https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
+	 *
+	 * ********** **/
 
 	module.exports = function (f) {
 	    var time = Date.now();
-	    window.Easycanvas.transition.$lastPaintTime = this.$nextTickTime = time;
+	    _transition2.default.$lastPaintTime = this.$nextTickTime = time;
 
 	    // calculating fps
 	    if (time - this.fpsCalculateTime >= 1000) {
@@ -2249,16 +2444,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        f();
 	    }.bind(this));
-	}; /** ********** *
-	    *
-	    * Execute function(@f) in each frame
-	    * - Limit by browsers, adjusting the time not being a multiple of RAF's interval (16.7ms).
-	    * - See https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
-	    *
-	    * ********** **/
+	};
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2268,6 +2457,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _utils2 = _interopRequireDefault(_utils);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var extend = function extend($sprite, settings) {
+	    var _this = this;
+
+	    var stopDefault = false;
+
+	    this.$extendList.forEach(function (plugin) {
+	        if (plugin.onRender) {
+	            var res = plugin.onRender.call(_this, $sprite, settings);
+	            if (res) {
+	                stopDefault = res;
+	            }
+	        }
+	    });
+
+	    return stopDefault;
+	}; /** ********** *
+	    *
+	    * CORE painting function
+	    * - Controlling canvas context, Transfer $children to rendered sprite.
+	    * - Includes some optimization.
+	    *
+	    * ********** **/
 
 	var render = function render($sprite, i) {
 	    var $canvas = this;
@@ -2351,8 +2563,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var settings = $sprite.settings || {};
 
-	    if ($canvas.$isWebgl && window.Easycanvas.$webglPainter) {
-	        window.Easycanvas.$webglPainter($sprite, settings, $canvas);
+	    if (extend.call($canvas, $sprite, settings)) {
 	        return;
 	    }
 
@@ -2427,13 +2638,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (saved) {
 	        cxt.restore();
 	    }
-	}; /** ********** *
-	    *
-	    * CORE painting function
-	    * - Controlling canvas context, Transfer $children to rendered sprite.
-	    * - Includes some optimization.
-	    *
-	    * ********** **/
+	};
 
 	module.exports = function () {
 	    var $canvas = this;
@@ -2442,32 +2647,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _add = __webpack_require__(31);
+	var _add = __webpack_require__(30);
 
 	var _add2 = _interopRequireDefault(_add);
 
-	var _remove = __webpack_require__(37);
+	var _remove = __webpack_require__(35);
 
 	var _remove2 = _interopRequireDefault(_remove);
 
-	var _start = __webpack_require__(40);
+	var _start = __webpack_require__(38);
 
 	var _start2 = _interopRequireDefault(_start);
 
-	var _paint = __webpack_require__(33);
+	var _paint = __webpack_require__(32);
 
 	var _paint2 = _interopRequireDefault(_paint);
 
-	var _clear = __webpack_require__(32);
+	var _clear = __webpack_require__(31);
 
 	var _clear2 = _interopRequireDefault(_clear);
 
-	var _pause = __webpack_require__(34);
+	var _pause = __webpack_require__(33);
 
 	var _pause2 = _interopRequireDefault(_pause);
 
@@ -2491,15 +2696,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _nextTick2 = _interopRequireDefault(_nextTick);
 
-	var _register = __webpack_require__(35);
+	var _register = __webpack_require__(34);
 
 	var _register2 = _interopRequireDefault(_register);
 
-	var _setFpsHandler = __webpack_require__(38);
+	var _setFpsHandler = __webpack_require__(36);
 
 	var _setFpsHandler2 = _interopRequireDefault(_setFpsHandler);
 
-	var _setMaxFps = __webpack_require__(39);
+	var _setMaxFps = __webpack_require__(37);
 
 	var _setMaxFps2 = _interopRequireDefault(_setMaxFps);
 
@@ -2533,7 +2738,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiOuter;
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2553,7 +2758,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                  * ********** **/
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2570,7 +2775,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2588,15 +2793,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    _utils2.default.execFuncs($canvas.hooks.ticked, $canvas, [$canvas.$rafTime]);
 
-	    if (this.$isWebgl) {
-	        var gl = this.$gl;
-	        // webglUtils.resizeCanvasToDisplaySize(gl.canvas);
-	        // Tell WebGL how to convert from clip space to pixels
-	        // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+	    // if (this.$isWebgl) {
+	    //     // let gl = this.$gl;
+	    //     // webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+	    //     // Tell WebGL how to convert from clip space to pixels
+	    //     // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-	        // gl.colorMask(true, false, false, true);
-	        gl.clear(gl.COLOR_BUFFER_BIT);
-	    } else {
+	    //     // gl.colorMask(true, false, false, true);
+	    //     // gl.clear(gl.COLOR_BUFFER_BIT);
+	    // } else {
+	    if ($canvas.$paintContext.clearRect) {
 	        $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
 	        // $canvas.$paintContext.fillStyle = 'rgba(255, 0, 0, 0.1)';
 	        // $canvas.$paintContext.fillRect(0, 0, this.width, this.height);
@@ -2647,7 +2853,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2663,7 +2869,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2674,8 +2880,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	module.exports = function (dom, option) {
+	var extend = function extend(opt) {
 	    var _this = this;
+
+	    this.$extendList.forEach(function (plugin) {
+	        if (plugin.onCreate) {
+	            plugin.onCreate.call(_this, opt);
+	        }
+	    });
+	}; /** ********** *
+	    *
+	    * Create an Easycanvas instance on current dom
+	    * - Start the 'hold' event judging interval(may includes a memory waste after destroyed).
+	    *
+	    * ********** **/
+
+	module.exports = function (dom, option) {
+	    var _this2 = this;
 
 	    if (true) {
 	        this.fpsHandler = this.fpsHandler || function (fps) {
@@ -2687,21 +2908,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var _option = option || {};
 
-	    this.$dom = dom || this.$dom;
+	    dom = this.$dom = dom || this.$dom;
 
 	    for (var i in _option) {
 	        this[i] = _option[i];
 	    }
 
-	    this.name = _option.name || 'Unnamed';
+	    this.name = _option.name || dom.id || dom.classList[0] || 'Unnamed';
 
-	    if (_option.fullScreen) {
+	    if (_option.fullScreen && typeof document !== 'undefined') {
 	        dom.width = dom.style.width = document.body.clientWidth || document.documentElement.clientWidth;
 	        dom.height = dom.style.height = document.body.clientHeight || document.documentElement.clientHeight;
 	    }
 
 	    if (true) {
-	        if (_option.width && dom.attributes['width'] && _option.width !== dom.width || _option.height && dom.attributes['height'] && _option.height !== dom.height) {
+	        if (_option.width && dom.attributes.width && _option.width !== dom.width || _option.height && dom.attributes.height && _option.height !== dom.height) {
 	            console.warn('[Easycanvas] Canvas size mismatched in "register" function.');
 	        }
 	    }
@@ -2709,115 +2930,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    dom.width = this.width = this.width || _option.width || dom.width;
 	    dom.height = this.height = this.height || _option.height || dom.height;
 
-	    if (_option.webgl) {
-	        this.$paintContext = dom.getContext('webgl', {
-	            alpha: true,
-	            premultipliedAlpha: false
-	        });
-
-	        if (this.$paintContext) {
-	            this.$isWebgl = true;
-
-	            if (true) {
-	                if (!window.Easycanvas.$webglRegister) {
-	                    console.warn('[Easycanvas] You has not imported the "Webgl" plugin of Easycanvas.');
-	                }
-	            }
-
-	            window.Easycanvas.$webglRegister(this, _option);
-	        } else {
-	            if (true) {
-	                console.warn('[Easycanvas] Webgl is not supported in current browser, using canvas2d instead.');
-	            }
-	        }
-	    }
-
-	    this.$paintContext = this.$paintContext || dom.getContext('2d');
-
 	    if (true) {
 	        this.$plugin.register(this);
 	    }
 
-	    this.events = _option.events || this.events || {};
+	    this.events = _option.events || {};
 
-	    // this.scroll = _option.scroll || {};
-	    this.hooks = _option.hooks || this.hooks || {};
+	    this.hooks = _option.hooks || {};
 
 	    var eventList = ['contextmenu', 'mousewheel', 'click', 'dblclick', 'mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'];
 	    eventList.forEach(function (e) {
-	        dom.addEventListener(e, _this.$eventHandler.bind(_this));
+	        dom.addEventListener(e, _this2.$eventHandler.bind(_this2));
 	    });
 
 	    _eventHandlerScroll2.default.tick();
-	    // this.$bindScroll.bind(_this);
-	}; /** ********** *
-	    *
-	    * Create an Easycanvas instance on current dom
-	    * - Start the 'hold' event judging interval(may includes a memory waste after destroyed).
-	    *
-	    * ********** **/
 
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
+	    extend.call(this, _option);
 
-	'use strict';
+	    this.$paintContext = this.$paintContext || dom.getContext('2d');
 
-	/** ********** *
-	 *
-	 * Prototype of canvas instance
-	 * - In develop mode, fps will throw warnings in low performance.
-	 *
-	 * ********** **/
-
-	var PROTOS = {
-	    $dom: null,
-	    $paintContext: null,
-	    $nextTickTime: 0,
-	    $lastPaintTime: 0, // 只有当maxFps位于1～59时才不为0
-	    $pausing: false,
-	    $freezing: false,
-
-	    name: '',
-	    fps: 0,
-	    lastFps: 0,
-	    fpsCalculateTime: 0,
-	    fpsHandler: null,
-	    width: 0,
-	    height: 0,
-	    events: {
-	        click: null
-	    },
-	    children: [],
-	    eHoldingFlag: false,
-	    eLastMouseHover: null,
-
-	    maxFps: -1,
-
-	    /* optimise */
-	    // optimiser: {
-	    //     blockSize: 100,
-	    //     cacheMap: {},
-	    // },
-
-	    /* scroll */
-	    scroll: {
-	        scrollable: false,
-	        scrollY: 0,
-	        minScrollY: undefined,
-	        maxScrollY: undefined
-	    },
-
-	    /* flags */
-	    $flags: {
-	        dragging: false
-	    }
+	    return this;
 	};
 
-	module.exports = PROTOS;
-
 /***/ }),
-/* 37 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2871,7 +3007,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 38 */
+/* 36 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2888,7 +3024,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 39 */
+/* 37 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2905,7 +3041,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 40 */
+/* 38 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2938,7 +3074,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 41 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3035,7 +3171,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            },
 	            timeCollect: function timeCollect($canvas, type, startOrEnd) {
-	                $canvas.$perf['$' + type] += (startOrEnd === 'START' ? -1 : 1) * Date.now();
+	                // START与END必须在同一个event loop中，且位于相同的微任务队列中
+	                // 否则会影响指标收集
+	                $canvas.$perf['$' + type] += (startOrEnd === 'START' || startOrEnd === 'PAUSE' ? -1 : 1) * Date.now();
 	            },
 	            selectSprite: function selectSprite(isChoosing, $canvas, $sprite) {
 	                if (!$sprite || !window[_constants2.default.devFlag].selectMode) {
@@ -3049,31 +3187,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        content: {
 	                            img: $canvas.imgLoader(MaskCanvasBase64)
 	                        },
-	                        style: {}
+	                        style: {},
+	                        webgl: undefined
 	                    });
 	                }
 
-	                ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
+	                ['tx', 'ty', 'rotate', 'rx', 'ry', 'scale', 'tw', 'th', 'locate'].forEach(function (key) {
 	                    (function (_key) {
 	                        $selectMask.style[_key] = function () {
-	                            return $sprite.$cache && $sprite.$cache[_key];
+	                            if (_key === 'tw' || _key === 'th') {
+	                                return $sprite.getStyle(_key) || $sprite.getRect()[_key];
+	                            }
+	                            return $sprite.getStyle(_key);
 	                        };
 	                    })(key);
 	                });
+	                window.$selectMask = $selectMask;
 
 	                // mask of webgl
-	                $selectMask.webgl = $sprite.webgl ? {} : false;
+	                $selectMask.webgl = $sprite.webgl ? {} : undefined;
 	                if ($selectMask.webgl) {
 	                    for (var key in $sprite.webgl) {
-	                        $selectMask.webgl[key] = $sprite.webgl[key];
+	                        (function (_key) {
+	                            $selectMask.webgl[_key] = function () {
+	                                if (typeof $sprite.webgl[_key] === 'function') {
+	                                    return $sprite.webgl[_key].call($sprite);
+	                                }
+	                                return $sprite.webgl[_key];
+	                            };
+	                        })(key);
 	                    }
 	                    $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);
+	                    $selectMask.webgl.opacity = 1;
 	                }
-
-	                // $sprite.$cache has calculated the 'scale' and 'locate'
-	                // Here uses the default values
-	                $selectMask.style.scale = 1;
-	                $selectMask.style.locate = 'lt';
 
 	                $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
 	                $selectMask.style.visible = function () {
@@ -3114,31 +3260,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 42 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _apiOuter = __webpack_require__(30);
+	var _apiOuter = __webpack_require__(29);
 
 	var _apiOuter2 = _interopRequireDefault(_apiOuter);
 
-	var _apiInner = __webpack_require__(22);
+	var _apiInner = __webpack_require__(21);
 
 	var _apiInner2 = _interopRequireDefault(_apiInner);
 
-	var _registerProtoData = __webpack_require__(36);
+	var _prototype = __webpack_require__(41);
 
-	var _registerProtoData2 = _interopRequireDefault(_registerProtoData);
+	var _prototype2 = _interopRequireDefault(_prototype);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var painter = function painter(config) {
 	    this.imgLoader = Easycanvas.imgLoader;
 
-	    for (var i in _registerProtoData2.default) {
+	    for (var i in _prototype2.default) {
 	        // Avoid muti instances from sharing data
-	        this[i] = this[i] || JSON.parse(JSON.stringify(_registerProtoData2.default[i]));
+	        this[i] = this[i] || JSON.parse(JSON.stringify(_prototype2.default[i]));
 	    }
 
 	    if (!config) {
@@ -3161,6 +3307,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    *
 	    * ********** **/
 
+	painter.prototype.$extendList = [];
+
 	for (var i in _apiInner2.default) {
 	    if (Object.prototype.hasOwnProperty.call(_apiInner2.default, i)) {
 	        painter.prototype[i] = _apiInner2.default[i];
@@ -3176,6 +3324,66 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = painter;
 
 /***/ }),
+/* 41 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	/** ********** *
+	 *
+	 * Prototype of canvas instance
+	 * - In develop mode, fps will throw warnings in low performance.
+	 *
+	 * ********** **/
+
+	var PROTOS = {
+	    $dom: null,
+	    $paintContext: null,
+	    $nextTickTime: 0,
+	    $lastPaintTime: 0, // 只有当maxFps位于1～59时才不为0
+	    $pausing: false,
+	    $freezing: false,
+
+	    name: '',
+	    fps: 0,
+	    lastFps: 0,
+	    fpsCalculateTime: 0,
+	    fpsHandler: null,
+	    width: 0,
+	    height: 0,
+	    events: {
+	        click: null
+	    },
+	    children: [],
+	    eHoldingFlag: false,
+	    eLastMouseHover: null,
+
+	    maxFps: -1,
+
+	    /* optimise */
+	    // optimiser: {
+	    //     blockSize: 100,
+	    //     cacheMap: {},
+	    // },
+
+	    /* scroll */
+	    scroll: {
+	        scrollable: false,
+	        scrollY: 0,
+	        minScrollY: undefined,
+	        maxScrollY: undefined
+	    },
+
+	    /* flags */
+	    $flags: {
+	        dragging: false
+	    }
+	};
+
+	module.exports = PROTOS;
+
+/***/ }),
+/* 42 */,
 /* 43 */,
 /* 44 */,
 /* 45 */,
@@ -3183,7 +3391,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 47 */,
 /* 48 */,
 /* 49 */,
-/* 50 */
+/* 50 */,
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3240,8 +3449,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 51 */,
-/* 52 */
+/* 52 */,
+/* 53 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3267,7 +3476,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3279,170 +3488,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        config: config
 	    };
 	};
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _utils = __webpack_require__(1);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// Math.PI wastes some performace
-	var PI = 3.141593;
-
-	var second2frame = function second2frame(second) {
-	    return second / 1000 * 60;
-	};
-
-	var getLastPaintTime = function getLastPaintTime(transitions) {
-	    return transitions.$lastPaintTime || Date.now();
-	};
-
-	var transFuncs = {
-	    linear: function linear(a, b, duration) {
-	        if (a === b) return a;
-
-	        var startTime = getLastPaintTime(this);
-
-	        var loop = false;
-
-	        var resFunc = function () {
-	            var currentTime = this.$lastPaintTime;
-	            var result = (b - a) * (currentTime - startTime) / duration + a;
-
-	            if (loop) {
-	                if (b > a) {
-	                    while (result > b) {
-	                        result -= b - a;
-	                    }
-	                } else {
-	                    while (result < b) {
-	                        result += b - a;
-	                    }
-	                }
-	            } else {
-	                if (b > a && result > b) {
-	                    resFunc.$done = true;
-	                    result = b;
-	                } else if (b < a && result < b) {
-	                    resFunc.$done = true;
-	                    result = b;
-	                }
-	            }
-
-	            return result;
-	        }.bind(this);
-
-	        resFunc.loop = function () {
-	            loop = true;
-	            return resFunc;
-	        };
-
-	        resFunc.restart = function () {
-	            startTime = getLastPaintTime(this);
-	        };
-
-	        return resFunc;
-	    },
-
-	    pendulum: function pendulum(a, b, duration, _config) {
-	        if (a === b) return a;
-
-	        var startTime = getLastPaintTime(this);
-
-	        var config = _config || {};
-	        config.start = config.start || 0;
-
-	        var loop = false;
-
-	        var resFunc = function () {
-	            var currentTime = getLastPaintTime(this);
-	            var passTime = (currentTime - startTime) / duration;
-
-	            if (!loop) {
-	                if (config.cycle) {
-	                    if (config.cycle < passTime) {
-	                        resFunc.$done = true;
-	                        passTime = config.cycle;
-	                    }
-	                } else if (passTime > 1) {
-	                    resFunc.$done = true;
-	                    passTime = 1;
-	                }
-	            } else {
-	                if (config.cycle) {
-	                    passTime %= config.cycle;
-	                }
-	            }
-
-	            var deg = passTime * PI * 2 - PI / 2 + config.start / 360 * PI;
-	            var result = (b - a) * (Math.sin(deg) + 1) / 2 + a;
-
-	            return result;
-	        }.bind(this);
-
-	        resFunc.loop = function () {
-	            loop = true;
-	            return resFunc;
-	        };
-
-	        resFunc.restart = function () {
-	            startTime = getLastPaintTime(this);
-	        };
-
-	        return resFunc;
-	    },
-
-	    ease: function ease(a, b, duration) {
-	        return this.pendulum(a, b, duration, {
-	            cycle: 0.5
-	        });
-	    },
-
-	    oneByOne: function oneByOne(_arr) {
-	        var arr = _arr;
-	        var loop = false;
-
-	        var resFunc = function resFunc() {
-	            for (var i = 0; i < arr.length; i++) {
-	                if (!arr[i].$done) {
-	                    return arr[i]();
-	                } else if (!arr[i].$nextRestart) {
-	                    arr[i].$nextRestart = true;
-	                    if (arr[i + 1]) {
-	                        arr[i + 1].restart();
-	                        return arr[i + 1]();
-	                    }
-	                }
-	            }
-
-	            if (loop) {
-	                for (var _i = 0; _i < arr.length; _i++) {
-	                    arr[_i].$done = false;
-	                    arr[_i].$nextRestart = false;
-	                    arr[_i].restart();
-	                }
-	                return arr[0]();
-	            }
-
-	            return arr[arr.length - 1]();
-	        };
-
-	        resFunc.loop = function () {
-	            loop = true;
-	            return resFunc;
-	        };
-
-	        return resFunc;
-	    }
-	};
-
-	module.exports = transFuncs;
 
 /***/ })
 /******/ ])

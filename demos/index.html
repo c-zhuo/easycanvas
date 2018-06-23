@@ -1,49 +1,98 @@
 <head>
     <script src="../build/index.js"></script>
+    <script src="../build/plugin.webgl.js"></script>
+    <script src="../build/plugin.webgl.3ds.js"></script>
 </head>
 
+<style>
+    body {
+        margin: 0;
+    }
+    canvas {
+        background-color: #4caf50;
+    }
+</style>
+
 <body>
-    <canvas id="foo" width="800" height="1400"></canvas>
+    <canvas id="foo" width="600" height="600"></canvas>
 
     <script>
         var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        $Painter.register(document.getElementById('foo'), {
+            webgl: true,
+            fullScreen: true,
+        }).start();
 
-        var box1 = new Easycanvas.class.sprite({name: 'Box-1'});
-        $Painter.add(box1);
-        box1.style.tw = 1000;
-        box1.style.th = 1000;
+        var texture2img = {
+            'Material #45': $Painter.imgLoader('../resource/game_char/4.jpg'),
+            'Material #46': $Painter.imgLoader('../resource/game_char/3.jpg'),
+            'Material #49': $Painter.imgLoader('../resource/game_char/6.jpg'),
+            'Material #51': $Painter.imgLoader('../resource/game_char/8.jpg'),
+        };
 
-        var box2 = box1.add({
-            name: 'Box-2',
-            style: {
-                tx: 300, ty: 100,
-                tw: 300, th: 800,
-            }
+        Easycanvas.loader3ds('../resource/game_char/sunnvfashi.3DS', function (data) {
+
+            var woman = $Painter.add({
+                name: 'woman',
+                style: {
+                    tx: 200,
+                    ty: 350,
+                },
+                webgl: {
+                    rx: 90, ry: 0, rz: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                },
+            });
+
+            data.forEach(function (model) {
+                woman.add({
+                    name: model.img || '辅助图层',
+                    webgl: window.Easycanvas.webglShapes.custom({
+                        vertices: model.vertices,
+                        indices: model.indices,
+                        img: texture2img[model.img],
+                        textures: model.textures,
+                        rx: function () {
+                            return this.$parent.webgl.rx;
+                        },
+                        ry: function () {
+                            return this.$parent.webgl.ry;
+                        },
+                        rz: function () {
+                            return this.$parent.webgl.rz();
+                        },
+                        scale: Easycanvas.transition.pendulum(40, 60, 3000).loop(),
+                        longSide: 99999,
+                        colors2: [
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            // Math.random() * 255,
+                        ],
+                    })
+                });
+            });
         });
 
-        var letterG = new Easycanvas.class.sprite({
-            name: 'An Visible Image',
-            content: {
-                img: Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png')
-            },
+        $Painter.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
+            // create a sprite
+            window.sprite1 = $Painter.add({
+                name: 'letter_G',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 200, th: 200,
+                    sx: 0, sy: 0, // source position, default 0
+                    tx: Easycanvas.transition.pendulum(300, 400, 2500).loop(),
+                    ty: 300,
+                    opacity: 1,
+                    rotate: 20,
+                    locate: 'center', // default center
+                    zIndex: 2, // z-index of this image
+                },
+                dragable: true,
+            });
         });
-        box2.add(letterG);
-        letterG.style.ty = Easycanvas.transition.pendulum(100, 200, 1000).loop();
-
-        var text = new Easycanvas.class.sprite({
-            name: 'An Invisible Text',
-            content: {
-                text: 'Can not see me',
-            },
-            style: {
-                color: 'red',
-                align: 'right',
-            }
-        });
-        text.style.visible = false;
-        box2.add(text);
     </script>
 </body>
 

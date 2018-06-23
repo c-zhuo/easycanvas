@@ -5,6 +5,9 @@
 </head>
 
 <style>
+    body {
+        /*opacity: 0.1;*/
+    }
     canvas {
         border: 1px solid grey;
         background-color: #ccc;
@@ -18,19 +21,18 @@
         var $Painter = new Easycanvas.painter();
         $Painter.register(document.getElementById('foo'), {
             webgl: {
-                fudgeFactor: 1,
+                // fudgeFactor: 1,
+                // depth: 1000,
+                // camera: {
+                //     // rx: 300,
+                //     // ry: 300,
+                //     // rz: 1,
+                //     // rx: Easycanvas.transition.pendulum(-180, 180, 1000).loop(),
+                //     ry: Easycanvas.transition.pendulum(-1800, 1800, 1000).loop(),
+                //     // ry: Easycanvas.transition.pendulum(100, 150, 1000).loop(),
+                //     // rz: Easycanvas.transition.pendulum(400, 500, 1000).loop(),
+                // }
             },
-            // {
-            //     // camera: {
-            //     //     // rx: 300,
-            //     //     // ry: 300,
-            //     //     rz: 1,
-            //     //     rx: Easycanvas.transition.pendulum(-180, 180, 1000).loop(),
-            //     //     ry: Easycanvas.transition.pendulum(-180, 180, 1000).loop(),
-            //     //     // ry: Easycanvas.transition.pendulum(100, 150, 1000).loop(),
-            //     //     // rz: Easycanvas.transition.pendulum(400, 500, 1000).loop(),
-            //     // }
-            // },
         });
         $Painter.start();
 
@@ -122,7 +124,7 @@
             return tmp.split(',');
         };
 
-        for (var i = 0; i <= -1; i++) {
+        for (var i = 0; i <= 10; i++) {
             // var ball = window.Easycanvas.webglShapes.ball({
             //     r: 50,
             //     // img: G,
@@ -157,32 +159,73 @@
             //     },
             //     webgl: ball,
             // });
+            var stone = $Painter.imgLoader('https://chenzhuo1992.github.io/tanyitan/stone.jpg');
 
             $Painter.add({
                 style: {
                     tx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
                     ty: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                    tx: Math.random() * 600,
+                    ty: Math.random() * 600,
                     zIndex: 10,
                 },
                 content: {
                     // img: G
                 },
-                webgl: window.Easycanvas.webglShapes.block({
-                    a: 30, b: 50, c: 40,
-                    // img: G,
-                    rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-                    ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
-                    rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 2000).loop(),
-                    colors: [
+                webgl: window.Easycanvas.webglShapes.icosahedron({
+                    r: 100,
+                    img: stone,
+                    rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 52000).loop(),
+                    ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 32000).loop(),
+                    rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 22000).loop(),
+                    colors2: [
                         Math.random() * 255,
                         Math.random() * 255,
                         Math.random() * 255,
                         Math.random() * 255,
-                        Math.random() * 255,
+                        // Math.random() * 255,
+                        // Math.random() * 255,
                     ],
                 }),
             });
         }
+
+        // var container = $Painter;
+        // var lastChild = null;
+        // for (var i = 0; i <= 2000; i++) {
+        //     if (i % 500 === 400) container = lastChild;
+        //     lastChild = container.add({
+        //         style: {
+        //             tx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+        //             ty: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+        //             tx: Math.random() * 600 - 4000,
+        //             ty: Math.random() * 600,
+        //             zIndex: 10,
+        //         },
+        //         events: {
+        //             ticked: function () {
+        //                 this.getStyle('tx');
+        //             },
+        //         },
+        //         content: {
+        //             img: G
+        //         },
+        //         // webgl: window.Easycanvas.webglShapes.block({
+        //         //     a: 30, b: 50, c: 40,
+        //         //     // img: G,
+        //         //     rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+        //         //     ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
+        //         //     rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 2000).loop(),
+        //         //     colors: [
+        //         //         Math.random() * 255,
+        //         //         Math.random() * 255,
+        //         //         Math.random() * 255,
+        //         //         Math.random() * 255,
+        //         //         Math.random() * 255,
+        //         //     ],
+        //         // }),
+        //     });
+        // }
     </script>
 </body>
 

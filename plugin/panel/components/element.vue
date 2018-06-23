@@ -63,7 +63,7 @@ export default {
             return this.maxVisibleElementsCount < this.instance.children.length;
         },
         instance () {
-            return this.$state.elements[this.canvasId][this.instanceId] || {};
+            return this.$state.elements[this.canvasId].sprites[this.instanceId] || {};
         },
         expanded () {
             return this.$state.treeElements.expansionMap.indexOf(this.instanceId) > -1;

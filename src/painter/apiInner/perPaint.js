@@ -21,6 +21,14 @@ const isChineseChar = function (temp) {
     return !re.test(temp);
 };
 
+const extend = function () {
+    this.$canvas.$extendList.forEach((plugin) => {
+        if (plugin.onPaint) {
+            plugin.onPaint.call(this);
+        }
+    });
+};
+
 module.exports = function (i, index) {
     i.$rendered = false;
 
@@ -29,14 +37,19 @@ module.exports = function (i, index) {
         utils.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
         return;
     }
-    
+
     utils.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
 
     let $canvas = this;
 
-    let settings = {};
+    extend.call(i);
 
     let _props = getComputedStyle(i, $canvas);
+
+    let settings = {
+        globalAlpha: utils.firstValuable(_props.opacity, 1)
+    };
+
     let _text = _props.text;
     let _img = _props.img;
 
@@ -65,32 +78,6 @@ module.exports = function (i, index) {
     } else { // center
         _props.tx -= _props.tw >> 1;
         _props.ty -= _props.th >> 1;
-    }
-
-    if (i.webgl) {
-        i.$rendered = true;
-
-        let _webgl = {
-            tx: i.getStyle('tx'),
-            ty: i.getStyle('ty'),
-            tz: utils.funcOrValue(i.webgl.tz, i) || 0,
-        };
-        for (var key in i.webgl) {
-            _webgl[key] = utils.funcOrValue(i.webgl[key], i) || 0;
-        }
-
-        let $paintSprite = {
-            $id: i.$id,
-            type: '3d',
-            webgl: _webgl,
-        };
-
-        if (process.env.NODE_ENV !== 'production') {
-            // 开发环境下，将元素挂载到$children里以供标记
-            $paintSprite.$origin = i;
-        };
-
-        $canvas.$children.push($paintSprite);
     }
 
     if (_props.fh || _props.fv) {
@@ -162,13 +149,16 @@ module.exports = function (i, index) {
         }
     }
 
-    for (let key in _props) {
-        i.$cache[key] = _props[key];
-    }
+    // ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach((key) => {
+    //     i.$cache[key] = _props[key];
+    // });
+    // for (let key in _props) {
+    //     i.$cache[key] = _props[key];
+    // }
 
     /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
     // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
-    if (!_props.rotate && !_text && _imgWidth) {
+    if (!_props.rotate && !_text && _imgWidth && _img.src) {
         cutOutside($canvas, _props, _imgWidth, _imgHeight)
     }
 
@@ -179,8 +169,6 @@ module.exports = function (i, index) {
             // _props[key] >>= 0;
         });
     }
-
-    delete i.$cache.textBottom;
 
     // if (process.env.NODE_ENV !== 'production') {
     //     if (!i.$cache.base64 && _img && _img.src) {
@@ -193,24 +181,24 @@ module.exports = function (i, index) {
 
     deliverChildren($canvas, _children, -1);
 
-    settings.globalAlpha = utils.firstValuable(_props.opacity, 1)
+    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
+        if (!_img.src || (_props.tx >= 0 && _props.tx < $canvas.width && _props.ty >= 0 && _props.ty < $canvas.height)) {
+            i.$rendered = true;
 
-    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh && _props.tx >= 0 && _props.tx < $canvas.width && _props.ty >= 0 && _props.ty < $canvas.height) {
-        i.$rendered = true;
+            let $paintSprite = {
+                $id: i.$id,
+                type: 'img',
+                settings: settings,
+                props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
+            };
 
-        let $paintSprite = {
-            $id: i.$id,
-            type: 'img',
-            settings: settings,
-            props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
-        };
+            if (process.env.NODE_ENV !== 'production') {
+                // 开发环境下，将元素挂载到$children里以供标记
+                $paintSprite.$origin = i;
+            };
 
-        if (process.env.NODE_ENV !== 'production') {
-            // 开发环境下，将元素挂载到$children里以供标记
-            $paintSprite.$origin = i;
-        };
-
-        $canvas.$children.push($paintSprite);
+            $canvas.$children.push($paintSprite);            
+        }
     }
 
     // TODO: rewrite
@@ -316,8 +304,11 @@ module.exports = function (i, index) {
                 textTy += textLineHeight || textFontsize;
             });
             // Record last line of this text
-            i.$cache.textBottom = textTy;
         }
+    }
+
+    if (!_img && !_text) {
+        i.$rendered = undefined;
     }
 
     deliverChildren($canvas, _children, 1);

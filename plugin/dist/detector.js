@@ -6,6 +6,8 @@ window.addEventListener('message', e => {
 function detect (win) {
     setTimeout(() => {
         if (win.__EASYCANVAS_DEVTOOL__) {
+            win.console.log('[Easycanvas] Easycanvas found ' + win.__EASYCANVAS_DEVTOOL__.version + ', the developer tool is effective.');
+
             win.postMessage({
                 name: 'paintRecording',
                 easyCanvasDetected: '1'

@@ -9,6 +9,7 @@ import hooks from './contents/hooks.js';
 import customEvent from './contents/customEvent.js';
 import sprite from './contents/sprite.js';
 import pluginPhysics from './contents/plugin-physics.js';
+import pluginWebgl from './contents/plugin-webgl.js';
 
 let content = `
     ${intro}
@@ -24,6 +25,7 @@ let content = `
     ${sprite}
 
     ${pluginPhysics}
+    ${pluginWebgl}
 `;
 
 let splits = content.split(/<\/*code>/);

@@ -18,7 +18,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -27,7 +27,7 @@ module.exports = `
                     });
 
                     // 第一个父sprite
-                    var $parent = new Easycanvas.class.sprite({
+                    var $parent = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -50,7 +50,7 @@ module.exports = `
                     $app.add($parent);
 
                     // 这里通过add增加子sprite
-                    $parent.add(new Easycanvas.class.sprite({
+                    $parent.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -61,7 +61,7 @@ module.exports = `
                     }));
 
                     // 第二个父sprite
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -89,7 +89,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -97,7 +97,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $parent = new Easycanvas.class.sprite({
+                    var $parent = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -123,7 +123,7 @@ module.exports = `
                     });
 
                     // 这里通过add增加第二个子sprite
-                    $parent.add(new Easycanvas.class.sprite({
+                    $parent.add(new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -152,14 +152,14 @@ module.exports = `
             <div class="code-2-demo bg-demo"></div>
             <code>
                 <script>
-                    var $a = new Easycanvas.class.sprite();
-                    var $b = new Easycanvas.class.sprite();
+                    var $a = new Easycanvas.sprite();
+                    var $b = new Easycanvas.sprite();
                     $b.add($a);
 
                     document.write($a.$parent === $b); // true
 
                     var c = {};
-                    var $c = new Easycanvas.class.sprite(c);
+                    var $c = new Easycanvas.sprite(c);
                     $c.add($b);
 
                     document.write($b.$parent === $c); // true
@@ -185,7 +185,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -193,7 +193,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $parent = new Easycanvas.class.sprite({
+                    var $parent = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -209,7 +209,7 @@ module.exports = `
 
                     for (var i = 0; i < 10; i++) {
                         // 创建10个sprite，连续嵌套10层。每一层的透明度都是上一层的0.6倍
-                        var $newChild = new Easycanvas.class.sprite({
+                        var $newChild = new Easycanvas.sprite({
                             content: {
                                 img: G,
                             },
@@ -243,7 +243,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -251,7 +251,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var $parent = new Easycanvas.class.sprite({
+                    var $parent = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
@@ -262,7 +262,7 @@ module.exports = `
                         },
                     });
 
-                    var $child = new Easycanvas.class.sprite({
+                    var $child = new Easycanvas.sprite({
                         content: {
                             img: G,
                         },
