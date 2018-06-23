@@ -1530,11 +1530,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var webgl = $sprite.webgl;
 	    var gl = $canvas.$gl;
 
-	    // if (process.env.NODE_ENV !== 'production') {
-	    //     if (!props[0] || !props[0].texture) {
-	    //         err('Texture not found, make sure using Painter.imgLoader instead of Easycanvas.imgLoader.')
-	    //     }
-	    // }
+	    if (true) {
+	        if (props && props[0] && !props[0].texture && props[0].src) {
+	            err('Texture not found, make sure using Painter.imgLoader instead of Easycanvas.imgLoader.');
+	        }
+	    }
 
 	    if ($sprite.type !== '3d') {
 
@@ -1620,7 +1620,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var gl = $canvas.$gl;
 
-	    gl.disable(gl.BLEND);
+	    gl.enable(gl.BLEND);
 	    gl.enable(gl.DEPTH_TEST);
 	    if (webgl.opacity) {
 	        gl.disable(gl.DEPTH_TEST);
@@ -1720,7 +1720,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        matrix = m4.xRotate(matrix, degToRad(webgl.rx) || 0);
 	        matrix = m4.yRotate(matrix, degToRad(webgl.ry) || 0);
 	        matrix = m4.zRotate(matrix, degToRad(webgl.rz) || 0);
-	        matrix = m4.scale(matrix, webgl.scaleX || 1, webgl.scaleY || 1, webgl.scaleZ || 1);
+	        matrix = m4.scale(matrix, webgl.scaleX || webgl.scale || 1, webgl.scaleY || webgl.scale || 1, webgl.scaleZ || webgl.scale || 1);
 	        var projectionMatrix = matrix;
 	    }
 
@@ -1782,7 +1782,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // Create a buffer.
 	    if (!cacheBuffer2d) {
-	        // if (1) {
 	        cacheBuffer2d = gl.createBuffer();
 	        gl.bindBuffer(gl.ARRAY_BUFFER, cacheBuffer2d);
 	        // Put a unit quad in the buffer
@@ -1792,18 +1791,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // 0, 1,
 	        // 1, 1,
 	        0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1];
-	        // const textureCoordinates = [
-	        //     // 0, 0,
-	        //     // 1, 0,
-	        //     // 0, 1,
-	        //     // 1, 1,
-	        //     srcX / texWidth, srcY / texHeight,
-	        //     srcX / texWidth, srcHeight / texHeight + srcY / texHeight,
-	        //     srcWidth / texWidth + srcX / texWidth, srcY / texHeight,
-	        //     srcWidth / texWidth + srcX / texWidth, srcY / texHeight,
-	        //     srcX / texWidth, srcHeight / texHeight + srcY / texHeight,
-	        //     srcWidth / texWidth + srcX / texWidth, srcHeight / texHeight + srcY / texHeight,
-	        // ];
 
 	        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
 	    }

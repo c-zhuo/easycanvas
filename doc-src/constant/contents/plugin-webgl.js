@@ -75,7 +75,7 @@ module.exports = `
 
         <h2>WebGL 3D</h2>
 
-        <p>当一个sprite类含有webgl属性时，</p>
+        <p>当一个sprite类含有webgl属性时，(待补充）</p>
 
     </article>
 `;

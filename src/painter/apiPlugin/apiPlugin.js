@@ -174,7 +174,7 @@ module.exports = function () {
                 return true;
             },
 
-            cancelSelectSprite ($canvas) {return;
+            cancelSelectSprite ($canvas) {
                 if (!$selectMask) return;
 
                 $canvas.remove($selectMask);

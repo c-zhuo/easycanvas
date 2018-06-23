@@ -1530,11 +1530,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var webgl = $sprite.webgl;
 	    var gl = $canvas.$gl;
 
-	    // if (process.env.NODE_ENV !== 'production') {
-	    //     if (!props[0] || !props[0].texture) {
-	    //         err('Texture not found, make sure using Painter.imgLoader instead of Easycanvas.imgLoader.')
-	    //     }
-	    // }
+	    if (true) {
+	        if (props && props[0] && !props[0].texture && props[0].src) {
+	            err('Texture not found, make sure using Painter.imgLoader instead of Easycanvas.imgLoader.');
+	        }
+	    }
 
 	    if ($sprite.type !== '3d') {
 
@@ -1620,7 +1620,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var gl = $canvas.$gl;
 
-	    gl.disable(gl.BLEND);
+	    gl.enable(gl.BLEND);
 	    gl.enable(gl.DEPTH_TEST);
 	    if (webgl.opacity) {
 	        gl.disable(gl.DEPTH_TEST);
@@ -1720,7 +1720,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        matrix = m4.xRotate(matrix, degToRad(webgl.rx) || 0);
 	        matrix = m4.yRotate(matrix, degToRad(webgl.ry) || 0);
 	        matrix = m4.zRotate(matrix, degToRad(webgl.rz) || 0);
-	        matrix = m4.scale(matrix, webgl.scaleX || 1, webgl.scaleY || 1, webgl.scaleZ || 1);
+	        matrix = m4.scale(matrix, webgl.scaleX || webgl.scale || 1, webgl.scaleY || webgl.scale || 1, webgl.scaleZ || webgl.scale || 1);
 	        var projectionMatrix = matrix;
 	    }
 
