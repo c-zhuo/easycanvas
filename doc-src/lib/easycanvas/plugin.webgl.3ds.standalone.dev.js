@@ -1449,8 +1449,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        var uv = mesh.texelL[j];
 	                        var u = uv[0];
 	                        var v = uv[1];
-	                        textures.push(v);
 	                        textures.push(u);
+	                        textures.push(1 - v);
 	                    }
 
 	                    data.push({

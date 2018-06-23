@@ -64,7 +64,12 @@ if (window.Easycanvas) {
     console.warn('[Easycanvas] already loaded.');
 } else {
     if (process.env.NODE_ENV !== 'production') {
-        console.warn('[Easycanvas] You are using the develop version.');
+        setTimeout(() => {
+            console.log(`%c Easycanvas %c You are using the develop version ${constants.version} %c`,
+                "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff",
+                "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff",
+                "background:transparent");
+        }, 500);
     }
     window.Easycanvas = Easycanvas;
 }

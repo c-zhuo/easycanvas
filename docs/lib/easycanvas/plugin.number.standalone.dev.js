@@ -55,20 +55,20 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(45);
+	module.exports = __webpack_require__(44);
 
 
 /***/ }),
 
-/***/ 45:
+/***/ 44:
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	var _ec = void 0;
 
 	var number = function number(opt) {
-	    var sprite = new _ec.sprite(opt);
+	    var sprite = new _ec.class.sprite(opt);
 
 	    sprite.style = opt.style;
 	    sprite.content.img = opt.number;
@@ -104,7 +104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    sprite.scrollToValue = function (value, time) {
 	        data.current = value;
-	        sprite.style.sy = _ec.transition.linear(sprite.$cache.sy, data.current * data.heightRate * data.numberHeight, time || 200);
+	        sprite.style.sy = _ec.transition.linear(sprite.getStyle('sy'), data.current * data.heightRate * data.numberHeight, time || 200);
 	    };
 
 	    sprite.stop = function () {
