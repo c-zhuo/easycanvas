@@ -29,6 +29,7 @@ Easycanvas是一个轻量、高效率的渐进式canvas渲染库，核心思路�
 - ☑ 允许自定义插件
 - ☑ 2D图片像素级编辑
 - ☐ 文档补齐
+- ☐ 支持微信小游戏
 - ☐ 支持加载mmd模型（插件）
 - ☐ 支持加载dds图片（插件）
 - ☐ 更多功能的单元测试
@@ -41,7 +42,7 @@ Easycanvas是一个轻量、高效率的渐进式canvas渲染库，核心思路�
 
 ### Introduction
 
-A lite(30kb) canvas library, includes a Chrome plugin for debugging. Support physics and animations with high performace. Suits mobile, PC(including IE) and Chinese '微信小程序/小游戏'.
+A lite(30kb) canvas library, includes a Chrome plugin for debugging. Support physics and animations with high performace. Suits mobile and PC(including IE).
 
 Expandable: Support highly decoupled components and custom API/events.
 
