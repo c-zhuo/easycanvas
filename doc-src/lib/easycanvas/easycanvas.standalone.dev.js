@@ -1382,9 +1382,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var $sprite = tmp.$sprite;
 	                var $canvas = tmp.$canvas;
 
-	                console.info('window.$ec = [Easycanvas ' + $canvas.$id + '], window.$es = [Easycanvas ' + $sprite.$id + ']');
-	                window.$ec = $canvas;
-	                window.$es = $sprite;
+	                console.log('%c window.$0 = %c Current Sprite(' + $sprite.name + ') %c ', "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff", "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff", "background:transparent");
+	                // console.log(`%c window.$1 = %c Current Painter %c`,
+	                //     "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff",
+	                //     "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff",
+	                //     "background:transparent");
+
+	                window.$0 = $sprite;
+	                window.$1 = $canvas;
 	            },
 
 	            pause: function pause($canvasId, opt) {
@@ -1531,7 +1536,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    console.warn('[Easycanvas] already loaded.');
 	} else {
 	    if (true) {
-	        console.warn('[Easycanvas] You are using the develop version.');
+	        setTimeout(function () {
+	            console.log('%c Easycanvas %c You are using the develop version ' + _constants2.default.version + ' %c', "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff", "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff", "background:transparent");
+	        }, 500);
 	    }
 	    window.Easycanvas = Easycanvas;
 	}
@@ -2941,6 +2948,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    extend.call(this, _option);
 
 	    this.$paintContext = this.$paintContext || dom.getContext('2d');
+
+	    return this;
 	};
 
 /***/ }),
@@ -3239,7 +3248,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return true;
 	            },
 	            cancelSelectSprite: function cancelSelectSprite($canvas) {
-	                return;
 	                if (!$selectMask) return;
 
 	                $canvas.remove($selectMask);

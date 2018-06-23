@@ -69,4 +69,6 @@ module.exports = function (dom, option) {
     extend.call(this, _option);
 
     this.$paintContext = this.$paintContext || dom.getContext('2d');
+
+    return this;
 };
