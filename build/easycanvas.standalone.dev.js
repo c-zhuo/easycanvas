@@ -1665,12 +1665,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return false;
 	    }
 
-	    var _tx = $sprite.getStyle('tx');
-	    var _ty = $sprite.getStyle('ty');
-	    var _tw = $sprite.getStyle('tw');
-	    var _th = $sprite.getStyle('th');
+	    var rect = $sprite.getRect();
 
-	    return _utils2.default.pointInRect(e.canvasX, e.canvasY, _tx, _tx + _tw, _ty, _ty + _th);
+	    return _utils2.default.pointInRect(e.canvasX, e.canvasY, rect.tx, rect.tx + rect.tw, rect.ty, rect.ty + rect.th);
 	};
 
 	/**
