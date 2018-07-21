@@ -9,6 +9,7 @@ import content from './constant/content.js';
 import css from './style.scss';
 document.body.appendChild(document.createElement('style')).innerHTML = css;
 
+const DefaultPage = '一些demo';
 const DemoableCodeClassName = 'code-2-demo';
 
 (function initBackgroundPhysics () {
@@ -69,8 +70,37 @@ const DemoableCodeClassName = 'code-2-demo';
 
                 let $content = this.contentDom.querySelector('#' + this.currentTitle);
                 if ($content) {
+                    // if ($content.className === 'demo') {
+                    //     let iframeHtmlCodes = `
+                    //         <html>
+                    //         <head>
+                    //             <style>canvas {border:1px solid #ddd;}</style>
+                    //             <script src="./lib/easycanvas/easycanvas.standalone.prod.js"></script>
+                    //         </head>
+                    //         <body>
+                    //             ${$content.innerHTML}
+                    //         </body>
+                    //         </html>
+                    //     `;
+
+                    //     // 清除之前的interval等
+
+                    //     // 不延迟的话上面的那行不生效
+                    //     setTimeout(() => {
+                    //         let $tempDemoIframe = document.querySelector('#temp-demo-iframe');
+                    //         $tempDemoIframe.contentWindow.location.href = 'about:blank';
+                    //         $tempDemoIframe.contentWindow.document.open();
+                    //         $tempDemoIframe.contentWindow.document.write(iframeHtmlCodes);
+                    //         $tempDemoIframe.contentWindow.document.close();
+                    //     }, 100);
+
+                    //     return '<iframe id="temp-demo-iframe" style="width: 100%; height: 100%; border: 0"></iframe>';
+                    // }
+
                     return $content.innerHTML;
+
                 }
+
                 return '';
             }
         },
@@ -106,7 +136,7 @@ const DemoableCodeClassName = 'code-2-demo';
 
             jQuery("#jquery-accordion-menu").jqueryAccordionMenu();
 
-            let title = decodeURIComponent(window.location.hash.substr(1)) || '概述';
+            let title = decodeURIComponent(window.location.hash.substr(1)) || DefaultPage;
             let folder = sidebar.filter((item) => {
                 return item.children.filter((subitem) => {
                     return subitem.name === title;

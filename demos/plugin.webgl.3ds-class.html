@@ -1,0 +1,69 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.webgl.js"></script>
+    <script src="../build/plugin.webgl.3ds.js"></script>
+</head>
+
+<style>
+    canvas {
+        border: 1px solid grey;
+        background-color: #4caf50;
+        /*opacity: 0.05;*/
+    }
+</style>
+
+<body>
+    <canvas id="foo" width="600" height="600"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            webgl: true,
+        });
+        $Painter.start();
+
+        for (var x = 1; x <= 2; x ++) {
+            $Painter.add(new Easycanvas.class.sprite({
+                style: {
+                    tx: 250 + x * 50, ty: 300,
+                    zIndex: Math.random(),
+                },
+                webgl: {
+                    _3dsImg: {
+                        'Flower Center': '../resource/15sunflower/center.jpg',
+                        'Petals': x === 1 ? '../resource/15sunflower/petal.jpg' : [
+                            255, 0, 0,
+                            166, 0, 0,
+                            88, 0, 0,
+                        ],
+                    },
+                    _3ds: '../resource/15sunflower/15sunflower.3DS',
+                    // pmd: '/demos/mmd/model/mokou/mokou_A.pmd',
+                    ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                    scale: 0.5,
+                }
+            }));
+        }
+
+        // $Painter.add(new Easycanvas.class.sprite({
+        //     style: {
+        //         tx: 200, ty: 350,
+        //         zIndex: Math.random(),
+        //     },
+        //     webgl: {
+        //         _3dsImg: {
+        //             'Material #45': '../resource/game_char/4.jpg',
+        //             'Material #46': '../resource/game_char/3.jpg',
+        //             'Material #49': '../resource/game_char/6.jpg',
+        //             'Material #51': '../resource/game_char/8.jpg',
+        //         },
+        //         _3ds: '../resource/game_char/sunnvfashi.3DS',
+        //         // pmd: '/demos/mmd/model/mokou/mokou_A.pmd',
+        //         scale: 50,
+        //         rx: 90, ry: 0,
+        //         rz: Easycanvas.transition.linear(0, 360, 5000).loop(),
+        //     }
+        // }));
+    </script>
+</body>
+
