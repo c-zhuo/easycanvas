@@ -126,7 +126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    txywh: ['tx', 'ty', 'tw', 'th'],
 	    sxywh: ['sx', 'sy', 'sw', 'sh'],
 	    devFlag: '__EASYCANVAS_DEVTOOL__',
-	    version: '0.5.2'
+	    version: '0.5.5'
 	};
 
 /***/ }),
