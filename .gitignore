@@ -4,3 +4,4 @@ node_modules/
 *.log
 demos/.*
 *.lock
+package-lock.json

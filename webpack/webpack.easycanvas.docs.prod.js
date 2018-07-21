@@ -6,6 +6,7 @@ var glob = require('glob');
 var webpack = require('webpack');
 var base = require('./webpack.config.base.js');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var StringReplacePlugin = require("string-replace-webpack-plugin");
 
 var js = glob.sync('./doc-src/main.js').reduce(function (prev, curr) {
     console.log(curr);
@@ -33,6 +34,19 @@ var config = {
         loaders: base.loaders.concat([{
             test: /\.scss$/,
             loaders: ['css', 'sass']
+        },
+        { 
+            test: /\.js$/,
+            loader: StringReplacePlugin.replace({
+                replacements: [
+                    {
+                        pattern: /\.\.\/resource\//ig,
+                        replacement: function (match, p1, offset, string) {
+                            return 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/resource/';
+                        }
+                    }
+                ]
+            })
         }])
     },
     babel: base.babel,
