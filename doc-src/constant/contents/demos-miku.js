@@ -1,6 +1,6 @@
 module.exports = `
     <section class="demo-box">
-        <div class="code-2-demo bg-demo">WebGL3D + 物理效果 + 骨骼动画 + 事件监听</div>
+        <div class="code-2-demo bg-demo">初音未来MMD模型舞蹈</div>
         <code>
             <head>
                 <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
