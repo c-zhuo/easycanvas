@@ -1,5 +1,11 @@
 ## Easycanvas Changelog
 
+#### 0.5.5
+
+- Bugfix: Event bug.
+
+- Docs: Update docs and demos.
+
 #### 0.5.2
 
 - Featrue: Support .3ds files 3D model.

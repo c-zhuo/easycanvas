@@ -41,7 +41,7 @@ module.exports = `
             <code>
                 <head>
                     <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
-                    <script src="./lib/easycanvas/plugin.webgl.MMD.standalone.prod.js"></script>
+                    <script src="./lib/easycanvas/plugin.webgl.mmd.standalone.prod.js"></script>
                 </head>
                 <body>
                     <canvas id="app"></canvas>
@@ -83,7 +83,7 @@ module.exports = `
             <code class="hidden">
                 <head>
                     <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
-                    <script src="./lib/easycanvas/plugin.webgl.MMD.standalone.prod.js"></script>
+                    <script src="./lib/easycanvas/plugin.webgl.mmd.standalone.prod.js"></script>
                 </head>
                 <body>
                     <canvas id="app"></canvas>
@@ -125,8 +125,8 @@ module.exports = `
             <code>
                 <head>
                     <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
-                    <script src="./lib/easycanvas/plugin.webgl.MMD.standalone.prod.js"></script>
-                    <script src='../resource/lib/ammo.js'></script>
+                    <script src="./lib/easycanvas/plugin.webgl.mmd.standalone.prod.js"></script>
+                    <script src='./lib/ammo.js'></script>
                 </head>
                 <body>
                     <canvas id="app"></canvas>
@@ -170,8 +170,8 @@ module.exports = `
             <code>
                 <head>
                     <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
-                    <script src="./lib/easycanvas/plugin.webgl.MMD.standalone.prod.js"></script>
-                    <script src='../resource/lib/ammo.js'></script>
+                    <script src="./lib/easycanvas/plugin.webgl.mmd.standalone.prod.js"></script>
+                    <script src='./lib/ammo.js'></script>
                 </head>
                 <body>
                     <canvas id="app"></canvas>
