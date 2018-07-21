@@ -12,7 +12,7 @@ module.exports = function () {
 
     let $canvas = this;
 
-    utils.execFuncs($canvas.hooks.ticked, $canvas, [$canvas.$rafTime]);
+    utils.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
 
     // if (this.$isWebgl) {
     //     // let gl = this.$gl;
@@ -62,8 +62,10 @@ module.exports = function () {
 
     this.fps++;
 
+    utils.execFuncs($canvas.hooks.ticked, $canvas, [$canvas.$rafTime]);
+
     if ($canvas.hooks.nextTick) {
-        utils.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
+        utils.execFuncs($canvas.hooks.nextTick, $canvas, [$canvas.$rafTime]);
         delete $canvas.hooks.nextTick;
     }
 };

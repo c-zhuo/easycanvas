@@ -1,3 +1,5 @@
+import { arrayRepeat } from './webgl-utils';
+
 const blockIndices = new Uint16Array([
     0, 1, 2,   0, 2, 3,    // front  
     4, 5, 6,   4, 6, 7,    // right  
@@ -43,17 +45,6 @@ const regularPolyhedron = {
         ],
     },
     
-};
-
-function arrayRepeat (arr, n) {
-    var oldLength = arr.length;
-    var newArray = new Array(Math.round(oldLength * n));
-
-    for (var i = 0, l = newArray.length; i < l; i++) {
-        newArray[i] = arr[i % oldLength];
-    }
-
-    return newArray;
 };
 
 var createShapeWithCachedArray = (() => {
@@ -237,6 +228,10 @@ const wrapper = function (structure, opt) {
     return structure;
 };
 
+const err = function (msg) {
+    console.error('[Easycanvas-webgl] ' + msg);
+};
+
 const webglShapes = {
     block: function (opt) {
         var structure = createShapeWithCachedArray('block', [opt.a, opt.b, opt.c], opt.colors);
@@ -254,16 +249,53 @@ const webglShapes = {
     },
 
     custom: function (opt) {
-        var res = Object.assign(opt, {
-            vertices: new Float32Array(opt.vertices),
-            indices: new Uint16Array(opt.indices),
-            textures: new Float32Array(opt.textures),
-        });
+        // if (process.env.NODE_ENV !== 'production') {
+        //     if (!opt.vertices || !opt.vertices.length) {
+        //         err('No vertices provided on custom shape.');
+        //         // console.log(opt);
+        //         // return;
+        //     }
+        // }
+
+        if (!opt.vertices.$cache) {
+            // 确保复用Float32Array类型的vertices
+            // 一个模型含有多个children时，使用相同的vertices的Buffer，提升效率
+            opt.vertices.$cache = new Float32Array(opt.vertices);
+        }
+
+        if (opt.normals && opt.normals.length) {
+            if (!opt.normals.$cache) {
+                opt.normals.$cache = new Float32Array(opt.normals);
+            }
+        }
+
+        if (opt.indices && opt.indices.length) {
+            if (!opt.indices.$cache) {
+                opt.indices.$cache = new Uint16Array(opt.indices);
+            }
+        }
+
+        if (opt.textures && opt.textures.length) {
+            if (!opt.textures.$cache) {
+                var repeatTimes = opt.vertices.length / opt.textures.length / 1.5;
+                opt.textures.$cache = new Float32Array(arrayRepeat(opt.textures, repeatTimes));
+            }
+        }
 
         if (opt.colors && opt.colors.length) {
-            var colorRepeatTimes = (opt.indices || opt.vertices).length / opt.colors.length * (opt.indices ? 3 : 1);
-            res.colors = new Uint8Array(arrayRepeat(opt.colors, colorRepeatTimes));
+            if (!opt.colors.$cache) {
+                var repeatTimes = opt.vertices.length / opt.colors.length;
+                opt.colors.$cache = new Uint8Array(arrayRepeat(opt.colors, repeatTimes));
+            }
         }
+
+        var res = Object.assign(opt, {
+            vertices: opt.vertices.$cache,
+            normals: opt.normals ? opt.normals.$cache : undefined,
+            indices: opt.indices ? opt.indices.$cache : undefined,
+            textures: opt.textures ? opt.textures.$cache : undefined,
+            colors: opt.colors ? opt.colors.$cache : undefined,
+        });
 
         return res;
     },

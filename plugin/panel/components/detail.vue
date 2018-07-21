@@ -9,7 +9,7 @@
                     <div class="type" v-if="instance[item.name]">
                         {{item.name}}
                     </div>
-                    <div class="fields">
+                    <div class="fields" v-if="instance[item.name]">
                         <template v-if="item.editable">
                             <div class="field" :class="{'no-editable': !item.editable}" v-for="field in instance[item.name]">
                                 <span class="key">{{$key}}</span>
@@ -60,6 +60,10 @@ export default {
                 {
                     name: 'physics',
                     editable: false,
+                },
+                {
+                    name: 'webgl',
+                    editable: true,
                 },
             ],
             detailType: null,
@@ -127,7 +131,7 @@ export default {
                 this.editInputValue = `'${this.editInputValue}'`;
             }
             const updateSpriteCode = `
-                window.__EASYCANVAS_DEVTOOL__.$plugin.updateSprite('${this.instanceId}', {
+                window.__EASYCANVAS_DEVTOOL__.$plugin.updateSprite('${this.instanceId}', '${this.detailType}', {
                     ${this.detailTypeKey}: ${this.editInputValue}
                 }, '${this.canvasId}');
             `;
@@ -200,11 +204,19 @@ export default {
 }
 .type {
     color: #486887;
-    padding-top: 10px;
 }
 .fields {
-    padding: 10px 20px 40px;
+    padding: 5px 20px 20px;
     font-family: Menlo,Consolas,monospace;
+
+    &:nth-child(1) {
+        padding-top: 10px;
+    }
+
+    &:nth-last-child(1) {
+        padding-bottom: 40px;
+    }
+
     .field {
         font-size: 12px;
         height: 20px;

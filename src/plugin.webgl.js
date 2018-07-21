@@ -8,8 +8,11 @@
 import _webglM4 from 'lib/m4.js';
 
 import webglShapes from './plugins/webgl-shapes.js';
+import webglShaders from './plugins/webgl-shaders.js';
+import { arrayRepeat } from './plugins/webgl-utils';
 
 import utils from 'utils/utils.js';
+
 import rectMeet from 'utils/math.rect-meet';
 import img2base64 from 'utils/img2base64.js';
 
@@ -21,83 +24,17 @@ const err = function (msg) {
     console.error('[Easycanvas-webgl] ' + msg);
 };
 
-const Shader_Vertex_Color = `
-    attribute vec4 a_position;
-    attribute vec4 a_color;
-    uniform float u_fudgeFactor; // 透射
-
-    uniform mat4 u_matrix;
-
-    varying vec4 v_color;
-
-    void main() {
-        // Multiply the position by the matrix.
-        // gl_Position = u_matrix * a_position;
-
-        // 透射
-        // 调整除数
-        vec4 position = u_matrix * a_position;
-        // 由于裁减空间中的 Z 值是 -1 到 +1 的，所以 +1 是为了让 zToDivideBy 变成 0 到 +2 * fudgeFactor
-        float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // 透射
-        gl_Position = vec4(position.xy / zToDivideBy, position.zw);
-
-        v_color = a_color;
-    }
-`;
-const Shader_Vertex_Textcoord = `
-    attribute vec4 a_position;
-    attribute vec2 a_texcoord;
-    uniform float u_fudgeFactor; // 透射
-
-    uniform mat4 u_matrix;
-
-    varying vec2 v_texcoord;
-
-    void main() {
-        // Multiply the position by the matrix.
-        // gl_Position = u_matrix * a_position;
-
-        // 透射
-        // 调整除数
-        vec4 position = u_matrix * a_position;
-        // 由于裁减空间中的 Z 值是 -1 到 +1 的，所以 +1 是为了让 zToDivideBy 变成 0 到 +2 * fudgeFactor
-        float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // 透射
-        gl_Position = vec4(position.xy / zToDivideBy, position.zw);
-
-        v_texcoord = a_texcoord;
-    }
-`;
-
-const Shader_Fragment_Textcoord = `
-    precision mediump float;
-
-    varying vec2 v_texcoord;
-
-    uniform sampler2D u_texture;
-
-    void main() {
-       gl_FragColor = texture2D(u_texture, v_texcoord);
-    }
-`;
-const Shader_Fragment_Color = `
-    precision mediump float;
-
-    varying vec4 v_color;
-
-    uniform sampler2D u_texture;
-
-    void main() {
-       gl_FragColor = v_color;
-    }
-`;
-
 const createShader = (function () {
     var shaderCachePool = {};
 
-    return function (gl, sourceCode, type) {
-        if (shaderCachePool[sourceCode]) {
-            return shaderCachePool[sourceCode];
+    return function (gl, type, colorOrTex, light) {
+        let cacheKey = '' + type + colorOrTex + light;
+
+        if (shaderCachePool[cacheKey]) {
+            return shaderCachePool[cacheKey];
         }
+
+        let sourceCode = webglShaders.factory(gl, type)(colorOrTex, light);
 
         // Compiles either a shader of type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
         var shader = gl.createShader(type);
@@ -109,7 +46,8 @@ const createShader = (function () {
             throw 'Could not compile WebGL program. \n\n' + info;
         }
 
-        shaderCachePool[sourceCode] = shader;
+        shaderCachePool[cacheKey] = shader;
+
         return shader;
     }
 })();
@@ -135,19 +73,14 @@ const createProgram = function (gl, vertexShader, fragmentShader) {
 const toggleShader = (function () {
     var lastType;
 
-    return function (gl, type) {
+    return function (gl, type, light) {
         if (lastType === type) return;
 
         lastType = type;
 
         var shaderVertexColor, shaderFragmentColor;
-        if (type === 0) {
-            shaderVertexColor = createShader(gl, Shader_Vertex_Color, gl.VERTEX_SHADER);
-            shaderFragmentColor = createShader(gl, Shader_Fragment_Color, gl.FRAGMENT_SHADER);
-        } else {
-            shaderVertexColor = createShader(gl, Shader_Vertex_Textcoord, gl.VERTEX_SHADER);
-            shaderFragmentColor = createShader(gl, Shader_Fragment_Textcoord, gl.FRAGMENT_SHADER);
-        }
+        shaderVertexColor = createShader(gl, gl.VERTEX_SHADER, type, light);
+        shaderFragmentColor = createShader(gl, gl.FRAGMENT_SHADER, type, light);
 
         gl.program = createProgram(gl, shaderVertexColor, shaderFragmentColor);
 
@@ -155,11 +88,19 @@ const toggleShader = (function () {
 
         // look up where the vertex data needs to go.
         gl.positionLocation = gl.getAttribLocation(gl.program, 'a_position');
+        gl.normalLocation = gl.getAttribLocation(gl.program, "a_normal");
         if (type === 0) {
             gl.colorLocation = gl.getAttribLocation(gl.program, 'a_color');
         } else {
             gl.texcoordLocation = gl.getAttribLocation(gl.program, 'a_texcoord');
         }
+
+        // light
+        // if (type === 0) {
+            gl.worldViewProjectionLocation = gl.getUniformLocation(gl.program, "u_worldViewProjection");
+            gl.worldInverseTransposeLocation = gl.getUniformLocation(gl.program, "u_worldInverseTranspose");
+            gl.reverseLightDirectionLocation = gl.getUniformLocation(gl.program, "u_reverseLightDirection");
+        // }
 
         // lookup uniforms
         gl.matrixLocation = gl.getUniformLocation(gl.program, 'u_matrix');
@@ -170,6 +111,7 @@ const toggleShader = (function () {
         }
 
         gl.enableVertexAttribArray(gl.positionLocation);
+        light && gl.enableVertexAttribArray(gl.normalLocation);
         gl.enableVertexAttribArray(gl.texcoordLocation);
         gl.enableVertexAttribArray(gl.colorLocation);
     };
@@ -272,19 +214,21 @@ const webglRender = function ($sprite, settings, $canvas) {
         // loading img
         // gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
         // 跳过绘制
-        var longSide = webgl.longSide * 1.8; // 三维根号3
-        var depth = $canvas.webgl.depth;
-        var meet = rectMeet(
-            webgl.tx - longSide, webgl.ty - longSide,
-            longSide * 2, longSide * 2,
-            (webgl.tz) / depth * $canvas.width / 2,
-            (webgl.tz) / depth * $canvas.height / 2,
-            $canvas.width - (webgl.tz) / depth * $canvas.width / 2,
-            $canvas.height - (webgl.tz) / depth * $canvas.height / 2,
-            0, 0, 0);
-        if (!meet) {
-            // console.log('miss');
-            return;
+        if (webgl.longSide) {
+            var longSide = webgl.longSide * 1.8; // 三维根号3
+            var depth = $canvas.webgl.$depth;
+            var meet = rectMeet(
+                webgl.tx - longSide, webgl.ty - longSide,
+                longSide * 2, longSide * 2,
+                (webgl.tz) / depth * $canvas.width / 2,
+                (webgl.tz) / depth * $canvas.height / 2,
+                $canvas.width - (webgl.tz) / depth * $canvas.width / 2,
+                $canvas.height - (webgl.tz) / depth * $canvas.height / 2,
+                0, 0, 0);
+            if (!meet) {
+                // console.log('miss');
+                return;
+            }
         }
 
         webglRender3d(
@@ -309,7 +253,7 @@ var webglRender3d = function ($canvas, webgl) {
     }
 
     var positionBuffer = webgl.vertices.$cacheBuffer,
-        colorBuffer, texcoordBuffer, indicesBuffer;
+        colorBuffer, texcoordBuffer, indicesBuffer, normalsBuffer;
 
     if (!positionBuffer) {
         positionBuffer = gl.createBuffer();
@@ -353,12 +297,22 @@ var webglRender3d = function ($canvas, webgl) {
         }
     }
 
+    if (webgl.normals) {
+        normalsBuffer = webgl.normals.$cacheBuffer;
+        if (!normalsBuffer) {
+            normalsBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, webgl.normals, gl.STATIC_DRAW);
+            webgl.normals.$cacheBuffer = normalsBuffer;
+        }
+    }
+
     // webglUtils.resizeCanvasToDisplaySize(gl.canvas);
     // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     // gl.enable(gl.CULL_FACE);
 
     if (colorBuffer) {
-        toggleShader(gl, 0);
+        toggleShader(gl, 0, $canvas.webgl.light);
         gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
         var size = 3;                 // 3 components per iteration
         var type = gl.UNSIGNED_BYTE;  // the data is 8bit unsigned values
@@ -367,7 +321,7 @@ var webglRender3d = function ($canvas, webgl) {
         var offset = 0;               // start at the beginning of the buffer
         gl.vertexAttribPointer(gl.colorLocation, size, type, normalize, stride, offset)
     } else if (texcoordBuffer) {
-        toggleShader(gl, 1);
+        toggleShader(gl, 1, $canvas.webgl.light);
         gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
         var size = 2;          // 2 components per iteration
         var type = gl.FLOAT;   // the data is 32bit floats
@@ -387,9 +341,19 @@ var webglRender3d = function ($canvas, webgl) {
         gl.vertexAttribPointer(gl.positionLocation, size, type, normalize, stride, offset);
     }
 
-    if ($canvas.webgl.fudgeFactor) {
+    if (webgl.normals) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+        var size = 3;          // 3 components per iteration
+        var type = gl.FLOAT;   // the data is 32bit floats
+        var normalize = false; // don't normalize the data
+        var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+        var offset = 0;        // start at the beginning of the buffer
+        gl.vertexAttribPointer(gl.normalLocation, size, type, normalize, stride, offset);
+    }
+
+    if ($canvas.webgl.$fudgeFactor) {
         var fudgeLocation = gl.getUniformLocation(gl.program, "u_fudgeFactor");
-        var fudgeFactor = $canvas.webgl.fudgeFactor;
+        var fudgeFactor = $canvas.webgl.$fudgeFactor;
         gl.uniform1f(fudgeLocation, fudgeFactor);
     }
 
@@ -401,15 +365,18 @@ var webglRender3d = function ($canvas, webgl) {
         matrix = m4.xRotate(matrix, degToRad(webgl.rx) || 0);
         matrix = m4.yRotate(matrix, degToRad(webgl.ry) || 0);
         matrix = m4.zRotate(matrix, degToRad(webgl.rz) || 0);
-        matrix = m4.scale(matrix, webgl.scaleX || webgl.scale || 1, webgl.scaleY || webgl.scale || 1, webgl.scaleZ || webgl.scale || 1);
+        matrix = m4.scale(matrix,
+            (webgl.scaleX !== 1 ? webgl.scaleX : webgl.scale) || 1,
+            (webgl.scaleY !== 1 ? webgl.scaleY : webgl.scale) || 1,
+            (webgl.scaleZ !== 1 ? webgl.scaleZ : webgl.scale) || 1);
         var projectionMatrix = matrix;
     }
 
     if ($canvas.webgl.camera) {
         // camera
-        var fieldOfViewRadians = degToRad(60);
-        var modelXRotationRadians = degToRad(0);
-        var modelYRotationRadians = degToRad(0);
+        // var fieldOfViewRadians = degToRad(60);
+        // var modelXRotationRadians = degToRad(0);
+        // var modelYRotationRadians = degToRad(0);
 
         // // Compute the projection matrix
         // // 投射投影
@@ -419,6 +386,7 @@ var webglRender3d = function ($canvas, webgl) {
         var cameraPosition = [
             degToRad(utils.funcOrValue($canvas.webgl.camera.rx || 0, $canvas)),
             degToRad(utils.funcOrValue($canvas.webgl.camera.ry || 0, $canvas)),
+            // degToRad(utils.funcOrValue($canvas.webgl.camera.rz || 0, $canvas)),
             // utils.funcOrValue($canvas.webgl.camera.rz, $canvas),
             1,
         ];
@@ -434,8 +402,20 @@ var webglRender3d = function ($canvas, webgl) {
         var projectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
     }
 
+    if ($canvas.webgl.light) {
+        // 光照变换
+        gl.uniformMatrix4fv(gl.worldViewProjectionLocation, false, matrix);
+        gl.uniformMatrix4fv(gl.worldInverseTransposeLocation, false, m4.transpose(projectionMatrix));
+    }
+
     // 耗性能
     gl.uniformMatrix4fv(gl.matrixLocation, false, projectionMatrix);
+
+    if ($canvas.webgl.light) {
+        var colorLocation = gl.getUniformLocation(gl.program, "a_color");
+        gl.uniform4fv(colorLocation, [1, 1, 1, 1]); // color
+        gl.uniform3fv(gl.reverseLightDirectionLocation, m4.normalize([0, 1, 0]));
+    }
 
     // Tell the shader to use texture unit 0 for u_texture
     gl.uniform1i(gl.textureLocation, 0);
@@ -542,15 +522,11 @@ var webglRender2d = function ($canvas,
 const webglRegister = function ($canvas, option) {
     $canvas.$isWebgl = true;
 
-    $canvas.webgl = {
-        depth: option.webgl.depth || 10000,
-        fudgeFactor: option.webgl.fudgeFactor || 0,
-        camera: option.webgl.camera,
-    };
+    $canvas.webgl = {};
+    Object.assign($canvas.webgl, option.webgl);
+    $canvas.webgl.depth = $canvas.webgl.depth || 10000;
 
     var gl = $canvas.$gl = $canvas.$paintContext;
-
-    gl.orthographic = m4.orthographic(0, $canvas.width, $canvas.height, 0, -$canvas.webgl.depth, $canvas.webgl.depth);
 
     gl.clearColor(0, 0, 0, 0);
     // gl.clear(gl.COLOR_BUFFER_BIT);
@@ -596,13 +572,24 @@ const webglRegister = function ($canvas, option) {
 
 const onCreate = function (_option) {
     if (_option.webgl) {
+        // 获取webgl对象
         this.$paintContext = this.$dom.getContext('webgl', {
             alpha: true,
             premultipliedAlpha: false,
         });
 
+        // 检测是否支持webgl
         if (this.$paintContext) {
             webglRegister(this, _option);
+
+            // 挂载每帧的事件监听
+            this.on('beforeTick', () => {
+                // 把每帧只需要计算一次的属性放到钩子里
+                // 后面可以增加camera.rx、light等参数，进一步优化性能
+                this.webgl.$depth = utils.funcOrValue(utils.firstValuable(this.webgl.depth, 0), this);
+                this.webgl.$fudgeFactor = utils.funcOrValue(utils.firstValuable(this.webgl.fudgeFactor, 0), this);
+                this.$paintContext.orthographic = m4.orthographic(0, this.width, this.height, 0, -this.webgl.$depth, this.webgl.$depth);
+            });
         } else {
             if (process.env.NODE_ENV !== 'production') {
                 err('Webgl is not supported in current browser, using canvas2d instead.');
@@ -615,12 +602,24 @@ const onCreate = function (_option) {
     }
 };
 
+const default0s = ['rx', 'ry', 'rz'];
+const default1s = ['scale', 'scaleX', 'scaleY', 'scaleZ'];
+const styleKeys = default0s.concat(default1s);
+
 const onPaint = function () {
     let $sprite = this;
     let $canvas = this.$canvas;
 
-    if ($sprite.webgl) {
+    if ($sprite.webgl && $sprite.webgl.vertices) {
         $sprite.$rendered = true;
+
+        if ($sprite.webgl.img) {
+            if (typeof $sprite.webgl.img === 'string') {
+                $sprite.webgl.img = $canvas.imgLoader($sprite.webgl.img);
+            } else if ($sprite.webgl.img.src) {
+                $sprite.webgl.img = $canvas.imgLoader($sprite.webgl.img.src);
+            }
+        }
 
         let _webgl = {
             tx: $sprite.getStyle('tx'),
@@ -628,10 +627,13 @@ const onPaint = function () {
             tz: utils.funcOrValue($sprite.webgl.tz, $sprite) || 0,
         };
 
-        for (var key in $sprite.webgl) {
-            // 耗性能
+        for (let key in $sprite.webgl) {
             _webgl[key] = utils.funcOrValue($sprite.webgl[key], $sprite) || 0;
         }
+
+        styleKeys.forEach((key) => {
+            _webgl[key] = $sprite.getWebglStyle(key);
+        });
 
         let $paintSprite = {
             $id: $sprite.$id,
@@ -653,12 +655,53 @@ const onRender = function ($sprite, settings) {
 
     if ($canvas.$isWebgl) {
         webglRender($sprite, settings, $canvas);
+
+        if (process.env.NODE_ENV !== 'production') {
+            $canvas.$plugin.drawImage($canvas);
+        }
+
         return true;
     }
 };
 
 const onUse = function (easycanvas) {
     easycanvas.webglShapes = webglShapes;
+
+    easycanvas.sprite.prototype.getWebglStyle = function (key) {
+        let $sprite = this;
+        let currentValue;
+
+        if (default1s.indexOf(key) >= 0) currentValue = 1;
+        if (default0s.indexOf(key) >= 0) currentValue = 0;
+
+        if ($sprite.webgl) {
+            currentValue = utils.funcOrValue($sprite.webgl[key], $sprite) || currentValue;
+        }
+
+        if ($sprite.$parent) {
+            if (default1s.indexOf(key) >= 0) {
+                currentValue *= utils.firstValuable($sprite.$parent.getWebglStyle(key), 1);
+            } else if (default0s.indexOf(key) >= 0) {
+                // rx, ry, rz
+                currentValue += utils.firstValuable($sprite.$parent.getWebglStyle(key), 0);
+            }
+        }
+
+        return currentValue;
+    };
+
+    easycanvas.sprite.prototype.updateWebglStyle = function (key, value) {
+        let $sprite = this;
+
+        if ($sprite.webgl && $sprite.webgl[key]) {
+            $sprite.webgl[key].$cacheBuffer = undefined;
+
+            if (key === 'colors' && value) {
+                let repeatTimes = $sprite.webgl.vertices.length / value.length;
+                $sprite.webgl.colors = new Uint8Array(arrayRepeat(value, repeatTimes));
+            }
+        }
+    };
 };
 
 const plugin = {
@@ -670,7 +713,6 @@ const plugin = {
 
 if (inBrowser && window.Easycanvas) {
     Easycanvas.use(plugin);
-    onUse(Easycanvas);
 } else {
     module.exports = plugin;
 }
