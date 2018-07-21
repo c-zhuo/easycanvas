@@ -47,10 +47,10 @@ module.exports = `
                         events: {
                             click: function (e) {
                                 this.style.tx = Easycanvas.transition.pendulum(
-                                    this.getStyle().tx, Math.random() * 350, 3000
+                                    this.getStyle('tx'), Math.random() * 350, 3000
                                 ).loop();
                                 this.style.ty = Easycanvas.transition.pendulum(
-                                    this.getStyle().ty, Math.random() * 350, 4000
+                                    this.getStyle('ty'), Math.random() * 350, 4000
                                 ).loop();
                             },
                         },

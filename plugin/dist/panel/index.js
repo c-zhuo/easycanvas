@@ -580,7 +580,7 @@ module.exports = {
     txywh: ['tx', 'ty', 'tw', 'th'],
     sxywh: ['sx', 'sy', 'sw', 'sh'],
     devFlag: '__EASYCANVAS_DEVTOOL__',
-    version: '0.5.3'
+    version: '0.5.2'
 };
 
 /***/ }),
@@ -16272,6 +16272,9 @@ exports.default = {
             }, {
                 name: 'physics',
                 editable: false
+            }, {
+                name: 'webgl',
+                editable: true
             }],
             detailType: null,
             detailTypeKey: null,
@@ -16343,7 +16346,7 @@ exports.default = {
             if (isNaN(Number(this.editInputValue))) {
                 this.editInputValue = '\'' + this.editInputValue + '\'';
             }
-            var updateSpriteCode = '\n                window.__EASYCANVAS_DEVTOOL__.$plugin.updateSprite(\'' + this.instanceId + '\', {\n                    ' + this.detailTypeKey + ': ' + this.editInputValue + '\n                }, \'' + this.canvasId + '\');\n            ';
+            var updateSpriteCode = '\n                window.__EASYCANVAS_DEVTOOL__.$plugin.updateSprite(\'' + this.instanceId + '\', \'' + this.detailType + '\', {\n                    ' + this.detailTypeKey + ': ' + this.editInputValue + '\n                }, \'' + this.canvasId + '\');\n            ';
             window.inspectedWindow.eval(updateSpriteCode, function (value) {
                 _this2.$actions.getElements(function () {
                     if (hideEdit) {
@@ -19546,7 +19549,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "*[_v-1cd4eef0] {\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n\n.detail-section[_v-1cd4eef0] {\n  height: 100%; }\n\n.detail[_v-1cd4eef0] {\n  font-size: 14px;\n  height: 100%; }\n\n.notice[_v-1cd4eef0] {\n  width: 100%;\n  height: 100%;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-pack: center;\n      justify-content: center;\n  -ms-flex-align: center;\n      align-items: center;\n  font-size: 14px;\n  font-weight: bold;\n  color: #DDDDDD; }\n\n.title[_v-1cd4eef0] {\n  font-size: 16px;\n  color: #3BA776;\n  width: 100%;\n  line-height: 25px;\n  box-sizing: border-box;\n  padding: 0 10px;\n  border-bottom: 1px solid #DDDDDD; }\n\n.content[_v-1cd4eef0] {\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n  padding: 20px;\n  overflow: scroll; }\n\n.type[_v-1cd4eef0] {\n  color: #486887;\n  padding-top: 10px; }\n\n.fields[_v-1cd4eef0] {\n  padding: 10px 20px 40px;\n  font-family: Menlo,Consolas,monospace; }\n  .fields .field[_v-1cd4eef0] {\n    font-size: 12px;\n    height: 20px;\n    line-height: 20px; }\n    .fields .field .key[_v-1cd4eef0] {\n      color: #881391; }\n    .fields .field .value[_v-1cd4eef0] {\n      display: inline-block;\n      color: #03c; }\n\n.edit[_v-1cd4eef0] {\n  display: inline-block;\n  z-index: 999; }\n  .edit input[_v-1cd4eef0] {\n    font-size: 12px;\n    width: 30px;\n    height: 18px;\n    line-height: 18px;\n    outline: none;\n    border: 1px solid #DDDDDD; }\n", ""]);
+exports.push([module.i, "*[_v-1cd4eef0] {\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text; }\n\n.detail-section[_v-1cd4eef0] {\n  height: 100%; }\n\n.detail[_v-1cd4eef0] {\n  font-size: 14px;\n  height: 100%; }\n\n.notice[_v-1cd4eef0] {\n  width: 100%;\n  height: 100%;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-pack: center;\n      justify-content: center;\n  -ms-flex-align: center;\n      align-items: center;\n  font-size: 14px;\n  font-weight: bold;\n  color: #DDDDDD; }\n\n.title[_v-1cd4eef0] {\n  font-size: 16px;\n  color: #3BA776;\n  width: 100%;\n  line-height: 25px;\n  box-sizing: border-box;\n  padding: 0 10px;\n  border-bottom: 1px solid #DDDDDD; }\n\n.content[_v-1cd4eef0] {\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n  padding: 20px;\n  overflow: scroll; }\n\n.type[_v-1cd4eef0] {\n  color: #486887; }\n\n.fields[_v-1cd4eef0] {\n  padding: 5px 20px 20px;\n  font-family: Menlo,Consolas,monospace; }\n  .fields[_v-1cd4eef0]:nth-child(1) {\n    padding-top: 10px; }\n  .fields[_v-1cd4eef0]:nth-last-child(1) {\n    padding-bottom: 40px; }\n  .fields .field[_v-1cd4eef0] {\n    font-size: 12px;\n    height: 20px;\n    line-height: 20px; }\n    .fields .field .key[_v-1cd4eef0] {\n      color: #881391; }\n    .fields .field .value[_v-1cd4eef0] {\n      display: inline-block;\n      color: #03c; }\n\n.edit[_v-1cd4eef0] {\n  display: inline-block;\n  z-index: 999; }\n  .edit input[_v-1cd4eef0] {\n    font-size: 12px;\n    width: 30px;\n    height: 18px;\n    line-height: 18px;\n    outline: none;\n    border: 1px solid #DDDDDD; }\n", ""]);
 
 // exports
 
@@ -20134,7 +20137,7 @@ module.exports = "\n\n\n\n\n<div class=\"vue-component-toggle\">\n    <div class
 /* 114 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<section class=\"detail-section\" _v-1cd4eef0=\"\">\n    <div clsss=\"detail\" v-if=\"instanceId &amp;&amp; showDetail\" _v-1cd4eef0=\"\">\n        <div class=\"title\" _v-1cd4eef0=\"\">\n            &lt;{{instance.name}}&gt;\n        </div>\n        <div class=\"content\" _v-1cd4eef0=\"\">\n            <template v-for=\"item in detailTypes\">\n                <div class=\"type\" v-if=\"instance[item.name]\" _v-1cd4eef0=\"\">\n                    {{item.name}}\n                </div>\n                <div class=\"fields\" _v-1cd4eef0=\"\">\n                    <template v-if=\"item.editable\">\n                        <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-for=\"field in instance[item.name]\" _v-1cd4eef0=\"\">\n                            <span class=\"key\" _v-1cd4eef0=\"\">{{$key}}</span>\n                            <span class=\"colon\" _v-1cd4eef0=\"\">: </span>\n                            <span class=\"value\" @click.stop=\"editValue(item.name, $key, $event)\" _v-1cd4eef0=\"\">{{field}}</span>\n                            <div class=\"edit\" v-if=\"detailType === item.name &amp;&amp; detailTypeKey === $key &amp;&amp; instanceId &amp;&amp; showDetail\" _v-1cd4eef0=\"\">\n                                <input id=\"editInput\" type=\"text\" v-model=\"editInputValue\" :style=\"{width: editInputWidth + 'px', marginLeft: -editInputWidth + 'px'}\" @keyup.enter=\"updateValue\" @keyup.up=\"editInputValueUp\" @keyup.down=\"editInputValueDown\" _v-1cd4eef0=\"\">\n                            </div>\n                        </div>\n                    </template>\n                    <template v-else=\"\">\n                        <v-field v-for=\"field in instance[item.name]\" :depth=\"0\" :item=\"item\" :field=\"{name: $key, value: field}\" _v-1cd4eef0=\"\"></v-field>\n                    </template>\n                </div>\n            </template>\n        </div>\n    </div>\n    <div class=\"notice\" v-else=\"\" _v-1cd4eef0=\"\">\n        Select a component instance to inspect.\n    </div>\n</section>\n";
+module.exports = "\n<section class=\"detail-section\" _v-1cd4eef0=\"\">\n    <div clsss=\"detail\" v-if=\"instanceId &amp;&amp; showDetail\" _v-1cd4eef0=\"\">\n        <div class=\"title\" _v-1cd4eef0=\"\">\n            &lt;{{instance.name}}&gt;\n        </div>\n        <div class=\"content\" _v-1cd4eef0=\"\">\n            <template v-for=\"item in detailTypes\">\n                <div class=\"type\" v-if=\"instance[item.name]\" _v-1cd4eef0=\"\">\n                    {{item.name}}\n                </div>\n                <div class=\"fields\" v-if=\"instance[item.name]\" _v-1cd4eef0=\"\">\n                    <template v-if=\"item.editable\">\n                        <div class=\"field\" :class=\"{'no-editable': !item.editable}\" v-for=\"field in instance[item.name]\" _v-1cd4eef0=\"\">\n                            <span class=\"key\" _v-1cd4eef0=\"\">{{$key}}</span>\n                            <span class=\"colon\" _v-1cd4eef0=\"\">: </span>\n                            <span class=\"value\" @click.stop=\"editValue(item.name, $key, $event)\" _v-1cd4eef0=\"\">{{field}}</span>\n                            <div class=\"edit\" v-if=\"detailType === item.name &amp;&amp; detailTypeKey === $key &amp;&amp; instanceId &amp;&amp; showDetail\" _v-1cd4eef0=\"\">\n                                <input id=\"editInput\" type=\"text\" v-model=\"editInputValue\" :style=\"{width: editInputWidth + 'px', marginLeft: -editInputWidth + 'px'}\" @keyup.enter=\"updateValue\" @keyup.up=\"editInputValueUp\" @keyup.down=\"editInputValueDown\" _v-1cd4eef0=\"\">\n                            </div>\n                        </div>\n                    </template>\n                    <template v-else=\"\">\n                        <v-field v-for=\"field in instance[item.name]\" :depth=\"0\" :item=\"item\" :field=\"{name: $key, value: field}\" _v-1cd4eef0=\"\"></v-field>\n                    </template>\n                </div>\n            </template>\n        </div>\n    </div>\n    <div class=\"notice\" v-else=\"\" _v-1cd4eef0=\"\">\n        Select a component instance to inspect.\n    </div>\n</section>\n";
 
 /***/ }),
 /* 115 */

@@ -111,8 +111,8 @@ module.exports = function (i, index) {
         settings.afterRotate = [-transX, -transY];
     }
 
-    let scale = _props.scale;
-    if (scale !== 1) {
+    if (_props.scale !== 1) {
+        let scale = _props.scale;
         _props.tx -= (scale - 1) * _props.tw >> 1;
         _props.ty -= (scale - 1) * _props.th >> 1;
         _props.tw *= scale;

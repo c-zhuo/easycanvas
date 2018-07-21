@@ -1,5 +1,3 @@
-import utils from './utils.js';
-
 // Math.PI wastes some performace
 const PI = 3.141593;
 
