@@ -34,7 +34,7 @@ module.exports = `
 
         <h2>创建实例</h2>
 
-        <p>如下例，只需要30行代码，可以在canvas上绘制一个运动的图片。点击“小齿轮”可以立即查看效果。</p>
+        <p>如下例，只需要30行代码，可以在canvas上绘制一个运动的图片。点击蓝色的小按钮可以立即查看效果。</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>

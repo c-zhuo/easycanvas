@@ -1,5 +1,7 @@
+import demos from './contents/demos.js';
 import intro from './contents/intro.js';
 import quickstart from './contents/quickstart.js';
+
 import inherit from './contents/inherit.js';
 import image from './contents/image.js';
 import events from './contents/events.js';
@@ -8,10 +10,15 @@ import sequence from './contents/sequence.js';
 import hooks from './contents/hooks.js';
 import customEvent from './contents/customEvent.js';
 import sprite from './contents/sprite.js';
+
 import pluginPhysics from './contents/plugin-physics.js';
 import pluginWebgl from './contents/plugin-webgl.js';
+import pluginWebgl3DS from './contents/plugin-webgl-3ds.js';
+import pluginWebglMMD from './contents/plugin-webgl-mmd.js';
+
 
 let content = `
+    ${demos}
     ${intro}
     ${quickstart}
 
@@ -26,6 +33,8 @@ let content = `
 
     ${pluginPhysics}
     ${pluginWebgl}
+    ${pluginWebgl3DS}
+    ${pluginWebglMMD}
 `;
 
 let splits = content.split(/<\/*code>/);

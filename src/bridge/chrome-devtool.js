@@ -63,11 +63,16 @@ if (process.env.NODE_ENV !== 'production') {
                             res[item.$id].style[key] = Math.round(res[item.$id].style[key]);
                         });
 
-                        const attachList = ['blend', 'physics', '$perf'];
-
-                        attachList.forEach((key) => {
+                        ['physics', '$perf'].forEach((key) => {
                             res[item.$id][key] = item[key];
                         });
+
+                        if (item.webgl) {
+                            res[item.$id].webgl = {};
+                            ['rx', 'ry', 'rz', 'tx', 'ty', 'tz'].forEach((key) => {
+                                res[item.$id].webgl[key] = utils.funcOrValue(item.webgl[key], item);
+                            });
+                        }
 
                         if (item.children) {
                             item.children.forEach(pusher);
@@ -126,11 +131,11 @@ if (process.env.NODE_ENV !== 'production') {
                 }
             },
 
-            updateSprite: function ($spriteId, map, $canvasId) {
+            updateSprite: function ($spriteId, groupName = 'style', keys, $canvasId) {
                 let $sprite = BRIDGE.selectSpriteById($spriteId, $canvasId).$sprite;
                 if (!$sprite) console.warn(`Sprite ${spriteId} Not Found.`);
 
-                Object.assign($sprite.style, map);
+                Object.assign($sprite[groupName], keys);
             },
 
             highlightSprite: function ($spriteId, opt, $canvasId) {

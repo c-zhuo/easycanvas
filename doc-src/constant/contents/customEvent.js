@@ -52,7 +52,7 @@ module.exports = `
                     });
 
                     var add90Deg = function () {
-                        var currentRotate = this.self().rotate;
+                        var currentRotate = this.getStyle('rotate');
                         this.style.rotate = Easycanvas.transition.linear(currentRotate, currentRotate + 90, 500);
                     };
 
