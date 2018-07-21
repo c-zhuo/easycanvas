@@ -4,7 +4,7 @@
     <canvas id="foo" width="800" height="1800" style="width: 800px; height: 1800px;"></canvas>
 
     <script>
-        var COUNT = 800;
+        var COUNT = 2000;
 
         var $Painter = new Easycanvas.painter();
         $Painter.register(document.getElementById('foo'), {
@@ -14,6 +14,7 @@
         $Painter.start();
         $Painter.fpsHandler = console.log;
 
+        $Painter.imgLoader.cacheCanvas = true;
         var demoPicUrl = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/block.jpg';
 
         $Painter.imgLoader(demoPicUrl, function (img) {
@@ -26,8 +27,8 @@
                     style: {
                         tx: Easycanvas.transition.pendulum(Math.random() * 500, Math.random() * 500, 9000).loop(),
                         ty: (Math.random() * 500),
-                        tw: (100 + Math.random() * 500),
-                        th: (100 + Math.random() * 500),
+                        tw: (50 + Math.random() * 200),
+                        th: (50 + Math.random() * 200),
                         zIndex: Math.random(),
                         // rotate: 40,
                     },

@@ -61,8 +61,11 @@ module.exports = function () {
             drawImage ($canvas, _props) {
                 if (!window[constants.devFlag].isPaintRecording) return;
 
-                $canvas.$perf.$paintArea += _props[7] * _props[8];
-                $canvas.$perf.$loadArea += _props[3] * _props[4];
+                if (_props) {
+                    $canvas.$perf.$paintArea += _props[7] * _props[8];
+                    $canvas.$perf.$loadArea += _props[3] * _props[4];
+                }
+
                 $canvas.$perf.$paintTimes++;
             },
 
@@ -128,7 +131,7 @@ module.exports = function () {
                         };
                     })(key);
                 });
-                window.$selectMask = $selectMask;
+                // window.$selectMask = $selectMask;
 
                 // mask of webgl
                 $selectMask.webgl = $sprite.webgl ? {} : undefined;
@@ -144,6 +147,8 @@ module.exports = function () {
                         })(key);
                     }
                     $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);
+                    delete $selectMask.webgl.colors;
+
                     $selectMask.webgl.opacity = 1;
                 }
 

@@ -46,15 +46,12 @@ const hitSprite = function ($sprite, e) {
         return false;
     }
 
-    let _tx = $sprite.getStyle('tx');
-    let _ty = $sprite.getStyle('ty');
-    let _tw = $sprite.getStyle('tw');
-    let _th = $sprite.getStyle('th');
+    let rect = $sprite.getRect();
 
     return utils.pointInRect(
         e.canvasX, e.canvasY,
-        _tx, _tx + _tw,
-        _ty, _ty + _th
+        rect.tx, rect.tx + rect.tw,
+        rect.ty, rect.ty + rect.th
     );
 };
 

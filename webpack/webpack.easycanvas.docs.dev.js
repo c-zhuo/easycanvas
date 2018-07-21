@@ -1,14 +1,8 @@
 'use strict';
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var path = require('path');
 var glob = require('glob');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var base = require('./webpack.config.base.js');
-
-var env = 'development';
-
-var mkdirp = require('mkdirp');
+var docConfig = require('./webpack.config.doc.js');
 
 var js = glob.sync('./doc-src/main.js').reduce(function (prev, curr) {
     prev[curr.slice(2, -3).replace('src', 'src')] = [curr];
@@ -18,7 +12,7 @@ var js = glob.sync('./doc-src/main.js').reduce(function (prev, curr) {
 var html = glob.sync('./doc-src/*.html').map(function (item) {
     return new HtmlWebpackPlugin({
         data: {
-            env: env
+            // env: env
         },
         filename: item.substr(0),
         template: 'ejs-compiled!' + item,
@@ -26,35 +20,10 @@ var html = glob.sync('./doc-src/*.html').map(function (item) {
     });
 });
 
-var config = {
-    entry: js,
-    resolve: base.resolve,
-    output: {
-        path: path.resolve('./dev/'),
-        filename: '[name].js',
-    },
-    module: {
-        loaders: base.loaders.concat([{
-            test: /\.scss$/,
-            loaders: ['css', 'sass']
-        }])
-    },
-    babel: base.babel,
-    plugins: ([
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(env)
-        }),
-        new CopyWebpackPlugin([
-            {
-                from: './doc-src/lib/',
-                to: './doc-src/lib/'
-            }
-        ]),
-    ]).concat(html),
-    node: base.node,
-    debug: false,
-    bail: true
-};
+var config = docConfig;
+config.entry = js;
+config.plugins = config.plugins.concat([
+    ]).concat(html);
 
 config.debug = true;
 config.bail = false;
@@ -64,28 +33,9 @@ config.plugins = config.plugins.concat([
     new webpack.NoErrorsPlugin()
 ]);
 
-// config.plugins = config.plugins.concat([
-//     new webpack.optimize.OccurrenceOrderPlugin(),
-//     new webpack.optimize.DedupePlugin(),
-//     new webpack.optimize.AggressiveMergingPlugin(),
-//     new webpack.optimize.UglifyJsPlugin({
-//         sourceMap: false,
-//         compress: {
-//             pure_getters: true,
-//             screw_ie8: true,
-//             unsafe: true,
-//             unsafe_comps: true,
-//             warnings: false
-//         },
-//         output: {
-//             comments: false
-//         }
-//     })
-// ]);
-
 config.devServer = {
     host: '0.0.0.0',
-    contentBase: path.resolve('./dev'),
+    // contentBase: path.resolve('./readme'), // static files
     historyApiFallback: true,
     inline: true,
     hot: true,

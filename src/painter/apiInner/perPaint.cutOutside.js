@@ -28,14 +28,14 @@ module.exports = function ($canvas, props, imgWidth, imgHeight) {
     }
 
     // target
-    if (props.tx < 0 && props.tw) {
+    if (props.tx < 0 && props.tw > -props.tx) {
         let cutRate = (-props.tx / props.tw);
         props.sx += props.sw * cutRate;
         props.sw -= props.sw * cutRate;
         props.tw = props.tw + props.tx;
         props.tx = 0;
     }
-    if (props.ty < 0 && props.th) {
+    if (props.ty < 0 && props.th > -props.ty) {
         let cutRate = (-props.ty / props.th);
         props.sy += props.sh * cutRate;
         props.sh -= props.sh * cutRate;

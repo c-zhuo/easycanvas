@@ -21,4 +21,6 @@ module.exports = function () {
             });
         }
     }, 40); // TODO
+
+    return this;
 };
