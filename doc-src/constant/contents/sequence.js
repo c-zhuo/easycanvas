@@ -15,11 +15,13 @@ module.exports = `
             <code>
                 <body>
                     <canvas id="app"></canvas>
-                    <p>点击画布可以看到效果</p>
+                    <p id="content">点击画布可以看到爆炸效果（爆炸图加载中，请稍等）</p>
                 </body>
 
                 <script>
-                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/Easycanvas/master/demos/Fire.png');
+                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/Easycanvas/master/demos/Fire.png', function () {
+                        document.getElementById('content').innerText = '点击画布可以看到爆炸效果';
+                    });
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -59,7 +61,7 @@ module.exports = `
 
         <p>如果将w改成2907/9，得到的是相同的效果。这个例子没有指定tw和th，因此绘制的尺寸默认为了读取图片的尺寸，在这里相当于原图中每帧的尺寸。</p>
 
-        <p>sequence中的loop代表这个动画是否是循环播放的，如果是</p>
+        <p>sequence中的loop代表这个动画是否是循环播放的，默认为true。如果false，那么将在轮播到最后一张图之后，自动移除当前的sprite（会触发beforeRemove和removed钩子）。</p>
 
         <p class="tip">Tips：这个例子中，一开始就加载了fire.png图片，而不是等到点击的时候再去加载，这样可以保证体验更加流畅。如果以字符串的形式定义var fire = 'fire.png'，那么加载是在首次渲染到这张图片时进行的。</p>
 

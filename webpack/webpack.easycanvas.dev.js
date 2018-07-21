@@ -11,7 +11,7 @@ var env = 'development';
 
 var mkdirp = require('mkdirp');
 
-var js = glob.sync('./src/**/*.js').reduce(function (prev, curr) {
+var js = glob.sync('./src/*.js').reduce(function (prev, curr) {
     prev[curr.slice(2, -3).replace('src', 'build')] = [curr];
     return prev;
 }, {});
@@ -35,7 +35,11 @@ var config = {
         filename: '[name].js'
     },
     module: {
-        loaders: base.loaders
+        loaders: base.loaders,
+        noParse: [
+            /src\/lib\//
+        ],
+        // path.join(__dirname, '../src/lib')
     },
     babel: base.babel,
     plugins: ([
@@ -47,7 +51,7 @@ var config = {
                 from: './demos/resource',
                 to: './resource'
             }
-        ])
+        ]),
     ]).concat(html),
     node: base.node,
     debug: false,

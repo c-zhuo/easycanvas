@@ -1,8 +1,9 @@
 const tree = `
     - 介绍
+    一些demo
     概述
     快速开始
-    - 教程
+    - 基础教程
     图片渲染与处理
     嵌套与继承
     事件
@@ -11,15 +12,13 @@ const tree = `
     精灵动画
     状态钩子
     自定义事件
-    - 插件
+    - 扩展插件
     物理引擎
     WebGL
-    WebGL-3DS模型（文档待补充）
-    数字效果（文档待补充）
+    WebGL-加载3DS模型
+    WebGL-加载MMD模型
+    渐变效果插件（文档待补充）
     自定义插件（文档待补充）
-    - API
-    Sprite API（文档待补充）
-    Painter API（文档待补充）
 `;
 
 let response = [];

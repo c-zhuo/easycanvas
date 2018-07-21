@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(17);
+	module.exports = __webpack_require__(23);
 
 
 /***/ }),
@@ -131,7 +131,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 3 */,
-/* 4 */
+/* 4 */,
+/* 5 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -175,7 +176,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toDataURL;
 
 /***/ }),
-/* 5 */
+/* 6 */,
+/* 7 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -187,7 +189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = rAF;
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -237,27 +239,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _on = __webpack_require__(12);
+	var _on = __webpack_require__(14);
 
 	var _on2 = _interopRequireDefault(_on);
 
-	var _off = __webpack_require__(11);
+	var _off = __webpack_require__(13);
 
 	var _off2 = _interopRequireDefault(_off);
 
-	var _nextTick = __webpack_require__(10);
+	var _nextTick = __webpack_require__(12);
 
 	var _nextTick2 = _interopRequireDefault(_nextTick);
 
-	var _trigger = __webpack_require__(13);
+	var _trigger = __webpack_require__(15);
 
 	var _trigger2 = _interopRequireDefault(_trigger);
 
-	var _broadcast = __webpack_require__(9);
+	var _broadcast = __webpack_require__(11);
 
 	var _broadcast2 = _interopRequireDefault(_broadcast);
 
-	var _bindDrag = __webpack_require__(7);
+	var _bindDrag = __webpack_require__(9);
 
 	var _bindDrag2 = _interopRequireDefault(_bindDrag);
 
@@ -527,7 +529,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = sprite;
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -634,7 +636,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -643,7 +645,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _tick2 = __webpack_require__(5);
+	var _tick2 = __webpack_require__(7);
 
 	var _tick3 = _interopRequireDefault(_tick2);
 
@@ -767,7 +769,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = scrollFuncs;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -801,7 +803,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -823,7 +825,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -849,7 +851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -891,7 +893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -919,7 +921,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 14 */
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1053,16 +1059,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = loader;
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 21 */
+/***/ (function(module, exports) {
 
-	'use strict';
-
-	var _utils = __webpack_require__(1);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	"use strict";
 
 	// Math.PI wastes some performace
 	var PI = 3.141593;
@@ -1217,7 +1217,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = transFuncs;
 
 /***/ }),
-/* 16 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1294,11 +1294,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            res[item.$id].style[key] = Math.round(res[item.$id].style[key]);
 	                        });
 
-	                        var attachList = ['blend', 'physics', '$perf'];
-
-	                        attachList.forEach(function (key) {
+	                        ['physics', '$perf'].forEach(function (key) {
 	                            res[item.$id][key] = item[key];
 	                        });
+
+	                        if (item.webgl) {
+	                            res[item.$id].webgl = {};
+	                            ['rx', 'ry', 'rz', 'tx', 'ty', 'tz'].forEach(function (key) {
+	                                res[item.$id].webgl[key] = _utils2.default.funcOrValue(item.webgl[key], item);
+	                            });
+	                        }
 
 	                        if (item.children) {
 	                            item.children.forEach(pusher);
@@ -1356,11 +1361,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            },
 
-	            updateSprite: function updateSprite($spriteId, map, $canvasId) {
+	            updateSprite: function updateSprite($spriteId) {
+	                var groupName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'style';
+	                var keys = arguments[2];
+	                var $canvasId = arguments[3];
+
 	                var $sprite = BRIDGE.selectSpriteById($spriteId, $canvasId).$sprite;
 	                if (!$sprite) console.warn('Sprite ' + spriteId + ' Not Found.');
 
-	                _extends($sprite.style, map);
+	                _extends($sprite[groupName], keys);
 	            },
 
 	            highlightSprite: function highlightSprite($spriteId, opt, $canvasId) {
@@ -1433,7 +1442,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 17 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1442,15 +1451,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _index = __webpack_require__(40);
+	var _index = __webpack_require__(47);
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _tick = __webpack_require__(5);
+	var _tick = __webpack_require__(7);
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _mirror = __webpack_require__(53);
+	var _mirror = __webpack_require__(69);
 
 	var _mirror2 = _interopRequireDefault(_mirror);
 
@@ -1458,27 +1467,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _transition = __webpack_require__(15);
+	var _transition = __webpack_require__(21);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
-	var _imgLoader = __webpack_require__(14);
+	var _imgLoader = __webpack_require__(20);
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
-	var _imgPretreat = __webpack_require__(51);
+	var _imgPretreat = __webpack_require__(67);
 
 	var _imgPretreat2 = _interopRequireDefault(_imgPretreat);
 
-	var _multlineText = __webpack_require__(54);
+	var _multlineText = __webpack_require__(70);
 
 	var _multlineText2 = _interopRequireDefault(_multlineText);
 
-	var _sprite = __webpack_require__(6);
+	var _sprite = __webpack_require__(8);
 
 	var _sprite2 = _interopRequireDefault(_sprite);
 
-	var _chromeDevtool = __webpack_require__(16);
+	var _chromeDevtool = __webpack_require__(22);
 
 	var _chromeDevtool2 = _interopRequireDefault(_chromeDevtool);
 
@@ -1546,35 +1555,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Easycanvas;
 
 /***/ }),
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _perPaint = __webpack_require__(26);
+	var _perPaint = __webpack_require__(33);
 
 	var _perPaint2 = _interopRequireDefault(_perPaint);
 
-	var _render = __webpack_require__(28);
+	var _render = __webpack_require__(35);
 
 	var _render2 = _interopRequireDefault(_render);
 
-	var _eventHandler = __webpack_require__(22);
+	var _eventHandler = __webpack_require__(29);
 
 	var _eventHandler2 = _interopRequireDefault(_eventHandler);
 
-	var _bindDrag = __webpack_require__(7);
+	var _bindDrag = __webpack_require__(9);
 
 	var _bindDrag2 = _interopRequireDefault(_bindDrag);
 
-	var _rAFer = __webpack_require__(27);
+	var _rAFer = __webpack_require__(34);
 
 	var _rAFer2 = _interopRequireDefault(_rAFer);
 
-	var _apiPlugin = __webpack_require__(39);
+	var _apiPlugin = __webpack_require__(46);
 
 	var _apiPlugin2 = _interopRequireDefault(_apiPlugin);
 
@@ -1603,7 +1613,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiInner;
 
 /***/ }),
-/* 22 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1616,7 +1626,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _eventHandlerScroll = __webpack_require__(8);
+	var _eventHandlerScroll = __webpack_require__(10);
 
 	var _eventHandlerScroll2 = _interopRequireDefault(_eventHandlerScroll);
 
@@ -1665,12 +1675,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return false;
 	    }
 
-	    var _tx = $sprite.getStyle('tx');
-	    var _ty = $sprite.getStyle('ty');
-	    var _tw = $sprite.getStyle('tw');
-	    var _th = $sprite.getStyle('th');
+	    var rect = $sprite.getRect();
 
-	    return _utils2.default.pointInRect(e.canvasX, e.canvasY, _tx, _tx + _tw, _ty, _ty + _th);
+	    return _utils2.default.pointInRect(e.canvasX, e.canvasY, rect.tx, rect.tx + rect.tw, rect.ty, rect.ty + rect.th);
 	};
 
 	/**
@@ -1834,7 +1841,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 23 */
+/* 30 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -1869,14 +1876,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    // target
-	    if (props.tx < 0 && props.tw) {
+	    if (props.tx < 0 && props.tw > -props.tx) {
 	        var _cutRate4 = -props.tx / props.tw;
 	        props.sx += props.sw * _cutRate4;
 	        props.sw -= props.sw * _cutRate4;
 	        props.tw = props.tw + props.tx;
 	        props.tx = 0;
 	    }
-	    if (props.ty < 0 && props.th) {
+	    if (props.ty < 0 && props.th > -props.ty) {
 	        var _cutRate5 = -props.ty / props.th;
 	        props.sy += props.sh * _cutRate5;
 	        props.sh -= props.sh * _cutRate5;
@@ -1896,7 +1903,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 24 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1934,7 +1941,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 25 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2045,7 +2052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 26 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2054,7 +2061,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _img2base = __webpack_require__(4);
+	var _img2base = __webpack_require__(5);
 
 	var _img2base2 = _interopRequireDefault(_img2base);
 
@@ -2062,15 +2069,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _perPaintGetComputedStyle = __webpack_require__(25);
+	var _perPaintGetComputedStyle = __webpack_require__(32);
 
 	var _perPaintGetComputedStyle2 = _interopRequireDefault(_perPaintGetComputedStyle);
 
-	var _perPaintCutOutside = __webpack_require__(23);
+	var _perPaintCutOutside = __webpack_require__(30);
 
 	var _perPaintCutOutside2 = _interopRequireDefault(_perPaintCutOutside);
 
-	var _perPaintDeliverChildren = __webpack_require__(24);
+	var _perPaintDeliverChildren = __webpack_require__(31);
 
 	var _perPaintDeliverChildren2 = _interopRequireDefault(_perPaintDeliverChildren);
 
@@ -2185,8 +2192,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        settings.afterRotate = [-transX, -transY];
 	    }
 
-	    var scale = _props.scale;
-	    if (scale !== 1) {
+	    if (_props.scale !== 1) {
+	        var scale = _props.scale;
 	        _props.tx -= (scale - 1) * _props.tw >> 1;
 	        _props.ty -= (scale - 1) * _props.th >> 1;
 	        _props.tw *= scale;
@@ -2391,16 +2398,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 27 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _tick = __webpack_require__(5);
+	var _tick = __webpack_require__(7);
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _transition = __webpack_require__(15);
+	var _transition = __webpack_require__(21);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
@@ -2447,7 +2454,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 28 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2647,64 +2654,64 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 29 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _add = __webpack_require__(30);
+	var _add = __webpack_require__(37);
 
 	var _add2 = _interopRequireDefault(_add);
 
-	var _remove = __webpack_require__(35);
+	var _remove = __webpack_require__(42);
 
 	var _remove2 = _interopRequireDefault(_remove);
 
-	var _start = __webpack_require__(38);
+	var _start = __webpack_require__(45);
 
 	var _start2 = _interopRequireDefault(_start);
 
-	var _paint = __webpack_require__(32);
+	var _paint = __webpack_require__(39);
 
 	var _paint2 = _interopRequireDefault(_paint);
 
-	var _clear = __webpack_require__(31);
+	var _clear = __webpack_require__(38);
 
 	var _clear2 = _interopRequireDefault(_clear);
 
-	var _pause = __webpack_require__(33);
+	var _pause = __webpack_require__(40);
 
 	var _pause2 = _interopRequireDefault(_pause);
 
-	var _on = __webpack_require__(12);
+	var _on = __webpack_require__(14);
 
 	var _on2 = _interopRequireDefault(_on);
 
-	var _off = __webpack_require__(11);
+	var _off = __webpack_require__(13);
 
 	var _off2 = _interopRequireDefault(_off);
 
-	var _trigger = __webpack_require__(13);
+	var _trigger = __webpack_require__(15);
 
 	var _trigger2 = _interopRequireDefault(_trigger);
 
-	var _broadcast = __webpack_require__(9);
+	var _broadcast = __webpack_require__(11);
 
 	var _broadcast2 = _interopRequireDefault(_broadcast);
 
-	var _nextTick = __webpack_require__(10);
+	var _nextTick = __webpack_require__(12);
 
 	var _nextTick2 = _interopRequireDefault(_nextTick);
 
-	var _register = __webpack_require__(34);
+	var _register = __webpack_require__(41);
 
 	var _register2 = _interopRequireDefault(_register);
 
-	var _setFpsHandler = __webpack_require__(36);
+	var _setFpsHandler = __webpack_require__(43);
 
 	var _setFpsHandler2 = _interopRequireDefault(_setFpsHandler);
 
-	var _setMaxFps = __webpack_require__(37);
+	var _setMaxFps = __webpack_require__(44);
 
 	var _setMaxFps2 = _interopRequireDefault(_setMaxFps);
 
@@ -2738,12 +2745,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiOuter;
 
 /***/ }),
-/* 30 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _sprite = __webpack_require__(6);
+	var _sprite = __webpack_require__(8);
 
 	var _sprite2 = _interopRequireDefault(_sprite);
 
@@ -2758,7 +2765,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                  * ********** **/
 
 /***/ }),
-/* 31 */
+/* 38 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2775,7 +2782,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 32 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2791,7 +2798,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var $canvas = this;
 
-	    _utils2.default.execFuncs($canvas.hooks.ticked, $canvas, [$canvas.$rafTime]);
+	    _utils2.default.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
 
 	    // if (this.$isWebgl) {
 	    //     // let gl = this.$gl;
@@ -2841,8 +2848,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.fps++;
 
+	    _utils2.default.execFuncs($canvas.hooks.ticked, $canvas, [$canvas.$rafTime]);
+
 	    if ($canvas.hooks.nextTick) {
-	        _utils2.default.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
+	        _utils2.default.execFuncs($canvas.hooks.nextTick, $canvas, [$canvas.$rafTime]);
 	        delete $canvas.hooks.nextTick;
 	    }
 	}; /** ********** *
@@ -2853,7 +2862,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 33 */
+/* 40 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2869,12 +2878,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 34 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _eventHandlerScroll = __webpack_require__(8);
+	var _eventHandlerScroll = __webpack_require__(10);
 
 	var _eventHandlerScroll2 = _interopRequireDefault(_eventHandlerScroll);
 
@@ -2953,7 +2962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 35 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3007,7 +3016,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 36 */
+/* 43 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3024,7 +3033,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 37 */
+/* 44 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3041,7 +3050,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 38 */
+/* 45 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3071,10 +3080,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 	    }, 40); // TODO
+
+	    return this;
 	};
 
 /***/ }),
-/* 39 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3139,8 +3150,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            drawImage: function drawImage($canvas, _props) {
 	                if (!window[_constants2.default.devFlag].isPaintRecording) return;
 
-	                $canvas.$perf.$paintArea += _props[7] * _props[8];
-	                $canvas.$perf.$loadArea += _props[3] * _props[4];
+	                if (_props) {
+	                    $canvas.$perf.$paintArea += _props[7] * _props[8];
+	                    $canvas.$perf.$loadArea += _props[3] * _props[4];
+	                }
+
 	                $canvas.$perf.$paintTimes++;
 	            },
 	            jumpRender: function jumpRender($canvas, _props) {
@@ -3202,7 +3216,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        };
 	                    })(key);
 	                });
-	                window.$selectMask = $selectMask;
+	                // window.$selectMask = $selectMask;
 
 	                // mask of webgl
 	                $selectMask.webgl = $sprite.webgl ? {} : undefined;
@@ -3218,6 +3232,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        })(key);
 	                    }
 	                    $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);
+	                    delete $selectMask.webgl.colors;
+
 	                    $selectMask.webgl.opacity = 1;
 	                }
 
@@ -3260,20 +3276,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 40 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _apiOuter = __webpack_require__(29);
+	var _apiOuter = __webpack_require__(36);
 
 	var _apiOuter2 = _interopRequireDefault(_apiOuter);
 
-	var _apiInner = __webpack_require__(21);
+	var _apiInner = __webpack_require__(28);
 
 	var _apiInner2 = _interopRequireDefault(_apiInner);
 
-	var _prototype = __webpack_require__(41);
+	var _prototype = __webpack_require__(48);
 
 	var _prototype2 = _interopRequireDefault(_prototype);
 
@@ -3324,7 +3340,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = painter;
 
 /***/ }),
-/* 41 */
+/* 48 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3383,25 +3399,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PROTOS;
 
 /***/ }),
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
 /* 49 */,
 /* 50 */,
-/* 51 */
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _imgLoader = __webpack_require__(14);
+	var _imgLoader = __webpack_require__(20);
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
-	var _img2base = __webpack_require__(4);
+	var _img2base = __webpack_require__(5);
 
 	var _img2base2 = _interopRequireDefault(_img2base);
 
@@ -3449,8 +3474,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 52 */,
-/* 53 */
+/* 68 */,
+/* 69 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3476,7 +3501,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 54 */
+/* 70 */
 /***/ (function(module, exports) {
 
 	'use strict';

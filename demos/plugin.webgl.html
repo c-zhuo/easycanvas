@@ -1,0 +1,78 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.webgl.js"></script>
+</head>
+
+<style>
+    canvas {
+        border: 1px solid grey;
+        background-color: #4caf50;
+    }
+</style>
+
+<body>
+    <canvas id="foo" width="600" height="600"></canvas>
+
+    <script>
+        var $app = new Easycanvas.painter({
+            el: '#foo',
+            width: 600,
+            height: 600,
+            webgl: {
+                depth: 10000,
+                // depth: Easycanvas.transition.pendulum(100, 10, 5000).loop(),
+                fudgeFactor: Easycanvas.transition.pendulum(1, 10, 1000).loop(),
+                // camera: {
+                //     rx: Easycanvas.transition.pendulum(-180, 180, 5000).loop()
+                // }
+            },
+        });
+
+        var vertices = [], colors = [], indices = [];
+        var count = 20;
+
+        for (var i = 0; i < count; i++) {
+            vertices.push((vertices[i - 3] || 0) + Math.random() * 100 - 50);
+            vertices.push((vertices[i - 3] || 0) + Math.random() * 100 - 50);
+            vertices.push((vertices[i - 3] || 0) + Math.random() * 100 - 50);
+            colors.push(Math.floor(Math.random() * 255));
+        }
+
+        for (var i = 0; i < count * 3; i += 3) {
+            for (var j = i + 3; j < count * 3 - 3; j += 3) {
+                indices.push(i / 3);
+                indices.push(j / 3);
+                indices.push(j / 3 + 1);
+            }
+        }
+
+        var getColor = Easycanvas.transition.pendulum(50, 200, 1000).loop()
+
+        for (var i = 100; i <= 300; i += 100) {
+            var $random = new Easycanvas.class.sprite({
+                style: {
+                    tx: i, ty: 200,
+                },
+                webgl:Easycanvas.webglShapes.custom({
+                    vertices: vertices,
+                    indices: indices,
+                    colors: colors,
+                    // ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                }),
+            });
+
+            $random.on('ticked', function (tick) {
+                for (var i = 0, l = count; i < l; i++) {
+                    $random.webgl.colors[i * 3] = getColor();
+                }
+
+                this.updateWebglStyle('colors');
+            });
+
+            $app.add($random);
+        }
+
+        $app.start();
+    </script>
+</body>
+

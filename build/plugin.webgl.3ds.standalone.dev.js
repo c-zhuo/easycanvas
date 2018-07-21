@@ -55,24 +55,17 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(48);
+	module.exports = __webpack_require__(55);
 
 
 /***/ }),
 
-/***/ 48:
+/***/ 26:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	/** ********** *
-	 *
-	 * Based on lib3ds.js, transform *.3ds files to JSON structrue
-	 * - https://github.com/timknip/js3ds/blob/master/js/lib3ds.js.
-	 *
-	 * ********** **/
 
 	var NULL_CHUNK = 0x0000;
 	var M3DMAGIC = 0x4D4D; /*3DS file*/
@@ -1376,7 +1369,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.spectralColor = 0;
 	};
 
-	function loadFile(url, callback) {
+	module.exports = Lib3ds;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(72).Buffer))
+
+/***/ }),
+
+/***/ 55:
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ********** *
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * Based on lib3ds.js, transform *.3ds files to JSON structrue
+	                                                                                                                                                                                                                                                                   * - https://github.com/timknip/js3ds/blob/master/js/lib3ds.js
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * ********** **/
+
+	var _lib3ds = __webpack_require__(26);
+
+	var _lib3ds2 = _interopRequireDefault(_lib3ds);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function loader3DS(url, callback) {
 	    var req = new XMLHttpRequest();
 
 	    if (req.overrideMimeType) {
@@ -1386,16 +1402,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    req.onreadystatechange = function () {
 	        if (req.readyState == 4) {
 	            if (req.status == 0 || req.status == 200) {
-	                var res = new Lib3ds(false, false);
+	                // @0 is some div to log some stuff, ie: document.getElementById("myDebugDiv")
+	                // @1 is a boolean indicating whether to log
+	                var res = new _lib3ds2.default(false, false);
 	                res.readFile(req.responseText);
-	                // @debugDiv is some div to log some stuff, ie: document.getElementById("myDebugDiv")
-	                // @bDebugging is a boolean indicating whether to log
 
 	                var data = [];
 
 	                // loop over the parsed meshes
-	                var i, j;
-	                for (i = 0; i < res.meshes.length; i++) {
+	                for (var i = 0; i < res.meshes.length; i++) {
 	                    var vertices = [];
 	                    var indices = [];
 	                    var textures = [];
@@ -1404,7 +1419,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    var mesh = res.meshes[i]; // a mesh is of type Lib3dsMesh
 
 	                    // vertices
-	                    for (j = 0; j < mesh.points; j++) {
+	                    for (var j = 0; j < mesh.points; j++) {
 	                        var vert = mesh.pointL[j]; // a vert is an Array(3)
 	                        vertices.push(vert[0]);
 	                        vertices.push(vert[1]);
@@ -1469,18 +1484,55 @@ return /******/ (function(modules) { // webpackBootstrap
 	    req.send(null);
 	};
 
+	var classInit = function classInit(opt) {
+	    if (!opt.webgl || !opt.webgl._3ds) {
+	        return;
+	    }
+
+	    var _3dsUrl = opt.webgl._3ds;
+	    var _3dsImg = opt.webgl._3dsImg;
+	    var useCache = opt.webgl.cache !== false;
+	    var sprite = this;
+
+	    loader3DS(_3dsUrl, function (data) {
+	        sprite.webgl = {};
+	        delete opt.webgl._3ds;
+	        delete opt.webgl.cache;
+
+	        data.forEach(function (model) {
+	            var imgOrColors = _3dsImg && _3dsImg[model.img];
+
+	            sprite.add({
+	                name: model.img,
+	                webgl: _extends(window.Easycanvas.webglShapes.custom({
+	                    vertices: model.vertices,
+	                    indices: model.indices,
+	                    img: !(imgOrColors instanceof Array) && imgOrColors,
+	                    textures: model.textures,
+	                    colors: imgOrColors instanceof Array && imgOrColors
+	                }), opt.webgl)
+	            });
+	        });
+
+	        sprite.trigger('webgl-3ds-loaded');
+	    }, useCache);
+	};
+
 	var inBrowser = typeof window !== 'undefined';
 
 	if (inBrowser && window.Easycanvas) {
-	    window.Easycanvas.loader3ds = loadFile;
+	    window.Easycanvas.loader3DS = loader3DS;
+	    Easycanvas.extend(classInit);
 	} else {
-	    module.exports = plugin;
+	    module.exports = {
+	        loader3DS: loader3DS,
+	        classInit: classInit
+	    };
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56).Buffer))
 
 /***/ }),
 
-/***/ 55:
+/***/ 71:
 /***/ (function(module, exports) {
 
 	'use strict'
@@ -1603,7 +1655,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 56:
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -1616,9 +1668,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict'
 
-	var base64 = __webpack_require__(55)
-	var ieee754 = __webpack_require__(58)
-	var isArray = __webpack_require__(57)
+	var base64 = __webpack_require__(71)
+	var ieee754 = __webpack_require__(74)
+	var isArray = __webpack_require__(73)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -3400,7 +3452,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 57:
+/***/ 73:
 /***/ (function(module, exports) {
 
 	var toString = {}.toString;
@@ -3412,7 +3464,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 58:
+/***/ 74:
 /***/ (function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {

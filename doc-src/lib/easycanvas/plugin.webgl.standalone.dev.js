@@ -55,7 +55,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(49);
+	module.exports = __webpack_require__(56);
 
 
 /***/ }),
@@ -143,7 +143,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -188,7 +188,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 20:
+/***/ 19:
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	var arrayRepeat = function arrayRepeat(arr, n) {
+	    var oldLength = arr.length;
+	    var newArray = new Array(Math.round(oldLength * n));
+
+	    for (var i = 0, l = newArray.length; i < l; i++) {
+	        newArray[i] = arr[i % oldLength];
+	    }
+
+	    return newArray;
+	};
+
+	module.exports = {
+	    arrayRepeat: arrayRepeat
+	};
+
+/***/ }),
+
+/***/ 27:
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -1394,39 +1416,47 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 49:
+/***/ 56:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _m = __webpack_require__(20);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ********** *
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * Support webgl rendering
+	                                                                                                                                                                                                                                                                   * - Usage: set {webgl: true} in config on registering your canvas instance.
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * ********** **/
+
+	var _m = __webpack_require__(27);
 
 	var _m2 = _interopRequireDefault(_m);
 
-	var _webglShapes = __webpack_require__(50);
+	var _webglShapes = __webpack_require__(66);
 
 	var _webglShapes2 = _interopRequireDefault(_webglShapes);
+
+	var _webglShaders = __webpack_require__(65);
+
+	var _webglShaders2 = _interopRequireDefault(_webglShaders);
+
+	var _webglUtils = __webpack_require__(19);
 
 	var _utils = __webpack_require__(1);
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _math = __webpack_require__(52);
+	var _math = __webpack_require__(68);
 
 	var _math2 = _interopRequireDefault(_math);
 
-	var _img2base = __webpack_require__(4);
+	var _img2base = __webpack_require__(5);
 
 	var _img2base2 = _interopRequireDefault(_img2base);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var m4 = (0, _m2.default)(); /** ********** *
-	                              *
-	                              * Support webgl rendering
-	                              * - Usage: set {webgl: true} in config on registering your canvas instance.
-	                              *
-	                              * ********** **/
+	var m4 = (0, _m2.default)();
 
 	var inBrowser = typeof window !== 'undefined';
 
@@ -1434,19 +1464,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    console.error('[Easycanvas-webgl] ' + msg);
 	};
 
-	var Shader_Vertex_Color = '\n    attribute vec4 a_position;\n    attribute vec4 a_color;\n    uniform float u_fudgeFactor; // \u900F\u5C04\n\n    uniform mat4 u_matrix;\n\n    varying vec4 v_color;\n\n    void main() {\n        // Multiply the position by the matrix.\n        // gl_Position = u_matrix * a_position;\n\n        // \u900F\u5C04\n        // \u8C03\u6574\u9664\u6570\n        vec4 position = u_matrix * a_position;\n        // \u7531\u4E8E\u88C1\u51CF\u7A7A\u95F4\u4E2D\u7684 Z \u503C\u662F -1 \u5230 +1 \u7684\uFF0C\u6240\u4EE5 +1 \u662F\u4E3A\u4E86\u8BA9 zToDivideBy \u53D8\u6210 0 \u5230 +2 * fudgeFactor\n        float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // \u900F\u5C04\n        gl_Position = vec4(position.xy / zToDivideBy, position.zw);\n\n        v_color = a_color;\n    }\n';
-	var Shader_Vertex_Textcoord = '\n    attribute vec4 a_position;\n    attribute vec2 a_texcoord;\n    uniform float u_fudgeFactor; // \u900F\u5C04\n\n    uniform mat4 u_matrix;\n\n    varying vec2 v_texcoord;\n\n    void main() {\n        // Multiply the position by the matrix.\n        // gl_Position = u_matrix * a_position;\n\n        // \u900F\u5C04\n        // \u8C03\u6574\u9664\u6570\n        vec4 position = u_matrix * a_position;\n        // \u7531\u4E8E\u88C1\u51CF\u7A7A\u95F4\u4E2D\u7684 Z \u503C\u662F -1 \u5230 +1 \u7684\uFF0C\u6240\u4EE5 +1 \u662F\u4E3A\u4E86\u8BA9 zToDivideBy \u53D8\u6210 0 \u5230 +2 * fudgeFactor\n        float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // \u900F\u5C04\n        gl_Position = vec4(position.xy / zToDivideBy, position.zw);\n\n        v_texcoord = a_texcoord;\n    }\n';
-
-	var Shader_Fragment_Textcoord = '\n    precision mediump float;\n\n    varying vec2 v_texcoord;\n\n    uniform sampler2D u_texture;\n\n    void main() {\n       gl_FragColor = texture2D(u_texture, v_texcoord);\n    }\n';
-	var Shader_Fragment_Color = '\n    precision mediump float;\n\n    varying vec4 v_color;\n\n    uniform sampler2D u_texture;\n\n    void main() {\n       gl_FragColor = v_color;\n    }\n';
-
 	var createShader = function () {
 	    var shaderCachePool = {};
 
-	    return function (gl, sourceCode, type) {
-	        if (shaderCachePool[sourceCode]) {
-	            return shaderCachePool[sourceCode];
+	    return function (gl, type, colorOrTex, light) {
+	        var cacheKey = '' + type + colorOrTex + light;
+
+	        if (shaderCachePool[cacheKey]) {
+	            return shaderCachePool[cacheKey];
 	        }
+
+	        var sourceCode = _webglShaders2.default.factory(gl, type)(colorOrTex, light);
 
 	        // Compiles either a shader of type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
 	        var shader = gl.createShader(type);
@@ -1458,7 +1486,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            throw 'Could not compile WebGL program. \n\n' + info;
 	        }
 
-	        shaderCachePool[sourceCode] = shader;
+	        shaderCachePool[cacheKey] = shader;
+
 	        return shader;
 	    };
 	}();
@@ -1484,19 +1513,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	var toggleShader = function () {
 	    var lastType;
 
-	    return function (gl, type) {
+	    return function (gl, type, light) {
 	        if (lastType === type) return;
 
 	        lastType = type;
 
 	        var shaderVertexColor, shaderFragmentColor;
-	        if (type === 0) {
-	            shaderVertexColor = createShader(gl, Shader_Vertex_Color, gl.VERTEX_SHADER);
-	            shaderFragmentColor = createShader(gl, Shader_Fragment_Color, gl.FRAGMENT_SHADER);
-	        } else {
-	            shaderVertexColor = createShader(gl, Shader_Vertex_Textcoord, gl.VERTEX_SHADER);
-	            shaderFragmentColor = createShader(gl, Shader_Fragment_Textcoord, gl.FRAGMENT_SHADER);
-	        }
+	        shaderVertexColor = createShader(gl, gl.VERTEX_SHADER, type, light);
+	        shaderFragmentColor = createShader(gl, gl.FRAGMENT_SHADER, type, light);
 
 	        gl.program = createProgram(gl, shaderVertexColor, shaderFragmentColor);
 
@@ -1504,11 +1528,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // look up where the vertex data needs to go.
 	        gl.positionLocation = gl.getAttribLocation(gl.program, 'a_position');
+	        gl.normalLocation = gl.getAttribLocation(gl.program, "a_normal");
 	        if (type === 0) {
 	            gl.colorLocation = gl.getAttribLocation(gl.program, 'a_color');
 	        } else {
 	            gl.texcoordLocation = gl.getAttribLocation(gl.program, 'a_texcoord');
 	        }
+
+	        // light
+	        // if (type === 0) {
+	        gl.worldViewProjectionLocation = gl.getUniformLocation(gl.program, "u_worldViewProjection");
+	        gl.worldInverseTransposeLocation = gl.getUniformLocation(gl.program, "u_worldInverseTranspose");
+	        gl.reverseLightDirectionLocation = gl.getUniformLocation(gl.program, "u_reverseLightDirection");
+	        // }
 
 	        // lookup uniforms
 	        gl.matrixLocation = gl.getUniformLocation(gl.program, 'u_matrix');
@@ -1519,6 +1551,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        gl.enableVertexAttribArray(gl.positionLocation);
+	        light && gl.enableVertexAttribArray(gl.normalLocation);
 	        gl.enableVertexAttribArray(gl.texcoordLocation);
 	        gl.enableVertexAttribArray(gl.colorLocation);
 	    };
@@ -1599,12 +1632,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // loading img
 	        // gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
 	        // 跳过绘制
-	        var longSide = webgl.longSide * 1.8; // 三维根号3
-	        var depth = $canvas.webgl.depth;
-	        var meet = (0, _math2.default)(webgl.tx - longSide, webgl.ty - longSide, longSide * 2, longSide * 2, webgl.tz / depth * $canvas.width / 2, webgl.tz / depth * $canvas.height / 2, $canvas.width - webgl.tz / depth * $canvas.width / 2, $canvas.height - webgl.tz / depth * $canvas.height / 2, 0, 0, 0);
-	        if (!meet) {
-	            // console.log('miss');
-	            return;
+	        if (webgl.longSide) {
+	            var longSide = webgl.longSide * 1.8; // 三维根号3
+	            var depth = $canvas.webgl.$depth;
+	            var meet = (0, _math2.default)(webgl.tx - longSide, webgl.ty - longSide, longSide * 2, longSide * 2, webgl.tz / depth * $canvas.width / 2, webgl.tz / depth * $canvas.height / 2, $canvas.width - webgl.tz / depth * $canvas.width / 2, $canvas.height - webgl.tz / depth * $canvas.height / 2, 0, 0, 0);
+	            if (!meet) {
+	                // console.log('miss');
+	                return;
+	            }
 	        }
 
 	        webglRender3d($canvas, webgl);
@@ -1629,7 +1664,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var positionBuffer = webgl.vertices.$cacheBuffer,
 	        colorBuffer,
 	        texcoordBuffer,
-	        indicesBuffer;
+	        indicesBuffer,
+	        normalsBuffer;
 
 	    if (!positionBuffer) {
 	        positionBuffer = gl.createBuffer();
@@ -1672,12 +1708,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 
+	    if (webgl.normals) {
+	        normalsBuffer = webgl.normals.$cacheBuffer;
+	        if (!normalsBuffer) {
+	            normalsBuffer = gl.createBuffer();
+	            gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+	            gl.bufferData(gl.ARRAY_BUFFER, webgl.normals, gl.STATIC_DRAW);
+	            webgl.normals.$cacheBuffer = normalsBuffer;
+	        }
+	    }
+
 	    // webglUtils.resizeCanvasToDisplaySize(gl.canvas);
 	    // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 	    // gl.enable(gl.CULL_FACE);
 
 	    if (colorBuffer) {
-	        toggleShader(gl, 0);
+	        toggleShader(gl, 0, $canvas.webgl.light);
 	        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 	        var size = 3; // 3 components per iteration
 	        var type = gl.UNSIGNED_BYTE; // the data is 8bit unsigned values
@@ -1686,7 +1732,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var offset = 0; // start at the beginning of the buffer
 	        gl.vertexAttribPointer(gl.colorLocation, size, type, normalize, stride, offset);
 	    } else if (texcoordBuffer) {
-	        toggleShader(gl, 1);
+	        toggleShader(gl, 1, $canvas.webgl.light);
 	        gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 	        var size = 2; // 2 components per iteration
 	        var type = gl.FLOAT; // the data is 32bit floats
@@ -1706,9 +1752,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        gl.vertexAttribPointer(gl.positionLocation, size, type, normalize, stride, offset);
 	    }
 
-	    if ($canvas.webgl.fudgeFactor) {
+	    if (webgl.normals) {
+	        gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+	        var size = 3; // 3 components per iteration
+	        var type = gl.FLOAT; // the data is 32bit floats
+	        var normalize = false; // don't normalize the data
+	        var stride = 0; // 0 = move forward size * sizeof(type) each iteration to get the next position
+	        var offset = 0; // start at the beginning of the buffer
+	        gl.vertexAttribPointer(gl.normalLocation, size, type, normalize, stride, offset);
+	    }
+
+	    if ($canvas.webgl.$fudgeFactor) {
 	        var fudgeLocation = gl.getUniformLocation(gl.program, "u_fudgeFactor");
-	        var fudgeFactor = $canvas.webgl.fudgeFactor;
+	        var fudgeFactor = $canvas.webgl.$fudgeFactor;
 	        gl.uniform1f(fudgeLocation, fudgeFactor);
 	    }
 
@@ -1720,15 +1776,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        matrix = m4.xRotate(matrix, degToRad(webgl.rx) || 0);
 	        matrix = m4.yRotate(matrix, degToRad(webgl.ry) || 0);
 	        matrix = m4.zRotate(matrix, degToRad(webgl.rz) || 0);
-	        matrix = m4.scale(matrix, webgl.scaleX || webgl.scale || 1, webgl.scaleY || webgl.scale || 1, webgl.scaleZ || webgl.scale || 1);
+	        matrix = m4.scale(matrix, (webgl.scaleX !== 1 ? webgl.scaleX : webgl.scale) || 1, (webgl.scaleY !== 1 ? webgl.scaleY : webgl.scale) || 1, (webgl.scaleZ !== 1 ? webgl.scaleZ : webgl.scale) || 1);
 	        var projectionMatrix = matrix;
 	    }
 
 	    if ($canvas.webgl.camera) {
 	        // camera
-	        var fieldOfViewRadians = degToRad(60);
-	        var modelXRotationRadians = degToRad(0);
-	        var modelYRotationRadians = degToRad(0);
+	        // var fieldOfViewRadians = degToRad(60);
+	        // var modelXRotationRadians = degToRad(0);
+	        // var modelYRotationRadians = degToRad(0);
 
 	        // // Compute the projection matrix
 	        // // 投射投影
@@ -1736,6 +1792,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // var projectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 1, 2000);
 
 	        var cameraPosition = [degToRad(_utils2.default.funcOrValue($canvas.webgl.camera.rx || 0, $canvas)), degToRad(_utils2.default.funcOrValue($canvas.webgl.camera.ry || 0, $canvas)),
+	        // degToRad(utils.funcOrValue($canvas.webgl.camera.rz || 0, $canvas)),
 	        // utils.funcOrValue($canvas.webgl.camera.rz, $canvas),
 	        1];
 	        // cameraPosition = [degToRad(0), 0, 1];
@@ -1750,8 +1807,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var projectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
 	    }
 
+	    if ($canvas.webgl.light) {
+	        // 光照变换
+	        gl.uniformMatrix4fv(gl.worldViewProjectionLocation, false, matrix);
+	        gl.uniformMatrix4fv(gl.worldInverseTransposeLocation, false, m4.transpose(projectionMatrix));
+	    }
+
 	    // 耗性能
 	    gl.uniformMatrix4fv(gl.matrixLocation, false, projectionMatrix);
+
+	    if ($canvas.webgl.light) {
+	        var colorLocation = gl.getUniformLocation(gl.program, "a_color");
+	        gl.uniform4fv(colorLocation, [1, 1, 1, 1]); // color
+	        gl.uniform3fv(gl.reverseLightDirectionLocation, m4.normalize([0, 1, 0]));
+	    }
 
 	    // Tell the shader to use texture unit 0 for u_texture
 	    gl.uniform1i(gl.textureLocation, 0);
@@ -1847,15 +1916,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var webglRegister = function webglRegister($canvas, option) {
 	    $canvas.$isWebgl = true;
 
-	    $canvas.webgl = {
-	        depth: option.webgl.depth || 10000,
-	        fudgeFactor: option.webgl.fudgeFactor || 0,
-	        camera: option.webgl.camera
-	    };
+	    $canvas.webgl = {};
+	    _extends($canvas.webgl, option.webgl);
+	    $canvas.webgl.depth = $canvas.webgl.depth || 10000;
 
 	    var gl = $canvas.$gl = $canvas.$paintContext;
-
-	    gl.orthographic = m4.orthographic(0, $canvas.width, $canvas.height, 0, -$canvas.webgl.depth, $canvas.webgl.depth);
 
 	    gl.clearColor(0, 0, 0, 0);
 	    // gl.clear(gl.COLOR_BUFFER_BIT);
@@ -1900,14 +1965,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	var onCreate = function onCreate(_option) {
+	    var _this = this;
+
 	    if (_option.webgl) {
+	        // 获取webgl对象
 	        this.$paintContext = this.$dom.getContext('webgl', {
 	            alpha: true,
 	            premultipliedAlpha: false
 	        });
 
+	        // 检测是否支持webgl
 	        if (this.$paintContext) {
 	            webglRegister(this, _option);
+
+	            // 挂载每帧的事件监听
+	            this.on('beforeTick', function () {
+	                // 把每帧只需要计算一次的属性放到钩子里
+	                // 后面可以增加camera.rx、light等参数，进一步优化性能
+	                _this.webgl.$depth = _utils2.default.funcOrValue(_utils2.default.firstValuable(_this.webgl.depth, 0), _this);
+	                _this.webgl.$fudgeFactor = _utils2.default.funcOrValue(_utils2.default.firstValuable(_this.webgl.fudgeFactor, 0), _this);
+	                _this.$paintContext.orthographic = m4.orthographic(0, _this.width, _this.height, 0, -_this.webgl.$depth, _this.webgl.$depth);
+	            });
 	        } else {
 	            if (true) {
 	                err('Webgl is not supported in current browser, using canvas2d instead.');
@@ -1920,12 +1998,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 
+	var default0s = ['rx', 'ry', 'rz'];
+	var default1s = ['scale', 'scaleX', 'scaleY', 'scaleZ'];
+	var styleKeys = default0s.concat(default1s);
+
 	var onPaint = function onPaint() {
 	    var $sprite = this;
 	    var $canvas = this.$canvas;
 
-	    if ($sprite.webgl) {
+	    if ($sprite.webgl && $sprite.webgl.vertices) {
 	        $sprite.$rendered = true;
+
+	        if ($sprite.webgl.img) {
+	            if (typeof $sprite.webgl.img === 'string') {
+	                $sprite.webgl.img = $canvas.imgLoader($sprite.webgl.img);
+	            } else if ($sprite.webgl.img.src) {
+	                $sprite.webgl.img = $canvas.imgLoader($sprite.webgl.img.src);
+	            }
+	        }
 
 	        var _webgl = {
 	            tx: $sprite.getStyle('tx'),
@@ -1934,9 +2024,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 
 	        for (var key in $sprite.webgl) {
-	            // 耗性能
 	            _webgl[key] = _utils2.default.funcOrValue($sprite.webgl[key], $sprite) || 0;
 	        }
+
+	        styleKeys.forEach(function (key) {
+	            _webgl[key] = $sprite.getWebglStyle(key);
+	        });
 
 	        var $paintSprite = {
 	            $id: $sprite.$id,
@@ -1958,12 +2051,53 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if ($canvas.$isWebgl) {
 	        webglRender($sprite, settings, $canvas);
+
+	        if (true) {
+	            $canvas.$plugin.drawImage($canvas);
+	        }
+
 	        return true;
 	    }
 	};
 
 	var onUse = function onUse(easycanvas) {
 	    easycanvas.webglShapes = _webglShapes2.default;
+
+	    easycanvas.sprite.prototype.getWebglStyle = function (key) {
+	        var $sprite = this;
+	        var currentValue = void 0;
+
+	        if (default1s.indexOf(key) >= 0) currentValue = 1;
+	        if (default0s.indexOf(key) >= 0) currentValue = 0;
+
+	        if ($sprite.webgl) {
+	            currentValue = _utils2.default.funcOrValue($sprite.webgl[key], $sprite) || currentValue;
+	        }
+
+	        if ($sprite.$parent) {
+	            if (default1s.indexOf(key) >= 0) {
+	                currentValue *= _utils2.default.firstValuable($sprite.$parent.getWebglStyle(key), 1);
+	            } else if (default0s.indexOf(key) >= 0) {
+	                // rx, ry, rz
+	                currentValue += _utils2.default.firstValuable($sprite.$parent.getWebglStyle(key), 0);
+	            }
+	        }
+
+	        return currentValue;
+	    };
+
+	    easycanvas.sprite.prototype.updateWebglStyle = function (key, value) {
+	        var $sprite = this;
+
+	        if ($sprite.webgl && $sprite.webgl[key]) {
+	            $sprite.webgl[key].$cacheBuffer = undefined;
+
+	            if (key === 'colors' && value) {
+	                var repeatTimes = $sprite.webgl.vertices.length / value.length;
+	                $sprite.webgl.colors = new Uint8Array((0, _webglUtils.arrayRepeat)(value, repeatTimes));
+	            }
+	        }
+	    };
 	};
 
 	var plugin = {
@@ -1975,19 +2109,49 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	if (inBrowser && window.Easycanvas) {
 	    Easycanvas.use(plugin);
-	    onUse(Easycanvas);
 	} else {
 	    module.exports = plugin;
 	}
 
 /***/ }),
 
-/***/ 50:
+/***/ 65:
 /***/ (function(module, exports) {
+
+	'use strict';
+
+	// @type: 0-color 1-textcoord
+	var shaderVertexFactory = function shaderVertexFactory(type, useLight) {
+	    var shaderString = '\n        attribute vec4 a_position;\n        ' + (type === 0 ? 'attribute vec4 a_color;' : 'attribute vec2 a_texcoord;') + '\n        ' + (useLight && '\n            attribute vec3 a_normal;\n            uniform mat4 u_worldViewProjection;\n            uniform mat4 u_worldInverseTranspose;\n        ' || '') + '\n        uniform float u_fudgeFactor; // \u900F\u5C04\n\n        uniform mat4 u_matrix;\n\n        ' + (type === 0 ? 'varying vec4 v_color;' : 'varying vec2 v_texcoord;') + '\n        ' + (useLight && '\n            varying vec3 v_normal;\n        ' || '') + '\n\n        void main() {\n            // Multiply the position by the matrix.\n            // gl_Position = u_matrix * a_position;\n\n            // \u900F\u5C04\n            // \u8C03\u6574\u9664\u6570\n            vec4 position = u_matrix * a_position;\n            // \u7531\u4E8E\u88C1\u51CF\u7A7A\u95F4\u4E2D\u7684 Z \u503C\u662F -1 \u5230 +1 \u7684\uFF0C\u6240\u4EE5 +1 \u662F\u4E3A\u4E86\u8BA9 zToDivideBy \u53D8\u6210 0 \u5230 +2 * fudgeFactor\n            float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // \u900F\u5C04\n\n            ' + (useLight ? 'gl_Position = u_worldViewProjection * a_position;' : // 和投射冲突了 TODO
+	    'gl_Position = vec4(position.xy / zToDivideBy, position.zw);') + '\n\n            // gl_Position = u_worldViewProjection * vec4(position.xy / zToDivideBy, position.zw);\n\n            ' + (type === 0 ? 'v_color = a_color;' : 'v_texcoord = a_texcoord;') + '\n\n                ' + (useLight && '\n                    v_normal = mat3(u_worldInverseTranspose) * a_normal;\n                ' || '') + '\n        }\n    ';
+
+	    return shaderString;
+	};
+
+	var shaderFragmentFactory = function shaderFragmentFactory(type, useLight) {
+	    var shaderString = '\n        precision mediump float;\n\n        ' + (type === 0 ? 'varying vec4 v_color;' : 'varying vec2 v_texcoord;') + '\n\n        uniform sampler2D u_texture;\n\n        ' + (useLight && '\n            varying vec3 v_normal;\n            uniform vec3 u_reverseLightDirection;\n        ' || '') + '\n\n        void main() {\n            ' + (useLight && '\n                vec3 normal = normalize(v_normal);\n                float light = dot(normal, u_reverseLightDirection);\n            ' || '') + '\n\n            ' + (type === 0 ? 'gl_FragColor = v_color;' : 'gl_FragColor = texture2D(u_texture, v_texcoord);') + '\n\n            ' + (useLight && '\n                light += 2.0;\n                light *= 0.5;\n                gl_FragColor.rgb *= light;\n            ' || '') + '\n        }\n    ';
+
+	    return shaderString;
+	};
+
+	module.exports = {
+	    shaderVertexFactory: shaderVertexFactory,
+	    shaderFragmentFactory: shaderFragmentFactory,
+	    factory: function factory(gl, type) {
+	        return type === gl.FRAGMENT_SHADER ? shaderFragmentFactory : shaderVertexFactory;
+	    }
+	};
+
+/***/ }),
+
+/***/ 66:
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _webglUtils = __webpack_require__(19);
 
 	var blockIndices = new Uint16Array([0, 1, 2, 0, 2, 3, // front  
 	4, 5, 6, 4, 6, 7, // right  
@@ -1996,7 +2160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	16, 17, 18, 16, 18, 19, // down  
 	20, 21, 22, 20, 22, 23]);
 
-	var blockTextures = new Float32Array(arrayRepeat([0, 0, 0, 1, 1, 1, 1, 0], 6));
+	var blockTextures = new Float32Array((0, _webglUtils.arrayRepeat)([0, 0, 0, 1, 1, 1, 1, 0], 6));
 
 	var TRIANGLE_FAN = 6;
 
@@ -2015,17 +2179,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        indices: [[7, 3, 1, 5], [7, 5, 4, 6], [7, 6, 2, 3], [3, 2, 0, 1], [0, 2, 6, 4], [1, 0, 4, 5]]
 	    }
 
-	};
-
-	function arrayRepeat(arr, n) {
-	    var oldLength = arr.length;
-	    var newArray = new Array(Math.round(oldLength * n));
-
-	    for (var i = 0, l = newArray.length; i < l; i++) {
-	        newArray[i] = arr[i % oldLength];
-	    }
-
-	    return newArray;
 	};
 
 	var createShapeWithCachedArray = function () {
@@ -2167,7 +2320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (!result.colors) {
 	                // var colorRepeatTimes = result.vertices.length / colors.length;
 	                var colorRepeatTimes = (result.indices || result.vertices).length / colors.length * (result.indices ? 3 : 1);
-	                result.colors = new Uint8Array(arrayRepeat(colors, Math.ceil(colorRepeatTimes)));
+	                result.colors = new Uint8Array((0, _webglUtils.arrayRepeat)(colors, Math.ceil(colorRepeatTimes)));
 
 	                cachePool[key + 'c'] = result.colors;
 	            }
@@ -2187,6 +2340,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return structure;
 	};
 
+	var err = function err(msg) {
+	    console.error('[Easycanvas-webgl] ' + msg);
+	};
+
 	var webglShapes = {
 	    block: function block(opt) {
 	        var structure = createShapeWithCachedArray('block', [opt.a, opt.b, opt.c], opt.colors);
@@ -2204,16 +2361,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    custom: function custom(opt) {
-	        var res = _extends(opt, {
-	            vertices: new Float32Array(opt.vertices),
-	            indices: new Uint16Array(opt.indices),
-	            textures: new Float32Array(opt.textures)
-	        });
+	        // if (process.env.NODE_ENV !== 'production') {
+	        //     if (!opt.vertices || !opt.vertices.length) {
+	        //         err('No vertices provided on custom shape.');
+	        //         // console.log(opt);
+	        //         // return;
+	        //     }
+	        // }
+
+	        if (!opt.vertices.$cache) {
+	            // 确保复用Float32Array类型的vertices
+	            // 一个模型含有多个children时，使用相同的vertices的Buffer，提升效率
+	            opt.vertices.$cache = new Float32Array(opt.vertices);
+	        }
+
+	        if (opt.normals && opt.normals.length) {
+	            if (!opt.normals.$cache) {
+	                opt.normals.$cache = new Float32Array(opt.normals);
+	            }
+	        }
+
+	        if (opt.indices && opt.indices.length) {
+	            if (!opt.indices.$cache) {
+	                opt.indices.$cache = new Uint16Array(opt.indices);
+	            }
+	        }
+
+	        if (opt.textures && opt.textures.length) {
+	            if (!opt.textures.$cache) {
+	                var repeatTimes = opt.vertices.length / opt.textures.length / 1.5;
+	                opt.textures.$cache = new Float32Array((0, _webglUtils.arrayRepeat)(opt.textures, repeatTimes));
+	            }
+	        }
 
 	        if (opt.colors && opt.colors.length) {
-	            var colorRepeatTimes = (opt.indices || opt.vertices).length / opt.colors.length * (opt.indices ? 3 : 1);
-	            res.colors = new Uint8Array(arrayRepeat(opt.colors, colorRepeatTimes));
+	            if (!opt.colors.$cache) {
+	                var repeatTimes = opt.vertices.length / opt.colors.length;
+	                opt.colors.$cache = new Uint8Array((0, _webglUtils.arrayRepeat)(opt.colors, repeatTimes));
+	            }
 	        }
+
+	        var res = _extends(opt, {
+	            vertices: opt.vertices.$cache,
+	            normals: opt.normals ? opt.normals.$cache : undefined,
+	            indices: opt.indices ? opt.indices.$cache : undefined,
+	            textures: opt.textures ? opt.textures.$cache : undefined,
+	            colors: opt.colors ? opt.colors.$cache : undefined
+	        });
 
 	        return res;
 	    }
@@ -2240,7 +2434,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 52:
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
