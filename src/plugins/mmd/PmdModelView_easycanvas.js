@@ -1,5 +1,6 @@
 import { vec3, quat4, mat4 } from 'lib/_glMatrix-0.9.5.min.js';
 import __GlslFunctions from './_GlslFunctions.js';
+import Physics from './Physics.js';
 
 var createFloatArray = function(num) {
   return new Float32Array(num);
@@ -757,7 +758,7 @@ PMDModelView.prototype.draw = function() {
     }
 
     var num = this.pmd.materials[i].vertexCount;
-    this._draw(this.textures[window.aaa || i], offset, num); // textrue!!!!!  6=eye
+    this._draw(this.textures[i], offset, num); // textrue!!!!!  6=eye
     offset += num;
   }
 };

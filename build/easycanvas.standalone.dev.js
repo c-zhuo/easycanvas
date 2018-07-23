@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(23);
+	module.exports = __webpack_require__(24);
 
 
 /***/ }),
@@ -925,7 +925,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 17 */,
 /* 18 */,
 /* 19 */,
-/* 20 */
+/* 20 */,
+/* 21 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1059,7 +1060,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = loader;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -1217,7 +1218,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = transFuncs;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1442,7 +1443,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1451,7 +1452,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _index = __webpack_require__(47);
+	var _index = __webpack_require__(48);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -1467,11 +1468,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _transition = __webpack_require__(21);
+	var _transition = __webpack_require__(22);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
-	var _imgLoader = __webpack_require__(20);
+	var _imgLoader = __webpack_require__(21);
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
@@ -1487,7 +1488,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _sprite2 = _interopRequireDefault(_sprite);
 
-	var _chromeDevtool = __webpack_require__(22);
+	var _chromeDevtool = __webpack_require__(23);
 
 	var _chromeDevtool2 = _interopRequireDefault(_chromeDevtool);
 
@@ -1555,24 +1556,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Easycanvas;
 
 /***/ }),
-/* 24 */,
 /* 25 */,
 /* 26 */,
 /* 27 */,
-/* 28 */
+/* 28 */,
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _perPaint = __webpack_require__(33);
+	var _perPaint = __webpack_require__(34);
 
 	var _perPaint2 = _interopRequireDefault(_perPaint);
 
-	var _render = __webpack_require__(35);
+	var _render = __webpack_require__(36);
 
 	var _render2 = _interopRequireDefault(_render);
 
-	var _eventHandler = __webpack_require__(29);
+	var _eventHandler = __webpack_require__(30);
 
 	var _eventHandler2 = _interopRequireDefault(_eventHandler);
 
@@ -1580,11 +1581,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _bindDrag2 = _interopRequireDefault(_bindDrag);
 
-	var _rAFer = __webpack_require__(34);
+	var _rAFer = __webpack_require__(35);
 
 	var _rAFer2 = _interopRequireDefault(_rAFer);
 
-	var _apiPlugin = __webpack_require__(46);
+	var _apiPlugin = __webpack_require__(47);
 
 	var _apiPlugin2 = _interopRequireDefault(_apiPlugin);
 
@@ -1613,7 +1614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiInner;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1841,7 +1842,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -1903,7 +1904,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1941,7 +1942,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2052,7 +2053,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2069,15 +2070,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _perPaintGetComputedStyle = __webpack_require__(32);
+	var _perPaintGetComputedStyle = __webpack_require__(33);
 
 	var _perPaintGetComputedStyle2 = _interopRequireDefault(_perPaintGetComputedStyle);
 
-	var _perPaintCutOutside = __webpack_require__(30);
+	var _perPaintCutOutside = __webpack_require__(31);
 
 	var _perPaintCutOutside2 = _interopRequireDefault(_perPaintCutOutside);
 
-	var _perPaintDeliverChildren = __webpack_require__(31);
+	var _perPaintDeliverChildren = __webpack_require__(32);
 
 	var _perPaintDeliverChildren2 = _interopRequireDefault(_perPaintDeliverChildren);
 
@@ -2398,7 +2399,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2407,7 +2408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _transition = __webpack_require__(21);
+	var _transition = __webpack_require__(22);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
@@ -2454,7 +2455,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2654,32 +2655,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _add = __webpack_require__(37);
+	var _add = __webpack_require__(38);
 
 	var _add2 = _interopRequireDefault(_add);
 
-	var _remove = __webpack_require__(42);
+	var _remove = __webpack_require__(43);
 
 	var _remove2 = _interopRequireDefault(_remove);
 
-	var _start = __webpack_require__(45);
+	var _start = __webpack_require__(46);
 
 	var _start2 = _interopRequireDefault(_start);
 
-	var _paint = __webpack_require__(39);
+	var _paint = __webpack_require__(40);
 
 	var _paint2 = _interopRequireDefault(_paint);
 
-	var _clear = __webpack_require__(38);
+	var _clear = __webpack_require__(39);
 
 	var _clear2 = _interopRequireDefault(_clear);
 
-	var _pause = __webpack_require__(40);
+	var _pause = __webpack_require__(41);
 
 	var _pause2 = _interopRequireDefault(_pause);
 
@@ -2703,15 +2704,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _nextTick2 = _interopRequireDefault(_nextTick);
 
-	var _register = __webpack_require__(41);
+	var _register = __webpack_require__(42);
 
 	var _register2 = _interopRequireDefault(_register);
 
-	var _setFpsHandler = __webpack_require__(43);
+	var _setFpsHandler = __webpack_require__(44);
 
 	var _setFpsHandler2 = _interopRequireDefault(_setFpsHandler);
 
-	var _setMaxFps = __webpack_require__(44);
+	var _setMaxFps = __webpack_require__(45);
 
 	var _setMaxFps2 = _interopRequireDefault(_setMaxFps);
 
@@ -2745,7 +2746,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiOuter;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2765,7 +2766,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                  * ********** **/
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2782,7 +2783,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2862,7 +2863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2878,7 +2879,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2962,7 +2963,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3016,7 +3017,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3033,7 +3034,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3050,7 +3051,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3085,7 +3086,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3276,20 +3277,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _apiOuter = __webpack_require__(36);
+	var _apiOuter = __webpack_require__(37);
 
 	var _apiOuter2 = _interopRequireDefault(_apiOuter);
 
-	var _apiInner = __webpack_require__(28);
+	var _apiInner = __webpack_require__(29);
 
 	var _apiInner2 = _interopRequireDefault(_apiInner);
 
-	var _prototype = __webpack_require__(48);
+	var _prototype = __webpack_require__(49);
 
 	var _prototype2 = _interopRequireDefault(_prototype);
 
@@ -3340,7 +3341,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = painter;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3399,7 +3400,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PROTOS;
 
 /***/ }),
-/* 49 */,
 /* 50 */,
 /* 51 */,
 /* 52 */,
@@ -3422,7 +3422,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _imgLoader = __webpack_require__(20);
+	var _imgLoader = __webpack_require__(21);
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
