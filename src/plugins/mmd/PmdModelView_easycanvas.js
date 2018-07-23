@@ -368,40 +368,40 @@ PMDModelView.prototype._initMotionArrays = function() {
     // console.warn(JSON.stringify(v1));
     var v1 = [(((this.vArray1[n * 3 + 0]+this.vmArray[n * 3 + 0])+(((((this.vArray1[n * 3 + 2]+this.vmArray[n * 3 + 2])*this.mrArray1[n * 4 + 0]-(this.vArray1[n * 3 + 0]+this.vmArray[n * 3 + 0])*this.mrArray1[n * 4 + 2])-((this.vArray1[n * 3 + 1]+this.vmArray[n * 3 + 1])*this.mrArray1[n * 4 + 3]))*this.mrArray1[n * 4 + 2]-(((this.vArray1[n * 3 + 0]+this.vmArray[n * 3 + 0])*this.mrArray1[n * 4 + 1]-(this.vArray1[n * 3 + 1]+this.vmArray[n * 3 + 1])*this.mrArray1[n * 4 + 0])-((this.vArray1[n * 3 + 2]+this.vmArray[n * 3 + 2])*this.mrArray1[n * 4 + 3]))*this.mrArray1[n * 4 + 1])*2))+this.mtArray1[n * 3 + 0]),(((this.vArray1[n * 3 + 1]+this.vmArray[n * 3 + 1])+(((((this.vArray1[n * 3 + 0]+this.vmArray[n * 3 + 0])*this.mrArray1[n * 4 + 1]-(this.vArray1[n * 3 + 1]+this.vmArray[n * 3 + 1])*this.mrArray1[n * 4 + 0])-((this.vArray1[n * 3 + 2]+this.vmArray[n * 3 + 2])*this.mrArray1[n * 4 + 3]))*this.mrArray1[n * 4 + 0]-(((this.vArray1[n * 3 + 1]+this.vmArray[n * 3 + 1])*this.mrArray1[n * 4 + 2]-(this.vArray1[n * 3 + 2]+this.vmArray[n * 3 + 2])*this.mrArray1[n * 4 + 1])-((this.vArray1[n * 3 + 0]+this.vmArray[n * 3 + 0])*this.mrArray1[n * 4 + 3]))*this.mrArray1[n * 4 + 2])*2))+this.mtArray1[n * 3 + 1]),(((this.vArray1[n * 3 + 2]+this.vmArray[n * 3 + 2])+(((((this.vArray1[n * 3 + 1]+this.vmArray[n * 3 + 1])*this.mrArray1[n * 4 + 2]-(this.vArray1[n * 3 + 2]+this.vmArray[n * 3 + 2])*this.mrArray1[n * 4 + 1])-((this.vArray1[n * 3 + 0]+this.vmArray[n * 3 + 0])*this.mrArray1[n * 4 + 3]))*this.mrArray1[n * 4 + 1]-(((this.vArray1[n * 3 + 2]+this.vmArray[n * 3 + 2])*this.mrArray1[n * 4 + 0]-(this.vArray1[n * 3 + 0]+this.vmArray[n * 3 + 0])*this.mrArray1[n * 4 + 2])-((this.vArray1[n * 3 + 1]+this.vmArray[n * 3 + 1])*this.mrArray1[n * 4 + 3]))*this.mrArray1[n * 4 + 0])*2))+this.mtArray1[n * 3 + 2])];
 
-    // if (this.bwArray[n] < 0.99) {
-    //   var v2 = __GlslFunctions.arrayAdd(
-    //     [
-    //       this.vArray2[n * 3 + 0],
-    //       this.vArray2[n * 3 + 1],
-    //       this.vArray2[n * 3 + 2]
-    //     ],
-    //     // this.pmd.vertices[n].position,
-    //     [
-    //       this.vmArray[n * 3 + 0],
-    //       this.vmArray[n * 3 + 1],
-    //       this.vmArray[n * 3 + 2],
-    //     ]
-    //   );
+    if (this.bwArray[n] < 0.99) {
+      var v2 = __GlslFunctions.arrayAdd(
+        [
+          this.vArray2[n * 3 + 0],
+          this.vArray2[n * 3 + 1],
+          this.vArray2[n * 3 + 2]
+        ],
+        // this.pmd.vertices[n].position,
+        [
+          this.vmArray[n * 3 + 0],
+          this.vmArray[n * 3 + 1],
+          this.vmArray[n * 3 + 2],
+        ]
+      );
 
-    //   v2 = __GlslFunctions.arrayAdd(
-    //     __GlslFunctions.qtransform(
-    //       v2,
-    //       [
-    //         this.mrArray2[n * 4 + 0],
-    //         this.mrArray2[n * 4 + 1],
-    //         this.mrArray2[n * 4 + 2],
-    //         this.mrArray2[n * 4 + 3],
-    //       ]
-    //     ),
-    //     [
-    //       this.mtArray2[n * 3 + 0],
-    //       this.mtArray2[n * 3 + 1],
-    //       this.mtArray2[n * 3 + 2],
-    //     ]
-    //   );
+      v2 = __GlslFunctions.arrayAdd(
+        __GlslFunctions.qtransform(
+          v2,
+          [
+            this.mrArray2[n * 4 + 0],
+            this.mrArray2[n * 4 + 1],
+            this.mrArray2[n * 4 + 2],
+            this.mrArray2[n * 4 + 3],
+          ]
+        ),
+        [
+          this.mtArray2[n * 3 + 0],
+          this.mtArray2[n * 3 + 1],
+          this.mtArray2[n * 3 + 2],
+        ]
+      );
 
-    //   v1 = __GlslFunctions.mix(v2, v1, this.bwArray[n]);
-    // }
+      v1 = __GlslFunctions.mix(v2, v1, this.bwArray[n]);
+    }
 
     return v1;
   }.bind(this);

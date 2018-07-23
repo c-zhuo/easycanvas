@@ -2635,6 +2635,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            var getVerticals = mv.getVerticals;
 
+	            window.getVerticals = getVerticals;
+
 	            setInterval(function () {
 	                v.update();
 	                for (var _i = 0, l = vertices.length / 3; _i < l; _i++) {
@@ -4755,10 +4757,66 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // vec3 v1 = aVertexPosition1 + aVertexMorph;\
 	  // v1 = qtransform(v1, aMotionRotation1) + aMotionTranslation1;\
 	  PMDModelView.prototype.getVerticals = function (n) {
-	    var v1 = _GlslFunctions2.default.arrayAdd([this.vArray1[n * 3 + 0], this.vArray1[n * 3 + 1], this.vArray1[n * 3 + 2]],
-	    // this.pmd.vertices[n].position,
-	    [this.vmArray[n * 3 + 0], this.vmArray[n * 3 + 1], this.vmArray[n * 3 + 2]]);
-	    v1 = _GlslFunctions2.default.arrayAdd(_GlslFunctions2.default.qtransform(v1, [this.mrArray1[n * 4 + 0], this.mrArray1[n * 4 + 1], this.mrArray1[n * 4 + 2], this.mrArray1[n * 4 + 3]]), [this.mtArray1[n * 3 + 0], this.mtArray1[n * 3 + 1], this.mtArray1[n * 3 + 2]]);
+	    // var v1 = __GlslFunctions.arrayAdd(
+	    //   [
+	    //     this.vArray1[n * 3 + 0],
+	    //     this.vArray1[n * 3 + 1],
+	    //     this.vArray1[n * 3 + 2]
+	    //   ],
+	    //   // this.pmd.vertices[n].position,
+	    //   [
+	    //     this.vmArray[n * 3 + 0],
+	    //     this.vmArray[n * 3 + 1],
+	    //     this.vmArray[n * 3 + 2],
+	    //   ]
+	    // );
+	    // v1 = __GlslFunctions.arrayAdd(
+	    //   __GlslFunctions.qtransform(
+	    //     v1,
+	    //     [
+	    //       this.mrArray1[n * 4 + 0],
+	    //       this.mrArray1[n * 4 + 1],
+	    //       this.mrArray1[n * 4 + 2],
+	    //       this.mrArray1[n * 4 + 3],
+	    //     ]
+	    //   ),
+	    //   [
+	    //     this.mtArray1[n * 3 + 0],
+	    //     this.mtArray1[n * 3 + 1],
+	    //     this.mtArray1[n * 3 + 2],
+	    //   ]
+	    // );
+
+	    // var v1 = __GlslFunctions.arrayAdd(
+	    //   [
+	    //     'this.vArray1[n * 3 + 0]',
+	    //     'this.vArray1[n * 3 + 1]',
+	    //     'this.vArray1[n * 3 + 2]'
+	    //   ],
+	    //   [
+	    //     'this.vmArray[n * 3 + 0]',
+	    //     'this.vmArray[n * 3 + 1]',
+	    //     'this.vmArray[n * 3 + 2]',
+	    //   ]
+	    // );
+	    // v1 = __GlslFunctions.arrayAdd(
+	    //   __GlslFunctions.qtransform(
+	    //     v1,
+	    //     [
+	    //       'this.mrArray1[n * 4 + 0]',
+	    //       'this.mrArray1[n * 4 + 1]',
+	    //       'this.mrArray1[n * 4 + 2]',
+	    //       'this.mrArray1[n * 4 + 3]',
+	    //     ]
+	    //   ),
+	    //   [
+	    //     'this.mtArray1[n * 3 + 0]',
+	    //     'this.mtArray1[n * 3 + 1]',
+	    //     'this.mtArray1[n * 3 + 2]',
+	    //   ]
+	    // );
+	    // console.warn(JSON.stringify(v1));
+	    var v1 = [this.vArray1[n * 3 + 0] + this.vmArray[n * 3 + 0] + (((this.vArray1[n * 3 + 2] + this.vmArray[n * 3 + 2]) * this.mrArray1[n * 4 + 0] - (this.vArray1[n * 3 + 0] + this.vmArray[n * 3 + 0]) * this.mrArray1[n * 4 + 2] - (this.vArray1[n * 3 + 1] + this.vmArray[n * 3 + 1]) * this.mrArray1[n * 4 + 3]) * this.mrArray1[n * 4 + 2] - ((this.vArray1[n * 3 + 0] + this.vmArray[n * 3 + 0]) * this.mrArray1[n * 4 + 1] - (this.vArray1[n * 3 + 1] + this.vmArray[n * 3 + 1]) * this.mrArray1[n * 4 + 0] - (this.vArray1[n * 3 + 2] + this.vmArray[n * 3 + 2]) * this.mrArray1[n * 4 + 3]) * this.mrArray1[n * 4 + 1]) * 2 + this.mtArray1[n * 3 + 0], this.vArray1[n * 3 + 1] + this.vmArray[n * 3 + 1] + (((this.vArray1[n * 3 + 0] + this.vmArray[n * 3 + 0]) * this.mrArray1[n * 4 + 1] - (this.vArray1[n * 3 + 1] + this.vmArray[n * 3 + 1]) * this.mrArray1[n * 4 + 0] - (this.vArray1[n * 3 + 2] + this.vmArray[n * 3 + 2]) * this.mrArray1[n * 4 + 3]) * this.mrArray1[n * 4 + 0] - ((this.vArray1[n * 3 + 1] + this.vmArray[n * 3 + 1]) * this.mrArray1[n * 4 + 2] - (this.vArray1[n * 3 + 2] + this.vmArray[n * 3 + 2]) * this.mrArray1[n * 4 + 1] - (this.vArray1[n * 3 + 0] + this.vmArray[n * 3 + 0]) * this.mrArray1[n * 4 + 3]) * this.mrArray1[n * 4 + 2]) * 2 + this.mtArray1[n * 3 + 1], this.vArray1[n * 3 + 2] + this.vmArray[n * 3 + 2] + (((this.vArray1[n * 3 + 1] + this.vmArray[n * 3 + 1]) * this.mrArray1[n * 4 + 2] - (this.vArray1[n * 3 + 2] + this.vmArray[n * 3 + 2]) * this.mrArray1[n * 4 + 1] - (this.vArray1[n * 3 + 0] + this.vmArray[n * 3 + 0]) * this.mrArray1[n * 4 + 3]) * this.mrArray1[n * 4 + 1] - ((this.vArray1[n * 3 + 2] + this.vmArray[n * 3 + 2]) * this.mrArray1[n * 4 + 0] - (this.vArray1[n * 3 + 0] + this.vmArray[n * 3 + 0]) * this.mrArray1[n * 4 + 2] - (this.vArray1[n * 3 + 1] + this.vmArray[n * 3 + 1]) * this.mrArray1[n * 4 + 3]) * this.mrArray1[n * 4 + 0]) * 2 + this.mtArray1[n * 3 + 2]];
 
 	    if (this.bwArray[n] < 0.99) {
 	      var v2 = _GlslFunctions2.default.arrayAdd([this.vArray2[n * 3 + 0], this.vArray2[n * 3 + 1], this.vArray2[n * 3 + 2]],
@@ -6171,6 +6229,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 
 	var cross = function cross(a, b) {
+	  // return [
+	  //   '(' + String(a[1]) + '*' + String(b[2]) + '-' + String(a[2]) + '*' + String(b[1]) + ')',
+	  //   '(' + String(a[2]) + '*' + String(b[0]) + '-' + String(a[0]) + '*' + String(b[2]) + ')',
+	  //   '(' + String(a[0]) + '*' + String(b[1]) + '-' + String(a[1]) + '*' + String(b[0]) + ')',
+	  // ];
+
 	  return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 	};
 
@@ -6183,20 +6247,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	var arrayAdd = function arrayAdd(a, b) {
-	  return a.map(function (v, index) {
-	    return v + b[index];
-	  });
+	  // return ['(' + String(a[0]) + '+' + String(b[0]) + ')', '(' + String(a[1]) + '+' + String(b[1]) + ')', '(' + String(a[2] + '+' + b[2]) + ')'];
+	  return [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+	  // return a.map((v, index) => {
+	  //   return v + b[index];
+	  // });
 	};
 	var arrayMns = function arrayMns(a, b) {
-	  return a.map(function (v, index) {
-	    return v - b[index];
-	  });
+	  // return ['(' + String(a[0]) + '-' + String(b[0]) + ')', '(' + String(a[1]) + '-' + String(b[1]) + ')', '(' + String(a[2] + '-' + b[2]) + ')'];
+	  return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+	  // return a.map((v, index) => {
+	  //   return v - b[index];
+	  // });
 	};
 
 	var arrayMuti = function arrayMuti(a, b) {
-	  return a.map(function (v, index) {
-	    return v * (b.length ? b[index] : b);
-	  });
+	  // if (b.push) {
+	  //     return ['(' + String(a[0]) + '*' + String(b[0]) + ')', '(' + String(a[1]) + '*' + String(b[1]) + ')', '(' + String(a[2] + '*' + b[2]) + ')'];
+	  // }
+	  // return ['(' + String(a[0]) + '*' + String(b) + ')', '(' + String(a[1]) + '*' + String(b) + ')', '(' + String(a[2] + '*' + b) + ')'];
+	  if (b.length) {
+	    return [a[0] * b[0], a[1] * b[1], a[2] * b[2]];
+	  }
+	  return [a[0] * b, a[1] * b, a[2] * b];
+
+	  // return a.map((v, index) => {
+	  //   return v * (b.length ? b[index] : b);
+	  // });
 	};
 
 	// mix only https://en.wikibooks.org/wiki/GLSL_Programming/Vector_and_Matrix_Operations
