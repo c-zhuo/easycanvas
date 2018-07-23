@@ -55,7 +55,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(57);
+	module.exports = __webpack_require__(58);
 
 
 /***/ }),
@@ -499,2297 +499,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ }),
 
 /***/ 16:
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * instance of classes in this file should be created and
-	 * their fields should be set by PMDFileParser.
-	 * TODO: rename fields to appropriate ones.
-	 */
-	function PMD() {
-	  this.header = null;
-	  this.englishHeader = null;
-	  this.vertexCount = null;
-	  this.vertexIndexCount = null;
-	  this.materialCount = null;
-	  this.boneCount = null;
-	  this.ikCount = null;
-	  this.faceCount = null;
-	  this.faceDisplayCount = null;
-	  this.boneFrameNameCount = null;
-	  this.boneDisplayCount = null;
-	  this.toonTextureCount = null;
-	  this.rigidBodyCount = null;
-	  this.jointCount = null;
-
-	  this.vertices = [];
-	  this.vertexIndices = [];
-	  this.materials = [];
-	  this.bones = [];
-	  this.iks = [];
-	  this.faces = [];
-	  this.faceDisplays = [];
-	  this.boneFrameNames = [];
-	  this.boneDisplays = [];
-	  this.englishBoneNames = [];
-	  this.englishFaceNames = [];
-	  this.englishBoneFrameNames = [];
-	  this.toonTextures = [];
-	  this.rigidBodies = [];
-	  this.joints = [];
-
-	  this.bonesHash = {};
-	  this.facesHash = {};
-
-	  this.images = [];
-	  this.toonImages = [];
-	  this.sphereImages = [];
-
-	  this.centerBone = {};
-	  this.leftFootBone = {};
-	  this.rightFootBone = {};
-	  this.leftEyeBone = {};
-	  this.rightEyeBone = {};
-	};
-
-	PMD.prototype.valid = function () {
-	  return this.header.valid();
-	};
-
-	PMD.prototype.getParentBone = function (bone) {
-	  return this.bones[bone.parentIndex];
-	};
-
-	PMD.prototype.loadImages = function (baseURL, callback) {
-	  var loader = new PMDImageLoader(this, baseURL);
-	  loader.load(callback);
-	};
-
-	PMD.prototype.setup = function () {
-	  for (var i = 0; i < this.vertexCount; i++) {
-	    this.vertices[i].setup();
-	  }
-
-	  for (var i = 0; i < this.boneCount; i++) {
-	    this.bonesHash[this.bones[i].name] = this.bones[i];
-	  }
-
-	  for (var i = 0; i < this.faceCount; i++) {
-	    this.facesHash[this.faces[i].name] = this.faces[i];
-	  }
-	  //  this.toRight();
-
-	  this._keepSomeBonesInfo();
-	};
-
-	PMD.prototype.toRight = function () {
-	  for (var i = 0; i < this.vertexCount; i++) {
-	    this.vertices[i].toRight();
-	  }
-
-	  for (var i = 0; i < this.boneCount; i++) {
-	    this.bones[i].toRight();
-	  }
-
-	  for (var i = 0; i < this.faceCount; i++) {
-	    this.faces[i].toRight();
-	  }
-
-	  for (var i = 0; i < this.rigidBodyCount; i++) {
-	    this.rigidBodies[i].toRight();
-	  }
-
-	  for (var i = 0; i < this.jointCount; i++) {
-	    this.joints[i].toRight();
-	  }
-	};
-
-	/**
-	 * TODO: change strings if sjis-lib is used
-	 */
-	PMD.prototype._keepSomeBonesInfo = function () {
-	  // �Z���^�[, ������, �E����, ����, �E��
-	  this._keepBoneInfo(this.centerBone, '0x830x5a0x830x930x830x5e0x810x5b');
-	  this._keepBoneInfo(this.leftFootBone, '0x8d0xb60x910xab0x8e0xf1');
-	  this._keepBoneInfo(this.rightFootBone, '0x890x450x910xab0x8e0xf1');
-	  this._keepBoneInfo(this.leftEyeBone, '0x8d0xb60x960xda');
-	  this._keepBoneInfo(this.rightEyeBone, '0x890x450x960xda');
-	};
-
-	PMD.prototype._keepBoneInfo = function (obj, name) {
-	  var boneNum = this._findBoneNumberByName(name);
-	  if (boneNum !== null) {
-	    var bone = this.bones[boneNum];
-	    obj.pos = this._getAveragePositionOfBone(bone);
-	    obj.id = boneNum;
-	    obj.bone = bone;
-	    obj.posFromBone = [];
-	    obj.posFromBone[0] = obj.pos[0] - bone.position[0];
-	    obj.posFromBone[1] = obj.pos[1] - bone.position[1];
-	    obj.posFromBone[2] = obj.pos[2] - bone.position[2];
-	  } else {
-	    obj.pos = null;
-	    obj.id = null;
-	    obj.bone = null;
-	    obj.posFromBone = null;
-	  }
-	};
-
-	PMD.prototype._findBoneNumberByName = function (name) {
-	  for (var i = 0; i < this.boneCount; i++) {
-	    if (this.bones[i].name == name) return i;
-	  }
-	  return null;
-	};
-
-	/**
-	 * TODO: consider the algorithm again.
-	 */
-	PMD.prototype._getAveragePositionOfBone = function (bone) {
-	  var num = 0;
-	  var pos = [0, 0, 0];
-	  for (var i = 0; i < this.vertexCount; i++) {
-	    var v = this.vertices[i];
-	    // TODO: consider boneWeight?
-	    if (v.boneIndices[0] == bone.id || v.boneIndices[1] == bone.id) {
-	      pos[0] += v.position[0];
-	      pos[1] += v.position[1];
-	      pos[2] += v.position[2];
-	      num++;
-	    }
-	    /*
-	        if(v.boneIndices[0] == bone.id) {
-	          pos[0] += v.position[0] * (v.boneIndex / 100);
-	          pos[1] += v.position[1] * (v.boneIndex / 100);
-	          pos[2] += v.position[2] * (v.boneIndex / 100);
-	          num++;
-	        } else if(v.boneIndices[1] == bone.id) {
-	          pos[0] += v.position[0] * ((100 - v.boneIndex) / 100);
-	          pos[1] += v.position[1] * ((100 - v.boneIndex) / 100);
-	          pos[2] += v.position[2] * ((100 - v.boneIndex) / 100);
-	          num++;
-	        }
-	    */
-	  }
-	  if (num != 0) {
-	    pos[0] = pos[0] / num;
-	    pos[1] = pos[1] / num;
-	    pos[2] = pos[2] / num;
-	  }
-	  return pos;
-	};
-
-	PMD.prototype.getBoneNames = function () {
-	  var array = [];
-	  for (var i = 0; i < this.boneCount; i++) {
-	    array[i] = this.bones[i].name;
-	  }
-	  return array;
-	};
-
-	PMD.prototype.getFaceNames = function () {
-	  var array = [];
-	  for (var i = 0; i < this.faceCount; i++) {
-	    array[i] = this.faces[i].name;
-	  }
-	  return array;
-	};
-
-	PMD.prototype.dump = function () {
-	  var str = '';
-
-	  str += 'vertexCount: ' + this.vertexCount + '\n';
-	  str += 'vertexIndexCount: ' + this.vertexIndexCount + '\n';
-	  str += 'materialCount: ' + this.materialCount + '\n';
-	  str += 'boneCount: ' + this.boneCount + '\n';
-	  str += 'ikCount: ' + this.ikCount + '\n';
-	  str += 'faceCount: ' + this.faceCount + '\n';
-	  str += 'faceDisplayCount: ' + this.faceDisplayCount + '\n';
-	  str += 'boneFrameNameCount: ' + this.boneFrameNameCount + '\n';
-	  str += 'boneDisplayCount: ' + this.boneDisplayCount + '\n';
-	  str += 'toonTextureCount: ' + this.toonTextureCount + '\n';
-	  str += 'rigidBodyCount: ' + this.rigidBodyCount + '\n';
-	  str += 'jointCount: ' + this.jointCount + '\n';
-	  str += '\n';
-
-	  str += this._dumpHeader();
-	  str += this._dumpVertices();
-	  str += this._dumpVertexIndices();
-	  str += this._dumpMaterials();
-	  str += this._dumpBones();
-	  str += this._dumpIKs();
-	  str += this._dumpFaces();
-	  str += this._dumpfaceDisplays();
-	  str += this._dumpBoneFrameNames();
-	  str += this._dumpBoneDisplays();
-	  str += this._dumpEnglishHeader();
-	  str += this._dumpEnglishBoneNames();
-	  str += this._dumpEnglishFaceNames();
-	  str += this._dumpToonTextures();
-	  str += this._dumpRigidBodies();
-	  str += this._dumpJoints();
-
-	  return str;
-	};
-
-	PMD.prototype.boneNumsOfMaterials = function () {
-	  var offset = 0;
-	  var result = [];
-	  for (var i = 0; i < this.materialCount; i++) {
-	    var array = [];
-	    for (var j = 0; j < this.boneCount; j++) {
-	      array[j] = 0;
-	    }
-
-	    var count = 0;
-	    var num = this.materials[i].vertexCount;
-	    for (var j = 0; j < num; j++) {
-	      var v = this.vertices[this.vertexIndices[offset + j].index];
-	      for (var k = 0; k < v.boneIndices.length; k++) {
-	        var index = v.boneIndices[k];
-	        if (array[index] == 0) count++;
-	        array[index]++;
-	      }
-	    }
-	    result.push(count);
-	    offset += num;
-	  }
-	  return result;
-	};
-
-	PMD.prototype._dumpHeader = function () {
-	  var str = '';
-	  str += '-- Header --\n';
-	  str += this.header.dump();
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpEnglishHeader = function () {
-	  var str = '';
-	  str += '-- Header(English) --\n';
-	  str += this.englishHeader.dump();
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpVertices = function () {
-	  var str = '';
-	  str += '-- Vertices --\n';
-	  for (var i = 0; i < this.vertexCount; i++) {
-	    str += this.vertices[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpVertexIndices = function () {
-	  var str = '';
-	  str += '-- VertexIndices --\n';
-	  for (var i = 0; i < this.vertexIndexCount; i++) {
-	    str += this.vertexIndices[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpMaterials = function () {
-	  var str = '';
-	  str += '-- Materials --\n';
-	  for (var i = 0; i < this.materialCount; i++) {
-	    str += this.materials[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpBones = function () {
-	  var str = '';
-	  str += '-- Bones --\n';
-	  for (var i = 0; i < this.boneCount; i++) {
-	    str += this.bones[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpIKs = function () {
-	  var str = '';
-	  str += '-- IKs --\n';
-	  for (var i = 0; i < this.ikCount; i++) {
-	    str += this.iks[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpFaces = function () {
-	  var str = '';
-	  str += '-- Faces --\n';
-	  for (var i = 0; i < this.faceCount; i++) {
-	    str += this.faces[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpFaceDisplays = function () {
-	  var str = '';
-	  str += '-- Face Displays --\n';
-	  for (var i = 0; i < this.faceDisplayCount; i++) {
-	    str += this.faceDisplays[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpBoneFrameNames = function () {
-	  var str = '';
-	  str += '-- Bone Frame Names --\n';
-	  for (var i = 0; i < this.boneFrameNameCount; i++) {
-	    str += this.boneFrameNames[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpBoneDisplays = function () {
-	  var str = '';
-	  str += '-- Bone Displays --\n';
-	  for (var i = 0; i < this.boneDisplayCount; i++) {
-	    str += this.boneDisplays[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpEnglishBoneNames = function () {
-	  var str = '';
-	  str += '-- Bone Names(English) --\n';
-	  for (var i = 0; i < this.boneCount; i++) {
-	    str += this.englishBoneNames[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpEnglishFaceNames = function () {
-	  var str = '';
-	  str += '-- Face Names(English) --\n';
-	  for (var i = 0; i < this.faceCount - 1; i++) {
-	    str += this.englishFaceNames[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpEnglishBoneFrameNames = function () {
-	  var str = '';
-	  str += '-- Bone Frame Names(English) --\n';
-	  for (var i = 0; i < this.boneFrameNameCount; i++) {
-	    str += this.englishBoneFrameNames[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpToonTextures = function () {
-	  var str = '';
-	  str += '-- Toon Textures --\n';
-	  for (var i = 0; i < this.toonTextureCount; i++) {
-	    str += this.toonTextures[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpRigidBodies = function () {
-	  var str = '';
-	  str += '-- Rigid Bodies --\n';
-	  for (var i = 0; i < this.rigidBodyCount; i++) {
-	    str += this.rigidBodies[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	PMD.prototype._dumpJoints = function () {
-	  var str = '';
-	  str += '-- Joints --\n';
-	  for (var i = 0; i < this.jointCount; i++) {
-	    str += this.joints[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	function PMDHeader() {
-	  this.magic = null;
-	  this.version = null;
-	  this.modelName = null;
-	  this.comment = null;
-	};
-
-	PMDHeader.prototype.valid = function () {
-	  return this.magic == 'Pmd';
-	};
-
-	PMDHeader.prototype.dump = function () {
-	  var str = '';
-	  str += 'magic: ' + this.magic + '\n';
-	  str += 'version: ' + this.version + '\n';
-	  str += 'model_name: ' + this.modelName + '\n';
-	  str += 'comment: ' + this.comment + '\n';
-	  return str;
-	};
-
-	function PMDVertex(id) {
-	  this.id = id;
-	  this.position = null;
-	  this.normal = null;
-	  this.uv = null;
-	  this.boneIndices = null;
-	  this.boneWeight = null;
-	  this.edgeFlag = null;
-	  this.boneWeightFloat1 = null;
-	  this.boneWeightFloat2 = null;
-	};
-
-	PMDVertex.prototype.setup = function () {
-	  this.boneWeightFloat1 = this.boneWeight / 100;
-	  this.boneWeightFloat2 = (100 - this.boneWeight) / 100;
-	};
-
-	PMDVertex.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'position: ' + this.position + '\n';
-	  str += 'normal: ' + this.normal + '\n';
-	  str += 'uv: ' + this.uv + '\n';
-	  str += 'boneIndices: ' + this.boneIndices + '\n';
-	  str += 'boneWeight: ' + this.boneWeight + '\n';
-	  str += 'edgeFlag: ' + this.edgeFlag + '\n';
-	  return str;
-	};
-
-	PMDVertex.prototype.toRight = function () {
-	  this.position[2] = -this.position[2];
-	  this.normal[2] = -this.normal[2];
-	};
-
-	function PMDVertexIndex(id) {
-	  this.id = id;
-	  this.index = null;
-	};
-
-	PMDVertexIndex.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'index: ' + this.index + '\n';
-	  return str;
-	};
-
-	function PMDMaterial(id) {
-	  this.id = id;
-	  this.color = null;
-	  this.specularity = null;
-	  this.specularColor = null;
-	  this.mirrorColor = null;
-	  this.tuneIndex = null;
-	  this.edgeFlag = null;
-	  this.vertexCount = null;
-	  this.fileName = null;
-	};
-
-	/**
-	 * TODO: temporal
-	 */
-	PMDMaterial.prototype.convertedFileName = function () {
-	  var filename = this.fileName.replace('.tga', '.png');
-
-	  // TODO: ignore sphere map so far
-	  var index;
-	  if ((index = filename.lastIndexOf('*')) >= 0) {
-	    filename = filename.substring(0, index);
-	  }
-
-	  return filename;
-	};
-
-	/**
-	 * TODO: temporal
-	 */
-	PMDMaterial.prototype.hasSphereTexture = function () {
-	  if (this.fileName.lastIndexOf('.sph') >= 0 || this.fileName.lastIndexOf('.spa') >= 0) return true;
-
-	  return false;
-	};
-
-	/**
-	 * TODO: temporal
-	 */
-	PMDMaterial.prototype.isSphereMapAddition = function () {
-	  var filename = this.fileName;
-
-	  if (filename.lastIndexOf('.spa') >= 0) return true;
-
-	  return false;
-	};
-
-	/**
-	 * TODO: temporal
-	 */
-	PMDMaterial.prototype.sphereMapFileName = function () {
-	  var filename = this.fileName;
-	  var index;
-	  if ((index = filename.lastIndexOf('*')) >= 0) {
-	    filename = filename.slice(index + 1);
-	  }
-	  if ((index = filename.lastIndexOf('+')) >= 0) {
-	    filename = filename.slice(index + 1);
-	  }
-	  return filename;
-	};
-
-	PMDMaterial.prototype.hasToon = function () {
-	  return this.tuneIndex >= 10 ? false : true;
-	};
-
-	PMDMaterial.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'color: ' + this.color + '\n';
-	  str += 'specularity: ' + this.specularity + '\n';
-	  str += 'specularColor: ' + this.specularColor + '\n';
-	  str += 'mirrorColor: ' + this.mirrorColor + '\n';
-	  str += 'tuneIndex: ' + this.tuneIndex + '\n';
-	  str += 'edgeFlag: ' + this.edgeFlag + '\n';
-	  str += 'vertexCount: ' + this.vertexCount + '\n';
-	  str += 'fileName: ' + this.fileName + '\n';
-	  return str;
-	};
-
-	function PMDBone(id) {
-	  this.id = id;
-	  this.name = null;
-	  this.parentIndex = null;
-	  this.tailIndex = null;
-	  this.type = null;
-	  this.ikIndex = null;
-	  this.position = null;
-
-	  this.motionIndex = null; // Note: be set by VMD;
-	  // TODO: remove and use id in VMD
-	  //       instead of motionIndex
-	  //       not to have VMD related info here
-	};
-
-	PMDBone.prototype.isKnee = function () {
-	  // TODO: change this parameter if name type changes.
-	  return this.name.indexOf('0x820xd00x820xb4') >= 0;
-	};
-
-	PMDBone.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'name: ' + this.name + '\n';
-	  str += 'parentIndex: ' + this.parentIndex + '\n';
-	  str += 'tailIndex: ' + this.tailIndex + '\n';
-	  str += 'type: ' + this.type + '\n';
-	  str += 'ikIndex: ' + this.ikIndex + '\n';
-	  str += 'position: ' + this.position + '\n';
-	  return str;
-	};
-
-	PMDBone.prototype.toRight = function () {
-	  this.position[2] = -this.position[2];
-	};
-
-	function PMDIK(id) {
-	  this.id = id;
-	  this.index = null;
-	  this.targetBoneIndex = null;
-	  this.chainLength = null;
-	  this.iteration = null;
-	  this.limitation = null;
-	  this.childBoneIndices = null;
-	};
-
-	PMDIK.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'index: ' + this.index + '\n';
-	  str += 'targetBoneIndex: ' + this.targetBoneIndex + '\n';
-	  str += 'chainLength: ' + this.chainLength + '\n';
-	  str += 'iteration: ' + this.iteration + '\n';
-	  str += 'limitation: ' + this.limitation + '\n';
-	  str += 'childBoneIndices: ' + this.childBoneIndices + '\n';
-	  return str;
-	};
-
-	function PMDFace(id) {
-	  this.id = id;
-	  this.name = null;
-	  this.vertexCount = null;
-	  this.type = null;
-	  this.vertices = null;
-	  this.done = false;
-
-	  this.motionIndex = null; // Note: be set by VMD;
-	  // TODO: remove and use id in VMD
-	  //       instead of motionIndex
-	  //       not to have VMD related info here
-	};
-
-	PMDFace.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'name: ' + this.name + '\n';
-	  str += 'vertexCount: ' + this.vertexCount + '\n';
-	  str += 'type: ' + this.type + '\n';
-
-	  for (var i = 0; i < this.vertices.length; i++) {
-	    str += this.vertices[i].dump();
-	  }
-
-	  return str;
-	};
-
-	PMDFace.prototype.toRight = function () {
-	  for (var i = 0; i < this.vertices.length; i++) {
-	    this.vertices[i].toRight();
-	  }
-	};
-
-	function PMDFaceVertex(id, type) {
-	  this.id = id;
-	  this.type = type;
-	  this.index = null;
-	  this.position = null;
-	};
-
-	PMDFaceVertex.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  //  str += 'type: '     + this.type     + '\n';
-	  str += 'index: ' + this.index + '\n';
-	  str += 'position: ' + this.position + '\n';
-	  return str;
-	};
-
-	PMDFaceVertex.prototype.toRight = function () {
-	  this.position[2] = -this.position[2];
-	};
-
-	function PMDFaceDisplay(id) {
-	  this.id = id;
-	  this.index = null;
-	};
-
-	PMDFaceDisplay.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'index: ' + this.index + '\n';
-	  return str;
-	};
-
-	function PMDBoneFrameName(id) {
-	  this.id = id;
-	  this.name = null;
-	};
-
-	PMDBoneFrameName.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'name: ' + this.name + '\n';
-	  return str;
-	};
-
-	function PMDBoneDisplay(id) {
-	  this.id = id;
-	  this.index = null;
-	  this.frameIndex = null;
-	};
-
-	PMDBoneDisplay.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'index: ' + this.index + '\n';
-	  str += 'frameIndex: ' + this.frameIndex + '\n';
-	  return str;
-	};
-
-	function PMDEnglishHeader() {
-	  this.compatibility = null;
-	  this.modelName = null;
-	  this.comment = null;
-	};
-
-	PMDEnglishHeader.prototype.dump = function () {
-	  var str = '';
-	  str += 'compatibility: ' + this.compatibility + '\n';
-	  str += 'modelName:     ' + this.modelName + '\n';
-	  str += 'comment: ' + this.comment + '\n';
-	  return str;
-	};
-
-	function PMDEnglishBoneName(id) {
-	  this.id = id;
-	  this.name = null;
-	};
-
-	PMDEnglishBoneName.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'name: ' + this.name + '\n';
-	  return str;
-	};
-
-	function PMDEnglishFaceName(id) {
-	  this.id = id;
-	  this.name = null;
-	};
-
-	PMDEnglishFaceName.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'name: ' + this.name + '\n';
-	  return str;
-	};
-
-	function PMDEnglishBoneFrameName(id) {
-	  this.id = id;
-	  this.name = null;
-	};
-
-	PMDEnglishBoneFrameName.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'name: ' + this.name + '\n';
-	  return str;
-	};
-
-	function PMDToonTexture(id) {
-	  this.id = id;
-	  this.fileName = null;
-	};
-
-	PMDToonTexture.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'fileName: ' + this.fileName + '\n';
-	  return str;
-	};
-
-	function PMDRigidBody(id) {
-	  this.id = id;
-	  this.name = null;
-	  this.boneIndex = null;
-	  this.groupIndex = null;
-	  this.groupTarget = null;
-	  this.shapeType = null;
-	  this.width = null;
-	  this.height = null;
-	  this.depth = null;
-	  this.position = null;
-	  this.rotation = null;
-	  this.weight = null;
-	  this.positionDim = null;
-	  this.rotationDim = null;
-	  this.recoil = null;
-	  this.friction = null;
-	  this.type = null;
-	};
-
-	PMDRigidBody.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'name: ' + this.name + '\n';
-	  str += 'boneIndex: ' + this.boneIndex + '\n';
-	  str += 'groupIndex: ' + this.groupIndex + '\n';
-	  str += 'groupTarget: ' + this.groupTarget + '\n';
-	  str += 'shapeType: ' + this.shapeType + '\n';
-	  str += 'width: ' + this.width + '\n';
-	  str += 'height: ' + this.height + '\n';
-	  str += 'depth: ' + this.depth + '\n';
-	  str += 'position: ' + this.position + '\n';
-	  str += 'rotation: ' + this.rotation + '\n';
-	  str += 'weight: ' + this.weight + '\n';
-	  str += 'positionDim: ' + this.positionDim + '\n';
-	  str += 'rotationDim: ' + this.rotationDim + '\n';
-	  str += 'recoil: ' + this.recoil + '\n';
-	  str += 'friction: ' + this.friction + '\n';
-	  str += 'type: ' + this.type + '\n';
-	  return str;
-	};
-
-	PMDRigidBody.prototype.toRight = function () {
-	  this.position[2] = -this.position[2];
-	  this.rotation[0] = -this.rotation[0];
-	  this.rotation[1] = -this.rotation[1];
-	};
-
-	function PMDJoint(id) {
-	  this.id = id;
-	  this.name = null;
-	  this.rigidBody1 = null;
-	  this.rigidBody2 = null;
-	  this.position = null;
-	  this.rotation = null;
-	  this.translationLimitation1 = null;
-	  this.translationLimitation2 = null;
-	  this.rotationLimitation1 = null;
-	  this.rotationLimitation2 = null;
-	  this.springPosition = null;
-	  this.springRotation = null;
-	};
-
-	PMDJoint.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'name: ' + this.name + '\n';
-	  str += 'rigidBody1: ' + this.rigidBody1 + '\n';
-	  str += 'rigidBody2: ' + this.rigidBody2 + '\n';
-	  str += 'position: ' + this.position + '\n';
-	  str += 'rotation: ' + this.rotation + '\n';
-	  str += 'translationLimitation1: ' + this.translationLimitation1 + '\n';
-	  str += 'translationLimitation2: ' + this.translationLimitation2 + '\n';
-	  str += 'rotationLimitation1: ' + this.rotationLimitation1 + '\n';
-	  str += 'rotationLimitation2: ' + this.rotationLimitation2 + '\n';
-	  str += 'springPosition: ' + this.springPosition + '\n';
-	  str += 'springRotation: ' + this.springRotation + '\n';
-	  return str;
-	};
-
-	PMDJoint.prototype.toRight = function () {
-	  this.position[2] = -this.position[2];
-	  this.rotation[0] = -this.rotation[0];
-	  this.rotation[1] = -this.rotation[1];
-	};
-
-	function PMDImageLoader(pmd, baseURL) {
-	  this.pmd = pmd;
-	  this.baseURL = baseURL;
-
-	  this.errorImageNum = 0;
-	  this.loadedImageNum = 0;
-	  this.noImageNum = 0;
-	};
-
-	/**
-	 * TODO: temporal
-	 */
-	PMDImageLoader.prototype.load = function (callback) {
-	  this.pmd.images.length = 0;
-	  this.pmd.toonImages.length = 0;
-	  this.pmd.sphereImages.length = 0;
-
-	  this.errorImageNum = 0;
-	  this.loadedImageNum = 0;
-	  this.noImageNum = 0;
-
-	  for (var i = 0; i < this.pmd.materialCount; i++) {
-	    var fileName = this.pmd.materials[i].convertedFileName();
-	    if (fileName == '' || fileName.indexOf('.spa') >= 0 || fileName.indexOf('.sph') >= 0) {
-	      this.pmd.images[i] = this._generatePixelImage();
-	      this.noImageNum++;
-	      this._checkDone(callback);
-	      continue;
-	    }
-
-	    var self = this;
-	    this.pmd.images[i] = new Image();
-	    this.pmd.images[i].onerror = function (event) {
-	      self.errorImageNum++;
-	      self._checkDone(callback);
-	    };
-	    this.pmd.images[i].onload = function (event) {
-	      self.loadedImageNum++;
-	      self._checkDone(callback);
-	    };
-	    this.pmd.images[i].src = this.baseURL + '/' + fileName;
-	  }
-
-	  // TODO: duplicated code
-	  for (var i = 0; i < this.pmd.toonTextureCount; i++) {
-	    var fileName = this.pmd.toonTextures[i].fileName;
-	    if (fileName == '' || fileName.indexOf('.spa') >= 0 || fileName.indexOf('.sph') >= 0) {
-	      this.pmd.toonImages[i] = this._generatePixelImage();
-	      this.noImageNum++;
-	      this._checkDone(callback);
-	      continue;
-	    }
-
-	    var self = this;
-	    this.pmd.toonImages[i] = new Image();
-	    this.pmd.toonImages[i].onerror = function (event) {
-	      self.errorImageNum++;
-	      self._checkDone(callback);
-	    };
-	    this.pmd.toonImages[i].onload = function (event) {
-	      self.loadedImageNum++;
-	      self._checkDone(callback);
-	    };
-	    this.pmd.toonImages[i].src = this.baseURL + '/' + fileName;
-	  }
-
-	  // TODO: duplicated code
-	  for (var i = 0; i < this.pmd.materialCount; i++) {
-	    if (!this.pmd.materials[i].hasSphereTexture()) {
-	      this.pmd.sphereImages[i] = this._generatePixelImage();
-	      this.noImageNum++;
-	      this._checkDone(callback);
-	      continue;
-	    }
-
-	    var fileName = this.pmd.materials[i].sphereMapFileName();
-	    var self = this;
-	    this.pmd.sphereImages[i] = new Image();
-	    this.pmd.sphereImages[i].onerror = function (event) {
-	      self.errorImageNum++;
-	      self._checkDone(callback);
-	    };
-	    this.pmd.sphereImages[i].onload = function (event) {
-	      self.loadedImageNum++;
-	      self._checkDone(callback);
-	    };
-	    this.pmd.sphereImages[i].src = this.baseURL + '/' + fileName;
-	  }
-	};
-
-	PMDImageLoader.prototype._generatePixelImage = function () {
-	  var cvs = document.createElement('canvas');
-	  cvs.width = 1;
-	  cvs.height = 1;
-	  var ctx = cvs.getContext('2d');
-
-	  ctx.fillStyle = 'rgb(255, 255, 255)';
-	  ctx.fillRect(0, 0, 1, 1);
-	  return cvs;
-	};
-
-	PMDImageLoader.prototype._checkDone = function (callback) {
-	  if (this.loadedImageNum + this.noImageNum + this.errorImageNum >= this.pmd.materialCount * 2 + this.pmd.toonTextureCount) {
-	    callback(this.pmd);
-	  }
-	};
-
-	module.exports = {
-	  PMD: PMD,
-	  PMDHeader: PMDHeader,
-	  PMDVertex: PMDVertex,
-	  PMDVertexIndex: PMDVertexIndex,
-	  PMDMaterial: PMDMaterial,
-	  PMDBone: PMDBone,
-	  PMDIK: PMDIK,
-	  PMDFace: PMDFace,
-	  PMDFaceVertex: PMDFaceVertex,
-	  PMDFaceDisplay: PMDFaceDisplay,
-	  PMDBoneFrameName: PMDBoneFrameName,
-	  PMDBoneDisplay: PMDBoneDisplay,
-	  PMDEnglishHeader: PMDEnglishHeader,
-	  PMDEnglishBoneName: PMDEnglishBoneName,
-	  PMDEnglishFaceName: PMDEnglishFaceName,
-	  PMDEnglishBoneFrameName: PMDEnglishBoneFrameName,
-	  PMDToonTexture: PMDToonTexture,
-	  PMDRigidBody: PMDRigidBody,
-	  PMDJoint: PMDJoint
-	};
-
-/***/ }),
-
-/***/ 17:
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _glMatrix095Min = __webpack_require__(4);
-
-	/**
-	 * instance of classes in this file should be created and
-	 * their fields should be set by VMDFileParser.
-	 */
-	function VMD() {
-	  this.header = null;
-	  this.motionCount = null;
-	  this.faceCount = null;
-	  this.cameraCount = null;
-	  this.lightCount = null;
-
-	  this.motions = [];
-	  this.faces = [];
-	  this.cameras = [];
-	  this.lights = [];
-
-	  this.frame = 0;
-	  this.orderedMotions = [];
-	  this.orderedFaces = [];
-	  this.orderedCameras = [];
-	  this.orderedLights = [];
-
-	  this.cameraIndex = -1;
-	  this.lightIndex = -1;
-
-	  // TODO: rename
-	  this.stepMotions = [];
-	  this.stepFaces = [];
-	  this.stepCamera = { location: [0, 0, 0],
-	    rotation: [0, 0, 0],
-	    length: 0,
-	    angle: 0,
-	    available: true };
-	  this.stepLight = { color: [0, 0, 0],
-	    location: [0, 0, 0],
-	    available: true };
-	};
-
-	// for reference
-	VMD.prototype.Object = Object;
-	VMD.prototype.Math = Math;
-	VMD.prototype.vec3 = _glMatrix095Min.vec3;
-	VMD.prototype.quat4 = _glMatrix095Min.quat4;
-
-	VMD.prototype.valid = function () {
-	  return this.header.valid();
-	};
-
-	VMD.prototype.supply = function () {
-	  for (var i = 0; i < this.motionCount; i++) {
-	    this.motions[i].supply();
-	  }for (var i = 0; i < this.faceCount; i++) {
-	    this.faces[i].supply();
-	  }for (var i = 0; i < this.cameraCount; i++) {
-	    this.cameras[i].supply();
-	  }for (var i = 0; i < this.lightCount; i++) {
-	    this.lights[i].supply();
-	  }
-	};
-
-	/**
-	 * TODO: temporal
-	 */
-	VMD.prototype.clone = function () {
-	  var v = new VMD();
-
-	  v.motionCount = this.motionCount;
-	  v.faceCount = this.faceCount;
-	  v.cameraCount = this.cameraCount;
-	  v.lightCount = this.lightCount;
-
-	  for (var i = 0; i < this.motionCount; i++) {
-	    v.motions[i] = this.motions[i];
-	  }
-
-	  for (var i = 0; i < this.faceCount; i++) {
-	    v.faces[i] = this.faces[i];
-	  }
-
-	  for (var i = 0; i < this.cameraCount; i++) {
-	    v.cameras[i] = this.cameras[i];
-	  }
-
-	  for (var i = 0; i < this.lightCount; i++) {
-	    v.lights[i] = this.lights[i];
-	  }
-
-	  return v;
-	};
-
-	VMD.prototype.setup = function (pmd) {
-	  this.frame = 0;
-	  this.cameraIndex = -1;
-	  this.lightIndex = -1;
-
-	  if (pmd) {
-	    this._setupMotions(pmd);
-	    this._setupFaces(pmd);
-	  }
-	  this._setupCameras();
-	  this._setupLights();
-
-	  // TODO: temporal
-	  this.step(1);
-	};
-
-	/**
-	 * TODO: optimize
-	 */
-	VMD.prototype._setupMotions = function (pmd) {
-	  var arrays = {};
-	  for (var i = 0; i < this.motionCount; i++) {
-	    var m = this.motions[i];
-
-	    // Note: remove unnecessary element for PMD
-	    if (pmd.bonesHash[m.boneName] === undefined) continue;
-
-	    if (arrays[m.boneName] === undefined) {
-	      arrays[m.boneName] = {};
-	      arrays[m.boneName].motions = [];
-	      arrays[m.boneName].index = -1;
-	    }
-	    arrays[m.boneName].motions.push(m);
-	  }
-
-	  for (var key in arrays) {
-	    arrays[key].motions.sort(function (a, b) {
-	      return a.frameNum - b.frameNum;
-	    });
-	  }
-
-	  this.orderedMotions.length = 0;
-	  var motionKeys = this.Object.keys(arrays);
-	  for (var i = 0; i < motionKeys.length; i++) {
-	    this.orderedMotions[i] = arrays[motionKeys[i]];
-	  }
-
-	  this.stepMotions.length = 0;
-	  for (var i = 0; i < pmd.boneCount; i++) {
-	    var a = {};
-	    a.location = [0, 0, 0];
-	    a.rotation = [0, 0, 0, 1];
-	    this._clearVec3(a.location); // just in case
-	    this._clearQuat4(a.rotation); // just in case
-	    this.stepMotions[i] = a;
-	  }
-
-	  var boneNames = pmd.getBoneNames();
-	  var tmp = 0;
-	  for (var i = 0; i < pmd.bones.length; i++) {
-	    var p = pmd.bones[i];
-	    p.motionIndex = motionKeys.indexOf(p.name);
-	    if (p.motionIndex == -1) {
-	      p.motionIndex = motionKeys.length + tmp;
-	      tmp++;
-	    }
-	  }
-	};
-
-	VMD.prototype._setupFaces = function (pmd) {
-	  var arrays = {};
-	  for (var i = 0; i < this.faceCount; i++) {
-	    var f = this.faces[i];
-
-	    if (pmd.facesHash[f.name] === undefined) continue;
-
-	    if (arrays[f.name] === undefined) {
-	      arrays[f.name] = {};
-	      arrays[f.name].faces = [];
-	      arrays[f.name].index = -1;
-	    }
-	    arrays[f.name].faces.push(f);
-	  }
-
-	  for (var key in arrays) {
-	    arrays[key].faces.sort(function (a, b) {
-	      return a.frameNum - b.frameNum;
-	    });
-	  }
-
-	  this.orderedFaces.length = 0;
-	  var faceKeys = this.Object.keys(arrays);
-	  for (var i = 0; i < faceKeys.length; i++) {
-	    this.orderedFaces[i] = arrays[faceKeys[i]];
-	  }
-
-	  this.stepFaces.length = 0;
-	  for (var i = 0; i < pmd.faceCount; i++) {
-	    var a = {};
-	    a.weight = 0;
-	    a.available = true;
-	    this.stepFaces[i] = a;
-	  }
-
-	  var faceNames = pmd.getFaceNames();
-	  var tmp = 0;
-	  for (var i = 0; i < pmd.faces.length; i++) {
-	    var p = pmd.faces[i];
-	    p.motionIndex = faceKeys.indexOf(p.name);
-	    if (p.motionIndex == -1) {
-	      p.motionIndex = faceKeys.length + tmp;
-	      this.stepFaces[p.motionIndex].available = false;
-	      tmp++;
-	    }
-	  }
-	};
-
-	VMD.prototype._setupCameras = function () {
-	  this.orderedCameras.length = 0;
-	  for (var i = 0; i < this.cameraCount; i++) {
-	    this.orderedCameras[i] = this.cameras[i];
-	  }
-
-	  this.orderedCameras.sort(function (a, b) {
-	    return a.frameNum - b.frameNum;
-	  });
-	};
-
-	VMD.prototype._setupLights = function () {
-	  this.orderedLights.length = 0;
-	  for (var i = 0; i < this.lightCount; i++) {
-	    this.orderedLights[i] = {};
-	    this.orderedLights[i].light = this.lights[i];
-	  }
-
-	  this.orderedLights.sort(function (a, b) {
-	    return a.light.frameNum - b.light.frameNum;
-	  });
-	};
-
-	VMD.prototype.step = function (dframe) {
-	  this._stepMotion();
-	  this._stepFace();
-	  this._stepCamera();
-	  this._stepLight();
-
-	  //  this.frame++;
-	  this.frame += dframe;
-	};
-
-	/**
-	 * TODO: check the logic.
-	 */
-	VMD.prototype._stepMotion = function () {
-	  for (var i = 0; i < this.orderedMotions.length; i++) {
-	    var m = this.orderedMotions[i];
-	    while (m.index + 1 < m.motions.length && m.motions[m.index + 1].frameNum <= this.frame) {
-	      m.index++;
-	    }
-	  }
-	};
-
-	/**
-	 * TODO: check the logic.
-	 */
-	VMD.prototype._stepFace = function () {
-	  for (var i = 0; i < this.orderedFaces.length; i++) {
-	    var f = this.orderedFaces[i];
-	    while (f.index + 1 < f.faces.length && f.faces[f.index + 1].frameNum <= this.frame) {
-	      f.index++;
-	    }
-	  }
-	};
-
-	/**
-	 * TODO: check the logic.
-	 */
-	VMD.prototype._stepCamera = function () {
-	  while (this.cameraIndex + 1 < this.cameras.length && this.orderedCameras[this.cameraIndex + 1].frameNum <= this.frame) {
-	    this.cameraIndex++;
-	  }
-	};
-
-	/**
-	 * TODO: check the logic.
-	 */
-	VMD.prototype._stepLight = function () {
-	  while (this.lightIndex + 1 < this.lights.length && this.orderedLights[this.lightIndex + 1].light.frameNum <= this.frame) {
-	    this.lightIndex++;
-	  }
-	};
-
-	VMD.prototype.merge = function (v) {
-	  this.motionCount += v.motionCount;
-	  this.faceCount += v.faceCount;
-	  this.cameraCount += v.cameraCount;
-	  this.lightCount += v.lightCount;
-
-	  for (var i = 0; i < v.motionCount; i++) {
-	    this.motions.push(v.motions[i]);
-	  }
-	  for (var i = 0; i < v.faceCount; i++) {
-	    this.faces.push(v.faces[i]);
-	  }
-	  for (var i = 0; i < v.cameraCount; i++) {
-	    this.cameras.push(v.cameras[i]);
-	  }
-	  for (var i = 0; i < v.lightCount; i++) {
-	    this.lights.push(v.lights[i]);
-	  }
-	};
-
-	VMD.prototype.addOffset = function (o) {
-	  for (var i = 0; i < this.motionCount; i++) {
-	    this.motions[i].frameNum += o;
-	  }
-	  for (var i = 0; i < this.faceCount; i++) {
-	    this.faces[i].frameNum += o;
-	  }
-	  for (var i = 0; i < this.cameraCount; i++) {
-	    this.cameras[i].frameNum += o;
-	  }
-	  for (var i = 0; i < this.lightCount; i++) {
-	    this.lights[i].frameNum += o;
-	  }
-	};
-
-	/**
-	 * TODO: temporal
-	 * TODO: calculate next frameNum at setup phase?
-	 * TODO: check the logic
-	 */
-	VMD.prototype.loadMotion = function () {
-	  for (var i = 0; i < this.orderedMotions.length; i++) {
-	    var m = this.orderedMotions[i];
-
-	    if (m.index == -1) continue;
-
-	    var m1 = m.motions[m.index];
-	    var m2 = m.motions[m.index + 1];
-	    var m3 = this.stepMotions[i];
-
-	    if (m1.frameNum == this.frame || m2 === undefined || m2.frameNum - m1.frameNum <= 2) {
-	      this._setVec3(m1.location, m3.location);
-	      this._setQuat4(m1.rotation, m3.rotation);
-	    } else {
-	      // Note: linear interpolation so far
-	      var d = m2.frameNum - m1.frameNum;
-	      var d2 = this.frame - m1.frameNum;
-	      var r = d2 / d;
-	      this._slerpQuat4(m1.rotation, m2.rotation, r, m3.rotation);
-	      this._lerpVec3(m1.location, m2.location, r, m3.location);
-	    }
-	  }
-
-	  for (var i = this.orderedMotions.length; i < this.stepMotions.length; i++) {
-	    var s = this.stepMotions[i];
-	    this._clearVec3(s.location);
-	    this._clearQuat4(s.rotation);
-	  }
-	};
-
-	/**
-	 * TODO: temporal
-	 * TODO: any ways to avoid update all morph Buffer?
-	 * TODO: check the logic.
-	 */
-	VMD.prototype.loadFace = function () {
-	  for (var i = 0; i < this.orderedFaces.length; i++) {
-	    var f = this.orderedFaces[i];
-
-	    if (f.index == -1) continue;
-
-	    var f1 = f.faces[f.index];
-	    var f2 = f.faces[f.index + 1];
-	    var f3 = this.stepFaces[i];
-
-	    if (f1.frameNum == this.frameNum || f2 === undefined || f2.frameNum - f1.frameNum <= 2) {
-	      f3.weight = f1.weight;
-	    } else {
-	      var d = f2.frameNum - f1.frameNum;
-	      var d2 = this.frame - f1.frameNum;
-	      var r = d2 / d;
-	      f3.weight = this._lerp(f1.weight, f2.weight, r);
-	    }
-	  }
-	};
-
-	/**
-	 * TODO: check the logic
-	 */
-	VMD.prototype.loadCamera = function () {
-	  var ocs = this.orderedCameras;
-	  var index = this.cameraIndex;
-	  this.stepCamera.available = false;
-
-	  if (index == -1) return;
-
-	  this.stepCamera.available = true;
-	  var c1 = ocs[index];
-	  var c2 = ocs[index + 1];
-
-	  if (c1.frameNum == this.frame || c2 === undefined || c2.frameNum - c1.frameNum <= 2) {
-	    this._setVec3(c1.location, this.stepCamera.location);
-	    this._setVec3(c1.rotation, this.stepCamera.rotation);
-	    this.stepCamera.length = c1.length;
-	    this.stepCamera.angle = c1.angle;
-	  } else {
-	    // Note: linear interpolation so far
-	    var d = c2.frameNum - c1.frameNum;
-	    var d2 = this.frame - c1.frameNum;
-	    var r = d2 / d;
-
-	    this._lerpVec3(c1.location, c2.location, r, this.stepCamera.location);
-	    this._lerpVec3(c1.rotation, c2.rotation, r, this.stepCamera.rotation);
-	    this.stepCamera.length = this._lerp(c1.length, c2.length, r);
-	    this.stepCamera.angle = this._lerp(c1.angle, c2.angle, r);
-	  }
-	};
-
-	/**
-	 * TODO: check the logic.
-	 * TODO: implement correctly
-	 */
-	VMD.prototype.loadLight = function () {
-	  var ols = this.orderedLights;
-	  var index = this.lightIndex;
-	  this.stepLight.available = false;
-
-	  if (index == -1) return;
-
-	  var light = ols[index].light;
-	  this.stepLight.available = true;
-	  this._setVec3(light.color, this.stepLight.color);
-	  this._setVec3(light.location, this.stepLight.location);
-	};
-
-	VMD.prototype._setVec3 = function (a, b) {
-	  b[0] = a[0];
-	  b[1] = a[1];
-	  b[2] = a[2];
-	};
-
-	VMD.prototype._setQuat4 = function (a, b) {
-	  b[0] = a[0];
-	  b[1] = a[1];
-	  b[2] = a[2];
-	  b[3] = a[3];
-	};
-
-	VMD.prototype._clearVec3 = function (a) {
-	  a[0] = 0;
-	  a[1] = 0;
-	  a[2] = 0;
-	};
-
-	VMD.prototype._clearQuat4 = function (a) {
-	  a[0] = 0;
-	  a[1] = 0;
-	  a[2] = 0;
-	  a[3] = 1;
-	};
-
-	VMD.prototype._lerp = function (a, b, c) {
-	  return a * (1 - c) + b * c;
-	};
-
-	VMD.prototype._lerpVec3 = function (a, b, c, d) {
-	  d[0] = this._lerp(a[0], b[0], c);
-	  d[1] = this._lerp(a[1], b[1], c);
-	  d[2] = this._lerp(a[2], b[2], c);
-	};
-
-	/**
-	 * copied from somewhere so far
-	 * TODO: move this logic to general matrix class or somewhere
-	 */
-	VMD.prototype._slerpQuat4 = function (q, r, t, p) {
-	  var cosHalfTheta = q[0] * r[0] + q[1] * r[1] + q[2] * r[2] + q[3] * r[3];
-	  if (cosHalfTheta < 0) {
-	    p[0] = -r[0];
-	    p[1] = -r[1];
-	    p[2] = -r[2];
-	    p[3] = -r[3];
-	    cosHalfTheta = -cosHalfTheta;
-	  } else {
-	    p[0] = r[0];
-	    p[1] = r[1];
-	    p[2] = r[2];
-	    p[3] = r[3];
-	  }
-
-	  if (this.Math.abs(cosHalfTheta) >= 1.0) {
-	    p[0] = q[0];
-	    p[1] = q[1];
-	    p[2] = q[2];
-	    p[3] = q[3];
-	    return p;
-	  }
-
-	  var halfTheta = this.Math.acos(cosHalfTheta);
-	  var sinHalfTheta = this.Math.sqrt(1.0 - cosHalfTheta * cosHalfTheta);
-
-	  if (this.Math.abs(sinHalfTheta) < 0.001) {
-	    p[0] = 0.5 * (q[0] + r[0]);
-	    p[1] = 0.5 * (q[1] + r[1]);
-	    p[2] = 0.5 * (q[2] + r[2]);
-	    p[3] = 0.5 * (q[3] + r[3]);
-	    return p;
-	  }
-
-	  var ratioA = this.Math.sin((1 - t) * halfTheta) / sinHalfTheta;
-	  var ratioB = this.Math.sin(t * halfTheta) / sinHalfTheta;
-
-	  p[0] = q[0] * ratioA + p[0] * ratioB;
-	  p[1] = q[1] * ratioA + p[1] * ratioB;
-	  p[2] = q[2] * ratioA + p[2] * ratioB;
-	  p[3] = q[3] * ratioA + p[3] * ratioB;
-	  return p;
-	};
-
-	/**
-	 * just copied from MMD.js so far
-	 */
-	_glMatrix095Min.vec3.rotateX = function (vec, angle, dest) {
-	  var rotation = _glMatrix095Min.mat4.rotateX(_glMatrix095Min.mat4.identity(_glMatrix095Min.mat4.create()), angle);
-	  return _glMatrix095Min.mat4.multiplyVec3(rotation, vec, dest);
-	};
-	_glMatrix095Min.vec3.rotateY = function (vec, angle, dest) {
-	  var rotation = _glMatrix095Min.mat4.rotateY(_glMatrix095Min.mat4.identity(_glMatrix095Min.mat4.create()), angle);
-	  return _glMatrix095Min.mat4.multiplyVec3(rotation, vec, dest);
-	};
-	_glMatrix095Min.vec3.rotateZ = function (vec, angle, dest) {
-	  var rotation = _glMatrix095Min.mat4.rotateZ(_glMatrix095Min.mat4.identity(_glMatrix095Min.mat4.create()), angle);
-	  return _glMatrix095Min.mat4.multiplyVec3(rotation, vec, dest);
-	};
-
-	VMD.prototype.getBoneMotion = function (bone) {
-	  return this.stepMotions[bone.motionIndex];
-	};
-
-	VMD.prototype.getFace = function (face) {
-	  return this.stepFaces[face.motionIndex];
-	};
-
-	VMD.prototype.getCamera = function () {
-	  return this.stepCamera;
-	};
-
-	VMD.prototype.getLight = function () {
-	  return this.stepLight;
-	};
-
-	/**
-	 * TODO: rename
-	 */
-	VMD.prototype.getCalculatedCameraParams = function (eye, center, up) {
-	  var yOffset = 0.0;
-	  var camera = this.getCamera();
-
-	  center[0] = camera.location[0];
-	  center[1] = camera.location[1] + yOffset;
-	  center[2] = camera.location[2];
-
-	  eye[0] = 0;
-	  eye[1] = 0 + yOffset;
-	  eye[2] = camera.length;
-
-	  up[0] = 0;
-	  up[1] = 1;
-	  up[2] = 0;
-
-	  this.vec3.rotateX(eye, camera.rotation[0], eye);
-	  this.vec3.rotateY(eye, camera.rotation[1], eye);
-	  this.vec3.rotateZ(eye, camera.rotation[2], eye);
-	  this.vec3.add(eye, camera.location, eye);
-
-	  this.vec3.rotateX(up, camera.rotation[0], up);
-	  this.vec3.rotateY(up, camera.rotation[1], up);
-	  this.vec3.rotateZ(up, camera.rotation[2], up);
-	};
-
-	VMD.prototype.dump = function () {
-	  var str = '';
-
-	  str += 'motionCount: ' + this.motionCount + '\n';
-	  str += 'faceCount: ' + this.faceCount + '\n';
-	  str += 'cameraCount: ' + this.cameraCount + '\n';
-	  str += 'lightCount: ' + this.lightCount + '\n';
-
-	  str += this._dumpMotions();
-	  str += this._dumpFaces();
-	  str += this._dumpCameras();
-	  str += this._dumpLights();
-
-	  return str;
-	};
-
-	VMD.prototype._dumpMotions = function () {
-	  var str = '';
-	  str += '-- Motions --\n';
-	  for (var i = 0; i < this.motionCount; i++) {
-	    str += this.motions[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	VMD.prototype._dumpFaces = function () {
-	  var str = '';
-	  str += '-- Faces --\n';
-	  for (var i = 0; i < this.faceCount; i++) {
-	    str += this.faces[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	VMD.prototype._dumpCameras = function () {
-	  var str = '';
-	  str += '-- Cameras --\n';
-	  for (var i = 0; i < this.cameraCount; i++) {
-	    str += this.cameras[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	VMD.prototype._dumpLights = function () {
-	  var str = '';
-	  str += '-- Lights --\n';
-	  for (var i = 0; i < this.lightCount; i++) {
-	    str += this.lights[i].dump();
-	  }
-	  str += '\n';
-	  return str;
-	};
-
-	function VMDHeader() {
-	  this.magic = null;
-	  this.modelName = null;
-	};
-
-	VMDHeader.prototype.valid = function () {
-	  return this.magic == 'Vocaloid Motion Data 0002';
-	};
-
-	VMDHeader.prototype.dump = function () {
-	  var str = '';
-	  str += 'magic: ' + this.magic + '\n';
-	  str += 'modelName: ' + this.modelName + '\n';
-	  return str;
-	};
-
-	function VMDMotion(id) {
-	  this.id = id;
-	  this.boneName = null;
-	  this.frameNum = null;
-	  this.location = null;
-	  this.rotation = null;
-	  this.interpolation = null;
-	};
-
-	VMDMotion.prototype.supply = function () {
-	  this.frameNum *= 2;
-	};
-
-	VMDMotion.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'boneName: ' + this.boneName + '\n';
-	  str += 'frameNum: ' + this.frameNum + '\n';
-	  str += 'location: ' + this.location + '\n';
-	  str += 'rotation: ' + this.rotation + '\n';
-	  str += 'interpolation: ' + this.interpolation + '\n';
-	  return str;
-	};
-
-	function VMDFace(id) {
-	  this.id = id;
-	  this.name = null;
-	  this.frameNum = null;
-	  this.weight = null;
-	};
-
-	VMDFace.prototype.supply = function () {
-	  this.frameNum *= 2;
-	};
-
-	VMDFace.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'name: ' + this.name + '\n';
-	  str += 'frameNum: ' + this.frameNum + '\n';
-	  str += 'weight: ' + this.weight + '\n';
-	  return str;
-	};
-
-	function VMDCamera(id) {
-	  this.id = id;
-	  this.frameNum = null;
-	  this.length = null;
-	  this.location = null;
-	  this.rotation = null;
-	  this.interpolation = null;
-	  this.angle = null;
-	  this.perspective = null;
-	};
-
-	VMDCamera.prototype.supply = function () {
-	  this.frameNum *= 2;
-	};
-
-	VMDCamera.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'frameNum: ' + this.frameNum + '\n';
-	  str += 'length: ' + this.length + '\n';
-	  str += 'location: ' + this.location + '\n';
-	  str += 'rotation: ' + this.rotation + '\n';
-	  str += 'interpolation: ' + this.interpolation + '\n';
-	  str += 'angle: ' + this.angle + '\n';
-	  str += 'perspective: ' + this.perspective + '\n';
-	  return str;
-	};
-
-	function VMDLight(id) {
-	  this.id = id;
-	  this.frameNum = null;
-	  this.color = null;
-	  this.location = null;
-	};
-
-	VMDLight.prototype.supply = function () {
-	  this.frameNum *= 2;
-	};
-
-	VMDLight.prototype.dump = function () {
-	  var str = '';
-	  str += 'id: ' + this.id + '\n';
-	  str += 'frameNum: ' + this.frameNum + '\n';
-	  str += 'color: ' + this.color + '\n';
-	  str += 'location: ' + this.location + '\n';
-	  return str;
-	};
-
-	module.exports = {
-	  VMD: VMD,
-	  VMDLight: VMDLight,
-	  VMDHeader: VMDHeader,
-	  VMDMotion: VMDMotion,
-	  VMDFace: VMDFace,
-	  VMDCamera: VMDCamera
-	};
-
-/***/ }),
-
-/***/ 18:
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _Utility = __webpack_require__(64);
-
-	var _Utility2 = _interopRequireDefault(_Utility);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function FileParser(buffer) {
-	  this.uint8 = new Uint8Array(buffer);
-	  this.offset = 0;
-	};
-	FileParser.prototype.Math = Math;
-
-	/**
-	 * -- sample --
-	 * FileParser.prototype._VERTEX_STRUCTURE = {
-	 *   position: {type: 'float', isArray: true, size: 3},
-	 *   normal: {type: 'float', isArray: true, size: 3},
-	 *   uv: {type: 'float', isArray: true, size: 2},
-	 *   boneIndices: {type: 'uint16', isArray: true, size: 2},
-	 *   boneWeight: {type: 'uint8'},
-	 *   edgeFlag: {type: 'uint8'}
-	 * };
-	 */
-
-	/**
-	 * Note: override this method in a child class
-	 */
-	FileParser.prototype.parse = function () {
-	  return {};
-	};
-
-	FileParser.prototype._parseObject = function (obj, s) {
-	  var o = this.offset;
-	  for (var key in s) {
-	    obj[key] = this._getValue(s[key], this.offset);
-	    // TODO: this can waste time when this function is called in loop
-	    this.offset += this._sizeof(s[key]);
-	  }
-	};
-
-	FileParser.prototype._getValue = function (param, offset) {
-	  return param.isArray === undefined ? this._getValueScalar(param, offset) : this._getValueArray(param, offset);
-	};
-
-	/**
-	 * TODO: you may use DataView.
-	 */
-	FileParser.prototype._getValueScalar = function (param, offset) {
-	  switch (param.type) {
-	    case 'char':
-	      return this._getChars(offset, 1);
-	    case 'strings':
-	      return this._getStrings(offset, 1);
-	    case 'uint8':
-	      return this._getUint8(offset);
-	    case 'uint16':
-	      return this._getUint16(offset);
-	    case 'uint32':
-	      return this._getUint32(offset);
-	    case 'float':
-	      return this._getFloat(offset);
-	    default:
-	      // TODO: to be specific
-	      throw 'error: undefined type' + param;
-	  }
-	};
-
-	FileParser.prototype._getValueArray = function (param, offset) {
-	  if (param.type == 'char') {
-	    return this._getChars(offset, param.size);
-	  }
-
-	  if (param.type == 'strings') {
-	    return this._getStrings(offset, param.size);
-	  }
-
-	  var array = [];
-	  var size = this._sizeofScalar(param);
-	  for (var i = 0; i < param.size; i++) {
-	    array[i] = this._getValueScalar(param, offset);
-	    offset += size;
-	  }
-
-	  return array;
-	};
-
-	FileParser.prototype._sizeof = function (param) {
-	  return param.isArray === undefined ? this._sizeofScalar(param) : this._sizeofArray(param);
-	};
-
-	FileParser.prototype._sizeofScalar = function (param) {
-	  switch (param.type) {
-	    case 'char':
-	      return 1;
-	    case 'strings':
-	      return 1;
-	    case 'uint8':
-	      return 1;
-	    case 'uint16':
-	      return 2;
-	    case 'uint32':
-	      return 4;
-	    case 'float':
-	      return 4;
-	    default:
-	      // TODO: to be specific
-	      throw 'error: undefined type ' + param + ' ' + param.type;
-	  }
-	};
-
-	FileParser.prototype._sizeofArray = function (param) {
-	  return this._sizeofScalar(param) * param.size;
-	};
-
-	FileParser.prototype._sizeofObject = function (o) {
-	  var size = 0;
-	  for (var key in o) {
-	    size += this._sizeof(o[key]);
-	  }
-	  return size;
-	};
-
-	FileParser.prototype._getUint8 = function (pos) {
-	  return this.uint8[pos];
-	};
-
-	FileParser.prototype._getUint16 = function (pos) {
-	  return this._getValueWithReverseByteOrder(pos, 2);
-	};
-
-	FileParser.prototype._getUint32 = function (pos) {
-	  return this._getValueWithReverseByteOrder(pos, 4);
-	};
-
-	FileParser.prototype._getFloat = function (pos) {
-	  return this._toBinary32(this._getValueWithReverseByteOrder(pos, 4));
-	};
-
-	FileParser.prototype._getValueWithReverseByteOrder = function (pos, size) {
-	  var value = 0;
-	  for (var i = 0; i < size; i++) {
-	    value = value << 8 | this.uint8[pos + size - i - 1];
-	  }
-	  return value;
-	};
-
-	FileParser.prototype._toBinary32 = function (uint32) {
-	  var sign = uint32 >> 31 & 1;
-	  var exponent = uint32 >> 23 & 0xFF;
-	  var fraction = uint32 & 0x7FFFFF;
-
-	  if (exponent == 0 && fraction == 0) return 0.0;
-
-	  if (exponent == 255 && fraction == 0) return Infinity;
-
-	  if (exponent == 255 && fraction != 0) return NaN;
-
-	  var tmp = 1;
-
-	  if (exponent == 0 && fraction != 0) {
-	    exponent = 1;
-	    tmp = 0;
-	  }
-
-	  for (var i = 0; i < 23; i++) {
-	    if (fraction >> 22 - i & 1) {
-	      tmp += this.Math.pow(2, -(i + 1));
-	    }
-	  }
-	  tmp = tmp * this.Math.pow(2, exponent - 127);
-	  if (sign) tmp = -tmp;
-	  return tmp;
-	};
-
-	FileParser.prototype._getChars = function (pos, size) {
-	  var str = '';
-	  for (var i = 0; i < size; i++) {
-	    var index = pos + i;
-	    if (this.uint8[index] == 0) break;
-	    // TODO: temporal
-	    str += String.fromCharCode(this.uint8[index]);
-	  }
-	  return str;
-	};
-
-	FileParser.prototype._getStrings = function (pos, size) {
-	  var str = '';
-	  for (var i = 0; i < size; i++) {
-	    var index = pos + i;
-	    if (this.uint8[index] == 0) break;
-	    // TODO: temporal
-	    str += (0, _Utility2.default)(16, this.uint8[index], 2);
-	  }
-	  return str;
-	};
-
-	FileParser.prototype.dump = function () {
-	  var array = this.uint8;
-
-	  var figure = 0;
-	  var tmp = array.length;
-	  while (tmp > 0) {
-	    figure++;
-	    tmp = tmp / 16 | 0;
-	  }
-
-	  var dump = '';
-	  var charDump = '';
-	  for (var i = 0; i < array.length; i++) {
-	    if (i % 16 == 0) {
-	      dump += (0, _Utility2.default)(16, i, figure);
-	      dump += ' ';
-	    }
-
-	    dump += (0, _Utility2.default)(16, array[i], 2);
-	    dump += ' ';
-
-	    if (array[i] >= 0x20 && array[i] <= 0x7E) charDump += String.fromCharCode(array[i]);else charDump += '.';
-
-	    if (i % 16 == 15) {
-	      dump += '  ';
-	      dump += charDump;
-	      dump += '\n';
-	      charDump = '';
-	    }
-	  }
-
-	  return dump;
-	};
-
-	module.exports = FileParser;
-
-/***/ }),
-
-/***/ 57:
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ********** *
-	                                                                                                                                                                                                                                                                   *
-	                                                                                                                                                                                                                                                                   * Based on mmd-viewer-js, Ammo.js
-	                                                                                                                                                                                                                                                                   * - https://github.com/takahirox/mmd-viewer-js
-	                                                                                                                                                                                                                                                                   * - https://github.com/kripken/ammo.js
-	                                                                                                                                                                                                                                                                   *
-	                                                                                                                                                                                                                                                                   * ********** **/
-
-	var _Pmd = __webpack_require__(16);
-
-	var _Pmd2 = _interopRequireDefault(_Pmd);
-
-	var _PmdFileParser = __webpack_require__(59);
-
-	var _PmdFileParser2 = _interopRequireDefault(_PmdFileParser);
-
-	var _PmdModelView_easycanvas = __webpack_require__(60);
-
-	var _PmdModelView_easycanvas2 = _interopRequireDefault(_PmdModelView_easycanvas);
-
-	var _PmdView_easycanvas = __webpack_require__(61);
-
-	var _PmdView_easycanvas2 = _interopRequireDefault(_PmdView_easycanvas);
-
-	var _Vmd = __webpack_require__(17);
-
-	var _Vmd2 = _interopRequireDefault(_Vmd);
-
-	var _VmdFileParser = __webpack_require__(62);
-
-	var _VmdFileParser2 = _interopRequireDefault(_VmdFileParser);
-
-	var _Physics = __webpack_require__(58);
-
-	var _Physics2 = _interopRequireDefault(_Physics);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	window.PmdModelView = _PmdModelView_easycanvas2.default;
-	window.PmdView = _PmdView_easycanvas2.default;
-	window.Vmd = _Vmd2.default;
-	window.VmdFileParser = _VmdFileParser2.default;
-	window.Physics = _Physics2.default;
-
-	var err = function err(msg) {
-	    console.error('[Easycanvas-webgl] ' + msg);
-	};
-
-	var pmdCache = {};
-	var ProcessingFlag = 'processing';
-
-	var __analyzePMD = function __analyzePMD(url, buffer, callback) {
-	    var pfp = new _PmdFileParser2.default(buffer);
-
-	    if (!pfp.valid()) {
-	        err('PMD Parse Error.');
-	        return;
-	    }
-
-	    var pmd = pfp.parse();
-	    pmd.setup();
-
-	    var vertices = pmd.vertices.map(function (a) {
-	        return a.position;
-	    }).join(',').split(',').map(function (a) {
-	        return Number(a);
-	    });
-	    var normals = pmd.vertices.map(function (a) {
-	        return a.normal;
-	    }).join(',').split(',');
-	    var textures = pmd.vertices.map(function (a) {
-	        return a.uv;
-	    }).join(',').split(',');
-	    var indices = pmd.vertexIndices.map(function (a) {
-	        return a.index;
-	    });
-
-	    var data = {
-	        vertices: vertices,
-	        normals: normals,
-	        textures: textures,
-	        indices: indices
-	    };
-
-	    pmd.$vertices = vertices;
-
-	    pmdCache[url] = {
-	        data: data,
-	        pmd: pmd
-	    };
-
-	    callback(data, pmd);
-	};
-
-	var __analyzeVMD = function __analyzeVMD(buffers, callback) {
-	    var vmds = [];
-	    var vfps = [];
-	    for (var i = 0; i < buffers.length; i++) {
-	        vfps[i] = new _VmdFileParser2.default(buffers[i]);
-
-	        if (!vfps[i].valid()) {
-	            err('VMD Parse Error.');
-	            return;
-	        }
-
-	        vmds[i] = vfps[i].parse();
-	    }
-
-	    var vmd = vmds[0];
-	    var vfp = vfps[0];
-	    // __vfp = vfps[0]; // for console debug.
-	    // __vmd = vmds[0]; // for console debug.
-
-	    for (var i = 1; i < buffers.length; i++) {
-	        vmd.merge(vmds[i]);
-	    }
-
-	    // if(__selectedMotion.music) {
-	    //   __loadMusicFile();
-	    // } else {
-	    callback({
-	        start: function start(pmd, vertices) {
-	            var p = new _Physics2.default(pmd);
-	            var v = new _PmdView_easycanvas2.default();
-	            var mv = new _PmdModelView_easycanvas2.default(null, pmd, v);
-	            mv.setup(); // 
-	            mv._initMotions();
-	            v.setup();
-	            v.addModelView(mv);
-
-	            // TODO: has accessed pmdView
-	            v.setVMD(vmd);
-	            // pmdView.setEye(__selectedMotion.eye);
-	            v.startDance();
-
-	            var getVerticals = mv.getVerticals;
-
-	            window.getVerticals = getVerticals;
-
-	            setInterval(function () {
-	                v.update();
-	                for (var _i = 0, l = vertices.length / 3; _i < l; _i++) {
-	                    // 这块比较耗性能，需要修改
-	                    var temp = getVerticals(_i);
-	                    vertices[_i * 3 + 0] = temp[0];
-	                    vertices[_i * 3 + 1] = temp[1];
-	                    vertices[_i * 3 + 2] = temp[2];
-	                }
-	                vertices.$cacheBuffer = undefined;
-	            }, 50);
-	        }
-	    });
-	    // }
-	};
-
-	var loaderPMD = function loaderPMD(url, callback) {
-	    var useCache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-	    if (useCache) {
-	        if (pmdCache[url]) {
-	            if (pmdCache[url] === ProcessingFlag) {
-	                setTimeout(function () {
-	                    loaderPMD(url, callback);
-	                }, 100);
-	            } else {
-	                callback(pmdCache[url].data, pmdCache[url].pmd);
-	            }
-	            return;
-	        }
-	        pmdCache[url] = ProcessingFlag;
-	    }
-
-	    var modelURL = url;
-
-	    var request = new XMLHttpRequest();
-	    request.responseType = 'arraybuffer';
-	    request.onload = function () {
-	        __analyzePMD(url, request.response, callback);
-	    };
-	    request.onerror = function (error) {
-	        err('PMD File Loaded Error.');
-	    };
-	    request.open('GET', modelURL, true);
-	    request.send(null);
-	};
-
-	var loaderVMD = function loaderVMD(urls, callback, index, buffers) {
-	    // 这俩参数暂时没发现有多大用
-	    index = index || 0;
-	    buffers = buffers || [];
-
-	    var url = urls.pop ? urls.length[index] : urls;
-
-	    var request = new XMLHttpRequest();
-	    request.responseType = 'arraybuffer';
-	    request.onload = function () {
-	        buffers.push(request.response);
-	        // if (index + 1 >= urls.length) {
-	        __analyzeVMD(buffers, callback);
-	        // } else {
-	        //     loaderVMD(urls, index+1, buffers);
-	        // }
-	    };
-	    request.onerror = function (error) {
-	        err('VMD File Loaded Error.');
-	    };
-	    request.open('GET', url, true);
-	    request.send(null);
-	};
-
-	var classInit = function classInit(opt) {
-	    if (!opt.webgl || !opt.webgl.pmd) {
-	        return;
-	    }
-
-	    var pmdUrl = opt.webgl.pmd;
-	    var imgPath = opt.webgl.imgPath;
-	    var useCache = opt.webgl.cache !== false;
-	    var sprite = this;
-
-	    var vmdQueue = void 0;
-
-	    loaderPMD(pmdUrl, function (data, pmd) {
-	        sprite.webgl = {};
-
-	        var vertices = data.vertices;
-	        var normals = data.normals;
-	        var textures = data.textures;
-	        var indices = data.indices;
-
-	        delete opt.webgl.pmd;
-	        delete opt.webgl.imgPath;
-	        delete opt.webgl.cache;
-
-	        var lastCount = 0;
-
-	        pmd.materials.forEach(function (mt, i) {
-	            var currentIndices = pmdCache[pmdUrl]['currentIndices' + i] || indices.slice(lastCount, lastCount + mt.vertexCount);
-	            pmdCache[pmdUrl]['currentIndices' + i] = currentIndices;
-
-	            sprite.add({
-	                name: mt.fileName,
-	                // 这块如果属性是function的话assign过去会有坑，需要改成非function的再assign过去，todo
-	                webgl: _extends(window.Easycanvas.webglShapes.custom({
-	                    vertices: vertices,
-	                    normals: normals,
-	                    indices: currentIndices,
-	                    textures: textures,
-	                    img: mt.fileName ? imgPath + mt.fileName : undefined,
-	                    colors: mt.fileName ? undefined : mt.color.map(function (num) {
-	                        return num * 255;
-	                    }).slice(0, 3) // mirrorColor
-	                }), opt.webgl)
-	            });
-	            lastCount += mt.vertexCount;
-	        });
-
-	        sprite.vmdStart = function (vmdUrl) {
-	            loaderVMD(vmdUrl, function (vmd) {
-	                vmd.start(pmd, sprite.children[0].webgl.vertices);
-	            });
-	        };
-
-	        if (vmdQueue) {
-	            sprite.vmdStart(vmdQueue);
-	        }
-
-	        sprite.trigger('webgl-mmd-loaded');
-	    }, useCache);
-
-	    sprite.vmdStart = function (vmdUrl) {
-	        vmdQueue = vmdUrl;
-	    };
-	};
-
-	var inBrowser = typeof window !== 'undefined';
-
-	if (inBrowser && window.Easycanvas) {
-	    Easycanvas.loaderPMD = loaderPMD;
-	    Easycanvas.loaderVMD = loaderVMD;
-	    Easycanvas.extend(classInit);
-	} else {
-	    module.exports = {
-	        loaderPMD: loaderPMD,
-	        loaderVMD: loaderVMD,
-	        classInit: classInit
-	    };
-	}
-
-/***/ }),
-
-/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3899,6 +1608,2297 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
+/***/ 17:
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * instance of classes in this file should be created and
+	 * their fields should be set by PMDFileParser.
+	 * TODO: rename fields to appropriate ones.
+	 */
+	function PMD() {
+	  this.header = null;
+	  this.englishHeader = null;
+	  this.vertexCount = null;
+	  this.vertexIndexCount = null;
+	  this.materialCount = null;
+	  this.boneCount = null;
+	  this.ikCount = null;
+	  this.faceCount = null;
+	  this.faceDisplayCount = null;
+	  this.boneFrameNameCount = null;
+	  this.boneDisplayCount = null;
+	  this.toonTextureCount = null;
+	  this.rigidBodyCount = null;
+	  this.jointCount = null;
+
+	  this.vertices = [];
+	  this.vertexIndices = [];
+	  this.materials = [];
+	  this.bones = [];
+	  this.iks = [];
+	  this.faces = [];
+	  this.faceDisplays = [];
+	  this.boneFrameNames = [];
+	  this.boneDisplays = [];
+	  this.englishBoneNames = [];
+	  this.englishFaceNames = [];
+	  this.englishBoneFrameNames = [];
+	  this.toonTextures = [];
+	  this.rigidBodies = [];
+	  this.joints = [];
+
+	  this.bonesHash = {};
+	  this.facesHash = {};
+
+	  this.images = [];
+	  this.toonImages = [];
+	  this.sphereImages = [];
+
+	  this.centerBone = {};
+	  this.leftFootBone = {};
+	  this.rightFootBone = {};
+	  this.leftEyeBone = {};
+	  this.rightEyeBone = {};
+	};
+
+	PMD.prototype.valid = function () {
+	  return this.header.valid();
+	};
+
+	PMD.prototype.getParentBone = function (bone) {
+	  return this.bones[bone.parentIndex];
+	};
+
+	PMD.prototype.loadImages = function (baseURL, callback) {
+	  var loader = new PMDImageLoader(this, baseURL);
+	  loader.load(callback);
+	};
+
+	PMD.prototype.setup = function () {
+	  for (var i = 0; i < this.vertexCount; i++) {
+	    this.vertices[i].setup();
+	  }
+
+	  for (var i = 0; i < this.boneCount; i++) {
+	    this.bonesHash[this.bones[i].name] = this.bones[i];
+	  }
+
+	  for (var i = 0; i < this.faceCount; i++) {
+	    this.facesHash[this.faces[i].name] = this.faces[i];
+	  }
+	  //  this.toRight();
+
+	  this._keepSomeBonesInfo();
+	};
+
+	PMD.prototype.toRight = function () {
+	  for (var i = 0; i < this.vertexCount; i++) {
+	    this.vertices[i].toRight();
+	  }
+
+	  for (var i = 0; i < this.boneCount; i++) {
+	    this.bones[i].toRight();
+	  }
+
+	  for (var i = 0; i < this.faceCount; i++) {
+	    this.faces[i].toRight();
+	  }
+
+	  for (var i = 0; i < this.rigidBodyCount; i++) {
+	    this.rigidBodies[i].toRight();
+	  }
+
+	  for (var i = 0; i < this.jointCount; i++) {
+	    this.joints[i].toRight();
+	  }
+	};
+
+	/**
+	 * TODO: change strings if sjis-lib is used
+	 */
+	PMD.prototype._keepSomeBonesInfo = function () {
+	  // �Z���^�[, ������, �E����, ����, �E��
+	  this._keepBoneInfo(this.centerBone, '0x830x5a0x830x930x830x5e0x810x5b');
+	  this._keepBoneInfo(this.leftFootBone, '0x8d0xb60x910xab0x8e0xf1');
+	  this._keepBoneInfo(this.rightFootBone, '0x890x450x910xab0x8e0xf1');
+	  this._keepBoneInfo(this.leftEyeBone, '0x8d0xb60x960xda');
+	  this._keepBoneInfo(this.rightEyeBone, '0x890x450x960xda');
+	};
+
+	PMD.prototype._keepBoneInfo = function (obj, name) {
+	  var boneNum = this._findBoneNumberByName(name);
+	  if (boneNum !== null) {
+	    var bone = this.bones[boneNum];
+	    obj.pos = this._getAveragePositionOfBone(bone);
+	    obj.id = boneNum;
+	    obj.bone = bone;
+	    obj.posFromBone = [];
+	    obj.posFromBone[0] = obj.pos[0] - bone.position[0];
+	    obj.posFromBone[1] = obj.pos[1] - bone.position[1];
+	    obj.posFromBone[2] = obj.pos[2] - bone.position[2];
+	  } else {
+	    obj.pos = null;
+	    obj.id = null;
+	    obj.bone = null;
+	    obj.posFromBone = null;
+	  }
+	};
+
+	PMD.prototype._findBoneNumberByName = function (name) {
+	  for (var i = 0; i < this.boneCount; i++) {
+	    if (this.bones[i].name == name) return i;
+	  }
+	  return null;
+	};
+
+	/**
+	 * TODO: consider the algorithm again.
+	 */
+	PMD.prototype._getAveragePositionOfBone = function (bone) {
+	  var num = 0;
+	  var pos = [0, 0, 0];
+	  for (var i = 0; i < this.vertexCount; i++) {
+	    var v = this.vertices[i];
+	    // TODO: consider boneWeight?
+	    if (v.boneIndices[0] == bone.id || v.boneIndices[1] == bone.id) {
+	      pos[0] += v.position[0];
+	      pos[1] += v.position[1];
+	      pos[2] += v.position[2];
+	      num++;
+	    }
+	    /*
+	        if(v.boneIndices[0] == bone.id) {
+	          pos[0] += v.position[0] * (v.boneIndex / 100);
+	          pos[1] += v.position[1] * (v.boneIndex / 100);
+	          pos[2] += v.position[2] * (v.boneIndex / 100);
+	          num++;
+	        } else if(v.boneIndices[1] == bone.id) {
+	          pos[0] += v.position[0] * ((100 - v.boneIndex) / 100);
+	          pos[1] += v.position[1] * ((100 - v.boneIndex) / 100);
+	          pos[2] += v.position[2] * ((100 - v.boneIndex) / 100);
+	          num++;
+	        }
+	    */
+	  }
+	  if (num != 0) {
+	    pos[0] = pos[0] / num;
+	    pos[1] = pos[1] / num;
+	    pos[2] = pos[2] / num;
+	  }
+	  return pos;
+	};
+
+	PMD.prototype.getBoneNames = function () {
+	  var array = [];
+	  for (var i = 0; i < this.boneCount; i++) {
+	    array[i] = this.bones[i].name;
+	  }
+	  return array;
+	};
+
+	PMD.prototype.getFaceNames = function () {
+	  var array = [];
+	  for (var i = 0; i < this.faceCount; i++) {
+	    array[i] = this.faces[i].name;
+	  }
+	  return array;
+	};
+
+	PMD.prototype.dump = function () {
+	  var str = '';
+
+	  str += 'vertexCount: ' + this.vertexCount + '\n';
+	  str += 'vertexIndexCount: ' + this.vertexIndexCount + '\n';
+	  str += 'materialCount: ' + this.materialCount + '\n';
+	  str += 'boneCount: ' + this.boneCount + '\n';
+	  str += 'ikCount: ' + this.ikCount + '\n';
+	  str += 'faceCount: ' + this.faceCount + '\n';
+	  str += 'faceDisplayCount: ' + this.faceDisplayCount + '\n';
+	  str += 'boneFrameNameCount: ' + this.boneFrameNameCount + '\n';
+	  str += 'boneDisplayCount: ' + this.boneDisplayCount + '\n';
+	  str += 'toonTextureCount: ' + this.toonTextureCount + '\n';
+	  str += 'rigidBodyCount: ' + this.rigidBodyCount + '\n';
+	  str += 'jointCount: ' + this.jointCount + '\n';
+	  str += '\n';
+
+	  str += this._dumpHeader();
+	  str += this._dumpVertices();
+	  str += this._dumpVertexIndices();
+	  str += this._dumpMaterials();
+	  str += this._dumpBones();
+	  str += this._dumpIKs();
+	  str += this._dumpFaces();
+	  str += this._dumpfaceDisplays();
+	  str += this._dumpBoneFrameNames();
+	  str += this._dumpBoneDisplays();
+	  str += this._dumpEnglishHeader();
+	  str += this._dumpEnglishBoneNames();
+	  str += this._dumpEnglishFaceNames();
+	  str += this._dumpToonTextures();
+	  str += this._dumpRigidBodies();
+	  str += this._dumpJoints();
+
+	  return str;
+	};
+
+	PMD.prototype.boneNumsOfMaterials = function () {
+	  var offset = 0;
+	  var result = [];
+	  for (var i = 0; i < this.materialCount; i++) {
+	    var array = [];
+	    for (var j = 0; j < this.boneCount; j++) {
+	      array[j] = 0;
+	    }
+
+	    var count = 0;
+	    var num = this.materials[i].vertexCount;
+	    for (var j = 0; j < num; j++) {
+	      var v = this.vertices[this.vertexIndices[offset + j].index];
+	      for (var k = 0; k < v.boneIndices.length; k++) {
+	        var index = v.boneIndices[k];
+	        if (array[index] == 0) count++;
+	        array[index]++;
+	      }
+	    }
+	    result.push(count);
+	    offset += num;
+	  }
+	  return result;
+	};
+
+	PMD.prototype._dumpHeader = function () {
+	  var str = '';
+	  str += '-- Header --\n';
+	  str += this.header.dump();
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpEnglishHeader = function () {
+	  var str = '';
+	  str += '-- Header(English) --\n';
+	  str += this.englishHeader.dump();
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpVertices = function () {
+	  var str = '';
+	  str += '-- Vertices --\n';
+	  for (var i = 0; i < this.vertexCount; i++) {
+	    str += this.vertices[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpVertexIndices = function () {
+	  var str = '';
+	  str += '-- VertexIndices --\n';
+	  for (var i = 0; i < this.vertexIndexCount; i++) {
+	    str += this.vertexIndices[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpMaterials = function () {
+	  var str = '';
+	  str += '-- Materials --\n';
+	  for (var i = 0; i < this.materialCount; i++) {
+	    str += this.materials[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpBones = function () {
+	  var str = '';
+	  str += '-- Bones --\n';
+	  for (var i = 0; i < this.boneCount; i++) {
+	    str += this.bones[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpIKs = function () {
+	  var str = '';
+	  str += '-- IKs --\n';
+	  for (var i = 0; i < this.ikCount; i++) {
+	    str += this.iks[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpFaces = function () {
+	  var str = '';
+	  str += '-- Faces --\n';
+	  for (var i = 0; i < this.faceCount; i++) {
+	    str += this.faces[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpFaceDisplays = function () {
+	  var str = '';
+	  str += '-- Face Displays --\n';
+	  for (var i = 0; i < this.faceDisplayCount; i++) {
+	    str += this.faceDisplays[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpBoneFrameNames = function () {
+	  var str = '';
+	  str += '-- Bone Frame Names --\n';
+	  for (var i = 0; i < this.boneFrameNameCount; i++) {
+	    str += this.boneFrameNames[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpBoneDisplays = function () {
+	  var str = '';
+	  str += '-- Bone Displays --\n';
+	  for (var i = 0; i < this.boneDisplayCount; i++) {
+	    str += this.boneDisplays[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpEnglishBoneNames = function () {
+	  var str = '';
+	  str += '-- Bone Names(English) --\n';
+	  for (var i = 0; i < this.boneCount; i++) {
+	    str += this.englishBoneNames[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpEnglishFaceNames = function () {
+	  var str = '';
+	  str += '-- Face Names(English) --\n';
+	  for (var i = 0; i < this.faceCount - 1; i++) {
+	    str += this.englishFaceNames[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpEnglishBoneFrameNames = function () {
+	  var str = '';
+	  str += '-- Bone Frame Names(English) --\n';
+	  for (var i = 0; i < this.boneFrameNameCount; i++) {
+	    str += this.englishBoneFrameNames[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpToonTextures = function () {
+	  var str = '';
+	  str += '-- Toon Textures --\n';
+	  for (var i = 0; i < this.toonTextureCount; i++) {
+	    str += this.toonTextures[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpRigidBodies = function () {
+	  var str = '';
+	  str += '-- Rigid Bodies --\n';
+	  for (var i = 0; i < this.rigidBodyCount; i++) {
+	    str += this.rigidBodies[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	PMD.prototype._dumpJoints = function () {
+	  var str = '';
+	  str += '-- Joints --\n';
+	  for (var i = 0; i < this.jointCount; i++) {
+	    str += this.joints[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	function PMDHeader() {
+	  this.magic = null;
+	  this.version = null;
+	  this.modelName = null;
+	  this.comment = null;
+	};
+
+	PMDHeader.prototype.valid = function () {
+	  return this.magic == 'Pmd';
+	};
+
+	PMDHeader.prototype.dump = function () {
+	  var str = '';
+	  str += 'magic: ' + this.magic + '\n';
+	  str += 'version: ' + this.version + '\n';
+	  str += 'model_name: ' + this.modelName + '\n';
+	  str += 'comment: ' + this.comment + '\n';
+	  return str;
+	};
+
+	function PMDVertex(id) {
+	  this.id = id;
+	  this.position = null;
+	  this.normal = null;
+	  this.uv = null;
+	  this.boneIndices = null;
+	  this.boneWeight = null;
+	  this.edgeFlag = null;
+	  this.boneWeightFloat1 = null;
+	  this.boneWeightFloat2 = null;
+	};
+
+	PMDVertex.prototype.setup = function () {
+	  this.boneWeightFloat1 = this.boneWeight / 100;
+	  this.boneWeightFloat2 = (100 - this.boneWeight) / 100;
+	};
+
+	PMDVertex.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'position: ' + this.position + '\n';
+	  str += 'normal: ' + this.normal + '\n';
+	  str += 'uv: ' + this.uv + '\n';
+	  str += 'boneIndices: ' + this.boneIndices + '\n';
+	  str += 'boneWeight: ' + this.boneWeight + '\n';
+	  str += 'edgeFlag: ' + this.edgeFlag + '\n';
+	  return str;
+	};
+
+	PMDVertex.prototype.toRight = function () {
+	  this.position[2] = -this.position[2];
+	  this.normal[2] = -this.normal[2];
+	};
+
+	function PMDVertexIndex(id) {
+	  this.id = id;
+	  this.index = null;
+	};
+
+	PMDVertexIndex.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'index: ' + this.index + '\n';
+	  return str;
+	};
+
+	function PMDMaterial(id) {
+	  this.id = id;
+	  this.color = null;
+	  this.specularity = null;
+	  this.specularColor = null;
+	  this.mirrorColor = null;
+	  this.tuneIndex = null;
+	  this.edgeFlag = null;
+	  this.vertexCount = null;
+	  this.fileName = null;
+	};
+
+	/**
+	 * TODO: temporal
+	 */
+	PMDMaterial.prototype.convertedFileName = function () {
+	  var filename = this.fileName.replace('.tga', '.png');
+
+	  // TODO: ignore sphere map so far
+	  var index;
+	  if ((index = filename.lastIndexOf('*')) >= 0) {
+	    filename = filename.substring(0, index);
+	  }
+
+	  return filename;
+	};
+
+	/**
+	 * TODO: temporal
+	 */
+	PMDMaterial.prototype.hasSphereTexture = function () {
+	  if (this.fileName.lastIndexOf('.sph') >= 0 || this.fileName.lastIndexOf('.spa') >= 0) return true;
+
+	  return false;
+	};
+
+	/**
+	 * TODO: temporal
+	 */
+	PMDMaterial.prototype.isSphereMapAddition = function () {
+	  var filename = this.fileName;
+
+	  if (filename.lastIndexOf('.spa') >= 0) return true;
+
+	  return false;
+	};
+
+	/**
+	 * TODO: temporal
+	 */
+	PMDMaterial.prototype.sphereMapFileName = function () {
+	  var filename = this.fileName;
+	  var index;
+	  if ((index = filename.lastIndexOf('*')) >= 0) {
+	    filename = filename.slice(index + 1);
+	  }
+	  if ((index = filename.lastIndexOf('+')) >= 0) {
+	    filename = filename.slice(index + 1);
+	  }
+	  return filename;
+	};
+
+	PMDMaterial.prototype.hasToon = function () {
+	  return this.tuneIndex >= 10 ? false : true;
+	};
+
+	PMDMaterial.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'color: ' + this.color + '\n';
+	  str += 'specularity: ' + this.specularity + '\n';
+	  str += 'specularColor: ' + this.specularColor + '\n';
+	  str += 'mirrorColor: ' + this.mirrorColor + '\n';
+	  str += 'tuneIndex: ' + this.tuneIndex + '\n';
+	  str += 'edgeFlag: ' + this.edgeFlag + '\n';
+	  str += 'vertexCount: ' + this.vertexCount + '\n';
+	  str += 'fileName: ' + this.fileName + '\n';
+	  return str;
+	};
+
+	function PMDBone(id) {
+	  this.id = id;
+	  this.name = null;
+	  this.parentIndex = null;
+	  this.tailIndex = null;
+	  this.type = null;
+	  this.ikIndex = null;
+	  this.position = null;
+
+	  this.motionIndex = null; // Note: be set by VMD;
+	  // TODO: remove and use id in VMD
+	  //       instead of motionIndex
+	  //       not to have VMD related info here
+	};
+
+	PMDBone.prototype.isKnee = function () {
+	  // TODO: change this parameter if name type changes.
+	  return this.name.indexOf('0x820xd00x820xb4') >= 0;
+	};
+
+	PMDBone.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'name: ' + this.name + '\n';
+	  str += 'parentIndex: ' + this.parentIndex + '\n';
+	  str += 'tailIndex: ' + this.tailIndex + '\n';
+	  str += 'type: ' + this.type + '\n';
+	  str += 'ikIndex: ' + this.ikIndex + '\n';
+	  str += 'position: ' + this.position + '\n';
+	  return str;
+	};
+
+	PMDBone.prototype.toRight = function () {
+	  this.position[2] = -this.position[2];
+	};
+
+	function PMDIK(id) {
+	  this.id = id;
+	  this.index = null;
+	  this.targetBoneIndex = null;
+	  this.chainLength = null;
+	  this.iteration = null;
+	  this.limitation = null;
+	  this.childBoneIndices = null;
+	};
+
+	PMDIK.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'index: ' + this.index + '\n';
+	  str += 'targetBoneIndex: ' + this.targetBoneIndex + '\n';
+	  str += 'chainLength: ' + this.chainLength + '\n';
+	  str += 'iteration: ' + this.iteration + '\n';
+	  str += 'limitation: ' + this.limitation + '\n';
+	  str += 'childBoneIndices: ' + this.childBoneIndices + '\n';
+	  return str;
+	};
+
+	function PMDFace(id) {
+	  this.id = id;
+	  this.name = null;
+	  this.vertexCount = null;
+	  this.type = null;
+	  this.vertices = null;
+	  this.done = false;
+
+	  this.motionIndex = null; // Note: be set by VMD;
+	  // TODO: remove and use id in VMD
+	  //       instead of motionIndex
+	  //       not to have VMD related info here
+	};
+
+	PMDFace.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'name: ' + this.name + '\n';
+	  str += 'vertexCount: ' + this.vertexCount + '\n';
+	  str += 'type: ' + this.type + '\n';
+
+	  for (var i = 0; i < this.vertices.length; i++) {
+	    str += this.vertices[i].dump();
+	  }
+
+	  return str;
+	};
+
+	PMDFace.prototype.toRight = function () {
+	  for (var i = 0; i < this.vertices.length; i++) {
+	    this.vertices[i].toRight();
+	  }
+	};
+
+	function PMDFaceVertex(id, type) {
+	  this.id = id;
+	  this.type = type;
+	  this.index = null;
+	  this.position = null;
+	};
+
+	PMDFaceVertex.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  //  str += 'type: '     + this.type     + '\n';
+	  str += 'index: ' + this.index + '\n';
+	  str += 'position: ' + this.position + '\n';
+	  return str;
+	};
+
+	PMDFaceVertex.prototype.toRight = function () {
+	  this.position[2] = -this.position[2];
+	};
+
+	function PMDFaceDisplay(id) {
+	  this.id = id;
+	  this.index = null;
+	};
+
+	PMDFaceDisplay.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'index: ' + this.index + '\n';
+	  return str;
+	};
+
+	function PMDBoneFrameName(id) {
+	  this.id = id;
+	  this.name = null;
+	};
+
+	PMDBoneFrameName.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'name: ' + this.name + '\n';
+	  return str;
+	};
+
+	function PMDBoneDisplay(id) {
+	  this.id = id;
+	  this.index = null;
+	  this.frameIndex = null;
+	};
+
+	PMDBoneDisplay.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'index: ' + this.index + '\n';
+	  str += 'frameIndex: ' + this.frameIndex + '\n';
+	  return str;
+	};
+
+	function PMDEnglishHeader() {
+	  this.compatibility = null;
+	  this.modelName = null;
+	  this.comment = null;
+	};
+
+	PMDEnglishHeader.prototype.dump = function () {
+	  var str = '';
+	  str += 'compatibility: ' + this.compatibility + '\n';
+	  str += 'modelName:     ' + this.modelName + '\n';
+	  str += 'comment: ' + this.comment + '\n';
+	  return str;
+	};
+
+	function PMDEnglishBoneName(id) {
+	  this.id = id;
+	  this.name = null;
+	};
+
+	PMDEnglishBoneName.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'name: ' + this.name + '\n';
+	  return str;
+	};
+
+	function PMDEnglishFaceName(id) {
+	  this.id = id;
+	  this.name = null;
+	};
+
+	PMDEnglishFaceName.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'name: ' + this.name + '\n';
+	  return str;
+	};
+
+	function PMDEnglishBoneFrameName(id) {
+	  this.id = id;
+	  this.name = null;
+	};
+
+	PMDEnglishBoneFrameName.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'name: ' + this.name + '\n';
+	  return str;
+	};
+
+	function PMDToonTexture(id) {
+	  this.id = id;
+	  this.fileName = null;
+	};
+
+	PMDToonTexture.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'fileName: ' + this.fileName + '\n';
+	  return str;
+	};
+
+	function PMDRigidBody(id) {
+	  this.id = id;
+	  this.name = null;
+	  this.boneIndex = null;
+	  this.groupIndex = null;
+	  this.groupTarget = null;
+	  this.shapeType = null;
+	  this.width = null;
+	  this.height = null;
+	  this.depth = null;
+	  this.position = null;
+	  this.rotation = null;
+	  this.weight = null;
+	  this.positionDim = null;
+	  this.rotationDim = null;
+	  this.recoil = null;
+	  this.friction = null;
+	  this.type = null;
+	};
+
+	PMDRigidBody.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'name: ' + this.name + '\n';
+	  str += 'boneIndex: ' + this.boneIndex + '\n';
+	  str += 'groupIndex: ' + this.groupIndex + '\n';
+	  str += 'groupTarget: ' + this.groupTarget + '\n';
+	  str += 'shapeType: ' + this.shapeType + '\n';
+	  str += 'width: ' + this.width + '\n';
+	  str += 'height: ' + this.height + '\n';
+	  str += 'depth: ' + this.depth + '\n';
+	  str += 'position: ' + this.position + '\n';
+	  str += 'rotation: ' + this.rotation + '\n';
+	  str += 'weight: ' + this.weight + '\n';
+	  str += 'positionDim: ' + this.positionDim + '\n';
+	  str += 'rotationDim: ' + this.rotationDim + '\n';
+	  str += 'recoil: ' + this.recoil + '\n';
+	  str += 'friction: ' + this.friction + '\n';
+	  str += 'type: ' + this.type + '\n';
+	  return str;
+	};
+
+	PMDRigidBody.prototype.toRight = function () {
+	  this.position[2] = -this.position[2];
+	  this.rotation[0] = -this.rotation[0];
+	  this.rotation[1] = -this.rotation[1];
+	};
+
+	function PMDJoint(id) {
+	  this.id = id;
+	  this.name = null;
+	  this.rigidBody1 = null;
+	  this.rigidBody2 = null;
+	  this.position = null;
+	  this.rotation = null;
+	  this.translationLimitation1 = null;
+	  this.translationLimitation2 = null;
+	  this.rotationLimitation1 = null;
+	  this.rotationLimitation2 = null;
+	  this.springPosition = null;
+	  this.springRotation = null;
+	};
+
+	PMDJoint.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'name: ' + this.name + '\n';
+	  str += 'rigidBody1: ' + this.rigidBody1 + '\n';
+	  str += 'rigidBody2: ' + this.rigidBody2 + '\n';
+	  str += 'position: ' + this.position + '\n';
+	  str += 'rotation: ' + this.rotation + '\n';
+	  str += 'translationLimitation1: ' + this.translationLimitation1 + '\n';
+	  str += 'translationLimitation2: ' + this.translationLimitation2 + '\n';
+	  str += 'rotationLimitation1: ' + this.rotationLimitation1 + '\n';
+	  str += 'rotationLimitation2: ' + this.rotationLimitation2 + '\n';
+	  str += 'springPosition: ' + this.springPosition + '\n';
+	  str += 'springRotation: ' + this.springRotation + '\n';
+	  return str;
+	};
+
+	PMDJoint.prototype.toRight = function () {
+	  this.position[2] = -this.position[2];
+	  this.rotation[0] = -this.rotation[0];
+	  this.rotation[1] = -this.rotation[1];
+	};
+
+	function PMDImageLoader(pmd, baseURL) {
+	  this.pmd = pmd;
+	  this.baseURL = baseURL;
+
+	  this.errorImageNum = 0;
+	  this.loadedImageNum = 0;
+	  this.noImageNum = 0;
+	};
+
+	/**
+	 * TODO: temporal
+	 */
+	PMDImageLoader.prototype.load = function (callback) {
+	  this.pmd.images.length = 0;
+	  this.pmd.toonImages.length = 0;
+	  this.pmd.sphereImages.length = 0;
+
+	  this.errorImageNum = 0;
+	  this.loadedImageNum = 0;
+	  this.noImageNum = 0;
+
+	  for (var i = 0; i < this.pmd.materialCount; i++) {
+	    var fileName = this.pmd.materials[i].convertedFileName();
+	    if (fileName == '' || fileName.indexOf('.spa') >= 0 || fileName.indexOf('.sph') >= 0) {
+	      this.pmd.images[i] = this._generatePixelImage();
+	      this.noImageNum++;
+	      this._checkDone(callback);
+	      continue;
+	    }
+
+	    var self = this;
+	    this.pmd.images[i] = new Image();
+	    this.pmd.images[i].onerror = function (event) {
+	      self.errorImageNum++;
+	      self._checkDone(callback);
+	    };
+	    this.pmd.images[i].onload = function (event) {
+	      self.loadedImageNum++;
+	      self._checkDone(callback);
+	    };
+	    this.pmd.images[i].src = this.baseURL + '/' + fileName;
+	  }
+
+	  // TODO: duplicated code
+	  for (var i = 0; i < this.pmd.toonTextureCount; i++) {
+	    var fileName = this.pmd.toonTextures[i].fileName;
+	    if (fileName == '' || fileName.indexOf('.spa') >= 0 || fileName.indexOf('.sph') >= 0) {
+	      this.pmd.toonImages[i] = this._generatePixelImage();
+	      this.noImageNum++;
+	      this._checkDone(callback);
+	      continue;
+	    }
+
+	    var self = this;
+	    this.pmd.toonImages[i] = new Image();
+	    this.pmd.toonImages[i].onerror = function (event) {
+	      self.errorImageNum++;
+	      self._checkDone(callback);
+	    };
+	    this.pmd.toonImages[i].onload = function (event) {
+	      self.loadedImageNum++;
+	      self._checkDone(callback);
+	    };
+	    this.pmd.toonImages[i].src = this.baseURL + '/' + fileName;
+	  }
+
+	  // TODO: duplicated code
+	  for (var i = 0; i < this.pmd.materialCount; i++) {
+	    if (!this.pmd.materials[i].hasSphereTexture()) {
+	      this.pmd.sphereImages[i] = this._generatePixelImage();
+	      this.noImageNum++;
+	      this._checkDone(callback);
+	      continue;
+	    }
+
+	    var fileName = this.pmd.materials[i].sphereMapFileName();
+	    var self = this;
+	    this.pmd.sphereImages[i] = new Image();
+	    this.pmd.sphereImages[i].onerror = function (event) {
+	      self.errorImageNum++;
+	      self._checkDone(callback);
+	    };
+	    this.pmd.sphereImages[i].onload = function (event) {
+	      self.loadedImageNum++;
+	      self._checkDone(callback);
+	    };
+	    this.pmd.sphereImages[i].src = this.baseURL + '/' + fileName;
+	  }
+	};
+
+	PMDImageLoader.prototype._generatePixelImage = function () {
+	  var cvs = document.createElement('canvas');
+	  cvs.width = 1;
+	  cvs.height = 1;
+	  var ctx = cvs.getContext('2d');
+
+	  ctx.fillStyle = 'rgb(255, 255, 255)';
+	  ctx.fillRect(0, 0, 1, 1);
+	  return cvs;
+	};
+
+	PMDImageLoader.prototype._checkDone = function (callback) {
+	  if (this.loadedImageNum + this.noImageNum + this.errorImageNum >= this.pmd.materialCount * 2 + this.pmd.toonTextureCount) {
+	    callback(this.pmd);
+	  }
+	};
+
+	module.exports = {
+	  PMD: PMD,
+	  PMDHeader: PMDHeader,
+	  PMDVertex: PMDVertex,
+	  PMDVertexIndex: PMDVertexIndex,
+	  PMDMaterial: PMDMaterial,
+	  PMDBone: PMDBone,
+	  PMDIK: PMDIK,
+	  PMDFace: PMDFace,
+	  PMDFaceVertex: PMDFaceVertex,
+	  PMDFaceDisplay: PMDFaceDisplay,
+	  PMDBoneFrameName: PMDBoneFrameName,
+	  PMDBoneDisplay: PMDBoneDisplay,
+	  PMDEnglishHeader: PMDEnglishHeader,
+	  PMDEnglishBoneName: PMDEnglishBoneName,
+	  PMDEnglishFaceName: PMDEnglishFaceName,
+	  PMDEnglishBoneFrameName: PMDEnglishBoneFrameName,
+	  PMDToonTexture: PMDToonTexture,
+	  PMDRigidBody: PMDRigidBody,
+	  PMDJoint: PMDJoint
+	};
+
+/***/ }),
+
+/***/ 18:
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _glMatrix095Min = __webpack_require__(4);
+
+	/**
+	 * instance of classes in this file should be created and
+	 * their fields should be set by VMDFileParser.
+	 */
+	function VMD() {
+	  this.header = null;
+	  this.motionCount = null;
+	  this.faceCount = null;
+	  this.cameraCount = null;
+	  this.lightCount = null;
+
+	  this.motions = [];
+	  this.faces = [];
+	  this.cameras = [];
+	  this.lights = [];
+
+	  this.frame = 0;
+	  this.orderedMotions = [];
+	  this.orderedFaces = [];
+	  this.orderedCameras = [];
+	  this.orderedLights = [];
+
+	  this.cameraIndex = -1;
+	  this.lightIndex = -1;
+
+	  // TODO: rename
+	  this.stepMotions = [];
+	  this.stepFaces = [];
+	  this.stepCamera = { location: [0, 0, 0],
+	    rotation: [0, 0, 0],
+	    length: 0,
+	    angle: 0,
+	    available: true };
+	  this.stepLight = { color: [0, 0, 0],
+	    location: [0, 0, 0],
+	    available: true };
+	};
+
+	// for reference
+	VMD.prototype.Object = Object;
+	VMD.prototype.Math = Math;
+	VMD.prototype.vec3 = _glMatrix095Min.vec3;
+	VMD.prototype.quat4 = _glMatrix095Min.quat4;
+
+	VMD.prototype.valid = function () {
+	  return this.header.valid();
+	};
+
+	VMD.prototype.supply = function () {
+	  for (var i = 0; i < this.motionCount; i++) {
+	    this.motions[i].supply();
+	  }for (var i = 0; i < this.faceCount; i++) {
+	    this.faces[i].supply();
+	  }for (var i = 0; i < this.cameraCount; i++) {
+	    this.cameras[i].supply();
+	  }for (var i = 0; i < this.lightCount; i++) {
+	    this.lights[i].supply();
+	  }
+	};
+
+	/**
+	 * TODO: temporal
+	 */
+	VMD.prototype.clone = function () {
+	  var v = new VMD();
+
+	  v.motionCount = this.motionCount;
+	  v.faceCount = this.faceCount;
+	  v.cameraCount = this.cameraCount;
+	  v.lightCount = this.lightCount;
+
+	  for (var i = 0; i < this.motionCount; i++) {
+	    v.motions[i] = this.motions[i];
+	  }
+
+	  for (var i = 0; i < this.faceCount; i++) {
+	    v.faces[i] = this.faces[i];
+	  }
+
+	  for (var i = 0; i < this.cameraCount; i++) {
+	    v.cameras[i] = this.cameras[i];
+	  }
+
+	  for (var i = 0; i < this.lightCount; i++) {
+	    v.lights[i] = this.lights[i];
+	  }
+
+	  return v;
+	};
+
+	VMD.prototype.setup = function (pmd) {
+	  this.frame = 0;
+	  this.cameraIndex = -1;
+	  this.lightIndex = -1;
+
+	  if (pmd) {
+	    this._setupMotions(pmd);
+	    this._setupFaces(pmd);
+	  }
+	  this._setupCameras();
+	  this._setupLights();
+
+	  // TODO: temporal
+	  this.step(1);
+	};
+
+	/**
+	 * TODO: optimize
+	 */
+	VMD.prototype._setupMotions = function (pmd) {
+	  var arrays = {};
+	  for (var i = 0; i < this.motionCount; i++) {
+	    var m = this.motions[i];
+
+	    // Note: remove unnecessary element for PMD
+	    if (pmd.bonesHash[m.boneName] === undefined) continue;
+
+	    if (arrays[m.boneName] === undefined) {
+	      arrays[m.boneName] = {};
+	      arrays[m.boneName].motions = [];
+	      arrays[m.boneName].index = -1;
+	    }
+	    arrays[m.boneName].motions.push(m);
+	  }
+
+	  for (var key in arrays) {
+	    arrays[key].motions.sort(function (a, b) {
+	      return a.frameNum - b.frameNum;
+	    });
+	  }
+
+	  this.orderedMotions.length = 0;
+	  var motionKeys = this.Object.keys(arrays);
+	  for (var i = 0; i < motionKeys.length; i++) {
+	    this.orderedMotions[i] = arrays[motionKeys[i]];
+	  }
+
+	  this.stepMotions.length = 0;
+	  for (var i = 0; i < pmd.boneCount; i++) {
+	    var a = {};
+	    a.location = [0, 0, 0];
+	    a.rotation = [0, 0, 0, 1];
+	    this._clearVec3(a.location); // just in case
+	    this._clearQuat4(a.rotation); // just in case
+	    this.stepMotions[i] = a;
+	  }
+
+	  var boneNames = pmd.getBoneNames();
+	  var tmp = 0;
+	  for (var i = 0; i < pmd.bones.length; i++) {
+	    var p = pmd.bones[i];
+	    p.motionIndex = motionKeys.indexOf(p.name);
+	    if (p.motionIndex == -1) {
+	      p.motionIndex = motionKeys.length + tmp;
+	      tmp++;
+	    }
+	  }
+	};
+
+	VMD.prototype._setupFaces = function (pmd) {
+	  var arrays = {};
+	  for (var i = 0; i < this.faceCount; i++) {
+	    var f = this.faces[i];
+
+	    if (pmd.facesHash[f.name] === undefined) continue;
+
+	    if (arrays[f.name] === undefined) {
+	      arrays[f.name] = {};
+	      arrays[f.name].faces = [];
+	      arrays[f.name].index = -1;
+	    }
+	    arrays[f.name].faces.push(f);
+	  }
+
+	  for (var key in arrays) {
+	    arrays[key].faces.sort(function (a, b) {
+	      return a.frameNum - b.frameNum;
+	    });
+	  }
+
+	  this.orderedFaces.length = 0;
+	  var faceKeys = this.Object.keys(arrays);
+	  for (var i = 0; i < faceKeys.length; i++) {
+	    this.orderedFaces[i] = arrays[faceKeys[i]];
+	  }
+
+	  this.stepFaces.length = 0;
+	  for (var i = 0; i < pmd.faceCount; i++) {
+	    var a = {};
+	    a.weight = 0;
+	    a.available = true;
+	    this.stepFaces[i] = a;
+	  }
+
+	  var faceNames = pmd.getFaceNames();
+	  var tmp = 0;
+	  for (var i = 0; i < pmd.faces.length; i++) {
+	    var p = pmd.faces[i];
+	    p.motionIndex = faceKeys.indexOf(p.name);
+	    if (p.motionIndex == -1) {
+	      p.motionIndex = faceKeys.length + tmp;
+	      this.stepFaces[p.motionIndex].available = false;
+	      tmp++;
+	    }
+	  }
+	};
+
+	VMD.prototype._setupCameras = function () {
+	  this.orderedCameras.length = 0;
+	  for (var i = 0; i < this.cameraCount; i++) {
+	    this.orderedCameras[i] = this.cameras[i];
+	  }
+
+	  this.orderedCameras.sort(function (a, b) {
+	    return a.frameNum - b.frameNum;
+	  });
+	};
+
+	VMD.prototype._setupLights = function () {
+	  this.orderedLights.length = 0;
+	  for (var i = 0; i < this.lightCount; i++) {
+	    this.orderedLights[i] = {};
+	    this.orderedLights[i].light = this.lights[i];
+	  }
+
+	  this.orderedLights.sort(function (a, b) {
+	    return a.light.frameNum - b.light.frameNum;
+	  });
+	};
+
+	VMD.prototype.step = function (dframe) {
+	  this._stepMotion();
+	  this._stepFace();
+	  this._stepCamera();
+	  this._stepLight();
+
+	  //  this.frame++;
+	  this.frame += dframe;
+	};
+
+	/**
+	 * TODO: check the logic.
+	 */
+	VMD.prototype._stepMotion = function () {
+	  for (var i = 0; i < this.orderedMotions.length; i++) {
+	    var m = this.orderedMotions[i];
+	    while (m.index + 1 < m.motions.length && m.motions[m.index + 1].frameNum <= this.frame) {
+	      m.index++;
+	    }
+	  }
+	};
+
+	/**
+	 * TODO: check the logic.
+	 */
+	VMD.prototype._stepFace = function () {
+	  for (var i = 0; i < this.orderedFaces.length; i++) {
+	    var f = this.orderedFaces[i];
+	    while (f.index + 1 < f.faces.length && f.faces[f.index + 1].frameNum <= this.frame) {
+	      f.index++;
+	    }
+	  }
+	};
+
+	/**
+	 * TODO: check the logic.
+	 */
+	VMD.prototype._stepCamera = function () {
+	  while (this.cameraIndex + 1 < this.cameras.length && this.orderedCameras[this.cameraIndex + 1].frameNum <= this.frame) {
+	    this.cameraIndex++;
+	  }
+	};
+
+	/**
+	 * TODO: check the logic.
+	 */
+	VMD.prototype._stepLight = function () {
+	  while (this.lightIndex + 1 < this.lights.length && this.orderedLights[this.lightIndex + 1].light.frameNum <= this.frame) {
+	    this.lightIndex++;
+	  }
+	};
+
+	VMD.prototype.merge = function (v) {
+	  this.motionCount += v.motionCount;
+	  this.faceCount += v.faceCount;
+	  this.cameraCount += v.cameraCount;
+	  this.lightCount += v.lightCount;
+
+	  for (var i = 0; i < v.motionCount; i++) {
+	    this.motions.push(v.motions[i]);
+	  }
+	  for (var i = 0; i < v.faceCount; i++) {
+	    this.faces.push(v.faces[i]);
+	  }
+	  for (var i = 0; i < v.cameraCount; i++) {
+	    this.cameras.push(v.cameras[i]);
+	  }
+	  for (var i = 0; i < v.lightCount; i++) {
+	    this.lights.push(v.lights[i]);
+	  }
+	};
+
+	VMD.prototype.addOffset = function (o) {
+	  for (var i = 0; i < this.motionCount; i++) {
+	    this.motions[i].frameNum += o;
+	  }
+	  for (var i = 0; i < this.faceCount; i++) {
+	    this.faces[i].frameNum += o;
+	  }
+	  for (var i = 0; i < this.cameraCount; i++) {
+	    this.cameras[i].frameNum += o;
+	  }
+	  for (var i = 0; i < this.lightCount; i++) {
+	    this.lights[i].frameNum += o;
+	  }
+	};
+
+	/**
+	 * TODO: temporal
+	 * TODO: calculate next frameNum at setup phase?
+	 * TODO: check the logic
+	 */
+	VMD.prototype.loadMotion = function () {
+	  for (var i = 0; i < this.orderedMotions.length; i++) {
+	    var m = this.orderedMotions[i];
+
+	    if (m.index == -1) continue;
+
+	    var m1 = m.motions[m.index];
+	    var m2 = m.motions[m.index + 1];
+	    var m3 = this.stepMotions[i];
+
+	    if (m1.frameNum == this.frame || m2 === undefined || m2.frameNum - m1.frameNum <= 2) {
+	      this._setVec3(m1.location, m3.location);
+	      this._setQuat4(m1.rotation, m3.rotation);
+	    } else {
+	      // Note: linear interpolation so far
+	      var d = m2.frameNum - m1.frameNum;
+	      var d2 = this.frame - m1.frameNum;
+	      var r = d2 / d;
+	      this._slerpQuat4(m1.rotation, m2.rotation, r, m3.rotation);
+	      this._lerpVec3(m1.location, m2.location, r, m3.location);
+	    }
+	  }
+
+	  for (var i = this.orderedMotions.length; i < this.stepMotions.length; i++) {
+	    var s = this.stepMotions[i];
+	    this._clearVec3(s.location);
+	    this._clearQuat4(s.rotation);
+	  }
+	};
+
+	/**
+	 * TODO: temporal
+	 * TODO: any ways to avoid update all morph Buffer?
+	 * TODO: check the logic.
+	 */
+	VMD.prototype.loadFace = function () {
+	  for (var i = 0; i < this.orderedFaces.length; i++) {
+	    var f = this.orderedFaces[i];
+
+	    if (f.index == -1) continue;
+
+	    var f1 = f.faces[f.index];
+	    var f2 = f.faces[f.index + 1];
+	    var f3 = this.stepFaces[i];
+
+	    if (f1.frameNum == this.frameNum || f2 === undefined || f2.frameNum - f1.frameNum <= 2) {
+	      f3.weight = f1.weight;
+	    } else {
+	      var d = f2.frameNum - f1.frameNum;
+	      var d2 = this.frame - f1.frameNum;
+	      var r = d2 / d;
+	      f3.weight = this._lerp(f1.weight, f2.weight, r);
+	    }
+	  }
+	};
+
+	/**
+	 * TODO: check the logic
+	 */
+	VMD.prototype.loadCamera = function () {
+	  var ocs = this.orderedCameras;
+	  var index = this.cameraIndex;
+	  this.stepCamera.available = false;
+
+	  if (index == -1) return;
+
+	  this.stepCamera.available = true;
+	  var c1 = ocs[index];
+	  var c2 = ocs[index + 1];
+
+	  if (c1.frameNum == this.frame || c2 === undefined || c2.frameNum - c1.frameNum <= 2) {
+	    this._setVec3(c1.location, this.stepCamera.location);
+	    this._setVec3(c1.rotation, this.stepCamera.rotation);
+	    this.stepCamera.length = c1.length;
+	    this.stepCamera.angle = c1.angle;
+	  } else {
+	    // Note: linear interpolation so far
+	    var d = c2.frameNum - c1.frameNum;
+	    var d2 = this.frame - c1.frameNum;
+	    var r = d2 / d;
+
+	    this._lerpVec3(c1.location, c2.location, r, this.stepCamera.location);
+	    this._lerpVec3(c1.rotation, c2.rotation, r, this.stepCamera.rotation);
+	    this.stepCamera.length = this._lerp(c1.length, c2.length, r);
+	    this.stepCamera.angle = this._lerp(c1.angle, c2.angle, r);
+	  }
+	};
+
+	/**
+	 * TODO: check the logic.
+	 * TODO: implement correctly
+	 */
+	VMD.prototype.loadLight = function () {
+	  var ols = this.orderedLights;
+	  var index = this.lightIndex;
+	  this.stepLight.available = false;
+
+	  if (index == -1) return;
+
+	  var light = ols[index].light;
+	  this.stepLight.available = true;
+	  this._setVec3(light.color, this.stepLight.color);
+	  this._setVec3(light.location, this.stepLight.location);
+	};
+
+	VMD.prototype._setVec3 = function (a, b) {
+	  b[0] = a[0];
+	  b[1] = a[1];
+	  b[2] = a[2];
+	};
+
+	VMD.prototype._setQuat4 = function (a, b) {
+	  b[0] = a[0];
+	  b[1] = a[1];
+	  b[2] = a[2];
+	  b[3] = a[3];
+	};
+
+	VMD.prototype._clearVec3 = function (a) {
+	  a[0] = 0;
+	  a[1] = 0;
+	  a[2] = 0;
+	};
+
+	VMD.prototype._clearQuat4 = function (a) {
+	  a[0] = 0;
+	  a[1] = 0;
+	  a[2] = 0;
+	  a[3] = 1;
+	};
+
+	VMD.prototype._lerp = function (a, b, c) {
+	  return a * (1 - c) + b * c;
+	};
+
+	VMD.prototype._lerpVec3 = function (a, b, c, d) {
+	  d[0] = this._lerp(a[0], b[0], c);
+	  d[1] = this._lerp(a[1], b[1], c);
+	  d[2] = this._lerp(a[2], b[2], c);
+	};
+
+	/**
+	 * copied from somewhere so far
+	 * TODO: move this logic to general matrix class or somewhere
+	 */
+	VMD.prototype._slerpQuat4 = function (q, r, t, p) {
+	  var cosHalfTheta = q[0] * r[0] + q[1] * r[1] + q[2] * r[2] + q[3] * r[3];
+	  if (cosHalfTheta < 0) {
+	    p[0] = -r[0];
+	    p[1] = -r[1];
+	    p[2] = -r[2];
+	    p[3] = -r[3];
+	    cosHalfTheta = -cosHalfTheta;
+	  } else {
+	    p[0] = r[0];
+	    p[1] = r[1];
+	    p[2] = r[2];
+	    p[3] = r[3];
+	  }
+
+	  if (this.Math.abs(cosHalfTheta) >= 1.0) {
+	    p[0] = q[0];
+	    p[1] = q[1];
+	    p[2] = q[2];
+	    p[3] = q[3];
+	    return p;
+	  }
+
+	  var halfTheta = this.Math.acos(cosHalfTheta);
+	  var sinHalfTheta = this.Math.sqrt(1.0 - cosHalfTheta * cosHalfTheta);
+
+	  if (this.Math.abs(sinHalfTheta) < 0.001) {
+	    p[0] = 0.5 * (q[0] + r[0]);
+	    p[1] = 0.5 * (q[1] + r[1]);
+	    p[2] = 0.5 * (q[2] + r[2]);
+	    p[3] = 0.5 * (q[3] + r[3]);
+	    return p;
+	  }
+
+	  var ratioA = this.Math.sin((1 - t) * halfTheta) / sinHalfTheta;
+	  var ratioB = this.Math.sin(t * halfTheta) / sinHalfTheta;
+
+	  p[0] = q[0] * ratioA + p[0] * ratioB;
+	  p[1] = q[1] * ratioA + p[1] * ratioB;
+	  p[2] = q[2] * ratioA + p[2] * ratioB;
+	  p[3] = q[3] * ratioA + p[3] * ratioB;
+	  return p;
+	};
+
+	/**
+	 * just copied from MMD.js so far
+	 */
+	_glMatrix095Min.vec3.rotateX = function (vec, angle, dest) {
+	  var rotation = _glMatrix095Min.mat4.rotateX(_glMatrix095Min.mat4.identity(_glMatrix095Min.mat4.create()), angle);
+	  return _glMatrix095Min.mat4.multiplyVec3(rotation, vec, dest);
+	};
+	_glMatrix095Min.vec3.rotateY = function (vec, angle, dest) {
+	  var rotation = _glMatrix095Min.mat4.rotateY(_glMatrix095Min.mat4.identity(_glMatrix095Min.mat4.create()), angle);
+	  return _glMatrix095Min.mat4.multiplyVec3(rotation, vec, dest);
+	};
+	_glMatrix095Min.vec3.rotateZ = function (vec, angle, dest) {
+	  var rotation = _glMatrix095Min.mat4.rotateZ(_glMatrix095Min.mat4.identity(_glMatrix095Min.mat4.create()), angle);
+	  return _glMatrix095Min.mat4.multiplyVec3(rotation, vec, dest);
+	};
+
+	VMD.prototype.getBoneMotion = function (bone) {
+	  return this.stepMotions[bone.motionIndex];
+	};
+
+	VMD.prototype.getFace = function (face) {
+	  return this.stepFaces[face.motionIndex];
+	};
+
+	VMD.prototype.getCamera = function () {
+	  return this.stepCamera;
+	};
+
+	VMD.prototype.getLight = function () {
+	  return this.stepLight;
+	};
+
+	/**
+	 * TODO: rename
+	 */
+	VMD.prototype.getCalculatedCameraParams = function (eye, center, up) {
+	  var yOffset = 0.0;
+	  var camera = this.getCamera();
+
+	  center[0] = camera.location[0];
+	  center[1] = camera.location[1] + yOffset;
+	  center[2] = camera.location[2];
+
+	  eye[0] = 0;
+	  eye[1] = 0 + yOffset;
+	  eye[2] = camera.length;
+
+	  up[0] = 0;
+	  up[1] = 1;
+	  up[2] = 0;
+
+	  this.vec3.rotateX(eye, camera.rotation[0], eye);
+	  this.vec3.rotateY(eye, camera.rotation[1], eye);
+	  this.vec3.rotateZ(eye, camera.rotation[2], eye);
+	  this.vec3.add(eye, camera.location, eye);
+
+	  this.vec3.rotateX(up, camera.rotation[0], up);
+	  this.vec3.rotateY(up, camera.rotation[1], up);
+	  this.vec3.rotateZ(up, camera.rotation[2], up);
+	};
+
+	VMD.prototype.dump = function () {
+	  var str = '';
+
+	  str += 'motionCount: ' + this.motionCount + '\n';
+	  str += 'faceCount: ' + this.faceCount + '\n';
+	  str += 'cameraCount: ' + this.cameraCount + '\n';
+	  str += 'lightCount: ' + this.lightCount + '\n';
+
+	  str += this._dumpMotions();
+	  str += this._dumpFaces();
+	  str += this._dumpCameras();
+	  str += this._dumpLights();
+
+	  return str;
+	};
+
+	VMD.prototype._dumpMotions = function () {
+	  var str = '';
+	  str += '-- Motions --\n';
+	  for (var i = 0; i < this.motionCount; i++) {
+	    str += this.motions[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	VMD.prototype._dumpFaces = function () {
+	  var str = '';
+	  str += '-- Faces --\n';
+	  for (var i = 0; i < this.faceCount; i++) {
+	    str += this.faces[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	VMD.prototype._dumpCameras = function () {
+	  var str = '';
+	  str += '-- Cameras --\n';
+	  for (var i = 0; i < this.cameraCount; i++) {
+	    str += this.cameras[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	VMD.prototype._dumpLights = function () {
+	  var str = '';
+	  str += '-- Lights --\n';
+	  for (var i = 0; i < this.lightCount; i++) {
+	    str += this.lights[i].dump();
+	  }
+	  str += '\n';
+	  return str;
+	};
+
+	function VMDHeader() {
+	  this.magic = null;
+	  this.modelName = null;
+	};
+
+	VMDHeader.prototype.valid = function () {
+	  return this.magic == 'Vocaloid Motion Data 0002';
+	};
+
+	VMDHeader.prototype.dump = function () {
+	  var str = '';
+	  str += 'magic: ' + this.magic + '\n';
+	  str += 'modelName: ' + this.modelName + '\n';
+	  return str;
+	};
+
+	function VMDMotion(id) {
+	  this.id = id;
+	  this.boneName = null;
+	  this.frameNum = null;
+	  this.location = null;
+	  this.rotation = null;
+	  this.interpolation = null;
+	};
+
+	VMDMotion.prototype.supply = function () {
+	  this.frameNum *= 2;
+	};
+
+	VMDMotion.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'boneName: ' + this.boneName + '\n';
+	  str += 'frameNum: ' + this.frameNum + '\n';
+	  str += 'location: ' + this.location + '\n';
+	  str += 'rotation: ' + this.rotation + '\n';
+	  str += 'interpolation: ' + this.interpolation + '\n';
+	  return str;
+	};
+
+	function VMDFace(id) {
+	  this.id = id;
+	  this.name = null;
+	  this.frameNum = null;
+	  this.weight = null;
+	};
+
+	VMDFace.prototype.supply = function () {
+	  this.frameNum *= 2;
+	};
+
+	VMDFace.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'name: ' + this.name + '\n';
+	  str += 'frameNum: ' + this.frameNum + '\n';
+	  str += 'weight: ' + this.weight + '\n';
+	  return str;
+	};
+
+	function VMDCamera(id) {
+	  this.id = id;
+	  this.frameNum = null;
+	  this.length = null;
+	  this.location = null;
+	  this.rotation = null;
+	  this.interpolation = null;
+	  this.angle = null;
+	  this.perspective = null;
+	};
+
+	VMDCamera.prototype.supply = function () {
+	  this.frameNum *= 2;
+	};
+
+	VMDCamera.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'frameNum: ' + this.frameNum + '\n';
+	  str += 'length: ' + this.length + '\n';
+	  str += 'location: ' + this.location + '\n';
+	  str += 'rotation: ' + this.rotation + '\n';
+	  str += 'interpolation: ' + this.interpolation + '\n';
+	  str += 'angle: ' + this.angle + '\n';
+	  str += 'perspective: ' + this.perspective + '\n';
+	  return str;
+	};
+
+	function VMDLight(id) {
+	  this.id = id;
+	  this.frameNum = null;
+	  this.color = null;
+	  this.location = null;
+	};
+
+	VMDLight.prototype.supply = function () {
+	  this.frameNum *= 2;
+	};
+
+	VMDLight.prototype.dump = function () {
+	  var str = '';
+	  str += 'id: ' + this.id + '\n';
+	  str += 'frameNum: ' + this.frameNum + '\n';
+	  str += 'color: ' + this.color + '\n';
+	  str += 'location: ' + this.location + '\n';
+	  return str;
+	};
+
+	module.exports = {
+	  VMD: VMD,
+	  VMDLight: VMDLight,
+	  VMDHeader: VMDHeader,
+	  VMDMotion: VMDMotion,
+	  VMDFace: VMDFace,
+	  VMDCamera: VMDCamera
+	};
+
+/***/ }),
+
+/***/ 19:
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _Utility = __webpack_require__(64);
+
+	var _Utility2 = _interopRequireDefault(_Utility);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function FileParser(buffer) {
+	  this.uint8 = new Uint8Array(buffer);
+	  this.offset = 0;
+	};
+	FileParser.prototype.Math = Math;
+
+	/**
+	 * -- sample --
+	 * FileParser.prototype._VERTEX_STRUCTURE = {
+	 *   position: {type: 'float', isArray: true, size: 3},
+	 *   normal: {type: 'float', isArray: true, size: 3},
+	 *   uv: {type: 'float', isArray: true, size: 2},
+	 *   boneIndices: {type: 'uint16', isArray: true, size: 2},
+	 *   boneWeight: {type: 'uint8'},
+	 *   edgeFlag: {type: 'uint8'}
+	 * };
+	 */
+
+	/**
+	 * Note: override this method in a child class
+	 */
+	FileParser.prototype.parse = function () {
+	  return {};
+	};
+
+	FileParser.prototype._parseObject = function (obj, s) {
+	  var o = this.offset;
+	  for (var key in s) {
+	    obj[key] = this._getValue(s[key], this.offset);
+	    // TODO: this can waste time when this function is called in loop
+	    this.offset += this._sizeof(s[key]);
+	  }
+	};
+
+	FileParser.prototype._getValue = function (param, offset) {
+	  return param.isArray === undefined ? this._getValueScalar(param, offset) : this._getValueArray(param, offset);
+	};
+
+	/**
+	 * TODO: you may use DataView.
+	 */
+	FileParser.prototype._getValueScalar = function (param, offset) {
+	  switch (param.type) {
+	    case 'char':
+	      return this._getChars(offset, 1);
+	    case 'strings':
+	      return this._getStrings(offset, 1);
+	    case 'uint8':
+	      return this._getUint8(offset);
+	    case 'uint16':
+	      return this._getUint16(offset);
+	    case 'uint32':
+	      return this._getUint32(offset);
+	    case 'float':
+	      return this._getFloat(offset);
+	    default:
+	      // TODO: to be specific
+	      throw 'error: undefined type' + param;
+	  }
+	};
+
+	FileParser.prototype._getValueArray = function (param, offset) {
+	  if (param.type == 'char') {
+	    return this._getChars(offset, param.size);
+	  }
+
+	  if (param.type == 'strings') {
+	    return this._getStrings(offset, param.size);
+	  }
+
+	  var array = [];
+	  var size = this._sizeofScalar(param);
+	  for (var i = 0; i < param.size; i++) {
+	    array[i] = this._getValueScalar(param, offset);
+	    offset += size;
+	  }
+
+	  return array;
+	};
+
+	FileParser.prototype._sizeof = function (param) {
+	  return param.isArray === undefined ? this._sizeofScalar(param) : this._sizeofArray(param);
+	};
+
+	FileParser.prototype._sizeofScalar = function (param) {
+	  switch (param.type) {
+	    case 'char':
+	      return 1;
+	    case 'strings':
+	      return 1;
+	    case 'uint8':
+	      return 1;
+	    case 'uint16':
+	      return 2;
+	    case 'uint32':
+	      return 4;
+	    case 'float':
+	      return 4;
+	    default:
+	      // TODO: to be specific
+	      throw 'error: undefined type ' + param + ' ' + param.type;
+	  }
+	};
+
+	FileParser.prototype._sizeofArray = function (param) {
+	  return this._sizeofScalar(param) * param.size;
+	};
+
+	FileParser.prototype._sizeofObject = function (o) {
+	  var size = 0;
+	  for (var key in o) {
+	    size += this._sizeof(o[key]);
+	  }
+	  return size;
+	};
+
+	FileParser.prototype._getUint8 = function (pos) {
+	  return this.uint8[pos];
+	};
+
+	FileParser.prototype._getUint16 = function (pos) {
+	  return this._getValueWithReverseByteOrder(pos, 2);
+	};
+
+	FileParser.prototype._getUint32 = function (pos) {
+	  return this._getValueWithReverseByteOrder(pos, 4);
+	};
+
+	FileParser.prototype._getFloat = function (pos) {
+	  return this._toBinary32(this._getValueWithReverseByteOrder(pos, 4));
+	};
+
+	FileParser.prototype._getValueWithReverseByteOrder = function (pos, size) {
+	  var value = 0;
+	  for (var i = 0; i < size; i++) {
+	    value = value << 8 | this.uint8[pos + size - i - 1];
+	  }
+	  return value;
+	};
+
+	FileParser.prototype._toBinary32 = function (uint32) {
+	  var sign = uint32 >> 31 & 1;
+	  var exponent = uint32 >> 23 & 0xFF;
+	  var fraction = uint32 & 0x7FFFFF;
+
+	  if (exponent == 0 && fraction == 0) return 0.0;
+
+	  if (exponent == 255 && fraction == 0) return Infinity;
+
+	  if (exponent == 255 && fraction != 0) return NaN;
+
+	  var tmp = 1;
+
+	  if (exponent == 0 && fraction != 0) {
+	    exponent = 1;
+	    tmp = 0;
+	  }
+
+	  for (var i = 0; i < 23; i++) {
+	    if (fraction >> 22 - i & 1) {
+	      tmp += this.Math.pow(2, -(i + 1));
+	    }
+	  }
+	  tmp = tmp * this.Math.pow(2, exponent - 127);
+	  if (sign) tmp = -tmp;
+	  return tmp;
+	};
+
+	FileParser.prototype._getChars = function (pos, size) {
+	  var str = '';
+	  for (var i = 0; i < size; i++) {
+	    var index = pos + i;
+	    if (this.uint8[index] == 0) break;
+	    // TODO: temporal
+	    str += String.fromCharCode(this.uint8[index]);
+	  }
+	  return str;
+	};
+
+	FileParser.prototype._getStrings = function (pos, size) {
+	  var str = '';
+	  for (var i = 0; i < size; i++) {
+	    var index = pos + i;
+	    if (this.uint8[index] == 0) break;
+	    // TODO: temporal
+	    str += (0, _Utility2.default)(16, this.uint8[index], 2);
+	  }
+	  return str;
+	};
+
+	FileParser.prototype.dump = function () {
+	  var array = this.uint8;
+
+	  var figure = 0;
+	  var tmp = array.length;
+	  while (tmp > 0) {
+	    figure++;
+	    tmp = tmp / 16 | 0;
+	  }
+
+	  var dump = '';
+	  var charDump = '';
+	  for (var i = 0; i < array.length; i++) {
+	    if (i % 16 == 0) {
+	      dump += (0, _Utility2.default)(16, i, figure);
+	      dump += ' ';
+	    }
+
+	    dump += (0, _Utility2.default)(16, array[i], 2);
+	    dump += ' ';
+
+	    if (array[i] >= 0x20 && array[i] <= 0x7E) charDump += String.fromCharCode(array[i]);else charDump += '.';
+
+	    if (i % 16 == 15) {
+	      dump += '  ';
+	      dump += charDump;
+	      dump += '\n';
+	      charDump = '';
+	    }
+	  }
+
+	  return dump;
+	};
+
+	module.exports = FileParser;
+
+/***/ }),
+
+/***/ 58:
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ********** *
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * Based on mmd-viewer-js, Ammo.js
+	                                                                                                                                                                                                                                                                   * - https://github.com/takahirox/mmd-viewer-js
+	                                                                                                                                                                                                                                                                   * - https://github.com/kripken/ammo.js
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * ********** **/
+
+	var _Pmd = __webpack_require__(17);
+
+	var _Pmd2 = _interopRequireDefault(_Pmd);
+
+	var _PmdFileParser = __webpack_require__(59);
+
+	var _PmdFileParser2 = _interopRequireDefault(_PmdFileParser);
+
+	var _PmdModelView_easycanvas = __webpack_require__(60);
+
+	var _PmdModelView_easycanvas2 = _interopRequireDefault(_PmdModelView_easycanvas);
+
+	var _PmdView_easycanvas = __webpack_require__(61);
+
+	var _PmdView_easycanvas2 = _interopRequireDefault(_PmdView_easycanvas);
+
+	var _Vmd = __webpack_require__(18);
+
+	var _Vmd2 = _interopRequireDefault(_Vmd);
+
+	var _VmdFileParser = __webpack_require__(62);
+
+	var _VmdFileParser2 = _interopRequireDefault(_VmdFileParser);
+
+	var _Physics = __webpack_require__(16);
+
+	var _Physics2 = _interopRequireDefault(_Physics);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// window.PmdModelView = PmdModelView;
+	// window.PmdView = PmdView;
+	// window.Vmd = Vmd;
+	// window.VmdFileParser = VmdFileParser;
+	// window.Physics = Physics;
+
+	var err = function err(msg) {
+	    console.error('[Easycanvas-webgl] ' + msg);
+	};
+
+	var pmdCache = {};
+	var ProcessingFlag = 'processing';
+
+	var __analyzePMD = function __analyzePMD(url, buffer, callback) {
+	    var pfp = new _PmdFileParser2.default(buffer);
+
+	    if (!pfp.valid()) {
+	        err('PMD Parse Error.');
+	        return;
+	    }
+
+	    var pmd = pfp.parse();
+	    pmd.setup();
+
+	    var vertices = pmd.vertices.map(function (a) {
+	        return a.position;
+	    }).join(',').split(',').map(function (a) {
+	        return Number(a);
+	    });
+	    var normals = pmd.vertices.map(function (a) {
+	        return a.normal;
+	    }).join(',').split(',');
+	    var textures = pmd.vertices.map(function (a) {
+	        return a.uv;
+	    }).join(',').split(',');
+	    var indices = pmd.vertexIndices.map(function (a) {
+	        return a.index;
+	    });
+
+	    var data = {
+	        vertices: vertices,
+	        normals: normals,
+	        textures: textures,
+	        indices: indices
+	    };
+
+	    pmd.$vertices = vertices;
+
+	    pmdCache[url] = {
+	        data: data,
+	        pmd: pmd
+	    };
+
+	    callback(data, pmd);
+	};
+
+	var __analyzeVMD = function __analyzeVMD(buffers, callback) {
+	    var vmds = [];
+	    var vfps = [];
+	    for (var i = 0; i < buffers.length; i++) {
+	        vfps[i] = new _VmdFileParser2.default(buffers[i]);
+
+	        if (!vfps[i].valid()) {
+	            err('VMD Parse Error.');
+	            return;
+	        }
+
+	        vmds[i] = vfps[i].parse();
+	    }
+
+	    var vmd = vmds[0];
+	    var vfp = vfps[0];
+	    // __vfp = vfps[0]; // for console debug.
+	    // __vmd = vmds[0]; // for console debug.
+
+	    for (var i = 1; i < buffers.length; i++) {
+	        vmd.merge(vmds[i]);
+	    }
+
+	    // if(__selectedMotion.music) {
+	    //   __loadMusicFile();
+	    // } else {
+	    callback({
+	        start: function start(pmd, vertices) {
+	            var p = new _Physics2.default(pmd);
+	            var v = new _PmdView_easycanvas2.default();
+	            var mv = new _PmdModelView_easycanvas2.default(null, pmd, v);
+	            mv.setup(); // 
+	            mv._initMotions();
+	            v.setup();
+	            v.addModelView(mv);
+
+	            // TODO: has accessed pmdView
+	            v.setVMD(vmd);
+	            // pmdView.setEye(__selectedMotion.eye);
+	            v.startDance();
+
+	            var getVerticals = mv.getVerticals;
+
+	            // window.getVerticals=getVerticals;
+
+	            setInterval(function () {
+	                v.update();
+	                for (var _i = 0, l = vertices.length / 3; _i < l; _i++) {
+	                    // 这块比较耗性能，需要修改
+	                    var temp = getVerticals(_i);
+	                    vertices[_i * 3 + 0] = temp[0];
+	                    vertices[_i * 3 + 1] = temp[1];
+	                    vertices[_i * 3 + 2] = temp[2];
+	                }
+	                vertices.$cacheBuffer = undefined;
+	            }, 50);
+	        }
+	    });
+	    // }
+	};
+
+	var loaderPMD = function loaderPMD(url, callback) {
+	    var useCache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+	    if (useCache) {
+	        if (pmdCache[url]) {
+	            if (pmdCache[url] === ProcessingFlag) {
+	                setTimeout(function () {
+	                    loaderPMD(url, callback);
+	                }, 100);
+	            } else {
+	                callback(pmdCache[url].data, pmdCache[url].pmd);
+	            }
+	            return;
+	        }
+	        pmdCache[url] = ProcessingFlag;
+	    }
+
+	    var modelURL = url;
+
+	    var request = new XMLHttpRequest();
+	    request.responseType = 'arraybuffer';
+	    request.onload = function () {
+	        __analyzePMD(url, request.response, callback);
+	    };
+	    request.onerror = function (error) {
+	        err('PMD File Loaded Error.');
+	    };
+	    request.open('GET', modelURL, true);
+	    request.send(null);
+	};
+
+	var loaderVMD = function loaderVMD(urls, callback, index, buffers) {
+	    // 这俩参数暂时没发现有多大用
+	    index = index || 0;
+	    buffers = buffers || [];
+
+	    var url = urls.pop ? urls.length[index] : urls;
+
+	    var request = new XMLHttpRequest();
+	    request.responseType = 'arraybuffer';
+	    request.onload = function () {
+	        buffers.push(request.response);
+	        // if (index + 1 >= urls.length) {
+	        __analyzeVMD(buffers, callback);
+	        // } else {
+	        //     loaderVMD(urls, index+1, buffers);
+	        // }
+	    };
+	    request.onerror = function (error) {
+	        err('VMD File Loaded Error.');
+	    };
+	    request.open('GET', url, true);
+	    request.send(null);
+	};
+
+	var classInit = function classInit(opt) {
+	    if (!opt.webgl || !opt.webgl.pmd) {
+	        return;
+	    }
+
+	    var pmdUrl = opt.webgl.pmd;
+	    var imgPath = opt.webgl.imgPath;
+	    var useCache = opt.webgl.cache !== false;
+	    var sprite = this;
+
+	    var vmdQueue = void 0;
+
+	    loaderPMD(pmdUrl, function (data, pmd) {
+	        sprite.webgl = {};
+
+	        var vertices = data.vertices;
+	        var normals = data.normals;
+	        var textures = data.textures;
+	        var indices = data.indices;
+
+	        delete opt.webgl.pmd;
+	        delete opt.webgl.imgPath;
+	        delete opt.webgl.cache;
+
+	        var lastCount = 0;
+
+	        pmd.materials.forEach(function (mt, i) {
+	            var currentIndices = pmdCache[pmdUrl]['currentIndices' + i] || indices.slice(lastCount, lastCount + mt.vertexCount);
+	            pmdCache[pmdUrl]['currentIndices' + i] = currentIndices;
+
+	            sprite.add({
+	                name: mt.fileName,
+	                // 这块如果属性是function的话assign过去会有坑，需要改成非function的再assign过去，todo
+	                webgl: _extends(window.Easycanvas.webglShapes.custom({
+	                    vertices: vertices,
+	                    normals: normals,
+	                    indices: currentIndices,
+	                    textures: textures,
+	                    img: mt.fileName ? imgPath + mt.fileName : undefined,
+	                    colors: mt.fileName ? undefined : mt.color.map(function (num) {
+	                        return num * 255;
+	                    }).slice(0, 3) // mirrorColor
+	                }), opt.webgl)
+	            });
+	            lastCount += mt.vertexCount;
+	        });
+
+	        sprite.vmdStart = function (vmdUrl) {
+	            loaderVMD(vmdUrl, function (vmd) {
+	                vmd.start(pmd, sprite.children[0].webgl.vertices);
+	            });
+	        };
+
+	        if (vmdQueue) {
+	            sprite.vmdStart(vmdQueue);
+	        }
+
+	        sprite.trigger('webgl-mmd-loaded');
+	    }, useCache);
+
+	    sprite.vmdStart = function (vmdUrl) {
+	        vmdQueue = vmdUrl;
+	    };
+	};
+
+	var inBrowser = typeof window !== 'undefined';
+
+	if (inBrowser && window.Easycanvas) {
+	    Easycanvas.loaderPMD = loaderPMD;
+	    Easycanvas.loaderVMD = loaderVMD;
+	    Easycanvas.extend(classInit);
+	} else {
+	    module.exports = {
+	        loaderPMD: loaderPMD,
+	        loaderVMD: loaderVMD,
+	        classInit: classInit
+	    };
+	}
+
+/***/ }),
+
 /***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3908,11 +3908,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Inherit2 = _interopRequireDefault(_Inherit);
 
-	var _FileParser = __webpack_require__(18);
+	var _FileParser = __webpack_require__(19);
 
 	var _FileParser2 = _interopRequireDefault(_FileParser);
 
-	var _Pmd = __webpack_require__(16);
+	var _Pmd = __webpack_require__(17);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4465,6 +4465,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _GlslFunctions2 = _interopRequireDefault(_GlslFunctions);
 
+	var _Physics = __webpack_require__(16);
+
+	var _Physics2 = _interopRequireDefault(_Physics);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var createFloatArray = function createFloatArray(num) {
@@ -4537,7 +4541,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  this.dancing = false;
 
-	  this.physics = new Physics(this.pmd);
+	  this.physics = new _Physics2.default(this.pmd);
 	};
 
 	// Note: for reference
@@ -5137,7 +5141,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var num = this.pmd.materials[i].vertexCount;
-	    this._draw(this.textures[window.aaa || i], offset, num); // textrue!!!!!  6=eye
+	    this._draw(this.textures[i], offset, num); // textrue!!!!!  6=eye
 	    offset += num;
 	  }
 	};
@@ -6044,9 +6048,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Inherit2 = _interopRequireDefault(_Inherit);
 
-	var _Vmd = __webpack_require__(17);
+	var _Vmd = __webpack_require__(18);
 
-	var _FileParser = __webpack_require__(18);
+	var _FileParser = __webpack_require__(19);
 
 	var _FileParser2 = _interopRequireDefault(_FileParser);
 
