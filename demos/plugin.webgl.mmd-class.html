@@ -2,14 +2,14 @@
     <script src="../build/index.js"></script>
     <script src="../build/plugin.webgl.js"></script>
     <script src="../build/plugin.webgl.mmd.js"></script>
-    <script src='../resource/lib/ammo.js'></script>
+    <script src='../resource/mmd/lib/ammo.js'></script>
 </head>
 
 <style>
     canvas {
         border: 1px solid grey;
         background-color: #4caf50;
-        /*opacity: 0.05;*/
+        /*opacity: 0.01;*/
     }
 </style>
 
@@ -25,7 +25,7 @@
         });
         $Painter.start();
 
-        for (var x = 1; x <= 2; x ++) {
+        for (var x = 1; x <= 1; x ++) {
             $Painter.add(new Easycanvas.class.sprite({
                 style: {
                     tx: x * 100, ty: 500,

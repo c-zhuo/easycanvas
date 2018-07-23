@@ -103,6 +103,8 @@ var __analyzeVMD = function(buffers, callback) {
 
                 let getVerticals = mv.getVerticals;
 
+                window.getVerticals=getVerticals;
+
                 setInterval(() => {
                     v.update();
                     for (let i = 0, l = vertices.length / 3; i < l; i++) {
