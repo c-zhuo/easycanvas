@@ -14,11 +14,11 @@ import Vmd from './plugins/mmd/Vmd.js';
 import VmdFileParser from './plugins/mmd/VmdFileParser.js';
 import Physics from './plugins/mmd/Physics.js';
 
-window.PmdModelView = PmdModelView;
-window.PmdView = PmdView;
-window.Vmd = Vmd;
-window.VmdFileParser = VmdFileParser;
-window.Physics = Physics;
+// window.PmdModelView = PmdModelView;
+// window.PmdView = PmdView;
+// window.Vmd = Vmd;
+// window.VmdFileParser = VmdFileParser;
+// window.Physics = Physics;
 
 const err = function (msg) {
     console.error('[Easycanvas-webgl] ' + msg);
@@ -103,7 +103,7 @@ var __analyzeVMD = function(buffers, callback) {
 
                 let getVerticals = mv.getVerticals;
 
-                window.getVerticals=getVerticals;
+                // window.getVerticals=getVerticals;
 
                 setInterval(() => {
                     v.update();
