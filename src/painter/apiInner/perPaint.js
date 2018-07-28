@@ -13,6 +13,7 @@ import constants from 'constants';
 import getComputedStyle from './perPaint.getComputedStyle.js';
 import cutOutside from './perPaint.cutOutside.js';
 import deliverChildren from './perPaint.deliverChildren.js';
+import rectMeet from 'utils/math.rect-meet';
 
 const blend = utils.blend;
 
@@ -182,7 +183,8 @@ module.exports = function (i, index) {
     deliverChildren($canvas, _children, -1);
 
     if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
-        if (!_img.src || (_props.tx >= 0 && _props.tx < $canvas.width && _props.ty >= 0 && _props.ty < $canvas.height)) {
+        // removed !_img.src ||  ???
+        if (rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate)) {
             i.$rendered = true;
 
             let $paintSprite = {

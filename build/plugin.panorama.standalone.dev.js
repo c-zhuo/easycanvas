@@ -1,170 +1,117 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else {
-		var a = factory();
-		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
-	}
+(function e(t, s) {
+    if (typeof exports === "object" && typeof module === "object") module.exports = s(); else if (typeof define === "function" && define.amd) define([], s); else {
+        var a = s();
+        for (var n in a) (typeof exports === "object" ? exports : t)[n] = a[n];
+    }
 })(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
-/******/ 		};
-
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-
-
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(53);
-
-
-/***/ }),
-
-/***/ 53:
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	var _ec = void 0;
-
-	var panorama = function panorama(opt) {
-	    var $Painter = opt.painter;
-	    // dx 每帧移动距离
-	    var img = opt.img,
-	        _opt$dx = opt.dx,
-	        dx = _opt$dx === undefined ? 0.5 : _opt$dx;
-
-
-	    var sprite = new Easycanvas.class.sprite(opt);
-	    sprite.dx = dx;
-
-	    var xSize = opt.style.tw;
-	    var ySize = opt.style.th;
-	    var imgW = opt.style.sw;
-	    var imgH = opt.style.sh;
-
-	    var x = 0;
-
-	    var img1 = new Easycanvas.class.sprite({
-	        content: {
-	            img: img
-	        },
-	        style: {
-	            locate: 'left',
-	            sw: xSize,
-	            th: ySize
-	        }
-	    });
-	    var img2 = new Easycanvas.class.sprite({
-	        content: {
-	            img: img
-	        },
-	        style: {
-	            locate: 'left',
-	            sw: xSize,
-	            th: ySize,
-	            sx: -xSize,
-	            opacity: 0
-	        }
-	    });
-	    sprite.add(img1);
-	    sprite.add(img2);
-	    var draw = function draw() {
-	        if (x > imgW) {
-	            x = -imgW;
-	        }
-	        if (x >= 0) {
-	            img2.style.sx = -imgW + x + 1;
-	            if (x < imgW - xSize) {
-	                img2.style.opacity = 0;
-	            } else {
-	                if (imgW - x >= 0 && imgW - x <= 5) {
-	                    img1.style.sw = 0;
-	                } else {
-	                    img1.style.sw = imgW - x;
-	                }
-	                img2.style.opacity = 1;
-	                img2.style.sw = xSize - img1.style.sw;
-	            }
-	        } else if (x >= -imgW) {
-	            img2.style.sx = imgW + x - 1;
-	            if (x < -xSize) {
-	                img1.style.opacity = 0;
-	            } else {
-	                img1.style.opacity = 1;
-	                img1.style.sw = xSize + x;
-	                img2.style.sw = -x;
-	            }
-	        }
-	        img1.style.sx = x;
-	        x += sprite.dx;
-	    };
-
-	    sprite.start = function () {
-	        sprite.on('ticked', draw);
-	    };
-	    sprite.stop = function () {
-	        sprite.off('ticked', draw);
-	    };
-	    sprite.changeSpeed = function (newDx) {
-	        dx = newDx;
-	    };
-
-	    return sprite;
-	};
-
-	if (window && window.Easycanvas) {
-	    _ec = window.Easycanvas;
-	    _ec.class.panorama = panorama;
-	}
-
-	module.exports = function (ec) {
-	    _ec = ec;
-	    ec.class.panorama = panorama;
-	};
-
-/***/ })
-
-/******/ })
+    return function(e) {
+        var t = {};
+        function s(a) {
+            if (t[a]) return t[a].exports;
+            var n = t[a] = {
+                exports: {},
+                id: a,
+                loaded: false
+            };
+            e[a].call(n.exports, n, n.exports, s);
+            n.loaded = true;
+            return n.exports;
+        }
+        s.m = e;
+        s.c = t;
+        s.p = "";
+        return s(0);
+    }({
+        0: function(e, t, s) {
+            e.exports = s(55);
+        },
+        55: function(e, t) {
+            "use strict";
+            var s = void 0;
+            var a = function e(t) {
+                var s = t.painter;
+                var a = t.img, n = t.dx, o = n === undefined ? .5 : n;
+                var i = new Easycanvas.class.sprite(t);
+                i.dx = o;
+                var r = t.style.tw;
+                var c = t.style.th;
+                var l = t.style.sw;
+                var f = t.style.sh;
+                var y = 0;
+                var p = new Easycanvas.class.sprite({
+                    content: {
+                        img: a
+                    },
+                    style: {
+                        locate: "left",
+                        sw: r,
+                        th: c
+                    }
+                });
+                var d = new Easycanvas.class.sprite({
+                    content: {
+                        img: a
+                    },
+                    style: {
+                        locate: "left",
+                        sw: r,
+                        th: c,
+                        sx: -r,
+                        opacity: 0
+                    }
+                });
+                i.add(p);
+                i.add(d);
+                var u = function e() {
+                    if (y > l) {
+                        y = -l;
+                    }
+                    if (y >= 0) {
+                        d.style.sx = -l + y + 1;
+                        if (y < l - r) {
+                            d.style.opacity = 0;
+                        } else {
+                            if (l - y >= 0 && l - y <= 5) {
+                                p.style.sw = 0;
+                            } else {
+                                p.style.sw = l - y;
+                            }
+                            d.style.opacity = 1;
+                            d.style.sw = r - p.style.sw;
+                        }
+                    } else if (y >= -l) {
+                        d.style.sx = l + y - 1;
+                        if (y < -r) {
+                            p.style.opacity = 0;
+                        } else {
+                            p.style.opacity = 1;
+                            p.style.sw = r + y;
+                            d.style.sw = -y;
+                        }
+                    }
+                    p.style.sx = y;
+                    y += i.dx;
+                };
+                i.start = function() {
+                    i.on("ticked", u);
+                };
+                i.stop = function() {
+                    i.off("ticked", u);
+                };
+                i.changeSpeed = function(e) {
+                    o = e;
+                };
+                return i;
+            };
+            if (window && window.Easycanvas) {
+                s = window.Easycanvas;
+                s.class.panorama = a;
+            }
+            e.exports = function(e) {
+                s = e;
+                e.class.panorama = a;
+            };
+        }
+    });
 });
-;
+

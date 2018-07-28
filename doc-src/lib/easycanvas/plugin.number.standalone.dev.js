@@ -1,152 +1,96 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else {
-		var a = factory();
-		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
-	}
+(function e(t, r) {
+    if (typeof exports === "object" && typeof module === "object") module.exports = r(); else if (typeof define === "function" && define.amd) define([], r); else {
+        var n = r();
+        for (var s in n) (typeof exports === "object" ? exports : t)[s] = n[s];
+    }
 })(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
-/******/ 		};
-
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-
-
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(51);
-
-
-/***/ }),
-
-/***/ 51:
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	var _ec = void 0;
-
-	var number = function number(opt) {
-	    var sprite = new _ec.class.sprite(opt);
-
-	    sprite.style = opt.style;
-	    sprite.content.img = opt.number;
-
-	    sprite.style.sx = 0;
-	    sprite.style.sw = sprite.style.sw || opt.number.width;
-	    sprite.style.sh = Math.floor(sprite.style.sh || opt.number.height / 10);
-
-	    var tick = 0;
-
-	    var data = {
-	        tick: Math.floor((opt.interval || 1000) / 16.6),
-	        heightRate: 1,
-	        numberHeight: sprite.style.sh,
-	        current: 0,
-	        stop: false
-	    };
-
-	    sprite.set = function (keys) {
-	        for (var i in keys) {
-	            data[i] = keys[i];
-	        }
-	    };
-
-	    sprite.getCurrentValue = function () {
-	        return data.current;
-	    };
-
-	    sprite.setCurrentValue = function (value) {
-	        data.current = value;
-	        sprite.style.sy = data.current * data.heightRate * data.numberHeight;
-	    };
-
-	    sprite.scrollToValue = function (value, time) {
-	        data.current = value;
-	        sprite.style.sy = _ec.transition.linear(sprite.getStyle('sy'), data.current * data.heightRate * data.numberHeight, time || 200);
-	    };
-
-	    sprite.stop = function () {
-	        data.stop = true;
-	    };
-
-	    sprite.restart = function () {
-	        data.stop = false;
-	        data.current = 0;
-	        sprite.style.sy = 0;
-	        tick = 0;
-	    };
-
-	    sprite.hooks = {
-	        ticked: function ticked() {
-	            if (data.stop || ++tick <= data.tick) return;
-	            tick = 1;
-	            data.current++;
-
-	            sprite.style.sy = data.current * data.heightRate * data.numberHeight;
-	            if (data.current > 9) {
-	                sprite.style.sy = 0;
-	                data.current = 0;
-	            }
-	        }
-	    };
-
-	    return sprite;
-	};
-
-	if (window && window.Easycanvas) {
-	    _ec = window.Easycanvas;
-	    _ec.class.number = number;
-	}
-
-	module.exports = function (ec) {
-	    _ec = ec;
-	    ec.class.number = number;
-	};
-
-/***/ })
-
-/******/ })
+    return function(e) {
+        var t = {};
+        function r(n) {
+            if (t[n]) return t[n].exports;
+            var s = t[n] = {
+                exports: {},
+                id: n,
+                loaded: false
+            };
+            e[n].call(s.exports, s, s.exports, r);
+            s.loaded = true;
+            return s.exports;
+        }
+        r.m = e;
+        r.c = t;
+        r.p = "";
+        return r(0);
+    }({
+        0: function(e, t, r) {
+            e.exports = r(54);
+        },
+        54: function(e, t) {
+            "use strict";
+            var r = void 0;
+            var n = function e(t) {
+                var n = new r.class.sprite(t);
+                n.style = t.style;
+                n.content.img = t.number;
+                n.style.sx = 0;
+                n.style.sw = n.style.sw || t.number.width;
+                n.style.sh = Math.floor(n.style.sh || t.number.height / 10);
+                var s = 0;
+                var o = {
+                    tick: Math.floor((t.interval || 1e3) / 16.6),
+                    heightRate: 1,
+                    numberHeight: n.style.sh,
+                    current: 0,
+                    stop: false
+                };
+                n.set = function(e) {
+                    for (var t in e) {
+                        o[t] = e[t];
+                    }
+                };
+                n.getCurrentValue = function() {
+                    return o.current;
+                };
+                n.setCurrentValue = function(e) {
+                    o.current = e;
+                    n.style.sy = o.current * o.heightRate * o.numberHeight;
+                };
+                n.scrollToValue = function(e, t) {
+                    o.current = e;
+                    n.style.sy = r.transition.linear(n.getStyle("sy"), o.current * o.heightRate * o.numberHeight, t || 200);
+                };
+                n.stop = function() {
+                    o.stop = true;
+                };
+                n.restart = function() {
+                    o.stop = false;
+                    o.current = 0;
+                    n.style.sy = 0;
+                    s = 0;
+                };
+                n.hooks = {
+                    ticked: function e() {
+                        if (o.stop || ++s <= o.tick) return;
+                        s = 1;
+                        o.current++;
+                        n.style.sy = o.current * o.heightRate * o.numberHeight;
+                        if (o.current > 9) {
+                            n.style.sy = 0;
+                            o.current = 0;
+                        }
+                    }
+                };
+                return n;
+            };
+            if (window && window.Easycanvas) {
+                r = window.Easycanvas;
+                r.class.number = n;
+            }
+            e.exports = function(e) {
+                r = e;
+                e.class.number = n;
+            };
+        }
+    });
 });
-;
+

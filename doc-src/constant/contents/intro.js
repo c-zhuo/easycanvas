@@ -6,8 +6,10 @@ module.exports = `
 
         <p>Easycanvas是一个轻量、高效率的canvas渲染库，核心思路是由数据的变化来驱动视图的变化。<strong>将canvas与一个树形的数据结构绑定，当数据改变时视图将随之更新，并且提供了一个Chrome插件来便于开发</strong>，包括数据结构的显示、对canvas中某个元素的样式进行调整等。</p>
         <img class="article-img" width="100%" src="https://github.com/chenzhuo1992/easycanvas/raw/master/demos/index.gif?raw=true"></img>
-        <p>html5的canvas标签只有一些基本的绘图操作，因此，事件的处理、元素的层级和嵌套、图像的旋转和布局都需要由一系列的基本操作组合形成。开发效率较低、代码维护成本偏高。</p>
-        <p>而Easycanvas就是将这些方法和数据相关联。它也提供了一些动画开发中可能用到的方法（例如过渡、图像处理等），以及一些可插拔的扩展插件（例如物理效果、淡出特效），以应对各种复杂的应用场景。此外，可以在使用时自定义一些组件（例如按钮、弹窗组件）来进行复用。</p>
+
+        <p>Easycanvas本身包括了绘图、事件、自定义钩子、组件式开发的功能，并额外提供了一些插件，用于物理效果、WebGL等方向的扩展。</p>
+
+        <p>Easycanvas拥有单元测试，以保证迭代中功能的稳定。问题可以提交issue，通常24h内回复。</p>
 
         <h2>关于性能</h2>
 
@@ -17,5 +19,7 @@ module.exports = `
         <h2>关于扩展</h2>
 
         <p>Easycanvas的画布是由一个个“sprite（精灵）”类组成的，每个精灵拥有自己的位置、尺寸、事件监听和钩子函数。使用时，可以在sprite类的基础上封装，形成例如button（按钮）、scene（场景）的组件。由于每个组件是一个独立的class，因此可以轻易做到复用。</p>
+
+        <p>Easycanvas提供了完整的生命周期钩子（创建、初始化、绘制前、渲染后、移除前、移除后），可以用于<strong>定制自己的全局插件和精灵组件</strong>。</p>
     </article>
 `;

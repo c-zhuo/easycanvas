@@ -18,7 +18,6 @@ let painter = function (config) {
         this[i] = this[i] || JSON.parse(JSON.stringify($prototype[i]));
     }
 
-
     if (!config) {
         return;
     }

@@ -2,7 +2,8 @@ const tree = `
     - 介绍
     一些demo
     概述
-    快速开始
+    快速开始（浏览器与Node环境）
+    快速开始（微信小游戏环境）
     - 基础教程
     图片渲染与处理
     嵌套与继承
@@ -44,7 +45,5 @@ tree.split(/\n/)
             });
         }
     });
-
-console.log(response);
 
 module.exports = response;
