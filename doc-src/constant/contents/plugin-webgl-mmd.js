@@ -80,7 +80,7 @@ module.exports = `
 
         <section>
             <div class="code-2-demo bg-demo"></div>
-            <code class="hidden">
+            <code>
                 <head>
                     <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
                     <script src="./lib/easycanvas/plugin.webgl.mmd.standalone.prod.js"></script>

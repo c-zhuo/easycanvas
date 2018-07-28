@@ -1,6 +1,7 @@
 import demos from './contents/demos.js';
 import intro from './contents/intro.js';
 import quickstart from './contents/quickstart.js';
+import quickstartWxgame from './contents/quickstart-wxgame.js';
 
 import inherit from './contents/inherit.js';
 import image from './contents/image.js';
@@ -21,6 +22,7 @@ let content = `
     ${demos}
     ${intro}
     ${quickstart}
+    ${quickstartWxgame}
 
     ${inherit}
     ${image}

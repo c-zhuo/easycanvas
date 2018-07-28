@@ -1,5 +1,5 @@
 module.exports = `
-    <article id="快速开始">
+    <article id="快速开始（浏览器与Node环境）">
         <h1>快速开始</h1>
 
         <h2>如何引入</h2>
