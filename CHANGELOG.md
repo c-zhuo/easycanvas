@@ -1,5 +1,17 @@
 ## Easycanvas Changelog
 
+#### 0.5.7
+
+- Bugfix: Rendering bug.
+
+- Featrue: Update 微信小游戏 Doc.
+
+#### 0.5.6
+
+- Bugfix: Event rendering bug.
+
+- Featrue: Support 微信小游戏.
+
 #### 0.5.5
 
 - Bugfix: Event bug.

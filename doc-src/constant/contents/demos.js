@@ -16,6 +16,8 @@ module.exports = `
         ${perf}
         ${sequence}
 
+        <p>微信小游戏《弹一弹》2D版的Demo可以在<a href="https://github.com/chenzhuo1992/easycanvas/tree/master/wxgame" target="_blank">这里</a>找到，将wxgame目录绑定为项目目录即可。</p>
+
         <p>其它Demo后续补充。</p>
 
     </article>

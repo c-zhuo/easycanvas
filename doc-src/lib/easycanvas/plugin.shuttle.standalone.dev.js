@@ -1,277 +1,193 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else {
-		var a = factory();
-		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
-	}
+(function t(e, n) {
+    if (typeof exports === "object" && typeof module === "object") module.exports = n(); else if (typeof define === "function" && define.amd) define([], n); else {
+        var a = n();
+        for (var r in a) (typeof exports === "object" ? exports : e)[r] = a[r];
+    }
 })(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
-/******/ 		};
-
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-
-
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(54);
-
-
-/***/ }),
-
-/***/ 1:
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	var utils = {
-	    isArray: Array.isArray || function (arg) {
-	        return Object.prototype.toString.call(arg) === '[object Array]';
-	    },
-
-	    funcOrValue: function funcOrValue(_funcOrValue, _this) {
-	        if (typeof _funcOrValue === 'function') {
-	            var res = _funcOrValue.call(_this);
-	            return res;
-	        }
-
-	        return _funcOrValue;
-	    },
-
-	    // 执行钩子函数或者钩子函数队列
-	    execFuncs: function execFuncs(funcOrArray, _this, _arg) {
-	        if (funcOrArray) {
-	            if (!utils.isArray(_arg)) {
-	                _arg = [_arg];
-	            }
-	        }
-
-	        if (typeof funcOrArray === 'function') {
-	            return funcOrArray.apply(_this, _arg);
-	        } else if (utils.isArray(funcOrArray)) {
-	            var res = [];
-	            funcOrArray.forEach(function (f) {
-	                res.push(f && f.apply(_this, _arg));
-	            });
-	            return res;
-	        }
-	    },
-
-	    blend: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'copy', 'xor', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'],
-
-	    pointInRect: function pointInRect(x, y, x1, x2, y1, y2) {
-	        return !(x < x1 || x > x2 || y < y1 || y > y2);
-	    },
-
-	    firstValuable: function firstValuable(a, b, c) {
-	        // 效率低
-	        // for (let i = 0; i < arguments.length; i++) {
-	        //     if (typeof arguments[i] !== 'undefined') {
-	        //         return arguments[i];
-	        //     }
-	        // }
-	        return typeof a === 'undefined' ? typeof b === 'undefined' ? c : b : a;
-	    }
-	};
-
-	module.exports = utils;
-
-/***/ }),
-
-/***/ 3:
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	var PI = 3.141593;
-
-	module.exports = function (x, y, rx0, ry0, d, returnArr) {
-	    var deg = d ? -d / 180 * PI : 0;
-	    var _x = (x - rx0) * Math.cos(deg) - (y - ry0) * Math.sin(deg) + rx0;
-	    var _y = (x - rx0) * Math.sin(deg) + (y - ry0) * Math.cos(deg) + ry0;
-
-	    if (returnArr) {
-	        return [_x, _y];
-	    }
-
-	    return {
-	        x: _x,
-	        y: _y
-	    };
-	};
-
-/***/ }),
-
-/***/ 54:
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _utils = __webpack_require__(1);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	var _mathPointRotate = __webpack_require__(3);
-
-	var _mathPointRotate2 = _interopRequireDefault(_mathPointRotate);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var or = _utils2.default.firstValuable;
-
-	var _ec = void 0;
-
-	var shuttle = function shuttle(opt) {
-	    var sprite = new _ec.class.sprite(opt);
-
-	    sprite.style = opt.style;
-
-	    var center = opt.center || {
-	        x: opt.style.tw / 2,
-	        y: opt.style.th / 2
-	    };
-
-	    var data = {
-	        passByRotate: false,
-	        speed: 2000
-	    };
-
-	    sprite.set = function (keys) {
-	        for (var i in keys) {
-	            data[i] = keys[i];
-	        }
-	    };
-
-	    opt.background && sprite.add(new _ec.class.sprite({
-	        content: {
-	            img: opt.background
-	        },
-	        style: {
-	            tx: 0,
-	            ty: 0,
-	            tw: opt.style.tw,
-	            th: opt.style.th,
-	            locate: 'lt'
-	        }
-	    }));
-
-	    var longest = Math.max(opt.style.tw, opt.style.th) + 100;
-	    var getResultPoint = function getResultPoint(deg) {
-	        return (0, _mathPointRotate2.default)(longest, 0, 0, 0, deg);
-	    };
-
-	    sprite.hooks = {
-	        ticked: function ticked() {
-	            if (Math.random() < 0.8) return;
-
-	            var deg = Math.random() * 360;
-	            var result = getResultPoint(deg);
-	            var randomImg = opt.passBy[Math.floor(deg) % opt.passBy.length];
-
-	            if (randomImg) {
-	                var child = new _ec.class.sprite({
-	                    content: {
-	                        img: randomImg
-	                    },
-	                    style: {
-	                        tx: Easycanvas.transition.linear(center.x, center.x + result.x, data.speed),
-	                        ty: Easycanvas.transition.linear(center.y, center.y + result.y, data.speed),
-	                        rotate: deg - 90,
-	                        tw: Easycanvas.transition.linear(1, randomImg.width * 2, data.speed),
-	                        th: Easycanvas.transition.linear(1, randomImg.height * 2, data.speed)
-	                    }
-	                });
-
-	                if (data.passByRotate) {
-	                    child.style.rx = center.x;
-	                    child.style.ry = center.y;
-	                    child.style.rotate = Easycanvas.transition.linear(0, 360, data.speed);
-	                }
-
-	                sprite.add(child);
-	                setTimeout(function () {
-	                    child.remove();
-	                }, data.speed);
-	            }
-
-	            if (Math.random() > data.passInRate) return;
-
-	            var circle = new _ec.class.sprite({
-	                content: {
-	                    img: opt.passIn[0]
-	                },
-	                style: {
-	                    tx: Easycanvas.transition.linear(center.x, center.x + result.x / 10, data.speed),
-	                    ty: Easycanvas.transition.linear(center.y, center.y + result.y / 10, data.speed),
-	                    rotate: deg,
-	                    tw: Easycanvas.transition.linear(10, center.x * 4, data.speed),
-	                    th: Easycanvas.transition.linear(10, center.x * 4, data.speed),
-	                    opacity: Easycanvas.transition.linear(5, 0.15, data.speed)
-	                }
-	            });
-	            sprite.add(circle);
-	            setTimeout(function () {
-	                circle.remove();
-	            }, data.speed);
-	        }
-	    };
-
-	    return sprite;
-	};
-
-	if (window && window.Easycanvas) {
-	    _ec = window.Easycanvas;
-	    _ec.class.shuttle = shuttle;
-	}
-
-	module.exports = function (ec) {
-	    _ec = ec;
-	    ec.class.shuttle = shuttle;
-	};
-
-/***/ })
-
-/******/ })
+    return function(t) {
+        var e = {};
+        function n(a) {
+            if (e[a]) return e[a].exports;
+            var r = e[a] = {
+                exports: {},
+                id: a,
+                loaded: false
+            };
+            t[a].call(r.exports, r, r.exports, n);
+            r.loaded = true;
+            return r.exports;
+        }
+        n.m = t;
+        n.c = e;
+        n.p = "";
+        return n(0);
+    }({
+        0: function(t, e, n) {
+            t.exports = n(57);
+        },
+        1: function(t, e) {
+            "use strict";
+            var n = {
+                isArray: Array.isArray || function(t) {
+                    return Object.prototype.toString.call(t) === "[object Array]";
+                },
+                funcOrValue: function t(e, n) {
+                    if (typeof e === "function") {
+                        var a = e.call(n);
+                        return a;
+                    }
+                    return e;
+                },
+                execFuncs: function t(e, a, r) {
+                    if (e) {
+                        if (!n.isArray(r)) {
+                            r = [ r ];
+                        }
+                    }
+                    if (typeof e === "function") {
+                        return e.apply(a, r);
+                    } else if (n.isArray(e)) {
+                        var s = [];
+                        e.forEach(function(t) {
+                            s.push(t && t.apply(a, r));
+                        });
+                        return s;
+                    }
+                },
+                blend: [ "source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in", "destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity" ],
+                pointInRect: function t(e, n, a, r, s, i) {
+                    return !(e < a || e > r || n < s || n > i);
+                },
+                firstValuable: function t(e, n, a) {
+                    return typeof e === "undefined" ? typeof n === "undefined" ? a : n : e;
+                }
+            };
+            t.exports = n;
+        },
+        2: function(t, e) {
+            "use strict";
+            var n = 3.141593;
+            t.exports = function(t, e, a, r, s, i) {
+                var o = s ? -s / 180 * n : 0;
+                var c = t, u = e;
+                if (s) {
+                    c = (t - a) * Math.cos(o) - (e - r) * Math.sin(o) + a;
+                    u = (t - a) * Math.sin(o) + (e - r) * Math.cos(o) + r;
+                }
+                if (i) {
+                    return [ c, u ];
+                }
+                return {
+                    x: c,
+                    y: u
+                };
+            };
+        },
+        57: function(t, e, n) {
+            "use strict";
+            var a = n(1);
+            var r = o(a);
+            var s = n(2);
+            var i = o(s);
+            function o(t) {
+                return t && t.__esModule ? t : {
+                    default: t
+                };
+            }
+            var c = r.default.firstValuable;
+            var u = void 0;
+            var l = function t(e) {
+                var n = new u.class.sprite(e);
+                n.style = e.style;
+                var a = e.center || {
+                    x: e.style.tw / 2,
+                    y: e.style.th / 2
+                };
+                var r = {
+                    passByRotate: false,
+                    speed: 2e3
+                };
+                n.set = function(t) {
+                    for (var e in t) {
+                        r[e] = t[e];
+                    }
+                };
+                e.background && n.add(new u.class.sprite({
+                    content: {
+                        img: e.background
+                    },
+                    style: {
+                        tx: 0,
+                        ty: 0,
+                        tw: e.style.tw,
+                        th: e.style.th,
+                        locate: "lt"
+                    }
+                }));
+                var s = Math.max(e.style.tw, e.style.th) + 100;
+                var o = function t(e) {
+                    return (0, i.default)(s, 0, 0, 0, e);
+                };
+                n.hooks = {
+                    ticked: function t() {
+                        if (Math.random() < .8) return;
+                        var s = Math.random() * 360;
+                        var i = o(s);
+                        var c = e.passBy[Math.floor(s) % e.passBy.length];
+                        if (c) {
+                            var l = new u.class.sprite({
+                                content: {
+                                    img: c
+                                },
+                                style: {
+                                    tx: Easycanvas.transition.linear(a.x, a.x + i.x, r.speed),
+                                    ty: Easycanvas.transition.linear(a.y, a.y + i.y, r.speed),
+                                    rotate: s - 90,
+                                    tw: Easycanvas.transition.linear(1, c.width * 2, r.speed),
+                                    th: Easycanvas.transition.linear(1, c.height * 2, r.speed)
+                                }
+                            });
+                            if (r.passByRotate) {
+                                l.style.rx = a.x;
+                                l.style.ry = a.y;
+                                l.style.rotate = Easycanvas.transition.linear(0, 360, r.speed);
+                            }
+                            n.add(l);
+                            setTimeout(function() {
+                                l.remove();
+                            }, r.speed);
+                        }
+                        if (Math.random() > r.passInRate) return;
+                        var f = new u.class.sprite({
+                            content: {
+                                img: e.passIn[0]
+                            },
+                            style: {
+                                tx: Easycanvas.transition.linear(a.x, a.x + i.x / 10, r.speed),
+                                ty: Easycanvas.transition.linear(a.y, a.y + i.y / 10, r.speed),
+                                rotate: s,
+                                tw: Easycanvas.transition.linear(10, a.x * 4, r.speed),
+                                th: Easycanvas.transition.linear(10, a.x * 4, r.speed),
+                                opacity: Easycanvas.transition.linear(5, .15, r.speed)
+                            }
+                        });
+                        n.add(f);
+                        setTimeout(function() {
+                            f.remove();
+                        }, r.speed);
+                    }
+                };
+                return n;
+            };
+            if (window && window.Easycanvas) {
+                u = window.Easycanvas;
+                u.class.shuttle = l;
+            }
+            t.exports = function(t) {
+                u = t;
+                t.class.shuttle = l;
+            };
+        }
+    });
 });
-;
+

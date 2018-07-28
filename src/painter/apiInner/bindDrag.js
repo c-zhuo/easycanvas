@@ -21,7 +21,8 @@ const dragHandler = function (originHandler, item, e, dragEnabled) {
     return originHandler ? originHandler.call(item, e) : (dragEnabled ? 'drag' : false);
 };
 
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isMobile = typeof wx !== 'undefined' ||
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 module.exports = {
     bind: function ($sprite) {

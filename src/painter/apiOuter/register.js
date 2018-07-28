@@ -32,7 +32,7 @@ module.exports = function (dom, option) {
         this[i] = _option[i];
     }
 
-    this.name = _option.name || dom.id || dom.classList[0] || 'Unnamed';
+    this.name = _option.name || dom.id || (dom.classList && dom.classList[0]) || 'Unnamed';
 
     if (_option.fullScreen && typeof document !== 'undefined') {
         dom.width = dom.style.width = document.body.clientWidth || document.documentElement.clientWidth;
