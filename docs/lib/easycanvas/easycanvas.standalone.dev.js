@@ -86,7 +86,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.5.6"
+            version: "0.5.7"
         };
     }, , function(e, t) {
         "use strict";
@@ -764,7 +764,7 @@
                             }
                         } else {
                             while (n < r) {
-                                n += r - t;
+                                n += t - r;
                             }
                         }
                     } else {

@@ -17932,7 +17932,7 @@ color: #333;\
 }\
 .ace-tm .ace_print-margin {\
 width: 1px;\
-background: #e8e8e8;\
+// background: #e8e8e8;\
 }\
 .ace-tm .ace_fold {\
 background-color: #6B72E6;\

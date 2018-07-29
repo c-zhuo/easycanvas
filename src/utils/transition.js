@@ -28,7 +28,7 @@ const transFuncs = {
                     }
                 } else {
                     while (result < b) {
-                        result += b - a;
+                        result += a - b;
                     }
                 }
             } else {
