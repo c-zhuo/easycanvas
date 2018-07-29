@@ -764,7 +764,7 @@
                             }
                         } else {
                             while (n < r) {
-                                n += r - t;
+                                n += t - r;
                             }
                         }
                     } else {

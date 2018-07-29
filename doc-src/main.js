@@ -187,7 +187,7 @@ const DemoableCodeClassName = 'code-2-demo';
                 let iframeHtmlCodes = `
                     <html>
                     <head>
-                        <style>canvas {border:1px solid #ddd;}</style>
+                        <style>body {margin: 0;} canvas {border:1px solid #ddd;}</style>
                         <script src="./lib/easycanvas/easycanvas.standalone.prod.js"></script>
                     </head>
                     <body>

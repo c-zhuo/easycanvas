@@ -158,21 +158,23 @@ module.exports = `
 
                     Easycanvas.loader3DS('../resource/game_char/sunnvfashi.3DS', function (data) {
                         data.forEach(function (model) {
+                            var roleShape = {
+                                vertices: model.vertices,
+                                indices: model.indices,
+                                img: texture[model.img],
+                                textures: model.textures,
+                                scale: 20,
+                                rx: 90, ry: 0, rz: rz,
+                            };
+
                             for (var i = 0; i < 10; i++) {
                                 $app.add({
                                     name: model.img,
                                     style: {
                                         tx: 60 + i % 5 * 70,
-                                        ty: i >=5 ? 300 : 100,
+                                        ty: i >= 5 ? 300 : 100,
                                     },
-                                    webgl: window.Easycanvas.webglShapes.custom({
-                                        vertices: model.vertices,
-                                        indices: model.indices,
-                                        img: texture[model.img],
-                                        textures: model.textures,
-                                        scale: 20,
-                                        rx: 90, ry: 0, rz: rz,
-                                    })
+                                    webgl: window.Easycanvas.webglShapes.custom(roleShape),
                                 });
                             }
                         });
