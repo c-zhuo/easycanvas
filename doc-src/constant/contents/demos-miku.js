@@ -35,7 +35,7 @@ module.exports = `
 
                 miku.vmdStart('../resource/mmd/vmd/wavefile_v2.vmd');
 
-                miku.on('webgl-mmd-loaded', function () {
+                miku.on('webgl-pmd-loaded', function () {
                     $app.events.mousemove = function (e) {
                         // 袖、袜、裙
                         miku.children[3].updateWebglStyle('colors',

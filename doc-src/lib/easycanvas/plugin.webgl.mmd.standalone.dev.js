@@ -3409,13 +3409,14 @@
                     });
                     s.vmdStart = function(t) {
                         M(t, function(t) {
+                            s.trigger("webgl-vmd-loaded");
                             t.start(n, s.children[0].webgl.vertices);
                         });
                     };
                     if (a) {
                         s.vmdStart(a);
                     }
-                    s.trigger("webgl-mmd-loaded");
+                    s.trigger("webgl-pmd-loaded");
                 }, n);
                 s.vmdStart = function(t) {
                     a = t;

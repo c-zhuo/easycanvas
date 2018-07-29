@@ -223,6 +223,7 @@ const classInit = function (opt) {
 
         sprite.vmdStart = (vmdUrl) => {
             loaderVMD(vmdUrl, function (vmd) {
+                sprite.trigger('webgl-vmd-loaded');
                 vmd.start(pmd, sprite.children[0].webgl.vertices);
             });
         };
@@ -231,7 +232,7 @@ const classInit = function (opt) {
             sprite.vmdStart(vmdQueue);
         }
 
-        sprite.trigger('webgl-mmd-loaded');
+        sprite.trigger('webgl-pmd-loaded');
     }, useCache);
 
     sprite.vmdStart = (vmdUrl) => {
