@@ -5,6 +5,7 @@ module.exports = `
             <body>
                 <canvas id="app"></canvas>
                 <p id="content">点击画布可以看到爆炸效果（爆炸图加载中，请稍等）</p>
+                <img src="https://raw.githubusercontent.com/chenzhuo1992/Easycanvas/master/demos/Fire.png" width="400">
             </body>
 
             <script>

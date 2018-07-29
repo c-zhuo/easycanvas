@@ -1,6 +1,6 @@
 module.exports = `
     <section class="demo-box">
-        <div class="code-2-demo bg-demo">初音未来MMD模型舞蹈</div>
+        <div class="code-2-demo bg-demo">初音未来MMD模型舞蹈，支持更换颜色</div>
         <code>
             <head>
                 <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
@@ -37,8 +37,18 @@ module.exports = `
 
                 miku.on('webgl-mmd-loaded', function () {
                     $app.events.mousemove = function (e) {
-                        miku.children[3].updateWebglStyle('colors', [e.canvasX,e.canvasY,e.canvasX + e.canvasY]);
-                        miku.children[1].updateWebglStyle('colors', [e.canvasY,e.canvasX,e.canvasX + e.canvasY]);
+                        // 袖、袜、裙
+                        miku.children[3].updateWebglStyle('colors',
+                            [e.canvasX, e.canvasY, e.canvasX + e.canvasY]
+                        );
+                        // 头发
+                        miku.children[1].updateWebglStyle('colors',
+                            [e.canvasY, e.canvasX, e.canvasX + e.canvasY]
+                        );
+                        // 衣服
+                        miku.children[4].updateWebglStyle('colors',
+                            [e.canvasX / 2, e.canvasY, e.canvasX + e.canvasY]
+                        );
                         miku.webgl.ry = Math.floor((e.canvasX - 200) / 4);
                     };
                 });

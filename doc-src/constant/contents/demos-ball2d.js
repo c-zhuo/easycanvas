@@ -1,6 +1,6 @@
 module.exports = `
     <section class="demo-box">
-        <div class="code-2-demo bg-demo">仿微信《弹一弹》小游戏2D版</div>
+        <div class="code-2-demo bg-demo">300行代码仿微信《弹一弹》小游戏2D版</div>
         <code>
             <head>
                 <script src="./lib/easycanvas/plugin.physics.standalone.prod.js"></script>
@@ -44,8 +44,8 @@ module.exports = `
                 // 用于碰撞检测
                 var BALL_TYPE = 1, BLOCK_TYPE = 2, BORDER_TYPE = 3, BOTTOM_TYPE = 4, BONUS_TYPE = 5;
                 // 初始化easycanvas实例
-                var $Painter = new Easycanvas.painter();
-                $Painter.register(document.getElementById('app'), {
+                var $app = new Easycanvas.painter();
+                $app.register(document.getElementById('app'), {
                     width: width,
                     height: height,
                     events: {
@@ -55,8 +55,8 @@ module.exports = `
                         touchend: shoot,
                     }
                 });
-                $Painter.start();
-                $Painter.add({
+                $app.start();
+                $app.add({
                     content: {
                         text: function () {
                             return '得分:' + score;
@@ -68,7 +68,7 @@ module.exports = `
                         color: 'black'
                     }
                 });
-                $Painter.add({
+                $app.add({
                     content: {
                         text: function () {
                             return '小球个数:' + ballCount;
@@ -87,12 +87,12 @@ module.exports = `
                         accuracy: 2,
                     },
                 });
-                $Painter.add($space);
+                $app.add($space);
                 $space.launch();
                 // 显示瞄准轨迹
                 var startAim = function () {
                     for (var i = 0; i < 7; i ++) {
-                        $Painter.add({
+                        $app.add({
                             content: {
                                 img: BALL,
                             },
@@ -120,7 +120,7 @@ module.exports = `
                 startAim();
                 function shoot () {
                     if (!canShoot) return;
-                    $Painter.broadcast('shoot');
+                    $app.broadcast('shoot');
                     canShoot = false;
                     // 防止过程中鼠标移动引起多个小球方向不同
                     var currentMouse = JSON.parse(JSON.stringify(mouse));

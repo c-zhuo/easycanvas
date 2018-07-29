@@ -41,12 +41,12 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $Painter = new Easycanvas.painter();
-                    $Painter.register(document.getElementById('app'), {
+                    var $app = new Easycanvas.painter();
+                    $app.register(document.getElementById('app'), {
                         width: 400,
                         height: 400,
                     });
-                    $Painter.start();
+                    $app.start();
 
                     var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
 
@@ -56,7 +56,7 @@ module.exports = `
                             accuracy: 1,
                         },
                     });
-                    $Painter.add($space);
+                    $app.add($space);
 
                     // 从这个时刻启，$space的物理规则生效
                     $space.launch();
@@ -127,12 +127,12 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $Painter = new Easycanvas.painter();
-                    $Painter.register(document.getElementById('app'), {
+                    var $app = new Easycanvas.painter();
+                    $app.register(document.getElementById('app'), {
                         width: 400,
                         height: 400,
                     });
-                    $Painter.start();
+                    $app.start();
 
                     var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
 
@@ -142,7 +142,7 @@ module.exports = `
                             accuracy: 2,
                         },
                     });
-                    $Painter.add($space);
+                    $app.add($space);
 
                     $space.launch();
 

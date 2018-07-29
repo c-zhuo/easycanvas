@@ -1,6 +1,6 @@
 module.exports = `
     <section class="demo-box">
-        <div class="code-2-demo bg-demo">仿微信《弹一弹》小游戏3D版</div>
+        <div class="code-2-demo bg-demo">400行代码仿微信《弹一弹》小游戏3D版</div>
         <code>
             <head>
                 <script src="./lib/easycanvas/plugin.physics.standalone.prod.js"></script>
@@ -39,7 +39,7 @@ module.exports = `
                 var canShoot = true;
                 var score = 0, ballLeft = 0, ballCount = 5;
                 var blockArray = [];
-                var $Painter = new Easycanvas.painter();
+                var $app = new Easycanvas.painter();
                 // 图片
                 var BALL = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/ball.png';
                 var BLOCK = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/block.jpg';
@@ -47,7 +47,7 @@ module.exports = `
                 // 用于碰撞检测
                 var BALL_TYPE = 1, BLOCK_TYPE = 2, BORDER_TYPE = 3, BOTTOM_TYPE = 4, BONUS_TYPE = 5;
                 // 初始化easycanvas实例
-                $Painter.register(document.getElementById('app'), {
+                $app.register(document.getElementById('app'), {
                     webgl: {
                         fudgeFactor: 1,
                     },
@@ -60,10 +60,10 @@ module.exports = `
                         touchend: shoot,
                     }
                 });
-                var BLOCK3D = $Painter.imgLoader('https://chenzhuo1992.github.io/tanyitan/stone.jpg');
-                var BALL3D = $Painter.imgLoader('https://chenzhuo1992.github.io/tanyitan/star.jpg');
-                $Painter.start();
-                $Painter.add({
+                var BLOCK3D = $app.imgLoader('https://chenzhuo1992.github.io/tanyitan/stone.jpg');
+                var BALL3D = $app.imgLoader('https://chenzhuo1992.github.io/tanyitan/star.jpg');
+                $app.start();
+                $app.add({
                     name: '得分',
                     content: {
                         text: function () {
@@ -76,7 +76,7 @@ module.exports = `
                         color: 'white'
                     }
                 });
-                $Painter.add({
+                $app.add({
                     name: '小球个数',
                     content: {
                         text: function () {
@@ -97,12 +97,12 @@ module.exports = `
                         accuracy: 2,
                     },
                 });
-                $Painter.add($space);
+                $app.add($space);
                 $space.launch();
                 // 显示瞄准轨迹
                 var startAim = function () {
                     for (var i = 0; i < 7; i ++) {
-                        $Painter.add({
+                        $app.add({
                             name: '瞄准小球',
                             content: {
                                 // img: BALL,
@@ -144,7 +144,7 @@ module.exports = `
                 startAim();
                 function shoot () {
                     if (!canShoot) return;
-                    $Painter.broadcast('shoot');
+                    $app.broadcast('shoot');
                     canShoot = false;
                     // 防止过程中鼠标移动引起多个小球方向不同
                     var currentMouse = JSON.parse(JSON.stringify(mouse));

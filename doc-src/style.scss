@@ -193,8 +193,7 @@ div.demo {
         display: inline-block;
         position: relative;
         min-width: 300px;
-        max-width: 600px;
-        flex: 1;
+        flex: 2;
         height: 100%;
         box-shadow: #a9a9a9 1px 1px 5px 1px;
 
@@ -232,6 +231,7 @@ div.demo {
     & > .demo-frame {
         display: inline-block;
         margin-left: 10px;
+        min-width: 402px;
         flex: 1;
         height: 100%;
         box-shadow: #a9a9a9 1px 1px 5px 1px;
