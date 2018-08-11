@@ -1,10 +1,8 @@
 ## Easycanvas Changelog
 
-#### 0.5.8
+#### 0.5.7
 
 - Bugfix: Transition bug of linear if the end is smaller.
-
-#### 0.5.7
 
 - Bugfix: Rendering bug.
 

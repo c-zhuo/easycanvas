@@ -12,7 +12,24 @@
 import utils from 'utils/utils.js';
 import constants from 'constants';
 
-import eventScroll from './eventHandler.scroll.js';
+// import eventScroll from './eventHandler.scroll.js';
+
+const isMobile = typeof wx !== 'undefined' ||
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// transform
+// const mobileEvents = ['touchstart', 'touchmove', 'touchend'];
+// const pcEvents = ['mousedown', 'mousemove', 'mouseup'];
+// const mobilePCTransform = function (type) {
+//     if (isMobile) {
+//         let index = pcEvents.indexOf(type);
+//         if (index >= 0) return mobileEvents[index];
+//     } else {
+//         let index = mobileEvents.indexOf(type);
+//         if (index >= 0) return pcEvents[index];
+//     }
+//     return type;
+// };
 
 /**
  * Sort sprite
@@ -115,6 +132,7 @@ module.exports = function (e) {
     scaleY = scaleY || 1;
 
     let $e = {
+        // type: mobilePCTransform(e.type),
         type: e.type,
         canvasX: e.layerX / scaleX,
         canvasY: e.layerY / scaleY,
@@ -153,7 +171,8 @@ module.exports = function (e) {
         $canvas.eHoldingFlag = e;
     } else if ($canvas.eHoldingFlag && ($e.type === 'mouseup' || $e.type === 'touchend')) {
         $canvas.eHoldingFlag = false;
-        eventScroll.stop();
+        // 基础库不再支持滚动
+        // eventScroll.stop();
     } else if ($canvas.eHoldingFlag && ($e.type === 'mousemove' || $e.type === 'touchmove')) {
         $canvas.eHoldingFlag = e;
     }// else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {
@@ -172,13 +191,14 @@ module.exports = function (e) {
             }
         }
 
-        if ($e.type === 'mousewheel') {
-            eventScroll.wheel(caughts[i], $e);
-        } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
-            if (eventScroll.touch(caughts[i], $e)) {
-                return;
-            }
-        }
+        // 基础库不再支持滚动
+        // if ($e.type === 'mousewheel') {
+        //     eventScroll.wheel(caughts[i], $e);
+        // } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
+        //     if (eventScroll.touch(caughts[i], $e)) {
+        //         return;
+        //     }
+        // }
 
         if (!caughts[i]['events']) continue; // TODO to remove
 

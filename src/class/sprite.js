@@ -176,7 +176,7 @@ sprite.prototype.add = function (child) {
 
     ChangeChildrenToSprite(this);
 
-    bindDrag.bind(this.children[this.children.length - 1]);
+    // bindDrag.bind(this.children[this.children.length - 1]);
 
     return this.children[this.children.length - 1];
 };

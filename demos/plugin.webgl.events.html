@@ -1,0 +1,177 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.webgl.js"></script>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        /*opacity: 0.3;*/
+    }
+</style>
+
+<body>
+    <canvas id="foo"></canvas>
+    <canvas id="cut"></canvas>
+
+    <script>
+        var $app = new Easycanvas.painter({
+            el: '#foo',
+            fullScreen: true,
+            webgl: {
+                camera: {
+                    enable: true,
+                    current: {
+                        x: 0,
+                        y: 0,
+                        z: -1000,
+                    },
+                    target: {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                    },
+                },
+            },
+            events: {
+                click: function ($e) {
+                    cutter($e);
+                }
+            }
+        });
+
+        $app.add({
+            style: {
+                tx: 0, ty: 0,
+            },
+            webgl: window.Easycanvas.webglShapes.ball({
+                r: 250, b: 20,
+                // colors: [255, 0, 0, 255, 255, 0, 0, 255, 0]
+                colors: [255, 0, 0]
+            }),
+        });
+
+        // 2500 40fps => 47 ==code style==> 50
+        for (var i = 0; i < 25; i++) {
+            $app.add({
+                style: {
+                    tx: Math.random() * 1000 - 500,
+                    ty: Math.random() * 1000 - 500,
+                },
+                webgl: window.Easycanvas.webglShapes.block({
+                    tz: Math.random() * 1000 - 500,
+                    a: 200, b: 100, c: 50,
+                    colors: [
+                        Math.random() * 255,
+                        Math.random() * 255,
+                        Math.random() * 255,
+                        // Math.random() * 255,
+                    ],
+                }),
+            });
+        }
+
+        $app.start();
+
+        var $cut = new Easycanvas.painter({
+            el: '#cut',
+            fullScreen: true,
+        });
+
+        gl = $app.$gl;
+        var fbo = gl.createFramebuffer();
+        function cutter ($e) {
+            function createFloatTexture(gl, width, height) {
+                var texture = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                gl.texImage2D(
+                    gl.TEXTURE_2D,
+                    0,
+                    gl.RGBA,
+                    width,
+                    height,
+                    0,
+                    gl.RGBA,
+                    gl.UNSIGNED_BYTE,
+                    null
+                );
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.bindTexture(gl.TEXTURE_2D, null);
+                return texture;
+            }
+
+            var renderTexture = createFloatTexture(gl, $app.width, $app.height);
+            // var renderTexture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, renderTexture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, $app.width, $app.height, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
+
+
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+            gl.framebufferTexture2D(
+                // First argument is always gl.FRAMEBUFFER
+                gl.FRAMEBUFFER,
+                // The second argument indicates the "attachment slot" of the FBO.
+                // Basically, it indicates the function of the texture that you are attaching.
+                // gl.COLOR_ATTACHMENT0 means that the texture will serve as the zeroth color buffer.
+                // By default, this is the only color buffer attachment slot of that you can use in vanially gl.
+                // To use other color buffer attachment slot, you need an extension.  (We will cover this later.)
+                gl.COLOR_ATTACHMENT0,
+                // The third argument indicates the kind of texture we are attaching.
+                // Since we are attaching a TEXTURE_2D, we give it gl.TEXTURE_2D
+                gl.TEXTURE_2D,
+                // The fourth argument is the texture that you want to attach.
+                // Of course, this must be created before hand.
+                renderTexture,
+                // The fifth argument is the mipmap level of the texture.
+                // This is always 0.
+                0
+            );
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+            gl.enable(gl.DEPTH_TEST);
+            gl.disable(gl.BLEND);
+
+            $app.nextTick(function () {
+                window.readout = new Uint8Array(1 * 1 * 4);
+                gl.readPixels($e.canvasX, $app.height - $e.canvasY, 1,1, gl.RGBA, gl.UNSIGNED_BYTE, readout);
+                // gl.readPixels(0, $app.height - 1, 1,1, gl.RGBA, gl.UNSIGNED_BYTE, readout);
+                // window.readout = new Uint8Array($app.width * $app.height * 4);
+                // gl.readPixels(0, $app.height, $app.width, $app.height, gl.RGBA, gl.UNSIGNED_BYTE, readout);
+
+                window.imageData = new ImageData($app.width, $app.height);
+                for (var i = 0; i < imageData.data.length / 4; i++) {
+                    // imageData.data[i * 4 + 0] = readout[i * 3 + 0];
+                    // imageData.data[i * 4 + 1] = readout[i * 3 + 1];
+                    // imageData.data[i * 4 + 2] = readout[i * 3 + 2];
+                    // imageData.data[i * 4 + 3] = readout[i * 3 + 3];
+                    imageData.data[i * 4 + 0] = readout[0];
+                    imageData.data[i * 4 + 1] = readout[1];
+                    imageData.data[i * 4 + 2] = readout[2];
+                    imageData.data[i * 4 + 3] = readout[3];
+                }
+
+                $cut.$paintContext.putImageData(imageData, 0, 0);
+                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+                // console.log(readout);
+            });
+        }
+
+        var interval = 2000;
+        var current = $app.webgl.camera.current;
+
+        function changeCamera () {
+            Easycanvas.transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
+            Easycanvas.transition(current, 'y', 'ease', Math.random() * 1000 - 500, interval);
+            Easycanvas.transition(current, 'z', 'linear', -1000 - Math.random() * 500, interval);
+        }
+
+        changeCamera();
+        setInterval(changeCamera, interval);
+    </script>
+</body>
+

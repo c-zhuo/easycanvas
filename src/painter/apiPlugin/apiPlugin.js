@@ -149,7 +149,9 @@ module.exports = function () {
                     $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);
                     delete $selectMask.webgl.colors;
 
-                    $selectMask.webgl.opacity = 1;
+                    // disable DEPTH_TEST
+                    // 否则会被$sprite完美遮挡，就看不到了
+                    $selectMask.webgl.hasAlpha = true;
                 }
 
                 $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;

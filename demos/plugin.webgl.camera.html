@@ -1,0 +1,103 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.webgl.js"></script>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        /*opacity: 0.3;*/
+    }
+</style>
+
+<body>
+    <canvas id="foo"></canvas>
+
+    <script>
+        var $app = new Easycanvas.painter({
+            el: '#foo',
+            fullScreen: true,
+            webgl: {
+                camera: {
+                    enable: true,
+                    current: {
+                        x: 0,
+                        y: 0,
+                        z: -1000,
+                    },
+                    target: {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                    },
+                    rotate: {
+                        x: 0,
+                        y: -1,
+                        z: 0,
+                    },
+                },
+            },
+        });
+
+        $app.add({
+            style: {
+                tx: 0, ty: 0,
+            },
+            webgl: window.Easycanvas.webglShapes.ball({
+                r: 250, b: 20,
+                // colors: [255, 0, 0, 255, 255, 0, 0, 255, 0]
+                colors: [255, 0, 0]
+            }),
+        });
+
+        // 2500 40fps => 47 ==code style==> 50
+        for (var i = 0; i < 25; i++) {
+            $app.add({
+                style: {
+                    tx: Math.random() * 1000 - 500,
+                    ty: Math.random() * 1000 - 500,
+                },
+                webgl: window.Easycanvas.webglShapes.block({
+                    tz: Math.random() * 1000 - 500,
+                    a: 200, b: 100, c: 50,
+                    colors: [
+                        Math.random() * 255,
+                        Math.random() * 255,
+                        Math.random() * 255,
+                        // Math.random() * 255,
+                    ],
+                }),
+            });
+        }
+
+        // $app.add({
+        //     style: {
+        //         tx: 0,
+        //         ty: 0,
+        //     },
+        //     webgl: window.Easycanvas.webglShapes.block({
+        //         // tz: 0,
+        //         a: 1000, b: 1000, c: 1000,
+        //         colors: [
+        //             200,0,0
+        //         ],
+        //     }),
+        // });
+
+        var interval = 2000;
+        var current = $app.webgl.camera.current;
+
+        function changeCamera () {
+            Easycanvas.transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
+            Easycanvas.transition(current, 'y', 'ease', Math.random() * 1000 - 500, interval);
+            Easycanvas.transition(current, 'z', 'linear', -1000 - Math.random() * 500, interval);
+        }
+
+        changeCamera();
+        setInterval(changeCamera, interval);
+
+        $app.start();
+    </script>
+</body>
+

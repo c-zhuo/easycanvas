@@ -10,10 +10,10 @@ const blockIndices = new Uint16Array([
 ]);
 
 const blockTextures = new Float32Array(arrayRepeat([
+    1, 0,
     0, 0,
     0, 1,
     1, 1,
-    1, 0,
 ], 6));
 
 const TRIANGLE_FAN = 6;
@@ -284,7 +284,13 @@ const webglShapes = {
 
         if (opt.colors && opt.colors.length) {
             if (!opt.colors.$cache) {
+                // 没有透明度时，colors和vertices都是长度为3的数组，一一对应，总长度相同
                 var repeatTimes = opt.vertices.length / opt.colors.length;
+
+                if (opt.hasAlpha) {
+                    repeatTimes = repeatTimes / 3 * 4;
+                }
+
                 opt.colors.$cache = new Uint8Array(arrayRepeat(opt.colors, repeatTimes));
             }
         }

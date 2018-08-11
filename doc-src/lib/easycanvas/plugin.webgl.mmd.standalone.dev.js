@@ -913,7 +913,7 @@
             }
             t.exports = i;
         },
-        18: function(t, e, i) {
+        17: function(t, e, i) {
             "use strict";
             var r = i(6);
             var o = s(r);
@@ -1607,7 +1607,7 @@
             };
             t.exports = p;
         },
-        19: function(t, e) {
+        18: function(t, e) {
             "use strict";
             function i() {
                 this.header = null;
@@ -2433,7 +2433,7 @@
                 PMDJoint: T
             };
         },
-        20: function(t, e, i) {
+        19: function(t, e, i) {
             "use strict";
             var r = i(4);
             function o() {
@@ -3024,7 +3024,7 @@
                 VMDCamera: h
             };
         },
-        21: function(t, e, i) {
+        20: function(t, e, i) {
             "use strict";
             var r = i(67);
             var o = n(r);
@@ -3227,7 +3227,7 @@
                 }
                 return t;
             };
-            var o = i(19);
+            var o = i(18);
             var n = y(o);
             var s = i(62);
             var a = y(s);
@@ -3235,11 +3235,11 @@
             var u = y(h);
             var p = i(64);
             var f = y(p);
-            var l = i(20);
+            var l = i(19);
             var c = y(l);
             var m = i(65);
             var _ = y(m);
-            var v = i(18);
+            var v = i(17);
             var d = y(v);
             function y(t) {
                 return t && t.__esModule ? t : {
@@ -3409,13 +3409,14 @@
                     });
                     s.vmdStart = function(t) {
                         M(t, function(t) {
+                            s.trigger("webgl-vmd-loaded");
                             t.start(n, s.children[0].webgl.vertices);
                         });
                     };
                     if (a) {
                         s.vmdStart(a);
                     }
-                    s.trigger("webgl-mmd-loaded");
+                    s.trigger("webgl-pmd-loaded");
                 }, n);
                 s.vmdStart = function(t) {
                     a = t;
@@ -3438,9 +3439,9 @@
             "use strict";
             var r = i(6);
             var o = h(r);
-            var n = i(21);
+            var n = i(20);
             var s = h(n);
-            var a = i(19);
+            var a = i(18);
             function h(t) {
                 return t && t.__esModule ? t : {
                     default: t
@@ -4177,7 +4178,7 @@
             var r = i(4);
             var o = i(66);
             var n = h(o);
-            var s = i(18);
+            var s = i(17);
             var a = h(s);
             function h(t) {
                 return t && t.__esModule ? t : {
@@ -5301,8 +5302,8 @@
             "use strict";
             var r = i(6);
             var o = h(r);
-            var n = i(20);
-            var s = i(21);
+            var n = i(19);
+            var s = i(20);
             var a = h(s);
             function h(t) {
                 return t && t.__esModule ? t : {
