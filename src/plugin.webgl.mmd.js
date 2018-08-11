@@ -14,12 +14,6 @@ import Vmd from './plugins/mmd/Vmd.js';
 import VmdFileParser from './plugins/mmd/VmdFileParser.js';
 import Physics from './plugins/mmd/Physics.js';
 
-// window.PmdModelView = PmdModelView;
-// window.PmdView = PmdView;
-// window.Vmd = Vmd;
-// window.VmdFileParser = VmdFileParser;
-// window.Physics = Physics;
-
 const err = function (msg) {
     console.error('[Easycanvas-webgl] ' + msg);
 };
@@ -223,6 +217,7 @@ const classInit = function (opt) {
 
         sprite.vmdStart = (vmdUrl) => {
             loaderVMD(vmdUrl, function (vmd) {
+                sprite.trigger('webgl-vmd-loaded');
                 vmd.start(pmd, sprite.children[0].webgl.vertices);
             });
         };
@@ -231,7 +226,7 @@ const classInit = function (opt) {
             sprite.vmdStart(vmdQueue);
         }
 
-        sprite.trigger('webgl-mmd-loaded');
+        sprite.trigger('webgl-pmd-loaded');
     }, useCache);
 
     sprite.vmdStart = (vmdUrl) => {

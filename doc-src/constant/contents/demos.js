@@ -1,4 +1,5 @@
 import miku from './demos-miku.js';
+import mikuCamera from './demos-miku-camera.js';
 import ball3d from './demos-ball3d.js';
 import ball2d from './demos-ball2d.js';
 import perfBall from './demos-perf-ball.js';
@@ -17,6 +18,7 @@ module.exports = `
         <p></p>
 
         ${miku}
+        ${mikuCamera}
         ${ball3d}
         ${ball2d}
         ${sequence}

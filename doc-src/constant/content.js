@@ -2,15 +2,16 @@ import demos from './contents/demos.js';
 import intro from './contents/intro.js';
 import quickstart from './contents/quickstart.js';
 import quickstartWxgame from './contents/quickstart-wxgame.js';
+import changelog from './contents/changelog.js';
 
-import inherit from './contents/inherit.js';
-import image from './contents/image.js';
-import events from './contents/events.js';
-import text from './contents/text.js';
-import sequence from './contents/sequence.js';
-import hooks from './contents/hooks.js';
-import customEvent from './contents/customEvent.js';
-import sprite from './contents/sprite.js';
+import inherit from './contents/base-inherit.js';
+import image from './contents/base-image.js';
+import events from './contents/base-events.js';
+import text from './contents/base-text.js';
+import sequence from './contents/base-sequence.js';
+import hooks from './contents/base-hooks.js';
+import customEvent from './contents/base-customEvent.js';
+import sprite from './contents/base-sprite.js';
 
 import pluginPhysics from './contents/plugin-physics.js';
 import pluginWebgl from './contents/plugin-webgl.js';
@@ -23,6 +24,7 @@ let content = `
     ${intro}
     ${quickstart}
     ${quickstartWxgame}
+    ${changelog}
 
     ${inherit}
     ${image}

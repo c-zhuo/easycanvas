@@ -22,7 +22,7 @@
         r.p = "";
         return r(0);
     }([ function(e, t, r) {
-        e.exports = r(26);
+        e.exports = r(25);
     }, function(e, t) {
         "use strict";
         var r = {
@@ -86,7 +86,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.5.7"
+            version: "0.5.8"
         };
     }, , function(e, t) {
         "use strict";
@@ -177,15 +177,15 @@
         var i = x(n);
         var s = r(3);
         var o = x(s);
-        var l = r(16);
+        var l = r(15);
         var f = x(l);
-        var u = r(15);
+        var u = r(14);
         var c = x(u);
-        var d = r(14);
+        var d = r(13);
         var v = x(d);
-        var h = r(17);
+        var h = r(16);
         var p = x(h);
-        var g = r(13);
+        var g = r(12);
         var y = x(g);
         var m = r(11);
         var $ = x(m);
@@ -285,7 +285,6 @@
             }
             this.children.push(e);
             w(this);
-            $.default.bind(this.children[this.children.length - 1]);
             return this.children[this.children.length - 1];
         };
         k.prototype.getRect = function() {
@@ -447,103 +446,6 @@
                 };
             }
         };
-    }, function(e, t, r) {
-        "use strict";
-        var a = r(1);
-        var n = o(a);
-        var i = r(9);
-        var s = o(i);
-        function o(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var l = {};
-        var f = false;
-        var u = [];
-        var c = {
-            stop: function e() {
-                f = false;
-            },
-            tick: function e() {
-                (0, s.default)(c.looper);
-            },
-            looper: function e() {
-                u.forEach(function(e, t) {
-                    var r = e.$scroll.speedX;
-                    var a = e.$scroll.speedY;
-                    if (Math.abs(e.$scroll.speedX) > 1) {
-                        e.$scroll.speedX *= e.scroll.smooth || .8;
-                    } else {
-                        e.$scroll.speedX = 0;
-                    }
-                    if (Math.abs(e.$scroll.speedY) > 1) {
-                        e.$scroll.speedY *= e.scroll.smooth || .8;
-                    } else {
-                        e.$scroll.speedY = 0;
-                    }
-                    if (Math.abs(e.$scroll.speedX) <= 1 && Math.abs(e.$scroll.speedY) <= 1) {
-                        u.splice(t, 1);
-                        return;
-                    }
-                    e.scroll.scrollY -= e.$scroll.speedY;
-                    e.scroll.scrollX -= e.$scroll.speedX;
-                    var i = n.default.funcOrValue(e.scroll.minScrollX, e);
-                    var s = n.default.funcOrValue(e.scroll.maxScrollX, e);
-                    var o = n.default.funcOrValue(e.scroll.minScrollY, e);
-                    var l = n.default.funcOrValue(e.scroll.maxScrollY, e);
-                    if (!isNaN(o) && e.scroll.scrollY < o) {
-                        e.scroll.scrollY = o;
-                    } else if (!isNaN(l) && e.scroll.scrollY > l) {
-                        e.scroll.scrollY = l;
-                    }
-                    if (!isNaN(i) && e.scroll.scrollX < i) {
-                        e.scroll.scrollX = i;
-                    } else if (!isNaN(s) && e.scroll.scrollX > s) {
-                        e.scroll.scrollX = s;
-                    }
-                });
-                c.tick();
-            },
-            touch: function e(t, r) {
-                if (!t.scroll.scrollable) return false;
-                if (!f) {
-                    f = +new Date();
-                    l.x = r.canvasX;
-                    l.y = r.canvasY;
-                } else {
-                    if (u.indexOf(t) === -1) {
-                        u.push(t);
-                    }
-                    var a = Math.abs(r.canvasX - l.x);
-                    var n = Math.abs(r.canvasY - l.y);
-                    var i = +new Date() - f;
-                    f = +new Date();
-                    i /= 10;
-                    if (a / i > 1 && i > 1) {
-                        t.$scroll.speedX += (r.canvasX - l.x) / i;
-                    }
-                    if (n / i > 1 && i > 1) {
-                        t.$scroll.speedY += (r.canvasY - l.y) / i;
-                    }
-                    l.x = r.canvasX;
-                    l.y = r.canvasY;
-                    r.event.preventDefault();
-                    return true;
-                }
-            },
-            wheel: function e(t, r) {
-                if (!t.scroll.scrollable) return false;
-                if (u.indexOf(t) === -1) {
-                    u.push(t);
-                }
-                t.$scroll.speedX = r.event.wheelDeltaX;
-                t.$scroll.speedY = r.event.wheelDeltaY;
-                r.event.preventDefault();
-                return true;
-            }
-        };
-        e.exports = c;
     }, function(e, t, r) {
         "use strict";
         var a = r(1);
@@ -740,79 +642,80 @@
         };
         o.cacheCanvas = false;
         e.exports = o;
-    }, function(e, t) {
+    }, function(e, t, r) {
         "use strict";
-        var r = 3.141593;
-        var a = function e(t) {
+        var a = r(1);
+        var n = 3.141593;
+        var i = function e(t) {
             return t / 1e3 * 60;
         };
-        var n = function e(t) {
+        var s = function e(t) {
             return t.$lastPaintTime || Date.now();
         };
-        var i = {
+        var o = {
             linear: function e(t, r, a) {
                 if (t === r) return t;
-                var i = n(this);
-                var s = false;
+                var n = s(this);
+                var i = false;
                 var o = function() {
                     var e = this.$lastPaintTime;
-                    var n = (r - t) * (e - i) / a + t;
-                    if (s) {
+                    var s = (r - t) * (e - n) / a + t;
+                    if (i) {
                         if (r > t) {
-                            while (n > r) {
-                                n -= r - t;
+                            while (s > r) {
+                                s -= r - t;
                             }
                         } else {
-                            while (n < r) {
-                                n += t - r;
+                            while (s < r) {
+                                s += t - r;
                             }
                         }
                     } else {
-                        if (r > t && n > r) {
+                        if (r > t && s > r) {
                             o.$done = true;
-                            n = r;
-                        } else if (r < t && n < r) {
+                            s = r;
+                        } else if (r < t && s < r) {
                             o.$done = true;
-                            n = r;
+                            s = r;
                         }
                     }
-                    return n;
+                    return s;
                 }.bind(this);
                 o.loop = function() {
-                    s = true;
+                    i = true;
                     return o;
                 };
                 o.restart = function() {
-                    i = n(this);
+                    n = s(this);
                 };
                 return o;
             },
-            pendulum: function e(t, a, i, s) {
-                if (t === a) return t;
-                var o = n(this);
-                var l = s || {};
+            pendulum: function e(t, r, a, i) {
+                if (t === r) return t;
+                var o = s(this);
+                var l = i || {};
                 l.start = l.start || 0;
                 var f = false;
                 var u = function() {
-                    var e = n(this);
-                    var s = (e - o) / i;
+                    var e = s(this);
+                    var i = (e - o) / a;
                     if (!f) {
                         if (l.cycle) {
-                            if (l.cycle < s) {
+                            if (l.cycle < i) {
                                 u.$done = true;
-                                s = l.cycle;
+                                i = l.cycle;
                             }
-                        } else if (s > 1) {
+                        } else if (i > 1) {
                             u.$done = true;
-                            s = 1;
+                            i = 1;
                         }
                     } else {
                         if (l.cycle) {
-                            s %= l.cycle;
+                            i %= l.cycle;
                         }
                     }
-                    var c = s * r * 2 - r / 2 + l.start / 360 * r;
-                    var d = (a - t) * (Math.sin(c) + 1) / 2 + t;
+                    var c = i * n * 2 - n / 2 + l.start / 360 * n;
+                    var d = (r - t) * (Math.sin(c) + 1) / 2 + t;
                     return d;
                 }.bind(this);
                 u.loop = function() {
@@ -820,12 +723,12 @@
                     return u;
                 };
                 u.restart = function() {
-                    o = n(this);
+                    o = s(this);
                 };
                 return u;
             },
             ease: function e(t, r, a) {
-                return this.pendulum(t, r, a, {
+                return this.pendulum(t, r, a * 2, {
                     cycle: .5
                 });
             },
@@ -861,7 +764,20 @@
                 return n;
             }
         };
-        e.exports = i;
+        var l = function e(t, r, n, i, s) {
+            var l = (0, a.funcOrValue)(t[r]);
+            if (true) {
+                if (typeof l === "undefined") {
+                    console.warn("[Easycanvas] start value in transition is undefined, using 0 instead.");
+                }
+            }
+            l = l || 0;
+            t[r] = o[n].bind(e)(l, i, s);
+        };
+        for (var f in o) {
+            l[f] = o[f];
+        }
+        e.exports = l;
     }, function(e, t, r) {
         "use strict";
         var a = Object.assign || function(e) {
@@ -1045,21 +961,21 @@
         var s = A(i);
         var o = r(9);
         var l = A(o);
-        var f = r(72);
+        var f = r(76);
         var u = A(f);
         var c = r(1);
         var d = A(c);
-        var v = r(24);
+        var v = r(23);
         var h = A(v);
-        var p = r(23);
+        var p = r(22);
         var g = A(p);
-        var y = r(71);
+        var y = r(75);
         var m = A(y);
-        var $ = r(73);
+        var $ = r(77);
         var x = A($);
         var w = r(10);
         var b = A(w);
-        var T = r(25);
+        var T = r(24);
         var k = A(T);
         function A(e) {
             return e && e.__esModule ? e : {
@@ -1108,7 +1024,7 @@
         var n = p(a);
         var i = r(38);
         var s = p(i);
-        var o = r(32);
+        var o = r(31);
         var l = p(o);
         var f = r(11);
         var u = p(f);
@@ -1135,17 +1051,16 @@
     }, function(e, t, r) {
         "use strict";
         var a = r(1);
-        var n = f(a);
+        var n = o(a);
         var i = r(3);
-        var s = f(i);
-        var o = r(12);
-        var l = f(o);
-        function f(e) {
+        var s = o(i);
+        function o(e) {
             return e && e.__esModule ? e : {
                 default: e
             };
         }
-        var u = function e(t) {
+        var l = typeof wx !== "undefined" || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        var f = function e(t) {
             return t.sort(function(e, t) {
                 if (true) {
                     if (window[s.default.devFlag] && window[s.default.devFlag].selectMode) {
@@ -1155,25 +1070,25 @@
                 return n.default.funcOrValue(n.default.firstValuable(e.events.eIndex, e.style.zIndex), e) < n.default.funcOrValue(n.default.firstValuable(t.events.eIndex, t.style.zIndex), t) ? 1 : -1;
             });
         };
-        var c = function e(t) {
+        var u = function e(t) {
             if (t.$parent && !e(t.$parent)) {
                 return false;
             }
             return n.default.funcOrValue(t.style.visible, t) !== false;
         };
-        var d = function e(t, r) {
-            if (c(t) === false) {
+        var c = function e(t, r) {
+            if (u(t) === false) {
                 return false;
             }
             var a = t.getRect();
             return n.default.pointInRect(r.canvasX, r.canvasY, a.tx, a.tx + a.tw, a.ty, a.ty + a.th);
         };
-        var v = function e(t, r, a) {
+        var d = function e(t, r, a) {
             if (!t || !t.length) return;
             for (var i = 0; i < t.length; i++) {
                 var o = t[i];
                 if (o.children.length) {
-                    e(u(o.children.filter(function(e) {
+                    e(f(o.children.filter(function(e) {
                         if (true) {
                             if (window[s.default.devFlag] && window[s.default.devFlag].selectMode) {
                                 return n.default.funcOrValue(e.style.zIndex, e) >= 0;
@@ -1182,11 +1097,11 @@
                         return n.default.funcOrValue(n.default.firstValuable(e.events.eIndex, e.style.zIndex), e) >= 0;
                     })), r, a);
                 }
-                if (d(o, r)) {
+                if (c(o, r)) {
                     a.push(o);
                 }
                 if (o.children.length) {
-                    e(u(o.children.filter(function(e) {
+                    e(f(o.children.filter(function(e) {
                         if (true) {
                             if (window[s.default.devFlag] && window[s.default.devFlag].selectMode) {
                                 return n.default.funcOrValue(e.style.zIndex, e) < 0;
@@ -1225,14 +1140,14 @@
             if (t.$flags.dragging && t.$flags.dragging.$id) {
                 o.push(t.$flags.dragging);
             }
-            v(u(t.children), i, o);
+            d(f(t.children), i, o);
             if (true) {
                 if (window[s.default.devFlag] && window[s.default.devFlag].selectMode && o.length) {
-                    var f = o[0];
-                    if (f.name === s.default.devFlag) {
-                        f = o[1];
+                    var l = o[0];
+                    if (l.name === s.default.devFlag) {
+                        l = o[1];
                     }
-                    if (f && t.$plugin.selectSprite(e.type === "click" || e.type === "touchend", t, f)) {
+                    if (l && t.$plugin.selectSprite(e.type === "click" || e.type === "touchend", t, l)) {
                         return;
                     }
                 }
@@ -1241,56 +1156,145 @@
                 t.eHoldingFlag = e;
             } else if (t.eHoldingFlag && (i.type === "mouseup" || i.type === "touchend")) {
                 t.eHoldingFlag = false;
-                l.default.stop();
             } else if (t.eHoldingFlag && (i.type === "mousemove" || i.type === "touchmove")) {
                 t.eHoldingFlag = e;
             }
-            for (var c = 0; c < o.length; c++) {
-                if ((i.type === "mousemove" || i.type === "touchmove") && t.eLastMouseHover && t.eLastMouseHover !== o[c] && o.indexOf(t.eLastMouseHover) === -1) {
-                    var d = t.eLastMouseHover["events"]["mouseout"] || t.eLastMouseHover["events"]["touchout"];
-                    if (d) {
-                        d.call(t.eLastMouseHover, i);
+            for (var u = 0; u < o.length; u++) {
+                if ((i.type === "mousemove" || i.type === "touchmove") && t.eLastMouseHover && t.eLastMouseHover !== o[u] && o.indexOf(t.eLastMouseHover) === -1) {
+                    var c = t.eLastMouseHover["events"]["mouseout"] || t.eLastMouseHover["events"]["touchout"];
+                    if (c) {
+                        c.call(t.eLastMouseHover, i);
                     }
                 }
-                if (i.type === "mousewheel") {
-                    l.default.wheel(o[c], i);
-                } else if (t.eHoldingFlag && i.type === "touchmove") {
-                    if (l.default.touch(o[c], i)) {
-                        return;
-                    }
-                }
-                if (!o[c]["events"]) continue;
-                var h = o[c]["events"][i.type];
-                if (h) {
-                    t.eLastMouseHover = o[c];
-                    var p = h.call(o[c], i);
-                    if (p === true) {
+                if (!o[u]["events"]) continue;
+                var v = o[u]["events"][i.type];
+                if (v) {
+                    t.eLastMouseHover = o[u];
+                    var h = v.call(o[u], i);
+                    if (h === true) {
                         t.eHoldingFlag = false;
-                        return p;
-                    } else if (p === "drag") {
+                        return h;
+                    } else if (h === "drag") {
                         t.eHoldingFlag = false;
-                        return p;
+                        return h;
                     }
                 }
-                if (o[c].events.through === false) {
+                if (o[u].events.through === false) {
                     return;
                 }
             }
             if (!o.length && t.eLastMouseHover) {
-                var g = t.eLastMouseHover["events"]["mouseout"];
-                if (g) {
-                    g.call(t.eLastMouseHover, i);
+                var p = t.eLastMouseHover["events"]["mouseout"];
+                if (p) {
+                    p.call(t.eLastMouseHover, i);
                 }
                 t.eLastMouseHover = null;
             }
-            var y = t.events[i.type];
-            if (y) {
-                if (y.call(t, i)) {
+            var g = t.events[i.type];
+            if (g) {
+                if (g.call(t, i)) {
                     t.eHoldingFlag = false;
                     return true;
                 }
             }
         };
+    }, function(e, t, r) {
+        "use strict";
+        var a = r(1);
+        var n = o(a);
+        var i = r(9);
+        var s = o(i);
+        function o(e) {
+            return e && e.__esModule ? e : {
+                default: e
+            };
+        }
+        var l = {};
+        var f = false;
+        var u = [];
+        var c = {
+            stop: function e() {
+                f = false;
+            },
+            tick: function e() {
+                (0, s.default)(c.looper);
+            },
+            looper: function e() {
+                u.forEach(function(e, t) {
+                    var r = e.$scroll.speedX;
+                    var a = e.$scroll.speedY;
+                    if (Math.abs(e.$scroll.speedX) > 1) {
+                        e.$scroll.speedX *= e.scroll.smooth || .8;
+                    } else {
+                        e.$scroll.speedX = 0;
+                    }
+                    if (Math.abs(e.$scroll.speedY) > 1) {
+                        e.$scroll.speedY *= e.scroll.smooth || .8;
+                    } else {
+                        e.$scroll.speedY = 0;
+                    }
+                    if (Math.abs(e.$scroll.speedX) <= 1 && Math.abs(e.$scroll.speedY) <= 1) {
+                        u.splice(t, 1);
+                        return;
+                    }
+                    e.scroll.scrollY -= e.$scroll.speedY;
+                    e.scroll.scrollX -= e.$scroll.speedX;
+                    var i = n.default.funcOrValue(e.scroll.minScrollX, e);
+                    var s = n.default.funcOrValue(e.scroll.maxScrollX, e);
+                    var o = n.default.funcOrValue(e.scroll.minScrollY, e);
+                    var l = n.default.funcOrValue(e.scroll.maxScrollY, e);
+                    if (!isNaN(o) && e.scroll.scrollY < o) {
+                        e.scroll.scrollY = o;
+                    } else if (!isNaN(l) && e.scroll.scrollY > l) {
+                        e.scroll.scrollY = l;
+                    }
+                    if (!isNaN(i) && e.scroll.scrollX < i) {
+                        e.scroll.scrollX = i;
+                    } else if (!isNaN(s) && e.scroll.scrollX > s) {
+                        e.scroll.scrollX = s;
+                    }
+                });
+                c.tick();
+            },
+            touch: function e(t, r) {
+                if (!t.scroll.scrollable) return false;
+                if (!f) {
+                    f = +new Date();
+                    l.x = r.canvasX;
+                    l.y = r.canvasY;
+                } else {
+                    if (u.indexOf(t) === -1) {
+                        u.push(t);
+                    }
+                    var a = Math.abs(r.canvasX - l.x);
+                    var n = Math.abs(r.canvasY - l.y);
+                    var i = +new Date() - f;
+                    f = +new Date();
+                    i /= 10;
+                    if (a / i > 1 && i > 1) {
+                        t.$scroll.speedX += (r.canvasX - l.x) / i;
+                    }
+                    if (n / i > 1 && i > 1) {
+                        t.$scroll.speedY += (r.canvasY - l.y) / i;
+                    }
+                    l.x = r.canvasX;
+                    l.y = r.canvasY;
+                    r.event.preventDefault();
+                    return true;
+                }
+            },
+            wheel: function e(t, r) {
+                if (!t.scroll.scrollable) return false;
+                if (u.indexOf(t) === -1) {
+                    u.push(t);
+                }
+                t.$scroll.speedX = r.event.wheelDeltaX;
+                t.$scroll.speedY = r.event.wheelDeltaY;
+                r.event.preventDefault();
+                return true;
+            }
+        };
+        e.exports = c;
     }, function(e, t) {
         "use strict";
         e.exports = function(e, t, r, a) {
@@ -1692,7 +1696,7 @@
         "use strict";
         var a = r(9);
         var n = o(a);
-        var i = r(24);
+        var i = r(23);
         var s = o(i);
         function o(e) {
             return e && e.__esModule ? e : {
@@ -1875,15 +1879,15 @@
         var d = E(c);
         var v = r(43);
         var h = E(v);
-        var p = r(16);
+        var p = r(15);
         var g = E(p);
-        var y = r(15);
+        var y = r(14);
         var m = E(y);
-        var $ = r(17);
+        var $ = r(16);
         var x = E($);
-        var w = r(13);
+        var w = r(12);
         var b = E(w);
-        var T = r(14);
+        var T = r(13);
         var k = E(T);
         var A = r(44);
         var S = E(A);
@@ -1982,7 +1986,7 @@
         };
     }, function(e, t, r) {
         "use strict";
-        var a = r(12);
+        var a = r(32);
         var n = i(a);
         function i(e) {
             return e && e.__esModule ? e : {
@@ -2207,7 +2211,7 @@
                             }
                             a.webgl.img = o.imgLoader(r);
                             delete a.webgl.colors;
-                            a.webgl.opacity = 1;
+                            a.webgl.hasAlpha = true;
                         }
                         a.style.zIndex = Number.MAX_SAFE_INTEGER;
                         a.style.visible = function() {
@@ -2246,7 +2250,7 @@
         "use strict";
         var a = r(39);
         var n = f(a);
-        var i = r(31);
+        var i = r(30);
         var s = f(i);
         var o = r(51);
         var l = f(o);
@@ -2318,9 +2322,9 @@
             }
         };
         e.exports = r;
-    }, , , , , , , , , , , , , , , , , , , , function(e, t, r) {
+    }, , , , , , , , , , , , , , , , , , , , , , , , function(e, t, r) {
         "use strict";
-        var a = r(23);
+        var a = r(22);
         var n = o(a);
         var i = r(5);
         var s = o(i);
