@@ -109,6 +109,7 @@ const DemoableCodeClassName = 'code-2-demo';
                 mode: "ace/mode/html",
                 selectionStyle: "text"
             });
+            window.editor = editor;
 
             this.$iframe = document.querySelector('#demo-iframe');
             this.$ace = editor;

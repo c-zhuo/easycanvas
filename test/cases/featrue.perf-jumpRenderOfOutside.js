@@ -117,6 +117,6 @@ describe('Featrue.perf-jumpRenderOfOutside Test.', function () {
             }
 
             done();
-        }, constants.waitForUpdateTime + 200);
+        }, constants.waitForUpdateTime + 100);
     });
 });

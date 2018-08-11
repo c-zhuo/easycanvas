@@ -1,6 +1,6 @@
 module.exports = `
     <section class="demo-box">
-        <div class="code-2-demo bg-demo">初音未来MMD模型舞蹈，支持更换颜色</div>
+        <div class="code-2-demo bg-demo">50行代码，3D模型，初音未来Miku舞蹈，支持更换颜色</div>
         <code>
             <head>
                 <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
@@ -9,6 +9,7 @@ module.exports = `
             </head>
             <body>
                 <canvas id="app"></canvas>
+                <p id="content">3D资源加载中，请稍等</p>
             </body>
 
             <script>
@@ -28,14 +29,15 @@ module.exports = `
                     webgl: {
                         imgPath: '../resource/mmd/model/mokou/',
                         pmd: '../resource/mmd/model/default/miku_v2.pmd',
-                        rz: 180, ry: 180,
+                        rz: 180, ry: 0,
                         scale: 15,
                     }
                 }));
 
-                miku.vmdStart('../resource/mmd/vmd/wavefile_v2.vmd');
+                miku.on('webgl-pmd-loaded', function () {
+                    miku.vmdStart('../resource/mmd/vmd/wavefile_v2.vmd');
+                    document.getElementById('content').innerText = '动作资源加载中，请稍等';
 
-                miku.on('webgl-mmd-loaded', function () {
                     $app.events.mousemove = function (e) {
                         // 袖、袜、裙
                         miku.children[3].updateWebglStyle('colors',
@@ -49,8 +51,12 @@ module.exports = `
                         miku.children[4].updateWebglStyle('colors',
                             [e.canvasX / 2, e.canvasY, e.canvasX + e.canvasY]
                         );
-                        miku.webgl.ry = Math.floor((e.canvasX - 200) / 4);
+                        miku.webgl.ry = -Math.floor((e.canvasX - 200) / 3);
                     };
+                });
+
+                miku.on('webgl-vmd-loaded', function () {
+                    document.getElementById('content').innerText = '加载完成，移动鼠标交互';
                 });
 
                 $app.start();

@@ -136,7 +136,6 @@ describe('Featrue.perf-jumpRenderOfCoveredSprite Test.', function () {
             expect(jumps.join(',')).toBe('0,4,7,0,0');
 
             done();
-        }, constants.waitForUpdateTime);
-        // }, constants.waitForUpdateTime + 200);
+        }, constants.waitForUpdateTime + 100);
     });
 });

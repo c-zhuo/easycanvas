@@ -1,100 +1,100 @@
-(function r(e, a) {
-    if (typeof exports === "object" && typeof module === "object") module.exports = a(); else if (typeof define === "function" && define.amd) define([], a); else {
-        var t = a();
-        for (var n in t) (typeof exports === "object" ? exports : e)[n] = t[n];
+(function r(e, t) {
+    if (typeof exports === "object" && typeof module === "object") module.exports = t(); else if (typeof define === "function" && define.amd) define([], t); else {
+        var a = t();
+        for (var n in a) (typeof exports === "object" ? exports : e)[n] = a[n];
     }
 })(this, function() {
     return function(r) {
         var e = {};
-        function a(t) {
-            if (e[t]) return e[t].exports;
-            var n = e[t] = {
+        function t(a) {
+            if (e[a]) return e[a].exports;
+            var n = e[a] = {
                 exports: {},
-                id: t,
+                id: a,
                 loaded: false
             };
-            r[t].call(n.exports, n, n.exports, a);
+            r[a].call(n.exports, n, n.exports, t);
             n.loaded = true;
             return n.exports;
         }
-        a.m = r;
-        a.c = e;
-        a.p = "";
-        return a(0);
+        t.m = r;
+        t.c = e;
+        t.p = "";
+        return t(0);
     }({
-        0: function(r, e, a) {
-            r.exports = a(59);
+        0: function(r, e, t) {
+            r.exports = t(59);
         },
         1: function(r, e) {
             "use strict";
-            var a = {
+            var t = {
                 isArray: Array.isArray || function(r) {
                     return Object.prototype.toString.call(r) === "[object Array]";
                 },
-                funcOrValue: function r(e, a) {
+                funcOrValue: function r(e, t) {
                     if (typeof e === "function") {
-                        var t = e.call(a);
-                        return t;
+                        var a = e.call(t);
+                        return a;
                     }
                     return e;
                 },
-                execFuncs: function r(e, t, n) {
+                execFuncs: function r(e, a, n) {
                     if (e) {
-                        if (!a.isArray(n)) {
+                        if (!t.isArray(n)) {
                             n = [ n ];
                         }
                     }
                     if (typeof e === "function") {
-                        return e.apply(t, n);
-                    } else if (a.isArray(e)) {
-                        var o = [];
+                        return e.apply(a, n);
+                    } else if (t.isArray(e)) {
+                        var i = [];
                         e.forEach(function(r) {
-                            o.push(r && r.apply(t, n));
+                            i.push(r && r.apply(a, n));
                         });
-                        return o;
+                        return i;
                     }
                 },
                 blend: [ "source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in", "destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity" ],
-                pointInRect: function r(e, a, t, n, o, i) {
-                    return !(e < t || e > n || a < o || a > i);
+                pointInRect: function r(e, t, a, n, i, o) {
+                    return !(e < a || e > n || t < i || t > o);
                 },
-                firstValuable: function r(e, a, t) {
-                    return typeof e === "undefined" ? typeof a === "undefined" ? t : a : e;
+                firstValuable: function r(e, t, a) {
+                    return typeof e === "undefined" ? typeof t === "undefined" ? a : t : e;
                 }
             };
-            r.exports = a;
+            r.exports = t;
         },
         2: function(r, e) {
             "use strict";
-            var a = 3.141593;
-            r.exports = function(r, e, t, n, o, i) {
-                var v = o ? -o / 180 * a : 0;
-                var c = r, u = e;
-                if (o) {
-                    c = (r - t) * Math.cos(v) - (e - n) * Math.sin(v) + t;
-                    u = (r - t) * Math.sin(v) + (e - n) * Math.cos(v) + n;
-                }
+            var t = 3.141593;
+            r.exports = function(r, e, a, n, i, o) {
+                var c = i ? -i / 180 * t : 0;
+                var l = r, v = e;
                 if (i) {
-                    return [ c, u ];
+                    l = (r - a) * Math.cos(c) - (e - n) * Math.sin(c) + a;
+                    v = (r - a) * Math.sin(c) + (e - n) * Math.cos(c) + n;
+                }
+                if (o) {
+                    return [ l, v ];
                 }
                 return {
-                    x: c,
-                    y: u
+                    x: l,
+                    y: v
                 };
             };
         },
         5: function(r, e) {
             "use strict";
-            var a = "processing";
-            var t = {};
+            var t = "processing";
+            var a = {};
             function n(r, e) {
                 if (r && r.match(/^data:/)) {
                     e && e(r);
                     return;
                 }
-                if (t[r]) {
-                    if (t[r] !== a) {
-                        e(t[r]);
+                if (a[r]) {
+                    if (a[r] !== t) {
+                        e(a[r]);
                     } else {
                         setTimeout(function() {
                             n(r, e);
@@ -102,176 +102,176 @@
                     }
                     return;
                 }
-                t[r] = a;
-                var o = new XMLHttpRequest();
-                o.onload = function() {
-                    var a = new FileReader();
-                    a.onloadend = function() {
-                        t[r] = a.result;
-                        e && e(a.result);
+                a[r] = t;
+                var i = new XMLHttpRequest();
+                i.onload = function() {
+                    var t = new FileReader();
+                    t.onloadend = function() {
+                        a[r] = t.result;
+                        e && e(t.result);
                     };
-                    a.readAsDataURL(o.response);
+                    t.readAsDataURL(i.response);
                 };
-                o.open("GET", r);
-                o.responseType = "blob";
-                o.send();
+                i.open("GET", r);
+                i.responseType = "blob";
+                i.send();
             }
             r.exports = n;
         },
-        7: function(r, e, a) {
+        7: function(r, e, t) {
             "use strict";
-            var t = a(2);
-            var n = o(t);
-            function o(r) {
+            var a = t(2);
+            var n = i(a);
+            function i(r) {
                 return r && r.__esModule ? r : {
                     default: r
                 };
             }
-            var i = 3.141593;
-            r.exports = function(r, e, a, t, n, o, v, c, u) {
-                var l = u ? -u / 180 * i : 0;
-                if (u) {
-                    r = (r - v) * Math.cos(u) - (e - c) * Math.sin(u) + v;
-                    e = (r - v) * Math.sin(u) + (e - c) * Math.cos(u) + c;
+            var o = 3.141593;
+            r.exports = function(r, e, t, a, n, i, c, l, v) {
+                var u = v ? -v / 180 * o : 0;
+                if (v) {
+                    r = (r - c) * Math.cos(v) - (e - l) * Math.sin(v) + c;
+                    e = (r - c) * Math.sin(v) + (e - l) * Math.cos(v) + l;
                 }
-                return r >= a && r <= a + n && e >= t && e <= t + o;
+                return r >= t && r <= t + n && e >= a && e <= a + i;
             };
         },
-        8: function(r, e, a) {
+        8: function(r, e, t) {
             "use strict";
-            var t = a(2);
-            var n = v(t);
-            var o = a(7);
-            var i = v(o);
-            function v(r) {
+            var a = t(2);
+            var n = c(a);
+            var i = t(7);
+            var o = c(i);
+            function c(r) {
                 return r && r.__esModule ? r : {
                     default: r
                 };
             }
-            r.exports = function(r, e, a, t, n, o, v, c, u, l, s) {
-                var f = (0, i.default)(r, e, n, o, v, c, u, l, s) || (0, i.default)(r + a, e, n, o, v, c, u, l, s) || (0, 
-                i.default)(r, e + t, n, o, v, c, u, l, s) || (0, i.default)(r + a, e + t, n, o, v, c, u, l, s);
+            r.exports = function(r, e, t, a, n, i, c, l, v, u, s) {
+                var f = (0, o.default)(r, e, n, i, c, l, v, u, s) || (0, o.default)(r + t, e, n, i, c, l, v, u, s) || (0, 
+                o.default)(r, e + a, n, i, c, l, v, u, s) || (0, o.default)(r + t, e + a, n, i, c, l, v, u, s);
                 if (f) return true;
-                var d = (0, i.default)(n, o, r, e, a, t, u, l, -s) || (0, i.default)(n + v, o, r, e, a, t, u, l, -s) || (0, 
-                i.default)(n, o + c, r, e, a, t, u, l, -s) || (0, i.default)(n + v, o + c, r, e, a, t, u, l, -s);
+                var d = (0, o.default)(n, i, r, e, t, a, v, u, -s) || (0, o.default)(n + c, i, r, e, t, a, v, u, -s) || (0, 
+                o.default)(n, i + l, r, e, t, a, v, u, -s) || (0, o.default)(n + c, i + l, r, e, t, a, v, u, -s);
                 if (d) return true;
                 return false;
             };
         },
-        22: function(r, e) {
+        21: function(r, e) {
             "use strict";
-            var a = function r(e, a) {
-                var t = e.length;
-                var n = new Array(Math.round(t * a));
-                for (var o = 0, i = n.length; o < i; o++) {
-                    n[o] = e[o % t];
+            var t = function r(e, t) {
+                var a = e.length;
+                var n = new Array(Math.round(a * t));
+                for (var i = 0, o = n.length; i < o; i++) {
+                    n[i] = e[i % a];
                 }
                 return n;
             };
             r.exports = {
-                arrayRepeat: a
+                arrayRepeat: t
             };
         },
-        30: function(r, e) {
+        29: function(r, e) {
             "use strict";
             r.exports = function() {
                 "use strict";
-                function r(r, e, a) {
-                    a = a || new Float32Array(16);
-                    var t = e[0 * 4 + 0];
+                function r(r, e, t) {
+                    t = t || new Float32Array(16);
+                    var a = e[0 * 4 + 0];
                     var n = e[0 * 4 + 1];
-                    var o = e[0 * 4 + 2];
-                    var i = e[0 * 4 + 3];
-                    var v = e[1 * 4 + 0];
-                    var c = e[1 * 4 + 1];
-                    var u = e[1 * 4 + 2];
-                    var l = e[1 * 4 + 3];
+                    var i = e[0 * 4 + 2];
+                    var o = e[0 * 4 + 3];
+                    var c = e[1 * 4 + 0];
+                    var l = e[1 * 4 + 1];
+                    var v = e[1 * 4 + 2];
+                    var u = e[1 * 4 + 3];
                     var s = e[2 * 4 + 0];
                     var f = e[2 * 4 + 1];
                     var d = e[2 * 4 + 2];
-                    var h = e[2 * 4 + 3];
-                    var g = e[3 * 4 + 0];
+                    var g = e[2 * 4 + 3];
+                    var h = e[3 * 4 + 0];
                     var p = e[3 * 4 + 1];
                     var m = e[3 * 4 + 2];
-                    var A = e[3 * 4 + 3];
-                    var x = r[0 * 4 + 0];
-                    var b = r[0 * 4 + 1];
+                    var _ = e[3 * 4 + 3];
+                    var b = r[0 * 4 + 0];
+                    var x = r[0 * 4 + 1];
                     var w = r[0 * 4 + 2];
-                    var y = r[0 * 4 + 3];
-                    var _ = r[1 * 4 + 0];
+                    var A = r[0 * 4 + 3];
+                    var y = r[1 * 4 + 0];
                     var R = r[1 * 4 + 1];
-                    var E = r[1 * 4 + 2];
-                    var T = r[1 * 4 + 3];
+                    var T = r[1 * 4 + 2];
+                    var E = r[1 * 4 + 3];
                     var F = r[2 * 4 + 0];
                     var L = r[2 * 4 + 1];
                     var M = r[2 * 4 + 2];
                     var B = r[2 * 4 + 3];
-                    var U = r[3 * 4 + 0];
-                    var D = r[3 * 4 + 1];
-                    var $ = r[3 * 4 + 2];
+                    var S = r[3 * 4 + 0];
+                    var U = r[3 * 4 + 1];
+                    var D = r[3 * 4 + 2];
                     var P = r[3 * 4 + 3];
-                    a[0] = t * x + n * _ + o * F + i * U;
-                    a[1] = t * b + n * R + o * L + i * D;
-                    a[2] = t * w + n * E + o * M + i * $;
-                    a[3] = t * y + n * T + o * B + i * P;
-                    a[4] = v * x + c * _ + u * F + l * U;
-                    a[5] = v * b + c * R + u * L + l * D;
-                    a[6] = v * w + c * E + u * M + l * $;
-                    a[7] = v * y + c * T + u * B + l * P;
-                    a[8] = s * x + f * _ + d * F + h * U;
-                    a[9] = s * b + f * R + d * L + h * D;
-                    a[10] = s * w + f * E + d * M + h * $;
-                    a[11] = s * y + f * T + d * B + h * P;
-                    a[12] = g * x + p * _ + m * F + A * U;
-                    a[13] = g * b + p * R + m * L + A * D;
-                    a[14] = g * w + p * E + m * M + A * $;
-                    a[15] = g * y + p * T + m * B + A * P;
-                    return a;
+                    t[0] = a * b + n * y + i * F + o * S;
+                    t[1] = a * x + n * R + i * L + o * U;
+                    t[2] = a * w + n * T + i * M + o * D;
+                    t[3] = a * A + n * E + i * B + o * P;
+                    t[4] = c * b + l * y + v * F + u * S;
+                    t[5] = c * x + l * R + v * L + u * U;
+                    t[6] = c * w + l * T + v * M + u * D;
+                    t[7] = c * A + l * E + v * B + u * P;
+                    t[8] = s * b + f * y + d * F + g * S;
+                    t[9] = s * x + f * R + d * L + g * U;
+                    t[10] = s * w + f * T + d * M + g * D;
+                    t[11] = s * A + f * E + d * B + g * P;
+                    t[12] = h * b + p * y + m * F + _ * S;
+                    t[13] = h * x + p * R + m * L + _ * U;
+                    t[14] = h * w + p * T + m * M + _ * D;
+                    t[15] = h * A + p * E + m * B + _ * P;
+                    return t;
                 }
-                function e(r, e, a) {
-                    a = a || new Float32Array(3);
-                    a[0] = r[0] + e[0];
-                    a[1] = r[1] + e[1];
-                    a[2] = r[2] + e[2];
-                    return a;
+                function e(r, e, t) {
+                    t = t || new Float32Array(3);
+                    t[0] = r[0] + e[0];
+                    t[1] = r[1] + e[1];
+                    t[2] = r[2] + e[2];
+                    return t;
                 }
-                function a(r, e, a) {
-                    a = a || new Float32Array(3);
-                    a[0] = r[0] - e[0];
-                    a[1] = r[1] - e[1];
-                    a[2] = r[2] - e[2];
-                    return a;
+                function t(r, e, t) {
+                    t = t || new Float32Array(3);
+                    t[0] = r[0] - e[0];
+                    t[1] = r[1] - e[1];
+                    t[2] = r[2] - e[2];
+                    return t;
                 }
-                function t(r, e) {
+                function a(r, e) {
                     e = e || new Float32Array(3);
-                    var a = Math.sqrt(r[0] * r[0] + r[1] * r[1] + r[2] * r[2]);
-                    if (a > 1e-5) {
-                        e[0] = r[0] / a;
-                        e[1] = r[1] / a;
-                        e[2] = r[2] / a;
+                    var t = Math.sqrt(r[0] * r[0] + r[1] * r[1] + r[2] * r[2]);
+                    if (t > 1e-5) {
+                        e[0] = r[0] / t;
+                        e[1] = r[1] / t;
+                        e[2] = r[2] / t;
                     }
                     return e;
                 }
-                function n(r, e, a) {
-                    a = a || new Float32Array(3);
-                    a[0] = r[1] * e[2] - r[2] * e[1];
-                    a[1] = r[2] * e[0] - r[0] * e[2];
-                    a[2] = r[0] * e[1] - r[1] * e[0];
-                    return a;
-                }
-                function o(r, e) {
-                    return r[0] * e[0] + r[1] * e[1] + r[2] * e[2];
+                function n(r, e, t) {
+                    t = t || new Float32Array(3);
+                    t[0] = r[1] * e[2] - r[2] * e[1];
+                    t[1] = r[2] * e[0] - r[0] * e[2];
+                    t[2] = r[0] * e[1] - r[1] * e[0];
+                    return t;
                 }
                 function i(r, e) {
-                    var a = r[0] - e[0];
-                    var t = r[1] - e[1];
+                    return r[0] * e[0] + r[1] * e[1] + r[2] * e[2];
+                }
+                function o(r, e) {
+                    var t = r[0] - e[0];
+                    var a = r[1] - e[1];
                     var n = r[2] - e[2];
-                    return a * a + t * t + n * n;
+                    return t * t + a * a + n * n;
                 }
-                function v(r, e) {
-                    return Math.sqrt(i(r, e));
+                function c(r, e) {
+                    return Math.sqrt(o(r, e));
                 }
-                function c(r) {
+                function l(r) {
                     r = r || new Float32Array(16);
                     r[0] = 1;
                     r[1] = 0;
@@ -291,7 +291,7 @@
                     r[15] = 1;
                     return r;
                 }
-                function u(r, e) {
+                function v(r, e) {
                     e = e || new Float32Array(16);
                     e[0] = r[0];
                     e[1] = r[4];
@@ -311,166 +311,166 @@
                     e[15] = r[15];
                     return e;
                 }
-                function l(r, e, o, i) {
-                    i = i || new Float32Array(16);
-                    var v = t(a(r, e));
-                    var c = t(n(o, v));
-                    var u = t(n(v, c));
-                    i[0] = c[0];
-                    i[1] = c[1];
-                    i[2] = c[2];
-                    i[3] = 0;
-                    i[4] = u[0];
-                    i[5] = u[1];
-                    i[6] = u[2];
-                    i[7] = 0;
-                    i[8] = v[0];
-                    i[9] = v[1];
-                    i[10] = v[2];
-                    i[11] = 0;
-                    i[12] = r[0];
-                    i[13] = r[1];
-                    i[14] = r[2];
-                    i[15] = 1;
-                    return i;
+                function u(r, e, i, o) {
+                    o = o || new Float32Array(16);
+                    var c = a(t(r, e));
+                    var l = a(n(i, c));
+                    var v = a(n(c, l));
+                    o[0] = l[0];
+                    o[1] = l[1];
+                    o[2] = l[2];
+                    o[3] = 0;
+                    o[4] = v[0];
+                    o[5] = v[1];
+                    o[6] = v[2];
+                    o[7] = 0;
+                    o[8] = c[0];
+                    o[9] = c[1];
+                    o[10] = c[2];
+                    o[11] = 0;
+                    o[12] = r[0];
+                    o[13] = r[1];
+                    o[14] = r[2];
+                    o[15] = 1;
+                    return o;
                 }
-                function s(r, e, a, t, n) {
+                function s(r, e, t, a, n) {
                     n = n || new Float32Array(16);
-                    var o = Math.tan(Math.PI * .5 - .5 * r);
-                    var i = 1 / (a - t);
-                    n[0] = o / e;
+                    var i = Math.tan(Math.PI * .5 - .5 * r);
+                    var o = 1 / (t - a);
+                    n[0] = i / e;
                     n[1] = 0;
                     n[2] = 0;
                     n[3] = 0;
                     n[4] = 0;
-                    n[5] = o;
+                    n[5] = i;
                     n[6] = 0;
                     n[7] = 0;
                     n[8] = 0;
                     n[9] = 0;
-                    n[10] = (a + t) * i;
+                    n[10] = (t + a) * o;
                     n[11] = -1;
                     n[12] = 0;
                     n[13] = 0;
-                    n[14] = a * t * i * 2;
+                    n[14] = t * a * o * 2;
                     n[15] = 0;
                     return n;
                 }
-                function f(r, e, a, t, n, o, i) {
-                    i = i || new Float32Array(16);
-                    i[0] = 2 / (e - r);
-                    i[1] = 0;
-                    i[2] = 0;
-                    i[3] = 0;
-                    i[4] = 0;
-                    i[5] = 2 / (t - a);
-                    i[6] = 0;
-                    i[7] = 0;
-                    i[8] = 0;
-                    i[9] = 0;
-                    i[10] = 2 / (n - o);
-                    i[11] = 0;
-                    i[12] = (r + e) / (r - e);
-                    i[13] = (a + t) / (a - t);
-                    i[14] = (n + o) / (n - o);
-                    i[15] = 1;
-                    return i;
+                function f(r, e, t, a, n, i, o) {
+                    o = o || new Float32Array(16);
+                    o[0] = 2 / (e - r);
+                    o[1] = 0;
+                    o[2] = 0;
+                    o[3] = 0;
+                    o[4] = 0;
+                    o[5] = 2 / (a - t);
+                    o[6] = 0;
+                    o[7] = 0;
+                    o[8] = 0;
+                    o[9] = 0;
+                    o[10] = 2 / (n - i);
+                    o[11] = 0;
+                    o[12] = (r + e) / (r - e);
+                    o[13] = (t + a) / (t - a);
+                    o[14] = (n + i) / (n - i);
+                    o[15] = 1;
+                    return o;
                 }
-                function d(r, e, a, t, n, o) {
-                    var i = e - r;
-                    var v = t - a;
-                    var c = o - n;
-                    dst[0] = 2 * n / i;
+                function d(r, e, t, a, n, i) {
+                    var o = e - r;
+                    var c = a - t;
+                    var l = i - n;
+                    dst[0] = 2 * n / o;
                     dst[1] = 0;
                     dst[2] = 0;
                     dst[3] = 0;
                     dst[4] = 0;
-                    dst[5] = 2 * n / v;
+                    dst[5] = 2 * n / c;
                     dst[6] = 0;
                     dst[7] = 0;
-                    dst[8] = (r + e) / i;
-                    dst[9] = (t + a) / v;
-                    dst[10] = -(o + n) / c;
+                    dst[8] = (r + e) / o;
+                    dst[9] = (a + t) / c;
+                    dst[10] = -(i + n) / l;
                     dst[11] = -1;
                     dst[12] = 0;
                     dst[13] = 0;
-                    dst[14] = -2 * n * o / c;
+                    dst[14] = -2 * n * i / l;
                     dst[15] = 0;
                     return dst;
                 }
-                function h(r, e, a, t) {
-                    t = t || new Float32Array(16);
-                    t[0] = 1;
-                    t[1] = 0;
-                    t[2] = 0;
-                    t[3] = 0;
-                    t[4] = 0;
-                    t[5] = 1;
-                    t[6] = 0;
-                    t[7] = 0;
-                    t[8] = 0;
-                    t[9] = 0;
-                    t[10] = 1;
-                    t[11] = 0;
-                    t[12] = r;
-                    t[13] = e;
-                    t[14] = a;
-                    t[15] = 1;
-                    return t;
+                function g(r, e, t, a) {
+                    a = a || new Float32Array(16);
+                    a[0] = 1;
+                    a[1] = 0;
+                    a[2] = 0;
+                    a[3] = 0;
+                    a[4] = 0;
+                    a[5] = 1;
+                    a[6] = 0;
+                    a[7] = 0;
+                    a[8] = 0;
+                    a[9] = 0;
+                    a[10] = 1;
+                    a[11] = 0;
+                    a[12] = r;
+                    a[13] = e;
+                    a[14] = t;
+                    a[15] = 1;
+                    return a;
                 }
-                function g(r, e, a, t, n) {
+                function h(r, e, t, a, n) {
                     n = n || new Float32Array(16);
-                    var o = r[0];
-                    var i = r[1];
-                    var v = r[2];
-                    var c = r[3];
-                    var u = r[1 * 4 + 0];
-                    var l = r[1 * 4 + 1];
+                    var i = r[0];
+                    var o = r[1];
+                    var c = r[2];
+                    var l = r[3];
+                    var v = r[1 * 4 + 0];
+                    var u = r[1 * 4 + 1];
                     var s = r[1 * 4 + 2];
                     var f = r[1 * 4 + 3];
                     var d = r[2 * 4 + 0];
-                    var h = r[2 * 4 + 1];
-                    var g = r[2 * 4 + 2];
+                    var g = r[2 * 4 + 1];
+                    var h = r[2 * 4 + 2];
                     var p = r[2 * 4 + 3];
                     var m = r[3 * 4 + 0];
-                    var A = r[3 * 4 + 1];
-                    var x = r[3 * 4 + 2];
-                    var b = r[3 * 4 + 3];
+                    var _ = r[3 * 4 + 1];
+                    var b = r[3 * 4 + 2];
+                    var x = r[3 * 4 + 3];
                     if (r !== n) {
-                        n[0] = o;
-                        n[1] = i;
-                        n[2] = v;
-                        n[3] = c;
-                        n[4] = u;
-                        n[5] = l;
+                        n[0] = i;
+                        n[1] = o;
+                        n[2] = c;
+                        n[3] = l;
+                        n[4] = v;
+                        n[5] = u;
                         n[6] = s;
                         n[7] = f;
                         n[8] = d;
-                        n[9] = h;
-                        n[10] = g;
+                        n[9] = g;
+                        n[10] = h;
                         n[11] = p;
                     }
-                    n[12] = o * e + u * a + d * t + m;
-                    n[13] = i * e + l * a + h * t + A;
-                    n[14] = v * e + s * a + g * t + x;
-                    n[15] = c * e + f * a + p * t + b;
+                    n[12] = i * e + v * t + d * a + m;
+                    n[13] = o * e + u * t + g * a + _;
+                    n[14] = c * e + s * t + h * a + b;
+                    n[15] = l * e + f * t + p * a + x;
                     return n;
                 }
                 function p(r, e) {
                     e = e || new Float32Array(16);
-                    var a = Math.cos(r);
-                    var t = Math.sin(r);
+                    var t = Math.cos(r);
+                    var a = Math.sin(r);
                     e[0] = 1;
                     e[1] = 0;
                     e[2] = 0;
                     e[3] = 0;
                     e[4] = 0;
-                    e[5] = a;
-                    e[6] = t;
+                    e[5] = t;
+                    e[6] = a;
                     e[7] = 0;
                     e[8] = 0;
-                    e[9] = -t;
-                    e[10] = a;
+                    e[9] = -a;
+                    e[10] = t;
                     e[11] = 0;
                     e[12] = 0;
                     e[13] = 0;
@@ -478,53 +478,53 @@
                     e[15] = 1;
                     return e;
                 }
-                function m(r, e, a) {
-                    a = a || new Float32Array(16);
-                    var t = r[4];
+                function m(r, e, t) {
+                    t = t || new Float32Array(16);
+                    var a = r[4];
                     var n = r[5];
-                    var o = r[6];
-                    var i = r[7];
-                    var v = r[8];
-                    var c = r[9];
-                    var u = r[10];
-                    var l = r[11];
+                    var i = r[6];
+                    var o = r[7];
+                    var c = r[8];
+                    var l = r[9];
+                    var v = r[10];
+                    var u = r[11];
                     var s = Math.cos(e);
                     var f = Math.sin(e);
-                    a[4] = s * t + f * v;
-                    a[5] = s * n + f * c;
-                    a[6] = s * o + f * u;
-                    a[7] = s * i + f * l;
-                    a[8] = s * v - f * t;
-                    a[9] = s * c - f * n;
-                    a[10] = s * u - f * o;
-                    a[11] = s * l - f * i;
-                    if (r !== a) {
-                        a[0] = r[0];
-                        a[1] = r[1];
-                        a[2] = r[2];
-                        a[3] = r[3];
-                        a[12] = r[12];
-                        a[13] = r[13];
-                        a[14] = r[14];
-                        a[15] = r[15];
+                    t[4] = s * a + f * c;
+                    t[5] = s * n + f * l;
+                    t[6] = s * i + f * v;
+                    t[7] = s * o + f * u;
+                    t[8] = s * c - f * a;
+                    t[9] = s * l - f * n;
+                    t[10] = s * v - f * i;
+                    t[11] = s * u - f * o;
+                    if (r !== t) {
+                        t[0] = r[0];
+                        t[1] = r[1];
+                        t[2] = r[2];
+                        t[3] = r[3];
+                        t[12] = r[12];
+                        t[13] = r[13];
+                        t[14] = r[14];
+                        t[15] = r[15];
                     }
-                    return a;
+                    return t;
                 }
-                function A(r, e) {
+                function _(r, e) {
                     e = e || new Float32Array(16);
-                    var a = Math.cos(r);
-                    var t = Math.sin(r);
-                    e[0] = a;
+                    var t = Math.cos(r);
+                    var a = Math.sin(r);
+                    e[0] = t;
                     e[1] = 0;
-                    e[2] = -t;
+                    e[2] = -a;
                     e[3] = 0;
                     e[4] = 0;
                     e[5] = 1;
                     e[6] = 0;
                     e[7] = 0;
-                    e[8] = t;
+                    e[8] = a;
                     e[9] = 0;
-                    e[10] = a;
+                    e[10] = t;
                     e[11] = 0;
                     e[12] = 0;
                     e[13] = 0;
@@ -532,48 +532,48 @@
                     e[15] = 1;
                     return e;
                 }
-                function x(r, e, a) {
-                    a = a || new Float32Array(16);
-                    var t = r[0 * 4 + 0];
+                function b(r, e, t) {
+                    t = t || new Float32Array(16);
+                    var a = r[0 * 4 + 0];
                     var n = r[0 * 4 + 1];
-                    var o = r[0 * 4 + 2];
-                    var i = r[0 * 4 + 3];
-                    var v = r[2 * 4 + 0];
-                    var c = r[2 * 4 + 1];
-                    var u = r[2 * 4 + 2];
-                    var l = r[2 * 4 + 3];
+                    var i = r[0 * 4 + 2];
+                    var o = r[0 * 4 + 3];
+                    var c = r[2 * 4 + 0];
+                    var l = r[2 * 4 + 1];
+                    var v = r[2 * 4 + 2];
+                    var u = r[2 * 4 + 3];
                     var s = Math.cos(e);
                     var f = Math.sin(e);
-                    a[0] = s * t - f * v;
-                    a[1] = s * n - f * c;
-                    a[2] = s * o - f * u;
-                    a[3] = s * i - f * l;
-                    a[8] = s * v + f * t;
-                    a[9] = s * c + f * n;
-                    a[10] = s * u + f * o;
-                    a[11] = s * l + f * i;
-                    if (r !== a) {
-                        a[4] = r[4];
-                        a[5] = r[5];
-                        a[6] = r[6];
-                        a[7] = r[7];
-                        a[12] = r[12];
-                        a[13] = r[13];
-                        a[14] = r[14];
-                        a[15] = r[15];
+                    t[0] = s * a - f * c;
+                    t[1] = s * n - f * l;
+                    t[2] = s * i - f * v;
+                    t[3] = s * o - f * u;
+                    t[8] = s * c + f * a;
+                    t[9] = s * l + f * n;
+                    t[10] = s * v + f * i;
+                    t[11] = s * u + f * o;
+                    if (r !== t) {
+                        t[4] = r[4];
+                        t[5] = r[5];
+                        t[6] = r[6];
+                        t[7] = r[7];
+                        t[12] = r[12];
+                        t[13] = r[13];
+                        t[14] = r[14];
+                        t[15] = r[15];
                     }
-                    return a;
+                    return t;
                 }
-                function b(r, e) {
+                function x(r, e) {
                     e = e || new Float32Array(16);
-                    var a = Math.cos(r);
-                    var t = Math.sin(r);
-                    e[0] = a;
-                    e[1] = t;
+                    var t = Math.cos(r);
+                    var a = Math.sin(r);
+                    e[0] = t;
+                    e[1] = a;
                     e[2] = 0;
                     e[3] = 0;
-                    e[4] = -t;
-                    e[5] = a;
+                    e[4] = -a;
+                    e[5] = t;
                     e[6] = 0;
                     e[7] = 0;
                     e[8] = 0;
@@ -586,120 +586,31 @@
                     e[15] = 1;
                     return e;
                 }
-                function w(r, e, a) {
-                    a = a || new Float32Array(16);
-                    var t = r[0 * 4 + 0];
+                function w(r, e, t) {
+                    t = t || new Float32Array(16);
+                    var a = r[0 * 4 + 0];
                     var n = r[0 * 4 + 1];
-                    var o = r[0 * 4 + 2];
-                    var i = r[0 * 4 + 3];
-                    var v = r[1 * 4 + 0];
-                    var c = r[1 * 4 + 1];
-                    var u = r[1 * 4 + 2];
-                    var l = r[1 * 4 + 3];
+                    var i = r[0 * 4 + 2];
+                    var o = r[0 * 4 + 3];
+                    var c = r[1 * 4 + 0];
+                    var l = r[1 * 4 + 1];
+                    var v = r[1 * 4 + 2];
+                    var u = r[1 * 4 + 3];
                     var s = Math.cos(e);
                     var f = Math.sin(e);
-                    a[0] = s * t + f * v;
-                    a[1] = s * n + f * c;
-                    a[2] = s * o + f * u;
-                    a[3] = s * i + f * l;
-                    a[4] = s * v - f * t;
-                    a[5] = s * c - f * n;
-                    a[6] = s * u - f * o;
-                    a[7] = s * l - f * i;
-                    if (r !== a) {
-                        a[8] = r[8];
-                        a[9] = r[9];
-                        a[10] = r[10];
-                        a[11] = r[11];
-                        a[12] = r[12];
-                        a[13] = r[13];
-                        a[14] = r[14];
-                        a[15] = r[15];
-                    }
-                    return a;
-                }
-                function y(r, e, a) {
-                    a = a || new Float32Array(16);
-                    var t = r[0];
-                    var n = r[1];
-                    var o = r[2];
-                    var i = Math.sqrt(t * t + n * n + o * o);
-                    t /= i;
-                    n /= i;
-                    o /= i;
-                    var v = t * t;
-                    var c = n * n;
-                    var u = o * o;
-                    var l = Math.cos(e);
-                    var s = Math.sin(e);
-                    var f = 1 - l;
-                    a[0] = v + (1 - v) * l;
-                    a[1] = t * n * f + o * s;
-                    a[2] = t * o * f - n * s;
-                    a[3] = 0;
-                    a[4] = t * n * f - o * s;
-                    a[5] = c + (1 - c) * l;
-                    a[6] = n * o * f + t * s;
-                    a[7] = 0;
-                    a[8] = t * o * f + n * s;
-                    a[9] = n * o * f - t * s;
-                    a[10] = u + (1 - u) * l;
-                    a[11] = 0;
-                    a[12] = 0;
-                    a[13] = 0;
-                    a[14] = 0;
-                    a[15] = 1;
-                    return a;
-                }
-                function _(r, e, a, t) {
-                    t = t || new Float32Array(16);
-                    var n = e[0];
-                    var o = e[1];
-                    var i = e[2];
-                    var v = Math.sqrt(n * n + o * o + i * i);
-                    n /= v;
-                    o /= v;
-                    i /= v;
-                    var c = n * n;
-                    var u = o * o;
-                    var l = i * i;
-                    var s = Math.cos(a);
-                    var f = Math.sin(a);
-                    var d = 1 - s;
-                    var h = c + (1 - c) * s;
-                    var g = n * o * d + i * f;
-                    var p = n * i * d - o * f;
-                    var m = n * o * d - i * f;
-                    var A = u + (1 - u) * s;
-                    var x = o * i * d + n * f;
-                    var b = n * i * d + o * f;
-                    var w = o * i * d - n * f;
-                    var y = l + (1 - l) * s;
-                    var _ = r[0];
-                    var R = r[1];
-                    var E = r[2];
-                    var T = r[3];
-                    var F = r[4];
-                    var L = r[5];
-                    var M = r[6];
-                    var B = r[7];
-                    var U = r[8];
-                    var D = r[9];
-                    var $ = r[10];
-                    var P = r[11];
-                    t[0] = h * _ + g * F + p * U;
-                    t[1] = h * R + g * L + p * D;
-                    t[2] = h * E + g * M + p * $;
-                    t[3] = h * T + g * B + p * P;
-                    t[4] = m * _ + A * F + x * U;
-                    t[5] = m * R + A * L + x * D;
-                    t[6] = m * E + A * M + x * $;
-                    t[7] = m * T + A * B + x * P;
-                    t[8] = b * _ + w * F + y * U;
-                    t[9] = b * R + w * L + y * D;
-                    t[10] = b * E + w * M + y * $;
-                    t[11] = b * T + w * B + y * P;
+                    t[0] = s * a + f * c;
+                    t[1] = s * n + f * l;
+                    t[2] = s * i + f * v;
+                    t[3] = s * o + f * u;
+                    t[4] = s * c - f * a;
+                    t[5] = s * l - f * n;
+                    t[6] = s * v - f * i;
+                    t[7] = s * u - f * o;
                     if (r !== t) {
+                        t[8] = r[8];
+                        t[9] = r[9];
+                        t[10] = r[10];
+                        t[11] = r[11];
                         t[12] = r[12];
                         t[13] = r[13];
                         t[14] = r[14];
@@ -707,19 +618,32 @@
                     }
                     return t;
                 }
-                function R(r, e, a, t) {
+                function A(r, e, t) {
                     t = t || new Float32Array(16);
-                    t[0] = r;
-                    t[1] = 0;
-                    t[2] = 0;
+                    var a = r[0];
+                    var n = r[1];
+                    var i = r[2];
+                    var o = Math.sqrt(a * a + n * n + i * i);
+                    a /= o;
+                    n /= o;
+                    i /= o;
+                    var c = a * a;
+                    var l = n * n;
+                    var v = i * i;
+                    var u = Math.cos(e);
+                    var s = Math.sin(e);
+                    var f = 1 - u;
+                    t[0] = c + (1 - c) * u;
+                    t[1] = a * n * f + i * s;
+                    t[2] = a * i * f - n * s;
                     t[3] = 0;
-                    t[4] = 0;
-                    t[5] = e;
-                    t[6] = 0;
+                    t[4] = a * n * f - i * s;
+                    t[5] = l + (1 - l) * u;
+                    t[6] = n * i * f + a * s;
                     t[7] = 0;
-                    t[8] = 0;
-                    t[9] = 0;
-                    t[10] = a;
+                    t[8] = a * i * f + n * s;
+                    t[9] = n * i * f - a * s;
+                    t[10] = v + (1 - v) * u;
                     t[11] = 0;
                     t[12] = 0;
                     t[13] = 0;
@@ -727,20 +651,96 @@
                     t[15] = 1;
                     return t;
                 }
-                function E(r, e, a, t, n) {
+                function y(r, e, t, a) {
+                    a = a || new Float32Array(16);
+                    var n = e[0];
+                    var i = e[1];
+                    var o = e[2];
+                    var c = Math.sqrt(n * n + i * i + o * o);
+                    n /= c;
+                    i /= c;
+                    o /= c;
+                    var l = n * n;
+                    var v = i * i;
+                    var u = o * o;
+                    var s = Math.cos(t);
+                    var f = Math.sin(t);
+                    var d = 1 - s;
+                    var g = l + (1 - l) * s;
+                    var h = n * i * d + o * f;
+                    var p = n * o * d - i * f;
+                    var m = n * i * d - o * f;
+                    var _ = v + (1 - v) * s;
+                    var b = i * o * d + n * f;
+                    var x = n * o * d + i * f;
+                    var w = i * o * d - n * f;
+                    var A = u + (1 - u) * s;
+                    var y = r[0];
+                    var R = r[1];
+                    var T = r[2];
+                    var E = r[3];
+                    var F = r[4];
+                    var L = r[5];
+                    var M = r[6];
+                    var B = r[7];
+                    var S = r[8];
+                    var U = r[9];
+                    var D = r[10];
+                    var P = r[11];
+                    a[0] = g * y + h * F + p * S;
+                    a[1] = g * R + h * L + p * U;
+                    a[2] = g * T + h * M + p * D;
+                    a[3] = g * E + h * B + p * P;
+                    a[4] = m * y + _ * F + b * S;
+                    a[5] = m * R + _ * L + b * U;
+                    a[6] = m * T + _ * M + b * D;
+                    a[7] = m * E + _ * B + b * P;
+                    a[8] = x * y + w * F + A * S;
+                    a[9] = x * R + w * L + A * U;
+                    a[10] = x * T + w * M + A * D;
+                    a[11] = x * E + w * B + A * P;
+                    if (r !== a) {
+                        a[12] = r[12];
+                        a[13] = r[13];
+                        a[14] = r[14];
+                        a[15] = r[15];
+                    }
+                    return a;
+                }
+                function R(r, e, t, a) {
+                    a = a || new Float32Array(16);
+                    a[0] = r;
+                    a[1] = 0;
+                    a[2] = 0;
+                    a[3] = 0;
+                    a[4] = 0;
+                    a[5] = e;
+                    a[6] = 0;
+                    a[7] = 0;
+                    a[8] = 0;
+                    a[9] = 0;
+                    a[10] = t;
+                    a[11] = 0;
+                    a[12] = 0;
+                    a[13] = 0;
+                    a[14] = 0;
+                    a[15] = 1;
+                    return a;
+                }
+                function T(r, e, t, a, n) {
                     n = n || new Float32Array(16);
                     n[0] = e * r[0 * 4 + 0];
                     n[1] = e * r[0 * 4 + 1];
                     n[2] = e * r[0 * 4 + 2];
                     n[3] = e * r[0 * 4 + 3];
-                    n[4] = a * r[1 * 4 + 0];
-                    n[5] = a * r[1 * 4 + 1];
-                    n[6] = a * r[1 * 4 + 2];
-                    n[7] = a * r[1 * 4 + 3];
-                    n[8] = t * r[2 * 4 + 0];
-                    n[9] = t * r[2 * 4 + 1];
-                    n[10] = t * r[2 * 4 + 2];
-                    n[11] = t * r[2 * 4 + 3];
+                    n[4] = t * r[1 * 4 + 0];
+                    n[5] = t * r[1 * 4 + 1];
+                    n[6] = t * r[1 * 4 + 2];
+                    n[7] = t * r[1 * 4 + 3];
+                    n[8] = a * r[2 * 4 + 0];
+                    n[9] = a * r[2 * 4 + 1];
+                    n[10] = a * r[2 * 4 + 2];
+                    n[11] = a * r[2 * 4 + 3];
                     if (r !== n) {
                         n[12] = r[12];
                         n[13] = r[13];
@@ -749,114 +749,114 @@
                     }
                     return n;
                 }
-                function T(r, e) {
+                function E(r, e) {
                     e = e || new Float32Array(16);
-                    var a = r[0 * 4 + 0];
-                    var t = r[0 * 4 + 1];
+                    var t = r[0 * 4 + 0];
+                    var a = r[0 * 4 + 1];
                     var n = r[0 * 4 + 2];
-                    var o = r[0 * 4 + 3];
-                    var i = r[1 * 4 + 0];
-                    var v = r[1 * 4 + 1];
-                    var c = r[1 * 4 + 2];
-                    var u = r[1 * 4 + 3];
-                    var l = r[2 * 4 + 0];
+                    var i = r[0 * 4 + 3];
+                    var o = r[1 * 4 + 0];
+                    var c = r[1 * 4 + 1];
+                    var l = r[1 * 4 + 2];
+                    var v = r[1 * 4 + 3];
+                    var u = r[2 * 4 + 0];
                     var s = r[2 * 4 + 1];
                     var f = r[2 * 4 + 2];
                     var d = r[2 * 4 + 3];
-                    var h = r[3 * 4 + 0];
-                    var g = r[3 * 4 + 1];
+                    var g = r[3 * 4 + 0];
+                    var h = r[3 * 4 + 1];
                     var p = r[3 * 4 + 2];
                     var m = r[3 * 4 + 3];
-                    var A = f * m;
-                    var x = p * d;
-                    var b = c * m;
-                    var w = p * u;
-                    var y = c * d;
-                    var _ = f * u;
+                    var _ = f * m;
+                    var b = p * d;
+                    var x = l * m;
+                    var w = p * v;
+                    var A = l * d;
+                    var y = f * v;
                     var R = n * m;
-                    var E = p * o;
-                    var T = n * d;
-                    var F = f * o;
-                    var L = n * u;
-                    var M = c * o;
-                    var B = l * g;
-                    var U = h * s;
-                    var D = i * g;
-                    var $ = h * v;
-                    var P = i * s;
-                    var S = l * v;
-                    var I = a * g;
-                    var O = h * t;
-                    var V = a * s;
-                    var C = l * t;
-                    var N = a * v;
-                    var Y = i * t;
-                    var z = A * v + w * s + y * g - (x * v + b * s + _ * g);
-                    var X = x * t + R * s + F * g - (A * t + E * s + T * g);
-                    var G = b * t + E * v + L * g - (w * t + R * v + M * g);
-                    var W = _ * t + T * v + M * s - (y * t + F * v + L * s);
-                    var j = 1 / (a * z + i * X + l * G + h * W);
-                    e[0] = j * z;
-                    e[1] = j * X;
-                    e[2] = j * G;
-                    e[3] = j * W;
-                    e[4] = j * (x * i + b * l + _ * h - (A * i + w * l + y * h));
-                    e[5] = j * (A * a + E * l + T * h - (x * a + R * l + F * h));
-                    e[6] = j * (w * a + R * i + M * h - (b * a + E * i + L * h));
-                    e[7] = j * (y * a + F * i + L * l - (_ * a + T * i + M * l));
-                    e[8] = j * (B * u + $ * d + P * m - (U * u + D * d + S * m));
-                    e[9] = j * (U * o + I * d + C * m - (B * o + O * d + V * m));
-                    e[10] = j * (D * o + O * u + N * m - ($ * o + I * u + Y * m));
-                    e[11] = j * (S * o + V * u + Y * d - (P * o + C * u + N * d));
-                    e[12] = j * (D * f + S * p + U * c - (P * p + B * c + $ * f));
-                    e[13] = j * (V * p + B * n + O * f - (I * f + C * p + U * n));
-                    e[14] = j * (I * c + Y * p + $ * n - (N * p + D * n + O * c));
-                    e[15] = j * (N * f + P * n + C * c - (V * c + Y * f + S * n));
+                    var T = p * i;
+                    var E = n * d;
+                    var F = f * i;
+                    var L = n * v;
+                    var M = l * i;
+                    var B = u * h;
+                    var S = g * s;
+                    var U = o * h;
+                    var D = g * c;
+                    var P = o * s;
+                    var $ = u * c;
+                    var z = t * h;
+                    var I = g * a;
+                    var O = t * s;
+                    var C = u * a;
+                    var V = t * c;
+                    var N = o * a;
+                    var Y = _ * c + w * s + A * h - (b * c + x * s + y * h);
+                    var j = b * a + R * s + F * h - (_ * a + T * s + E * h);
+                    var X = x * a + T * c + L * h - (w * a + R * c + M * h);
+                    var G = y * a + E * c + M * s - (A * a + F * c + L * s);
+                    var W = 1 / (t * Y + o * j + u * X + g * G);
+                    e[0] = W * Y;
+                    e[1] = W * j;
+                    e[2] = W * X;
+                    e[3] = W * G;
+                    e[4] = W * (b * o + x * u + y * g - (_ * o + w * u + A * g));
+                    e[5] = W * (_ * t + T * u + E * g - (b * t + R * u + F * g));
+                    e[6] = W * (w * t + R * o + M * g - (x * t + T * o + L * g));
+                    e[7] = W * (A * t + F * o + L * u - (y * t + E * o + M * u));
+                    e[8] = W * (B * v + D * d + P * m - (S * v + U * d + $ * m));
+                    e[9] = W * (S * i + z * d + C * m - (B * i + I * d + O * m));
+                    e[10] = W * (U * i + I * v + V * m - (D * i + z * v + N * m));
+                    e[11] = W * ($ * i + O * v + N * d - (P * i + C * v + V * d));
+                    e[12] = W * (U * f + $ * p + S * l - (P * p + B * l + D * f));
+                    e[13] = W * (O * p + B * n + I * f - (z * f + C * p + S * n));
+                    e[14] = W * (z * l + N * p + D * n - (V * p + U * n + I * l));
+                    e[15] = W * (V * f + P * n + C * l - (O * l + N * f + $ * n));
                     return e;
                 }
-                function F(r, e, a) {
-                    a = a || new Float32Array(4);
-                    for (var t = 0; t < 4; ++t) {
-                        a[t] = 0;
+                function F(r, e, t) {
+                    t = t || new Float32Array(4);
+                    for (var a = 0; a < 4; ++a) {
+                        t[a] = 0;
                         for (var n = 0; n < 4; ++n) {
-                            a[t] += e[n] * r[n * 4 + t];
+                            t[a] += e[n] * r[n * 4 + a];
                         }
                     }
-                    return a;
+                    return t;
                 }
-                function L(r, e, a) {
-                    a = a || new Float32Array(3);
-                    var t = e[0];
+                function L(r, e, t) {
+                    t = t || new Float32Array(3);
+                    var a = e[0];
                     var n = e[1];
-                    var o = e[2];
-                    var i = t * r[0 * 4 + 3] + n * r[1 * 4 + 3] + o * r[2 * 4 + 3] + r[3 * 4 + 3];
-                    a[0] = (t * r[0 * 4 + 0] + n * r[1 * 4 + 0] + o * r[2 * 4 + 0] + r[3 * 4 + 0]) / i;
-                    a[1] = (t * r[0 * 4 + 1] + n * r[1 * 4 + 1] + o * r[2 * 4 + 1] + r[3 * 4 + 1]) / i;
-                    a[2] = (t * r[0 * 4 + 2] + n * r[1 * 4 + 2] + o * r[2 * 4 + 2] + r[3 * 4 + 2]) / i;
-                    return a;
-                }
-                function M(r, e, a) {
-                    a = a || new Float32Array(3);
-                    var t = e[0];
-                    var n = e[1];
-                    var o = e[2];
-                    a[0] = t * r[0 * 4 + 0] + n * r[1 * 4 + 0] + o * r[2 * 4 + 0];
-                    a[1] = t * r[0 * 4 + 1] + n * r[1 * 4 + 1] + o * r[2 * 4 + 1];
-                    a[2] = t * r[0 * 4 + 2] + n * r[1 * 4 + 2] + o * r[2 * 4 + 2];
-                    return a;
-                }
-                function B(r, e, a) {
-                    a = a || new Float32Array(3);
-                    var t = T(r);
-                    var n = e[0];
-                    var o = e[1];
                     var i = e[2];
-                    a[0] = n * t[0 * 4 + 0] + o * t[0 * 4 + 1] + i * t[0 * 4 + 2];
-                    a[1] = n * t[1 * 4 + 0] + o * t[1 * 4 + 1] + i * t[1 * 4 + 2];
-                    a[2] = n * t[2 * 4 + 0] + o * t[2 * 4 + 1] + i * t[2 * 4 + 2];
-                    return a;
+                    var o = a * r[0 * 4 + 3] + n * r[1 * 4 + 3] + i * r[2 * 4 + 3] + r[3 * 4 + 3];
+                    t[0] = (a * r[0 * 4 + 0] + n * r[1 * 4 + 0] + i * r[2 * 4 + 0] + r[3 * 4 + 0]) / o;
+                    t[1] = (a * r[0 * 4 + 1] + n * r[1 * 4 + 1] + i * r[2 * 4 + 1] + r[3 * 4 + 1]) / o;
+                    t[2] = (a * r[0 * 4 + 2] + n * r[1 * 4 + 2] + i * r[2 * 4 + 2] + r[3 * 4 + 2]) / o;
+                    return t;
                 }
-                function U(r, e) {
+                function M(r, e, t) {
+                    t = t || new Float32Array(3);
+                    var a = e[0];
+                    var n = e[1];
+                    var i = e[2];
+                    t[0] = a * r[0 * 4 + 0] + n * r[1 * 4 + 0] + i * r[2 * 4 + 0];
+                    t[1] = a * r[0 * 4 + 1] + n * r[1 * 4 + 1] + i * r[2 * 4 + 1];
+                    t[2] = a * r[0 * 4 + 2] + n * r[1 * 4 + 2] + i * r[2 * 4 + 2];
+                    return t;
+                }
+                function B(r, e, t) {
+                    t = t || new Float32Array(3);
+                    var a = E(r);
+                    var n = e[0];
+                    var i = e[1];
+                    var o = e[2];
+                    t[0] = n * a[0 * 4 + 0] + i * a[0 * 4 + 1] + o * a[0 * 4 + 2];
+                    t[1] = n * a[1 * 4 + 0] + i * a[1 * 4 + 1] + o * a[1 * 4 + 2];
+                    t[2] = n * a[2 * 4 + 0] + i * a[2 * 4 + 1] + o * a[2 * 4 + 2];
+                    return t;
+                }
+                function S(r, e) {
                     e = e || new Float32Array(16);
                     e[0] = r[0];
                     e[1] = r[1];
@@ -877,34 +877,34 @@
                     return e;
                 }
                 return {
-                    copy: U,
-                    lookAt: l,
+                    copy: S,
+                    lookAt: u,
                     addVectors: e,
-                    subtractVectors: a,
-                    distance: v,
-                    distanceSq: i,
-                    normalize: t,
+                    subtractVectors: t,
+                    distance: c,
+                    distanceSq: o,
+                    normalize: a,
                     cross: n,
-                    dot: o,
-                    identity: c,
-                    transpose: u,
+                    dot: i,
+                    identity: l,
+                    transpose: v,
                     orthographic: f,
                     frustum: d,
                     perspective: s,
-                    translation: h,
-                    translate: g,
+                    translation: g,
+                    translate: h,
                     xRotation: p,
-                    yRotation: A,
-                    zRotation: b,
+                    yRotation: _,
+                    zRotation: x,
                     xRotate: m,
-                    yRotate: x,
+                    yRotate: b,
                     zRotate: w,
-                    axisRotation: y,
-                    axisRotate: _,
+                    axisRotation: A,
+                    axisRotate: y,
                     scaling: R,
-                    scale: E,
+                    scale: T,
                     multiply: r,
-                    inverse: T,
+                    inverse: E,
                     transformVector: F,
                     transformPoint: L,
                     transformDirection: M,
@@ -912,368 +912,371 @@
                 };
             };
         },
-        59: function(r, e, a) {
+        59: function(r, e, t) {
             "use strict";
-            var t = Object.assign || function(r) {
+            var a = Object.assign || function(r) {
                 for (var e = 1; e < arguments.length; e++) {
-                    var a = arguments[e];
-                    for (var t in a) {
-                        if (Object.prototype.hasOwnProperty.call(a, t)) {
-                            r[t] = a[t];
+                    var t = arguments[e];
+                    for (var a in t) {
+                        if (Object.prototype.hasOwnProperty.call(t, a)) {
+                            r[a] = t[a];
                         }
                     }
                 }
                 return r;
             };
-            var n = a(30);
-            var o = m(n);
-            var i = a(69);
-            var v = m(i);
-            var c = a(68);
-            var u = m(c);
-            var l = a(22);
-            var s = a(1);
+            var n = t(29);
+            var i = m(n);
+            var o = t(73);
+            var c = m(o);
+            var l = t(72);
+            var v = m(l);
+            var u = t(21);
+            var s = t(1);
             var f = m(s);
-            var d = a(8);
-            var h = m(d);
-            var g = a(5);
-            var p = m(g);
+            var d = t(8);
+            var g = m(d);
+            var h = t(5);
+            var p = m(h);
             function m(r) {
                 return r && r.__esModule ? r : {
                     default: r
                 };
             }
-            var A = (0, o.default)();
-            var x = typeof window !== "undefined";
-            var b = function r(e) {
+            var _ = (0, i.default)();
+            var b = typeof window !== "undefined";
+            var x = function r(e) {
                 console.error("[Easycanvas-webgl] " + e);
             };
             var w = function() {
                 var r = {};
-                return function(e, a, t, n) {
-                    var o = "" + a + t + n;
+                return function(e, t, a, n, i) {
+                    var o = "" + t + a + n + i;
+                    if (e.singleShader) {
+                        o = "singleShader" + t;
+                    }
                     if (r[o]) {
                         return r[o];
                     }
-                    var i = u.default.factory(e, a)(t, n);
-                    var v = e.createShader(a);
-                    e.shaderSource(v, i);
-                    e.compileShader(v);
-                    if (!e.getShaderParameter(v, e.COMPILE_STATUS)) {
-                        var c = e.getShaderInfoLog(v);
-                        throw "Could not compile WebGL program. \n\n" + c;
+                    var c = v.default[e.singleShader ? "final" : "factory"](e, t)(a, n, i);
+                    var l = e.createShader(t);
+                    e.shaderSource(l, c);
+                    e.compileShader(l);
+                    if (!e.getShaderParameter(l, e.COMPILE_STATUS)) {
+                        var u = e.getShaderInfoLog(l);
+                        throw "Could not compile WebGL program. \n\n" + u;
                     }
-                    r[o] = v;
-                    return v;
+                    r[o] = l;
+                    return l;
                 };
             }();
-            var y = function r(e, a, t) {
+            var A = function r(e, t, a) {
                 var n = e.createProgram();
-                e.attachShader(n, a);
                 e.attachShader(n, t);
+                e.attachShader(n, a);
                 e.linkProgram(n);
                 if (!e.getProgramParameter(n, e.LINK_STATUS)) {
-                    var o = e.getProgramInfoLog(n);
-                    throw "Could not compile WebGL program. \n\n" + o;
+                    var i = e.getProgramInfoLog(n);
+                    throw "Could not compile WebGL program. \n\n" + i;
                 }
                 return n;
             };
-            var _ = function() {
+            var y = function() {
                 var r;
-                return function(e, a, t) {
-                    if (r === a) return;
-                    r = a;
-                    var n, o;
-                    n = w(e, e.VERTEX_SHADER, a, t);
-                    o = w(e, e.FRAGMENT_SHADER, a, t);
-                    e.program = y(e, n, o);
+                return function(e, t, a, n) {
+                    var i = "" + t + a + n;
+                    if (e.singleShader) {
+                        i = "singleShader";
+                    }
+                    if (r === i) return;
+                    r = i;
+                    var o, c;
+                    o = w(e, e.VERTEX_SHADER, t, a, n);
+                    c = w(e, e.FRAGMENT_SHADER, t, a, n);
+                    e.program = A(e, o, c);
                     e.useProgram(e.program);
                     e.positionLocation = e.getAttribLocation(e.program, "a_position");
                     e.normalLocation = e.getAttribLocation(e.program, "a_normal");
-                    if (a === 0) {
+                    if (t === 0) {
                         e.colorLocation = e.getAttribLocation(e.program, "a_color");
                     } else {
                         e.texcoordLocation = e.getAttribLocation(e.program, "a_texcoord");
                     }
+                    e.sizeLocation = e.getAttribLocation(e.program, "u_size");
                     e.worldViewProjectionLocation = e.getUniformLocation(e.program, "u_worldViewProjection");
                     e.worldInverseTransposeLocation = e.getUniformLocation(e.program, "u_worldInverseTranspose");
                     e.reverseLightDirectionLocation = e.getUniformLocation(e.program, "u_reverseLightDirection");
+                    e.vShaderTypeLocation = e.getUniformLocation(e.program, "v_shaderType");
+                    e.fShaderTypeLocation = e.getUniformLocation(e.program, "f_shaderType");
                     e.matrixLocation = e.getUniformLocation(e.program, "u_matrix");
-                    if (a === 0) {
+                    if (t === 0) {
                         e.textureLocation = e.getUniformLocation(e.program, "u_texture");
                     } else {
                         e.textureMatrixLocation = e.getUniformLocation(e.program, "u_textureMatrix");
                     }
                     e.enableVertexAttribArray(e.positionLocation);
-                    t && e.enableVertexAttribArray(e.normalLocation);
+                    a && e.enableVertexAttribArray(e.normalLocation);
                     e.enableVertexAttribArray(e.texcoordLocation);
                     e.enableVertexAttribArray(e.colorLocation);
                 };
             }();
             var R = {};
-            var E = function r(e, a, t) {
+            var T = function r(e, t, a) {
                 var n = e.props;
-                var o = e.webgl;
-                var i = t.$gl;
-                if (true) {
-                    if (n && n[0] && !n[0].texture && n[0].src) {
-                        b("Texture not found, make sure using Painter.imgLoader instead of Easycanvas.imgLoader.");
-                    }
-                }
+                var i = e.webgl;
+                var o = a.$gl;
                 if (e.type !== "3d") {
                     if (!n[0] && n.content) {
-                        var v = n.content + n.font + n.align + n.color;
-                        var c = R[v];
-                        if (!c) {
-                            var u = i.createTexture();
-                            var l = document.createElement("canvas").getContext("2d");
-                            l.clearRect(0, 0, l.canvas.width, l.canvas.height);
-                            l.canvas.width = n.content.length * parseInt(n.font) * 2;
-                            l.canvas.height = parseInt(n.font) + 5;
-                            l.font = n.font;
-                            l.textAlign = n.align;
-                            l.fillStyle = n.color;
-                            l.fillText(n.content, n.align === "right" ? l.canvas.width : n.align === "center" ? l.canvas.width / 2 : 0, l.canvas.height - 5);
-                            i.bindTexture(i.TEXTURE_2D, u);
-                            i.texImage2D(i.TEXTURE_2D, 0, i.RGBA, i.RGBA, i.UNSIGNED_BYTE, l.canvas);
-                            i.texParameteri(i.TEXTURE_2D, i.TEXTURE_MIN_FILTER, i.LINEAR);
-                            i.texParameteri(i.TEXTURE_2D, i.TEXTURE_WRAP_S, i.CLAMP_TO_EDGE);
-                            i.texParameteri(i.TEXTURE_2D, i.TEXTURE_WRAP_T, i.CLAMP_TO_EDGE);
-                            c = R[v] = {
-                                texture: u,
-                                width: l.canvas.width,
-                                height: l.canvas.height,
-                                img: l.canvas,
-                                canvas: l.canvas
+                        var c = n.content + n.font + n.align + n.color;
+                        var l = R[c];
+                        if (!l) {
+                            var v = o.createTexture();
+                            var u = document.createElement("canvas").getContext("2d");
+                            u.clearRect(0, 0, u.canvas.width, u.canvas.height);
+                            u.canvas.width = n.content.length * parseInt(n.font) * 2;
+                            u.canvas.height = parseInt(n.font) + 5;
+                            u.font = n.font;
+                            u.textAlign = n.align;
+                            u.fillStyle = n.color;
+                            u.fillText(n.content, n.align === "right" ? u.canvas.width : n.align === "center" ? u.canvas.width / 2 : 0, u.canvas.height - 5);
+                            o.bindTexture(o.TEXTURE_2D, v);
+                            o.texImage2D(o.TEXTURE_2D, 0, o.RGBA, o.RGBA, o.UNSIGNED_BYTE, u.canvas);
+                            o.texParameteri(o.TEXTURE_2D, o.TEXTURE_MIN_FILTER, o.LINEAR);
+                            o.texParameteri(o.TEXTURE_2D, o.TEXTURE_WRAP_S, o.CLAMP_TO_EDGE);
+                            o.texParameteri(o.TEXTURE_2D, o.TEXTURE_WRAP_T, o.CLAMP_TO_EDGE);
+                            l = R[c] = {
+                                texture: v,
+                                width: u.canvas.width,
+                                height: u.canvas.height,
+                                img: u.canvas,
+                                canvas: u.canvas
                             };
                         }
-                        n = [ c, 0, 0, c.canvas.width, c.canvas.height, n.align === "right" ? n.tx - c.canvas.width : n.align === "center" ? n.tx - c.canvas.width / 2 : n.tx, n.ty - c.canvas.height + 5, c.canvas.width, c.canvas.height ];
+                        n = [ l, 0, 0, l.canvas.width, l.canvas.height, n.align === "right" ? n.tx - l.canvas.width : n.align === "center" ? n.tx - l.canvas.width / 2 : n.tx, n.ty - l.canvas.height + 5, l.canvas.width, l.canvas.height ];
                     }
                     if (n[0] && n[0].texture) {
-                        var s = (0, h.default)(n[5], n[6], n[7], n[8], 0, 0, t.width, t.height, a.beforeRotate && a.beforeRotate[0], a.beforeRotate && a.beforeRotate[1], a.rotate);
+                        var s = (0, g.default)(n[5], n[6], n[7], n[8], 0, 0, a.width, a.height, t.beforeRotate && t.beforeRotate[0], t.beforeRotate && t.beforeRotate[1], t.rotate);
                         if (!s) {
                             return;
                         }
                         if (n[0].img.width === 0) return;
-                        i.bindTexture(i.TEXTURE_2D, n[0].texture);
-                        M(t, n[0].texture, n[0].width, n[0].height, n[1], n[2], n[3], n[4], n[5], n[6], n[7], n[8], a);
+                        o.bindTexture(o.TEXTURE_2D, n[0].texture);
+                        M(a, n[0].texture, n[0].width, n[0].height, n[1], n[2], n[3], n[4], n[5], n[6], n[7], n[8], t);
                     }
-                } else if (e.type === "3d" && (o.img || o.colors)) {
-                    if (o.img && o.img.texture) {
-                        i.bindTexture(i.TEXTURE_2D, o.img.texture);
+                } else if (e.type === "3d" && (i.img || i.colors)) {
+                    if (i.img && i.img.texture) {
+                        o.bindTexture(o.TEXTURE_2D, i.img.texture);
                     }
-                    if (o.longSide) {
-                        var f = o.longSide * 1.8;
-                        var d = t.webgl.$depth;
-                        var s = (0, h.default)(o.tx - f, o.ty - f, f * 2, f * 2, o.tz / d * t.width / 2, o.tz / d * t.height / 2, t.width - o.tz / d * t.width / 2, t.height - o.tz / d * t.height / 2, 0, 0, 0);
+                    if (i.longSide && !a.webgl.$camera) {
+                        var f = i.longSide * 1.8;
+                        var d = a.webgl.$depth;
+                        var s = (0, g.default)(i.tx - f, i.ty - f, f * 2, f * 2, i.tz / d * a.width / 2, i.tz / d * a.height / 2, a.width - i.tz / d * a.width / 2, a.height - i.tz / d * a.height / 2, 0, 0, 0);
                         if (!s) {
                             return;
                         }
                     }
-                    F(t, o);
+                    F(a, i);
                 }
             };
-            function T(r) {
+            function E(r) {
                 return r * Math.PI / 180;
             }
-            var F = function r(e, a) {
-                if ((!a.colors || !a.colors.length) && (!a.textures || !a.textures.length)) return;
-                var t = e.$gl;
-                t.enable(t.BLEND);
-                t.enable(t.DEPTH_TEST);
-                if (a.opacity) {
-                    t.disable(t.DEPTH_TEST);
+            var F = function r(e, t) {
+                if ((!t.colors || !t.colors.length) && (!t.textures || !t.textures.length)) return;
+                var a = e.$gl;
+                if (t.hasAlpha) {
+                    a.disable(a.DEPTH_TEST);
+                    a.enable(a.BLEND);
+                } else {
+                    a.enable(a.DEPTH_TEST);
+                    a.disable(a.BLEND);
                 }
-                var n = a.vertices.$cacheBuffer, o, i, v, c;
+                var n = t.vertices.$cacheBuffer, i, o, c, l, v;
                 if (!n) {
-                    n = t.createBuffer();
-                    t.bindBuffer(t.ARRAY_BUFFER, n);
-                    t.bufferData(t.ARRAY_BUFFER, a.vertices, t.STATIC_DRAW);
-                    a.vertices.$cacheBuffer = n;
+                    n = a.createBuffer();
+                    a.bindBuffer(a.ARRAY_BUFFER, n);
+                    a.bufferData(a.ARRAY_BUFFER, t.vertices, a.STATIC_DRAW);
+                    t.vertices.$cacheBuffer = n;
                 }
-                if (a.colors) {
-                    o = a.colors.$cacheBuffer;
-                    if (!o) {
-                        o = t.createBuffer();
-                        t.bindBuffer(t.ARRAY_BUFFER, o);
-                        t.bufferData(t.ARRAY_BUFFER, a.colors, t.STATIC_DRAW);
-                        a.colors.$cacheBuffer = o;
+                if (t.colors) {
+                    i = t.colors.$cacheBuffer;
+                    if (!i) {
+                        i = a.createBuffer();
+                        a.bindBuffer(a.ARRAY_BUFFER, i);
+                        a.bufferData(a.ARRAY_BUFFER, t.colors, a.STATIC_DRAW);
+                        t.colors.$cacheBuffer = i;
                     }
                 } else {
-                    i = a.textures.$cacheBuffer;
-                    if (!i) {
-                        i = t.createBuffer();
-                        t.bindBuffer(t.ARRAY_BUFFER, i);
-                        t.bufferData(t.ARRAY_BUFFER, a.textures, t.STATIC_DRAW);
-                        a.textures.$cacheBuffer = i;
+                    o = t.textures.$cacheBuffer;
+                    if (!o) {
+                        o = a.createBuffer();
+                        a.bindBuffer(a.ARRAY_BUFFER, o);
+                        a.bufferData(a.ARRAY_BUFFER, t.textures, a.STATIC_DRAW);
+                        t.textures.$cacheBuffer = o;
                     }
                 }
-                if (a.indices) {
-                    v = a.indices.$cacheBuffer;
+                if (t.pointSizes) {
+                    v = t.pointSizes.$cacheBuffer;
                     if (!v) {
-                        v = t.createBuffer();
-                        t.bindBuffer(t.ELEMENT_ARRAY_BUFFER, v);
-                        t.bufferData(t.ELEMENT_ARRAY_BUFFER, a.indices, t.STATIC_DRAW);
-                        a.indices.$cacheBuffer = v;
+                        v = a.createBuffer();
+                        a.bindBuffer(a.ARRAY_BUFFER, v);
+                        a.bufferData(a.ARRAY_BUFFER, t.pointSizes, a.STATIC_DRAW);
+                        t.pointSizes.$cacheBuffer = v;
                     }
                 }
-                if (a.normals) {
-                    c = a.normals.$cacheBuffer;
+                if (t.indices) {
+                    c = t.indices.$cacheBuffer;
                     if (!c) {
-                        c = t.createBuffer();
-                        t.bindBuffer(t.ARRAY_BUFFER, c);
-                        t.bufferData(t.ARRAY_BUFFER, a.normals, t.STATIC_DRAW);
-                        a.normals.$cacheBuffer = c;
+                        c = a.createBuffer();
+                        a.bindBuffer(a.ELEMENT_ARRAY_BUFFER, c);
+                        a.bufferData(a.ELEMENT_ARRAY_BUFFER, t.indices, a.STATIC_DRAW);
+                        t.indices.$cacheBuffer = c;
                     }
                 }
-                if (o) {
-                    _(t, 0, e.webgl.light);
-                    t.bindBuffer(t.ARRAY_BUFFER, o);
-                    var u = 3;
-                    var l = t.UNSIGNED_BYTE;
-                    var s = true;
-                    var d = 0;
-                    var h = 0;
-                    t.vertexAttribPointer(t.colorLocation, u, l, s, d, h);
-                } else if (i) {
-                    _(t, 1, e.webgl.light);
-                    t.bindBuffer(t.ARRAY_BUFFER, i);
-                    var u = 2;
-                    var l = t.FLOAT;
-                    var s = false;
-                    var d = 0;
-                    var h = 0;
-                    t.vertexAttribPointer(t.texcoordLocation, u, l, s, d, h);
+                if (t.normals) {
+                    l = t.normals.$cacheBuffer;
+                    if (!l) {
+                        l = a.createBuffer();
+                        a.bindBuffer(a.ARRAY_BUFFER, l);
+                        a.bufferData(a.ARRAY_BUFFER, t.normals, a.STATIC_DRAW);
+                        t.normals.$cacheBuffer = l;
+                    }
                 }
-                if (a.vertices) {
-                    t.bindBuffer(t.ARRAY_BUFFER, n);
-                    var u = 3;
-                    var l = t.FLOAT;
-                    var s = false;
-                    var d = 0;
-                    var h = 0;
-                    t.vertexAttribPointer(t.positionLocation, u, l, s, d, h);
+                if (i) {
+                    y(a, 0, e.webgl.light, t.primitive);
+                    a.bindBuffer(a.ARRAY_BUFFER, i);
+                    a.vertexAttribPointer(a.colorLocation, t.hasAlpha ? 4 : 3, a.UNSIGNED_BYTE, true, 0, 0);
+                } else if (o) {
+                    y(a, 1, e.webgl.light, t.primitive);
+                    a.bindBuffer(a.ARRAY_BUFFER, o);
+                    a.vertexAttribPointer(a.texcoordLocation, 2, a.FLOAT, false, 0, 0);
                 }
-                if (a.normals) {
-                    t.bindBuffer(t.ARRAY_BUFFER, c);
-                    var u = 3;
-                    var l = t.FLOAT;
-                    var s = false;
-                    var d = 0;
-                    var h = 0;
-                    t.vertexAttribPointer(t.normalLocation, u, l, s, d, h);
+                if (t.pointSizes) {
+                    a.bindBuffer(a.ARRAY_BUFFER, v);
+                    a.vertexAttribPointer(a.sizeLocation, 1, a.FLOAT, false, 0, 0);
+                }
+                if (t.vertices) {
+                    a.bindBuffer(a.ARRAY_BUFFER, n);
+                    a.vertexAttribPointer(a.positionLocation, 3, a.FLOAT, false, 0, 0);
+                }
+                if (t.normals) {
+                    a.bindBuffer(a.ARRAY_BUFFER, l);
+                    a.vertexAttribPointer(a.normalLocation, 3, a.FLOAT, false, 0, 0);
                 }
                 if (e.webgl.$fudgeFactor) {
-                    var g = t.getUniformLocation(t.program, "u_fudgeFactor");
-                    var p = e.webgl.$fudgeFactor;
-                    t.uniform1f(g, p);
+                    var u = a.getUniformLocation(a.program, "u_fudgeFactor");
+                    var s = e.webgl.$fudgeFactor;
+                    a.uniform1f(u, s);
                 }
-                {
-                    var m = t.orthographic;
-                    m = A.translate(m, a.tx || 0, a.ty || 0, a.tz || 0);
-                    m = A.xRotate(m, T(a.rx) || 0);
-                    m = A.yRotate(m, T(a.ry) || 0);
-                    m = A.zRotate(m, T(a.rz) || 0);
-                    m = A.scale(m, (a.scaleX !== 1 ? a.scaleX : a.scale) || 1, (a.scaleY !== 1 ? a.scaleY : a.scale) || 1, (a.scaleZ !== 1 ? a.scaleZ : a.scale) || 1);
-                    var x = m;
-                }
-                if (e.webgl.camera) {
-                    var b = [ T(f.default.funcOrValue(e.webgl.camera.rx || 0, e)), T(f.default.funcOrValue(e.webgl.camera.ry || 0, e)), 1 ];
-                    var w = [ 0, 1, 0 ];
-                    var y = A.lookAt(b, x, w);
-                    var R = A.inverse(y);
-                    var x = A.multiply(x, R);
-                }
-                if (e.webgl.light) {
-                    t.uniformMatrix4fv(t.worldViewProjectionLocation, false, m);
-                    t.uniformMatrix4fv(t.worldInverseTransposeLocation, false, A.transpose(x));
-                }
-                t.uniformMatrix4fv(t.matrixLocation, false, x);
-                if (e.webgl.light) {
-                    var E = t.getUniformLocation(t.program, "a_color");
-                    t.uniform4fv(E, [ 1, 1, 1, 1 ]);
-                    t.uniform3fv(t.reverseLightDirectionLocation, A.normalize([ 0, 1, 0 ]));
-                }
-                t.uniform1i(t.textureLocation, 0);
-                if (v) {
-                    t.bindBuffer(t.ELEMENT_ARRAY_BUFFER, v);
-                    t.drawElements(t.TRIANGLES, a.indices.length, t.UNSIGNED_SHORT, 0);
+                var d;
+                if (!e.webgl.$camera) {
+                    d = a.orthographic;
                 } else {
-                    t.drawArrays(t.TRIANGLES, 0, a.vertices.length / 3);
+                    d = e.webgl.$camera.viewProjectionMatrix;
+                }
+                d = _.translate(d, t.tx || 0, t.ty || 0, t.tz || 0);
+                t.rx && (d = _.xRotate(d, E(t.rx)));
+                t.ry && (d = _.yRotate(d, E(t.ry)));
+                t.rz && (d = _.zRotate(d, E(t.rz)));
+                d = _.scale(d, (t.scaleX !== 1 ? t.scaleX : t.scale) || 1, (t.scaleY !== 1 ? t.scaleY : t.scale) || 1, (t.scaleZ !== 1 ? t.scaleZ : t.scale) || 1);
+                if (e.webgl.light) {
+                    a.uniformMatrix4fv(a.worldViewProjectionLocation, false, d);
+                    a.uniformMatrix4fv(a.worldInverseTransposeLocation, false, _.transpose(d));
+                }
+                a.uniformMatrix4fv(a.matrixLocation, false, d);
+                if (e.webgl.light) {
+                    var g = a.getUniformLocation(a.program, "a_color");
+                    a.uniform4fv(g, [ 1, 1, 1, 1 ]);
+                    a.uniform3fv(a.reverseLightDirectionLocation, _.normalize([ 0, 1, 0 ]));
+                }
+                a.uniform1i(a.textureLocation, 0);
+                var h = a.getUniformLocation(a.program, "f_shaderType");
+                a.uniform1i(h, f.default.firstValuable(t.primitive, 2));
+                var p = a.getUniformLocation(a.program, "v_shaderType");
+                a.uniform1i(p, f.default.firstValuable(t.primitive, 2));
+                if (c) {
+                    a.bindBuffer(a.ELEMENT_ARRAY_BUFFER, c);
+                    a.drawElements(a.TRIANGLES, t.indices.length, a.UNSIGNED_SHORT, 0);
+                } else {
+                    a.drawArrays(t.primitive === 0 ? a.POINTS : a.TRIANGLES, 0, t.vertices.length / 3);
                 }
             };
             var L;
-            var M = function r(e, a, t, n, o, i, v, c, u, l, s, f, d) {
-                var h = e.$gl;
-                h.enable(h.BLEND);
-                h.disable(h.DEPTH_TEST);
-                _(h, 1);
+            var M = function r(e, t, a, n, i, o, c, l, v, u, s, f, d) {
+                var g = e.$gl;
+                g.enable(g.BLEND);
+                g.disable(g.DEPTH_TEST);
+                y(g, 1);
                 if (!L) {
-                    L = h.createBuffer();
-                    h.bindBuffer(h.ARRAY_BUFFER, L);
-                    var g = [ 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1 ];
-                    h.bufferData(h.ARRAY_BUFFER, new Float32Array(g), h.STATIC_DRAW);
+                    L = g.createBuffer();
+                    g.bindBuffer(g.ARRAY_BUFFER, L);
+                    var h = [ 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1 ];
+                    g.bufferData(g.ARRAY_BUFFER, new Float32Array(h), g.STATIC_DRAW);
                 }
-                h.bindBuffer(h.ARRAY_BUFFER, L);
-                h.vertexAttribPointer(h.positionLocation, 2, h.FLOAT, false, 0, 0);
-                h.vertexAttribPointer(h.texcoordLocation, 2, h.FLOAT, false, 0, 0);
-                var p = h.orthographic;
-                p = A.translate(p, u, l, 0);
+                g.bindBuffer(g.ARRAY_BUFFER, L);
+                g.vertexAttribPointer(g.positionLocation, 2, g.FLOAT, false, 0, 0);
+                g.vertexAttribPointer(g.texcoordLocation, 2, g.FLOAT, false, 0, 0);
+                var p = g.orthographic;
+                p = _.translate(p, v, u, 0);
                 if (d.rotate) {
-                    p = A.translate(p, -u + d.beforeRotate[0] || 0, -l + d.beforeRotate[1] || 0, 0);
-                    p = A.zRotate(p, d.rotate);
-                    p = A.translate(p, u + d.afterRotate[0] || 0, l + d.afterRotate[1] || 0, 0);
+                    p = _.translate(p, -v + d.beforeRotate[0] || 0, -u + d.beforeRotate[1] || 0, 0);
+                    p = _.zRotate(p, d.rotate);
+                    p = _.translate(p, v + d.afterRotate[0] || 0, u + d.afterRotate[1] || 0, 0);
                 }
-                p = A.scale(p, s, f, 1);
-                h.uniformMatrix4fv(h.matrixLocation, false, p);
-                if (o || i || v !== t || c !== n) {
-                    var m = A.translation(o / t, i / n, 0);
-                    m = A.scale(m, v / t, c / n, 1);
-                    h.uniformMatrix4fv(h.textureMatrixLocation, false, m);
+                p = _.scale(p, s, f, 1);
+                g.uniformMatrix4fv(g.matrixLocation, false, p);
+                if (i || o || c !== a || l !== n) {
+                    var m = _.translation(i / a, o / n, 0);
+                    m = _.scale(m, c / a, l / n, 1);
+                    g.uniformMatrix4fv(g.textureMatrixLocation, false, m);
                 }
-                h.drawArrays(h.TRIANGLES, 0, 6);
+                g.drawArrays(g.TRIANGLES, 0, 6);
             };
-            var B = function r(e, a) {
+            var B = function r(e, t) {
                 e.$isWebgl = true;
                 e.webgl = {};
-                t(e.webgl, a.webgl);
+                a(e.webgl, t.webgl);
                 e.webgl.depth = e.webgl.depth || 1e4;
+                e.webgl.singleShader = e.webgl.singleShader || 0;
+                e.webgl.camera = e.webgl.camera || {};
+                e.webgl.camera.current = e.webgl.camera.current || {};
+                e.webgl.camera.target = e.webgl.camera.target || {};
                 var n = e.$gl = e.$paintContext;
                 n.clearColor(0, 0, 0, 0);
                 n.blendFunc(n.SRC_ALPHA, n.ONE_MINUS_SRC_ALPHA);
-                _(n, 0);
+                y(n, 0);
                 {
                     e.imgLoader = function(r, e) {
-                        var a = n.createTexture();
-                        var t = {
+                        var t = n.createTexture();
+                        var a = {
                             width: 0,
                             height: 0
                         };
                         (0, p.default)(r, function(r) {
-                            function o(r) {
-                                var o = new Image();
-                                o.addEventListener("load", function() {
-                                    t.width = o.width;
-                                    t.height = o.height;
-                                    t.texture = a;
-                                    t.img = o;
-                                    n.bindTexture(n.TEXTURE_2D, a);
+                            function i(r) {
+                                var i = new Image();
+                                i.addEventListener("load", function() {
+                                    a.width = i.width;
+                                    a.height = i.height;
+                                    a.texture = t;
+                                    a.img = i;
+                                    n.bindTexture(n.TEXTURE_2D, t);
                                     n.texParameteri(n.TEXTURE_2D, n.TEXTURE_MIN_FILTER, n.LINEAR);
                                     n.texParameteri(n.TEXTURE_2D, n.TEXTURE_WRAP_S, n.CLAMP_TO_EDGE);
                                     n.texParameteri(n.TEXTURE_2D, n.TEXTURE_WRAP_T, n.CLAMP_TO_EDGE);
-                                    n.texImage2D(n.TEXTURE_2D, 0, n.RGBA, n.RGBA, n.UNSIGNED_BYTE, o);
-                                    e && e(t);
+                                    n.texImage2D(n.TEXTURE_2D, 0, n.RGBA, n.RGBA, n.UNSIGNED_BYTE, i);
+                                    e && e(a);
                                 });
-                                o.src = r;
+                                i.src = r;
                             }
-                            o(r, e);
+                            i(r, e);
                         });
-                        return t;
+                        return a;
                     };
                 }
             };
-            var U = function r(e) {
-                var a = this;
+            var S = function r(e) {
+                var t = this;
                 if (e.webgl) {
                     this.$paintContext = this.$dom.getContext("webgl", {
                         alpha: true,
@@ -1282,13 +1285,31 @@
                     if (this.$paintContext) {
                         B(this, e);
                         this.on("beforeTick", function() {
-                            a.webgl.$depth = f.default.funcOrValue(f.default.firstValuable(a.webgl.depth, 0), a);
-                            a.webgl.$fudgeFactor = f.default.funcOrValue(f.default.firstValuable(a.webgl.fudgeFactor, 0), a);
-                            a.$paintContext.orthographic = A.orthographic(0, a.width, a.height, 0, -a.webgl.$depth, a.webgl.$depth);
+                            t.$paintContext.clear(t.$paintContext.COLOR_BUFFER_BIT | t.$paintContext.DEPTH_BUFFER_BIT);
+                            t.webgl.$depth = f.default.funcOrValue(f.default.firstValuable(t.webgl.depth, 0), t);
+                            t.webgl.$camera = t.webgl.camera.enable ? {} : false;
+                            t.webgl.$fudgeFactor = f.default.funcOrValue(f.default.firstValuable(t.webgl.fudgeFactor, 0), t);
+                            if (t.webgl.$camera) {
+                                var r = t.webgl.camera;
+                                var e = t.width / t.height;
+                                var a = _.perspective(E(60), e, 1, 1e4);
+                                var n = [ f.default.funcOrValue(r.current.x || 0, t), f.default.funcOrValue(r.current.y || 0, t), f.default.funcOrValue(r.current.z || 0, t) ];
+                                var i = [ 0, -1, 0 ];
+                                if (r.rotate) {
+                                    i = [ f.default.funcOrValue(r.rotate.x, t), f.default.funcOrValue(r.rotate.y, t), f.default.funcOrValue(r.rotate.z, t) ];
+                                }
+                                var o = [ f.default.funcOrValue(r.target.x || 0, t), f.default.funcOrValue(r.target.y || 0, t), f.default.funcOrValue(r.target.z || 0, t) ];
+                                var c = _.lookAt(n, o, i);
+                                var l = _.inverse(c);
+                                var v = _.multiply(a, l);
+                                t.webgl.$camera.viewProjectionMatrix = v;
+                            }
+                            t.$paintContext.orthographic = _.orthographic(0, t.width, t.height, 0, t.webgl.$depth, -t.webgl.$depth);
+                            t.$paintContext.singleShader = t.webgl.singleShader;
                         });
                     } else {
                         if (true) {
-                            b("Webgl is not supported in current browser, using canvas2d instead.");
+                            x("Webgl is not supported in current browser, using canvas2d instead.");
                         }
                         if (e.webgl.fallback) {
                             e.webgl.fallback.call(this);
@@ -1296,131 +1317,165 @@
                     }
                 }
             };
-            var D = [ "rx", "ry", "rz" ];
-            var $ = [ "scale", "scaleX", "scaleY", "scaleZ" ];
-            var P = D.concat($);
-            var S = function r() {
+            var U = [ "rx", "ry", "rz" ];
+            var D = [ "scale", "scaleX", "scaleY", "scaleZ" ];
+            var P = U.concat(D);
+            var $ = function r() {
                 var e = this;
-                var a = this.$canvas;
+                var t = this.$canvas;
                 if (e.webgl && e.webgl.vertices) {
                     e.$rendered = true;
                     if (e.webgl.img) {
                         if (typeof e.webgl.img === "string") {
-                            e.webgl.img = a.imgLoader(e.webgl.img);
+                            e.webgl.img = t.imgLoader(e.webgl.img);
                         } else if (e.webgl.img.src) {
-                            e.webgl.img = a.imgLoader(e.webgl.img.src);
+                            e.webgl.img = t.imgLoader(e.webgl.img.src);
                         }
                     }
-                    var t = {
+                    var a = {
                         tx: e.getStyle("tx"),
                         ty: e.getStyle("ty"),
                         tz: f.default.funcOrValue(e.webgl.tz, e) || 0
                     };
                     for (var n in e.webgl) {
-                        t[n] = f.default.funcOrValue(e.webgl[n], e) || 0;
+                        a[n] = f.default.funcOrValue(e.webgl[n], e) || 0;
                     }
                     P.forEach(function(r) {
-                        t[r] = e.getWebglStyle(r);
+                        a[r] = e.getWebglStyle(r);
                     });
-                    var o = {
+                    var i = {
                         $id: e.$id,
                         type: "3d",
-                        webgl: t
+                        webgl: a
                     };
                     if (true) {
-                        o.$origin = e;
+                        i.$origin = e;
                     }
-                    a.$children.push(o);
+                    t.$children.push(i);
                 }
             };
-            var I = function r(e, a) {
-                var t = this;
-                if (t.$isWebgl) {
-                    E(e, a, t);
+            var z = function r(e, t) {
+                var a = this;
+                if (a.$isWebgl) {
+                    T(e, t, a);
                     if (true) {
-                        t.$plugin.drawImage(t);
+                        a.$plugin.drawImage(a);
                     }
                     return true;
                 }
             };
-            var O = function r(e) {
-                e.webglShapes = v.default;
+            var I = function r(e) {
+                e.webglShapes = c.default;
                 e.sprite.prototype.getWebglStyle = function(r) {
                     var e = this;
-                    var a = void 0;
-                    if ($.indexOf(r) >= 0) a = 1;
-                    if (D.indexOf(r) >= 0) a = 0;
+                    var t = void 0;
+                    if (D.indexOf(r) >= 0) t = 1;
+                    if (U.indexOf(r) >= 0) t = 0;
                     if (e.webgl) {
-                        a = f.default.funcOrValue(e.webgl[r], e) || a;
+                        t = f.default.funcOrValue(e.webgl[r], e) || t;
                     }
                     if (e.$parent) {
-                        if ($.indexOf(r) >= 0) {
-                            a *= f.default.firstValuable(e.$parent.getWebglStyle(r), 1);
-                        } else if (D.indexOf(r) >= 0) {
-                            a += f.default.firstValuable(e.$parent.getWebglStyle(r), 0);
+                        if (D.indexOf(r) >= 0) {
+                            t *= f.default.firstValuable(e.$parent.getWebglStyle(r), 1);
+                        } else if (U.indexOf(r) >= 0) {
+                            t += f.default.firstValuable(e.$parent.getWebglStyle(r), 0);
                         }
                     }
-                    return a;
+                    return t;
                 };
                 e.sprite.prototype.updateWebglStyle = function(r, e) {
-                    var a = this;
-                    if (a.webgl && a.webgl[r]) {
-                        a.webgl[r].$cacheBuffer = undefined;
+                    var t = this;
+                    if (t.webgl && t.webgl[r]) {
+                        t.webgl[r].$cacheBuffer = undefined;
                         if (r === "colors" && e) {
-                            var t = a.webgl.vertices.length / e.length;
-                            a.webgl.colors = new Uint8Array((0, l.arrayRepeat)(e, t));
+                            var a = t.webgl.vertices.length / e.length;
+                            t.webgl.colors = new Uint8Array((0, u.arrayRepeat)(e, a));
                         }
                     }
                 };
             };
-            var V = {
-                onCreate: U,
-                onPaint: S,
-                onRender: I,
-                onUse: O
+            var O = {
+                onCreate: S,
+                onPaint: $,
+                onRender: z,
+                onUse: I
             };
-            if (x && window.Easycanvas) {
-                Easycanvas.use(V);
+            if (b && window.Easycanvas) {
+                Easycanvas.use(O);
             } else {
-                r.exports = V;
+                r.exports = O;
             }
         },
         68: function(r, e) {
             "use strict";
-            var a = function r(e, a) {
-                var t = "\n        attribute vec4 a_position;\n        " + (e === 0 ? "attribute vec4 a_color;" : "attribute vec2 a_texcoord;") + "\n        " + (a && "\n            attribute vec3 a_normal;\n            uniform mat4 u_worldViewProjection;\n            uniform mat4 u_worldInverseTranspose;\n        " || "") + "\n        uniform float u_fudgeFactor; // 透射\n\n        uniform mat4 u_matrix;\n\n        " + (e === 0 ? "varying vec4 v_color;" : "varying vec2 v_texcoord;") + "\n        " + (a && "\n            varying vec3 v_normal;\n        " || "") + "\n\n        void main() {\n            // Multiply the position by the matrix.\n            // gl_Position = u_matrix * a_position;\n\n            // 透射\n            // 调整除数\n            vec4 position = u_matrix * a_position;\n            // 由于裁减空间中的 Z 值是 -1 到 +1 的，所以 +1 是为了让 zToDivideBy 变成 0 到 +2 * fudgeFactor\n            float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // 透射\n\n            " + (a ? "gl_Position = u_worldViewProjection * a_position;" : "gl_Position = vec4(position.xy / zToDivideBy, position.zw);") + "\n\n            // gl_Position = u_worldViewProjection * vec4(position.xy / zToDivideBy, position.zw);\n\n            " + (e === 0 ? "v_color = a_color;" : "v_texcoord = a_texcoord;") + "\n\n                " + (a && "\n                    v_normal = mat3(u_worldInverseTranspose) * a_normal;\n                " || "") + "\n        }\n    ";
+            r.exports = function(r, e, t) {
+                var a = "\n        precision mediump float;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        uniform sampler2D u_texture;\n\n        " + (e && "\n            varying vec3 v_normal;\n            uniform vec3 u_reverseLightDirection;\n        " || "") + "\n\n        void main() {\n            " + (e && "\n                vec3 normal = normalize(v_normal);\n                float light = dot(normal, u_reverseLightDirection);\n            " || "") + "\n\n            " + ([ "gl_FragColor = v_color;", "gl_FragColor = texture2D(u_texture, v_texcoord);" ][r] || "") + "\n\n            " + (t === 0 && "\n                float dist = distance( gl_PointCoord, vec2(0.5) );\n                float alpha = 1.0 - smoothstep(0.45,0.5,dist);\n                gl_FragColor.a *= alpha;\n            " || "") + "\n\n            " + (e && "\n                light += 2.0;\n                light *= 0.5;\n                gl_FragColor.rgb *= light;\n            " || "") + "\n        }\n    ";
+                return a;
+            };
+        },
+        69: function(r, e) {
+            "use strict";
+            r.exports = function(r, e) {
+                var t = "\n        precision mediump float;\n\n        uniform int f_shaderType;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        uniform sampler2D u_texture;\n\n        " + (e && "\n            varying vec3 v_normal;\n            uniform vec3 u_reverseLightDirection;\n        " || "") + "\n\n        void main() {\n            " + (e && "\n                vec3 normal = normalize(v_normal);\n                float light = dot(normal, u_reverseLightDirection);\n            " || "") + "\n\n            " + ([ "gl_FragColor = v_color;", "gl_FragColor = texture2D(u_texture, v_texcoord);" ][r] || "") + "\n\n            if (f_shaderType == 0) {\n                float dist = distance( gl_PointCoord, vec2(0.5) );\n                float alpha = 1.0 - smoothstep(0.1,0.5,dist);\n                gl_FragColor.a *= alpha;\n            }\n\n            " + (e && "\n                light += 2.0;\n                light *= 0.5;\n                gl_FragColor.rgb *= light;\n            " || "") + "\n        }\n    ";
                 return t;
             };
-            var t = function r(e, a) {
-                var t = "\n        precision mediump float;\n\n        " + (e === 0 ? "varying vec4 v_color;" : "varying vec2 v_texcoord;") + "\n\n        uniform sampler2D u_texture;\n\n        " + (a && "\n            varying vec3 v_normal;\n            uniform vec3 u_reverseLightDirection;\n        " || "") + "\n\n        void main() {\n            " + (a && "\n                vec3 normal = normalize(v_normal);\n                float light = dot(normal, u_reverseLightDirection);\n            " || "") + "\n\n            " + (e === 0 ? "gl_FragColor = v_color;" : "gl_FragColor = texture2D(u_texture, v_texcoord);") + "\n\n            " + (a && "\n                light += 2.0;\n                light *= 0.5;\n                gl_FragColor.rgb *= light;\n            " || "") + "\n        }\n    ";
+        },
+        70: function(r, e) {
+            "use strict";
+            r.exports = function(r, e, t) {
+                var a = "\n        precision mediump float;\n        attribute vec4 a_position;\n        " + ([ "attribute vec4 a_color;", "attribute vec2 a_texcoord;" ][r] || "") + "\n\n        " + (t === 0 && "\n            attribute float u_size; // 点精灵大小\n        " || "") + "\n\n        " + (e && "\n            attribute vec3 a_normal;\n            uniform mat4 u_worldViewProjection;\n            uniform mat4 u_worldInverseTranspose;\n        " || "") + "\n\n        uniform float u_fudgeFactor; // 透射\n\n        uniform mat4 u_matrix;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        " + (e && "\n            varying vec3 v_normal;\n        " || "") + "\n\n        void main() {\n            // Multiply the position by the matrix.\n            // gl_Position = u_matrix * a_position;\n\n            // 透射\n            // 调整除数\n            vec4 position = u_matrix * a_position;\n            // 由于裁减空间中的 Z 值是 -1 到 +1 的，所以 +1 是为了让 zToDivideBy 变成 0 到 +2 * fudgeFactor\n            float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // 透射\n\n            " + (e ? "gl_Position = u_worldViewProjection * a_position;" : "gl_Position = vec4(position.xy / zToDivideBy, position.zw);") + "\n\n            // gl_Position = u_worldViewProjection * vec4(position.xy / zToDivideBy, position.zw);\n\n            " + ([ "v_color = a_color;", "v_texcoord = a_texcoord;" ][r] || "") + "\n\n            " + (t === 0 && "\n                gl_PointSize = u_size;\n            " || "") + "\n\n            " + (e && "\n                v_normal = mat3(u_worldInverseTranspose) * a_normal;\n            " || "") + "\n        }\n    ";
+                return a;
+            };
+        },
+        71: function(r, e) {
+            "use strict";
+            r.exports = function(r, e) {
+                var t = "\n        precision mediump float;\n\n        uniform int v_shaderType;\n\n        attribute vec4 a_position;\n        " + ([ "attribute vec4 a_color;", "attribute vec2 a_texcoord;" ][r] || "") + "\n\n        attribute float u_size; // 点精灵大小\n\n        " + (e && "\n            attribute vec3 a_normal;\n            uniform mat4 u_worldViewProjection;\n            uniform mat4 u_worldInverseTranspose;\n        " || "") + "\n\n        uniform float u_fudgeFactor; // 透射\n\n        uniform mat4 u_matrix;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        " + (e && "\n            varying vec3 v_normal;\n        " || "") + "\n\n        void main() {\n            // Multiply the position by the matrix.\n            // gl_Position = u_matrix * a_position;\n\n            // 透射\n            // 调整除数\n            vec4 position = u_matrix * a_position;\n            // 由于裁减空间中的 Z 值是 -1 到 +1 的，所以 +1 是为了让 zToDivideBy 变成 0 到 +2 * fudgeFactor\n            float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // 透射\n\n            " + (e ? "gl_Position = u_worldViewProjection * a_position;" : "gl_Position = vec4(position.xy / zToDivideBy, position.zw);") + "\n\n            // gl_Position = u_worldViewProjection * vec4(position.xy / zToDivideBy, position.zw);\n\n            if (v_shaderType == 0) {\n                gl_PointSize = u_size;\n            } else {\n            }\n\n            " + ([ "v_color = a_color;", "v_texcoord = a_texcoord;" ][r] || "") + "\n\n            " + (e && "\n                v_normal = mat3(u_worldInverseTranspose) * a_normal;\n            " || "") + "\n        }\n    ";
                 return t;
             };
+        },
+        72: function(r, e, t) {
+            "use strict";
+            var a = t(70);
+            var n = s(a);
+            var i = t(71);
+            var o = s(i);
+            var c = t(68);
+            var l = s(c);
+            var v = t(69);
+            var u = s(v);
+            function s(r) {
+                return r && r.__esModule ? r : {
+                    default: r
+                };
+            }
             r.exports = {
-                shaderVertexFactory: a,
-                shaderFragmentFactory: t,
-                factory: function r(e, n) {
-                    return n === e.FRAGMENT_SHADER ? t : a;
+                factory: function r(e, t) {
+                    return t === e.FRAGMENT_SHADER ? l.default : n.default;
+                },
+                final: function r(e, t) {
+                    return t === e.FRAGMENT_SHADER ? u.default : o.default;
                 }
             };
         },
-        69: function(r, e, a) {
+        73: function(r, e, t) {
             "use strict";
-            var t = Object.assign || function(r) {
+            var a = Object.assign || function(r) {
                 for (var e = 1; e < arguments.length; e++) {
-                    var a = arguments[e];
-                    for (var t in a) {
-                        if (Object.prototype.hasOwnProperty.call(a, t)) {
-                            r[t] = a[t];
+                    var t = arguments[e];
+                    for (var a in t) {
+                        if (Object.prototype.hasOwnProperty.call(t, a)) {
+                            r[a] = t[a];
                         }
                     }
                 }
                 return r;
             };
-            var n = a(22);
-            var o = new Uint16Array([ 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23 ]);
-            var i = new Float32Array((0, n.arrayRepeat)([ 0, 0, 0, 1, 1, 1, 1, 0 ], 6));
-            var v = 6;
-            var c = {
+            var n = t(21);
+            var i = new Uint16Array([ 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23 ]);
+            var o = new Float32Array((0, n.arrayRepeat)([ 1, 0, 0, 0, 0, 1, 1, 1 ], 6));
+            var c = 6;
+            var l = {
                 icosahedron: {
                     vertices: [ 0, 0, -1.902, 0, 0, 1.902, -1.701, 0, -.8507, 1.701, 0, .8507, 1.376, -1, -.8507, 1.376, 1, -.8507, -1.376, -1, .8507, -1.376, 1, .8507, -.5257, -1.618, -.8507, -.5257, 1.618, -.8507, .5257, -1.618, .8507, .5257, 1.618, .8507 ],
                     indices: [ [ 1, 11, 7 ], [ 1, 7, 6 ], [ 1, 6, 10 ], [ 1, 10, 3 ], [ 1, 3, 11 ], [ 4, 8, 0 ], [ 5, 4, 0 ], [ 9, 5, 0 ], [ 2, 9, 0 ], [ 8, 2, 0 ], [ 11, 9, 7 ], [ 7, 2, 6 ], [ 6, 8, 10 ], [ 10, 4, 3 ], [ 3, 5, 11 ], [ 4, 10, 8 ], [ 5, 3, 4 ], [ 9, 11, 5 ], [ 2, 7, 9 ], [ 8, 6, 2 ] ]
@@ -1439,106 +1494,106 @@
                     indices: [ [ 7, 3, 1, 5 ], [ 7, 5, 4, 6 ], [ 7, 6, 2, 3 ], [ 3, 2, 0, 1 ], [ 0, 2, 6, 4 ], [ 1, 0, 4, 5 ] ]
                 }
             };
-            var u = function() {
+            var v = function() {
                 var r = {};
-                return function(e, a) {
-                    var t = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-                    var v = e + a.join(",") + t.join(",");
-                    var u = {};
+                return function(e, t) {
+                    var a = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+                    var c = e + t.join(",") + a.join(",");
+                    var v = {};
                     if (e === "quadrilateral") {} else if (e === "block") {
-                        var l = a[0] / 2;
-                        var s = a[1] / 2;
-                        var f = a[2] / 2;
-                        var d = r[v + "v"] || new Float32Array([ l, s, f, -l, s, f, -l, -s, f, l, -s, f, l, s, f, l, -s, f, l, -s, -f, l, s, -f, l, s, f, l, s, -f, -l, s, -f, -l, s, f, -l, s, f, -l, s, -f, -l, -s, -f, -l, -s, f, -l, -s, -f, l, -s, -f, l, -s, f, -l, -s, f, l, -s, -f, -l, -s, -f, -l, s, -f, l, s, -f ]);
-                        var h = r[v + "l"] || Math.max(Math.max.apply(undefined, d), -Math.min.apply(undefined, d));
-                        u.vertices = r[v + "v"] = d;
-                        u.indices = o;
-                        u.textures = i;
-                        u.longSide = r[v + "l"] = h;
+                        var u = t[0] / 2;
+                        var s = t[1] / 2;
+                        var f = t[2] / 2;
+                        var d = r[c + "v"] || new Float32Array([ u, s, f, -u, s, f, -u, -s, f, u, -s, f, u, s, f, u, -s, f, u, -s, -f, u, s, -f, u, s, f, u, s, -f, -u, s, -f, -u, s, f, -u, s, f, -u, s, -f, -u, -s, -f, -u, -s, f, -u, -s, -f, u, -s, -f, u, -s, f, -u, -s, f, u, -s, -f, -u, -s, -f, -u, s, -f, u, s, -f ]);
+                        var g = r[c + "l"] || Math.max(Math.max.apply(undefined, d), -Math.min.apply(undefined, d));
+                        v.vertices = r[c + "v"] = d;
+                        v.indices = i;
+                        v.textures = o;
+                        v.longSide = r[c + "l"] = g;
                     } else if (e === "ball") {
-                        var g = r[v + "v"] || [];
-                        var p = r[v + "i"] || [];
-                        var m = r[v + "t"] || [];
-                        if (!g.length) {
-                            var A = [];
-                            var x = a[0];
-                            var b = a[1], w = a[2];
-                            for (var y = 0; y <= b; y++) {
-                                var _ = y * Math.PI / b;
-                                var R = Math.sin(_);
-                                var E = Math.cos(_);
-                                for (var T = 0; T <= w; T++) {
-                                    var F = T * 2 * Math.PI / w;
+                        var h = r[c + "v"] || [];
+                        var p = r[c + "i"] || [];
+                        var m = r[c + "t"] || [];
+                        if (!h.length) {
+                            var _ = [];
+                            var b = t[0];
+                            var x = t[1], w = t[2];
+                            for (var A = 0; A <= x; A++) {
+                                var y = A * Math.PI / x;
+                                var R = Math.sin(y);
+                                var T = Math.cos(y);
+                                for (var E = 0; E <= w; E++) {
+                                    var F = E * 2 * Math.PI / w;
                                     var L = Math.sin(F);
                                     var M = Math.cos(F);
                                     var B = M * R;
-                                    var U = E;
-                                    var D = L * R;
-                                    var $ = 1 - T / w;
-                                    var P = 1 - y / b;
-                                    A.push(B);
-                                    A.push(U);
-                                    A.push(D);
-                                    m.push($);
+                                    var S = T;
+                                    var U = L * R;
+                                    var D = 1 - E / w;
+                                    var P = 1 - A / x;
+                                    _.push(B);
+                                    _.push(S);
+                                    _.push(U);
+                                    m.push(D);
                                     m.push(P);
-                                    g.push(x * B);
-                                    g.push(x * U);
-                                    g.push(x * D);
+                                    h.push(b * B);
+                                    h.push(b * S);
+                                    h.push(b * U);
                                 }
                             }
-                            for (var y = 0; y < b; y++) {
-                                for (var T = 0; T < w; T++) {
-                                    var S = y * (w + 1) + T;
-                                    var I = S + w + 1;
-                                    p.push(S);
-                                    p.push(I);
-                                    p.push(S + 1);
-                                    p.push(I);
-                                    p.push(I + 1);
-                                    p.push(S + 1);
+                            for (var A = 0; A < x; A++) {
+                                for (var E = 0; E < w; E++) {
+                                    var $ = A * (w + 1) + E;
+                                    var z = $ + w + 1;
+                                    p.push($);
+                                    p.push(z);
+                                    p.push($ + 1);
+                                    p.push(z);
+                                    p.push(z + 1);
+                                    p.push($ + 1);
                                 }
                             }
-                            r[v + "v"] = new Float32Array(g);
-                            r[v + "i"] = new Uint16Array(p);
-                            r[v + "t"] = new Float32Array(m);
-                            r[v + "l"] = Math.max(Math.max.apply(undefined, d), -Math.min.apply(undefined, g));
+                            r[c + "v"] = new Float32Array(h);
+                            r[c + "i"] = new Uint16Array(p);
+                            r[c + "t"] = new Float32Array(m);
+                            r[c + "l"] = Math.max(Math.max.apply(undefined, d), -Math.min.apply(undefined, h));
                         }
-                        u.vertices = r[v + "v"];
-                        u.indices = r[v + "i"];
-                        u.textures = r[v + "t"];
-                        u.longSide = r[v + "l"];
+                        v.vertices = r[c + "v"];
+                        v.indices = r[c + "i"];
+                        v.textures = r[c + "t"];
+                        v.longSide = r[c + "l"];
                     } else {
-                        var d = r[v + "v"] || new Float32Array(c[e].vertices.map(function(r) {
-                            return r * a[0] / 2;
+                        var d = r[c + "v"] || new Float32Array(l[e].vertices.map(function(r) {
+                            return r * t[0] / 2;
                         }));
-                        var h = r[v + "l"] || Math.max(Math.max.apply(undefined, d), -Math.min.apply(undefined, d));
-                        u.vertices = r[v + "v"] = d;
-                        u.indices = new Uint16Array(c[e].indices.join(",").split(","));
-                        u.textures = r[v + "t"];
-                        if (!u.textures) {
-                            u.textures = [];
-                            for (var O = 0; O < u.indices.length; O++) {
-                                u.textures.push(Math.random().toFixed(2));
+                        var g = r[c + "l"] || Math.max(Math.max.apply(undefined, d), -Math.min.apply(undefined, d));
+                        v.vertices = r[c + "v"] = d;
+                        v.indices = new Uint16Array(l[e].indices.join(",").split(","));
+                        v.textures = r[c + "t"];
+                        if (!v.textures) {
+                            v.textures = [];
+                            for (var I = 0; I < v.indices.length; I++) {
+                                v.textures.push(Math.random().toFixed(2));
                             }
-                            u.textures = r[v + "t"] = new Float32Array(u.textures);
+                            v.textures = r[c + "t"] = new Float32Array(v.textures);
                         }
-                        u.longSide = r[v + "l"] = h;
+                        v.longSide = r[c + "l"] = g;
                     }
-                    if (t.length) {
-                        u.colors = r[v + "c"];
-                        if (!u.colors) {
-                            var V = (u.indices || u.vertices).length / t.length * (u.indices ? 3 : 1);
-                            u.colors = new Uint8Array((0, n.arrayRepeat)(t, Math.ceil(V)));
-                            r[v + "c"] = u.colors;
+                    if (a.length) {
+                        v.colors = r[c + "c"];
+                        if (!v.colors) {
+                            var O = (v.indices || v.vertices).length / a.length * (v.indices ? 3 : 1);
+                            v.colors = new Uint8Array((0, n.arrayRepeat)(a, Math.ceil(O)));
+                            r[c + "c"] = v.colors;
                         }
                     }
-                    return u;
+                    return v;
                 };
             }();
-            var l = function r(e, a) {
-                for (var t in a) {
-                    if (!e[t]) {
-                        e[t] = a[t];
+            var u = function r(e, t) {
+                for (var a in t) {
+                    if (!e[a]) {
+                        e[a] = t[a];
                     }
                 }
                 return e;
@@ -1548,16 +1603,16 @@
             };
             var f = {
                 block: function r(e) {
-                    var a = u("block", [ e.a, e.b, e.c ], e.colors);
-                    return l(a, e);
+                    var t = v("block", [ e.a, e.b, e.c ], e.colors);
+                    return u(t, e);
                 },
                 quadrilateral: function r(e) {
-                    var a = u("quadrilateral", [ e.a, e.b, e.c ], e.colors);
-                    return l(a, e);
+                    var t = v("quadrilateral", [ e.a, e.b, e.c ], e.colors);
+                    return u(t, e);
                 },
                 ball: function r(e) {
-                    var a = u("ball", [ e.r, e.b || e.lat || 20, e.b || e.lng || 20 ], e.colors);
-                    return l(a, e);
+                    var t = v("ball", [ e.r, e.b || e.lat || 20, e.b || e.lng || 20 ], e.colors);
+                    return u(t, e);
                 },
                 custom: function r(e) {
                     if (!e.vertices.$cache) {
@@ -1575,35 +1630,38 @@
                     }
                     if (e.textures && e.textures.length) {
                         if (!e.textures.$cache) {
-                            var a = e.vertices.length / e.textures.length / 1.5;
-                            e.textures.$cache = new Float32Array((0, n.arrayRepeat)(e.textures, a));
+                            var t = e.vertices.length / e.textures.length / 1.5;
+                            e.textures.$cache = new Float32Array((0, n.arrayRepeat)(e.textures, t));
                         }
                     }
                     if (e.colors && e.colors.length) {
                         if (!e.colors.$cache) {
-                            var a = e.vertices.length / e.colors.length;
-                            e.colors.$cache = new Uint8Array((0, n.arrayRepeat)(e.colors, a));
+                            var t = e.vertices.length / e.colors.length;
+                            if (e.hasAlpha) {
+                                t = t / 3 * 4;
+                            }
+                            e.colors.$cache = new Uint8Array((0, n.arrayRepeat)(e.colors, t));
                         }
                     }
-                    var o = t(e, {
+                    var i = a(e, {
                         vertices: e.vertices.$cache,
                         normals: e.normals ? e.normals.$cache : undefined,
                         indices: e.indices ? e.indices.$cache : undefined,
                         textures: e.textures ? e.textures.$cache : undefined,
                         colors: e.colors ? e.colors.$cache : undefined
                     });
-                    return o;
+                    return i;
                 }
             };
             var d = function r(e) {
                 f[e] = function(r) {
-                    var a = u(e, [ r.r ], r.colors);
-                    a.type = v;
-                    return l(a, r);
+                    var t = v(e, [ r.r ], r.colors);
+                    t.type = c;
+                    return u(t, r);
                 };
             };
-            for (var h in c) {
-                d(h);
+            for (var g in l) {
+                d(g);
             }
             r.exports = f;
         }

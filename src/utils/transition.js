@@ -1,6 +1,8 @@
 // Math.PI wastes some performace
 const PI = 3.141593;
 
+import { funcOrValue } from './utils.js';
+
 const second2frame = function (second) {
     return second / 1000 * 60;
 };
@@ -9,7 +11,7 @@ const getLastPaintTime = function (transitions) {
     return transitions.$lastPaintTime || Date.now();
 };
 
-const transFuncs = {
+const types = {
     linear: function (a, b, duration) {
         if (a === b) return a;
 
@@ -105,7 +107,7 @@ const transFuncs = {
     },
 
     ease: function (a, b, duration) {
-        return this.pendulum(a, b, duration, {
+        return this.pendulum(a, b, duration * 2, {
             cycle: 0.5,
         });
     },
@@ -148,4 +150,22 @@ const transFuncs = {
     },
 };
 
-module.exports = transFuncs;
+const transition = function (parent, key, type, end, duration) {
+    let current = funcOrValue(parent[key]);
+
+    if (process.env.NODE_ENV !== 'production') {
+        if (typeof current === 'undefined') {
+            console.warn('[Easycanvas] start value in transition is undefined, using 0 instead.');
+        }
+    }
+
+    current = current || 0;
+
+    parent[key] = types[type].bind(transition)(current, end, duration);
+};
+
+for (var i in types) {
+    transition[i] = types[i];
+}
+
+module.exports = transition;

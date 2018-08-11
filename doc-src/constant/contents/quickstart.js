@@ -2,7 +2,7 @@ module.exports = `
     <article id="快速开始（浏览器与Node环境）">
         <h1>快速开始</h1>
 
-        <h2>如何引入</h2>
+        <h2>在浏览器和Node中引入</h2>
 
         <p>Easycanvas支持通过script标签的方式引入，或者通过npm包引入。develop版本可以配合Chrome插件进行调试。</p>
 
