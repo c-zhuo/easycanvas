@@ -11,6 +11,8 @@
 import utils from 'utils/utils.js';
 import constants from 'constants';
 
+// const inBrowser = typeof window !== 'undefined';
+
 module.exports = function ($sprite, $canvas) {
     let _props = {};
 

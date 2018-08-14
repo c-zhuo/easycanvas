@@ -33,6 +33,7 @@ module.exports = function (dom, option) {
     }
 
     this.name = _option.name || dom.id || (dom.classList && dom.classList[0]) || 'Unnamed';
+    this.$inBrowser = typeof window !== 'undefined';
 
     if (_option.fullScreen && typeof document !== 'undefined') {
         dom.width = dom.style.width = document.body.clientWidth || document.documentElement.clientWidth;
@@ -59,12 +60,20 @@ module.exports = function (dom, option) {
 
     this.hooks = _option.hooks || {};
 
-    let eventList = ['contextmenu', 'mousewheel', 'click', 'dblclick', 'mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'];
-    eventList.forEach((e) => {
-        dom.addEventListener(e, this.$eventHandler.bind(this));
-    });
+    if (this.$inBrowser) {
+        let eventList = ['contextmenu', 'mousewheel', 'click', 'dblclick', 'mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'];
+        eventList.forEach((e) => {
+            dom.addEventListener(e, this.$eventHandler.bind(this));
+        });
 
-    eventScroll.tick();
+        eventScroll.tick();
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+        if (this.$paintContext) {
+            console.error(`[Easycanvas] Current instance is already registered.`);
+        }
+    }
 
     extend.call(this, _option);
 
