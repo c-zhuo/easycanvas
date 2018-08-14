@@ -1,0 +1,13 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="class-1">
+    <button> example </button>
+  </view>
+  <view class="class-2">
+    <canvas
+    	style="width: 100vw; height: 400px;" 
+    	bindtouchstart="func"
+    	canvas-id="app"
+    	class="canvas"></canvas>
+  </view>
+</view>

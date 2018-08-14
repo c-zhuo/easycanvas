@@ -22,7 +22,7 @@
         r.p = "";
         return r(0);
     }([ function(e, t, r) {
-        e.exports = r(25);
+        e.exports = r(27);
     }, function(e, t) {
         "use strict";
         var r = {
@@ -86,9 +86,9 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.5.8"
+            version: "0.5.9"
         };
-    }, , function(e, t) {
+    }, , , function(e, t) {
         "use strict";
         var r = "processing";
         var a = {};
@@ -122,7 +122,110 @@
             i.send();
         }
         e.exports = n;
-    }, , function(e, t, r) {
+    }, , , function(e, t) {
+        "use strict";
+        var r = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(e) {
+            return typeof e;
+        } : function(e) {
+            return e && typeof Symbol === "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
+        };
+        var a = {};
+        var n = [];
+        var i = "processing";
+        var s = 0;
+        var o = function e(t, i, o) {
+            var l = o || {};
+            var f = e.cacheCanvas;
+            if ((typeof t === "undefined" ? "undefined" : r(t)) === "object") {
+                var u = t;
+                l.callbackArgs = l.callbackArgs || [];
+                e(u.shift(), function(t) {
+                    l.callbackArgs.push(t);
+                    if (u.length > 1) {
+                        e(u, i, l);
+                    } else {
+                        e(u[0], function(e) {
+                            l.callbackArgs.push(e);
+                            i(l.callbackArgs);
+                        }, l);
+                    }
+                }, o);
+                return;
+            }
+            var c = t + "_" + JSON.stringify(o) + "_" + f;
+            if (a[c]) {
+                if (i) {
+                    i(a[c]);
+                }
+                return a[c];
+            }
+            var d = new Image();
+            if (l.block) {
+                d.src = t;
+                s++;
+            } else if (s === 0) {
+                d.src = t;
+            } else {
+                n.push({
+                    imgObj: d,
+                    src: t
+                });
+            }
+            a[c] = d;
+            var v = void 0;
+            if (l.canvas || l.alphaColor || f) {
+                v = document.createElement("canvas");
+                v.width = v.height || 0;
+                a[c] = v;
+            }
+            d.onload = function() {
+                if (d.src.substr(-3) === "jpg" || d.src.substr(-3) === "jpeg" || d.src.substr(-3) === "bmp") {
+                    d.$noAlpha = true;
+                } else if (d.src.indexOf("data:image/jpg;") === 0) {
+                    d.$noAlpha = true;
+                }
+                if (l.block) {
+                    s--;
+                    if (s === 0) {
+                        n.forEach(function(e) {
+                            e.imgObj.src = e.src;
+                        });
+                        n.splice(0);
+                    }
+                }
+                if (v && (l.canvas || l.alphaColor || f)) {
+                    var e = v.getContext("2d");
+                    v.width = d.width;
+                    v.height = d.height;
+                    v.$noAlpha = d.$noAlpha;
+                    e.drawImage(d, 0, 0);
+                    if (l.alphaColor) {
+                        var t = e.getImageData(0, 0, d.width, d.height);
+                        var r = [];
+                        for (var a = 0; a < t.data.length; a += 4) {
+                            var o = t.data[a] + t.data[a + 1] + t.data[a + 2];
+                            var u = 1;
+                            if (t.data[a] < u && t.data[a + 1] < u && t.data[a + 2] < u) {
+                                t.data[a + 3] = Math.floor(o / 255);
+                            }
+                        }
+                        e.putImageData(t, 0, 0);
+                        v.$noAlpha = false;
+                    }
+                    d = v;
+                }
+                if (i) {
+                    i(d);
+                }
+            };
+            d.onerror = function() {
+                a[c] = d;
+            };
+            return v || d;
+        };
+        o.cacheCanvas = false;
+        e.exports = o;
+    }, function(e, t, r) {
         "use strict";
         var a = r(2);
         var n = i(a);
@@ -144,7 +247,7 @@
         "use strict";
         var a = r(2);
         var n = o(a);
-        var i = r(7);
+        var i = r(10);
         var s = o(i);
         function o(e) {
             return e && e.__esModule ? e : {
@@ -162,10 +265,11 @@
         };
     }, function(e, t) {
         "use strict";
-        var r = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(e) {
-            window.setTimeout(e, 1e3 / 60);
+        var r = function e(t) {
+            setTimeout(t, 1e3 / 60);
         };
-        e.exports = r;
+        var a = typeof window !== "undefined" ? window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || r : r;
+        e.exports = a;
     }, function(e, t, r) {
         "use strict";
         var a = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(e) {
@@ -177,18 +281,18 @@
         var i = x(n);
         var s = r(3);
         var o = x(s);
-        var l = r(15);
+        var l = r(18);
         var f = x(l);
-        var u = r(14);
+        var u = r(17);
         var c = x(u);
-        var d = r(13);
+        var d = r(16);
         var v = x(d);
-        var h = r(16);
+        var h = r(19);
         var p = x(h);
-        var g = r(12);
+        var g = r(15);
         var y = x(g);
-        var m = r(11);
-        var $ = x(m);
+        var $ = r(14);
+        var m = x($);
         function x(e) {
             return e && e.__esModule ? e : {
                 default: e
@@ -539,110 +643,7 @@
                 return n.default.execFuncs(this.hooks[t], this, e);
             }
         };
-    }, , , , , , function(e, t) {
-        "use strict";
-        var r = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(e) {
-            return typeof e;
-        } : function(e) {
-            return e && typeof Symbol === "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-        };
-        var a = {};
-        var n = [];
-        var i = "processing";
-        var s = 0;
-        var o = function e(t, i, o) {
-            var l = o || {};
-            var f = e.cacheCanvas;
-            if ((typeof t === "undefined" ? "undefined" : r(t)) === "object") {
-                var u = t;
-                l.callbackArgs = l.callbackArgs || [];
-                e(u.shift(), function(t) {
-                    l.callbackArgs.push(t);
-                    if (u.length > 1) {
-                        e(u, i, l);
-                    } else {
-                        e(u[0], function(e) {
-                            l.callbackArgs.push(e);
-                            i(l.callbackArgs);
-                        }, l);
-                    }
-                }, o);
-                return;
-            }
-            var c = t + "_" + JSON.stringify(o) + "_" + f;
-            if (a[c]) {
-                if (i) {
-                    i(a[c]);
-                }
-                return a[c];
-            }
-            var d = new Image();
-            if (l.block) {
-                d.src = t;
-                s++;
-            } else if (s === 0) {
-                d.src = t;
-            } else {
-                n.push({
-                    imgObj: d,
-                    src: t
-                });
-            }
-            a[c] = d;
-            var v = void 0;
-            if (l.canvas || l.alphaColor || f) {
-                v = document.createElement("canvas");
-                v.width = v.height || 0;
-                a[c] = v;
-            }
-            d.onload = function() {
-                if (d.src.substr(-3) === "jpg" || d.src.substr(-3) === "jpeg" || d.src.substr(-3) === "bmp") {
-                    d.$noAlpha = true;
-                } else if (d.src.indexOf("data:image/jpg;") === 0) {
-                    d.$noAlpha = true;
-                }
-                if (l.block) {
-                    s--;
-                    if (s === 0) {
-                        n.forEach(function(e) {
-                            e.imgObj.src = e.src;
-                        });
-                        n.splice(0);
-                    }
-                }
-                if (v && (l.canvas || l.alphaColor || f)) {
-                    var e = v.getContext("2d");
-                    v.width = d.width;
-                    v.height = d.height;
-                    v.$noAlpha = d.$noAlpha;
-                    e.drawImage(d, 0, 0);
-                    if (l.alphaColor) {
-                        var t = e.getImageData(0, 0, d.width, d.height);
-                        var r = [];
-                        for (var a = 0; a < t.data.length; a += 4) {
-                            var o = t.data[a] + t.data[a + 1] + t.data[a + 2];
-                            var u = 1;
-                            if (t.data[a] < u && t.data[a + 1] < u && t.data[a + 2] < u) {
-                                t.data[a + 3] = Math.floor(o / 255);
-                            }
-                        }
-                        e.putImageData(t, 0, 0);
-                        v.$noAlpha = false;
-                    }
-                    d = v;
-                }
-                if (i) {
-                    i(d);
-                }
-            };
-            d.onerror = function() {
-                a[c] = d;
-            };
-            return v || d;
-        };
-        o.cacheCanvas = false;
-        e.exports = o;
-    }, function(e, t, r) {
+    }, , , , , , function(e, t, r) {
         "use strict";
         var a = r(1);
         var n = 3.141593;
@@ -957,25 +958,25 @@
         "use strict";
         var a = r(3);
         var n = A(a);
-        var i = r(50);
+        var i = r(51);
         var s = A(i);
-        var o = r(9);
+        var o = r(12);
         var l = A(o);
-        var f = r(76);
+        var f = r(84);
         var u = A(f);
         var c = r(1);
         var d = A(c);
-        var v = r(23);
+        var v = r(25);
         var h = A(v);
-        var p = r(22);
+        var p = r(9);
         var g = A(p);
-        var y = r(75);
-        var m = A(y);
-        var $ = r(77);
-        var x = A($);
-        var w = r(10);
+        var y = r(83);
+        var $ = A(y);
+        var m = r(85);
+        var x = A(m);
+        var w = r(13);
         var b = A(w);
-        var T = r(24);
+        var T = r(26);
         var k = A(T);
         function A(e) {
             return e && e.__esModule ? e : {
@@ -985,7 +986,7 @@
         var S = {
             painter: s.default,
             imgLoader: g.default,
-            imgPretreat: m.default,
+            imgPretreat: $.default,
             multlineText: x.default,
             transition: h.default,
             tick: l.default,
@@ -1007,30 +1008,33 @@
             }
             S.painter.prototype.$extendList.push(e);
         };
-        if (window.Easycanvas) {
-            console.warn("[Easycanvas] already loaded.");
-        } else {
-            if (true) {
-                setTimeout(function() {
-                    console.log("%c Easycanvas %c You are using the develop version " + n.default.version + " %c", "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff", "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff", "background:transparent");
-                }, 500);
+        var F = typeof window !== "undefined";
+        if (F) {
+            if (window.Easycanvas) {
+                console.warn("[Easycanvas] already loaded, it should be loaded only once.");
+            } else {
+                if (true) {
+                    setTimeout(function() {
+                        console.log("%c Easycanvas %c You are using the develop version " + n.default.version + " %c", "background:#4086f4; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff", "background:#41b883; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff", "background:transparent");
+                    }, 500);
+                }
+                window.Easycanvas = S;
             }
-            window.Easycanvas = S;
         }
         e.exports = S;
-    }, , , , , function(e, t, r) {
+    }, , , , function(e, t, r) {
         "use strict";
-        var a = r(36);
+        var a = r(37);
         var n = p(a);
-        var i = r(38);
+        var i = r(39);
         var s = p(i);
-        var o = r(31);
+        var o = r(32);
         var l = p(o);
-        var f = r(11);
+        var f = r(14);
         var u = p(f);
-        var c = r(37);
+        var c = r(38);
         var d = p(c);
-        var v = r(49);
+        var v = r(50);
         var h = p(v);
         function p(e) {
             return e && e.__esModule ? e : {
@@ -1112,6 +1116,14 @@
                 }
             }
         };
+        var v = function e(t, r) {
+            var a = this;
+            this.$extendList.forEach(function(e) {
+                if (e.onEvent) {
+                    e.onEvent.call(a, t, r);
+                }
+            });
+        };
         e.exports = function(e) {
             var t = this;
             if (!e.layerX && e.touches && e.touches[0]) {
@@ -1124,75 +1136,77 @@
             }
             var r = this.$dom.getBoundingClientRect().width > this.$dom.getBoundingClientRect().height !== this.width > this.height;
             var a = Math.floor(this.$dom.getBoundingClientRect()[r ? "height" : "width"]) / this.width;
-            var n = Math.floor(this.$dom.getBoundingClientRect()[r ? "width" : "height"]) / this.height;
+            var i = Math.floor(this.$dom.getBoundingClientRect()[r ? "width" : "height"]) / this.height;
             a = a || 1;
-            n = n || 1;
-            var i = {
+            i = i || 1;
+            var o = {
                 type: e.type,
                 canvasX: e.layerX / a,
-                canvasY: e.layerY / n,
+                canvasY: e.layerY / i,
                 event: e
             };
             if (t.events.interceptor) {
-                i = t.events.interceptor(i);
+                o = n.default.firstValuable(t.events.interceptor(o), o);
+                if (!o || o.$stopPropagation) return;
             }
-            var o = [];
+            var l = [];
             if (t.$flags.dragging && t.$flags.dragging.$id) {
-                o.push(t.$flags.dragging);
+                l.push(t.$flags.dragging);
             }
-            d(f(t.children), i, o);
+            d(f(t.children), o, l);
+            v.call(t, o, l);
             if (true) {
-                if (window[s.default.devFlag] && window[s.default.devFlag].selectMode && o.length) {
-                    var l = o[0];
-                    if (l.name === s.default.devFlag) {
-                        l = o[1];
+                if (window[s.default.devFlag] && window[s.default.devFlag].selectMode && l.length) {
+                    var u = l[0];
+                    if (u.name === s.default.devFlag) {
+                        u = l[1];
                     }
-                    if (l && t.$plugin.selectSprite(e.type === "click" || e.type === "touchend", t, l)) {
+                    if (u && t.$plugin.selectSprite(e.type === "click" || e.type === "touchend", t, u)) {
                         return;
                     }
                 }
             }
-            if (!t.eHoldingFlag && (i.type === "mousedown" || i.type === "touchstart")) {
+            if (!t.eHoldingFlag && (o.type === "mousedown" || o.type === "touchstart")) {
                 t.eHoldingFlag = e;
-            } else if (t.eHoldingFlag && (i.type === "mouseup" || i.type === "touchend")) {
+            } else if (t.eHoldingFlag && (o.type === "mouseup" || o.type === "touchend")) {
                 t.eHoldingFlag = false;
-            } else if (t.eHoldingFlag && (i.type === "mousemove" || i.type === "touchmove")) {
+            } else if (t.eHoldingFlag && (o.type === "mousemove" || o.type === "touchmove")) {
                 t.eHoldingFlag = e;
             }
-            for (var u = 0; u < o.length; u++) {
-                if ((i.type === "mousemove" || i.type === "touchmove") && t.eLastMouseHover && t.eLastMouseHover !== o[u] && o.indexOf(t.eLastMouseHover) === -1) {
-                    var c = t.eLastMouseHover["events"]["mouseout"] || t.eLastMouseHover["events"]["touchout"];
-                    if (c) {
-                        c.call(t.eLastMouseHover, i);
+            for (var c = 0; c < l.length; c++) {
+                if ((o.type === "mousemove" || o.type === "touchmove") && t.eLastMouseHover && t.eLastMouseHover !== l[c] && l.indexOf(t.eLastMouseHover) === -1) {
+                    var h = t.eLastMouseHover["events"]["mouseout"] || t.eLastMouseHover["events"]["touchout"];
+                    if (h) {
+                        h.call(t.eLastMouseHover, o);
                     }
                 }
-                if (!o[u]["events"]) continue;
-                var v = o[u]["events"][i.type];
-                if (v) {
-                    t.eLastMouseHover = o[u];
-                    var h = v.call(o[u], i);
-                    if (h === true) {
+                if (!l[c]["events"]) continue;
+                var p = l[c]["events"][o.type];
+                if (p) {
+                    t.eLastMouseHover = l[c];
+                    var g = p.call(l[c], o);
+                    if (g === true) {
                         t.eHoldingFlag = false;
-                        return h;
-                    } else if (h === "drag") {
+                        return g;
+                    } else if (g === "drag") {
                         t.eHoldingFlag = false;
-                        return h;
+                        return g;
                     }
                 }
-                if (o[u].events.through === false) {
+                if (l[c].events.through === false) {
                     return;
                 }
             }
-            if (!o.length && t.eLastMouseHover) {
-                var p = t.eLastMouseHover["events"]["mouseout"];
-                if (p) {
-                    p.call(t.eLastMouseHover, i);
+            if (!l.length && t.eLastMouseHover) {
+                var y = t.eLastMouseHover["events"]["mouseout"];
+                if (y) {
+                    y.call(t.eLastMouseHover, o);
                 }
                 t.eLastMouseHover = null;
             }
-            var g = t.events[i.type];
-            if (g) {
-                if (g.call(t, i)) {
+            var $ = t.events[o.type];
+            if ($) {
+                if ($.call(t, o)) {
                     t.eHoldingFlag = false;
                     return true;
                 }
@@ -1202,7 +1216,7 @@
         "use strict";
         var a = r(1);
         var n = o(a);
-        var i = r(9);
+        var i = r(12);
         var s = o(i);
         function o(e) {
             return e && e.__esModule ? e : {
@@ -1447,25 +1461,25 @@
         "use strict";
         var a = r(1);
         var n = y(a);
-        var i = r(5);
+        var i = r(6);
         var s = y(i);
         var o = r(3);
         var l = y(o);
-        var f = r(35);
+        var f = r(36);
         var u = y(f);
-        var c = r(33);
+        var c = r(34);
         var d = y(c);
-        var v = r(34);
+        var v = r(35);
         var h = y(v);
-        var p = r(8);
+        var p = r(11);
         var g = y(p);
         function y(e) {
             return e && e.__esModule ? e : {
                 default: e
             };
         }
-        var m = n.default.blend;
-        var $ = function e(t) {
+        var $ = n.default.blend;
+        var m = function e(t) {
             var r = /[^\u4e00-\u9fa5]/;
             return !r.test(t);
         };
@@ -1527,7 +1541,7 @@
                 if (typeof a.blend === "string") {
                     i.globalCompositeOperation = a.blend;
                 } else {
-                    i.globalCompositeOperation = m[a.blend];
+                    i.globalCompositeOperation = $[a.blend];
                 }
             }
             if (a.rotate) {
@@ -1585,9 +1599,7 @@
                         settings: i,
                         props: [ o, a.sx, a.sy, a.sw, a.sh, a.tx, a.ty, a.tw, a.th ]
                     };
-                    if (true) {
-                        T.$origin = e;
-                    }
+                    T.$origin = e;
                     r.$children.push(T);
                 }
             }
@@ -1661,7 +1673,7 @@
                                 r = 0;
                             }
                             r++;
-                            n -= M * ($(e[r]) ? 1.05 : .6);
+                            n -= M * (m(e[r]) ? 1.05 : .6);
                         }
                         if (e || t) {
                             E.push(e);
@@ -1694,9 +1706,9 @@
         };
     }, function(e, t, r) {
         "use strict";
-        var a = r(9);
+        var a = r(12);
         var n = o(a);
-        var i = r(23);
+        var i = r(25);
         var s = o(i);
         function o(e) {
             return e && e.__esModule ? e : {
@@ -1867,40 +1879,40 @@
         };
     }, function(e, t, r) {
         "use strict";
-        var a = r(40);
+        var a = r(41);
         var n = E(a);
-        var i = r(45);
+        var i = r(46);
         var s = E(i);
-        var o = r(48);
+        var o = r(49);
         var l = E(o);
-        var f = r(42);
+        var f = r(43);
         var u = E(f);
-        var c = r(41);
+        var c = r(42);
         var d = E(c);
-        var v = r(43);
+        var v = r(44);
         var h = E(v);
-        var p = r(15);
+        var p = r(18);
         var g = E(p);
-        var y = r(14);
-        var m = E(y);
-        var $ = r(16);
-        var x = E($);
-        var w = r(12);
+        var y = r(17);
+        var $ = E(y);
+        var m = r(19);
+        var x = E(m);
+        var w = r(15);
         var b = E(w);
-        var T = r(13);
+        var T = r(16);
         var k = E(T);
-        var A = r(44);
+        var A = r(45);
         var S = E(A);
-        var F = r(46);
+        var F = r(47);
         var M = E(F);
-        var O = r(47);
+        var O = r(48);
         var _ = E(O);
         function E(e) {
             return e && e.__esModule ? e : {
                 default: e
             };
         }
-        var R = {
+        var V = {
             start: l.default,
             paint: u.default,
             add: n.default,
@@ -1911,15 +1923,15 @@
             setMaxFps: _.default,
             pause: h.default,
             on: g.default,
-            off: m.default,
+            off: $.default,
             trigger: x.default,
             broadcast: b.default,
             nextTick: k.default
         };
-        e.exports = R;
+        e.exports = V;
     }, function(e, t, r) {
         "use strict";
-        var a = r(10);
+        var a = r(13);
         var n = i(a);
         function i(e) {
             return e && e.__esModule ? e : {
@@ -1942,12 +1954,10 @@
             };
         }
         e.exports = function() {
-            if (this.$pausing || document.hidden) return;
+            if (this.$pausing || this.$inBrowser && document.hidden) return;
             var e = this;
             n.default.execFuncs(e.hooks.beforeTick, e, [ e.$rafTime ]);
-            if (e.$paintContext.clearRect) {
-                e.$paintContext.clearRect(0, 0, this.width, this.height);
-            }
+            if (e.$paintContext.clearRect) {}
             if (!e.$freezing) {
                 e.$children = [];
                 if (true) {
@@ -1986,7 +1996,7 @@
         };
     }, function(e, t, r) {
         "use strict";
-        var a = r(32);
+        var a = r(33);
         var n = i(a);
         function i(e) {
             return e && e.__esModule ? e : {
@@ -2016,6 +2026,7 @@
                 this[i] = a[i];
             }
             this.name = a.name || e.id || e.classList && e.classList[0] || "Unnamed";
+            this.$inBrowser = typeof window !== "undefined";
             if (a.fullScreen && typeof document !== "undefined") {
                 e.width = e.style.width = document.body.clientWidth || document.documentElement.clientWidth;
                 e.height = e.style.height = document.body.clientHeight || document.documentElement.clientHeight;
@@ -2032,11 +2043,18 @@
             }
             this.events = a.events || {};
             this.hooks = a.hooks || {};
-            var o = [ "contextmenu", "mousewheel", "click", "dblclick", "mousedown", "mouseup", "mousemove", "touchstart", "touchend", "touchmove" ];
-            o.forEach(function(t) {
-                e.addEventListener(t, r.$eventHandler.bind(r));
-            });
-            n.default.tick();
+            if (this.$inBrowser) {
+                var o = [ "contextmenu", "mousewheel", "click", "dblclick", "mousedown", "mouseup", "mousemove", "touchstart", "touchend", "touchmove" ];
+                o.forEach(function(t) {
+                    e.addEventListener(t, r.$eventHandler.bind(r));
+                });
+                n.default.tick();
+            }
+            if (true) {
+                if (this.$paintContext) {
+                    console.error("[Easycanvas] Current instance is already registered.");
+                }
+            }
             s.call(this, a);
             this.$paintContext = this.$paintContext || e.getContext("2d");
             return this;
@@ -2248,19 +2266,21 @@
         };
     }, function(e, t, r) {
         "use strict";
-        var a = r(39);
-        var n = f(a);
-        var i = r(30);
-        var s = f(i);
-        var o = r(51);
-        var l = f(o);
-        function f(e) {
+        var a = r(40);
+        var n = c(a);
+        var i = r(31);
+        var s = c(i);
+        var o = r(52);
+        var l = c(o);
+        var f = r(9);
+        var u = c(f);
+        function c(e) {
             return e && e.__esModule ? e : {
                 default: e
             };
         }
-        var u = function e(t) {
-            this.imgLoader = Easycanvas.imgLoader;
+        var d = function e(t) {
+            this.imgLoader = u.default;
             for (var r in l.default) {
                 this[r] = this[r] || JSON.parse(JSON.stringify(l.default[r]));
             }
@@ -2276,18 +2296,18 @@
                 this.register(typeof t.el === "string" ? document.querySelector(t.el) : t.el, t);
             }
         };
-        u.prototype.$extendList = [];
-        for (var c in s.default) {
-            if (Object.prototype.hasOwnProperty.call(s.default, c)) {
-                u.prototype[c] = s.default[c];
+        d.prototype.$extendList = [];
+        for (var v in s.default) {
+            if (Object.prototype.hasOwnProperty.call(s.default, v)) {
+                d.prototype[v] = s.default[v];
             }
         }
-        for (var d in n.default) {
-            if (Object.prototype.hasOwnProperty.call(n.default, d)) {
-                u.prototype[d] = n.default[d];
+        for (var h in n.default) {
+            if (Object.prototype.hasOwnProperty.call(n.default, h)) {
+                d.prototype[h] = n.default[h];
             }
         }
-        e.exports = u;
+        e.exports = d;
     }, function(e, t) {
         "use strict";
         var r = {
@@ -2322,11 +2342,11 @@
             }
         };
         e.exports = r;
-    }, , , , , , , , , , , , , , , , , , , , , , , , function(e, t, r) {
+    }, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , function(e, t, r) {
         "use strict";
-        var a = r(22);
+        var a = r(9);
         var n = o(a);
-        var i = r(5);
+        var i = r(6);
         var s = o(i);
         function o(e) {
             return e && e.__esModule ? e : {

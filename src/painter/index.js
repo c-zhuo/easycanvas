@@ -9,9 +9,10 @@ import apiOuter from './apiOuter.js';
 import apiInner from './apiInner.js';
 
 import $prototype from './prototype.js';
+import imgLoader from 'utils/img-loader.js';
 
 let painter = function (config) {
-    this.imgLoader = Easycanvas.imgLoader;
+    this.imgLoader = imgLoader;
 
     for (let i in $prototype) {
         // Avoid muti instances from sharing data

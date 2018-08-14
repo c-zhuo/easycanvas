@@ -1098,14 +1098,14 @@
 	    var touchEvent = new TouchEvent(type)
 
 	    touchEvent.touches = event.touches
-	    // hacned start
+	    // hacked start
 	    if (event.touches[0]) {
 	    	lastX = event.touches[0].clientX
 			lastY = event.touches[0].clientY;
 	    }
 	    touchEvent.layerX = lastX;
 	    touchEvent.layerY = lastY;
-	    // hacned end
+	    // hacked end
 	    touchEvent.targetTouches = Array.prototype.slice.call(event.touches)
 	    touchEvent.changedTouches = event.changedTouches
 	    touchEvent.timeStamp = event.timeStamp

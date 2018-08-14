@@ -8,14 +8,14 @@
 import utils from 'utils/utils.js';
 
 module.exports = function () {
-    if (this.$pausing || document.hidden) return;
+    if (this.$pausing || (this.$inBrowser && document.hidden)) return;
 
     let $canvas = this;
 
     utils.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
 
     if ($canvas.$paintContext.clearRect) {
-        $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
+        // $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
     }
 
     if (!$canvas.$freezing) {
