@@ -183,7 +183,6 @@ module.exports = function (i, index) {
     deliverChildren($canvas, _children, -1);
 
     if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
-        // removed !_img.src ||  ???
         if (rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate)) {
             i.$rendered = true;
 
@@ -194,10 +193,10 @@ module.exports = function (i, index) {
                 props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
             };
 
-            if (process.env.NODE_ENV !== 'production') {
-                // 开发环境下，将元素挂载到$children里以供标记
+            // if (process.env.NODE_ENV !== 'production') {
+            //     // 开发环境下，将元素挂载到$children里以供标记
                 $paintSprite.$origin = i;
-            };
+            // };
 
             $canvas.$children.push($paintSprite);            
         }

@@ -1,0 +1,18 @@
+/**index.wxss**/
+.container {
+	overflow: hidden;
+}
+
+.class-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.class-2 {
+  margin-top: 200px;
+}
+
+.canvas {
+	width: 100%;
+}
