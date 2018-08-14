@@ -111,6 +111,14 @@ const looper = function (arr, e, caughts) {
     }
 };
 
+const extend = function ($e, caughts) {
+    this.$extendList.forEach((plugin) => {
+        if (plugin.onEvent) {
+            plugin.onEvent.call(this, $e, caughts);
+        }
+    });
+};
+
 module.exports = function (e) {
     let $canvas = this;
 
@@ -140,7 +148,8 @@ module.exports = function (e) {
     };
 
     if ($canvas.events.interceptor) {
-        $e = $canvas.events.interceptor($e);
+        $e = utils.firstValuable($canvas.events.interceptor($e), $e);
+        if (!$e || $e.$stopPropagation) return;
     }
 
     let caughts = [];
@@ -150,6 +159,8 @@ module.exports = function (e) {
     }
 
     looper(sortByIndex($canvas.children), $e, caughts);
+
+    extend.call($canvas, $e, caughts);
 
     if (process.env.NODE_ENV !== 'production') {
         // 开发者工具select模式下为选取元素

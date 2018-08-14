@@ -21,7 +21,7 @@ const PROTOS = {
     width: 0,
     height: 0,
     events: {
-        click: null
+        click: null,
     },
     children: [],
     eHoldingFlag: false,
