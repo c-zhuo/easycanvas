@@ -207,7 +207,7 @@ var createShapeWithCachedArray = (() => {
 
             if (!result.colors) {
                 // var colorRepeatTimes = result.vertices.length / colors.length;
-                var colorRepeatTimes = (result.indices || result.vertices).length / colors.length * (result.indices ? 3 : 1);
+                var colorRepeatTimes = (result.indices || result.vertices).length * (result.indices ? 3 : 1) / colors.length;
                 result.colors = new Uint8Array(arrayRepeat(colors, Math.ceil(colorRepeatTimes)));
 
                 cachePool[key + 'c'] = result.colors;
@@ -219,7 +219,7 @@ var createShapeWithCachedArray = (() => {
 })();
 
 const wrapper = function (structure, opt) {
-    for (var key in opt) {
+    for (let key in opt) {
         if (!structure[key]) {
             structure[key] = opt[key]
         }
@@ -228,6 +228,28 @@ const wrapper = function (structure, opt) {
     return structure;
 };
 
+const appendEventFlag = (function () {
+    let current = 0;
+
+
+    return function (shape) {
+        if (!current) {
+            current++;
+        }
+
+        let colorRepeatTimes = (shape.indices || shape.vertices).length * (shape.indices ? 3 : 1) / 3;
+        shape.$eventFlag = new Uint8Array(arrayRepeat([
+            current % 256,
+            Math.floor(current / 256) % 256,
+            Math.floor(current / 65536) % 256,
+        ], Math.ceil(colorRepeatTimes)));
+
+        current++;
+
+        return shape;
+    };
+})();
+
 const err = function (msg) {
     console.error('[Easycanvas-webgl] ' + msg);
 };
@@ -235,17 +257,17 @@ const err = function (msg) {
 const webglShapes = {
     block: function (opt) {
         var structure = createShapeWithCachedArray('block', [opt.a, opt.b, opt.c], opt.colors);
-        return wrapper(structure, opt);
+        return appendEventFlag(wrapper(structure, opt));
     },
 
     quadrilateral: function (opt) {
         var structure = createShapeWithCachedArray('quadrilateral', [opt.a, opt.b, opt.c], opt.colors);
-        return wrapper(structure, opt);
+        return appendEventFlag(wrapper(structure, opt));
     },
 
     ball: function (opt) {
         var structure = createShapeWithCachedArray('ball', [opt.r, opt.b || opt.lat || 20, opt.b || opt.lng || 20], opt.colors);
-        return wrapper(structure, opt);
+        return appendEventFlag(wrapper(structure, opt));
     },
 
     custom: function (opt) {
@@ -303,7 +325,7 @@ const webglShapes = {
             colors: opt.colors ? opt.colors.$cache : undefined,
         });
 
-        return res;
+        return appendEventFlag(res);
     },
 
     // icosahedron: function (opt) {
@@ -316,7 +338,7 @@ for (let shape in regularPolyhedron) {
     webglShapes[shape] = function (opt) {
         var structure = createShapeWithCachedArray(shape, [opt.r], opt.colors);
         structure.type = TRIANGLE_FAN;
-        return wrapper(structure, opt);
+        return appendEventFlag(wrapper(structure, opt));
     };
 }
 
