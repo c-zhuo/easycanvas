@@ -3,5 +3,5 @@ module.exports = {
     txywh: ['tx', 'ty', 'tw', 'th'],
     sxywh: ['sx', 'sy', 'sw', 'sh'],
     devFlag: '__EASYCANVAS_DEVTOOL__',
-    version: '0.5.8',
+    version: '0.5.9',
 };

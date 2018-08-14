@@ -1,1 +1,1 @@
-import './plugins/wxgame-adaptor.js';
+import './plugin-wxgame/wxgame-adaptor.js';
