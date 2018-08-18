@@ -444,7 +444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var fallback = function fallback(callback) {
-					setTimeout(callback, 1000 / 60);
+	    setTimeout(callback, 1000 / 60);
 	};
 
 	var rAF = typeof window !== 'undefined' ? window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || fallback : fallback;
@@ -1978,7 +1978,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (!scrolling) {
 	            // start scroll
-	            scrolling = +new Date();
+	            scrolling = Date.now();
 	            startPos.x = $e.canvasX;
 	            startPos.y = $e.canvasY;
 	        } else {
@@ -1988,8 +1988,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            var absX = Math.abs($e.canvasX - startPos.x);
 	            var absY = Math.abs($e.canvasY - startPos.y);
-	            var deltaTime = +new Date() - scrolling;
-	            scrolling = +new Date();
+	            var deltaTime = Date.now() - scrolling;
+	            scrolling = Date.now();
 	            deltaTime /= 10;
 	            if (absX / deltaTime > 1 && deltaTime > 1) {
 	                $sprite.$scroll.speedX += ($e.canvasX - startPos.x) / deltaTime;
@@ -2988,7 +2988,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _utils2.default.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
 
 	    if ($canvas.$paintContext.clearRect) {
-	        // $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
+	        $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
 	    }
 
 	    if (!$canvas.$freezing) {
