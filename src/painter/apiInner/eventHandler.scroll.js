@@ -73,7 +73,7 @@ let scrollFuncs = {
 
         if (!scrolling) {
             // start scroll
-            scrolling = +new Date();
+            scrolling = Date.now();
             startPos.x = $e.canvasX;
             startPos.y = $e.canvasY;
         } else {
@@ -83,8 +83,8 @@ let scrollFuncs = {
 
             let absX = Math.abs($e.canvasX - startPos.x);
             let absY = Math.abs($e.canvasY - startPos.y);
-            let deltaTime = +new Date() - scrolling;
-            scrolling = +new Date();
+            let deltaTime = Date.now() - scrolling;
+            scrolling = Date.now();
             deltaTime /= 10;
             if (absX / deltaTime > 1 && deltaTime > 1) {
                 $sprite.$scroll.speedX += ($e.canvasX - startPos.x) / deltaTime;
