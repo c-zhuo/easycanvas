@@ -37,7 +37,7 @@ Easycanvas是一个轻量、高效率的渐进式canvas渲染库。将canvas与�
 
 #### Changelog
 
-- [Changelog](https://github.com/chenzhuo1992/easycanvas/blob/master/CHANGELOG.md).
+- [更新日志](https://chenzhuo1992.github.io/easycanvas/#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97).
 
 ### Introduction
 
