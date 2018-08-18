@@ -3,12 +3,12 @@ const fallback = function (callback) {
 };
 
 const rAF = typeof window !== 'undefined' ? (
-		window.requestAnimationFrame  ||
-	    window.webkitRequestAnimationFrame  ||
-	    window.mozRequestAnimationFrame     ||
-	    window.oRequestAnimationFrame       ||
-	    window.msRequestAnimationFrame		||
-	    fallback
+        window.requestAnimationFrame  ||
+        window.webkitRequestAnimationFrame  ||
+        window.mozRequestAnimationFrame     ||
+        window.oRequestAnimationFrame       ||
+        window.msRequestAnimationFrame      ||
+        fallback
     ) : fallback;
 
 module.exports = rAF;
