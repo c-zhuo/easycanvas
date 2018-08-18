@@ -15,7 +15,7 @@ module.exports = function () {
     utils.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
 
     if ($canvas.$paintContext.clearRect) {
-        // $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
+        $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
     }
 
     if (!$canvas.$freezing) {
