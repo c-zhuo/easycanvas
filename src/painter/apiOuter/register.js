@@ -60,13 +60,13 @@ module.exports = function (dom, option) {
 
     this.hooks = _option.hooks || {};
 
+    eventScroll.tick();
+
     if (this.$inBrowser) {
         let eventList = ['contextmenu', 'mousewheel', 'click', 'dblclick', 'mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'];
         eventList.forEach((e) => {
             dom.addEventListener(e, this.$eventHandler.bind(this));
         });
-
-        eventScroll.tick();
     }
 
     if (process.env.NODE_ENV !== 'production') {

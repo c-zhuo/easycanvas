@@ -79,9 +79,23 @@ Page({
 
     var img = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
 
+    var $Box = $App.add({
+      style: {
+        locate: 'lt',
+        tx: 0,
+        ty: 0,
+        tw: 500,
+        th: 500,
+      },
+      scroll: {
+        scrollable: true,
+        minScrollY: 0,
+        maxScrollY: 100,
+      },
+    });
 
     // Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
-        var sprite1 = $App.add({
+        var sprite1 = $Box.add({
             content: {
                 img: imgUrl,
             },
