@@ -13,6 +13,8 @@ const plugin = {
 Easycanvas.use(plugin);
 
 var $App;
+var lastX, lastY;
+var clickAfterTouchend = false;
 
 Page({
   data: {
@@ -111,7 +113,8 @@ Page({
             },
             events: {
                 eIndex: 2,
-                mousemove: function (e) {
+                touchmove: function (e) {
+                    console.log(11111111);
                     console.log(this, e);
                 },
             },
@@ -142,8 +145,9 @@ Page({
             },
             events: {
                 eIndex: 2, // event-index of this image
-                mousemove: function (e) {
+                click: function (e) {
                     // "this" means this sprite, as sprite1
+                    console.log(22222222);
                     console.log(this, e);
                 },
                 // others: mousehold, mousedown, mouseout and touch events
@@ -153,7 +157,45 @@ Page({
 
   //事件处理函数
   func: function (e) {
-    console.log($App, e);
-    debugger;
+    // console.log(e);
+    lastX = e.touches[0] ? e.touches[0].x : lastX;
+    lastY = e.touches[0] ? e.touches[0].y : lastY;
+
+    var obj = {
+      type: e.type,
+      targetTouches: [
+        {
+          pageX: lastX,
+          pageY: lastY,
+        }
+      ],
+      currentTarget: {
+        offsetLeft: 0,
+        offsetTop: 0,
+      }
+    };
+
+    clickAfterTouchend = e.type !== 'touchmove' && e.type !== 'longtap';
+    $App.$eventHandler(obj);
+
+    if (e.type === 'touchend') {
+      var obj = {
+        type: 'click',
+        targetTouches: [
+          {
+            pageX: lastX,
+            pageY: lastY,
+          }
+        ],
+        currentTarget: {
+          offsetLeft: 0,
+          offsetTop: 0,
+        }
+      };
+      $App.$eventHandler(obj);
+    }
+    
+    // console.log(obj);
+    // debugger;
   },
 })
