@@ -12,6 +12,11 @@ document.body.appendChild(document.createElement('style')).innerHTML = css;
 const DefaultPage = '一些demo';
 const DemoableCodeClassName = 'code-2-demo';
 
+const Analyze = function (str) {
+    var img = new Image();
+    img.src = 'http://122.114.162.204:8001/point?title=' + str;
+};
+
 (function initBackgroundPhysics () {
     return;
     window.w = document.body.clientWidth;
@@ -151,6 +156,8 @@ const DemoableCodeClassName = 'code-2-demo';
                     }
                 });
             }
+
+            Analyze(title);
         },
         methods: {
             chooseTitle (item) {
@@ -162,6 +169,8 @@ const DemoableCodeClassName = 'code-2-demo';
                 this.$nextTick(() => {
                     document.querySelector('.content').scrollTo(0, 0);
                 });
+
+                Analyze(item.name);
             },
 
             hideDemo () {
