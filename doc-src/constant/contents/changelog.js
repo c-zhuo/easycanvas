@@ -6,6 +6,9 @@ module.exports = `
 
         <h2>进行中</h2>
 
+        <p>Feature：支持在<strong>微信小程序</strong>中使用（不是微信小游戏，微信小游戏已在0.5.6版本支持）。</p>
+        <p>Feature：为WebGL插件增加<strong>事件监听</strong>功能。</p>
+        <p>Feature：为WebGL插件增加<strong>更多3D模型的loader</strong>（基于threejs的loader）。</p>
         <p>Feature：为WebGL插件增加<strong>绘制点与圆</strong>的API：通过修改App.webgl.camera的属性可以实现摄像头位置与视角的调整。</p>
         <p>Feature：为WebGL插件优化<strong>Shader性能</strong>：通过场景中的元素种类，自动调整shader语法。</p>
         <p>Feature：提供<strong>图像特效插件</strong>（近支持2D）。</p>
@@ -13,19 +16,19 @@ module.exports = `
 
         <h2>当前版本</h2>
 
-        <h3>0.5.8</h3>
+        <h3>0.5.8 (2018.8.11)</h3>
 
         <p>为WebGL插件增加<strong>调整摄像头</strong>的API：通过修改App.webgl.camera的属性可以实现摄像头位置与视角的调整。</p>
         <p>Bugfix：修复2D渲染中，个别场景下没有智能跳过屏幕外Sprite绘制，导致性能浪费的问题。</p>
 
         <h2>历史版本</h2>
 
-        <h3>0.5.7</h3>
+        <h3>0.5.7 (2018.7.29)</h3>
 
         <p>Bugfix：修复线性渐变时，终点小于起点会导致js卡死的bug，如Easycanvas.transition.linear(2, 1, 1000)。</p>
         <p>Bugfix：修复2D渲染中，带有角度的Sprite部分位于屏幕外时，坐标计算的bug。</p>
 
-        <h3>0.5.6</h3>
+        <h3>0.5.6 (2018.7.25)</h3>
 
         <p>支持微信小游戏。</p>
 
