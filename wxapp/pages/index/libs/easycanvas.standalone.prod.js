@@ -1650,18 +1650,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// import eventScroll from './eventHandler.scroll.js';
 
-	/** ********** *
-	 *
-	 * Handle events on canvas (Includes both user's events and debugging events)
-	 * - Compare event's coordinate and the coordinate of every sprite in
-	 *   Easycanvas.children, and check sprite's handlers one by one.
-	 * - Events: mousedown, mousemove, mouseup, touchstart, touchmove, touchend,
-	 *   click, contextmenu
-	 * - Expanded events: hold, touchout
-	 *
-	 * ********** **/
-
-	var isMobile = typeof wx !== 'undefined' || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+	// const isMobile = typeof wx !== 'undefined' ||
+	//     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 	// transform
 	// const mobileEvents = ['touchstart', 'touchmove', 'touchend'];
@@ -1682,6 +1672,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * - Order by eIndex dev-tool's in events' triggering
 	 * - Order by zIndex in dev-tool's select mode
 	 */
+	/** ********** *
+	 *
+	 * Handle events on canvas (Includes both user's events and debugging events)
+	 * - Compare event's coordinate and the coordinate of every sprite in
+	 *   Easycanvas.children, and check sprite's handlers one by one.
+	 * - Events: mousedown, mousemove, mouseup, touchstart, touchmove, touchend,
+	 *   click, contextmenu
+	 * - Expanded events: hold, touchout
+	 *
+	 * ********** **/
+
 	var sortByIndex = function sortByIndex(arr) {
 	    return arr.sort(function (a, b) {
 	        if (false) {
@@ -1766,7 +1767,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = function (e) {
 	    var $canvas = this;
 
-	    if (!e.layerX && e.touches && e.touches[0]) {
+	    if (!e.layerX && e.targetTouches && e.targetTouches[0]) {
 	        e.layerX = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
 	        e.layerY = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
 	    }
@@ -1775,13 +1776,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        e.layerY = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
 	    }
 
-	    var isRotated = this.$dom.getBoundingClientRect().width > this.$dom.getBoundingClientRect().height !== this.width > this.height;
+	    var isRotated = false;
+	    var scaleX = 1;
+	    var scaleY = 1;
 
-	    var scaleX = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'height' : 'width']) / this.width;
-	    var scaleY = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'width' : 'height']) / this.height;
+	    if (this.$dom.getBoundingClientRect) {
+	        this.$dom.getBoundingClientRect().width > this.$dom.getBoundingClientRect().height !== this.width > this.height;
 
-	    scaleX = scaleX || 1;
-	    scaleY = scaleY || 1;
+	        scaleX = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'height' : 'width']) / this.width;
+	        scaleY = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'width' : 'height']) / this.height;
+	    }
 
 	    var $e = {
 	        // type: mobilePCTransform(e.type),

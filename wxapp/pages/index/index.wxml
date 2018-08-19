@@ -6,7 +6,11 @@
   <view class="class-2">
     <canvas
     	style="width: 100vw; height: 400px;" 
-    	bindtouchstart="func"
+      bindtouchstart="func"
+      bindtouchmove="func"
+      bindtouchend="func"
+      bindtouchcancel="func"
+    	bindlongtap="func"
     	canvas-id="app"
     	class="canvas"></canvas>
   </view>
