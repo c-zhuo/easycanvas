@@ -14,8 +14,8 @@ import constants from 'constants';
 
 // import eventScroll from './eventHandler.scroll.js';
 
-const isMobile = typeof wx !== 'undefined' ||
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+// const isMobile = typeof wx !== 'undefined' ||
+//     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 // transform
 // const mobileEvents = ['touchstart', 'touchmove', 'touchend'];
@@ -122,7 +122,7 @@ const extend = function ($e, caughts) {
 module.exports = function (e) {
     let $canvas = this;
 
-    if (!e.layerX && e.touches && e.touches[0]) {
+    if (!e.layerX && e.targetTouches && e.targetTouches[0]) {
         e.layerX = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
         e.layerY = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
     }
@@ -131,13 +131,16 @@ module.exports = function (e) {
         e.layerY = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
     }
 
-    let isRotated = this.$dom.getBoundingClientRect().width > this.$dom.getBoundingClientRect().height !== this.width > this.height
+    let isRotated = false;
+    let scaleX = 1;
+    let scaleY = 1;
 
-    let scaleX = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'height' : 'width']) / this.width;
-    let scaleY = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'width' : 'height']) / this.height;
+    if (this.$dom.getBoundingClientRect) {
+        this.$dom.getBoundingClientRect().width > this.$dom.getBoundingClientRect().height !== this.width > this.height
 
-    scaleX = scaleX || 1;
-    scaleY = scaleY || 1;
+        scaleX = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'height' : 'width']) / this.width;
+        scaleY = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'width' : 'height']) / this.height;
+    }
 
     let $e = {
         // type: mobilePCTransform(e.type),
