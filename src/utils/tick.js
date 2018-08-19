@@ -2,8 +2,8 @@ const fallback = function (callback) {
     setTimeout(callback, 1000 / 60);
 };
 
-const rAF = typeof window !== 'undefined' ? (
-        window.requestAnimationFrame  ||
+const rAF = typeof requestAnimationFrame !== 'undefined' ? (
+        requestAnimationFrame  ||
         window.webkitRequestAnimationFrame  ||
         window.mozRequestAnimationFrame     ||
         window.oRequestAnimationFrame       ||

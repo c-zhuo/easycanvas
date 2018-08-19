@@ -12,7 +12,7 @@
 import utils from 'utils/utils.js';
 import constants from 'constants';
 
-// import eventScroll from './eventHandler.scroll.js';
+import eventScroll from './eventHandler.scroll.js';
 
 // const isMobile = typeof wx !== 'undefined' ||
 //     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -186,7 +186,7 @@ module.exports = function (e) {
     } else if ($canvas.eHoldingFlag && ($e.type === 'mouseup' || $e.type === 'touchend')) {
         $canvas.eHoldingFlag = false;
         // 基础库不再支持滚动
-        // eventScroll.stop();
+        eventScroll.stop();
     } else if ($canvas.eHoldingFlag && ($e.type === 'mousemove' || $e.type === 'touchmove')) {
         $canvas.eHoldingFlag = e;
     }// else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {
@@ -206,13 +206,13 @@ module.exports = function (e) {
         }
 
         // 基础库不再支持滚动
-        // if ($e.type === 'mousewheel') {
-        //     eventScroll.wheel(caughts[i], $e);
-        // } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
-        //     if (eventScroll.touch(caughts[i], $e)) {
-        //         return;
-        //     }
-        // }
+        if ($e.type === 'mousewheel') {
+            eventScroll.wheel(caughts[i], $e);
+        } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
+            if (eventScroll.touch(caughts[i], $e)) {
+                return;
+            }
+        }
 
         if (!caughts[i]['events']) continue; // TODO to remove
 
