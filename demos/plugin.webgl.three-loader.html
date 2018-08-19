@@ -1,0 +1,40 @@
+<head>
+    <script src="../build/index.js"></script>
+    <script src="../build/plugin.webgl.js"></script>
+    <script src="../build/plugin.webgl.three-loader.js"></script>
+    <script src='../resource/mmd/lib/mmdparser.min.js'></script>
+</head>
+
+<style>
+    canvas {
+        border: 1px solid grey;
+        background-color: #4caf50;
+        /*opacity: 0.05;*/
+    }
+</style>
+
+<body>
+    <canvas id="foo" width="600" height="600"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            webgl: {
+              // light: true,
+            },
+        });
+        $Painter.start();
+
+        var $box = $Painter.add({
+            style: {
+                tx: 200, ty: 500,
+            },
+        });
+
+        var loader = new Easycanvas.threeLoaders.MMDLoader();
+        loader.loadPMX('../resource/mmd/model/default/miku.pmx', function (data) {
+            console.log(data);
+        })
+    </script>
+</body>
+

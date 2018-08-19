@@ -21,12 +21,8 @@ Page({
     debug: false,
   },
 
-  onShow: function () {
+  onLoad: function () {
     var context = wx.createCanvasContext('app');
-    console.log(context);
-    console.log(Easycanvas);
-
-    console.log(context.fillRect);
 
     $App = new Easycanvas.painter();
     $App.$dom = context;
@@ -34,11 +30,14 @@ Page({
     $App.register();
 
     $App.on('ticked', function () {
-      var actions = context.getActions();
-      wx.drawCanvas({
-        canvasId: 'app',
-        actions: actions
-      });
+      context.draw()
+      // var actions = context.getActions();
+      // // console.log(actions.length);
+      // // debugger;
+      // wx.drawCanvas({
+      //   canvasId: 'app',
+      //   actions: actions
+      // });
     });
 
     wx.getSystemInfo({
@@ -92,7 +91,9 @@ Page({
       scroll: {
         scrollable: true,
         minScrollY: 0,
-        maxScrollY: 100,
+        maxScrollY: 400,
+        minScrollX: 0,
+        maxScrollX: 0,
       },
     });
 
@@ -103,56 +104,56 @@ Page({
             },
             style: {
                 tw: 250, th: 130,
-                sx: 0, sy: 0, // source position, default 0
+                sx: 0, sy: 0,
                 sw: 200, sh: 200,
                 tx: Easycanvas.transition.pendulum(111, 222, 2500).loop(),
                 ty: 80,
                 rotate: 20,
-                locate: 'lt', // default center
-                zIndex: 1,
+                locate: 'lt',
+                zIndex: 2,
             },
             events: {
-                eIndex: 2,
                 touchmove: function (e) {
                     console.log(11111111);
                     console.log(this, e);
+                    this.style.opacity = Math.random() + 0.5;
                 },
             },
         });
 
-        var sprite2 = $App.add({
+        var sprite2 = $Box.add({
             content: {
-                img: img,
+                img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
             },
             style: {
-                tw: 250, th: 130,
-                sx: 0, sy: 0,
-                sw: 200, sh: 200,
-                tx: Easycanvas.transition.pendulum(111, 155, 2500).loop(),
-                ty: Easycanvas.transition.pendulum(111, 155, 2500).loop(),
-                opacity: 0.5,
+                tw: $App.width, th: $App.height,
+                tx: 0, ty: 0,
+                opacity: 1,
                 locate: 'lt',
-                zIndex: 2,
-            },
-            hooks: {
-              ticked () {
-                var actions = context.getActions();
-                wx.drawCanvas({
-                  canvasId: 'app',
-                  actions: actions
-                });
-              }
+                zIndex: 1,
             },
             events: {
-                eIndex: 2, // event-index of this image
                 click: function (e) {
-                    // "this" means this sprite, as sprite1
                     console.log(22222222);
                     console.log(this, e);
+                    this.style.opacity = Math.random() + 0.5;
                 },
-                // others: mousehold, mousedown, mouseout and touch events
             },
         });
+
+        for (var i = 0; i < 0; i++) {
+          $App.add({
+              content: {
+                  img: img,
+              },
+              style: {
+                  tw: 50, th: 50,
+                  tx: Easycanvas.transition.pendulum(Math.random() * 100, Math.random() * 800, Math.random() * 1000 + 1500).loop(),
+                  ty: Easycanvas.transition.pendulum(Math.random() * 100, Math.random() * 800, Math.random() * 1000 + 1500).loop(),
+                  zIndex: 10 + Math.random(),
+              },
+          });
+        }
   },
 
   //事件处理函数
@@ -172,7 +173,8 @@ Page({
       currentTarget: {
         offsetLeft: 0,
         offsetTop: 0,
-      }
+      },
+      preventDefault: function () {}
     };
 
     clickAfterTouchend = e.type !== 'touchmove' && e.type !== 'longtap';
@@ -190,12 +192,10 @@ Page({
         currentTarget: {
           offsetLeft: 0,
           offsetTop: 0,
-        }
+        },
+        preventDefault: function () {}
       };
       $App.$eventHandler(obj);
     }
-    
-    // console.log(obj);
-    // debugger;
   },
 })

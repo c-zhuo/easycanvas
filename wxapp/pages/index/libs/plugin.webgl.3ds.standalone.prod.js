@@ -55,12 +55,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(79);
+	module.exports = __webpack_require__(85);
 
 
 /***/ }),
 
-/***/ 30:
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -1370,11 +1370,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = Lib3ds;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(94).Buffer))
 
 /***/ }),
 
-/***/ 79:
+/***/ 85:
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1386,7 +1386,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                   *
 	                                                                                                                                                                                                                                                                   * ********** **/
 
-	var _lib3ds = __webpack_require__(30);
+	var _lib3ds = __webpack_require__(32);
 
 	var _lib3ds2 = _interopRequireDefault(_lib3ds);
 
@@ -1532,7 +1532,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 86:
+/***/ 93:
 /***/ (function(module, exports) {
 
 	'use strict'
@@ -1655,7 +1655,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 87:
+/***/ 94:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -1668,9 +1668,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict'
 
-	var base64 = __webpack_require__(86)
-	var ieee754 = __webpack_require__(89)
-	var isArray = __webpack_require__(88)
+	var base64 = __webpack_require__(93)
+	var ieee754 = __webpack_require__(96)
+	var isArray = __webpack_require__(95)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -3452,7 +3452,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 88:
+/***/ 95:
 /***/ (function(module, exports) {
 
 	var toString = {}.toString;
@@ -3464,7 +3464,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 89:
+/***/ 96:
 /***/ (function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {

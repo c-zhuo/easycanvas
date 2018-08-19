@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(27);
+	module.exports = __webpack_require__(29);
 
 
 /***/ }),
@@ -447,7 +447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    setTimeout(callback, 1000 / 60);
 	};
 
-	var rAF = typeof window !== 'undefined' ? window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || fallback : fallback;
+	var rAF = typeof requestAnimationFrame !== 'undefined' ? requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || fallback : fallback;
 
 	module.exports = rAF;
 
@@ -502,23 +502,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _on = __webpack_require__(18);
+	var _on = __webpack_require__(19);
 
 	var _on2 = _interopRequireDefault(_on);
 
-	var _off = __webpack_require__(17);
+	var _off = __webpack_require__(18);
 
 	var _off2 = _interopRequireDefault(_off);
 
-	var _nextTick = __webpack_require__(16);
+	var _nextTick = __webpack_require__(17);
 
 	var _nextTick2 = _interopRequireDefault(_nextTick);
 
-	var _trigger = __webpack_require__(19);
+	var _trigger = __webpack_require__(20);
 
 	var _trigger2 = _interopRequireDefault(_trigger);
 
-	var _broadcast = __webpack_require__(15);
+	var _broadcast = __webpack_require__(16);
 
 	var _broadcast2 = _interopRequireDefault(_broadcast);
 
@@ -908,6 +908,139 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
+	var _tick2 = __webpack_require__(12);
+
+	var _tick3 = _interopRequireDefault(_tick2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/** ********** *
+	 *
+	 * Handle wheel events on canvas
+	 * - Wheel events pass in from eventHandler.js.
+	 * - Includes touch scroll and mouse wheel scroll.
+	 *
+	 * ********** **/
+
+	var startPos = {};
+	var scrolling = false;
+
+	var tickPool = [];
+
+	var scrollFuncs = {
+	    stop: function stop() {
+	        scrolling = false;
+	    },
+
+	    tick: function tick() {
+	        (0, _tick3.default)(scrollFuncs.looper);
+	    },
+
+	    looper: function looper() {
+	        tickPool.forEach(function ($sprite, index) {
+	            var speedX = $sprite.$scroll.speedX;
+	            var speedY = $sprite.$scroll.speedY;
+
+	            if (Math.abs($sprite.$scroll.speedX) > 1) {
+	                $sprite.$scroll.speedX *= $sprite.scroll.smooth || 0.8;
+	            } else {
+	                $sprite.$scroll.speedX = 0;
+	            }
+	            if (Math.abs($sprite.$scroll.speedY) > 1) {
+	                $sprite.$scroll.speedY *= $sprite.scroll.smooth || 0.8;
+	            } else {
+	                $sprite.$scroll.speedY = 0;
+	            }
+
+	            if (Math.abs($sprite.$scroll.speedX) <= 1 && Math.abs($sprite.$scroll.speedY) <= 1) {
+	                tickPool.splice(index, 1);
+	                return;
+	            }
+
+	            $sprite.scroll.scrollY -= $sprite.$scroll.speedY;
+	            $sprite.scroll.scrollX -= $sprite.$scroll.speedX;
+
+	            var minScrollX = _utils2.default.funcOrValue($sprite.scroll.minScrollX, $sprite);
+	            var maxScrollX = _utils2.default.funcOrValue($sprite.scroll.maxScrollX, $sprite);
+	            var minScrollY = _utils2.default.funcOrValue($sprite.scroll.minScrollY, $sprite);
+	            var maxScrollY = _utils2.default.funcOrValue($sprite.scroll.maxScrollY, $sprite);
+
+	            if (!isNaN(minScrollY) && $sprite.scroll.scrollY < minScrollY) {
+	                $sprite.scroll.scrollY = minScrollY;
+	            } else if (!isNaN(maxScrollY) && $sprite.scroll.scrollY > maxScrollY) {
+	                $sprite.scroll.scrollY = maxScrollY;
+	            }
+
+	            if (!isNaN(minScrollX) && $sprite.scroll.scrollX < minScrollX) {
+	                $sprite.scroll.scrollX = minScrollX;
+	            } else if (!isNaN(maxScrollX) && $sprite.scroll.scrollX > maxScrollX) {
+	                $sprite.scroll.scrollX = maxScrollX;
+	            }
+	        });
+
+	        scrollFuncs.tick();
+	    },
+
+	    touch: function touch($sprite, $e) {
+	        if (!$sprite.scroll.scrollable) return false;
+
+	        if (!scrolling) {
+	            // start scroll
+	            scrolling = Date.now();
+	            startPos.x = $e.canvasX;
+	            startPos.y = $e.canvasY;
+	        } else {
+	            if (tickPool.indexOf($sprite) === -1) {
+	                tickPool.push($sprite);
+	            }
+
+	            var absX = Math.abs($e.canvasX - startPos.x);
+	            var absY = Math.abs($e.canvasY - startPos.y);
+	            var deltaTime = Date.now() - scrolling;
+	            scrolling = Date.now();
+	            deltaTime /= 10;
+	            if (absX / deltaTime > 1 && deltaTime > 1) {
+	                $sprite.$scroll.speedX += ($e.canvasX - startPos.x) / deltaTime;
+	            }
+	            if (absY / deltaTime > 1 && deltaTime > 1) {
+	                $sprite.$scroll.speedY += ($e.canvasY - startPos.y) / deltaTime;
+	            }
+
+	            startPos.x = $e.canvasX;
+	            startPos.y = $e.canvasY;
+
+	            $e.event.preventDefault();
+	            return true;
+	        }
+	    },
+
+	    wheel: function wheel($sprite, $e) {
+	        if (!$sprite.scroll.scrollable) return false;
+
+	        if (tickPool.indexOf($sprite) === -1) {
+	            tickPool.push($sprite);
+	        }
+
+	        $sprite.$scroll.speedX = $e.event.wheelDeltaX;
+	        $sprite.$scroll.speedY = $e.event.wheelDeltaY;
+
+	        $e.event.preventDefault();
+	        return true;
+	    }
+	};
+
+	module.exports = scrollFuncs;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _utils = __webpack_require__(1);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = function () {
@@ -933,7 +1066,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -955,7 +1088,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -981,7 +1114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1023,7 +1156,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1051,12 +1184,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 20 */,
 /* 21 */,
 /* 22 */,
 /* 23 */,
 /* 24 */,
-/* 25 */
+/* 25 */,
+/* 26 */,
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1234,7 +1368,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = transition;
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1459,7 +1593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1468,7 +1602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _index = __webpack_require__(51);
+	var _index = __webpack_require__(52);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -1476,7 +1610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _mirror = __webpack_require__(84);
+	var _mirror = __webpack_require__(91);
 
 	var _mirror2 = _interopRequireDefault(_mirror);
 
@@ -1484,7 +1618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _transition = __webpack_require__(25);
+	var _transition = __webpack_require__(27);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
@@ -1492,11 +1626,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
-	var _imgPretreat = __webpack_require__(83);
+	var _imgPretreat = __webpack_require__(90);
 
 	var _imgPretreat2 = _interopRequireDefault(_imgPretreat);
 
-	var _multlineText = __webpack_require__(85);
+	var _multlineText = __webpack_require__(92);
 
 	var _multlineText2 = _interopRequireDefault(_multlineText);
 
@@ -1504,7 +1638,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _sprite2 = _interopRequireDefault(_sprite);
 
-	var _chromeDevtool = __webpack_require__(26);
+	var _chromeDevtool = __webpack_require__(28);
 
 	var _chromeDevtool2 = _interopRequireDefault(_chromeDevtool);
 
@@ -1576,23 +1710,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Easycanvas;
 
 /***/ }),
-/* 28 */,
-/* 29 */,
 /* 30 */,
-/* 31 */
+/* 31 */,
+/* 32 */,
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _perPaint = __webpack_require__(37);
+	var _perPaint = __webpack_require__(38);
 
 	var _perPaint2 = _interopRequireDefault(_perPaint);
 
-	var _render = __webpack_require__(39);
+	var _render = __webpack_require__(40);
 
 	var _render2 = _interopRequireDefault(_render);
 
-	var _eventHandler = __webpack_require__(32);
+	var _eventHandler = __webpack_require__(34);
 
 	var _eventHandler2 = _interopRequireDefault(_eventHandler);
 
@@ -1600,11 +1734,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _bindDrag2 = _interopRequireDefault(_bindDrag);
 
-	var _rAFer = __webpack_require__(38);
+	var _rAFer = __webpack_require__(39);
 
 	var _rAFer2 = _interopRequireDefault(_rAFer);
 
-	var _apiPlugin = __webpack_require__(50);
+	var _apiPlugin = __webpack_require__(51);
 
 	var _apiPlugin2 = _interopRequireDefault(_apiPlugin);
 
@@ -1633,7 +1767,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiInner;
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1646,9 +1780,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _eventHandlerScroll = __webpack_require__(15);
 
-	// import eventScroll from './eventHandler.scroll.js';
+	var _eventHandlerScroll2 = _interopRequireDefault(_eventHandlerScroll);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// const isMobile = typeof wx !== 'undefined' ||
 	//     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -1672,17 +1808,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * - Order by eIndex dev-tool's in events' triggering
 	 * - Order by zIndex in dev-tool's select mode
 	 */
-	/** ********** *
-	 *
-	 * Handle events on canvas (Includes both user's events and debugging events)
-	 * - Compare event's coordinate and the coordinate of every sprite in
-	 *   Easycanvas.children, and check sprite's handlers one by one.
-	 * - Events: mousedown, mousemove, mouseup, touchstart, touchmove, touchend,
-	 *   click, contextmenu
-	 * - Expanded events: hold, touchout
-	 *
-	 * ********** **/
-
 	var sortByIndex = function sortByIndex(arr) {
 	    return arr.sort(function (a, b) {
 	        if (false) {
@@ -1699,6 +1824,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Check whether the event hits certain sprite
 	 * - Sprite in first frame will not captrue any event [?]
 	 */
+	/** ********** *
+	 *
+	 * Handle events on canvas (Includes both user's events and debugging events)
+	 * - Compare event's coordinate and the coordinate of every sprite in
+	 *   Easycanvas.children, and check sprite's handlers one by one.
+	 * - Events: mousedown, mousemove, mouseup, touchstart, touchmove, touchend,
+	 *   click, contextmenu
+	 * - Expanded events: hold, touchout
+	 *
+	 * ********** **/
+
 	var isVisible = function isVisible($sprite) {
 	    if ($sprite.$parent && !isVisible($sprite.$parent)) {
 	        return false;
@@ -1831,7 +1967,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else if ($canvas.eHoldingFlag && ($e.type === 'mouseup' || $e.type === 'touchend')) {
 	        $canvas.eHoldingFlag = false;
 	        // 基础库不再支持滚动
-	        // eventScroll.stop();
+	        _eventHandlerScroll2.default.stop();
 	    } else if ($canvas.eHoldingFlag && ($e.type === 'mousemove' || $e.type === 'touchmove')) {
 	        $canvas.eHoldingFlag = e;
 	    } // else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {
@@ -1847,13 +1983,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        // 基础库不再支持滚动
-	        // if ($e.type === 'mousewheel') {
-	        //     eventScroll.wheel(caughts[i], $e);
-	        // } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
-	        //     if (eventScroll.touch(caughts[i], $e)) {
-	        //         return;
-	        //     }
-	        // }
+	        if ($e.type === 'mousewheel') {
+	            _eventHandlerScroll2.default.wheel(caughts[i], $e);
+	        } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
+	            if (_eventHandlerScroll2.default.touch(caughts[i], $e)) {
+	                return;
+	            }
+	        }
 
 	        if (!caughts[i]['events']) continue; // TODO to remove
 
@@ -1895,140 +2031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _utils = __webpack_require__(1);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	var _tick2 = __webpack_require__(12);
-
-	var _tick3 = _interopRequireDefault(_tick2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/** ********** *
-	 *
-	 * Handle wheel events on canvas
-	 * - Wheel events pass in from eventHandler.js.
-	 * - Includes touch scroll and mouse wheel scroll.
-	 *
-	 * ********** **/
-
-	var startPos = {};
-	var scrolling = false;
-
-	var tickPool = [];
-
-	var scrollFuncs = {
-	    stop: function stop() {
-	        scrolling = false;
-	    },
-
-	    tick: function tick() {
-	        (0, _tick3.default)(scrollFuncs.looper);
-	    },
-
-	    looper: function looper() {
-	        tickPool.forEach(function ($sprite, index) {
-	            var speedX = $sprite.$scroll.speedX;
-	            var speedY = $sprite.$scroll.speedY;
-
-	            if (Math.abs($sprite.$scroll.speedX) > 1) {
-	                $sprite.$scroll.speedX *= $sprite.scroll.smooth || 0.8;
-	            } else {
-	                $sprite.$scroll.speedX = 0;
-	            }
-	            if (Math.abs($sprite.$scroll.speedY) > 1) {
-	                $sprite.$scroll.speedY *= $sprite.scroll.smooth || 0.8;
-	            } else {
-	                $sprite.$scroll.speedY = 0;
-	            }
-
-	            if (Math.abs($sprite.$scroll.speedX) <= 1 && Math.abs($sprite.$scroll.speedY) <= 1) {
-	                tickPool.splice(index, 1);
-	                return;
-	            }
-
-	            $sprite.scroll.scrollY -= $sprite.$scroll.speedY;
-	            $sprite.scroll.scrollX -= $sprite.$scroll.speedX;
-
-	            var minScrollX = _utils2.default.funcOrValue($sprite.scroll.minScrollX, $sprite);
-	            var maxScrollX = _utils2.default.funcOrValue($sprite.scroll.maxScrollX, $sprite);
-	            var minScrollY = _utils2.default.funcOrValue($sprite.scroll.minScrollY, $sprite);
-	            var maxScrollY = _utils2.default.funcOrValue($sprite.scroll.maxScrollY, $sprite);
-
-	            if (!isNaN(minScrollY) && $sprite.scroll.scrollY < minScrollY) {
-	                $sprite.scroll.scrollY = minScrollY;
-	            } else if (!isNaN(maxScrollY) && $sprite.scroll.scrollY > maxScrollY) {
-	                $sprite.scroll.scrollY = maxScrollY;
-	            }
-
-	            if (!isNaN(minScrollX) && $sprite.scroll.scrollX < minScrollX) {
-	                $sprite.scroll.scrollX = minScrollX;
-	            } else if (!isNaN(maxScrollX) && $sprite.scroll.scrollX > maxScrollX) {
-	                $sprite.scroll.scrollX = maxScrollX;
-	            }
-	        });
-
-	        scrollFuncs.tick();
-	    },
-
-	    touch: function touch($sprite, $e) {
-	        if (!$sprite.scroll.scrollable) return false;
-
-	        if (!scrolling) {
-	            // start scroll
-	            scrolling = Date.now();
-	            startPos.x = $e.canvasX;
-	            startPos.y = $e.canvasY;
-	        } else {
-	            if (tickPool.indexOf($sprite) === -1) {
-	                tickPool.push($sprite);
-	            }
-
-	            var absX = Math.abs($e.canvasX - startPos.x);
-	            var absY = Math.abs($e.canvasY - startPos.y);
-	            var deltaTime = Date.now() - scrolling;
-	            scrolling = Date.now();
-	            deltaTime /= 10;
-	            if (absX / deltaTime > 1 && deltaTime > 1) {
-	                $sprite.$scroll.speedX += ($e.canvasX - startPos.x) / deltaTime;
-	            }
-	            if (absY / deltaTime > 1 && deltaTime > 1) {
-	                $sprite.$scroll.speedY += ($e.canvasY - startPos.y) / deltaTime;
-	            }
-
-	            startPos.x = $e.canvasX;
-	            startPos.y = $e.canvasY;
-
-	            $e.event.preventDefault();
-	            return true;
-	        }
-	    },
-
-	    wheel: function wheel($sprite, $e) {
-	        if (!$sprite.scroll.scrollable) return false;
-
-	        if (tickPool.indexOf($sprite) === -1) {
-	            tickPool.push($sprite);
-	        }
-
-	        $sprite.$scroll.speedX = $e.event.wheelDeltaX;
-	        $sprite.$scroll.speedY = $e.event.wheelDeltaY;
-
-	        $e.event.preventDefault();
-	        return true;
-	    }
-	};
-
-	module.exports = scrollFuncs;
-
-/***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2090,7 +2093,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2128,7 +2131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2241,7 +2244,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2258,15 +2261,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _perPaintGetComputedStyle = __webpack_require__(36);
+	var _perPaintGetComputedStyle = __webpack_require__(37);
 
 	var _perPaintGetComputedStyle2 = _interopRequireDefault(_perPaintGetComputedStyle);
 
-	var _perPaintCutOutside = __webpack_require__(34);
+	var _perPaintCutOutside = __webpack_require__(35);
 
 	var _perPaintCutOutside2 = _interopRequireDefault(_perPaintCutOutside);
 
-	var _perPaintDeliverChildren = __webpack_require__(35);
+	var _perPaintDeliverChildren = __webpack_require__(36);
 
 	var _perPaintDeliverChildren2 = _interopRequireDefault(_perPaintDeliverChildren);
 
@@ -2589,7 +2592,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2598,7 +2601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _transition = __webpack_require__(25);
+	var _transition = __webpack_require__(27);
 
 	var _transition2 = _interopRequireDefault(_transition);
 
@@ -2645,7 +2648,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2845,64 +2848,64 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _add = __webpack_require__(41);
+	var _add = __webpack_require__(42);
 
 	var _add2 = _interopRequireDefault(_add);
 
-	var _remove = __webpack_require__(46);
+	var _remove = __webpack_require__(47);
 
 	var _remove2 = _interopRequireDefault(_remove);
 
-	var _start = __webpack_require__(49);
+	var _start = __webpack_require__(50);
 
 	var _start2 = _interopRequireDefault(_start);
 
-	var _paint = __webpack_require__(43);
+	var _paint = __webpack_require__(44);
 
 	var _paint2 = _interopRequireDefault(_paint);
 
-	var _clear = __webpack_require__(42);
+	var _clear = __webpack_require__(43);
 
 	var _clear2 = _interopRequireDefault(_clear);
 
-	var _pause = __webpack_require__(44);
+	var _pause = __webpack_require__(45);
 
 	var _pause2 = _interopRequireDefault(_pause);
 
-	var _on = __webpack_require__(18);
+	var _on = __webpack_require__(19);
 
 	var _on2 = _interopRequireDefault(_on);
 
-	var _off = __webpack_require__(17);
+	var _off = __webpack_require__(18);
 
 	var _off2 = _interopRequireDefault(_off);
 
-	var _trigger = __webpack_require__(19);
+	var _trigger = __webpack_require__(20);
 
 	var _trigger2 = _interopRequireDefault(_trigger);
 
-	var _broadcast = __webpack_require__(15);
+	var _broadcast = __webpack_require__(16);
 
 	var _broadcast2 = _interopRequireDefault(_broadcast);
 
-	var _nextTick = __webpack_require__(16);
+	var _nextTick = __webpack_require__(17);
 
 	var _nextTick2 = _interopRequireDefault(_nextTick);
 
-	var _register = __webpack_require__(45);
+	var _register = __webpack_require__(46);
 
 	var _register2 = _interopRequireDefault(_register);
 
-	var _setFpsHandler = __webpack_require__(47);
+	var _setFpsHandler = __webpack_require__(48);
 
 	var _setFpsHandler2 = _interopRequireDefault(_setFpsHandler);
 
-	var _setMaxFps = __webpack_require__(48);
+	var _setMaxFps = __webpack_require__(49);
 
 	var _setMaxFps2 = _interopRequireDefault(_setMaxFps);
 
@@ -2936,7 +2939,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiOuter;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2956,7 +2959,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                  * ********** **/
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2973,7 +2976,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3042,7 +3045,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3058,12 +3061,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _eventHandlerScroll = __webpack_require__(33);
+	var _eventHandlerScroll = __webpack_require__(15);
 
 	var _eventHandlerScroll2 = _interopRequireDefault(_eventHandlerScroll);
 
@@ -3151,7 +3154,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3205,7 +3208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * ********** **/
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3222,7 +3225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3239,7 +3242,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3274,7 +3277,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3467,20 +3470,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _apiOuter = __webpack_require__(40);
+	var _apiOuter = __webpack_require__(41);
 
 	var _apiOuter2 = _interopRequireDefault(_apiOuter);
 
-	var _apiInner = __webpack_require__(31);
+	var _apiInner = __webpack_require__(33);
 
 	var _apiInner2 = _interopRequireDefault(_apiInner);
 
-	var _prototype = __webpack_require__(52);
+	var _prototype = __webpack_require__(53);
 
 	var _prototype2 = _interopRequireDefault(_prototype);
 
@@ -3537,7 +3540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = painter;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3596,7 +3599,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PROTOS;
 
 /***/ }),
-/* 53 */,
 /* 54 */,
 /* 55 */,
 /* 56 */,
@@ -3626,7 +3628,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 80 */,
 /* 81 */,
 /* 82 */,
-/* 83 */
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3683,7 +3692,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 84 */
+/* 91 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3709,7 +3718,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 85 */
+/* 92 */
 /***/ (function(module, exports) {
 
 	'use strict';
