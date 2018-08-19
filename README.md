@@ -31,13 +31,15 @@ Easycanvas是一个轻量、高效率的渐进式canvas渲染库。将canvas与�
 - ☑ 支持加载mmd模型（插件）
 - ☑ 支持加载dds图片（插件）
 - ☑ 支持微信小游戏
+- ☐ 支持微信小程序
+- ☐ 支持threejs的loader
 - ☐ 更多功能的单元测试
 - ☐ 调试工具的性能分析部分完善
 - ☐ webgl的3D渲染性能优化
 
 #### Changelog
 
-- [Changelog](https://github.com/chenzhuo1992/easycanvas/blob/master/CHANGELOG.md).
+- [更新日志](https://chenzhuo1992.github.io/easycanvas/#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97).
 
 ### Introduction
 
