@@ -31,15 +31,27 @@ const Easycanvas = {
 };
 
 Easycanvas.extend = function (pluginHook) {
-    Easycanvas.sprite.prototype.$extendList.push(pluginHook);
+    let $extendList = Easycanvas.sprite.prototype.$extendList;
+
+    if ($extendList.indexOf(pluginHook) >= 0) return;
+
+    $extendList.push(pluginHook);
 };
 
 Easycanvas.use = function (pluginHook) {
+    let $extendList = Easycanvas.painter.prototype.$extendList;
+
+    if ($extendList.indexOf(pluginHook) >= 0) return;
+
     if (pluginHook.onUse) {
         pluginHook.onUse(Easycanvas);
     }
 
-    Easycanvas.painter.prototype.$extendList.push(pluginHook);
+    $extendList.push(pluginHook);
+};
+
+Easycanvas.component = function (componentInit, namespace) {
+    componentInit(Easycanvas, namespace);
 };
 
 // if (process.env.NODE_ENV !== 'production') {
@@ -74,7 +86,9 @@ if (inBrowser) {
                     "background:transparent");
             }, 500);
         }
-        window.Easycanvas = Easycanvas;
+        if (process.env.UMD === 'true') {
+            window.Easycanvas = Easycanvas;
+        }
     }
 }
 

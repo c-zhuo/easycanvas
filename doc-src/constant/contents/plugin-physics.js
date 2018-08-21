@@ -19,6 +19,7 @@ module.exports = `
 
             import Easycanvas from easycanvas;
             import EasycanvasPhysics from easycanvas/build/plugin.physics.js;
+
             Easycanvas.extend(EasycanvasPhysics);
         </code>
 

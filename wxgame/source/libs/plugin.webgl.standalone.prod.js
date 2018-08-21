@@ -1533,6 +1533,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (bMeetA) return true;
 
+	    // 十字形
+	    if (y1 > y2 && y1 + h1 < y2 + h2 && x1 < x2 && x1 + w1 > x2 + w2) return true;
+	    if (x1 > x2 && x1 + w1 < x2 + w2 && y1 < y2 && y1 + h1 > y2 + h2) return true;
+
 	    return false;
 	};
 

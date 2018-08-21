@@ -21,6 +21,7 @@ module.exports = `
 
             import Easycanvas from easycanvas;
             import EasycanvasWebgl from easycanvas/build/plugin.webgl.js;
+
             Easycanvas.use(EasycanvasWebgl);
 
             <!-- 引入后，常用形状可以在Easycanvas.webglShapes下找到 -->
@@ -382,8 +383,166 @@ module.exports = `
 
         <p class="tip">Tips：fudgeFactor为负数时，会出现“远大近小”的效果。</p>
 
-        <h2>视角与光源</h2>
+        <h2>视角</h2>
 
-        <p>未来版本将支持这些特性。</p>
+        <p>修改painter实例的webgl参数中的camera，可以调整视角和朝向。Demo如下：</p>
+
+        <section>
+            <div class="code-2-demo bg-demo"></div>
+            <code>
+                <head>
+                    <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
+                </head>
+                <body>
+                    <canvas id="app"></canvas>
+                </body>
+
+                <script>
+                    var $app = new Easycanvas.painter({
+                        el: '#app',
+                        width: 400,
+                        height: 400,
+                        webgl: {
+                            camera: {
+                                enable: true,
+                                current: {
+                                    x: 0,
+                                    y: 0,
+                                    z: -100,
+                                },
+                                target: {
+                                    x: 200,
+                                    y: 200,
+                                    z: 0,
+                                },
+                                rotate: {
+                                    x: 0,
+                                    y: -1,
+                                    z: 0,
+                                }
+                            },
+                        }
+                    });
+
+                    [50, 150, 250, 350].forEach(function (tx) {
+                        $app.add(new Easycanvas.sprite({
+                            style: {
+                                tx: tx, ty: 200,
+                            },
+                            webgl: Easycanvas.webglShapes.block({
+                                a: 20, b: 40, c: 80, rz: 45, rx: 30,
+                                colors: [255,255,0,255,0,0,0,255,0],
+                            }),
+                        }));
+                    });
+
+                    // 视角调整间隔
+                    var interval = 2000;
+                    // 调整摄像头位置
+                    var current = $app.webgl.camera.current;
+                    // 调整摄像目标位置
+                    var target = $app.webgl.camera.target;
+                    // 摄像头角度
+                    var rotate = $app.webgl.camera.rotate;
+
+                    function changeCamera () {
+                        Easycanvas.transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
+                        Easycanvas.transition(current, 'y', 'ease', Math.random() * 600 - 400, interval);
+                        Easycanvas.transition(target, 'x', 'ease', Math.random() * 100 + 150, interval);
+                        Easycanvas.transition(target, 'y', 'ease', Math.random() * 100 + 150, interval);
+                        Easycanvas.transition(rotate, 'x', 'linear', Math.random() * 2 - 1, interval);
+                        Easycanvas.transition(rotate, 'y', 'linear', Math.random() * 2 - 1, interval);
+                        Easycanvas.transition(rotate, 'z', 'linear', Math.random() * 2 - 1, interval);
+                    }
+
+                    changeCamera();
+                    setInterval(changeCamera, 1000);
+
+                    $app.start();
+                </script>
+            </code>
+        </section>
+
+        <h2>绘制像素点</h2>
+
+        <p>像素点（也可以理解为单色的球体）通过自定义形状进行绘制。Demo如下：</p>
+
+        <section>
+            <div class="code-2-demo bg-demo"></div>
+            <code>
+                <head>
+                    <script src="./lib/easycanvas/plugin.webgl.standalone.prod.js"></script>
+                </head>
+                <body>
+                    <canvas id="app"></canvas>
+                </body>
+
+                <script>
+                    var $app = new Easycanvas.painter({
+                        el: '#app',
+                        width: 400,
+                        height: 400,
+                        webgl: {
+                            singleShader: true,
+                        },
+                        events: {
+                            mousemove: function ($e) {
+                                mouseX = $e.canvasX;
+                                mouseY = $e.canvasY;
+                            },
+                        }
+                    });
+
+                    var mouseX = 200;
+                    var mouseY = 200;
+
+                    function createEffect () {
+                        var $effect = $app.add({
+                            style: {
+                                tx: Easycanvas.transition.pendulum(
+                                    mouseX + 5 - Math.random() * 10,
+                                    mouseX - 100 - Math.random() * 400,
+                                    3000
+                                ).loop(),
+                                ty: Easycanvas.transition.ease(
+                                    mouseY,
+                                    mouseY - 200,
+                                    1000
+                                ),
+                                zIndex: Math.random(),
+                            },
+                            webgl: window.Easycanvas.webglShapes.custom({
+                                vertices: [0, 0, 0],
+                                colors: [
+                                    255, Math.random() * 128, 0, 255,
+                                ],
+                                pointSizes: new Float32Array([10]),
+                                primitive: 0, // points
+                                hasAlpha: true,
+                            }),
+                            hooks: {
+                                ticked: function () {
+                                    this.webgl.pointSizes[0] += 2;
+                                    this.updateWebglStyle('pointSizes');
+
+                                    if (this.webgl.colors[3] > 4) {
+                                        this.webgl.colors[3] -= 4;
+                                        this.updateWebglStyle('colors');
+                                    } else {
+                                        this.remove();
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    $app.on('ticked', createEffect, 50);
+
+                    $app.start();
+                </script>
+            </code>
+        </section>
+
+        <p class="tip">Tips：这里的singleShader的用途是让Easycanvas使用同一个shader渲染各种不同的图形，以降低切换shader造成的性能损耗。当渲染像素点时，这项必须为true，但后续版本会解除这个限制。</p>
     </article>
 `;

@@ -71,7 +71,7 @@ module.exports = `
                         }
                     },
                     style: {
-                        tx: 5, ty: 5, zIndex: 99,
+                        tx: 5, ty: 15, zIndex: 99,
                         textAlign: 'left', textVerticalAlign: 'top',
                         color: 'white'
                     }
@@ -84,8 +84,8 @@ module.exports = `
                         }
                     },
                     style: {
-                        tx: 395, ty: 5, zIndex: 99,
-                        textAlign: 'right', textVerticalAlign: 'top',
+                        tx: 5, ty: 35, zIndex: 99,
+                        textAlign: 'left', textVerticalAlign: 'top',
                         color: 'white'
                     }
                 });

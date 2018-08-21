@@ -1,20 +1,10 @@
 import Easycanvas from './libs/easycanvas.standalone.prod.js';
+import EasycanvasWxapp from './libs/plugin.wxapp.standalone.prod.js';
+Easycanvas.use(EasycanvasWxapp);
 
 const app = getApp();
 
-const plugin = {
-    onRender: function ($sprite, settings) {
-      if ($sprite.props[0]) {
-        $sprite.props[0] = $sprite.props[0].url;
-      }
-    },
-};
-
-Easycanvas.use(plugin);
-
 var $App;
-var lastX, lastY;
-var clickAfterTouchend = false;
 
 Page({
   data: {
@@ -50,31 +40,6 @@ Page({
     // $App.height = 400;
 
     $App.start();
-
-    var cache = {};
-    $App.imgLoader = Easycanvas.imgLoader = function (str, callback) {
-      if (cache[str]) return cache[str];
-
-      var obj = {
-        width: 0,
-        height: 0,
-      };
-
-      cache[str] = obj;
-
-      wx.getImageInfo({
-        src: str,
-        success: function (data) {
-          console.log(data);
-          obj.width = data.width;
-          obj.height = data.height;
-          obj.url = data.path;
-          if (callback) callback(obj);
-        },
-      });
-
-      return obj;
-    };
 
     var imgUrl = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
 
@@ -158,44 +123,6 @@ Page({
 
   //事件处理函数
   func: function (e) {
-    // console.log(e);
-    lastX = e.touches[0] ? e.touches[0].x : lastX;
-    lastY = e.touches[0] ? e.touches[0].y : lastY;
-
-    var obj = {
-      type: e.type,
-      targetTouches: [
-        {
-          pageX: lastX,
-          pageY: lastY,
-        }
-      ],
-      currentTarget: {
-        offsetLeft: 0,
-        offsetTop: 0,
-      },
-      preventDefault: function () {}
-    };
-
-    clickAfterTouchend = e.type !== 'touchmove' && e.type !== 'longtap';
-    $App.$eventHandler(obj);
-
-    if (e.type === 'touchend') {
-      var obj = {
-        type: 'click',
-        targetTouches: [
-          {
-            pageX: lastX,
-            pageY: lastY,
-          }
-        ],
-        currentTarget: {
-          offsetLeft: 0,
-          offsetTop: 0,
-        },
-        preventDefault: function () {}
-      };
-      $App.$eventHandler(obj);
-    }
+    $App.handle(e);
   },
 })

@@ -23,6 +23,7 @@ module.exports = `
             import Easycanvas from easycanvas;
             import EasycanvasWebgl from easycanvas/build/plugin.webgl.js;
             import EasycanvasWebgl3DS from easycanvas/build/plugin.webgl.3ds.js;
+
             Easycanvas.use(EasycanvasWebgl);
             Easycanvas.use(EasycanvasWebgl3DS);
         </code>

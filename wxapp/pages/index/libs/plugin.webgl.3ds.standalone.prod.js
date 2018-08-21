@@ -1370,7 +1370,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = Lib3ds;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(94).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(95).Buffer))
 
 /***/ }),
 
@@ -1532,7 +1532,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 93:
+/***/ 94:
 /***/ (function(module, exports) {
 
 	'use strict'
@@ -1655,7 +1655,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 94:
+/***/ 95:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -1668,9 +1668,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict'
 
-	var base64 = __webpack_require__(93)
-	var ieee754 = __webpack_require__(96)
-	var isArray = __webpack_require__(95)
+	var base64 = __webpack_require__(94)
+	var ieee754 = __webpack_require__(97)
+	var isArray = __webpack_require__(96)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -3452,7 +3452,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 95:
+/***/ 96:
 /***/ (function(module, exports) {
 
 	var toString = {}.toString;
@@ -3464,7 +3464,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ 96:
+/***/ 97:
 /***/ (function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {

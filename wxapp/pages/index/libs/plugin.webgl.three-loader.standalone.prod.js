@@ -2522,8 +2522,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/** ********** *
 	 *
-	 * Support three loaders
-	 * - ...
+	 * Support threejs loaders
+	 * - Based on some modules in threejs.
 	 *
 	 * ********** **/
 

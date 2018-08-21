@@ -434,6 +434,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (bMeetA) return true;
 
+	    // 十字形
+	    if (y1 > y2 && y1 + h1 < y2 + h2 && x1 < x2 && x1 + w1 > x2 + w2) return true;
+	    if (x1 > x2 && x1 + w1 < x2 + w2 && y1 < y2 && y1 + h1 > y2 + h2) return true;
+
 	    return false;
 	};
 
@@ -1610,7 +1614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _tick2 = _interopRequireDefault(_tick);
 
-	var _mirror = __webpack_require__(91);
+	var _mirror = __webpack_require__(92);
 
 	var _mirror2 = _interopRequireDefault(_mirror);
 
@@ -1626,11 +1630,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _imgLoader2 = _interopRequireDefault(_imgLoader);
 
-	var _imgPretreat = __webpack_require__(90);
+	var _imgPretreat = __webpack_require__(91);
 
 	var _imgPretreat2 = _interopRequireDefault(_imgPretreat);
 
-	var _multlineText = __webpack_require__(92);
+	var _multlineText = __webpack_require__(93);
 
 	var _multlineText2 = _interopRequireDefault(_multlineText);
 
@@ -3635,7 +3639,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 87 */,
 /* 88 */,
 /* 89 */,
-/* 90 */
+/* 90 */,
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3692,7 +3697,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3718,7 +3723,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports) {
 
 	'use strict';

@@ -7,13 +7,13 @@
     * {
         margin: 0;
         padding: 0;
-        opacity: 0.3;
+        opacity: 0.5;
     }
 </style>
 
 <body>
     <canvas id="foo"></canvas>
-    <!-- <canvas id="cut"></canvas> -->
+    <canvas id="$cut"></canvas>
 
     <script>
         var $app = new Easycanvas.painter({
@@ -21,7 +21,7 @@
             fullScreen: true,
             webgl: {
                 camera: {
-                    enable: true,
+                    enable: !true,
                     current: {
                         x: 0,
                         y: 0,
@@ -47,54 +47,69 @@
         //     }),
         // });
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
-            // create a sprite
-            window.sprite2d = $app.add({
-                name: '2d',
-                content: {
-                    img: img,
-                },
-                style: {
-                    tw: 250, th: 130,
-                    sx: 0, sy: 0, // source position, default 0
-                    tx: Easycanvas.transition.pendulum(111, 222, 2500).loop(),
-                    ty: 80,
-                    opacity: 1,
-                    rotate: 20,
-                    locate: 'center', // default center
-                    zIndex: 2, // z-index of this image
-                },
-                events: {
-                    eIndex: 2, // event-index of this image
-                    mousemove: function (e) {
-                        // "this" means this sprite, as sprite1
-                        console.log(this, e);
-                    },
-                    // others: mousehold, mousedown, mouseout and touch events
-                },
-            });
-        });
+        // Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
+        //     // create a sprite
+        //     window.sprite2d = $app.add({
+        //         name: '2d',
+        //         content: {
+        //             img: img,
+        //         },
+        //         style: {
+        //             tw: 250, th: 130,
+        //             sx: 0, sy: 0, // source position, default 0
+        //             tx: Easycanvas.transition.pendulum(111, 222, 2500).loop(),
+        //             ty: 80,
+        //             opacity: 1,
+        //             rotate: 20,
+        //             locate: 'center', // default center
+        //             zIndex: 2, // z-index of this image
+        //         },
+        //         events: {
+        //             eIndex: 2, // event-index of this image
+        //             mousemove: function (e) {
+        //                 // "this" means this sprite, as sprite1
+        //                 console.log(this, e);
+        //             },
+        //             // others: mousehold, mousedown, mouseout and touch events
+        //         },
+        //     });
+        // });
 
         // 2500 40fps => 47 ==code style==> 50
-        // for (var i = 0; i < 25; i++) {
-        //     $app.add({
-        //         style: {
-        //             tx: Math.random() * 1000 - 500,
-        //             ty: Math.random() * 1000 - 500,
-        //             zIndex: Math.random()
-        //         },
-        //         webgl: window.Easycanvas.webglShapes.block({
-        //             tz: Math.random() * 1000 - 500,
-        //             a: 200, b: 100, c: 50,
-        //             colors: [
-        //                 Math.random() * 255,
-        //                 Math.random() * 255,
-        //                 Math.random() * 255,
-        //                 // Math.random() * 255,
-        //             ],
-        //         }),
-        //     });
-        // }
+        for (var i = 0; i < 25; i++) {
+            // 目前现象是zIndex会影响事件顺序，但是取色时应该不影响才对
+            var zIndex = Math.random();
+            var tz = Math.random() * 1000 - 500;
+            $app.add({
+                style: {
+                    tx: Math.random() * 1000 - 500,
+                    ty: Math.random() * 1000 - 500,
+                    zIndex: zIndex
+                },
+                webgl: window.Easycanvas.webglShapes.block({
+                    tz: tz,
+                    a: 200, b: 100, c: 50,
+                    colors: [
+                        Math.random() * 255,
+                        Math.random() * 255,
+                        Math.random() * 255,
+                        // Math.random() * 255,
+                    ],
+                }),
+                events: {
+                    mousemove: function () {
+                        this.updateWebglStyle('colors', [
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            Math.random() * 255,
+                        ]);
+
+                        // console.log(this.webgl.zIndex);
+                        // console.log(this.webgl.$eventFlag);
+                    }
+                }
+            });
+        }
 
         $app.start();
 
