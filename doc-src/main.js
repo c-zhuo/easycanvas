@@ -12,6 +12,13 @@ document.body.appendChild(document.createElement('style')).innerHTML = css;
 const DefaultPage = '一些demo';
 const DemoableCodeClassName = 'code-2-demo';
 
+const Analyze = function (str) {
+    if (window.location.port) return;
+
+    var img = new Image();
+    img.src = 'http://122.114.162.204:8001/point?title=' + str;
+};
+
 (function initBackgroundPhysics () {
     return;
     window.w = document.body.clientWidth;
@@ -151,6 +158,8 @@ const DemoableCodeClassName = 'code-2-demo';
                     }
                 });
             }
+
+            Analyze(title);
         },
         methods: {
             chooseTitle (item) {
@@ -162,6 +171,8 @@ const DemoableCodeClassName = 'code-2-demo';
                 this.$nextTick(() => {
                     document.querySelector('.content').scrollTo(0, 0);
                 });
+
+                Analyze(item.name);
             },
 
             hideDemo () {
@@ -174,6 +185,8 @@ const DemoableCodeClassName = 'code-2-demo';
 
             updateDemo () {
                 this.debug();
+
+                Analyze('updateDemo');
             },
 
             debug (code) {
@@ -206,6 +219,8 @@ const DemoableCodeClassName = 'code-2-demo';
                     this.$iframe.contentWindow.document.write(iframeHtmlCodes);
                     this.$iframe.contentWindow.document.close();
                 }, 100);
+
+                Analyze('debug');
             },
         },
         // watch: {

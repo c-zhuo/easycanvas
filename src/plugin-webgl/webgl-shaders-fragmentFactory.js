@@ -32,7 +32,8 @@ module.exports = function (type, useLight, primitive) {
 
             ${primitive === 0 && `
                 float dist = distance( gl_PointCoord, vec2(0.5) );
-                float alpha = 1.0 - smoothstep(0.45,0.5,dist);
+                float alpha = 1.0 - smoothstep(0.1,0.5,dist);
+                // float alpha = 1.0 - smoothstep(0.45,0.5,dist);
                 gl_FragColor.a *= alpha;
             ` || ''}
 

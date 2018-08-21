@@ -35,14 +35,6 @@ const PROTOS = {
     //     cacheMap: {},
     // },
 
-    /* scroll */
-    scroll: {
-        scrollable: false,
-        scrollY: 0,
-        minScrollY: undefined,
-        maxScrollY: undefined,
-    },
-
     /* flags */
     $flags: {
         dragging: false

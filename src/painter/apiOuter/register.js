@@ -5,8 +5,6 @@
  *
  * ********** **/
 
-import eventScroll from '../apiInner/eventHandler.scroll.js';
-
 const extend = function (opt) {
     this.$extendList.forEach((plugin) => {
         if (plugin.onCreate) {
@@ -59,8 +57,6 @@ module.exports = function (dom, option) {
     this.events = _option.events || {};
 
     this.hooks = _option.hooks || {};
-
-    eventScroll.tick();
 
     if (this.$inBrowser) {
         let eventList = ['contextmenu', 'mousewheel', 'click', 'dblclick', 'mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'];

@@ -32,6 +32,7 @@ module.exports = `
                             tx: 150, ty: 150,
                             tw: 200, th: 200,
                             color: 'red',
+                            backgroundColor: 'orange',
                         },
                     });
 

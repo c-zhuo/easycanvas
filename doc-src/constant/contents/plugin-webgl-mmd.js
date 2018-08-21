@@ -26,6 +26,7 @@ module.exports = `
             import Easycanvas from easycanvas;
             import EasycanvasWebgl from easycanvas/build/plugin.webgl.js;
             import EasycanvasWebglMMD from easycanvas/build/plugin.webgl.mmd.js;
+
             Easycanvas.use(EasycanvasWebgl);
             Easycanvas.use(EasycanvasWebglMMD);
         </code>

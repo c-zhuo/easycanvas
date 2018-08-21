@@ -57,27 +57,29 @@ module.exports = `
                 });
                 $app.start();
                 $app.add({
+                    name: '得分',
                     content: {
                         text: function () {
                             return '得分:' + score;
                         }
                     },
                     style: {
-                        tx: 5, ty: 5,
+                        tx: 5, ty: 15, zIndex: 99,
                         textAlign: 'left', textVerticalAlign: 'top',
-                        color: 'black'
+                        color: 'red'
                     }
                 });
                 $app.add({
+                    name: '小球个数',
                     content: {
                         text: function () {
                             return '小球个数:' + ballCount;
                         }
                     },
                     style: {
-                        tx: 395, ty: 5,
-                        textAlign: 'right', textVerticalAlign: 'top',
-                        color: 'black'
+                        tx: 5, ty: 35, zIndex: 99,
+                        textAlign: 'left', textVerticalAlign: 'top',
+                        color: 'red'
                     }
                 });
                 // 初始化easycanvas物理引擎

@@ -53,13 +53,13 @@ const createShader = (function () {
 var lastType;
 
 module.exports = function (gl, type, light, primitive) {
-    let lastFlag = '' + type + light + primitive;
+    let currentType = '' + type + light + primitive;
     if (gl.singleShader) {
-        lastFlag = 'singleShader';
+        currentType = 'singleShader';
     }
 
-    if (lastType === lastFlag) return;
-    lastType = lastFlag;
+    if (lastType === currentType) return;
+    lastType = currentType;
 
     var shaderVertexColor, shaderFragmentColor;
     shaderVertexColor = createShader(gl, gl.VERTEX_SHADER, type, light, primitive);
