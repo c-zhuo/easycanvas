@@ -1,65 +1,82 @@
 <head>
     <script src="../build/index.js"></script>
+    <script src="../build/component.scroll.js"></script>
 </head>
 
 <body>
     <canvas id="foo" width="800" height="1600"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
-
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
-            // create a sprite
-            var sprite1 = $Painter.add({
-                style: {
-                    tx: 10,
-                    ty: 10,
-                    tw: 500,
-                    th: 800,
-                    locate: 'lt', // default center
-                },
-                scroll: {
-                    scrollable: true,
-                    minScrollX: 0,
-                    maxScrollX: 500,
-                    minScrollY: 0,
-                    maxScrollY: 500,
-                },
-                children: [{
-                    content: {
-                        img: img,
-                    },
-                    drag: {
-                        dragable: true,
-                        x1: 0, x2: 999,
-                        y1: 0, y2: 999,
-                    },
-                    events: {
-                        eIndex: 2,
-                    },
-                    style: {
-                        tx: 500, ty: 500,
-                        tw: 250, th: 250,
-                    },
-                }, {
-                    content: {
-                        img: img,
-                    },
-                    style: {
-                        tx: 200, ty: 500,
-                        tw: 50, th: 50,
-                    },
-                }],
-                events: {
-                    eIndex: 999,
-                    click () {
-                        console.log(1);
-                    }
-                },
-            });
+        var $App = new Easycanvas.painter();
+        $App.register(document.getElementById('foo'), {
+            fullScreen: true,
         });
+        $App.start();
+
+        // var $ScrollBox = $App.add({
+        //     style: {
+        //         tx: 0,
+        //         ty: 0,
+        //         tw: $App.width,
+        //         th: $App.height,
+        //         locate: 'lt',
+        //     },
+        //     scroll: {
+        //         scrollable: true,
+        //         minScrollX: 0,
+        //         maxScrollX: 0,
+        //         minScrollY: 0,
+        //         maxScrollY: $App.height,
+        //     },
+        //     events: {
+        //         // interceptor: function ($e) {
+        //         //     if ($e.type === 'touchmove' || $e.type === 'hold') {
+        //         //         $e.$stopPropagation = true;
+        //         //         return $e;
+        //         //     }
+        //         // }
+        //     },
+        // });
+        var $ScrollBox = $App.add(new Easycanvas.class.scroll({
+            name: 'ScrollBox',
+            style: {
+                tx: 0,
+                ty: 0,
+                tw: $App.width,
+                th: $App.height,
+                locate: 'lt',
+            },
+            scroll: {
+                scrollable: true,
+                minScrollX: 0,
+                maxScrollX: 0,
+                minScrollY: 0,
+                maxScrollY: $App.height,
+            },
+        }));
+
+        var imgSrc = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
+
+        for (var i = 0; i < 10; i++) {
+            $ScrollBox.add({
+                content: {
+                    img: imgSrc
+                },
+                style: {
+                    tx: $App.width / 2, ty: 100 + i * 300,
+                    tw: 100 + i * 10, th: 100 + i * 10,
+                },
+                events: {
+                    click: function () {
+                        this.style.opacity = this.style.opacity === 1 ? 0.5 : 1;
+                    },
+                    touchmove: function () {
+                        console.log(1);
+                        return true;
+                    }
+                }
+            });
+        }
     </script>
 </body>
 

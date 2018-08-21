@@ -24,13 +24,14 @@ const floatEqual = function (a, b) {
     return Math.abs(a - b) < 1;
 };
 
+// 同一帧多次判断时，使用缓存的结果
+var eventedTimestamp = 0;
+var eventedResult = false;
+
 module.exports = function ($e, caughts) {
     var $canvas = this;
     var gl = $canvas.$gl;
     var fbo = gl.createFramebuffer();
-
-    var eventedTimestamp = 0;
-    var eventedResult = false;
 
     if ($canvas.$lastPaintTime === eventedTimestamp) {
         return eventedResult;
@@ -60,29 +61,39 @@ module.exports = function ($e, caughts) {
         // This is always 0.
         0
     );
-    gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.enable(gl.DEPTH_TEST);
-    gl.disable(gl.BLEND);
+    // gl.clearColor(0, 0, 0, 0);
+    // gl.clear(gl.COLOR_BUFFER_BIT);
+    // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    // gl.enable(gl.DEPTH_TEST);
+    // gl.disable(gl.BLEND);
 
     gl.eventing = true;
-    $canvas.$render()
+    // $canvas.$render();
+    $canvas.paint();
 
     // console.log($e.type)
 
     var readout = new Uint8Array(3);
     gl.readPixels($e.canvasX, $canvas.height - $e.canvasY, 1, 1, gl.RGB, gl.UNSIGNED_BYTE, readout);
 
+    // console.log('readout', readout);
+
     // window.imageData = new ImageData($canvas.width, $canvas.height);
+    // window.readImageData = new Uint8Array($canvas.width * $canvas.height * 3);
+    // gl.readPixels(0, 0, $canvas.width, $canvas.height, gl.RGB, gl.UNSIGNED_BYTE, readImageData);
+    // // console.log(readImageData.filter(a => a));
     // for (var i = 0; i < imageData.data.length / 4; i++) {
-    //     imageData.data[i * 4 + 0] = readout[0];
-    //     imageData.data[i * 4 + 1] = readout[1];
-    //     imageData.data[i * 4 + 2] = readout[2];
-    //     // imageData.data[i * 4 + 3] = readout[3];
+    //     imageData.data[i * 4 + 0] = readImageData[i * 3 + 0];
+    //     imageData.data[i * 4 + 1] = readImageData[i * 3 + 1];
+    //     imageData.data[i * 4 + 2] = readImageData[i * 3 + 2];
+    //     imageData.data[i * 4 + 3] = 255;
     // }
-    // console.log(readout);
-    // $foo.$paintContext.putImageData(imageData, 0, 0);
+    // // console.warn(imageData.data.filter((a) => {
+    // //     return a > 0 && a < 255;
+    // // }));
+    // $cut.width = $canvas.width;
+    // $cut.height = $canvas.height;
+    // $cut.getContext('2d').putImageData(imageData, 0, 0);
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.eventing = false;
@@ -96,8 +107,12 @@ module.exports = function ($e, caughts) {
         return floatEqual(readout[0], flag[0]) && floatEqual(readout[1], flag[1]) && floatEqual(readout[2], flag[2]);
     })[0];
 
+    // 同一帧多次判断时，用于使用的缓存
     eventedTimestamp = $canvas.$lastPaintTime;
     eventedResult = $hit;
 
-    console.log($hit);
+    if ($hit) {
+        // console.log($hit);
+        caughts.push($hit.$origin);
+    }
 };

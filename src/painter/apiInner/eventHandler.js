@@ -12,8 +12,6 @@
 import utils from 'utils/utils.js';
 import constants from 'constants';
 
-import eventScroll from './eventHandler.scroll.js';
-
 // const isMobile = typeof wx !== 'undefined' ||
 //     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -79,8 +77,17 @@ const hitSprite = function ($sprite, e) {
 const looper = function (arr, e, caughts) {
     if (!arr || !arr.length) return;
 
-    for (let i = 0; i < arr.length; i++) {
+    let l = arr.length;
+    for (let i = 0; i < l; i++) {
         let item = arr[i];
+
+        if (hitSprite(item, e)) {
+            if (item.events.interceptor) {
+                var $e = utils.firstValuable(item.events.interceptor.call(item, e), e);
+                if (!$e || $e.$stopPropagation) continue;
+            }
+        }
+
         if (item.children.length) {
             // Children above
             looper(sortByIndex(item.children.filter(function (a) {
@@ -151,13 +158,14 @@ module.exports = function (e) {
     };
 
     if ($canvas.events.interceptor) {
-        $e = utils.firstValuable($canvas.events.interceptor($e), $e);
+        $e = utils.firstValuable($canvas.events.interceptor.call($canvas, $e), $e);
         if (!$e || $e.$stopPropagation) return;
     }
 
     let caughts = [];
 
     if ($canvas.$flags.dragging && $canvas.$flags.dragging.$id) {
+        // 拖拽状态下，拖拽中的sprite优先触发事件
         caughts.push($canvas.$flags.dragging);
     }
 
@@ -185,8 +193,6 @@ module.exports = function (e) {
         $canvas.eHoldingFlag = e;
     } else if ($canvas.eHoldingFlag && ($e.type === 'mouseup' || $e.type === 'touchend')) {
         $canvas.eHoldingFlag = false;
-        // 基础库不再支持滚动
-        eventScroll.stop();
     } else if ($canvas.eHoldingFlag && ($e.type === 'mousemove' || $e.type === 'touchmove')) {
         $canvas.eHoldingFlag = e;
     }// else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {
@@ -202,15 +208,6 @@ module.exports = function (e) {
             let eMouseout = $canvas.eLastMouseHover['events']['mouseout'] || $canvas.eLastMouseHover['events']['touchout'];
             if (eMouseout) {
                 eMouseout.call($canvas.eLastMouseHover, $e);
-            }
-        }
-
-        // 基础库不再支持滚动
-        if ($e.type === 'mousewheel') {
-            eventScroll.wheel(caughts[i], $e);
-        } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
-            if (eventScroll.touch(caughts[i], $e)) {
-                return;
             }
         }
 

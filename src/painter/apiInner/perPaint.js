@@ -112,6 +112,10 @@ module.exports = function (i, index) {
         settings.afterRotate = [-transX, -transY];
     }
 
+    if (_props.backgroundColor) {
+        settings.fillRect = _props.backgroundColor;
+    }
+
     if (_props.scale !== 1) {
         let scale = _props.scale;
         _props.tx -= (scale - 1) * _props.tw >> 1;
@@ -182,8 +186,30 @@ module.exports = function (i, index) {
 
     deliverChildren($canvas, _children, -1);
 
+    if (settings.fillRect) {
+        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
+        if (meetResult) {
+            i.$rendered = true;
+
+            let $paintSprite = {
+                $id: i.$id,
+                type: 'context',
+                settings: settings,
+                props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
+            };
+
+            // if (process.env.NODE_ENV !== 'production') {
+            //     // 开发环境下，将元素挂载到$children里以供标记
+                $paintSprite.$origin = i;
+            // };
+
+            $canvas.$children.push($paintSprite);
+        }
+    }
+
     if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
-        if (rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate)) {
+        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
+        if (meetResult) {
             i.$rendered = true;
 
             let $paintSprite = {
@@ -198,7 +224,7 @@ module.exports = function (i, index) {
                 $paintSprite.$origin = i;
             // };
 
-            $canvas.$children.push($paintSprite);            
+            $canvas.$children.push($paintSprite);
         }
     }
 
@@ -211,6 +237,8 @@ module.exports = function (i, index) {
         let textAlign = _props.align || _props.textAlign || 'left';
         let textFont = _props.textFont || '14px Arial';
         let textFontsize = parseInt(textFont);
+        // let textFontsize = parseInt(textFont) * _props.scale;
+        // textFont = textFontsize + 'px Arial';
         let textLineHeight = _props.lineHeight || textFontsize;
 
         // Change css-align to canvas-align style
@@ -222,11 +250,16 @@ module.exports = function (i, index) {
 
         // Change css-align to canvas-align style
         if (_props.textVerticalAlign === 'top') {
-            textTy += textFontsize + (textLineHeight - textFontsize) / 2;
+            settings.textBaseline = 'top';
+            // textTy += textFontsize + (textLineHeight - textFontsize) / 2;
         } else if (_props.textVerticalAlign === 'bottom') {
-            textTy += _props.th - (textLineHeight - textFontsize) / 2;
+            settings.textBaseline = 'bottom';
+            textTy += _props.th;
+            // textTy += _props.th - (textLineHeight - textFontsize) / 2;
         } else if (_props.textVerticalAlign === 'middle') {
-            textTy += _props.th / 2 + textFontsize / 2;
+            // textTy += _props.th / 2 + textFontsize / 2;
+            textTy += _props.th >> 1;
+            settings.textBaseline = 'middle';
         }
 
         if (typeof _text === 'string' || typeof _text === 'number') {
@@ -304,7 +337,6 @@ module.exports = function (i, index) {
                 });
                 textTy += textLineHeight || textFontsize;
             });
-            // Record last line of this text
         }
     }
 

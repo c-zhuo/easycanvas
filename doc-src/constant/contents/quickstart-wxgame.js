@@ -10,11 +10,13 @@ module.exports = `
 
         <code>
             // 注意先引入Wxgame，后引入Easycanvas
-            import Wxgame from './source/libs/plugin.wxgame.standalone.prod.js'
-            import Easycanvas from './source/libs/easycanvas.standalone.prod.js'
+            import Wxgame from './your-path/plugin.wxgame.standalone.prod.js'
+            import Easycanvas from './your-path/easycanvas.standalone.prod.js'
 
             // 如果要使用其它插件（例如扩展物理效果），放在Easycanvas后加载即可
-            import Physics from './source/libs/plugin.physics.standalone.prod.js'
+            import EasycanvasPhysics from './your-path/plugin.physics.standalone.prod.js'
+
+            Easycanvas.extend(EasycanvasPhysics);
         </code>
 
         <p>这里的js文件可以在<a href="https://github.com/chenzhuo1992/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>
@@ -51,7 +53,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>可以看到，写法上与Easycanvas在浏览器中的使用完全没有区别。<strong>唯一不同的是，微信小游戏提供了全局的canvas对象，因此调用register时可以直接传入canvas</strong>。可以通过一些代码抹平浏览器端和微信小游戏端的差异，例如：</p>
+        <p>可以看到，写法上与Easycanvas在浏览器中的使用完全没有区别。<strong>唯一不同的是，微信小游戏提供了全局的canvas对象，因此调用register时可以直接传入canvas</strong>。可以通过一些代码抹平浏览器端和微信小游戏端的差异，这样你的js可以同时在小程序和浏览器中运行，例如：</p>
 
         <section>
             <code>
@@ -63,7 +65,6 @@ module.exports = `
         <p class="tip">Tips：不建议额外引入微信提供的adaptor，可能会引起一些问题。Easycanvas提供的插件中，Physics插件可以在微信小游戏中运行，但其它插件可能存在一些问题（未经测试），欢迎反馈。</p>
 
         <p>后面“基础教程”里提到的API同样在微信小游戏适用。</p>
-
     </article>
 
 `;

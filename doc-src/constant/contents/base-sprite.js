@@ -66,9 +66,9 @@ module.exports = `
 
         <p class="tip">Tips：在这个例子中，this.style.tx()这种写法也可以取到当前的实际值。</p>
 
-        <p><strong>getRect获取的是实际渲染的位置，左上角为tx、ty对应的顶点（这一点和HTML5的getBoundingClientRect是相同的），getStyle获取的是实际计算的样式（tx、ty对应哪个点是和locate相关的），而getSelfStyle获取的是当前自身的样式（用来获取一些函数形式的动态属性的当前值）</strong>。有关locate的介绍，请参阅“图片渲染与处理”。</p>
+        <p><strong>getRect()获取的是实际渲染的位置，返回的tx、ty为渲染时左上角的坐标（这一点和HTML5的getBoundingClientRect()获取到的left、top的含义相同），getStyle('opacity')获取的是实际渲染的样式（例如最终的透明度等），而getSelfStyle('tx')获取的是当前自身的样式（用来获取一些函数形式的动态属性的当前值，例如一个渐变的当前值）</strong>。其中getSelfStyle()可以不传参数，将返回一个包含当前对象自身所有样式的对象。getSelfStyle().tx与getSelfStyle('tx')相同（但是更耗性能）。当locate为lt时，getRect().tx与getStyle('tx')相同。有关locate的介绍，请参阅“图片渲染与处理”。</p>
 
-        <p>这个例子是有一个层级，因此getStyle和getSelfStyle的效果相同。下面这个例子存在两个层级，所以这两个API的结果不同：</p>
+        <p>上面的例子只有一个层级，因此getStyle和getSelfStyle的效果相同。下面这个例子存在两个层级，所以这两个API的结果不同：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -76,6 +76,7 @@ module.exports = `
                 <body>
                     <canvas id="app"></canvas>
                     <p id="getSelfStyle">点击第二个字母G</p>
+                    <p id="getSelfStyleTx"></p>
                     <p id="getStyle"></p>
                     <p id="getRect"></p>
                 </body>
@@ -112,9 +113,10 @@ module.exports = `
                         },
                         events: {
                             click: function () {
-                                document.getElementById('getSelfStyle').innerHTML = 'getSelfStyle: ' + JSON.stringify(this.getSelfStyle());
-                                document.getElementById('getStyle').innerHTML = 'getStyle tx: ' + this.getStyle('tx');
-                                document.getElementById('getRect').innerHTML = 'getRect: ' + JSON.stringify(this.getRect());
+                                document.getElementById('getSelfStyle').innerHTML = 'getSelfStyle(): ' + JSON.stringify(this.getSelfStyle());
+                                document.getElementById('getSelfStyleTx').innerHTML = 'getSelfStyle().tx: ' + JSON.stringify(this.getSelfStyle('tx'));
+                                document.getElementById('getStyle').innerHTML = 'getStyle("tx"): ' + this.getStyle('tx');
+                                document.getElementById('getRect').innerHTML = 'getRect(): ' + JSON.stringify(this.getRect());
                             }
                         }
                     });
