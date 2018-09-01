@@ -85,7 +85,7 @@ module.exports = `
             <code>
                 <body>
                     <canvas id="app"></canvas>
-                    <p>点击字母G时调用remove方法</p>
+                    <p>点击小的字母G时调用remove方法</p>
                 </body>
 
                 <script>
@@ -208,7 +208,7 @@ module.exports = `
                     var $lastChild = $parent;
 
                     for (var i = 0; i < 10; i++) {
-                        // 创建10个sprite，连续嵌套10层。每一层的透明度都是上一层的0.6倍
+                        // 创建10个sprite，连续嵌套10层。每一层的透明度都是上一层的0.7倍
                         var $newChild = new Easycanvas.sprite({
                             content: {
                                 img: G,
@@ -233,7 +233,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>可以通过修改inherit来改变要继承的属性，例如：</p>
+        <p>可以通过修改inherit来改变要继承的属性，例如下面的例子。但是<strong>不建议这么做</strong>，这样可能会让代码不易理解，或是影响一些插件的正常使用。</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>

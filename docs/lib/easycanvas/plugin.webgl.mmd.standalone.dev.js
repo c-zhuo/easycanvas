@@ -23,9 +23,9 @@
         return i(0);
     }({
         0: function(t, e, i) {
-            t.exports = i(60);
+            t.exports = i(87);
         },
-        4: function(t, e) {
+        5: function(t, e) {
             "use strict";
             var i = {}, r = {}, o = {}, n = {};
             var s = typeof Float32Array != "undefined" ? Float32Array : typeof WebGLFloatArray != "undefined" ? WebGLFloatArray : Array;
@@ -897,7 +897,7 @@
                 quat4: n
             };
         },
-        6: function(t, e) {
+        8: function(t, e) {
             "use strict";
             function i(t, e) {
                 var i = function t(e) {
@@ -913,11 +913,11 @@
             }
             t.exports = i;
         },
-        17: function(t, e, i) {
+        19: function(t, e, i) {
             "use strict";
-            var r = i(6);
+            var r = i(8);
             var o = s(r);
-            var n = i(4);
+            var n = i(5);
             function s(t) {
                 return t && t.__esModule ? t : {
                     default: t
@@ -1607,7 +1607,7 @@
             };
             t.exports = p;
         },
-        18: function(t, e) {
+        20: function(t, e) {
             "use strict";
             function i() {
                 this.header = null;
@@ -2433,9 +2433,9 @@
                 PMDJoint: T
             };
         },
-        19: function(t, e, i) {
+        21: function(t, e, i) {
             "use strict";
-            var r = i(4);
+            var r = i(5);
             function o() {
                 this.header = null;
                 this.motionCount = null;
@@ -3024,9 +3024,9 @@
                 VMDCamera: h
             };
         },
-        20: function(t, e, i) {
+        22: function(t, e, i) {
             "use strict";
-            var r = i(67);
+            var r = i(59);
             var o = n(r);
             function n(t) {
                 return t && t.__esModule ? t : {
@@ -3214,234 +3214,13 @@
             };
             t.exports = s;
         },
-        60: function(t, e, i) {
+        54: function(t, e, i) {
             "use strict";
-            var r = Object.assign || function(t) {
-                for (var e = 1; e < arguments.length; e++) {
-                    var i = arguments[e];
-                    for (var r in i) {
-                        if (Object.prototype.hasOwnProperty.call(i, r)) {
-                            t[r] = i[r];
-                        }
-                    }
-                }
-                return t;
-            };
-            var o = i(18);
-            var n = y(o);
-            var s = i(62);
-            var a = y(s);
-            var h = i(63);
-            var u = y(h);
-            var p = i(64);
-            var f = y(p);
-            var l = i(19);
-            var c = y(l);
-            var m = i(65);
-            var _ = y(m);
-            var v = i(17);
-            var d = y(v);
-            function y(t) {
-                return t && t.__esModule ? t : {
-                    default: t
-                };
-            }
-            var g = function t(e) {
-                console.error("[Easycanvas-webgl] " + e);
-            };
-            var T = {};
-            var A = "processing";
-            var E = function t(e, i, r) {
-                var o = new a.default(i);
-                if (!o.valid()) {
-                    g("PMD Parse Error.");
-                    return;
-                }
-                var n = o.parse();
-                n.setup();
-                var s = n.vertices.map(function(t) {
-                    return t.position;
-                }).join(",").split(",").map(function(t) {
-                    return Number(t);
-                });
-                var h = n.vertices.map(function(t) {
-                    return t.normal;
-                }).join(",").split(",");
-                var u = n.vertices.map(function(t) {
-                    return t.uv;
-                }).join(",").split(",");
-                var p = n.vertexIndices.map(function(t) {
-                    return t.index;
-                });
-                var f = {
-                    vertices: s,
-                    normals: h,
-                    textures: u,
-                    indices: p
-                };
-                n.$vertices = s;
-                T[e] = {
-                    data: f,
-                    pmd: n
-                };
-                r(f, n);
-            };
-            var I = function t(e, i) {
-                var r = [];
-                var o = [];
-                for (var n = 0; n < e.length; n++) {
-                    o[n] = new _.default(e[n]);
-                    if (!o[n].valid()) {
-                        g("VMD Parse Error.");
-                        return;
-                    }
-                    r[n] = o[n].parse();
-                }
-                var s = r[0];
-                var a = o[0];
-                for (var n = 1; n < e.length; n++) {
-                    s.merge(r[n]);
-                }
-                i({
-                    start: function t(e, i) {
-                        var r = new d.default(e);
-                        var o = new f.default();
-                        var n = new u.default(null, e, o);
-                        n.setup();
-                        n._initMotions();
-                        o.setup();
-                        o.addModelView(n);
-                        o.setVMD(s);
-                        o.startDance();
-                        var a = n.getVerticals;
-                        setInterval(function() {
-                            o.update();
-                            for (var t = 0, e = i.length / 3; t < e; t++) {
-                                var r = a(t);
-                                i[t * 3 + 0] = r[0];
-                                i[t * 3 + 1] = r[1];
-                                i[t * 3 + 2] = r[2];
-                            }
-                            i.$cacheBuffer = undefined;
-                        }, 50);
-                    }
-                });
-            };
-            var C = function t(e, i) {
-                var r = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-                if (r) {
-                    if (T[e]) {
-                        if (T[e] === A) {
-                            setTimeout(function() {
-                                t(e, i);
-                            }, 100);
-                        } else {
-                            i(T[e].data, T[e].pmd);
-                        }
-                        return;
-                    }
-                    T[e] = A;
-                }
-                var o = e;
-                var n = new XMLHttpRequest();
-                n.responseType = "arraybuffer";
-                n.onload = function() {
-                    E(e, n.response, i);
-                };
-                n.onerror = function(t) {
-                    g("PMD File Loaded Error.");
-                };
-                n.open("GET", o, true);
-                n.send(null);
-            };
-            var M = function t(e, i, r, o) {
-                r = r || 0;
-                o = o || [];
-                var n = e.pop ? e.length[r] : e;
-                var s = new XMLHttpRequest();
-                s.responseType = "arraybuffer";
-                s.onload = function() {
-                    o.push(s.response);
-                    I(o, i);
-                };
-                s.onerror = function(t) {
-                    g("VMD File Loaded Error.");
-                };
-                s.open("GET", n, true);
-                s.send(null);
-            };
-            var x = function t(e) {
-                if (!e.webgl || !e.webgl.pmd) {
-                    return;
-                }
-                var i = e.webgl.pmd;
-                var o = e.webgl.imgPath;
-                var n = e.webgl.cache !== false;
-                var s = this;
-                var a = void 0;
-                C(i, function(t, n) {
-                    s.webgl = {};
-                    var h = t.vertices;
-                    var u = t.normals;
-                    var p = t.textures;
-                    var f = t.indices;
-                    delete e.webgl.pmd;
-                    delete e.webgl.imgPath;
-                    delete e.webgl.cache;
-                    var l = 0;
-                    n.materials.forEach(function(t, n) {
-                        var a = T[i]["currentIndices" + n] || f.slice(l, l + t.vertexCount);
-                        T[i]["currentIndices" + n] = a;
-                        s.add({
-                            name: t.fileName,
-                            webgl: r(window.Easycanvas.webglShapes.custom({
-                                vertices: h,
-                                normals: u,
-                                indices: a,
-                                textures: p,
-                                img: t.fileName ? o + t.fileName : undefined,
-                                colors: t.fileName ? undefined : t.color.map(function(t) {
-                                    return t * 255;
-                                }).slice(0, 3)
-                            }), e.webgl)
-                        });
-                        l += t.vertexCount;
-                    });
-                    s.vmdStart = function(t) {
-                        M(t, function(t) {
-                            s.trigger("webgl-vmd-loaded");
-                            t.start(n, s.children[0].webgl.vertices);
-                        });
-                    };
-                    if (a) {
-                        s.vmdStart(a);
-                    }
-                    s.trigger("webgl-pmd-loaded");
-                }, n);
-                s.vmdStart = function(t) {
-                    a = t;
-                };
-            };
-            var b = typeof window !== "undefined";
-            if (b && window.Easycanvas) {
-                Easycanvas.loaderPMD = C;
-                Easycanvas.loaderVMD = M;
-                Easycanvas.extend(x);
-            } else {
-                t.exports = {
-                    loaderPMD: C,
-                    loaderVMD: M,
-                    classInit: x
-                };
-            }
-        },
-        62: function(t, e, i) {
-            "use strict";
-            var r = i(6);
+            var r = i(8);
             var o = h(r);
-            var n = i(20);
+            var n = i(22);
             var s = h(n);
-            var a = i(18);
+            var a = i(20);
             function h(t) {
                 return t && t.__esModule ? t : {
                     default: t
@@ -4173,12 +3952,12 @@
             };
             t.exports = u;
         },
-        63: function(t, e, i) {
+        55: function(t, e, i) {
             "use strict";
-            var r = i(4);
-            var o = i(66);
+            var r = i(5);
+            var o = i(58);
             var n = h(o);
-            var s = i(17);
+            var s = i(19);
             var a = h(s);
             function h(t) {
                 return t && t.__esModule ? t : {
@@ -4836,9 +4615,9 @@
             };
             t.exports = f;
         },
-        64: function(t, e, i) {
+        56: function(t, e, i) {
             "use strict";
-            var r = i(4);
+            var r = i(5);
             function o(t) {
                 this.layer = t;
                 this.modelViews = [];
@@ -5298,12 +5077,12 @@
             };
             t.exports = o;
         },
-        65: function(t, e, i) {
+        57: function(t, e, i) {
             "use strict";
-            var r = i(6);
+            var r = i(8);
             var o = h(r);
-            var n = i(19);
-            var s = i(20);
+            var n = i(21);
+            var s = i(22);
             var a = h(s);
             function h(t) {
                 return t && t.__esModule ? t : {
@@ -5534,7 +5313,7 @@
             };
             t.exports = u;
         },
-        66: function(t, e) {
+        58: function(t, e) {
             "use strict";
             var i = function t(e, i) {
                 return [ e[1] * i[2] - e[2] * i[1], e[2] * i[0] - e[0] * i[2], e[0] * i[1] - e[1] * i[0] ];
@@ -5567,7 +5346,7 @@
                 mix: a
             };
         },
-        67: function(t, e) {
+        59: function(t, e) {
             "use strict";
             function i(t, e, i) {
                 var r = "";
@@ -5580,6 +5359,227 @@
                 return o + (r + e.toString(t)).substr(-1 * i);
             }
             t.exports = i;
+        },
+        87: function(t, e, i) {
+            "use strict";
+            var r = Object.assign || function(t) {
+                for (var e = 1; e < arguments.length; e++) {
+                    var i = arguments[e];
+                    for (var r in i) {
+                        if (Object.prototype.hasOwnProperty.call(i, r)) {
+                            t[r] = i[r];
+                        }
+                    }
+                }
+                return t;
+            };
+            var o = i(20);
+            var n = y(o);
+            var s = i(54);
+            var a = y(s);
+            var h = i(55);
+            var u = y(h);
+            var p = i(56);
+            var f = y(p);
+            var l = i(21);
+            var c = y(l);
+            var m = i(57);
+            var _ = y(m);
+            var v = i(19);
+            var d = y(v);
+            function y(t) {
+                return t && t.__esModule ? t : {
+                    default: t
+                };
+            }
+            var g = function t(e) {
+                console.error("[Easycanvas-webgl] " + e);
+            };
+            var T = {};
+            var A = "processing";
+            var E = function t(e, i, r) {
+                var o = new a.default(i);
+                if (!o.valid()) {
+                    g("PMD Parse Error.");
+                    return;
+                }
+                var n = o.parse();
+                n.setup();
+                var s = n.vertices.map(function(t) {
+                    return t.position;
+                }).join(",").split(",").map(function(t) {
+                    return Number(t);
+                });
+                var h = n.vertices.map(function(t) {
+                    return t.normal;
+                }).join(",").split(",");
+                var u = n.vertices.map(function(t) {
+                    return t.uv;
+                }).join(",").split(",");
+                var p = n.vertexIndices.map(function(t) {
+                    return t.index;
+                });
+                var f = {
+                    vertices: s,
+                    normals: h,
+                    textures: u,
+                    indices: p
+                };
+                n.$vertices = s;
+                T[e] = {
+                    data: f,
+                    pmd: n
+                };
+                r(f, n);
+            };
+            var I = function t(e, i) {
+                var r = [];
+                var o = [];
+                for (var n = 0; n < e.length; n++) {
+                    o[n] = new _.default(e[n]);
+                    if (!o[n].valid()) {
+                        g("VMD Parse Error.");
+                        return;
+                    }
+                    r[n] = o[n].parse();
+                }
+                var s = r[0];
+                var a = o[0];
+                for (var n = 1; n < e.length; n++) {
+                    s.merge(r[n]);
+                }
+                i({
+                    start: function t(e, i) {
+                        var r = new d.default(e);
+                        var o = new f.default();
+                        var n = new u.default(null, e, o);
+                        n.setup();
+                        n._initMotions();
+                        o.setup();
+                        o.addModelView(n);
+                        o.setVMD(s);
+                        o.startDance();
+                        var a = n.getVerticals;
+                        setInterval(function() {
+                            o.update();
+                            for (var t = 0, e = i.length / 3; t < e; t++) {
+                                var r = a(t);
+                                i[t * 3 + 0] = r[0];
+                                i[t * 3 + 1] = r[1];
+                                i[t * 3 + 2] = r[2];
+                            }
+                            i.$cacheBuffer = undefined;
+                        }, 50);
+                    }
+                });
+            };
+            var C = function t(e, i) {
+                var r = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+                if (r) {
+                    if (T[e]) {
+                        if (T[e] === A) {
+                            setTimeout(function() {
+                                t(e, i);
+                            }, 100);
+                        } else {
+                            i(T[e].data, T[e].pmd);
+                        }
+                        return;
+                    }
+                    T[e] = A;
+                }
+                var o = e;
+                var n = new XMLHttpRequest();
+                n.responseType = "arraybuffer";
+                n.onload = function() {
+                    E(e, n.response, i);
+                };
+                n.onerror = function(t) {
+                    g("PMD File Loaded Error.");
+                };
+                n.open("GET", o, true);
+                n.send(null);
+            };
+            var M = function t(e, i, r, o) {
+                r = r || 0;
+                o = o || [];
+                var n = e.pop ? e.length[r] : e;
+                var s = new XMLHttpRequest();
+                s.responseType = "arraybuffer";
+                s.onload = function() {
+                    o.push(s.response);
+                    I(o, i);
+                };
+                s.onerror = function(t) {
+                    g("VMD File Loaded Error.");
+                };
+                s.open("GET", n, true);
+                s.send(null);
+            };
+            var x = function t(e) {
+                if (!e.webgl || !e.webgl.pmd) {
+                    return;
+                }
+                var i = e.webgl.pmd;
+                var o = e.webgl.imgPath;
+                var n = e.webgl.cache !== false;
+                var s = this;
+                var a = void 0;
+                C(i, function(t, n) {
+                    s.webgl = {};
+                    var h = t.vertices;
+                    var u = t.normals;
+                    var p = t.textures;
+                    var f = t.indices;
+                    delete e.webgl.pmd;
+                    delete e.webgl.imgPath;
+                    delete e.webgl.cache;
+                    var l = 0;
+                    n.materials.forEach(function(t, n) {
+                        var a = T[i]["currentIndices" + n] || f.slice(l, l + t.vertexCount);
+                        T[i]["currentIndices" + n] = a;
+                        s.add({
+                            name: t.fileName,
+                            webgl: r(window.Easycanvas.webglShapes.custom({
+                                vertices: h,
+                                normals: u,
+                                indices: a,
+                                textures: p,
+                                img: t.fileName ? o + t.fileName : undefined,
+                                colors: t.fileName ? undefined : t.color.map(function(t) {
+                                    return t * 255;
+                                }).slice(0, 3)
+                            }), e.webgl)
+                        });
+                        l += t.vertexCount;
+                    });
+                    s.vmdStart = function(t) {
+                        M(t, function(t) {
+                            s.trigger("webgl-vmd-loaded");
+                            t.start(n, s.children[0].webgl.vertices);
+                        });
+                    };
+                    if (a) {
+                        s.vmdStart(a);
+                    }
+                    s.trigger("webgl-pmd-loaded");
+                }, n);
+                s.vmdStart = function(t) {
+                    a = t;
+                };
+            };
+            var b = typeof window !== "undefined";
+            if (b && window.Easycanvas) {
+                Easycanvas.loaderPMD = C;
+                Easycanvas.loaderVMD = M;
+                Easycanvas.extend(x);
+            } else {
+                t.exports = {
+                    loaderPMD: C,
+                    loaderVMD: M,
+                    classInit: x
+                };
+            }
         }
     });
 });

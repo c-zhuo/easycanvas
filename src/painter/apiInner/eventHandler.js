@@ -12,10 +12,8 @@
 import utils from 'utils/utils.js';
 import constants from 'constants';
 
-// import eventScroll from './eventHandler.scroll.js';
-
-const isMobile = typeof wx !== 'undefined' ||
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+// const isMobile = typeof wx !== 'undefined' ||
+//     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 // transform
 // const mobileEvents = ['touchstart', 'touchmove', 'touchend'];
@@ -79,8 +77,17 @@ const hitSprite = function ($sprite, e) {
 const looper = function (arr, e, caughts) {
     if (!arr || !arr.length) return;
 
-    for (let i = 0; i < arr.length; i++) {
+    let l = arr.length;
+    for (let i = 0; i < l; i++) {
         let item = arr[i];
+
+        if (hitSprite(item, e)) {
+            if (item.events.interceptor) {
+                var $e = utils.firstValuable(item.events.interceptor.call(item, e), e);
+                if (!$e || $e.$stopPropagation) continue;
+            }
+        }
+
         if (item.children.length) {
             // Children above
             looper(sortByIndex(item.children.filter(function (a) {
@@ -111,10 +118,18 @@ const looper = function (arr, e, caughts) {
     }
 };
 
+const extend = function ($e, caughts) {
+    this.$extendList.forEach((plugin) => {
+        if (plugin.onEvent) {
+            plugin.onEvent.call(this, $e, caughts);
+        }
+    });
+};
+
 module.exports = function (e) {
     let $canvas = this;
 
-    if (!e.layerX && e.touches && e.touches[0]) {
+    if (!e.layerX && e.targetTouches && e.targetTouches[0]) {
         e.layerX = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
         e.layerY = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
     }
@@ -123,13 +138,16 @@ module.exports = function (e) {
         e.layerY = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
     }
 
-    let isRotated = this.$dom.getBoundingClientRect().width > this.$dom.getBoundingClientRect().height !== this.width > this.height
+    let isRotated = false;
+    let scaleX = 1;
+    let scaleY = 1;
 
-    let scaleX = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'height' : 'width']) / this.width;
-    let scaleY = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'width' : 'height']) / this.height;
+    if (this.$dom.getBoundingClientRect) {
+        this.$dom.getBoundingClientRect().width > this.$dom.getBoundingClientRect().height !== this.width > this.height
 
-    scaleX = scaleX || 1;
-    scaleY = scaleY || 1;
+        scaleX = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'height' : 'width']) / this.width;
+        scaleY = Math.floor(this.$dom.getBoundingClientRect()[isRotated ? 'width' : 'height']) / this.height;
+    }
 
     let $e = {
         // type: mobilePCTransform(e.type),
@@ -140,16 +158,20 @@ module.exports = function (e) {
     };
 
     if ($canvas.events.interceptor) {
-        $e = $canvas.events.interceptor($e);
+        $e = utils.firstValuable($canvas.events.interceptor.call($canvas, $e), $e);
+        if (!$e || $e.$stopPropagation) return;
     }
 
     let caughts = [];
 
     if ($canvas.$flags.dragging && $canvas.$flags.dragging.$id) {
+        // 拖拽状态下，拖拽中的sprite优先触发事件
         caughts.push($canvas.$flags.dragging);
     }
 
     looper(sortByIndex($canvas.children), $e, caughts);
+
+    extend.call($canvas, $e, caughts);
 
     if (process.env.NODE_ENV !== 'production') {
         // 开发者工具select模式下为选取元素
@@ -171,8 +193,6 @@ module.exports = function (e) {
         $canvas.eHoldingFlag = e;
     } else if ($canvas.eHoldingFlag && ($e.type === 'mouseup' || $e.type === 'touchend')) {
         $canvas.eHoldingFlag = false;
-        // 基础库不再支持滚动
-        // eventScroll.stop();
     } else if ($canvas.eHoldingFlag && ($e.type === 'mousemove' || $e.type === 'touchmove')) {
         $canvas.eHoldingFlag = e;
     }// else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {
@@ -190,15 +210,6 @@ module.exports = function (e) {
                 eMouseout.call($canvas.eLastMouseHover, $e);
             }
         }
-
-        // 基础库不再支持滚动
-        // if ($e.type === 'mousewheel') {
-        //     eventScroll.wheel(caughts[i], $e);
-        // } else if ($canvas.eHoldingFlag && $e.type === 'touchmove') {
-        //     if (eventScroll.touch(caughts[i], $e)) {
-        //         return;
-        //     }
-        // }
 
         if (!caughts[i]['events']) continue; // TODO to remove
 

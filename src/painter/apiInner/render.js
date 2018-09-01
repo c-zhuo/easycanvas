@@ -142,6 +142,14 @@ const render = function ($sprite, i) {
         cxt.globalAlpha = settings.globalAlpha;
     }
 
+    if (settings.textBaseline) {
+        if (!saved) {
+            cxt.save();
+            saved = true;
+        }
+        cxt.textBaseline = settings.textBaseline;
+    }
+
     if (settings.translate) {
         if (!saved) {
             cxt.save();
@@ -190,6 +198,9 @@ const render = function ($sprite, i) {
         cxt.fillStyle = cxt.strokeStyle = props.color || 'white';
         cxt.textAlign = props.align;
         cxt[props.type || 'fillText'](props.content, props.tx, props.ty);
+    } else if (settings.fillRect) { // $sprite.type === 'context'
+        cxt.fillStyle = settings.fillRect;
+        cxt.fillRect(props[5],props[6],props[7],props[8]);
     }
 
     if (saved) {

@@ -7,13 +7,13 @@
     * {
         margin: 0;
         padding: 0;
-        /*opacity: 0.3;*/
+        opacity: 0.5;
     }
 </style>
 
 <body>
     <canvas id="foo"></canvas>
-    <canvas id="cut"></canvas>
+    <canvas id="$cut"></canvas>
 
     <script>
         var $app = new Easycanvas.painter({
@@ -21,7 +21,7 @@
             fullScreen: true,
             webgl: {
                 camera: {
-                    enable: true,
+                    enable: !true,
                     current: {
                         x: 0,
                         y: 0,
@@ -34,33 +34,60 @@
                     },
                 },
             },
-            events: {
-                click: function ($e) {
-                    cutter($e);
-                }
-            }
         });
 
-        $app.add({
-            style: {
-                tx: 0, ty: 0,
-            },
-            webgl: window.Easycanvas.webglShapes.ball({
-                r: 250, b: 20,
-                // colors: [255, 0, 0, 255, 255, 0, 0, 255, 0]
-                colors: [255, 0, 0]
-            }),
-        });
+        // $app.add({
+        //     style: {
+        //         tx: 0, ty: 0,
+        //     },
+        //     webgl: window.Easycanvas.webglShapes.ball({
+        //         r: 250, b: 20,
+        //         // colors: [255, 0, 0, 255, 255, 0, 0, 255, 0]
+        //         colors: [255, 0, 0]
+        //     }),
+        // });
+
+        // Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
+        //     // create a sprite
+        //     window.sprite2d = $app.add({
+        //         name: '2d',
+        //         content: {
+        //             img: img,
+        //         },
+        //         style: {
+        //             tw: 250, th: 130,
+        //             sx: 0, sy: 0, // source position, default 0
+        //             tx: Easycanvas.transition.pendulum(111, 222, 2500).loop(),
+        //             ty: 80,
+        //             opacity: 1,
+        //             rotate: 20,
+        //             locate: 'center', // default center
+        //             zIndex: 2, // z-index of this image
+        //         },
+        //         events: {
+        //             eIndex: 2, // event-index of this image
+        //             mousemove: function (e) {
+        //                 // "this" means this sprite, as sprite1
+        //                 console.log(this, e);
+        //             },
+        //             // others: mousehold, mousedown, mouseout and touch events
+        //         },
+        //     });
+        // });
 
         // 2500 40fps => 47 ==code style==> 50
         for (var i = 0; i < 25; i++) {
+            // 目前现象是zIndex会影响事件顺序，但是取色时应该不影响才对
+            var zIndex = Math.random();
+            var tz = Math.random() * 1000 - 500;
             $app.add({
                 style: {
                     tx: Math.random() * 1000 - 500,
                     ty: Math.random() * 1000 - 500,
+                    zIndex: zIndex
                 },
                 webgl: window.Easycanvas.webglShapes.block({
-                    tz: Math.random() * 1000 - 500,
+                    tz: tz,
                     a: 200, b: 100, c: 50,
                     colors: [
                         Math.random() * 255,
@@ -69,97 +96,27 @@
                         // Math.random() * 255,
                     ],
                 }),
+                events: {
+                    mousemove: function () {
+                        this.updateWebglStyle('colors', [
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            Math.random() * 255,
+                        ]);
+
+                        // console.log(this.webgl.zIndex);
+                        // console.log(this.webgl.$eventFlag);
+                    }
+                }
             });
         }
 
         $app.start();
 
-        var $cut = new Easycanvas.painter({
-            el: '#cut',
-            fullScreen: true,
-        });
-
-        gl = $app.$gl;
-        var fbo = gl.createFramebuffer();
-        function cutter ($e) {
-            function createFloatTexture(gl, width, height) {
-                var texture = gl.createTexture();
-                gl.bindTexture(gl.TEXTURE_2D, texture);
-                gl.texImage2D(
-                    gl.TEXTURE_2D,
-                    0,
-                    gl.RGBA,
-                    width,
-                    height,
-                    0,
-                    gl.RGBA,
-                    gl.UNSIGNED_BYTE,
-                    null
-                );
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                gl.bindTexture(gl.TEXTURE_2D, null);
-                return texture;
-            }
-
-            var renderTexture = createFloatTexture(gl, $app.width, $app.height);
-            // var renderTexture = gl.createTexture();
-            gl.bindTexture(gl.TEXTURE_2D, renderTexture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, $app.width, $app.height, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
-
-
-            gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-            gl.framebufferTexture2D(
-                // First argument is always gl.FRAMEBUFFER
-                gl.FRAMEBUFFER,
-                // The second argument indicates the "attachment slot" of the FBO.
-                // Basically, it indicates the function of the texture that you are attaching.
-                // gl.COLOR_ATTACHMENT0 means that the texture will serve as the zeroth color buffer.
-                // By default, this is the only color buffer attachment slot of that you can use in vanially gl.
-                // To use other color buffer attachment slot, you need an extension.  (We will cover this later.)
-                gl.COLOR_ATTACHMENT0,
-                // The third argument indicates the kind of texture we are attaching.
-                // Since we are attaching a TEXTURE_2D, we give it gl.TEXTURE_2D
-                gl.TEXTURE_2D,
-                // The fourth argument is the texture that you want to attach.
-                // Of course, this must be created before hand.
-                renderTexture,
-                // The fifth argument is the mipmap level of the texture.
-                // This is always 0.
-                0
-            );
-            gl.clearColor(0, 0, 0, 0);
-            gl.clear(gl.COLOR_BUFFER_BIT);
-            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-            gl.enable(gl.DEPTH_TEST);
-            gl.disable(gl.BLEND);
-
-            $app.nextTick(function () {
-                window.readout = new Uint8Array(1 * 1 * 4);
-                gl.readPixels($e.canvasX, $app.height - $e.canvasY, 1,1, gl.RGBA, gl.UNSIGNED_BYTE, readout);
-                // gl.readPixels(0, $app.height - 1, 1,1, gl.RGBA, gl.UNSIGNED_BYTE, readout);
-                // window.readout = new Uint8Array($app.width * $app.height * 4);
-                // gl.readPixels(0, $app.height, $app.width, $app.height, gl.RGBA, gl.UNSIGNED_BYTE, readout);
-
-                window.imageData = new ImageData($app.width, $app.height);
-                for (var i = 0; i < imageData.data.length / 4; i++) {
-                    // imageData.data[i * 4 + 0] = readout[i * 3 + 0];
-                    // imageData.data[i * 4 + 1] = readout[i * 3 + 1];
-                    // imageData.data[i * 4 + 2] = readout[i * 3 + 2];
-                    // imageData.data[i * 4 + 3] = readout[i * 3 + 3];
-                    imageData.data[i * 4 + 0] = readout[0];
-                    imageData.data[i * 4 + 1] = readout[1];
-                    imageData.data[i * 4 + 2] = readout[2];
-                    imageData.data[i * 4 + 3] = readout[3];
-                }
-
-                $cut.$paintContext.putImageData(imageData, 0, 0);
-                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-                // console.log(readout);
-            });
-        }
+        // var $cut = new Easycanvas.painter({
+        //     el: '#cut',
+        //     fullScreen: true,
+        // });
 
         var interval = 2000;
         var current = $app.webgl.camera.current;
@@ -170,8 +127,8 @@
             Easycanvas.transition(current, 'z', 'linear', -1000 - Math.random() * 500, interval);
         }
 
-        changeCamera();
-        setInterval(changeCamera, interval);
+        // changeCamera();
+        // setInterval(changeCamera, interval);
     </script>
 </body>
 

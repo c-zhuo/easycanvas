@@ -46,6 +46,9 @@ var config = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(env)
         }),
+        new webpack.DefinePlugin({
+            'process.env.UMD': JSON.stringify('true')
+        }),
         new CopyWebpackPlugin([
             {
                 from: './demos/resource',

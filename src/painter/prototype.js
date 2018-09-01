@@ -21,7 +21,7 @@ const PROTOS = {
     width: 0,
     height: 0,
     events: {
-        click: null
+        click: null,
     },
     children: [],
     eHoldingFlag: false,
@@ -34,14 +34,6 @@ const PROTOS = {
     //     blockSize: 100,
     //     cacheMap: {},
     // },
-
-    /* scroll */
-    scroll: {
-        scrollable: false,
-        scrollY: 0,
-        minScrollY: undefined,
-        maxScrollY: undefined,
-    },
 
     /* flags */
     $flags: {
