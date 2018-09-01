@@ -51,7 +51,7 @@ A lite(30kb+) canvas library, includes a Chrome plugin for debugging. Support ph
 
 ### Chrome Plugin
 
-Throw `./plugin/dist` to `Chrome://extensions`.
+Throw `./chrome-devtools/dist` to `Chrome://extensions`.
 
 ### How to use
 

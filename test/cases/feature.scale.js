@@ -14,6 +14,7 @@ var sprite1;
 
 Easycanvas.imgLoader(constants.png30px, function (img) {
     sprite1 = $Painter.add({
+        // $children[0]
         content: {
             img: img,
         },
@@ -25,6 +26,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
         },
         children: [
             {
+                // $children[1]
                 content: {
                     img: img,
                 },
@@ -35,6 +37,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                 },
             },
             {
+                // $children[2]
                 inherit: ['tx'],
                 content: {
                     img: img,
@@ -47,6 +50,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                 },
             },
             {
+                // $children[3]
                 content: {
                     img: img,
                 },
@@ -58,6 +62,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                 },
             },
             {
+                // $children[4]
                 content: {
                     img: img,
                 },
@@ -79,6 +84,11 @@ describe('Feature.scale Test.', function () {
             expect($Painter.$children[0].props.slice(5).join(',')).toBe('40,40,150,150');
             expect($Painter.$children[1].props.slice(5).join(',')).toBe('140,40,150,150');
 
+            console.warn(sprite1.children[1].getStyle('scale'));
+            console.warn(sprite1.children[1].getStyle('scale'));
+            console.warn(sprite1.children[1].getStyle('scale'));
+            console.warn(sprite1.children[1].getStyle('scale'));
+            console.warn(sprite1.children[1].getStyle('scale'));
             // tx/ty 100~130  ==>  85～145
             expect($Painter.$children[2].props.slice(5).join(',')).toBe('85,85,60,60');
 

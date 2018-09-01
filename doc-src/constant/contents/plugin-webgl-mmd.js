@@ -26,6 +26,7 @@ module.exports = `
             import Easycanvas from easycanvas;
             import EasycanvasWebgl from easycanvas/build/plugin.webgl.js;
             import EasycanvasWebglMMD from easycanvas/build/plugin.webgl.mmd.js;
+
             Easycanvas.use(EasycanvasWebgl);
             Easycanvas.use(EasycanvasWebglMMD);
         </code>
@@ -149,7 +150,7 @@ module.exports = `
                         webgl: {
                             imgPath: '../resource/mmd/model/mokou/',
                             pmd: '../resource/mmd/model/default/miku_v2.pmd',
-                            rz: 180, ry: 180,
+                            rz: 180,
                             scale: 15,
                         }
                     }));
@@ -206,7 +207,7 @@ module.exports = `
                                     indices: indices.slice(lastCount, lastCount + mt.vertexCount),
                                     textures: textures,
                                     img: mt.fileName ? ('../resource/mmd/model/mokou/' + mt.fileName) : undefined,
-                                    rz: 180, ry: 180, scale: 15,
+                                    rz: 180, scale: 15,
                                     colors: mt.fileName ? undefined : (
                                       mt.color.map((num) => {return num * 255}).slice(0, 3)
                                     ),

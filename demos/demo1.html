@@ -8,8 +8,8 @@
     <script>
         var $Painter = new Easycanvas.painter();
 
-        // $Painter.register(document.getElementById('foo'));
-        // $Painter.start();
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
 
         Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
@@ -37,10 +37,6 @@
                     // others: mousehold, mousedown, mouseout and touch events
                 },
             });
-
-            $Painter.register(document.getElementById('foo'));
-            $Painter.start();
-
         });
     </script>
 </body>

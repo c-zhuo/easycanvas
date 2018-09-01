@@ -13,6 +13,8 @@ const DefaultPage = '一些demo';
 const DemoableCodeClassName = 'code-2-demo';
 
 const Analyze = function (str) {
+    if (window.location.port) return;
+
     var img = new Image();
     img.src = 'http://122.114.162.204:8001/point?title=' + str;
 };
@@ -183,6 +185,8 @@ const Analyze = function (str) {
 
             updateDemo () {
                 this.debug();
+
+                Analyze('updateDemo');
             },
 
             debug (code) {
@@ -215,6 +219,8 @@ const Analyze = function (str) {
                     this.$iframe.contentWindow.document.write(iframeHtmlCodes);
                     this.$iframe.contentWindow.document.close();
                 }, 100);
+
+                Analyze('debug');
             },
         },
         // watch: {

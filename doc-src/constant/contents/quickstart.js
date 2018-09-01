@@ -12,6 +12,9 @@ module.exports = `
 
             <!-- 生产版本 -->
             <script src="http://your-path/easycanvas.standalone.prod.js"></script>
+
+            <!-- 如果你只是想快速尝试demo -->
+            <script src="https://chenzhuo1992.github.io/easycanvas/lib/easycanvas/easycanvas.standalone.prod.js"></script>
         </code>
 
         <p>这两个js文件可以在<a href="https://github.com/chenzhuo1992/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>

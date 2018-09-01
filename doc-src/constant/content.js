@@ -2,6 +2,7 @@ import demos from './contents/demos.js';
 import intro from './contents/intro.js';
 import quickstart from './contents/quickstart.js';
 import quickstartWxgame from './contents/quickstart-wxgame.js';
+import quickstartWxapp from './contents/quickstart-wxapp.js';
 import changelog from './contents/changelog.js';
 
 import inherit from './contents/base-inherit.js';
@@ -18,12 +19,14 @@ import pluginWebgl from './contents/plugin-webgl.js';
 import pluginWebgl3DS from './contents/plugin-webgl-3ds.js';
 import pluginWebglMMD from './contents/plugin-webgl-mmd.js';
 
+import componentScroll from './contents/component-scroll.js';
 
 let content = `
     ${demos}
     ${intro}
     ${quickstart}
     ${quickstartWxgame}
+    ${quickstartWxapp}
     ${changelog}
 
     ${inherit}
@@ -39,6 +42,8 @@ let content = `
     ${pluginWebgl}
     ${pluginWebgl3DS}
     ${pluginWebglMMD}
+
+    ${componentScroll}
 `;
 
 let splits = content.split(/<\/*code>/);

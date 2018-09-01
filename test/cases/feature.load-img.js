@@ -14,6 +14,8 @@ Easycanvas.imgLoader.cacheCanvas = false;
 
 var $sp1 = $Painter.add({
     content: {
+        // 异步加载，这里取到的cacheCanvas应该是true
+        // 便于项目中“按需加载”
         img: constants.png10px,
     },
     style: {
@@ -56,7 +58,7 @@ describe('Feature.load-img Test.', function () {
             expect($Painter.$children[0].type).toBe('img');
             expect($Painter.$children[1].type).toBe('img');
             expect($Painter.$children[2].type).toBe('img');
-            expect($sp1.content.img.tagName).toBe('IMG');
+            expect($sp1.content.img.tagName).toBe('CANVAS');
             expect($sp2.content.img.tagName).toBe('CANVAS');
             expect($sp3.content.img.tagName).toBe('IMG');
             done();
