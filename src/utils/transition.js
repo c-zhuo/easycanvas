@@ -3,25 +3,21 @@ const PI = 3.141593;
 
 import { funcOrValue } from './utils.js';
 
-const second2frame = function (second) {
-    return second / 1000 * 60;
-};
-
 const getLastPaintTime = function (transitions) {
     return transitions.$lastPaintTime || Date.now();
 };
 
 const types = {
     linear: function (a, b, duration) {
-        if (a === b) return a;
-
         let startTime = getLastPaintTime(this);
 
         let loop = false;
+        let callback;
 
         let resFunc = function () {
             let currentTime = this.$lastPaintTime;
-            let result = (b - a) * (currentTime - startTime) / duration + a;
+            let progress = (currentTime - startTime) / duration;
+            let result = (b - a) * progress + a;
 
             if (loop) {
                 if (b > a) {
@@ -43,6 +39,11 @@ const types = {
                 }
             }
 
+            if (progress >= 1 && callback) {
+                callback.call(this, result);
+                callback = null;
+            }
+
             return result;
         }.bind(this);
 
@@ -53,43 +54,55 @@ const types = {
 
         resFunc.restart = function () {
             startTime = getLastPaintTime(this);
+            return resFunc;
+        };
+
+        resFunc.then = function (cb) {
+            callback = cb;
+            return resFunc;
         };
 
         return resFunc;
     },
 
     pendulum: function (a, b, duration, _config) {
-        if (a === b) return a;
-
         let startTime = getLastPaintTime(this);
 
         let config = _config || {};
         config.start = config.start || 0;
 
         let loop = false;
+        let callback;
+        let cycle = config.cycle || 1;
 
         let resFunc = function () {
             let currentTime = getLastPaintTime(this);
-            let passTime = (currentTime - startTime) / duration;
+            let progress = (currentTime - startTime) / duration;
 
             if (!loop) {
-                if (config.cycle) {
-                    if (config.cycle < passTime) {
+                if (cycle) {
+                    if (progress > cycle) {
+                        progress = cycle;
                         resFunc.$done = true;
-                        passTime = config.cycle;
+                        progress = cycle;
                     }
-                } else if (passTime > 1) {
+                } else if (progress > 1) {
                     resFunc.$done = true;
-                    passTime = 1;
+                    progress = 1;
                 }
             } else {
-                if (config.cycle) {
-                    passTime %= config.cycle;
+                if (cycle) {
+                    progress %= cycle;
                 }
             }
 
-            let deg = passTime * PI * 2 - (PI / 2) + config.start / 360 * PI;
+            let deg = progress * PI * 2 - (PI / 2) + config.start / 360 * PI;
             let result = (b - a) * (Math.sin(deg) + 1) / 2 + a;
+
+            if (progress >= cycle && callback) {
+                callback.call(this, result);
+                callback = null;
+            }
 
             return result;
         }.bind(this);
@@ -101,6 +114,12 @@ const types = {
 
         resFunc.restart = function () {
             startTime = getLastPaintTime(this);
+            return resFunc;
+        };
+
+        resFunc.then = function (cb) {
+            callback = cb;
+            return resFunc;
         };
 
         return resFunc;
@@ -150,8 +169,8 @@ const types = {
     },
 };
 
-const transition = function (parent, key, type, end, duration) {
-    let current = funcOrValue(parent[key]);
+const transition = function (sprite, key, type, end, duration) {
+    let current = funcOrValue(sprite[key]);
 
     if (process.env.NODE_ENV !== 'production') {
         if (typeof current === 'undefined') {
@@ -161,7 +180,7 @@ const transition = function (parent, key, type, end, duration) {
 
     current = current || 0;
 
-    parent[key] = types[type].bind(transition)(current, end, duration);
+    sprite[key] = types[type].bind(transition)(current, end, duration);
 };
 
 for (var i in types) {

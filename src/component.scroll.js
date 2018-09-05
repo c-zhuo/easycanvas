@@ -130,9 +130,10 @@ const component = function (opt) {
                 scrollFuncs.wheel(this, $e);
             } else if ($e.type === 'touchend' || $e.type === 'mouseup') {
                 scrollFuncs.loose(this);
+            } else if ($e.type === 'hold') {
             }
 
-            // $e.$stopPropagation = true;
+            $e.$stopPropagation = true;
             return $e;
         },
         // touchmove: function ($e) {

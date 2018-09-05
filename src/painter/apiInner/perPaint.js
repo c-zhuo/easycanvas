@@ -263,20 +263,22 @@ module.exports = function (i, index) {
         }
 
         if (typeof _text === 'string' || typeof _text === 'number') {
-            $canvas.$children.push({
-                $id: i.$id,
-                type: 'text',
-                settings: settings,
-                props: {
-                    tx: textTx,
-                    ty: textTy,
-                    content: String(_text),
-                    align: textAlign,
-                    font: textFont,
-                    color: _props.color,
-                    type: _props.textType,
-                }
-            });
+            if (textTy + textFontsize * 2 > 0 && textTy - textFontsize * 2 < $canvas.height) {
+                $canvas.$children.push({
+                    $id: i.$id,
+                    type: 'text',
+                    settings: settings,
+                    props: {
+                        tx: textTx,
+                        ty: textTy,
+                        content: String(_text),
+                        align: textAlign,
+                        font: textFont,
+                        color: _props.color,
+                        type: _props.textType,
+                    }
+                });
+            }
         } else if (_text.length) {
             _text.forEach(function (t) {
                 $canvas.$children.push({

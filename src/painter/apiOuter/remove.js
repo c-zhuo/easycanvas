@@ -15,12 +15,12 @@ module.exports = function ($sprite, sync) {
 
     setTimeout(() => {
         if ($sprite.$parent) {
-            $sprite.$parent.children = $sprite.$parent.children.filter(function (c) {
-                return c.$removing !== true;
+            $sprite.$parent.children = $sprite.$parent.children.filter((child) => {
+                return child.$removing !== true;
             });
         } else {
-            this.children = this.children.filter(function (c) {
-                return c.$removing !== true;
+            this.children = this.children.filter((child) => {
+                return child.$removing !== true;
             });
         }
 
