@@ -5,6 +5,9 @@
  * ********** **/
 
 module.exports = function () {
+    this.children.forEach((child) => {
+        child.remove();
+    });
+
     this.children = [];
-    // this.children.splice(0);
 };

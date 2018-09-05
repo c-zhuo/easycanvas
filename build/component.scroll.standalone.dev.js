@@ -23,9 +23,9 @@
         return r(0);
     }({
         0: function(l, e, r) {
-            l.exports = r(28);
+            l.exports = r(31);
         },
-        28: function(l, e) {
+        31: function(l, e) {
             "use strict";
             var r = Object.assign || function(l) {
                 for (var e = 1; e < arguments.length; e++) {
@@ -134,7 +134,8 @@
                             a.wheel(this, e);
                         } else if (e.type === "touchend" || e.type === "mouseup") {
                             a.loose(this);
-                        }
+                        } else if (e.type === "hold") {}
+                        e.$stopPropagation = true;
                         return e;
                     }
                 };

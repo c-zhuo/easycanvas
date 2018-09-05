@@ -40,6 +40,7 @@ import constants from 'constants';
 
 import on from '../painter/apiOuter/on.js';
 import off from '../painter/apiOuter/off.js';
+import clear from '../painter/apiOuter/clear.js';
 import nextTick from '../painter/apiOuter/nextTick.js';
 import trigger from '../painter/apiOuter/trigger.js';
 import broadcast from '../painter/apiOuter/broadcast.js';
@@ -301,6 +302,7 @@ sprite.prototype.update = function (opt) {
 sprite.prototype.nextTick = nextTick;
 sprite.prototype.on = on;
 sprite.prototype.off = off;
+sprite.prototype.clear = clear;
 sprite.prototype.trigger = trigger;
 sprite.prototype.broadcast = broadcast;
 
