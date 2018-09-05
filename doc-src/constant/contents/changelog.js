@@ -10,6 +10,8 @@ module.exports = `
         <p>Feature：为WebGL插件增加<strong>更多3D模型的loader</strong>（基于threejs的loader）。</p>
         <p>Feature：<strong>精灵动画组件</strong>（支持2D与3D），支持更多API。Sprite.content.sequence（原精灵动画API）将不建议使用。</p>
         <p>Component：抽离scroll组件。</p>
+        <p>Feature：transition增加then方法。</p>
+        <p>Bugfix：修复pendulum和ease可能多一帧的bug。</p>
 
         <h2>当前版本</h2>
 
@@ -20,13 +22,12 @@ module.exports = `
         <p>Feature：支持在<strong>微信小程序</strong>中使用（微信小游戏已在0.5.6版本支持）。</p>
         <p>Feature：为WebGL插件优化<strong>Shader性能</strong>：通过场景中的元素种类，自动调整shader语法。设置singleShader为true后开启，详见文档。</p>
         <p>Feature：为WebGL插件增加<strong>绘制像素点</strong>的API，详见文档。</p>
-        <p>Feature：为WebGL插件增加<strong>调整摄像头位置和视角</strong>的API，详见文档。</p>
 
         <h2>历史版本</h2>
 
         <h3>0.5.8 (2018.8.11)</h3>
 
-        <p>为WebGL插件增加<strong>调整摄像头</strong>的API：通过修改App.webgl.camera的属性可以实现摄像头位置与视角的调整。</p>
+        <p>Feature：为WebGL插件增加<strong>调整摄像头位置和视角</strong>的API，详见文档。</p>
         <p>Bugfix：修复2D渲染中，个别场景下没有智能跳过屏幕外Sprite绘制，导致性能浪费的问题。</p>
 
         <h3>0.5.7 (2018.7.29)</h3>

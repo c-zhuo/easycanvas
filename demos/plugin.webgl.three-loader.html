@@ -3,6 +3,7 @@
     <script src="../build/plugin.webgl.js"></script>
     <script src="../build/plugin.webgl.three-loader.js"></script>
     <script src='../resource/mmd/lib/mmdparser.min.js'></script>
+    <script src='../resource/fbxdds/zlib.min.js'></script>
 </head>
 
 <style>
@@ -31,10 +32,52 @@
             },
         });
 
-        var loader = new Easycanvas.threeLoaders.MMDLoader();
-        loader.loadPMX('../resource/mmd/model/default/miku.pmx', function (data) {
-            console.log(data);
-        })
+        // var MMDLoader = new Easycanvas.threeLoaders.MMDLoader();
+        // MMDLoader.loadPMX('../resource/mmd/model/default/miku.pmx', function (data) {
+        //     console.warn(data);
+        // });
+
+        var FBXLoader = new Easycanvas.threeLoaders.FBXLoader();
+        FBXLoader.load('../resource/fbxdds/mx.fbx', function (data) {
+        // FBXLoader.load('../resource/fbxdds/xiaoxiongmao.fbx', function (data) {
+            window.data = data;
+
+            for (let i in data.Objects.Geometry) {
+                let item = data.Objects.Geometry[i];
+
+                let indices = item.PolygonVertexIndex.a.map((number, index) => {
+                    if (index % 3 === 2) return -number - 1;
+                    return number;
+                });
+                // window.indices = indices;
+                // indices = item.PolygonVertexIndex.a.filter((number) => {
+                //     return number >= 0;
+                // });
+                // console.log(indices)
+                // indices.pop();
+                // indices.pop();
+                // indices.pop();
+
+                $box.add({
+                    webgl: window.Easycanvas.webglShapes.custom({
+                        vertices: item.Vertices.a,
+                        indices: indices,
+                        // img: texture2img[model.img],
+                        // textures: model.textures,
+                        scale: 300,
+                        // colors: !textures.length ? colors : undefined,
+                        colors: [
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            Math.random() * 255,
+                            // Math.random() * 255,
+                        ],
+                        rx: 90,
+                        rz: Easycanvas.transition.pendulum(0, 360, 5000).loop(),
+                    }),
+                });
+            }
+        });
     </script>
 </body>
 
