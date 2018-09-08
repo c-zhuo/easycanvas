@@ -105,6 +105,8 @@ module.exports = function () {
             },
 
             selectSprite (isChoosing, $canvas, $sprite) {
+                window[constants.devFlag].MaskCanvasBase64 = MaskCanvasBase64;
+
                 if (!$sprite || !window[constants.devFlag].selectMode) {
                     ApiPlugin.cancelSelectSprite($canvas);
                     return false;
@@ -131,7 +133,12 @@ module.exports = function () {
                         };
                     })(key);
                 });
-                // window.$selectMask = $selectMask;
+
+                $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
+                $selectMask.style.visible = function () {
+                    return window[constants.devFlag].selectMode;
+                };
+                $selectMask.style.opacity = 0.8;
 
                 // mask of webgl
                 $selectMask.webgl = $sprite.webgl ? {} : undefined;
@@ -146,19 +153,11 @@ module.exports = function () {
                             };
                         })(key);
                     }
+
                     $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);
-                    delete $selectMask.webgl.colors;
-
-                    // disable DEPTH_TEST
-                    // 否则会被$sprite完美遮挡，就看不到了
-                    $selectMask.webgl.hasAlpha = true;
+                    $selectMask.webgl.colors = false;
+                    $selectMask.style.zIndex = Number.MIN_SAFE_INTEGER;
                 }
-
-                $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
-                $selectMask.style.visible = function () {
-                    return window[constants.devFlag].selectMode;
-                };
-                $selectMask.style.opacity = 0.8;
 
                 if (isChoosing) {
                     $canvas.remove($selectMask);

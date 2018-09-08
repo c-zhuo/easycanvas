@@ -5,16 +5,7 @@
  *
  * ********** **/
 
-import { FileLoader } from './FileLoader.js';
-import { LoaderUtils } from './LoaderUtils.js';
-import { Interpolant } from './Interpolant.js';
-
-// hacked the 'THREE' object
-const THREE = {
-	FileLoader,
-	LoaderUtils,
-	Interpolant,
-};
+import THREE from './mock-three.js';
 
 module.exports = ( function () {
 
@@ -36,22 +27,22 @@ module.exports = ( function () {
 			loader.setResponseType( 'arraybuffer' );
 			loader.load( url, function ( buffer ) {
 
-				try {
+				// try {
 
 					var scene = self.parse( buffer, resourceDirectory );
 					onLoad( scene );
 
-				} catch ( error ) {
+				// } catch ( error ) {
 
-					window.setTimeout( function () {
+				// 	window.setTimeout( function () {
 
-						if ( onError ) onError( error );
+				// 		if ( onError ) onError( error );
 
-						self.manager.itemError( url );
+				// 		self.manager && self.manager.itemError( url );
 
-					}, 0 );
+				// 	}, 0 );
 
-				}
+				// }
 
 			}, onProgress, onError );
 

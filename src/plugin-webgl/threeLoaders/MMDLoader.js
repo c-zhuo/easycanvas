@@ -5,16 +5,7 @@
  *
  * ********** **/
 
-import { FileLoader } from './FileLoader.js';
-import { LoaderUtils } from './LoaderUtils.js';
-import { Interpolant } from './Interpolant.js';
-
-// hacked the 'THREE' object
-const THREE = {
-	FileLoader,
-	LoaderUtils,
-	Interpolant,
-};
+import THREE from './mock-three.js';
 
 /**
  * @author takahiro / https://github.com/takahirox
