@@ -27,39 +27,37 @@ const webglRegister = function ($canvas, option) {
     
     // toggleShader(gl, 0);
 
-    {
-        $canvas.imgLoader = function (url, callback) {
-            var tex = gl.createTexture();
+    $canvas.imgLoader = function (url, callback) {
+        var tex = gl.createTexture();
 
-            var textureInfo = {
-                width: 0,
-                height: 0,
-            };
+        var textureInfo = {
+            width: 0,
+            height: 0,
+        };
 
-            img2base64(url, function (base64url) {
-                function loadImageAndCreateTextureInfo(url) {
-                    var img = new Image();
-                    img.addEventListener('load', function() {
-                        textureInfo.width = img.width;
-                        textureInfo.height = img.height;
-                        textureInfo.texture = tex;
-                        textureInfo.img = img;
+        img2base64(url, function (base64url) {
+            function loadImageAndCreateTextureInfo(url) {
+                var img = new Image();
+                img.addEventListener('load', function() {
+                    textureInfo.width = img.width;
+                    textureInfo.height = img.height;
+                    textureInfo.texture = tex;
+                    textureInfo.img = img;
 
-                        gl.bindTexture(gl.TEXTURE_2D, tex);
-                        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-                        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+                    gl.bindTexture(gl.TEXTURE_2D, tex);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
 
-                        callback && callback(textureInfo);
-                    });
-                    img.src = url;
-                }
-                loadImageAndCreateTextureInfo(base64url, callback);
-            });
+                    callback && callback(textureInfo);
+                });
+                img.src = url;
+            }
+            loadImageAndCreateTextureInfo(base64url, callback);
+        });
 
-            return textureInfo;
-        }
+        return textureInfo;
     }
 };
 

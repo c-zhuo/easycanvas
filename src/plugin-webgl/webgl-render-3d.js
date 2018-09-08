@@ -12,7 +12,8 @@ module.exports = function ($canvas, webgl) {
     let gl = $canvas.$gl;
 
     if (webgl.hasAlpha) {
-        gl.disable(gl.DEPTH_TEST);
+        // gl.disable(gl.DEPTH_TEST);
+        gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.BLEND);
     } else {
         gl.enable(gl.DEPTH_TEST);
