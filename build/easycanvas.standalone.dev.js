@@ -122,7 +122,7 @@
             i.send();
         }
         e.exports = a;
-    }, , , function(e, t) {
+    }, , , , function(e, t) {
         "use strict";
         var r = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(e) {
             return typeof e;
@@ -247,7 +247,7 @@
         "use strict";
         var n = r(2);
         var a = o(n);
-        var i = r(10);
+        var i = r(11);
         var s = o(i);
         function o(e) {
             return e && e.__esModule ? e : {
@@ -276,19 +276,19 @@
         var i = b(a);
         var s = r(3);
         var o = b(s);
-        var f = r(18);
+        var f = r(19);
         var l = b(f);
-        var u = r(17);
+        var u = r(18);
         var c = b(u);
-        var d = r(15);
+        var d = r(16);
         var v = b(d);
-        var h = r(16);
+        var h = r(17);
         var p = b(h);
-        var g = r(19);
+        var g = r(20);
         var y = b(g);
-        var m = r(14);
+        var m = r(15);
         var $ = b(m);
-        var x = r(13);
+        var x = r(14);
         var w = b(x);
         function b(e) {
             return e && e.__esModule ? e : {
@@ -647,7 +647,7 @@
                 return a.default.execFuncs(this.hooks[t], this, e);
             }
         };
-    }, , , , , , , , , function(e, t) {
+    }, , , , , , , , function(e, t) {
         "use strict";
         var r = function e(t) {
             setTimeout(t, 1e3 / 60);
@@ -991,19 +991,19 @@
         var s = A(i);
         var o = r(28);
         var f = A(o);
-        var l = r(93);
+        var l = r(96);
         var u = A(l);
         var c = r(1);
         var d = A(c);
         var v = r(29);
         var h = A(v);
-        var p = r(9);
+        var p = r(10);
         var g = A(p);
-        var y = r(92);
+        var y = r(95);
         var m = A(y);
-        var $ = r(94);
+        var $ = r(97);
         var x = A($);
-        var w = r(12);
+        var w = r(13);
         var b = A(w);
         var T = r(30);
         var k = A(T);
@@ -1068,7 +1068,7 @@
         var s = p(i);
         var o = r(37);
         var f = p(o);
-        var l = r(13);
+        var l = r(14);
         var u = p(l);
         var c = r(42);
         var d = p(c);
@@ -1430,7 +1430,7 @@
         var d = y(c);
         var v = r(39);
         var h = y(v);
-        var p = r(11);
+        var p = r(12);
         var g = y(p);
         function y(e) {
             return e && e.__esModule ? e : {
@@ -1878,19 +1878,19 @@
         var f = E(o);
         var l = r(46);
         var u = E(l);
-        var c = r(15);
+        var c = r(16);
         var d = E(c);
         var v = r(47);
         var h = E(v);
-        var p = r(18);
+        var p = r(19);
         var g = E(p);
-        var y = r(17);
+        var y = r(18);
         var m = E(y);
-        var $ = r(19);
+        var $ = r(20);
         var x = E($);
-        var w = r(14);
+        var w = r(15);
         var b = E(w);
-        var T = r(16);
+        var T = r(17);
         var k = E(T);
         var A = r(48);
         var F = E(A);
@@ -1922,7 +1922,7 @@
         e.exports = _;
     }, function(e, t, r) {
         "use strict";
-        var n = r(12);
+        var n = r(13);
         var a = i(n);
         function i(e) {
             return e && e.__esModule ? e : {
@@ -2195,6 +2195,7 @@
                                 };
                             })(e);
                         });
+                        n.$mirrTo = f;
                         n.webgl = f.webgl ? {} : undefined;
                         if (n.webgl) {
                             for (var l in f.webgl) {
@@ -2207,9 +2208,8 @@
                                     };
                                 })(l);
                             }
+                            console.log(n.webgl.vertices);
                             n.webgl.img = o.imgLoader(r);
-                            delete n.webgl.colors;
-                            n.webgl.hasAlpha = true;
                         }
                         n.style.zIndex = Number.MAX_SAFE_INTEGER;
                         n.style.visible = function() {
@@ -2252,7 +2252,7 @@
         var s = c(i);
         var o = r(55);
         var f = c(o);
-        var l = r(9);
+        var l = r(10);
         var u = c(l);
         function c(e) {
             return e && e.__esModule ? e : {
@@ -2316,9 +2316,9 @@
             }
         };
         e.exports = r;
-    }, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , function(e, t, r) {
+    }, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , function(e, t, r) {
         "use strict";
-        var n = r(9);
+        var n = r(10);
         var a = o(n);
         var i = r(6);
         var s = o(i);

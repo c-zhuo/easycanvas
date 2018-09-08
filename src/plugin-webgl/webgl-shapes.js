@@ -207,7 +207,7 @@ var createShapeWithCachedArray = (() => {
 
             if (!result.colors) {
                 // var colorRepeatTimes = result.vertices.length / colors.length;
-                var colorRepeatTimes = (result.indices || result.vertices).length * (result.indices ? 3 : 1) / colors.length;
+                var colorRepeatTimes = (result.indices || result.vertices).length * (result.indices ? 4 : 1) / colors.length;
                 result.colors = new Uint8Array(arrayRepeat(colors, Math.ceil(colorRepeatTimes)));
 
                 cachePool[key + 'c'] = result.colors;
@@ -237,7 +237,7 @@ const appendEventFlag = (function () {
             current++;
         }
 
-        let colorRepeatTimes = (shape.indices || shape.vertices).length * (shape.indices ? 3 : 1) / 3;
+        let colorRepeatTimes = (shape.indices || shape.vertices).length * (shape.indices ? 4 : 1) / 4;
         shape.$eventFlag = new Uint8Array(arrayRepeat([
             current % 256,
             Math.floor(current / 256) % 256,
