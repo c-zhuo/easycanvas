@@ -86,7 +86,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.5.9"
+            version: "0.5.10"
         };
     }, , , function(e, t) {
         "use strict";
@@ -1586,8 +1586,8 @@
                 var S = n.ty;
                 var M = n.align || n.textAlign || "left";
                 var O = n.textFont || "14px Arial";
-                var R = parseInt(O);
-                var E = n.lineHeight || R;
+                var E = parseInt(O);
+                var R = n.lineHeight || E;
                 if (M === "center") {
                     F += n.tw / 2;
                 } else if (M === "right") {
@@ -1603,7 +1603,7 @@
                     i.textBaseline = "middle";
                 }
                 if (typeof s === "string" || typeof s === "number") {
-                    if (S + R * 2 > 0 && S - R * 2 < r.height) {
+                    if (S + E * 2 > 0 && S - E * 2 < r.height) {
                         r.$children.push({
                             $id: e.$id,
                             type: "text",
@@ -1638,7 +1638,7 @@
                     });
                 } else if (s.type === "multline-text") {
                     var _ = s.text.split(/\t|\n/);
-                    var C = [];
+                    var I = [];
                     _.forEach(function(e, t) {
                         e = String.prototype.trim.apply(e);
                         if (s.config.start) {
@@ -1649,18 +1649,18 @@
                         while (e.length && r < e.length) {
                             if (a <= 0) {
                                 a = n.tw;
-                                C.push(e.substr(0, r));
+                                I.push(e.substr(0, r));
                                 e = e.substr(r);
                                 r = 0;
                             }
                             r++;
-                            a -= R * ($(e[r]) ? 1.05 : .6);
+                            a -= E * ($(e[r]) ? 1.05 : .6);
                         }
                         if (e || t) {
-                            C.push(e);
+                            I.push(e);
                         }
                     });
-                    C.forEach(function(t) {
+                    I.forEach(function(t) {
                         r.$children.push({
                             $id: e.$id,
                             type: "text",
@@ -1675,7 +1675,7 @@
                                 type: n.textType
                             }
                         });
-                        S += E || R;
+                        S += R || E;
                     });
                 }
             }
@@ -1871,34 +1871,34 @@
     }, function(e, t, r) {
         "use strict";
         var n = r(45);
-        var a = E(n);
+        var a = R(n);
         var i = r(49);
-        var s = E(i);
+        var s = R(i);
         var o = r(52);
-        var f = E(o);
+        var f = R(o);
         var l = r(46);
-        var u = E(l);
+        var u = R(l);
         var c = r(16);
-        var d = E(c);
+        var d = R(c);
         var v = r(47);
-        var h = E(v);
+        var h = R(v);
         var p = r(19);
-        var g = E(p);
+        var g = R(p);
         var y = r(18);
-        var m = E(y);
+        var m = R(y);
         var $ = r(20);
-        var x = E($);
+        var x = R($);
         var w = r(15);
-        var b = E(w);
+        var b = R(w);
         var T = r(17);
-        var k = E(T);
+        var k = R(T);
         var A = r(48);
-        var F = E(A);
+        var F = R(A);
         var S = r(50);
-        var M = E(S);
+        var M = R(S);
         var O = r(51);
-        var R = E(O);
-        function E(e) {
+        var E = R(O);
+        function R(e) {
             return e && e.__esModule ? e : {
                 default: e
             };
@@ -1911,7 +1911,7 @@
             register: F.default,
             clear: d.default,
             setFpsHandler: M.default,
-            setMaxFps: R.default,
+            setMaxFps: E.default,
             pause: h.default,
             on: g.default,
             off: m.default,
@@ -2171,6 +2171,7 @@
                         t.$perf["$" + r] += (n === "START" || n === "PAUSE" ? -1 : 1) * Date.now();
                     },
                     selectSprite: function e(a, o, f) {
+                        window[s.default.devFlag].MaskCanvasBase64 = r;
                         if (!f || !window[s.default.devFlag].selectMode) {
                             i.cancelSelectSprite(o);
                             return false;
@@ -2195,7 +2196,11 @@
                                 };
                             })(e);
                         });
-                        n.$mirrTo = f;
+                        n.style.zIndex = Number.MAX_SAFE_INTEGER;
+                        n.style.visible = function() {
+                            return window[s.default.devFlag].selectMode;
+                        };
+                        n.style.opacity = .8;
                         n.webgl = f.webgl ? {} : undefined;
                         if (n.webgl) {
                             for (var l in f.webgl) {
@@ -2208,14 +2213,10 @@
                                     };
                                 })(l);
                             }
-                            console.log(n.webgl.vertices);
                             n.webgl.img = o.imgLoader(r);
+                            n.webgl.colors = false;
+                            n.style.zIndex = Number.MIN_SAFE_INTEGER;
                         }
-                        n.style.zIndex = Number.MAX_SAFE_INTEGER;
-                        n.style.visible = function() {
-                            return window[s.default.devFlag].selectMode;
-                        };
-                        n.style.opacity = .8;
                         if (a) {
                             o.remove(n);
                             n = null;

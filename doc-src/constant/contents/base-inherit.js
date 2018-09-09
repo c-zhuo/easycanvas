@@ -8,7 +8,7 @@ module.exports = `
 
         <p>嵌套让树型结构更加清晰，既便于大型动画的设计，又可以更方便地在开发者工具中找到要调试的特定sprite。嵌套的父、子级sprite之间有属性的继承规则，类似HTML和CSS一样。</p>
 
-        <p>下面是一个例子，最顶层是两个字母G，其中一个又含有两个children.</p>
+        <p>下面是一个例子，最顶层是一个字母G，它又含有两个children。两个children的位置是继承父级sprite的。</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -26,7 +26,7 @@ module.exports = `
                         height: 400
                     });
 
-                    // 第一个父sprite
+                    // 父级sprite
                     var $parent = new Easycanvas.sprite({
                         content: {
                             img: G,
@@ -35,7 +35,7 @@ module.exports = `
                             tw: 50, th: 50,
                             ty: 50, tx: Easycanvas.transition.pendulum(50, 150, 4000).loop(),
                         },
-                        // 这里通过children增加一个子sprite
+                        // 可以通过children属性来指定它的子节点sprite
                         children: [{
                             content: {
                                 img: G,
@@ -48,8 +48,9 @@ module.exports = `
                     });
 
                     $app.add($parent);
+                    $app.start();
 
-                    // 这里通过add增加子sprite
+                    // 也可以通过add来动态增加子节点sprite
                     $parent.add(new Easycanvas.sprite({
                         content: {
                             img: G,
@@ -59,19 +60,6 @@ module.exports = `
                             tx: 50, ty: 50,
                         }
                     }));
-
-                    // 第二个父sprite
-                    $app.add(new Easycanvas.sprite({
-                        content: {
-                            img: G,
-                        },
-                        style: {
-                            tw: 50, th: 50,
-                            ty: 300, tx: Easycanvas.transition.pendulum(50, 150, 4000).loop(),
-                        }
-                    }));
-
-                    $app.start();
                 </script>
             </code>
         </section>
@@ -172,7 +160,7 @@ module.exports = `
 
         <h2>继承</h2>
 
-        <p>子sprite的绘制坐标tx、ty会继承父级sprite，而透明度、缩放将相乘处理。当然，可以指定某个sprite的哪些属性继承。在上面的例子中，children之所以左右摇摆，就是因为parent节点的tx在左右移动。</p>
+        <p>子sprite的绘制坐标tx、ty会继承父级sprite，而透明度、缩放将相乘处理。在上面的例子中，children之所以左右摇摆，就是因为parent节点的tx在左右移动。</p>
 
         <p><strong>默认情况下，tx（渲染的X坐标）、ty（渲染的Y坐标）、scale（缩放）、opacity（透明度）会继承。</strong>当父子sprite同时具有属性时，坐标会相加，透明度和缩放会相乘。例如下例：</p>
 

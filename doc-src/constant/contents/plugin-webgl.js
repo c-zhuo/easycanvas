@@ -8,6 +8,8 @@ module.exports = `
 
         <p>需要注意是的，<strong>WebGL的2D渲染效率可能会比Canvas渲染2D图形要差一些</strong>，因为目前很多浏览器的Canvas API是使用了硬件加速的，浏览器利用GPU进行图形的绘制，效率更高一些。WebGL的优势主要在于可以利用GPU高效进行3D效果所需要的计算。</p>
 
+        <p class="tip">Tips：目前只能在浏览器中使用，暂不支持微信小程序和微信小游戏。</p>
+
         <h2>引入方式</h2>
 
         <code>
@@ -16,7 +18,8 @@ module.exports = `
 
             <script src="http://your-path/easycanvas.standalone.prod.js"></script>
             <script src="http://your-path/plugin.webgl.3ds.standalone.prod.js"></script>
-
+        </code>
+        <code>
             <!-- node环境引入 -->
 
             import Easycanvas from easycanvas;

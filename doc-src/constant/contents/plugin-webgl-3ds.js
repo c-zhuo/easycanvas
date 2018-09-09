@@ -17,7 +17,8 @@ module.exports = `
             <script src="http://your-path/easycanvas.standalone.prod.js"></script>
             <script src="http://your-path/plugin.webgl.standalone.prod.js"></script>
             <script src="http://your-path/plugin.webgl.3ds.standalone.prod.js"></script>
-
+        </code>
+        <code>
             <!-- node环境引入 -->
 
             import Easycanvas from easycanvas;

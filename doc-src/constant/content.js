@@ -18,6 +18,7 @@ import pluginPhysics from './contents/plugin-physics.js';
 import pluginWebgl from './contents/plugin-webgl.js';
 import pluginWebgl3DS from './contents/plugin-webgl-3ds.js';
 import pluginWebglMMD from './contents/plugin-webgl-mmd.js';
+import pluginWebglLoaders from './contents/plugin-webgl-loaders.js';
 
 import componentScroll from './contents/component-scroll.js';
 
@@ -42,6 +43,7 @@ let content = `
     ${pluginWebgl}
     ${pluginWebgl3DS}
     ${pluginWebglMMD}
+    ${pluginWebglLoaders}
 
     ${componentScroll}
 `;
