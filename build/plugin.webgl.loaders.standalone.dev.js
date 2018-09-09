@@ -23,7 +23,7 @@
         return r(0);
     }({
         0: function(e, t, r) {
-            e.exports = r(92);
+            e.exports = r(91);
         },
         9: function(e, t, r) {
             "use strict";
@@ -2041,7 +2041,7 @@
                 return e;
             }();
         },
-        92: function(e, t, r) {
+        91: function(e, t, r) {
             "use strict";
             var a = r(68);
             var n = u(a);
@@ -2056,7 +2056,12 @@
             }
             var d = typeof window !== "undefined";
             var l = {
-                MMDLoader: n.default,
+                MMDLoader: function e(t, r, a, i) {
+                    var o = new n.default();
+                    o.load(t, function(e) {
+                        r(e);
+                    }, a, i);
+                },
                 FBXLoader: function e(t, r, a, n) {
                     var i = new o.default();
                     i.load(t, function(e) {

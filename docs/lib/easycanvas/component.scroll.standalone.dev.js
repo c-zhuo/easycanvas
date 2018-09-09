@@ -1,38 +1,38 @@
-(function l(e, r) {
-    if (typeof exports === "object" && typeof module === "object") module.exports = r(); else if (typeof define === "function" && define.amd) define([], r); else {
-        var s = r();
-        for (var o in s) (typeof exports === "object" ? exports : e)[o] = s[o];
+(function l(r, e) {
+    if (typeof exports === "object" && typeof module === "object") module.exports = e(); else if (typeof define === "function" && define.amd) define([], e); else {
+        var s = e();
+        for (var o in s) (typeof exports === "object" ? exports : r)[o] = s[o];
     }
 })(this, function() {
     return function(l) {
-        var e = {};
-        function r(s) {
-            if (e[s]) return e[s].exports;
-            var o = e[s] = {
+        var r = {};
+        function e(s) {
+            if (r[s]) return r[s].exports;
+            var o = r[s] = {
                 exports: {},
                 id: s,
                 loaded: false
             };
-            l[s].call(o.exports, o, o.exports, r);
+            l[s].call(o.exports, o, o.exports, e);
             o.loaded = true;
             return o.exports;
         }
-        r.m = l;
-        r.c = e;
-        r.p = "";
-        return r(0);
+        e.m = l;
+        e.c = r;
+        e.p = "";
+        return e(0);
     }({
-        0: function(l, e, r) {
-            l.exports = r(28);
+        0: function(l, r, e) {
+            l.exports = e(31);
         },
-        28: function(l, e) {
+        31: function(l, r) {
             "use strict";
-            var r = Object.assign || function(l) {
-                for (var e = 1; e < arguments.length; e++) {
-                    var r = arguments[e];
-                    for (var s in r) {
-                        if (Object.prototype.hasOwnProperty.call(r, s)) {
-                            l[s] = r[s];
+            var e = Object.assign || function(l) {
+                for (var r = 1; r < arguments.length; r++) {
+                    var e = arguments[r];
+                    for (var s in e) {
+                        if (Object.prototype.hasOwnProperty.call(e, s)) {
+                            l[s] = e[s];
                         }
                     }
                 }
@@ -41,83 +41,84 @@
             var s = typeof window !== "undefined";
             var o = {};
             var c = false;
-            var t = void 0;
+            var t = false;
+            var n = void 0;
             var a = {
-                loose: function l(e) {
+                loose: function l(r) {
                     c = false;
                 },
-                looper: function l(e) {
-                    if (!e.$scroll || !e.$scroll.$scrolling) return;
-                    if (c) return;
-                    if (Math.abs(e.$scroll.speedX) > 1) {
-                        e.$scroll.speedX *= e.scroll.smooth || .8;
+                looper: function l(r) {
+                    if (!r.$scroll || !r.$scroll.$scrolling) return;
+                    if (Math.abs(r.$scroll.speedX) > 1) {
+                        r.$scroll.speedX *= r.scroll.smooth || .8;
                     } else {
-                        e.$scroll.speedX = 0;
+                        r.$scroll.speedX = 0;
                     }
-                    if (Math.abs(e.$scroll.speedY) > 1) {
-                        e.$scroll.speedY *= e.scroll.smooth || .8;
+                    if (Math.abs(r.$scroll.speedY) > 1) {
+                        r.$scroll.speedY *= r.scroll.smooth || .8;
                     } else {
-                        e.$scroll.speedY = 0;
+                        r.$scroll.speedY = 0;
                     }
-                    if (Math.abs(e.$scroll.speedX) <= 2 && Math.abs(e.$scroll.speedY) <= 2) {
-                        e.$scroll.$scrolling = false;
+                    if (Math.abs(r.$scroll.speedX) <= 2 && Math.abs(r.$scroll.speedY) <= 2) {
+                        r.$scroll.$scrolling = false;
                         return;
                     }
-                    e.scroll.scrollY -= e.$scroll.speedY;
-                    e.scroll.scrollX -= e.$scroll.speedX;
-                    var r = t.utils.funcOrValue(e.scroll.minScrollX, e);
-                    var s = t.utils.funcOrValue(e.scroll.maxScrollX, e);
-                    var o = t.utils.funcOrValue(e.scroll.minScrollY, e);
-                    var a = t.utils.funcOrValue(e.scroll.maxScrollY, e);
-                    if (!isNaN(o) && e.scroll.scrollY < o) {
-                        e.scroll.scrollY = o;
-                    } else if (!isNaN(a) && e.scroll.scrollY > a) {
-                        e.scroll.scrollY = a;
+                    if (c) return;
+                    r.scroll.scrollY -= r.$scroll.speedY;
+                    r.scroll.scrollX -= r.$scroll.speedX;
+                    var e = n.utils.funcOrValue(r.scroll.minScrollX, r);
+                    var s = n.utils.funcOrValue(r.scroll.maxScrollX, r);
+                    var o = n.utils.funcOrValue(r.scroll.minScrollY, r);
+                    var t = n.utils.funcOrValue(r.scroll.maxScrollY, r);
+                    if (!isNaN(o) && r.scroll.scrollY < o) {
+                        r.scroll.scrollY = o;
+                    } else if (!isNaN(t) && r.scroll.scrollY > t) {
+                        r.scroll.scrollY = t;
                     }
-                    if (!isNaN(r) && e.scroll.scrollX < r) {
-                        e.scroll.scrollX = r;
-                    } else if (!isNaN(s) && e.scroll.scrollX > s) {
-                        e.scroll.scrollX = s;
+                    if (!isNaN(e) && r.scroll.scrollX < e) {
+                        r.scroll.scrollX = e;
+                    } else if (!isNaN(s) && r.scroll.scrollX > s) {
+                        r.scroll.scrollX = s;
                     }
                 },
-                touch: function l(e, r) {
-                    if (!e.scroll.scrollable) return false;
+                touch: function l(r, e) {
+                    if (!r.scroll.scrollable) return false;
                     var s = Date.now();
                     if (!c) {
                         c = s;
-                        o.x = r.canvasX;
-                        o.y = r.canvasY;
-                        e.$scroll.speedX = 0;
-                        e.$scroll.speedY = 0;
+                        o.x = e.canvasX;
+                        o.y = e.canvasY;
+                        r.$scroll.speedX = 0;
+                        r.$scroll.speedY = 0;
                     } else {
-                        e.$scroll.$scrolling = true;
-                        var t = Math.abs(r.canvasX - o.x);
-                        var a = Math.abs(r.canvasY - o.y);
-                        var n = s - c;
+                        r.$scroll.$scrolling = true;
+                        var t = Math.abs(e.canvasX - o.x);
+                        var n = Math.abs(e.canvasY - o.y);
+                        var a = s - c;
                         c = s;
-                        if (t >= 1 && n > 1) {
-                            e.$scroll.speedX += (r.canvasX - o.x) / n * 10;
+                        if (t >= 1 && a > 1) {
+                            r.$scroll.speedX += (e.canvasX - o.x) / a * 10;
                         }
-                        if (a >= 1 && n > 1) {
-                            e.$scroll.speedY = (r.canvasY - o.y) / n * 50;
-                            e.scroll.scrollY += o.y - r.canvasY;
+                        if (n >= 1 && a > 1) {
+                            r.$scroll.speedY = (e.canvasY - o.y) * 3;
+                            r.scroll.scrollY += o.y - e.canvasY;
                         }
-                        o.x = r.canvasX;
-                        o.y = r.canvasY;
+                        o.x = e.canvasX;
+                        o.y = e.canvasY;
                         return true;
                     }
                 },
-                wheel: function l(e, r) {
-                    if (!e.scroll.scrollable) return false;
-                    e.$scroll.$scrolling = true;
-                    e.$scroll.speedX = r.event.wheelDeltaX;
-                    e.$scroll.speedY = r.event.wheelDeltaY;
+                wheel: function l(r, e) {
+                    if (!r.scroll.scrollable) return false;
+                    r.$scroll.$scrolling = true;
+                    r.$scroll.speedX = e.event.wheelDeltaX;
+                    r.$scroll.speedY = e.event.wheelDeltaY;
                     return true;
                 }
             };
-            var n = function l(e) {
-                var s = e || {};
-                s.scroll = r({
+            var i = function l(r) {
+                var s = r || {};
+                s.scroll = e({
                     scrollX: 0,
                     scrollY: 0,
                     scrollable: true,
@@ -125,28 +126,50 @@
                     maxScrollX: 0,
                     minScrollY: 0,
                     maxScrollY: 0
-                }, e.scroll);
+                }, r.scroll);
+                var o = function l() {
+                    u.scroll.scrollY = t();
+                };
+                var c = true;
+                var i = function l() {
+                    c = !c;
+                };
                 s.events = {
-                    interceptor: function l(e) {
-                        if (e.type === "touchmove") {
-                            a.touch(this, e);
-                        } else if (e.type === "mousewheel") {
-                            a.wheel(this, e);
-                        } else if (e.type === "touchend" || e.type === "mouseup") {
+                    interceptor: function l(r) {
+                        if (!c) return r;
+                        if (r.type === "touchmove") {
+                            a.touch(this, r);
+                            r.$stopPropagation = true;
+                        } else if (r.type === "mousewheel") {
+                            a.wheel(this, r);
+                        } else if (r.type === "touchend" || r.type === "mouseup") {
                             a.loose(this);
+                        } else if (r.type === "hold") {
+                            r.$stopPropagation = true;
                         }
-                        return e;
+                        if (t) {
+                            u.off("ticked", o);
+                            t = false;
+                        }
+                        return r;
                     }
                 };
-                var o = new t.class.sprite(s);
-                o.on("ticked", function() {
-                    a.looper(o);
+                var u = new n.class.sprite(s);
+                u.on("ticked", function() {
+                    a.looper(u);
                 });
-                o.$scroll = {
+                u.on("handleToggle", i);
+                u.on("scrollTo", function(l, r) {
+                    t = n.transition.pendulum(u.scroll.scrollY, l, (r || 200) * 2, {
+                        cycle: .5
+                    });
+                    u.on("ticked", o);
+                });
+                u.$scroll = {
                     speedX: 0,
                     speedY: 0
                 };
-                var c = o.add({
+                var f = u.add({
                     name: "scrolling-element",
                     style: {
                         tx: function l() {
@@ -157,18 +180,22 @@
                         }
                     }
                 });
-                o.add = c.add.bind(c);
-                return o;
+                u.add = f.add.bind(f);
+                u.clear = f.clear.bind(f);
+                u.getChildren = function() {
+                    return f.children;
+                };
+                return u;
             };
-            var i = function l(e, r) {
-                t = e;
-                e.class[r] = n;
+            var u = function l(r, e) {
+                n = r;
+                r.class[e] = i;
             };
             if (s && window.Easycanvas) {
-                t = Easycanvas;
-                Easycanvas.class.scroll = n;
+                n = Easycanvas;
+                Easycanvas.class.scroll = i;
             } else {
-                l.exports = i;
+                l.exports = u;
             }
         }
     });
