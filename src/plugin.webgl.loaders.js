@@ -14,7 +14,12 @@ const inBrowser = typeof window !== 'undefined';
 
 const loaders = {
     // FileLoader,
-    MMDLoader,
+    MMDLoader: function (url, onLoad, onProgress, onError) {
+        let loader = new MMDLoader();
+        loader.load(url, (data) => {
+            onLoad(data);
+        }, onProgress, onError);
+    },
     FBXLoader: function (url, onLoad, onProgress, onError) {
         let loader = new FBXLoader();
         loader.load(url, (data) => {

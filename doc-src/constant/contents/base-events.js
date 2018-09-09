@@ -13,7 +13,7 @@ module.exports = `
             <code>
                 <body>
                     <canvas id="app"></canvas>
-                    <p id="eventName"></p>
+                    <p id="eventName">鼠标移上去看看</p>
                 </body>
 
                 <script>
@@ -42,6 +42,10 @@ module.exports = `
                             tx: 100, ty: 100,
                         },
                         events: {
+                            contextmenu: function ($e) {
+                                alert('禁止鼠标右键菜单');
+                                $e.event.preventDefault();
+                            },
                             click: handler,
                             mousedown: handler,
                             mouseup: handler,
