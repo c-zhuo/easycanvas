@@ -9,6 +9,7 @@ const inBrowser = typeof window !== 'undefined';
 
 let startPos = {};
 let touching = false;
+let autoScroll = false;
 let ec;
 
 let scrollFuncs = {
@@ -18,8 +19,6 @@ let scrollFuncs = {
 
     looper: function ($sprite) {
         if (!$sprite.$scroll || !$sprite.$scroll.$scrolling) return;
-
-        if (touching) return;
 
         if (Math.abs($sprite.$scroll.speedX) > 1) {
             $sprite.$scroll.speedX *= $sprite.scroll.smooth || 0.8;
@@ -36,6 +35,8 @@ let scrollFuncs = {
             $sprite.$scroll.$scrolling = false;
             return;
         }
+
+        if (touching) return;
 
         $sprite.scroll.scrollY -= $sprite.$scroll.speedY;
         $sprite.scroll.scrollX -= $sprite.$scroll.speedX;
@@ -84,9 +85,14 @@ let scrollFuncs = {
                 $sprite.$scroll.speedX += ($e.canvasX - startPos.x) / deltaTime * 10;
             }
             if (absY >= 1 && deltaTime > 1) {
-                $sprite.$scroll.speedY = ($e.canvasY - startPos.y) / deltaTime * 50;
+                $sprite.$scroll.speedY = ($e.canvasY - startPos.y) * 3;
                 $sprite.scroll.scrollY += startPos.y - $e.canvasY;
             }
+
+        // $sprite.$scroll.speedX = ($sprite.$scroll.speedX + ($e.canvasX - startPos.x) * 2) / 2;
+
+        // let curSpeed = ($e.canvasY - startPos.y) * 3;
+        // $sprite.$scroll.speedY = ($sprite.$scroll.speedY + curSpeed) / 2;
 
             startPos.x = $e.canvasX;
             startPos.y = $e.canvasY;
@@ -122,18 +128,34 @@ const component = function (opt) {
         maxScrollY: 0,
     }, opt.scroll);
 
+    const autoScrollFunc = () => {
+        $sprite.scroll.scrollY = autoScroll();
+    };
+
+    let handling = true;
+    const handleToggle = () => {
+        handling = !handling;
+    };
+
     option.events = {
         interceptor: function ($e) {
+            if (!handling) return $e;
+
             if ($e.type === 'touchmove') {
                 scrollFuncs.touch(this, $e);
+                $e.$stopPropagation = true;
             } else if ($e.type === 'mousewheel') {
                 scrollFuncs.wheel(this, $e);
             } else if ($e.type === 'touchend' || $e.type === 'mouseup') {
                 scrollFuncs.loose(this);
             } else if ($e.type === 'hold') {
+                $e.$stopPropagation = true;
             }
 
-            $e.$stopPropagation = true;
+            if (autoScroll) {
+                $sprite.off('ticked', autoScrollFunc);
+                autoScroll = false;
+            }
             return $e;
         },
         // touchmove: function ($e) {
@@ -156,6 +178,21 @@ const component = function (opt) {
         scrollFuncs.looper($sprite);
     });
 
+    $sprite.on('handleToggle', handleToggle);
+
+    $sprite.on('scrollTo', (position, duration) => {
+        autoScroll = ec.transition.pendulum(
+            $sprite.scroll.scrollY,
+            position,
+            (duration || 200) * 2,
+            {
+                cycle: 0.5,
+            }
+        );
+
+        $sprite.on('ticked', autoScrollFunc);
+    });
+
     $sprite.$scroll = {
         speedX: 0,
         speedY: 0,
@@ -174,6 +211,10 @@ const component = function (opt) {
     });
 
     $sprite.add = $scrollingElement.add.bind($scrollingElement);
+    $sprite.clear = $scrollingElement.clear.bind($scrollingElement);
+    $sprite.getChildren = () => {
+        return $scrollingElement.children;
+    };
 
     return $sprite;
 }

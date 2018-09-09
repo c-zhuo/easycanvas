@@ -18,36 +18,35 @@
     <canvas id="foo" width="800" height="1200"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('foo'), {
             webgl: {
               light: !true,
             },
         });
-        $Painter.start();
+        $app.start();
 
-        var $box = $Painter.add({
+        var $box = $app.add({
             style: {
                 tx: 400, ty: 1120,
             },
         });
 
-        // var MMDLoader = new Easycanvas.loaders.MMDLoader();
-        // MMDLoader.loadPMX('../resource/mmd/model/default/miku.pmx', function (data) {
+        // Easycanvas.loaders.MMDLoader.load('../resource/mmd/model/default/miku.pmx', function (data) {
         //     console.warn(data);
         // });
 
         var imgs = [
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_yanzhao_D.dds'),
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_yanzhao_D.dds'),
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_face_D.dds'),
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_hair_D.dds'),
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
-            $Painter.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_yanzhao_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_yanzhao_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_face_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_hair_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
+            $app.ddsLoader('../resource/fbxdds/mingxiu_body_D.dds'),
         ];
 
         Easycanvas.loaders.FBXLoader('../resource/fbxdds/mx.fbx', function (data) {

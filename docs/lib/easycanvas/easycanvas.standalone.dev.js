@@ -22,7 +22,7 @@
         r.p = "";
         return r(0);
     }([ function(e, t, r) {
-        e.exports = r(29);
+        e.exports = r(32);
     }, function(e, t) {
         "use strict";
         var r = {
@@ -86,7 +86,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.5.9"
+            version: "0.5.10"
         };
     }, , , function(e, t) {
         "use strict";
@@ -122,7 +122,7 @@
             i.send();
         }
         e.exports = a;
-    }, , , function(e, t) {
+    }, , , , function(e, t) {
         "use strict";
         var r = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(e) {
             return typeof e;
@@ -247,7 +247,7 @@
         "use strict";
         var n = r(2);
         var a = o(n);
-        var i = r(10);
+        var i = r(11);
         var s = o(i);
         function o(e) {
             return e && e.__esModule ? e : {
@@ -273,31 +273,33 @@
             return e && typeof Symbol === "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
         };
         var a = r(1);
-        var i = x(a);
+        var i = b(a);
         var s = r(3);
-        var o = x(s);
-        var f = r(17);
-        var l = x(f);
-        var u = r(16);
-        var c = x(u);
-        var d = r(15);
-        var v = x(d);
-        var h = r(18);
-        var p = x(h);
-        var g = r(14);
-        var y = x(g);
-        var m = r(13);
-        var $ = x(m);
-        function x(e) {
+        var o = b(s);
+        var f = r(19);
+        var l = b(f);
+        var u = r(18);
+        var c = b(u);
+        var d = r(16);
+        var v = b(d);
+        var h = r(17);
+        var p = b(h);
+        var g = r(20);
+        var y = b(g);
+        var m = r(15);
+        var $ = b(m);
+        var x = r(14);
+        var w = b(x);
+        function b(e) {
             return e && e.__esModule ? e : {
                 default: e
             };
         }
-        var w = function e(t) {
+        var T = function e(t) {
             if (t.children) {
                 t.children.forEach(function(r, n) {
                     if (!r.$id) {
-                        t.children[n] = new k(r);
+                        t.children[n] = new F(r);
                     }
                     if (t.$id && !t.$dom) {
                         t.children[n].$canvas = t.$canvas;
@@ -309,7 +311,7 @@
                 });
             }
         };
-        var b = function e(t) {
+        var k = function e(t) {
             var r = t || {};
             if (!r.$id) {
                 r.$id = Math.random().toString(36).substr(2);
@@ -351,35 +353,35 @@
                 r.name = r.name || "Unnamed Easycanvas Object";
             }
             r.children = r.children || [];
-            w(r);
+            T(r);
             return r;
         };
-        var T = function e(t) {
+        var A = function e(t) {
             var r = this;
             this.$extendList.forEach(function(e) {
                 e.call(r, t);
             });
         };
-        var k = function e(t) {
-            var r = b(t);
+        var F = function e(t) {
+            var r = k(t);
             for (var n in r) {
                 if (Object.prototype.hasOwnProperty.call(r, n)) {
                     this[n] = r[n];
                 }
             }
-            T.call(this, r);
+            A.call(this, r);
             return this;
         };
-        k.prototype.$extendList = [];
-        k.prototype.add = function(e) {
+        F.prototype.$extendList = [];
+        F.prototype.add = function(e) {
             if (!e) {
                 return;
             }
             this.children.push(e);
-            w(this);
+            T(this);
             return this.children[this.children.length - 1];
         };
-        k.prototype.getRect = function() {
+        F.prototype.getRect = function() {
             var e = this;
             var t = {};
             o.default.txywh.forEach(function(r) {
@@ -404,7 +406,7 @@
             }
             return t;
         };
-        k.prototype.getSelfStyle = function(e) {
+        F.prototype.getSelfStyle = function(e) {
             var t = {};
             if (e) {
                 return i.default.funcOrValue(this.style[e], this);
@@ -414,7 +416,7 @@
             }
             return t;
         };
-        k.prototype.getStyle = function(e) {
+        F.prototype.getStyle = function(e) {
             var t = this;
             var r = i.default.funcOrValue(t.style[e], t);
             if (t.$parent) {
@@ -436,7 +438,7 @@
             }
             return r;
         };
-        k.prototype.remove = function(e) {
+        F.prototype.remove = function(e) {
             if (e) {
                 this.$canvas.remove(e);
                 i.default.execFuncs(e.hooks.removed, e);
@@ -449,7 +451,7 @@
             }
             i.default.execFuncs(this.hooks.removed, this);
         };
-        k.prototype.update = function(e) {
+        F.prototype.update = function(e) {
             if (!e) return;
             for (var t in e) {
                 if (n(e[t]) === "object") {
@@ -461,12 +463,13 @@
                 }
             }
         };
-        k.prototype.nextTick = v.default;
-        k.prototype.on = l.default;
-        k.prototype.off = c.default;
-        k.prototype.trigger = p.default;
-        k.prototype.broadcast = y.default;
-        e.exports = k;
+        F.prototype.nextTick = p.default;
+        F.prototype.on = l.default;
+        F.prototype.off = c.default;
+        F.prototype.clear = v.default;
+        F.prototype.trigger = y.default;
+        F.prototype.broadcast = $.default;
+        e.exports = F;
     }, function(e, t, r) {
         "use strict";
         var n = r(1);
@@ -565,6 +568,14 @@
         };
     }, function(e, t) {
         "use strict";
+        e.exports = function() {
+            this.children.forEach(function(e) {
+                e.remove();
+            });
+            this.children = [];
+        };
+    }, function(e, t) {
+        "use strict";
         e.exports = function(e) {
             var t = function t() {
                 e.apply(this, arguments);
@@ -636,7 +647,7 @@
                 return a.default.execFuncs(this.hooks[t], this, e);
             }
         };
-    }, , , , , , , function(e, t) {
+    }, , , , , , , , function(e, t) {
         "use strict";
         var r = function e(t) {
             setTimeout(t, 1e3 / 60);
@@ -648,85 +659,103 @@
         var n = r(1);
         var a = 3.141593;
         var i = function e(t) {
-            return t / 1e3 * 60;
-        };
-        var s = function e(t) {
             return t.$lastPaintTime || Date.now();
         };
-        var o = {
+        var s = {
             linear: function e(t, r, n) {
-                if (t === r) return t;
-                var a = s(this);
-                var i = false;
-                var o = function() {
+                var a = i(this);
+                var s = false;
+                var o = void 0;
+                var f = function() {
                     var e = this.$lastPaintTime;
-                    var s = (r - t) * (e - a) / n + t;
-                    if (i) {
+                    var i = (e - a) / n;
+                    var l = (r - t) * i + t;
+                    if (s) {
                         if (r > t) {
-                            while (s > r) {
-                                s -= r - t;
+                            while (l > r) {
+                                l -= r - t;
                             }
                         } else {
-                            while (s < r) {
-                                s += t - r;
+                            while (l < r) {
+                                l += t - r;
                             }
                         }
                     } else {
-                        if (r > t && s > r) {
-                            o.$done = true;
-                            s = r;
-                        } else if (r < t && s < r) {
-                            o.$done = true;
-                            s = r;
+                        if (r > t && l > r) {
+                            f.$done = true;
+                            l = r;
+                        } else if (r < t && l < r) {
+                            f.$done = true;
+                            l = r;
                         }
                     }
-                    return s;
+                    if (i >= 1 && o) {
+                        o.call(this, l);
+                        o = null;
+                    }
+                    return l;
                 }.bind(this);
-                o.loop = function() {
-                    i = true;
-                    return o;
+                f.loop = function() {
+                    s = true;
+                    return f;
                 };
-                o.restart = function() {
-                    a = s(this);
+                f.restart = function() {
+                    a = i(this);
+                    return f;
                 };
-                return o;
+                f.then = function(e) {
+                    o = e;
+                    return f;
+                };
+                return f;
             },
-            pendulum: function e(t, r, n, i) {
-                if (t === r) return t;
-                var o = s(this);
-                var f = i || {};
+            pendulum: function e(t, r, n, s) {
+                var o = i(this);
+                var f = s || {};
                 f.start = f.start || 0;
                 var l = false;
-                var u = function() {
-                    var e = s(this);
-                    var i = (e - o) / n;
+                var u = void 0;
+                var c = f.cycle || 1;
+                var d = function() {
+                    var e = i(this);
+                    var s = (e - o) / n;
                     if (!l) {
-                        if (f.cycle) {
-                            if (f.cycle < i) {
-                                u.$done = true;
-                                i = f.cycle;
+                        if (c) {
+                            if (s > c) {
+                                s = c;
+                                d.$done = true;
+                                s = c;
                             }
-                        } else if (i > 1) {
-                            u.$done = true;
-                            i = 1;
+                        } else if (s > 1) {
+                            d.$done = true;
+                            s = 1;
                         }
                     } else {
-                        if (f.cycle) {
-                            i %= f.cycle;
+                        if (c) {
+                            s %= c;
                         }
                     }
-                    var c = i * a * 2 - a / 2 + f.start / 360 * a;
-                    var d = (r - t) * (Math.sin(c) + 1) / 2 + t;
-                    return d;
+                    var v = s * a * 2 - a / 2 + f.start / 360 * a;
+                    var h = (r - t) * (Math.sin(v) + 1) / 2 + t;
+                    if (s >= c && u) {
+                        u.call(this, h);
+                        u = null;
+                    }
+                    return h;
                 }.bind(this);
-                u.loop = function() {
+                d.loop = function() {
                     l = true;
-                    return u;
+                    return d;
                 };
-                u.restart = function() {
-                    o = s(this);
+                d.restart = function() {
+                    o = i(this);
+                    return d;
                 };
-                return u;
+                d.then = function(e) {
+                    u = e;
+                    return d;
+                };
+                return d;
             },
             ease: function e(t, r, n) {
                 return this.pendulum(t, r, n * 2, {
@@ -765,7 +794,7 @@
                 return a;
             }
         };
-        var f = function e(t, r, a, i, s) {
+        var o = function e(t, r, a, i, o) {
             var f = (0, n.funcOrValue)(t[r]);
             if (true) {
                 if (typeof f === "undefined") {
@@ -773,12 +802,12 @@
                 }
             }
             f = f || 0;
-            t[r] = o[a].bind(e)(f, i, s);
+            t[r] = s[a].bind(e)(f, i, o);
         };
-        for (var l in o) {
-            f[l] = o[l];
+        for (var f in s) {
+            o[f] = s[f];
         }
-        e.exports = f;
+        e.exports = o;
     }, function(e, t, r) {
         "use strict";
         var n = Object.assign || function(e) {
@@ -958,25 +987,25 @@
         "use strict";
         var n = r(3);
         var a = A(n);
-        var i = r(52);
+        var i = r(54);
         var s = A(i);
-        var o = r(25);
+        var o = r(28);
         var f = A(o);
-        var l = r(92);
+        var l = r(96);
         var u = A(l);
         var c = r(1);
         var d = A(c);
-        var v = r(26);
+        var v = r(29);
         var h = A(v);
-        var p = r(9);
+        var p = r(10);
         var g = A(p);
-        var y = r(91);
+        var y = r(95);
         var m = A(y);
-        var $ = r(93);
+        var $ = r(97);
         var x = A($);
-        var w = r(12);
+        var w = r(13);
         var b = A(w);
-        var T = r(27);
+        var T = r(30);
         var k = A(T);
         function A(e) {
             return e && e.__esModule ? e : {
@@ -1033,17 +1062,17 @@
         e.exports = F;
     }, , , , function(e, t, r) {
         "use strict";
-        var n = r(38);
+        var n = r(41);
         var a = p(n);
-        var i = r(40);
+        var i = r(43);
         var s = p(i);
-        var o = r(34);
+        var o = r(37);
         var f = p(o);
-        var l = r(13);
+        var l = r(14);
         var u = p(l);
-        var c = r(39);
+        var c = r(42);
         var d = p(c);
-        var v = r(51);
+        var v = r(53);
         var h = p(v);
         function p(e) {
             return e && e.__esModule ? e : {
@@ -1395,13 +1424,13 @@
         var s = y(i);
         var o = r(3);
         var f = y(o);
-        var l = r(37);
+        var l = r(40);
         var u = y(l);
-        var c = r(35);
+        var c = r(38);
         var d = y(c);
-        var v = r(36);
+        var v = r(39);
         var h = y(v);
-        var p = r(11);
+        var p = r(12);
         var g = y(p);
         function y(e) {
             return e && e.__esModule ? e : {
@@ -1557,8 +1586,8 @@
                 var S = n.ty;
                 var M = n.align || n.textAlign || "left";
                 var O = n.textFont || "14px Arial";
-                var R = parseInt(O);
-                var E = n.lineHeight || R;
+                var E = parseInt(O);
+                var R = n.lineHeight || E;
                 if (M === "center") {
                     F += n.tw / 2;
                 } else if (M === "right") {
@@ -1574,20 +1603,22 @@
                     i.textBaseline = "middle";
                 }
                 if (typeof s === "string" || typeof s === "number") {
-                    r.$children.push({
-                        $id: e.$id,
-                        type: "text",
-                        settings: i,
-                        props: {
-                            tx: F,
-                            ty: S,
-                            content: String(s),
-                            align: M,
-                            font: O,
-                            color: n.color,
-                            type: n.textType
-                        }
-                    });
+                    if (S + E * 2 > 0 && S - E * 2 < r.height) {
+                        r.$children.push({
+                            $id: e.$id,
+                            type: "text",
+                            settings: i,
+                            props: {
+                                tx: F,
+                                ty: S,
+                                content: String(s),
+                                align: M,
+                                font: O,
+                                color: n.color,
+                                type: n.textType
+                            }
+                        });
+                    }
                 } else if (s.length) {
                     s.forEach(function(t) {
                         r.$children.push({
@@ -1607,7 +1638,7 @@
                     });
                 } else if (s.type === "multline-text") {
                     var _ = s.text.split(/\t|\n/);
-                    var C = [];
+                    var I = [];
                     _.forEach(function(e, t) {
                         e = String.prototype.trim.apply(e);
                         if (s.config.start) {
@@ -1618,18 +1649,18 @@
                         while (e.length && r < e.length) {
                             if (a <= 0) {
                                 a = n.tw;
-                                C.push(e.substr(0, r));
+                                I.push(e.substr(0, r));
                                 e = e.substr(r);
                                 r = 0;
                             }
                             r++;
-                            a -= R * ($(e[r]) ? 1.05 : .6);
+                            a -= E * ($(e[r]) ? 1.05 : .6);
                         }
                         if (e || t) {
-                            C.push(e);
+                            I.push(e);
                         }
                     });
-                    C.forEach(function(t) {
+                    I.forEach(function(t) {
                         r.$children.push({
                             $id: e.$id,
                             type: "text",
@@ -1644,7 +1675,7 @@
                                 type: n.textType
                             }
                         });
-                        S += E || R;
+                        S += R || E;
                     });
                 }
             }
@@ -1656,9 +1687,9 @@
         };
     }, function(e, t, r) {
         "use strict";
-        var n = r(25);
+        var n = r(28);
         var a = o(n);
-        var i = r(26);
+        var i = r(29);
         var s = o(i);
         function o(e) {
             return e && e.__esModule ? e : {
@@ -1839,35 +1870,35 @@
         };
     }, function(e, t, r) {
         "use strict";
-        var n = r(42);
-        var a = E(n);
-        var i = r(47);
-        var s = E(i);
-        var o = r(50);
-        var f = E(o);
-        var l = r(44);
-        var u = E(l);
-        var c = r(43);
-        var d = E(c);
-        var v = r(45);
-        var h = E(v);
-        var p = r(17);
-        var g = E(p);
-        var y = r(16);
-        var m = E(y);
-        var $ = r(18);
-        var x = E($);
-        var w = r(14);
-        var b = E(w);
-        var T = r(15);
-        var k = E(T);
-        var A = r(46);
-        var F = E(A);
-        var S = r(48);
-        var M = E(S);
-        var O = r(49);
-        var R = E(O);
-        function E(e) {
+        var n = r(45);
+        var a = R(n);
+        var i = r(49);
+        var s = R(i);
+        var o = r(52);
+        var f = R(o);
+        var l = r(46);
+        var u = R(l);
+        var c = r(16);
+        var d = R(c);
+        var v = r(47);
+        var h = R(v);
+        var p = r(19);
+        var g = R(p);
+        var y = r(18);
+        var m = R(y);
+        var $ = r(20);
+        var x = R($);
+        var w = r(15);
+        var b = R(w);
+        var T = r(17);
+        var k = R(T);
+        var A = r(48);
+        var F = R(A);
+        var S = r(50);
+        var M = R(S);
+        var O = r(51);
+        var E = R(O);
+        function R(e) {
             return e && e.__esModule ? e : {
                 default: e
             };
@@ -1880,7 +1911,7 @@
             register: F.default,
             clear: d.default,
             setFpsHandler: M.default,
-            setMaxFps: R.default,
+            setMaxFps: E.default,
             pause: h.default,
             on: g.default,
             off: m.default,
@@ -1891,7 +1922,7 @@
         e.exports = _;
     }, function(e, t, r) {
         "use strict";
-        var n = r(12);
+        var n = r(13);
         var a = i(n);
         function i(e) {
             return e && e.__esModule ? e : {
@@ -1899,11 +1930,6 @@
             };
         }
         e.exports = a.default.prototype.add;
-    }, function(e, t) {
-        "use strict";
-        e.exports = function() {
-            this.children = [];
-        };
     }, function(e, t, r) {
         "use strict";
         var n = r(1);
@@ -2145,6 +2171,7 @@
                         t.$perf["$" + r] += (n === "START" || n === "PAUSE" ? -1 : 1) * Date.now();
                     },
                     selectSprite: function e(a, o, f) {
+                        window[s.default.devFlag].MaskCanvasBase64 = r;
                         if (!f || !window[s.default.devFlag].selectMode) {
                             i.cancelSelectSprite(o);
                             return false;
@@ -2169,6 +2196,11 @@
                                 };
                             })(e);
                         });
+                        n.style.zIndex = Number.MAX_SAFE_INTEGER;
+                        n.style.visible = function() {
+                            return window[s.default.devFlag].selectMode;
+                        };
+                        n.style.opacity = .8;
                         n.webgl = f.webgl ? {} : undefined;
                         if (n.webgl) {
                             for (var l in f.webgl) {
@@ -2182,14 +2214,9 @@
                                 })(l);
                             }
                             n.webgl.img = o.imgLoader(r);
-                            delete n.webgl.colors;
-                            n.webgl.hasAlpha = true;
+                            n.webgl.colors = false;
+                            n.style.zIndex = Number.MIN_SAFE_INTEGER;
                         }
-                        n.style.zIndex = Number.MAX_SAFE_INTEGER;
-                        n.style.visible = function() {
-                            return window[s.default.devFlag].selectMode;
-                        };
-                        n.style.opacity = .8;
                         if (a) {
                             o.remove(n);
                             n = null;
@@ -2220,13 +2247,13 @@
         };
     }, function(e, t, r) {
         "use strict";
-        var n = r(41);
+        var n = r(44);
         var a = c(n);
-        var i = r(33);
+        var i = r(36);
         var s = c(i);
-        var o = r(53);
+        var o = r(55);
         var f = c(o);
-        var l = r(9);
+        var l = r(10);
         var u = c(l);
         function c(e) {
             return e && e.__esModule ? e : {
@@ -2290,9 +2317,9 @@
             }
         };
         e.exports = r;
-    }, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , function(e, t, r) {
+    }, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , function(e, t, r) {
         "use strict";
-        var n = r(9);
+        var n = r(10);
         var a = o(n);
         var i = r(6);
         var s = o(i);

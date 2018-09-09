@@ -20,7 +20,8 @@ module.exports = `
             <script src="http://your-path/easycanvas.standalone.prod.js"></script>
             <script src="http://your-path/plugin.webgl.standalone.prod.js"></script>
             <script src="http://your-path/plugin.webgl.mmd.standalone.prod.js"></script>
-
+        </code>
+        <code>
             <!-- node环境引入 -->
 
             import Easycanvas from easycanvas;
@@ -164,7 +165,7 @@ module.exports = `
 
         <h2>解析MMD数据</h2>
 
-        <p>下面是一个解析MMD文件的数据的例子。将相同的图层放在一起，可以提升渲染效率（可以参考webgl.3DS插件文末的方式）。</p>
+        <p>下面是一个解析MMD文件的数据的例子。</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -227,6 +228,8 @@ module.exports = `
         </section>
 
         <p>PMD模型中，indices是全部索引，我们需要将他们拆分为各个图层所需要的索引数据；colors是0到1之间的数值，我们也要将他们转换为255以内的rgb色值。由于色值可以循环使用，截取colors时保留长度3的数组即可。</p>
+
+        <p class="tip">将相同的图层放在一起，可以提升渲染效率（可以参考webgl.3DS插件文末的方式）。</p>
 
     </article>
 `;
