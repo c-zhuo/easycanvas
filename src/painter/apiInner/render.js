@@ -37,15 +37,36 @@ const render = function ($sprite, i) {
     /*
         Jump useless paintings, by calculating border size
     */
-    if ($sprite.type === 'img' || $sprite.type === 'fillRect') {
-        // 当前图层不太小的时候，判断是否可以跳过绘制
-        let currentImgSize = props[7] * props[8];
-        let $children = $canvas.$children;
+    // if ($sprite.type === 'img' || $sprite.type === 'fillRect') {
+    let currentSize;
+    let isText = $sprite.type === 'text';
 
-        if (currentImgSize > 200 * 200 &&
+    // 一些扩展插件的绘制可能没有props
+    if (props) {
+        if (isText) {
+            let length = props.content.length;
+
+            currentSize = props.fontsize * props.fontsize * 9 * length;
+
+            props[5] = props.tx - props.fontsize * 1.5 * length;
+            if (props[5] < 0) props[5] = 0;
+            props[6] = props.ty - props.fontsize * 1.5;
+            if (props[6] < 0) props[6] = 0;
+            props[7] = props.fontsize * 3 * length;
+            if (props[5] + props[7] > $canvas.width) props[7] = $canvas.width - props[5];
+            props[8] = props.fontsize * 3;
+            if (props[6] + props[8] > $canvas.height) props[8] = $canvas.height - props[6];
+        } else {
+            currentSize = props.tw * props.th;
+        }
+
+        // 当前图层不太小的时候，判断是否可以跳过绘制
+        if ((currentSize > 200 * 200 || isText) &&
             !$sprite.settings.transform &&
             !$sprite.settings.rotate
         ) {
+            let $children = $canvas.$children;
+
             for (let j = $children.length - 1; j > i; j--) {
                 let $tmpSprite = $children[j];
 
@@ -54,21 +75,25 @@ const render = function ($sprite, i) {
                     continue;
                 }
 
-                let tmpProps = $tmpSprite.props;
-
-                if ($sprite.type === 'text' || !$sprite.type) {
+                if ($tmpSprite.type === 'text' || !$tmpSprite.type) {
                     // 不是图片
                     $tmpSprite.$cannotCover = true;
                     continue;
                 }
 
-                if (tmpProps[7] * tmpProps[8] < currentImgSize) {
-                    // 太小的图片不认为可以遮挡当前图片，不能跳过当前图片的绘制
-                    // 只是对于当前图片来说cannotCover，对其它图片有可能，所以不设置$cannotCover
+                let tmpProps = $tmpSprite.props;
+
+                if (tmpProps.tw * tmpProps.th < 200 * 200) {
+                    // 太小的图片不认为可以遮挡
+                    $tmpSprite.$cannotCover = true;
                     continue;
                 }
 
-                if (tmpProps[0] && !tmpProps[0].$noAlpha) {
+                if (tmpProps.tw * tmpProps.th < currentSize) {
+                    continue;
+                }
+
+                if ($tmpSprite.img && !$tmpSprite.img.$noAlpha) {
                     // 带alpha通道的图片不会遮挡当前图片，不能跳过当前图片的绘制
                     $tmpSprite.$cannotCover = true;
                     continue;
@@ -86,18 +111,19 @@ const render = function ($sprite, i) {
                 }
 
                 if (utils.pointInRect(
-                        props[5], props[6],
-                        tmpProps[5], tmpProps[7],
-                        tmpProps[6], tmpProps[8],
+                        props.tx, props.ty,
+                        tmpProps.tx, tmpProps.tx + tmpProps.tw,
+                        tmpProps.ty, tmpProps.ty + tmpProps.th,
                     ) && utils.pointInRect(
-                        props[5] + props[7], props[6] + props[8],
-                        tmpProps[5], tmpProps[7],
-                        tmpProps[6], tmpProps[8],
+                        props.tx + props.tw, props.ty + props.th,
+                        tmpProps.tx, tmpProps.tx + tmpProps.tw,
+                        tmpProps.ty, tmpProps.ty + tmpProps.th,
                     )
                 ) {
                     if (process.env.NODE_ENV !== 'production') {
                         $sprite.$origin.$useless = true;
-                        $canvas.$plugin.jumpRender($canvas, props);
+                        // props格式换了
+                        // $canvas.$plugin.jumpRender($canvas, props);
                     }
 
                     // console.log('useless');
@@ -142,13 +168,13 @@ const render = function ($sprite, i) {
         cxt.globalAlpha = settings.globalAlpha;
     }
 
-    if (settings.textBaseline) {
-        if (!saved) {
-            cxt.save();
-            saved = true;
-        }
-        cxt.textBaseline = settings.textBaseline;
-    }
+    // if (settings.textBaseline) {
+    //     if (!saved) {
+    //         cxt.save();
+    //         saved = true;
+    //     }
+    //     cxt.textBaseline = settings.textBaseline;
+    // }
 
     if (settings.translate) {
         if (!saved) {
@@ -189,18 +215,19 @@ const render = function ($sprite, i) {
     }
 
     if ($sprite.type === 'img') {
-        cxt.drawImage(props[0],props[1],props[2],props[3],props[4],props[5],props[6],props[7],props[8]);
+        cxt.drawImage($sprite.img,props.sx,props.sy,props.sw,props.sh,props.tx,props.ty,props.tw,props.th);
         if (process.env.NODE_ENV !== 'production') {
             $canvas.$plugin.drawImage($canvas, props);
         }
     } else if ($sprite.type === 'text' && props.content) {
         cxt.font = props.font;
-        cxt.fillStyle = cxt.strokeStyle = props.color || 'white';
+        cxt.fillStyle = props.color || 'white';
         cxt.textAlign = props.align;
+        cxt.textBaseline = props.baseline;
         cxt[props.type || 'fillText'](props.content, props.tx, props.ty);
     } else if ($sprite.type === 'fillRect') { 
         cxt.fillStyle = settings.fillRect;
-        cxt.fillRect(props[5],props[6],props[7],props[8]);
+        cxt.fillRect(props.tx,props.ty,props.tw,props.th);
     }
 
     if (saved) {

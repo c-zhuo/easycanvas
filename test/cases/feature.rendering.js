@@ -92,13 +92,20 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
 
 describe('Feature.rendering Test.', function () {
     it('Basic props inherit correctly.', function (done) {
+        let getRenderStyle = function (props) {
+            return [
+                props.sx, props.sy, props.sw, props.sh,
+                props.tx, props.ty, props.tw, props.th,
+            ].join(',');
+        };
+
         setTimeout(() => {
             expect($Painter.$children.length).toBe(4);
             expect($Painter.$children[0].type).toBe('img');
-            expect($Painter.$children[0].props.slice(1).join(',')).toBe('0,0,30,30,100,100,30,30');
+            expect(getRenderStyle($Painter.$children[0].props)).toBe('0,0,30,30,100,100,30,30');
             expect($Painter.$children[3].settings.rotate.toFixed(2)).toBe('-0.70');
             expect($Painter.$children[2].settings.rotate).toBe(undefined);
-            expect($Painter.$children[2].props.slice(1).join(',')).toBe('0,0,30,30,40,540,150,150');
+            expect(getRenderStyle($Painter.$children[2].props)).toBe('0,0,30,30,40,540,150,150');
             done();
         }, constants.waitForUpdateTime);
     });

@@ -13,13 +13,18 @@ module.exports = `
 
         <h2>当前版本</h2>
 
+        <h3>0.5.11 (2018.9.x)</h3>
+
+        <p>Bugfix：修复部分低版本安卓手机，<strong>event不能正确触发</strong>的bug。</p>
+        <p>Performance：调整部分底层实现，提升渲染和事件的性能。</p>
+
+        <h2>历史版本</h2>
+
         <h3>0.5.10 (2018.9.9)</h3>
 
         <p>Bugfix：修复pendulum和ease在结束后可能额外执行一帧，导致结束点有偏差的bug。</p>
         <p>Feature：为transition增加<strong>then</strong>方法，结束时触发，例如Easycanvas.transition.linear(2, 8, 1000).then(Function)。</p>
         <p>Feature：为WebGL引入<strong>Three.js的loaders</strong>，用于加载fbx、dds等更多模型和资源文件，详见文档。</p>
-
-        <h2>历史版本</h2>
 
         <h3>0.5.9 (2018.9.1)</h3>
 

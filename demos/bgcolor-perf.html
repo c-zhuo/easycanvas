@@ -20,6 +20,17 @@
             }
         });
 
+        $Painter.add({
+            content: {
+                text: 1234,
+            },
+            style: {
+                tx: 100, ty: 200,
+                tw: 200, th: 200,
+                zIndex: -10,
+            }
+        });
+
         Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
             window.sprite1 = $Painter.add({
