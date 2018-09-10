@@ -2,7 +2,7 @@ import imgLoader from './img-loader.js';
 import img2base64 from './img2base64.js';
 
 module.exports = function (url, option) {
-    var result = undefined;
+    var result;
 
     img2base64(url, function (base64) {
         return imgLoader(base64, function (canvas) {

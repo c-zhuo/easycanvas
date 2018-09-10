@@ -132,8 +132,8 @@ const preAdd = function (_item) {
 
     ChangeChildrenToSprite(item);
 
-    // item.$cache = {};
-    // item.$styleCacheTime = {};
+    item.$cache = {};
+    item.$styleCacheTime = {};
 
     return item;
 };
@@ -232,11 +232,9 @@ sprite.prototype.getSelfStyle = function (key) {
 sprite.prototype.getStyle = function (key) {
     let $sprite = this;
 
-    // if ($sprite.$styleCacheTime[key] === $sprite.$canvas.$lastPaintTime && $sprite.$cache[key]) {
-    //     window.y++;
-    //     return $sprite.$cache[key];
-    // }
-    //     window.n++;
+    if ($sprite.$styleCacheTime[key] === $sprite.$canvas.$lastPaintTime) {
+        return $sprite.$cache[key];
+    }
 
     let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
 
@@ -250,22 +248,28 @@ sprite.prototype.getStyle = function (key) {
         }
 
         if (needInherit) {
-            if (key === 'tw' || key === 'th') {
-                return utils.firstValuable(currentValue, $sprite.$parent.getStyle(key));
-            } else if (key === 'opacity' || key === 'scale') {
+            if (key === 'opacity' || key === 'scale') {
+                var parentValue = utils.firstValuable($sprite.$parent.getStyle(key), 1);
+
+    $sprite.$parent.$styleCacheTime[key] = $sprite.$canvas.$lastPaintTime;
+    $sprite.$parent.$cache[key] = parentValue;
+
                 return (
-                    utils.firstValuable($sprite.$parent.getStyle(key), 1)
+                    parentValue
                 ) * utils.firstValuable(currentValue, 1);
             } else {
+                var parentValue = utils.firstValuable($sprite.$parent.getStyle(key), 0);
+
+    $sprite.$parent.$styleCacheTime[key] = $sprite.$canvas.$lastPaintTime;
+    $sprite.$parent.$cache[key] = parentValue;
+
                 return (
-                    utils.firstValuable($sprite.$parent.getStyle(key), 0)
+                    parentValue
                 ) + utils.firstValuable(currentValue, 0);
             }
         }
     }
 
-    // $sprite.$styleCacheTime[key] = $sprite.$canvas.$lastPaintTime;
-    // $sprite.$cache[key] = currentValue;
 
     return currentValue;
 };
