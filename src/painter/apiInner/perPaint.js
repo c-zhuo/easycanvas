@@ -193,7 +193,7 @@ module.exports = function (i, index) {
 
             let $paintSprite = {
                 $id: i.$id,
-                type: 'context',
+                type: 'fillRect',
                 settings: settings,
                 props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
             };
