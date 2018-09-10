@@ -11,14 +11,10 @@ module.exports = function () {
 
     setInterval(() => {
         if (this.eHoldingFlag) {
-            let e = this.eHoldingFlag;
-            this.$eventHandler.call(this, {
-                layerX: e.layerX,
-                layerY: e.layerY,
-                screenX: e.screenX || e.layerX,
-                screenY: e.screenY || e.layerY,
-                type: 'hold',
-            });
+            let $e = this.eHoldingFlag;
+            $e.type = 'hold';
+
+            this.$eventHandler.call(this, null, $e);
         }
     }, 40); // TODO
 

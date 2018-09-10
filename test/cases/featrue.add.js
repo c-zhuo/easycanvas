@@ -47,11 +47,11 @@ describe('Featrue.add Test.', function () {
             let $children = $Painter.$children
             expect($children.length).toBe(1);
             expect($children[0].type).toBe('img');
-            expect($children[0].props[0].tagName).toBe('IMG');
-            expect($children[0].props[0].width).toBe(10);
-            expect($children[0].props[7]).toBe(10);
-            expect($children[0].props[5]).toBe(0);
-            expect($children[0].props[6]).toBe(77);
+            expect($children[0].props.img.tagName).toBe('IMG');
+            expect($children[0].props.img.width).toBe(10);
+            expect($children[0].props.tw).toBe(10);
+            expect($children[0].props.tx).toBe(0);
+            expect($children[0].props.ty).toBe(77);
             done();
         }, constants.waitForUpdateTime);
     });

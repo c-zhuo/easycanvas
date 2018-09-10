@@ -7,14 +7,11 @@
 
 const inBrowser = typeof window !== 'undefined';
 
-let startPos = {};
-let touching = false;
-let autoScroll = false;
 let ec;
 
 let scrollFuncs = {
     loose: function ($sprite) {
-        touching = false;
+        $sprite.$scroll.touching = false;
     },
 
     looper: function ($sprite) {
@@ -36,7 +33,7 @@ let scrollFuncs = {
             return;
         }
 
-        if (touching) return;
+        if ($sprite.$scroll.touching) return;
 
         $sprite.scroll.scrollY -= $sprite.$scroll.speedY;
         $sprite.scroll.scrollX -= $sprite.$scroll.speedX;
@@ -64,29 +61,43 @@ let scrollFuncs = {
 
         let now = Date.now();
 
-        if (!touching) {
+        if (!$sprite.$scroll.touching) {
             // start scroll
-            touching = now;
+            $sprite.$scroll.touching = now;
+            $sprite.$scroll.quickTouch = now;
 
-            startPos.x = $e.canvasX;
-            startPos.y = $e.canvasY;
+            $sprite.$scroll.startPos.x = $e.canvasX;
+            $sprite.$scroll.startPos.y = $e.canvasY;
 
             $sprite.$scroll.speedX = 0;
             $sprite.$scroll.speedY = 0;
         } else {
             $sprite.$scroll.$scrolling = true;
 
-            let absX = Math.abs($e.canvasX - startPos.x);
-            let absY = Math.abs($e.canvasY - startPos.y);
-            let deltaTime = now - touching;
-            touching = now;
+            let deltaX = $sprite.$scroll.startPos.x - $e.canvasX;
+            let deltaY = $sprite.$scroll.startPos.y - $e.canvasY;
 
-            if (absX >= 1 && deltaTime > 1) {
-                $sprite.$scroll.speedX += ($e.canvasX - startPos.x) / deltaTime * 10;
+            let deltaTime = now - $sprite.$scroll.touching;
+            $sprite.$scroll.touching = now;
+
+            if ($sprite.scroll.scrollX + deltaX < $sprite.scroll.minScrollX ||
+                $sprite.scroll.scrollX + deltaX > $sprite.scroll.maxScrollX) {
+                if ($sprite.scroll.flexibleX) deltaX >>= 3;
+                else deltaX = 0;
             }
-            if (absY >= 1 && deltaTime > 1) {
-                $sprite.$scroll.speedY = ($e.canvasY - startPos.y) * 3;
-                $sprite.scroll.scrollY += startPos.y - $e.canvasY;
+            if ($sprite.scroll.scrollY + deltaY < $sprite.scroll.minScrollY ||
+                $sprite.scroll.scrollY + deltaY > $sprite.scroll.maxScrollY) {
+                if ($sprite.scroll.flexibleY) deltaY >>= 3;
+                else deltaY = 0;
+            }
+
+            if (Math.abs(deltaX) >= 1 && deltaTime > 1) {
+                $sprite.$scroll.speedX = ($e.canvasX - $sprite.$scroll.startPos.x) * 4;
+                $sprite.scroll.scrollX += deltaX;
+            }
+            if (Math.abs(deltaY) >= 1 && deltaTime > 1) {
+                $sprite.$scroll.speedY = ($e.canvasY - $sprite.$scroll.startPos.y) * 4;
+                $sprite.scroll.scrollY += deltaY;
             }
 
         // $sprite.$scroll.speedX = ($sprite.$scroll.speedX + ($e.canvasX - startPos.x) * 2) / 2;
@@ -94,11 +105,11 @@ let scrollFuncs = {
         // let curSpeed = ($e.canvasY - startPos.y) * 3;
         // $sprite.$scroll.speedY = ($sprite.$scroll.speedY + curSpeed) / 2;
 
-            startPos.x = $e.canvasX;
-            startPos.y = $e.canvasY;
+            $sprite.$scroll.startPos.x = $e.canvasX;
+            $sprite.$scroll.startPos.y = $e.canvasY;
 
             // $e.event.preventDefault();
-            return true;
+            $e.stopPropagation();
         }
     },
 
@@ -111,11 +122,13 @@ let scrollFuncs = {
         $sprite.$scroll.speedY = $e.event.wheelDeltaY;
 
         // $e.event.preventDefault();
-        return true;
+        $e.stopPropagation();
     }
 };
 
 const component = function (opt) {
+    let autoScroll = false;
+
     let option = opt || {};
 
     option.scroll = Object.assign({
@@ -129,7 +142,9 @@ const component = function (opt) {
     }, opt.scroll);
 
     const autoScrollFunc = () => {
-        $sprite.scroll.scrollY = autoScroll();
+        if (autoScroll) {
+            $sprite.scroll.scrollY = autoScroll();
+        }
     };
 
     let handling = true;
@@ -137,9 +152,11 @@ const component = function (opt) {
         handling = !handling;
     };
 
-    option.events = {
-        interceptor: function ($e) {
-            if (!handling) return $e;
+    option.events = Object.assign({
+        interceptor ($e) {
+            if (!handling) {
+                return $e;
+            }
 
             if ($e.type === 'touchmove') {
                 scrollFuncs.touch(this, $e);
@@ -170,7 +187,7 @@ const component = function (opt) {
         // mouseup: function () {
         //     scrollFuncs.stop();
         // },
-    };
+    }, option.events || {});
 
     let $sprite = new ec.class.sprite(option);
 
@@ -196,6 +213,8 @@ const component = function (opt) {
     $sprite.$scroll = {
         speedX: 0,
         speedY: 0,
+        touching: false,
+        startPos: {},
     };
 
     let $scrollingElement = $sprite.add({
@@ -221,7 +240,11 @@ const component = function (opt) {
 
 const init = function (Easycanvas, namespace) {
     ec = Easycanvas;
-    Easycanvas.class[namespace] = component;
+    if (namespace) {
+        Easycanvas.class[namespace] = component;
+    }
+
+    return component;
 };
 
 if (inBrowser && window.Easycanvas) {

@@ -28,6 +28,7 @@ module.exports = function ($canvas, props, imgWidth, imgHeight) {
     }
 
     // target
+    // TODO
     if (props.tx < 0 && props.tw > -props.tx) {
         let cutRate = (-props.tx / props.tw);
         props.sx += props.sw * cutRate;
@@ -42,12 +43,12 @@ module.exports = function ($canvas, props, imgWidth, imgHeight) {
         props.th = props.th + props.ty;
         props.ty = 0;
     }
-    if (props.tx + props.tw > $canvas.width && props.tw) {
+    if (props.tw && props.tx + props.tw > $canvas.width) {
         let cutRate = (props.tx + props.tw - $canvas.width) / props.tw;
         props.tw -= props.tw * cutRate;
         props.sw -= props.sw * cutRate;
     }
-    if (props.ty + props.th > $canvas.height && props.th) {
+    if (props.th && props.ty + props.th > $canvas.height) {
         let cutRate = (props.ty + props.th - $canvas.height) / props.th;
         props.th -= props.th * cutRate;
         props.sh -= props.sh * cutRate;

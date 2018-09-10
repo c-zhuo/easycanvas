@@ -44,7 +44,7 @@ import clear from '../painter/apiOuter/clear.js';
 import nextTick from '../painter/apiOuter/nextTick.js';
 import trigger from '../painter/apiOuter/trigger.js';
 import broadcast from '../painter/apiOuter/broadcast.js';
-import bindDrag from '../painter/apiInner/bindDrag.js';
+// import bindDrag from '../painter/apiInner/bindDrag.js';
 
 const ChangeChildrenToSprite = function ($parent) {
     if ($parent.children) {
@@ -82,13 +82,16 @@ const preAdd = function (_item) {
 
     item.style = item.style || {};
 
+    item.style.tx = item.style.tx || 0;
+    item.style.ty = item.style.ty || 0;
+    item.style.scale = utils.firstValuable(item.style.scale, 1);
+    item.style.opacity = utils.firstValuable(item.style.opacity, 1);
+
     item.style.zIndex = item.style.zIndex || 0;
     item.style.mirrX = item.style.mirrX || 0;
 
-    item.style.opacity = utils.firstValuable(item.style.opacity, 1);
     item.style.locate = item.style.locate || 'center';
     // item.style.rotate = item.style.rotate || 0;
-    item.style.scale = item.style.scale || 1;
 
     let _img = utils.funcOrValue(item.content.img);
 
@@ -231,8 +234,9 @@ sprite.prototype.getSelfStyle = function (key) {
 
 sprite.prototype.getStyle = function (key) {
     let $sprite = this;
+    let lastPaintTime = $sprite.$canvas.$lastPaintTime;
 
-    if ($sprite.$styleCacheTime[key] === $sprite.$canvas.$lastPaintTime) {
+    if ($sprite.$styleCacheTime[key] === lastPaintTime) {
         return $sprite.$cache[key];
     }
 
@@ -248,20 +252,22 @@ sprite.prototype.getStyle = function (key) {
         }
 
         if (needInherit) {
-            if (key === 'opacity' || key === 'scale') {
-                var parentValue = utils.firstValuable($sprite.$parent.getStyle(key), 1);
+            let parentValue = $sprite.$parent.getStyle(key);
 
-    $sprite.$parent.$styleCacheTime[key] = $sprite.$canvas.$lastPaintTime;
-    $sprite.$parent.$cache[key] = parentValue;
+            if (key === 'opacity' || key === 'scale') {
+                parentValue = utils.firstValuable(parentValue, 1);
+
+                $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+                $sprite.$parent.$cache[key] = parentValue;
 
                 return (
                     parentValue
                 ) * utils.firstValuable(currentValue, 1);
             } else {
-                var parentValue = utils.firstValuable($sprite.$parent.getStyle(key), 0);
+                parentValue = utils.firstValuable(parentValue, 0);
 
-    $sprite.$parent.$styleCacheTime[key] = $sprite.$canvas.$lastPaintTime;
-    $sprite.$parent.$cache[key] = parentValue;
+                $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+                $sprite.$parent.$cache[key] = parentValue;
 
                 return (
                     parentValue

@@ -53,10 +53,10 @@ describe('Feature.sequenceDiagram Test.', function () {
             // $Painter.$dom.dispatchEvent(evt);
             expect($Painter.$children.length).toBe(1);
             expect($Painter.$children[0].type).toBe('img');
-            expect($Painter.$children[0].props[3]).toBe(Math.round(Fire.width / 9));
-            expect($Painter.$children[0].props[4]).toBe(Math.round(Fire.height));
-            expect($Painter.$children[0].props[5]).toBe(Math.round(posX - Fire.width / 9 / 2));
-            expect($Painter.$children[0].props[6]).toBe(Math.round(posY - Fire.height / 2));
+            expect($Painter.$children[0].props.sw).toBe(Math.round(Fire.width / 9));
+            expect($Painter.$children[0].props.sh).toBe(Math.round(Fire.height));
+            expect($Painter.$children[0].props.tx).toBe(Math.round(posX - Fire.width / 9 / 2));
+            expect($Painter.$children[0].props.ty).toBe(Math.round(posY - Fire.height / 2));
             done();
         }, constants.waitForUpdateTime * 2);
     });

@@ -8,12 +8,12 @@
  * ********** **/
 
 import utils from 'utils/utils.js';
-import img2base64 from 'utils/img2base64.js';
 import constants from 'constants';
 import getComputedStyle from './perPaint.getComputedStyle.js';
 import cutOutside from './perPaint.cutOutside.js';
 import deliverChildren from './perPaint.deliverChildren.js';
 import rectMeet from 'utils/math.rect-meet';
+// import img2base64 from 'utils/img2base64.js';
 
 const blend = utils.blend;
 
@@ -145,7 +145,7 @@ module.exports = function (i, index) {
      * 由于对象可能处于动画中，因此选用最大的绘制比
      */
     if (process.env.NODE_ENV !== 'production') {
-        if (_imgWidth && _imgHeight && _props.sw && _props.sh) {
+        if (_imgWidth && _imgHeight) {
             let paintRate = _props.tw * _props.th / (_props.sw * _props.sh);
             if (!i.$perf.paintRate || paintRate > i.$perf.paintRate) {
                 i.$perf.paintRate = paintRate;
@@ -162,18 +162,18 @@ module.exports = function (i, index) {
     // }
 
     /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
-    // 判断sw、sh是否存在只是从计算上防止js报错，其实上游决定了参数一定存在
-    if (!_props.rotate && !_text && _imgWidth && _img.src) {
+    if (!_props.rotate && !_text && _imgWidth) {
         cutOutside($canvas, _props, _imgWidth, _imgHeight)
     }
 
-    if (_imgWidth > 10 && _imgHeight > 10) {
-        // 太小的图不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”
-        constants.xywh.forEach(function (key) {
-            _props[key] = Math.round(_props[key]);
-            // _props[key] >>= 0;
-        });
-    }
+    // TODO
+    // if (_imgWidth > 10 && _imgHeight > 10) {
+    //     // 太小的图不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”
+    //     constants.xywh.forEach(function (key) {
+    //         _props[key] = Math.round(_props[key]);
+    //         // _props[key] >>= 0;
+    //     });
+    // }
 
     // if (process.env.NODE_ENV !== 'production') {
     //     if (!i.$cache.base64 && _img && _img.src) {
@@ -195,7 +195,8 @@ module.exports = function (i, index) {
                 $id: i.$id,
                 type: 'fillRect',
                 settings: settings,
-                props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
+                img: _img,
+                props: _props,
             };
 
             // if (process.env.NODE_ENV !== 'production') {
@@ -207,7 +208,7 @@ module.exports = function (i, index) {
         }
     }
 
-    if (_img && _imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
+    if (_imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
         var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
         if (meetResult) {
             i.$rendered = true;
@@ -216,7 +217,8 @@ module.exports = function (i, index) {
                 $id: i.$id,
                 type: 'img',
                 settings: settings,
-                props: [_img, _props.sx, _props.sy, _props.sw, _props.sh, _props.tx, _props.ty, _props.tw, _props.th]
+                img: _img,
+                props: _props,
             };
 
             // if (process.env.NODE_ENV !== 'production') {
@@ -237,6 +239,7 @@ module.exports = function (i, index) {
         let textAlign = _props.align || _props.textAlign || 'left';
         let textFont = _props.textFont || '14px Arial';
         let textFontsize = parseInt(textFont);
+        let textBaseline;
         // let textFontsize = parseInt(textFont) * _props.scale;
         // textFont = textFontsize + 'px Arial';
         let textLineHeight = _props.lineHeight || textFontsize;
@@ -250,16 +253,16 @@ module.exports = function (i, index) {
 
         // Change css-align to canvas-align style
         if (_props.textVerticalAlign === 'top') {
-            settings.textBaseline = 'top';
+            textBaseline = 'top';
             // textTy += textFontsize + (textLineHeight - textFontsize) / 2;
         } else if (_props.textVerticalAlign === 'bottom') {
-            settings.textBaseline = 'bottom';
+            textBaseline = 'bottom';
             textTy += _props.th;
             // textTy += _props.th - (textLineHeight - textFontsize) / 2;
         } else if (_props.textVerticalAlign === 'middle') {
             // textTy += _props.th / 2 + textFontsize / 2;
             textTy += _props.th >> 1;
-            settings.textBaseline = 'middle';
+            textBaseline = 'middle';
         }
 
         if (typeof _text === 'string' || typeof _text === 'number') {
@@ -272,11 +275,14 @@ module.exports = function (i, index) {
                         tx: textTx,
                         ty: textTy,
                         content: String(_text),
+                        fontsize: textFontsize,
                         align: textAlign,
+                        baseline: textBaseline,
                         font: textFont,
                         color: _props.color,
                         type: _props.textType,
-                    }
+                    },
+                    $origin: i,
                 });
             }
         } else if (_text.length) {
@@ -289,11 +295,14 @@ module.exports = function (i, index) {
                         tx: textTx + utils.funcOrValue(t.tx, i),
                         ty: textTy + utils.funcOrValue(t.ty, i),
                         content: utils.funcOrValue(t.content, i),
+                        fontsize: textFontsize,
+                        baseline: textBaseline,
                         align: textAlign,
                         font: textFont,
                         color: _props.color,
                         type: _props.textType,
-                    }
+                    },
+                    $origin: i,
                 });
             });
         } else if (_text.type === 'multline-text') {
@@ -330,12 +339,15 @@ module.exports = function (i, index) {
                         ty: textTy,
                         // tw: _props.tw,
                         // th: _props.th,
+                        fontsize: textFontsize,
                         content: r,
+                        baseline: textBaseline,
                         align: textAlign,
                         font: textFont,
                         color: _props.color,
                         type: _props.textType,
-                    }
+                    },
+                    $origin: i,
                 });
                 textTy += textLineHeight || textFontsize;
             });
