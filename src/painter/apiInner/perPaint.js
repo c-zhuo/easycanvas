@@ -116,6 +116,10 @@ module.exports = function (i, index) {
         settings.fillRect = _props.backgroundColor;
     }
 
+    if (_props.overflow && _props.overflow === 'hidden') {
+        settings.clip = true;
+    }
+
     if (_props.scale !== 1) {
         let scale = _props.scale;
         _props.tx -= (scale - 1) * _props.tw >> 1;
@@ -183,6 +187,28 @@ module.exports = function (i, index) {
     //         });
     //     }
     // }
+
+    if (settings.clip) {
+        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
+        if (meetResult) {
+            i.$rendered = true;
+
+            let $paintSprite = {
+                $id: i.$id,
+                type: 'clip',
+                settings: settings,
+                img: _img,
+                props: _props,
+            };
+
+            // if (process.env.NODE_ENV !== 'production') {
+            //     // 开发环境下，将元素挂载到$children里以供标记
+                $paintSprite.$origin = i;
+            // };
+
+            $canvas.$children.push($paintSprite);
+        }
+    }
 
     deliverChildren($canvas, _children, -1);
 
@@ -359,6 +385,28 @@ module.exports = function (i, index) {
     }
 
     deliverChildren($canvas, _children, 1);
+
+    if (settings.clip) {
+        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
+        if (meetResult) {
+            i.$rendered = true;
+
+            let $paintSprite = {
+                $id: i.$id,
+                type: 'clipOver',
+                settings: settings,
+                img: _img,
+                props: _props,
+            };
+
+            // if (process.env.NODE_ENV !== 'production') {
+            //     // 开发环境下，将元素挂载到$children里以供标记
+                $paintSprite.$origin = i;
+            // };
+
+            $canvas.$children.push($paintSprite);
+        }
+    }
 
     utils.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
 };

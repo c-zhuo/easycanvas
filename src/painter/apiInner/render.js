@@ -42,7 +42,7 @@ const render = function ($sprite, i) {
     let isText = $sprite.type === 'text';
 
     // 一些扩展插件的绘制可能没有props
-    if (props) {
+    if (props && $sprite.type !== 'clip' && $sprite.type !== 'clipOver') {
         if (isText) {
             let length = props.content.length;
 
@@ -75,7 +75,7 @@ const render = function ($sprite, i) {
                     continue;
                 }
 
-                if ($tmpSprite.type === 'text' || !$tmpSprite.type) {
+                if (!$tmpSprite.type || $tmpSprite.type !== 'img' || $tmpSprite.type !== 'fillRect') {
                     // 不是图片
                     $tmpSprite.$cannotCover = true;
                     continue;
@@ -150,64 +150,64 @@ const render = function ($sprite, i) {
         Rendering operation
     */
     let saved = false;
-    let cxt = $canvas.$paintContext;
+    let ctx = $canvas.$paintContext;
 
     if (settings.globalCompositeOperation) {
         if (!saved) {
-            cxt.save();
+            ctx.save();
             saved = true;
         }
-        cxt.globalCompositeOperation = settings.globalCompositeOperation;
+        ctx.globalCompositeOperation = settings.globalCompositeOperation;
     }
 
     if (settings.globalAlpha !== 1 && !isNaN(settings.globalAlpha)) {
         if (!saved) {
-            cxt.save();
+            ctx.save();
             saved = true;
         }
-        cxt.globalAlpha = settings.globalAlpha;
+        ctx.globalAlpha = settings.globalAlpha;
     }
 
     // if (settings.textBaseline) {
     //     if (!saved) {
-    //         cxt.save();
+    //         ctx.save();
     //         saved = true;
     //     }
-    //     cxt.textBaseline = settings.textBaseline;
+    //     ctx.textBaseline = settings.textBaseline;
     // }
 
     if (settings.translate) {
         if (!saved) {
-            cxt.save();
+            ctx.save();
             saved = true;
         }
-        cxt.translate(settings.translate[0] || 0, settings.translate[1] || 0);
+        ctx.translate(settings.translate[0] || 0, settings.translate[1] || 0);
     }
 
     if (settings.rotate) {
         if (!saved) {
-            cxt.save();
+            ctx.save();
             saved = true;
         }
-        cxt.translate(settings.beforeRotate[0] || 0, settings.beforeRotate[1] || 0);
-        cxt.rotate(settings.rotate || 0);
-        cxt.translate(settings.afterRotate[0] || 0, settings.afterRotate[1] || 0);
+        ctx.translate(settings.beforeRotate[0] || 0, settings.beforeRotate[1] || 0);
+        ctx.rotate(settings.rotate || 0);
+        ctx.translate(settings.afterRotate[0] || 0, settings.afterRotate[1] || 0);
     }
 
     if (settings.scale) {
         if (!saved) {
-            cxt.save();
+            ctx.save();
             saved = true;
         }
-        cxt.scale(settings.scale[0] || 1, settings.scale[1] || 1);
+        ctx.scale(settings.scale[0] || 1, settings.scale[1] || 1);
     }
 
     if (settings.transform) {
         if (!saved) {
-            cxt.save();
+            ctx.save();
             saved = true;
         }
-        cxt.transform(
+        ctx.transform(
             1, settings.transform.fh,
             settings.transform.fv, 1,
             settings.transform.fx, settings.transform.fy
@@ -215,23 +215,37 @@ const render = function ($sprite, i) {
     }
 
     if ($sprite.type === 'img') {
-        cxt.drawImage($sprite.img,props.sx,props.sy,props.sw,props.sh,props.tx,props.ty,props.tw,props.th);
+        ctx.drawImage($sprite.img,props.sx,props.sy,props.sw,props.sh,props.tx,props.ty,props.tw,props.th);
         if (process.env.NODE_ENV !== 'production') {
             $canvas.$plugin.drawImage($canvas, props);
         }
     } else if ($sprite.type === 'text' && props.content) {
-        cxt.font = props.font;
-        cxt.fillStyle = props.color || 'white';
-        cxt.textAlign = props.align;
-        cxt.textBaseline = props.baseline;
-        cxt[props.type || 'fillText'](props.content, props.tx, props.ty);
+        ctx.font = props.font;
+        ctx.fillStyle = props.color || 'white';
+        ctx.textAlign = props.align;
+        ctx.textBaseline = props.baseline;
+        ctx[props.type || 'fillText'](props.content, props.tx, props.ty);
     } else if ($sprite.type === 'fillRect') { 
-        cxt.fillStyle = settings.fillRect;
-        cxt.fillRect(props.tx,props.ty,props.tw,props.th);
+        ctx.fillStyle = settings.fillRect;
+        ctx.fillRect(props.tx,props.ty,props.tw,props.th);
+    } else if ($sprite.type === 'clip') { 
+        ctx.save();
+        // rect会导致FPS逐渐降低，怀疑未清理导致
+        // ctx.rect(props.tx, props.ty, props.tw, props.th);
+        ctx.beginPath();
+        ctx.moveTo(props.tx, props.ty);
+        ctx.lineTo(props.tx + props.tw, props.ty);
+        ctx.lineTo(props.tx + props.tw, props.ty + props.th);
+        ctx.lineTo(props.tx, props.ty + props.th);
+        ctx.lineTo(props.tx, props.ty);
+        ctx.closePath();
+        ctx.clip();
+    } else if ($sprite.type === 'clipOver') {
+        ctx.restore();
     }
 
     if (saved) {
-        cxt.restore();
+        ctx.restore();
     }
 };
 

@@ -52,7 +52,7 @@
   ],
   "scripts": {
     "d": "npm run ec:build",
-    "e": "npm run ec:buildes",
+    "e": "npm run ec:ecdebug",
     "u": "npm run karma:unit",
     "r": "npm run readme",
     "w": "npm run ec:wxdebug && rm ./wxgame/source/libs/* && rm ./wxapp/pages/index/libs/* && cp ./build/*.prod.js ./wxgame/source/libs/ && cp ./build/*.prod.js ./wxapp/pages/index/libs/",
@@ -64,7 +64,7 @@
     "readme": "node ./readme/language_deliver.js",
     "ec:wxdebug": "rm -rf ./build && webpack --config ./webpack/webpack.easycanvas.standalone.wxdebug.js && echo done.",
     "ec:build": "rm -rf ./build && (concurrently 'webpack --config ./webpack/webpack.easycanvas.min.js' 'webpack --config ./webpack/webpack.easycanvas.standalone.dev.js' 'webpack --config ./webpack/webpack.easycanvas.standalone.prod.js') && echo done.",
-    "ec:buildes": "rm -rf ./build && webpack --config ./webpack/webpack.easycanvas.min.js && echo done.",
+    "ec:ecdebug": "rm -rf ./build && webpack --config ./webpack/webpack.easycanvas.debug.js && echo done.",
     "ec:dev": "webpack-dev-server --config ./webpack/webpack.easycanvas.dev.js",
     "ec:docs": "rm ./doc-src/lib/easycanvas/*.js & cp ./build/*.js ./doc-src/lib/easycanvas/ & webpack-dev-server --config ./webpack/webpack.easycanvas.docs.dev.js",
     "ec:docserver": "rm ./doc-src/lib/easycanvas/*.js & cp ./build/*.js ./doc-src/lib/easycanvas/ & webpack-dev-server --config ./webpack/webpack.easycanvas.docs.server.js",
