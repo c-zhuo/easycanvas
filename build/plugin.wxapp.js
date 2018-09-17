@@ -1,1 +1,161 @@
-!function(e,t){if("object"==typeof exports&&"object"==typeof module)module.exports=t();else if("function"==typeof define&&define.amd)define([],t);else{var o=t();for(var n in o)("object"==typeof exports?exports:e)[n]=o[n]}}(this,function(){return function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}({0:function(e,t,o){e.exports=o(92)},92:function(e,t){"use strict";var o,n,r={},f=function(e,t){if(r[e])return r[e];var o={width:0,height:0};return r[e]=o,wx.getImageInfo({src:e,success:function(e){console.log(e),o.width=e.width,o.height=e.height,o.url=e.path,t&&t(o)}}),o},i=function(e){e.imgLoader=f},s=function(e,t){e.props[0]&&(e.props[0]=e.props[0].url)},u=!1,p=function(e){o=e.touches[0]?e.touches[0].x:o,n=e.touches[0]?e.touches[0].y:n;var t={type:e.type,targetTouches:[{pageX:o,pageY:n}],currentTarget:{offsetLeft:0,offsetTop:0},preventDefault:function(){}};if(u="touchmove"!==e.type&&"longtap"!==e.type,this.$eventHandler(t),"touchend"===e.type){var t={type:"click",targetTouches:[{pageX:o,pageY:n}],currentTarget:{offsetLeft:0,offsetTop:0},preventDefault:function(){u=!1}};this.$eventHandler(t)}},c=function(){this.imgLoader=f,this.handle=p};e.exports={onUse:i,onRender:s,onCreate:c}}})});
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 0:
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(92);
+
+
+/***/ }),
+
+/***/ 92:
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	var cache = {};
+	var imgLoader = function imgLoader(str, callback) {
+	    if (cache[str]) return cache[str];
+
+	    var obj = {
+	        width: 0,
+	        height: 0
+	    };
+
+	    cache[str] = obj;
+
+	    wx.getImageInfo({
+	        src: str,
+	        success: function success(data) {
+	            console.log(data);
+	            obj.width = data.width;
+	            obj.height = data.height;
+	            obj.url = data.path;
+	            if (callback) callback(obj);
+	        }
+	    });
+
+	    return obj;
+	};
+
+	var onUse = function onUse(Easycanvas) {
+	    Easycanvas.imgLoader = imgLoader;
+	};
+
+	var onRender = function onRender($sprite, settings) {
+	    if ($sprite.props[0]) {
+	        $sprite.props[0] = $sprite.props[0].url;
+	    }
+	};
+
+	var lastX, lastY;
+	var clickAfterTouchend = false;
+
+	var handle = function handle(e) {
+	    // console.log(e);
+	    lastX = e.touches[0] ? e.touches[0].x : lastX;
+	    lastY = e.touches[0] ? e.touches[0].y : lastY;
+
+	    var obj = {
+	        type: e.type,
+	        targetTouches: [{
+	            pageX: lastX,
+	            pageY: lastY
+	        }],
+	        currentTarget: {
+	            offsetLeft: 0,
+	            offsetTop: 0
+	        },
+	        preventDefault: function preventDefault() {}
+	    };
+
+	    clickAfterTouchend = e.type !== 'touchmove' && e.type !== 'longtap';
+	    this.$eventHandler(obj);
+
+	    if (e.type === 'touchend') {
+	        var obj = {
+	            type: 'click',
+	            targetTouches: [{
+	                pageX: lastX,
+	                pageY: lastY
+	            }],
+	            currentTarget: {
+	                offsetLeft: 0,
+	                offsetTop: 0
+	            },
+	            preventDefault: function preventDefault() {
+	                clickAfterTouchend = false;
+	            }
+	        };
+	        this.$eventHandler(obj);
+	    }
+	};
+
+	var onCreate = function onCreate() {
+	    this.imgLoader = imgLoader;
+	    this.handle = handle;
+	};
+
+	module.exports = {
+	    onUse: onUse,
+	    onRender: onRender,
+	    onCreate: onCreate
+	};
+
+/***/ })
+
+/******/ })
+});
+;
