@@ -17,7 +17,7 @@ module.exports = `
                             height: 100%;
                             max-width: 100%;
                             background-color: #222;
-                            background-image: url(https://chenzhuo1992.github.io/tanyitan/bg.jpg);
+                            background-image: url(https://c-zhuo.github.io/tanyitan/bg.jpg);
                             background-size: auto 100%;
                             background-position: 50% 50%;
                         }
@@ -41,9 +41,9 @@ module.exports = `
                     var blockArray = [];
                     var $app = new Easycanvas.painter();
                     // 图片
-                    var BALL = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/ball.png';
-                    var BLOCK = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/block.jpg';
-                    var TRIANGLE = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/triangle.png';
+                    var BALL = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/ball.png';
+                    var BLOCK = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/block.jpg';
+                    var TRIANGLE = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/triangle.png';
                     // 用于碰撞检测
                     var BALL_TYPE = 1, BLOCK_TYPE = 2, BORDER_TYPE = 3, BOTTOM_TYPE = 4, BONUS_TYPE = 5;
                     // 初始化easycanvas实例
@@ -60,8 +60,8 @@ module.exports = `
                             touchend: shoot,
                         }
                     });
-                    var BLOCK3D = $app.imgLoader('https://chenzhuo1992.github.io/tanyitan/stone.jpg');
-                    var BALL3D = $app.imgLoader('https://chenzhuo1992.github.io/tanyitan/star.jpg');
+                    var BLOCK3D = $app.imgLoader('https://c-zhuo.github.io/tanyitan/stone.jpg');
+                    var BALL3D = $app.imgLoader('https://c-zhuo.github.io/tanyitan/star.jpg');
                     $app.start();
                     $app.add({
                         name: '得分',

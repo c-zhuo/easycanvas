@@ -140,7 +140,7 @@ const Analyze = function (str) {
                 }
             }, 800);
 
-            let prefetchImg = new Image().src = 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true';
+            let prefetchImg = new Image().src = 'https://github.com/c-zhuo/easycanvas/blob/master/demos/G.png?raw=true';
 
             jQuery("#jquery-accordion-menu").jqueryAccordionMenu();
 

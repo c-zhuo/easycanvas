@@ -39,12 +39,12 @@ module.exports = `
         <h2>微信小游戏</h2>
         <p></p>
 
-        <p>微信小游戏《弹一弹》2D版的Demo可以在[<a href="https://github.com/chenzhuo1992/easycanvas/tree/master/wxgame" target="_blank">这里</a>]找到，将wxgame目录绑定为项目目录即可。</p>
+        <p>微信小游戏《弹一弹》2D版的Demo可以在[<a href="https://github.com/c-zhuo/easycanvas/tree/master/wxgame" target="_blank">这里</a>]找到，将wxgame目录绑定为项目目录即可。</p>
 
         <h2>微信小程序</h2>
         <p></p>
 
-        <p>微信小程序的示例Demo可以在[<a href="https://github.com/chenzhuo1992/easycanvas/tree/master/wxapp" target="_blank">这里</a>]找到，将wxapp目录绑定为项目目录即可。</p>
+        <p>微信小程序的示例Demo可以在[<a href="https://github.com/c-zhuo/easycanvas/tree/master/wxapp" target="_blank">这里</a>]找到，将wxapp目录绑定为项目目录即可。</p>
 
         <p class="tip">其它Demo后续补充。</p>
 

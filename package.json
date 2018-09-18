@@ -1,7 +1,7 @@
 {
   "name": "easycanvas",
   "version": "0.5.10",
-  "description": "Canvas framework. See https://chenzhuo1992.github.io/easycanvas/",
+  "description": "Canvas framework. See https://c-zhuo.github.io/easycanvas/",
   "keywords": [
     "canvas",
     "webgl",
@@ -10,11 +10,11 @@
   "main": "build/easycanvas.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:chenzhuo1992/easycanvas.git"
+    "url": "git@github.com:c-zhuo/easycanvas.git"
   },
   "author": "chenzhuo04",
   "license": "MIT",
-  "homepage": "https://chenzhuo1992.github.io/easycanvas/",
+  "homepage": "https://c-zhuo.github.io/easycanvas/",
   "devDependencies": {
     "babel-core": "6",
     "babel-loader": "6",

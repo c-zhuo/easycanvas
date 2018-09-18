@@ -38,9 +38,9 @@ module.exports = `
                     var score = 0, ballLeft = 0, ballCount = 5;
                     var blockArray = [];
                     // 图片
-                    var BALL = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/ball.png';
-                    var BLOCK = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/block.jpg';
-                    var TRIANGLE = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/triangle.png';
+                    var BALL = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/ball.png';
+                    var BLOCK = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/block.jpg';
+                    var TRIANGLE = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/triangle.png';
                     // 用于碰撞检测
                     var BALL_TYPE = 1, BLOCK_TYPE = 2, BORDER_TYPE = 3, BOTTOM_TYPE = 4, BONUS_TYPE = 5;
                     // 初始化easycanvas实例

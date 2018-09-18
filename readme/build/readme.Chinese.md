@@ -1,6 +1,6 @@
 ## Easycanvas
 
-![https://github.com/chenzhuo1992/easycanvas/blob/master/demos/index.html](https://github.com/chenzhuo1992/easycanvas/blob/master/demos/index.gif?raw=true)
+![https://github.com/c-zhuo/easycanvas/blob/master/demos/index.html](https://github.com/c-zhuo/easycanvas/blob/master/demos/index.gif?raw=true)
 
 ## 如何开始
 
@@ -256,7 +256,7 @@ Easycanvas可以通过`children`属性设置子元素，从而实现元素嵌套
     $Painter.register(document.getElementById('foo'));
     $Painter.start();
 
-    Easycanvas.imgLoader('https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G30x30.png?raw=true', function (img) {
+    Easycanvas.imgLoader('https://github.com/c-zhuo/easycanvas/blob/master/demos/G30x30.png?raw=true', function (img) {
         // create a sprite
         var sprite1 = $Painter.add({
             content: {
@@ -341,7 +341,7 @@ Easycanvas可以通过`children`属性设置子元素，从而实现元素嵌套
         }
     });
 
-    var Fire = Easycanvas.imgLoader(https://github.com/chenzhuo1992/easycanvas/blob/master/demos/Fire.png?raw=true);
+    var Fire = Easycanvas.imgLoader(https://github.com/c-zhuo/easycanvas/blob/master/demos/Fire.png?raw=true);
 
     var createFire = function (initX, initY) {
         return {

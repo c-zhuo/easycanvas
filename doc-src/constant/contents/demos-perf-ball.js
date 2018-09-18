@@ -15,7 +15,7 @@ module.exports = `
                         height: 400,
                     });
 
-                    var ball = 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/master/docs/ball.png';
+                    var ball = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/ball.png';
 
                     $app.events.mousemove = function (e) {
                         $root.style.tx = e.canvasX;
