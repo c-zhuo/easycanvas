@@ -146,11 +146,26 @@ const render = function ($sprite, i) {
         }
     }
 
+    let ctx = $canvas.$paintContext;
+
+    if ($sprite.type === 'clip') { 
+        ctx.save();
+        // rect会导致FPS逐渐降低，怀疑未清理导致
+        // ctx.rect(props.tx, props.ty, props.tw, props.th);
+        ctx.beginPath();
+        ctx.moveTo(props.tx, props.ty);
+        ctx.lineTo(props.tx + props.tw, props.ty);
+        ctx.lineTo(props.tx + props.tw, props.ty + props.th);
+        ctx.lineTo(props.tx, props.ty + props.th);
+        ctx.lineTo(props.tx, props.ty);
+        ctx.closePath();
+        ctx.clip();
+    }
+
     /*
         Rendering operation
     */
     let saved = false;
-    let ctx = $canvas.$paintContext;
 
     if (settings.globalCompositeOperation) {
         if (!saved) {
@@ -228,18 +243,18 @@ const render = function ($sprite, i) {
     } else if ($sprite.type === 'fillRect') { 
         ctx.fillStyle = settings.fillRect;
         ctx.fillRect(props.tx,props.ty,props.tw,props.th);
-    } else if ($sprite.type === 'clip') { 
-        ctx.save();
-        // rect会导致FPS逐渐降低，怀疑未清理导致
-        // ctx.rect(props.tx, props.ty, props.tw, props.th);
-        ctx.beginPath();
-        ctx.moveTo(props.tx, props.ty);
-        ctx.lineTo(props.tx + props.tw, props.ty);
-        ctx.lineTo(props.tx + props.tw, props.ty + props.th);
-        ctx.lineTo(props.tx, props.ty + props.th);
-        ctx.lineTo(props.tx, props.ty);
-        ctx.closePath();
-        ctx.clip();
+    // } else if ($sprite.type === 'clip') { 
+    //     ctx.save();
+    //     // rect会导致FPS逐渐降低，怀疑未清理导致
+    //     // ctx.rect(props.tx, props.ty, props.tw, props.th);
+    //     ctx.beginPath();
+    //     ctx.moveTo(props.tx, props.ty);
+    //     ctx.lineTo(props.tx + props.tw, props.ty);
+    //     ctx.lineTo(props.tx + props.tw, props.ty + props.th);
+    //     ctx.lineTo(props.tx, props.ty + props.th);
+    //     ctx.lineTo(props.tx, props.ty);
+    //     ctx.closePath();
+    //     ctx.clip();
     } else if ($sprite.type === 'clipOver') {
         ctx.restore();
     }
