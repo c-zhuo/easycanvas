@@ -15,7 +15,7 @@ module.exports = `
             Easycanvas.use(EasycanvasWxapp);
         </code>
 
-        <p>这里的js文件可以在<a href="https://github.com/chenzhuo1992/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>
+        <p>这里的js文件可以在<a href="https://github.com/c-zhuo/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>
 
         <h2>创建实例</h2>
 

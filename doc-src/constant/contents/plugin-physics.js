@@ -50,7 +50,7 @@ module.exports = `
                     });
                     $app.start();
 
-                    var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
+                    var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
 
                     var $space = new Easycanvas.sprite({
                         physics: {
@@ -136,7 +136,7 @@ module.exports = `
                     });
                     $app.start();
 
-                    var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
+                    var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
 
                     var $space = new Easycanvas.sprite({
                         physics: {

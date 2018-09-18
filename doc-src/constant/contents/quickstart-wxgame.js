@@ -19,7 +19,7 @@ module.exports = `
             Easycanvas.extend(EasycanvasPhysics);
         </code>
 
-        <p>这里的js文件可以在<a href="https://github.com/chenzhuo1992/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>
+        <p>这里的js文件可以在<a href="https://github.com/c-zhuo/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>
 
         <h2>创建实例</h2>
 
@@ -32,7 +32,7 @@ module.exports = `
 
                 var $letterG = new Easycanvas.sprite({
                     content: {
-                        img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+                        img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                     },
                     style: {
                         tw: 50,

@@ -1,12 +1,12 @@
 {
   "name": "easycanvas-plugin",
   "version": "0.1.0",
-  "description": "A cute canvas framework. See https://chenzhuo1992.github.io/easycanvas",
+  "description": "A cute canvas framework. See https://c-zhuo.github.io/easycanvas",
   "keywords": "canvas, framework, animation",
   "main": "",
   "repository": {
     "type": "git",
-    "url": "git@github.com:chenzhuo1992/easycanvas.git"
+    "url": "git@github.com:c-zhuo/easycanvas.git"
   },
   "author": "chenzhuo04",
   "license": "ISC",

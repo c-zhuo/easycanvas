@@ -41,9 +41,9 @@ Page({
 
     $App.start();
 
-    var imgUrl = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
+    var imgUrl = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
-    var img = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png');
+    var img = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
 
     var $Box = $App.add({
       style: {
@@ -80,7 +80,7 @@ Page({
 
     var sprite2 = $Box.add({
         content: {
-            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+            img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
         },
         style: {
             tw: $App.width, th: $App.height,

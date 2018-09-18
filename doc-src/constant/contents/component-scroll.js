@@ -63,7 +63,7 @@ module.exports = `
                         },
                     }));
 
-                    var imgSrc = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
+                    var imgSrc = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
                     for (var i = 0; i < 10; i++) {
                         $ScrollBox.add({
