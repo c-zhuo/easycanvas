@@ -8,6 +8,7 @@
 const inBrowser = typeof window !== 'undefined';
 
 let ec;
+let mutipleScrollLock;
 
 let scrollFuncs = {
     loose: function ($sprite) {
@@ -92,11 +93,11 @@ let scrollFuncs = {
             }
 
             if (Math.abs(deltaX) >= 1 && deltaTime > 1) {
-                $sprite.$scroll.speedX = ($e.canvasX - $sprite.$scroll.startPos.x) * 4;
+                $sprite.$scroll.speedX = ($e.canvasX - $sprite.$scroll.startPos.x) * 3;
                 $sprite.scroll.scrollX += deltaX;
             }
             if (Math.abs(deltaY) >= 1 && deltaTime > 1) {
-                $sprite.$scroll.speedY = ($e.canvasY - $sprite.$scroll.startPos.y) * 4;
+                $sprite.$scroll.speedY = ($e.canvasY - $sprite.$scroll.startPos.y) * 3;
                 $sprite.scroll.scrollY += deltaY;
             }
 
@@ -109,7 +110,8 @@ let scrollFuncs = {
             $sprite.$scroll.startPos.y = $e.canvasY;
 
             // $e.event.preventDefault();
-            $e.stopPropagation();
+            if (Math.abs(deltaX) > Math.abs(deltaY) + 1) return 1;
+            else if (Math.abs(deltaX) < Math.abs(deltaY) - 1) return 2;
         }
     },
 
@@ -139,54 +141,95 @@ const component = function (opt) {
         maxScrollX: 0,
         minScrollY: 0,
         maxScrollY: 0,
+        propagationX: false,
+        propagationY: false,
     }, opt.scroll);
 
     const autoScrollFunc = () => {
         if (autoScroll) {
             $sprite.scroll.scrollY = autoScroll();
+        } else {
+            $sprite.off('ticked', autoScrollFunc);
         }
     };
 
-    let handling = true;
-    const handleToggle = () => {
-        handling = !handling;
-    };
+    // let handling = true;
+    // const handleToggle = () => {
+    //     handling = !handling;
+    // };
+
+    let started = false;
 
     option.events = Object.assign({
-        interceptor ($e) {
-            if (!handling) {
-                return $e;
-            }
+        // interceptor ($e) {
+        //     if (!handling) {
+        //         return $e;
+        //     }
 
-            if ($e.type === 'touchmove') {
-                scrollFuncs.touch(this, $e);
-                $e.$stopPropagation = true;
-            } else if ($e.type === 'mousewheel') {
-                scrollFuncs.wheel(this, $e);
-            } else if ($e.type === 'touchend' || $e.type === 'mouseup') {
-                scrollFuncs.loose(this);
-            } else if ($e.type === 'hold') {
-                $e.$stopPropagation = true;
-            }
+        //     if ($e.type === 'touchmove') {
+        //         scrollFuncs.touch(this, $e);
+        //         $e.$stopPropagation = true;
+        //     } else if ($e.type === 'mousewheel') {
+        //         scrollFuncs.wheel(this, $e);
+        //     } else if ($e.type === 'touchend' || $e.type === 'mouseup') {
+        //         scrollFuncs.loose(this);
+        //     } else if ($e.type === 'hold') {
+        //         $e.$stopPropagation = true;
+        //     }
 
-            if (autoScroll) {
-                $sprite.off('ticked', autoScrollFunc);
-                autoScroll = false;
+        //     if (autoScroll) {
+        //         $sprite.off('ticked', autoScrollFunc);
+        //         autoScroll = false;
+        //     }
+        //     return $e;
+        // },
+        touchstart: function ($e) {
+            // 先结束，防止之前拖动时拖到外面，导致没触发loose
+            scrollFuncs.loose(this);
+
+            started = true;
+            mutipleScrollLock = false;
+
+            scrollFuncs.touch(this, $e);
+
+            // scroll外面还有一个scroll的时候，让事件传递出去
+            if (!$sprite.scroll.propagationX && !$sprite.scroll.propagationY) {
+                $e.stopPropagation();
             }
-            return $e;
         },
-        // touchmove: function ($e) {
-        //     scrollFuncs.touch(this, $e);
-        // },
-        // mousewheel: function ($e) {
-        //     scrollFuncs.wheel(this, $e);
-        // },
-        // touchend: function () {
-        //     scrollFuncs.stop();
-        // },
-        // mouseup: function () {
-        //     scrollFuncs.stop();
-        // },
+        touchmove: function ($e) {
+            if (!started) return;
+
+            if (mutipleScrollLock && this !== mutipleScrollLock) {
+                // console.log('rejected!', mutipleScrollLock);
+                return;
+            }
+
+            let moveDirect = scrollFuncs.touch(this, $e);
+            if (moveDirect === 1 && $sprite.scroll.propagationY) {
+                $e.stopPropagation();
+                mutipleScrollLock = this;
+                // console.log('locked', mutipleScrollLock);
+            } else if (moveDirect === 2 && $sprite.scroll.propagationX) {
+                $e.stopPropagation();
+                mutipleScrollLock = this;
+                // console.log('locked', mutipleScrollLock);
+            }
+        },
+        mousewheel: function ($e) {
+            started = true;
+
+            scrollFuncs.wheel(this, $e);
+            $e.stopPropagation();
+        },
+        touchend: function () {
+            started = false;
+            scrollFuncs.loose(this);
+        },
+        mouseup: function () {
+            started = false;
+            scrollFuncs.loose(this);
+        },
     }, option.events || {});
 
     let $sprite = new ec.class.sprite(option);
@@ -195,7 +238,7 @@ const component = function (opt) {
         scrollFuncs.looper($sprite);
     });
 
-    $sprite.on('handleToggle', handleToggle);
+    // $sprite.on('handleToggle', handleToggle);
 
     $sprite.on('scrollTo', (position, duration) => {
         autoScroll = ec.transition.pendulum(
@@ -205,7 +248,9 @@ const component = function (opt) {
             {
                 cycle: 0.5,
             }
-        );
+        ).then(() => {
+            autoScroll = false;
+        });
 
         $sprite.on('ticked', autoScrollFunc);
     });

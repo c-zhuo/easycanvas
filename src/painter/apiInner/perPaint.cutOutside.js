@@ -18,8 +18,10 @@ module.exports = function ($canvas, props, imgWidth, imgHeight) {
     }
     if (imgWidth && props.sx + props.sw > imgWidth) {
         let cutRate = (props.sx + props.sw - imgWidth) / props.sw;
-        props.sw -= props.sw * cutRate;
-        props.tw -= props.tw * cutRate;
+        // if (cutRate < 1) {
+            props.sw -= props.sw * cutRate;
+            props.tw -= props.tw * cutRate;
+        // }
     }
     if (imgHeight && props.sy + props.sh > imgHeight) {
         let cutRate = (props.sy + props.sh - imgHeight) / props.sh;
