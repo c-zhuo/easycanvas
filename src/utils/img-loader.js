@@ -35,12 +35,18 @@ const loader = function (url, callback, option) {
     let cacheNamespace = url + '_' + JSON.stringify(option) + '_' + cacheCanvas;
 
     if (Cache[cacheNamespace]) {
-        // setTimeout(function () {
-            if (callback) {
+        if (callback) {
+            if (Cache[cacheNamespace].width && callback) {
                 callback(Cache[cacheNamespace]);
+            } else {
+                setTimeout(function () {
+                    loader(url, callback, option);
+                }, 100);
             }
-        // });
-        return Cache[cacheNamespace];
+            return;
+        } else {
+            return Cache[cacheNamespace];
+        }
     }
     // todo: 多个loader加载同一图片，目前只触发一个callback；待补充
 

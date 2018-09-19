@@ -165,11 +165,6 @@ module.exports = function (i, index) {
     //     i.$cache[key] = _props[key];
     // }
 
-    /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
-    if (!_props.rotate && !_text && _imgWidth) {
-        cutOutside($canvas, _props, _imgWidth, _imgHeight)
-    }
-
     // TODO
     // if (_imgWidth > 10 && _imgHeight > 10) {
     //     // 太小的图不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”
@@ -235,9 +230,14 @@ module.exports = function (i, index) {
     }
 
     if (_imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
-        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
+        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width - 1, $canvas.height - 1, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
         if (meetResult) {
             i.$rendered = true;
+
+            /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
+            if (!_props.rotate && !_text) {
+                cutOutside($canvas, _props, _imgWidth, _imgHeight);
+            }
 
             let $paintSprite = {
                 $id: i.$id,
