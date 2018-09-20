@@ -186,8 +186,6 @@ module.exports = function (i, index) {
     if (settings.clip) {
         var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
         if (meetResult) {
-            i.$rendered = true;
-
             let $paintSprite = {
                 $id: i.$id,
                 type: 'clip',
@@ -389,8 +387,6 @@ module.exports = function (i, index) {
     if (settings.clip) {
         var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
         if (meetResult) {
-            i.$rendered = true;
-
             let $paintSprite = {
                 $id: i.$id,
                 type: 'clipOver',
