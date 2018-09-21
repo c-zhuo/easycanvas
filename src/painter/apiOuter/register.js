@@ -26,6 +26,10 @@ module.exports = function (dom, option) {
 
     dom = this.$dom = dom || this.$dom;
 
+    // 修复iOS下click时闪烁
+    // https://stackoverflow.com/questions/9526719/ipad-canvas-flickers-when-tapped
+    // dom.style['webkitTapHighlightColor'] = 'rgba(0,0,0,0);';
+
     for (var i in _option) {
         this[i] = _option[i];
     }

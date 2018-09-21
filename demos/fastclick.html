@@ -1,0 +1,52 @@
+<head>
+    <meta name="viewport" content="initial-scale=0.5,user-scalable=no,width=device-width,viewport-fit=cover">
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <style>
+        * { -webkit-tap-highlight-color:rgba(0,0,0,0); }
+    </style>
+    <canvas id="foo" width="400" height="800"></canvas>
+    <a href="http://a.meituan.com:8080/demos/demo1.html">12345</a>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+
+        $Painter.register(document.getElementById('foo'), {
+            fastclick: true,
+        });
+        $Painter.start();
+
+        Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png', function (img) {
+            // create a sprite
+            window.sprite1 = $Painter.add({
+                name: 'root',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 250, th: 130,
+                    sx: 0, sy: 0, // source position, default 0
+                    tx: Easycanvas.transition.ease(111, 422, 2500).loop(),
+                    ty: 80,
+                    opacity: 1,
+                    rotate: 20,
+                    locate: 'center', // default center
+                },
+                events: {
+                    click: function () {
+                        console.log('click !');
+                    },
+                    touchstart: function () {
+                        console.log('touchstart !');
+                    },
+                    touchend: function () {
+                        console.log('touchend !');
+                    },
+                },
+            });
+        });
+    </script>
+</body>
+
