@@ -955,7 +955,7 @@
                 default: t
             };
         }
-        var R = {
+        var S = {
             painter: o.default,
             imgLoader: g.default,
             imgPretreat: $.default,
@@ -971,24 +971,24 @@
             $version: n.default.version,
             env: "develop"
         };
-        R.extend = function(t) {
-            var e = R.sprite.prototype.$extendList;
+        S.extend = function(t) {
+            var e = S.sprite.prototype.$extendList;
             if (e.indexOf(t) >= 0) return;
             e.push(t);
         };
-        R.use = function(t) {
-            var e = R.painter.prototype.$extendList;
+        S.use = function(t) {
+            var e = S.painter.prototype.$extendList;
             if (e.indexOf(t) >= 0) return;
             if (t.onUse) {
-                t.onUse(R);
+                t.onUse(S);
             }
             e.push(t);
         };
-        R.component = function(t, e) {
-            t(R, e);
+        S.component = function(t, e) {
+            t(S, e);
         };
-        var S = typeof window !== "undefined";
-        if (S) {
+        var R = typeof window !== "undefined";
+        if (R) {
             if (window.Easycanvas) {
                 console.warn("[Easycanvas] already loaded, it should be loaded only once.");
             } else {
@@ -998,11 +998,11 @@
                     }, 500);
                 }
                 if (true) {
-                    window.Easycanvas = R;
+                    window.Easycanvas = S;
                 }
             }
         }
-        t.exports = R;
+        t.exports = S;
     }, , , , function(t, e, r) {
         "use strict";
         var i = r(40);
@@ -1114,80 +1114,106 @@
                 return true;
             }
         };
-        t.exports = function(t, e) {
-            var r = this;
-            var i = void 0;
+        var h = {
+            x: 0,
+            y: 0,
+            timeStamp: 0
+        };
+        var v;
+        v = function t(e, r) {
+            var i = this;
             var a = void 0;
-            var s = 1;
+            var s = void 0;
             var l = 1;
-            if (!e) {
-                if (!t.layerX && t.targetTouches && t.targetTouches[0]) {
-                    i = t.targetTouches[0].pageX - t.currentTarget.offsetLeft;
-                    a = t.targetTouches[0].pageY - t.currentTarget.offsetTop;
-                } else if (!t.layerX && t.changedTouches && t.changedTouches[0]) {
-                    i = t.changedTouches[0].pageX - t.currentTarget.offsetLeft;
-                    a = t.changedTouches[0].pageY - t.currentTarget.offsetTop;
+            var d = 1;
+            if (!r) {
+                if (!e.layerX && e.targetTouches && e.targetTouches[0]) {
+                    a = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
+                    s = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
+                } else if (!e.layerX && e.changedTouches && e.changedTouches[0]) {
+                    a = e.changedTouches[0].pageX - e.currentTarget.offsetLeft;
+                    s = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
                 } else {
-                    i = t.layerX;
-                    a = t.layerY;
+                    a = e.layerX;
+                    s = e.layerY;
                 }
-                var d = false;
+                var p = false;
                 if (this.$dom.getBoundingClientRect) {
-                    var h = this.$dom.getBoundingClientRect();
-                    h.width > h.height !== this.width > this.height;
-                    s = Math.floor(h[d ? "height" : "width"]) / this.width;
-                    l = Math.floor(h[d ? "width" : "height"]) / this.height;
+                    var g = this.$dom.getBoundingClientRect();
+                    g.width > g.height !== this.width > this.height;
+                    l = Math.floor(g[p ? "height" : "width"]) / this.width;
+                    d = Math.floor(g[p ? "width" : "height"]) / this.height;
                 }
             }
-            var v = e || {
-                type: t.type,
-                canvasX: i / s,
-                canvasY: a / l,
-                event: t
+            var y = r || {
+                type: e.type,
+                canvasX: a / l,
+                canvasY: s / d,
+                event: e
             };
-            v.stopPropagation = function() {
-                v.$stopPropagation = true;
-            };
-            if (r.events.interceptor) {
-                v = n.default.firstValuable(r.events.interceptor.call(r, v), v);
-                if (!v || v.$stopPropagation) return;
-            }
-            var p = [];
-            u(f(r.children), v, p);
-            c.call(r, v, p);
-            if (true) {
-                if (window[o.default.devFlag] && window[o.default.devFlag].selectMode && p.length) {
-                    var g = p[0];
-                    if (g.name === o.default.devFlag) {
-                        g = p[1];
+            if (i.fastclick) {
+                if (y.type === "click" && !y.fakeClick) {
+                    return;
+                } else if (y.type === "touchstart") {
+                    h.x = y.canvasX;
+                    h.y = y.canvasY;
+                    h.timeStamp = Date.now();
+                } else if (y.type === "touchend") {
+                    if (Math.abs(h.x - y.canvasX) < 30 && Math.abs(h.y - y.canvasY) < 30 && Date.now() - h.timeStamp < 200) {
+                        v.call(this, null, {
+                            fakeClick: true,
+                            type: "click",
+                            canvasX: h.x,
+                            canvasY: h.y,
+                            event: e
+                        });
                     }
-                    if (g && r.$plugin.selectSprite(t.type === "click" || t.type === "touchend", r, g)) {
+                }
+            }
+            y.stopPropagation = function() {
+                y.$stopPropagation = true;
+            };
+            if (i.events.interceptor) {
+                y = n.default.firstValuable(i.events.interceptor.call(i, y), y);
+                if (!y || y.$stopPropagation) return;
+            }
+            var $ = [];
+            u(f(i.children), y, $);
+            c.call(i, y, $);
+            if (true) {
+                if (window[o.default.devFlag] && window[o.default.devFlag].selectMode && $.length) {
+                    var m = $[0];
+                    if (m.name === o.default.devFlag) {
+                        m = $[1];
+                    }
+                    if (m && i.$plugin.selectSprite(y.type === "click" || y.type === "touchend", i, m)) {
                         return;
                     }
                 }
             }
-            if ((v.type === "mousemove" || v.type === "touchmove") && r.eLastMouseHover && p.indexOf(r.eLastMouseHover) === -1) {
-                var y = r.eLastMouseHover["events"]["mouseout"] || r.eLastMouseHover["events"]["touchout"];
-                if (y) {
-                    y.call(r.eLastMouseHover, v);
+            if ((y.type === "mousemove" || y.type === "touchmove") && i.eLastMouseHover && $.indexOf(i.eLastMouseHover) === -1) {
+                var x = i.eLastMouseHover["events"]["mouseout"] || i.eLastMouseHover["events"]["touchout"];
+                if (x) {
+                    x.call(i.eLastMouseHover, y);
                 }
             }
-            r.eLastMouseHover = p[0];
-            if (!p.length && r.eLastMouseHover) {
-                var $ = r.eLastMouseHover["events"]["mouseout"];
-                if ($) {
-                    $.call(r.eLastMouseHover, v);
+            i.eLastMouseHover = $[0];
+            if (!$.length && i.eLastMouseHover) {
+                var w = i.eLastMouseHover["events"]["mouseout"];
+                if (w) {
+                    w.call(i.eLastMouseHover, y);
                 }
-                r.eLastMouseHover = null;
+                i.eLastMouseHover = null;
             }
-            var m = r.events[v.type];
-            if (m) {
-                if (m.call(r, v)) {
-                    r.eHoldingFlag = false;
+            var b = i.events[y.type];
+            if (b) {
+                if (b.call(i, y)) {
+                    i.eHoldingFlag = false;
                     return true;
                 }
             }
         };
+        t.exports = v;
     }, function(t, e) {
         "use strict";
         t.exports = function(t, e, r, i) {
@@ -1514,36 +1540,36 @@
             }
             if (o) {
                 t.$rendered = true;
-                var R = i.tx;
-                var S = i.ty;
+                var S = i.tx;
+                var R = i.ty;
                 var F = i.align || i.textAlign || "left";
                 var O = i.textFont || "14px Arial";
                 var M = parseInt(O);
                 var E = void 0;
                 var _ = i.lineHeight || M;
                 if (F === "center") {
-                    R += i.tw / 2;
+                    S += i.tw / 2;
                 } else if (F === "right") {
-                    R += i.tw;
+                    S += i.tw;
                 }
                 if (i.textVerticalAlign === "top") {
                     E = "top";
                 } else if (i.textVerticalAlign === "bottom") {
                     E = "bottom";
-                    S += i.th;
+                    R += i.th;
                 } else if (i.textVerticalAlign === "middle") {
-                    S += i.th >> 1;
+                    R += i.th >> 1;
                     E = "middle";
                 }
                 if (typeof o === "string" || typeof o === "number") {
-                    if (S + M * 2 > 0 && S - M * 2 < r.height) {
+                    if (R + M * 2 > 0 && R - M * 2 < r.height) {
                         r.$children.push({
                             $id: t.$id,
                             type: "text",
                             settings: a,
                             props: {
-                                tx: R,
-                                ty: S,
+                                tx: S,
+                                ty: R,
                                 content: String(o),
                                 fontsize: M,
                                 align: F,
@@ -1562,8 +1588,8 @@
                             type: "text",
                             settings: a,
                             props: {
-                                tx: R + n.default.funcOrValue(e.tx, t),
-                                ty: S + n.default.funcOrValue(e.ty, t),
+                                tx: S + n.default.funcOrValue(e.tx, t),
+                                ty: R + n.default.funcOrValue(e.ty, t),
                                 content: n.default.funcOrValue(e.content, t),
                                 fontsize: M,
                                 baseline: E,
@@ -1605,8 +1631,8 @@
                             type: "text",
                             settings: a,
                             props: {
-                                tx: R,
-                                ty: S,
+                                tx: S,
+                                ty: R,
                                 fontsize: M,
                                 content: e,
                                 baseline: E,
@@ -1617,7 +1643,7 @@
                             },
                             $origin: t
                         });
-                        S += _ || M;
+                        R += _ || M;
                     });
                 }
             }
@@ -1872,9 +1898,9 @@
         var T = r(16);
         var k = E(T);
         var A = r(47);
-        var R = E(A);
-        var S = r(49);
-        var F = E(S);
+        var S = E(A);
+        var R = r(49);
+        var F = E(R);
         var O = r(50);
         var M = E(O);
         function E(t) {
@@ -1887,7 +1913,7 @@
             paint: u.default,
             add: n.default,
             remove: o.default,
-            register: R.default,
+            register: S.default,
             clear: d.default,
             setFpsHandler: F.default,
             setMaxFps: M.default,
@@ -2080,7 +2106,7 @@
                     e.type = "hold";
                     t.$eventHandler.call(t, null, e);
                 }
-            }, 40);
+            }, 100);
             return this;
         };
     }, function(t, e, r) {

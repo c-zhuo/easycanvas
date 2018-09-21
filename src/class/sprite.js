@@ -276,7 +276,6 @@ sprite.prototype.getStyle = function (key) {
         }
     }
 
-
     return currentValue;
 };
 

@@ -137,7 +137,12 @@ const triggerEventOnSprite = function ($sprite, $e) {
     }
 };
 
-module.exports = function (e, _$e) {
+const fastclick = {
+    x: 0, y: 0, timeStamp: 0,
+};
+
+var eventHandler;
+eventHandler = function (e, _$e) {
     let $canvas = this;
 
     let layerX;
@@ -170,12 +175,31 @@ module.exports = function (e, _$e) {
     }
 
     let $e = _$e || {
-        // type: mobilePCTransform(e.type),
         type: e.type,
         canvasX: layerX / scaleX,
         canvasY: layerY / scaleY,
         event: e
     };
+
+    if ($canvas.fastclick) {
+        if ($e.type === 'click' && !$e.fakeClick) {
+            return;
+        } else if ($e.type === 'touchstart') {
+            fastclick.x = $e.canvasX;
+            fastclick.y = $e.canvasY;
+            fastclick.timeStamp = Date.now();
+        } else if ($e.type === 'touchend') {
+            if (Math.abs(fastclick.x - $e.canvasX) < 30 && Math.abs(fastclick.y - $e.canvasY) < 30 && Date.now() - fastclick.timeStamp < 200) {
+                eventHandler.call(this, null, {
+                    fakeClick: true,
+                    type: 'click',
+                    canvasX: fastclick.x,
+                    canvasY: fastclick.y,
+                    event: e
+                });
+            }
+        }
+    }
 
     $e.stopPropagation = function () {
         $e.$stopPropagation = true;
@@ -206,7 +230,7 @@ module.exports = function (e, _$e) {
                 chooseSprite = caughts[1];
             }
 
-            if (chooseSprite && $canvas.$plugin.selectSprite(e.type === 'click' || e.type === 'touchend', $canvas, chooseSprite)) {
+            if (chooseSprite && $canvas.$plugin.selectSprite($e.type === 'click' || $e.type === 'touchend', $canvas, chooseSprite)) {
                 return;
             }
         }
@@ -273,3 +297,5 @@ module.exports = function (e, _$e) {
         }
     }
 };
+
+module.exports = eventHandler;

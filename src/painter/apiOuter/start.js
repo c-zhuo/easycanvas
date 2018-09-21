@@ -16,7 +16,7 @@ module.exports = function () {
 
             this.$eventHandler.call(this, null, $e);
         }
-    }, 40); // TODO
+    }, 100); // TODO
 
     return this;
 };
