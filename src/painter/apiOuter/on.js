@@ -21,6 +21,7 @@ module.exports = function (name, func, throttle) {
             }
         };
         handle.$lastTriggerTime = -1;
+        handle.$handle = func;
     }
 
     if (!this.hooks[name]) {

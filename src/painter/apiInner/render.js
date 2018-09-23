@@ -37,7 +37,6 @@ const render = function ($sprite, i) {
     /*
         Jump useless paintings, by calculating border size
     */
-    // if ($sprite.type === 'img' || $sprite.type === 'fillRect') {
     let currentSize;
     let isText = $sprite.type === 'text';
 
@@ -75,8 +74,9 @@ const render = function ($sprite, i) {
                     continue;
                 }
 
-                if (!$tmpSprite.type || $tmpSprite.type !== 'img' || $tmpSprite.type !== 'fillRect') {
+                if (!$tmpSprite.type || $tmpSprite.type !== 'img') {
                     // 不是图片
+                    // fillRect可能还有透明度
                     $tmpSprite.$cannotCover = true;
                     continue;
                 }
@@ -183,14 +183,6 @@ const render = function ($sprite, i) {
         ctx.globalAlpha = settings.globalAlpha;
     }
 
-    // if (settings.textBaseline) {
-    //     if (!saved) {
-    //         ctx.save();
-    //         saved = true;
-    //     }
-    //     ctx.textBaseline = settings.textBaseline;
-    // }
-
     if (settings.translate) {
         if (!saved) {
             ctx.save();
@@ -243,18 +235,6 @@ const render = function ($sprite, i) {
     } else if ($sprite.type === 'fillRect') { 
         ctx.fillStyle = settings.fillRect;
         ctx.fillRect(props.tx,props.ty,props.tw,props.th);
-    // } else if ($sprite.type === 'clip') { 
-    //     ctx.save();
-    //     // rect会导致FPS逐渐降低，怀疑未清理导致
-    //     // ctx.rect(props.tx, props.ty, props.tw, props.th);
-    //     ctx.beginPath();
-    //     ctx.moveTo(props.tx, props.ty);
-    //     ctx.lineTo(props.tx + props.tw, props.ty);
-    //     ctx.lineTo(props.tx + props.tw, props.ty + props.th);
-    //     ctx.lineTo(props.tx, props.ty + props.th);
-    //     ctx.lineTo(props.tx, props.ty);
-    //     ctx.closePath();
-    //     ctx.clip();
     } else if ($sprite.type === 'clipOver') {
         ctx.restore();
     }

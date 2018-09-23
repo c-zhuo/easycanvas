@@ -37,7 +37,7 @@ const PROTOS = {
 
     /* flags */
     $flags: {
-        dragging: false
+        // dragging: false
     },
 };
 

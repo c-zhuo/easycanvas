@@ -228,14 +228,15 @@ module.exports = function (i, index) {
     }
 
     if (_imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
+        if (!_props.rotate && !_text) {
+            cutOutside($canvas, _props, _imgWidth, _imgHeight);
+        }
+
         var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width - 1, $canvas.height - 1, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
         if (meetResult) {
             i.$rendered = true;
 
             /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
-            if (!_props.rotate && !_text) {
-                cutOutside($canvas, _props, _imgWidth, _imgHeight);
-            }
 
             let $paintSprite = {
                 $id: i.$id,
