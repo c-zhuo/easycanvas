@@ -10,7 +10,6 @@
             webgl: !true
         });
         $Painter.start();
-        $Painter.fpsHandler = console.log;
 
         constants = {
     waitForUpdateTime: 50,
@@ -27,14 +26,14 @@
             // 跳过绘制0个
             sprites.type1 = [];
             for (var i = 0; i < 2; i++) {
-                let sprite = $Painter.add({
-                    name: 'type1',
+                var sprite = $Painter.add({
                     content: {
                         img: img,
                     },
                     style: {
-                        tx: Math.random() * 200, ty: Math.random() * 200,
-                        tw: 105, th: Math.random() * 100 + 50,
+                        tx: 200, ty: 200,
+                        tw: 400, th: 300,
+                        opacity: 0.5,
                         zIndex: 1,
                     },
                 });
@@ -42,19 +41,19 @@
             }
         });
 
-        Easycanvas.imgLoader.cacheCanvas = Math.random() < 0.5;
+        Easycanvas.imgLoader.cacheCanvas = false;
         Easycanvas.imgLoader(constants.png30px, function (img) {
             // 跳过绘制4个
             sprites.type2 = [];
             for (var i = 0; i < 4; i++) {
-                let sprite = $Painter.add({
-                    name: 'type2',
+                var sprite = $Painter.add({
+                    name: 4,
                     content: {
                         img: img,
                     },
                     style: {
-                        tx: 100, ty: 100,
-                        tw: 200, th: 200,
+                        tx: 200, ty: 200,
+                        tw: 200, th: 300,
                         zIndex: 2,
                     },
                 });
@@ -62,19 +61,19 @@
             }
         });
 
-        Easycanvas.imgLoader.cacheCanvas = true;
+        Easycanvas.imgLoader.cacheCanvas = false;
         Easycanvas.imgLoader(constants.jpg100px, function (img) {
             // 跳过绘制8-1=7个
             sprites.type3 = [];
             for (var i = 0; i < 8; i++) {
-                let sprite = $Painter.add({
-                    name: 'type3',
+                var sprite = $Painter.add({
+                    name: 5,
                     content: {
                         img: img,
                     },
                     style: {
-                        tx: 100, ty: 100,
-                        tw: 200, th: 200,
+                        tx: 200, ty: 200,
+                        tw: 200, th: 300,
                         zIndex: 3,
                     },
                 });
@@ -82,19 +81,18 @@
             }
         });
 
-        Easycanvas.imgLoader.cacheCanvas = Math.random() < 0.5;
+        Easycanvas.imgLoader.cacheCanvas = false;
         Easycanvas.imgLoader(constants.jpg100px, function (img) {
             // 跳过绘制0个
             sprites.type4 = [];
             for (var i = 0; i < 16; i++) {
-                let sprite = $Painter.add({
-                    name: 'type4',
+                var sprite = $Painter.add({
                     content: {
                         img: i % 2 ? img : constants.jpg100px,
                     },
                     style: {
-                        tx: 100, ty: 100,
-                        tw: 200, th: 200,
+                        tx: 200, ty: 200,
+                        tw: 200, th: 300,
                         opacity: 0.6,
                         zIndex: 4,
                     },
@@ -103,26 +101,24 @@
             }
         });
 
-        Easycanvas.imgLoader.cacheCanvas = Math.random() < 0.5;
+        Easycanvas.imgLoader.cacheCanvas = false;
         Easycanvas.imgLoader(constants.png30px, function (img) {
             // 跳过绘制0个
             sprites.type5 = [];
             for (var i = 0; i < 32; i++) {
-                let sprite = $Painter.add({
-                    name: 'type5',
+                var sprite = $Painter.add({
                     content: {
                         img: i % 2 ? img : constants.png30px,
                     },
                     style: {
-                        tx: 100, ty: 100,
-                        tw: 200, th: 200,
+                        tx: 200, ty: 200,
+                        tw: 200, th: 300,
                         zIndex: 5,
                     },
                 });
                 sprites.type5.push(sprite);
             }
         });
-
 
         setTimeout(function () {
             for (var type in sprites) {
