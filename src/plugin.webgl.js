@@ -18,7 +18,7 @@ const plugin = {
     onPaint,
     onRender,
     onUse,
-    onEvent,
+    // onEvent,
 };
 
 if (inBrowser && window.Easycanvas) {

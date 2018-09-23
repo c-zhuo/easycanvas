@@ -1822,8 +1822,7 @@
                 onCreate: c.default,
                 onPaint: v.default,
                 onRender: s.default,
-                onUse: o.default,
-                onEvent: n.default
+                onUse: o.default
             };
             if (g && window.Easycanvas) {
                 Easycanvas.use(h);

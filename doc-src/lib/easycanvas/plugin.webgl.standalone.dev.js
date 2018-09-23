@@ -23,7 +23,7 @@
         return t(0);
     }({
         0: function(r, e, t) {
-            r.exports = t(90);
+            r.exports = t(89);
         },
         1: function(r, e) {
             "use strict";
@@ -83,7 +83,7 @@
                 };
             };
         },
-        4: function(r, e) {
+        3: function(r, e) {
             "use strict";
             var t = function r(e, t) {
                 var a = e.length;
@@ -112,41 +112,6 @@
             };
         },
         6: function(r, e) {
-            "use strict";
-            var t = "processing";
-            var a = {};
-            function n(r, e) {
-                if (r && r.match(/^data:/)) {
-                    e && e(r);
-                    return;
-                }
-                if (a[r]) {
-                    if (a[r] !== t) {
-                        e(a[r]);
-                    } else {
-                        setTimeout(function() {
-                            n(r, e);
-                        }, 100);
-                    }
-                    return;
-                }
-                a[r] = t;
-                var i = new XMLHttpRequest();
-                i.onload = function() {
-                    var t = new FileReader();
-                    t.onloadend = function() {
-                        a[r] = t.result;
-                        e && e(t.result);
-                    };
-                    t.readAsDataURL(i.response);
-                };
-                i.open("GET", r);
-                i.responseType = "blob";
-                i.send();
-            }
-            r.exports = n;
-        },
-        7: function(r, e) {
             "use strict";
             r.exports = function() {
                 "use strict";
@@ -886,6 +851,41 @@
                 };
             };
         },
+        10: function(r, e) {
+            "use strict";
+            var t = "processing";
+            var a = {};
+            function n(r, e) {
+                if (r && r.match(/^data:/)) {
+                    e && e(r);
+                    return;
+                }
+                if (a[r]) {
+                    if (a[r] !== t) {
+                        e(a[r]);
+                    } else {
+                        setTimeout(function() {
+                            n(r, e);
+                        }, 100);
+                    }
+                    return;
+                }
+                a[r] = t;
+                var i = new XMLHttpRequest();
+                i.onload = function() {
+                    var t = new FileReader();
+                    t.onloadend = function() {
+                        a[r] = t.result;
+                        e && e(t.result);
+                    };
+                    t.readAsDataURL(i.response);
+                };
+                i.open("GET", r);
+                i.responseType = "blob";
+                i.send();
+            }
+            r.exports = n;
+        },
         11: function(r, e, t) {
             "use strict";
             var a = t(2);
@@ -928,9 +928,9 @@
                 return false;
             };
         },
-        27: function(r, e, t) {
+        26: function(r, e, t) {
             "use strict";
-            var a = t(80);
+            var a = t(79);
             var n = i(a);
             function i(r) {
                 return r && r.__esModule ? r : {
@@ -1008,7 +1008,7 @@
                 r.enableVertexAttribArray(r.colorLocation);
             };
         },
-        69: function(r, e, t) {
+        68: function(r, e, t) {
             "use strict";
             var a = Object.assign || function(r) {
                 for (var e = 1; e < arguments.length; e++) {
@@ -1023,11 +1023,11 @@
             };
             var n = t(1);
             var i = f(n);
-            var o = t(6);
+            var o = t(10);
             var u = f(o);
-            var c = t(7);
+            var c = t(6);
             var l = f(c);
-            var v = t(4);
+            var v = t(3);
             function f(r) {
                 return r && r.__esModule ? r : {
                     default: r
@@ -1117,7 +1117,7 @@
                 }
             };
         },
-        70: function(r, e) {
+        69: function(r, e) {
             "use strict";
             var t = function r(e, t, a) {
                 var n = e.createTexture();
@@ -1166,11 +1166,11 @@
                 }
             };
         },
-        71: function(r, e, t) {
+        70: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = o(a);
-            var i = t(4);
+            var i = t(3);
             function o(r) {
                 return r && r.__esModule ? r : {
                     default: r
@@ -1216,16 +1216,16 @@
                 }
             };
         },
-        72: function(r, e, t) {
+        71: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = s(a);
             var i = t(12);
             var o = s(i);
-            var u = t(4);
-            var c = t(75);
+            var u = t(3);
+            var c = t(74);
             var l = s(c);
-            var v = t(74);
+            var v = t(73);
             var f = s(v);
             function s(r) {
                 return r && r.__esModule ? r : {
@@ -1301,13 +1301,13 @@
                 }
             };
         },
-        73: function(r, e, t) {
+        72: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = c(a);
-            var i = t(81);
+            var i = t(80);
             var o = c(i);
-            var u = t(4);
+            var u = t(3);
             function c(r) {
                 return r && r.__esModule ? r : {
                     default: r
@@ -1344,14 +1344,14 @@
                 };
             };
         },
-        74: function(r, e, t) {
+        73: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = v(a);
-            var i = t(7);
+            var i = t(6);
             var o = v(i);
-            var u = t(4);
-            var c = t(27);
+            var u = t(3);
+            var c = t(26);
             var l = v(c);
             function v(r) {
                 return r && r.__esModule ? r : {
@@ -1391,14 +1391,14 @@
                 p.drawArrays(p.TRIANGLES, 0, 6);
             };
         },
-        75: function(r, e, t) {
+        74: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = v(a);
-            var i = t(7);
+            var i = t(6);
             var o = v(i);
-            var u = t(4);
-            var c = t(27);
+            var u = t(3);
+            var c = t(26);
             var l = v(c);
             function v(r) {
                 return r && r.__esModule ? r : {
@@ -1529,43 +1529,43 @@
                 }
             };
         },
-        76: function(r, e) {
+        75: function(r, e) {
             "use strict";
             r.exports = function(r, e, t) {
                 var a = "\n        precision mediump float;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        uniform sampler2D u_texture;\n\n        " + (e && "\n            varying vec3 v_normal;\n            uniform vec3 u_reverseLightDirection;\n        " || "") + "\n\n        void main() {\n            " + (e && "\n                vec3 normal = normalize(v_normal);\n                float light = dot(normal, u_reverseLightDirection);\n            " || "") + "\n\n            " + ([ "gl_FragColor = v_color;", "gl_FragColor = texture2D(u_texture, v_texcoord);" ][r] || "") + "\n\n            " + (t === 0 && "\n                float dist = distance( gl_PointCoord, vec2(0.5) );\n                float alpha = 1.0 - smoothstep(0.1,0.5,dist);\n                // float alpha = 1.0 - smoothstep(0.45,0.5,dist);\n                gl_FragColor.a *= alpha;\n            " || "") + "\n\n            " + (e && "\n                light += 2.0;\n                light *= 0.5;\n                gl_FragColor.rgb *= light;\n            " || "") + "\n        }\n    ";
                 return a;
             };
         },
-        77: function(r, e) {
+        76: function(r, e) {
             "use strict";
             r.exports = function(r, e) {
                 var t = "\n        precision mediump float;\n\n        uniform int f_shaderType;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        uniform sampler2D u_texture;\n\n        " + (e && "\n            varying vec3 v_normal;\n            uniform vec3 u_reverseLightDirection;\n        " || "") + "\n\n        void main() {\n            " + (e && "\n                vec3 normal = normalize(v_normal);\n                float light = dot(normal, u_reverseLightDirection);\n            " || "") + "\n\n            " + ([ "gl_FragColor = v_color;", "gl_FragColor = texture2D(u_texture, v_texcoord);" ][r] || "") + "\n\n            if (f_shaderType == 0) {\n                float dist = distance( gl_PointCoord, vec2(0.5) );\n                float alpha = 1.0 - smoothstep(0.1,0.5,dist);\n                gl_FragColor.a *= alpha;\n            }\n\n            " + (e && "\n                light += 2.0;\n                light *= 0.5;\n                gl_FragColor.rgb *= light;\n            " || "") + "\n        }\n    ";
                 return t;
             };
         },
-        78: function(r, e) {
+        77: function(r, e) {
             "use strict";
             r.exports = function(r, e, t) {
                 var a = "\n        precision mediump float;\n        attribute vec4 a_position;\n        " + ([ "attribute vec4 a_color;", "attribute vec2 a_texcoord;" ][r] || "") + "\n\n        " + (t === 0 && "\n            attribute float u_size; // 点精灵大小\n        " || "") + "\n\n        " + (e && "\n            attribute vec3 a_normal;\n            uniform mat4 u_worldViewProjection;\n            uniform mat4 u_worldInverseTranspose;\n        " || "") + "\n\n        uniform float u_fudgeFactor; // 透射\n\n        uniform mat4 u_matrix;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        " + (e && "\n            varying vec3 v_normal;\n        " || "") + "\n\n        void main() {\n            // Multiply the position by the matrix.\n            // gl_Position = u_matrix * a_position;\n\n            // 透射\n            // 调整除数\n            vec4 position = u_matrix * a_position;\n            // 由于裁减空间中的 Z 值是 -1 到 +1 的，所以 +1 是为了让 zToDivideBy 变成 0 到 +2 * fudgeFactor\n            float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // 透射\n\n            " + (e ? "gl_Position = u_worldViewProjection * a_position;" : "gl_Position = vec4(position.xy / zToDivideBy, position.zw);") + "\n\n            // gl_Position = u_worldViewProjection * vec4(position.xy / zToDivideBy, position.zw);\n\n            " + ([ "v_color = a_color;", "v_texcoord = a_texcoord;" ][r] || "") + "\n\n            " + (t === 0 && "\n                gl_PointSize = u_size;\n            " || "") + "\n\n            " + (e && "\n                v_normal = mat3(u_worldInverseTranspose) * a_normal;\n            " || "") + "\n        }\n    ";
                 return a;
             };
         },
-        79: function(r, e) {
+        78: function(r, e) {
             "use strict";
             r.exports = function(r, e) {
                 var t = "\n        precision mediump float;\n\n        uniform int v_shaderType;\n\n        attribute vec4 a_position;\n        " + ([ "attribute vec4 a_color;", "attribute vec2 a_texcoord;" ][r] || "") + "\n\n        attribute float u_size; // 点精灵大小\n\n        " + (e && "\n            attribute vec3 a_normal;\n            uniform mat4 u_worldViewProjection;\n            uniform mat4 u_worldInverseTranspose;\n        " || "") + "\n\n        uniform float u_fudgeFactor; // 透射\n\n        uniform mat4 u_matrix;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        " + (e && "\n            varying vec3 v_normal;\n        " || "") + "\n\n        void main() {\n            // Multiply the position by the matrix.\n            // gl_Position = u_matrix * a_position;\n\n            // 透射\n            // 调整除数\n            vec4 position = u_matrix * a_position;\n            // 由于裁减空间中的 Z 值是 -1 到 +1 的，所以 +1 是为了让 zToDivideBy 变成 0 到 +2 * fudgeFactor\n            float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // 透射\n\n            " + (e ? "gl_Position = u_worldViewProjection * a_position;" : "gl_Position = vec4(position.xy / zToDivideBy, position.zw);") + "\n\n            // gl_Position = u_worldViewProjection * vec4(position.xy / zToDivideBy, position.zw);\n\n            if (v_shaderType == 0) {\n                gl_PointSize = u_size;\n            } else {\n            }\n\n            " + ([ "v_color = a_color;", "v_texcoord = a_texcoord;" ][r] || "") + "\n\n            " + (e && "\n                v_normal = mat3(u_worldInverseTranspose) * a_normal;\n            " || "") + "\n        }\n    ";
                 return t;
             };
         },
-        80: function(r, e, t) {
+        79: function(r, e, t) {
             "use strict";
-            var a = t(78);
+            var a = t(77);
             var n = f(a);
-            var i = t(79);
+            var i = t(78);
             var o = f(i);
-            var u = t(76);
+            var u = t(75);
             var c = f(u);
-            var l = t(77);
+            var l = t(76);
             var v = f(l);
             function f(r) {
                 return r && r.__esModule ? r : {
@@ -1581,7 +1581,7 @@
                 }
             };
         },
-        81: function(r, e, t) {
+        80: function(r, e, t) {
             "use strict";
             var a = Object.assign || function(r) {
                 for (var e = 1; e < arguments.length; e++) {
@@ -1594,7 +1594,7 @@
                 }
                 return r;
             };
-            var n = t(4);
+            var n = t(3);
             var i = new Uint16Array([ 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23 ]);
             var o = new Float32Array((0, n.arrayRepeat)([ 1, 0, 0, 0, 0, 1, 1, 1 ], 6));
             var u = 6;
@@ -1800,17 +1800,17 @@
             }
             r.exports = d;
         },
-        90: function(r, e, t) {
+        89: function(r, e, t) {
             "use strict";
-            var a = t(70);
+            var a = t(69);
             var n = d(a);
-            var i = t(73);
+            var i = t(72);
             var o = d(i);
-            var u = t(69);
+            var u = t(68);
             var c = d(u);
-            var l = t(71);
+            var l = t(70);
             var v = d(l);
-            var f = t(72);
+            var f = t(71);
             var s = d(f);
             function d(r) {
                 return r && r.__esModule ? r : {
@@ -1822,8 +1822,7 @@
                 onCreate: c.default,
                 onPaint: v.default,
                 onRender: s.default,
-                onUse: o.default,
-                onEvent: n.default
+                onUse: o.default
             };
             if (g && window.Easycanvas) {
                 Easycanvas.use(h);

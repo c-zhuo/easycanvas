@@ -17,7 +17,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
+                    var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',
@@ -88,7 +88,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var G = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png';
+                    var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
                     var $app = new Easycanvas.painter({
                         el: '#app',

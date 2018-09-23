@@ -10,28 +10,28 @@
         $Painter.register(document.getElementById('foo'));
         $Painter.start();
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png?a=0', null, {
+        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=0', null, {
             block: true
         });
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png?a=1');
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png?a=2', null, {
+        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=1');
+        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=2', null, {
             block: true
         });
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png?a=3', function () {
+        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=3', function () {
             console.log('a=3 loaded 1st');
         });
         setTimeout(function () {
             for (var i = 0; i <= 20; i++) {
-                Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png?a=3', function () {
+                Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=3', function () {
                     console.log('a=3 loaded again');
                 });
             }
         }, 0);
 
         Easycanvas.imgLoader([
-            'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png?a=4',
-            'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png?a=5',
-            'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png?a=6'
+            'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=4',
+            'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=5',
+            'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=6'
         ], function (arr) {
             console.log(arr);
         });

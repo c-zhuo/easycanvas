@@ -4,7 +4,7 @@ module.exports = `
 
         <p>“精灵动画”也称为“序列动画”、“逐帧动画”、“动作序列”等，是指把一个元素在各个帧的状态的画面归到一组依次绘制，形成动画。例如下面是一个爆炸的动作序列图：</p>
 
-        <img class="article-img" width="100%" src="https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/Fire.png"></img>
+        <img class="article-img" width="100%" src="https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png"></img>
 
         <h2>基本配置</h2>
 
@@ -19,7 +19,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/Easycanvas/master/demos/Fire.png', function () {
+                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png', function () {
                         document.getElementById('content').innerText = '点击画布可以看到爆炸效果';
                     });
 
@@ -69,7 +69,7 @@ module.exports = `
 
         <p>有的精灵动画用到的图片不规范（例如排布时没有等分），或者一张图片中有好几组精灵动画。例如下面这个图片包含了人物的八个方向运动的序列图，每个方向6帧：</p>
 
-        <img class="article-img" width="100%" src="https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/human.png"></img>
+        <img class="article-img" width="100%" src="https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/human.png"></img>
 
         <p>如果让w和h分别为-6和-8，将得到人物8个方向循环播放的动画，如下：</p>
 
@@ -89,7 +89,7 @@ module.exports = `
 
                     var $human = new Easycanvas.sprite({
                         content: {
-                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/human.png',
+                            img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/human.png',
                             sequence: {
                                 w: -6,
                                 h: -8,
@@ -123,7 +123,7 @@ module.exports = `
                         height: 400
                     });
 
-                    var img = 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/human.png';
+                    var img = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/human.png';
                     var width = 166, height = 103;
 
                     var $human = new Easycanvas.sprite({
