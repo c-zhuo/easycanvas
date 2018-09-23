@@ -7,7 +7,7 @@ module.exports = `
         <p>Easycanvas是一个渐进式、高效率的canvas渲染库，核心思路是由数据的变化来驱动视图的变化。<strong>将canvas与一个树形的数据结构绑定，当数据改变时视图将随之更新，并且提供了一个Chrome插件来便于开发</strong>，包括数据结构的显示、对canvas中某个元素的样式进行调整等。</p>
         <img class="article-img" width="100%" src="https://github.com/c-zhuo/easycanvas/raw/master/demos/index.gif?raw=true"></img>
 
-        <p>Easycanvas支持在浏览器、微信小程序、微信小游戏中使用。</p>
+        <p>Easycanvas支持在浏览器（PC & Mobile）、微信小程序、微信小游戏中使用。</p>
 
         <p>Easycanvas本身提供了绘图、事件、自定义钩子、组件式开发等功能，并额外提供了一些插件，用于物理效果、WebGL等方向的扩展。其中WebGL插件支持导入pmd/pmx/vmd/vpd/fbx/dds等3D模型和图像文件。</p>
 
