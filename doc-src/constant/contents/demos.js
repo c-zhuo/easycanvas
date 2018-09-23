@@ -5,6 +5,7 @@ import ball3d from './demos-ball3d.js';
 import ball2d from './demos-ball2d.js';
 import sequence from './demos-sequence.js';
 import text from './demos-text.js';
+import components from './demos-components.js';
 
 import perfBall from './demos-perf-ball.js';
 import perf2000 from './demos-perf-2000.js';
@@ -92,6 +93,10 @@ module.exports = `
         <div class="demos-card">
             <div class="demos-screenshoot" style="background-image:url(../resource/doc/11.jpg)"></div>
             ${perf2000}
+        </div>
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/12.jpg)"></div>
+            ${components}
         </div>
 
         <h2>微信小游戏</h2>

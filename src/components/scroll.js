@@ -101,15 +101,9 @@ let scrollFuncs = {
                 $sprite.scroll.scrollY += deltaY;
             }
 
-        // $sprite.$scroll.speedX = ($sprite.$scroll.speedX + ($e.canvasX - startPos.x) * 2) / 2;
-
-        // let curSpeed = ($e.canvasY - startPos.y) * 3;
-        // $sprite.$scroll.speedY = ($sprite.$scroll.speedY + curSpeed) / 2;
-
             $sprite.$scroll.startPos.x = $e.canvasX;
             $sprite.$scroll.startPos.y = $e.canvasY;
 
-            // $e.event.preventDefault();
             if (Math.abs(deltaX) > Math.abs(deltaY) + 1) return 1;
             else if (Math.abs(deltaX) < Math.abs(deltaY) - 1) return 2;
         }
@@ -161,28 +155,6 @@ const component = function (opt) {
     let started = false;
 
     option.events = Object.assign({
-        // interceptor ($e) {
-        //     if (!handling) {
-        //         return $e;
-        //     }
-
-        //     if ($e.type === 'touchmove') {
-        //         scrollFuncs.touch(this, $e);
-        //         $e.$stopPropagation = true;
-        //     } else if ($e.type === 'mousewheel') {
-        //         scrollFuncs.wheel(this, $e);
-        //     } else if ($e.type === 'touchend' || $e.type === 'mouseup') {
-        //         scrollFuncs.loose(this);
-        //     } else if ($e.type === 'hold') {
-        //         $e.$stopPropagation = true;
-        //     }
-
-        //     if (autoScroll) {
-        //         $sprite.off('ticked', autoScrollFunc);
-        //         autoScroll = false;
-        //     }
-        //     return $e;
-        // },
         touchstart: function ($e) {
             // 先结束，防止之前拖动时拖到外面，导致没触发loose
             scrollFuncs.loose(this);
@@ -232,6 +204,16 @@ const component = function (opt) {
         },
     }, option.events || {});
 
+    if (option.scroll.capture) {
+        option.events.interceptor = ($e) => {
+            if ($sprite.events[$e.type]) {
+                $sprite.events[$e.type].call($sprite, $e);
+                return false;
+            }
+            return $e;
+        };
+    }
+
     let $sprite = new ec.class.sprite(option);
 
     $sprite.on('ticked', () => {
@@ -240,7 +222,7 @@ const component = function (opt) {
 
     // $sprite.on('handleToggle', handleToggle);
 
-    $sprite.on('scrollTo', (position, duration) => {
+    $sprite.on('scrollTo', (position, duration, callback) => {
         autoScroll = ec.transition.pendulum(
             $sprite.scroll.scrollY,
             position,
@@ -250,6 +232,8 @@ const component = function (opt) {
             }
         ).then(() => {
             autoScroll = false;
+
+            callback && callback();
         });
 
         $sprite.on('ticked', autoScrollFunc);

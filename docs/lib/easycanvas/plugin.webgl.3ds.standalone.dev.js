@@ -23,9 +23,9 @@
         return e(0);
     }({
         0: function(t, r, e) {
-            t.exports = e(88);
+            t.exports = e(92);
         },
-        34: function(t, r, e) {
+        38: function(t, r, e) {
             (function(r) {
                 "use strict";
                 var e = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(t) {
@@ -1124,9 +1124,9 @@
                     this.spectralColor = 0;
                 };
                 t.exports = on;
-            }).call(r, e(98).Buffer);
+            }).call(r, e(102).Buffer);
         },
-        88: function(t, r, e) {
+        92: function(t, r, e) {
             "use strict";
             var n = Object.assign || function(t) {
                 for (var r = 1; r < arguments.length; r++) {
@@ -1139,7 +1139,7 @@
                 }
                 return t;
             };
-            var i = e(34);
+            var i = e(38);
             var a = o(i);
             function o(t) {
                 return t && t.__esModule ? t : {
@@ -1237,7 +1237,7 @@
                 };
             }
         },
-        97: function(t, r) {
+        101: function(t, r) {
             "use strict";
             r.byteLength = u;
             r.toByteArray = h;
@@ -1323,12 +1323,12 @@
                 return o.join("");
             }
         },
-        98: function(t, r, e) {
+        102: function(t, r, e) {
             (function(t) {
                 "use strict";
-                var n = e(97);
-                var i = e(100);
-                var a = e(99);
+                var n = e(101);
+                var i = e(104);
+                var a = e(103);
                 r.Buffer = u;
                 r.SlowBuffer = b;
                 r.INSPECT_MAX_BYTES = 50;
@@ -2685,13 +2685,13 @@
                 return this;
             }());
         },
-        99: function(t, r) {
+        103: function(t, r) {
             var e = {}.toString;
             t.exports = Array.isArray || function(t) {
                 return e.call(t) == "[object Array]";
             };
         },
-        100: function(t, r) {
+        104: function(t, r) {
             r.read = function(t, r, e, n, i) {
                 var a, o;
                 var s = i * 8 - n - 1;
