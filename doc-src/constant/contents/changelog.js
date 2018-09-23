@@ -16,34 +16,38 @@ module.exports = `
         <h3>0.6.0 (2018.9.23)</h3>
 
         <p>Bugfix：修复部分低版本安卓手机，<strong>event不能正确触发</strong>的bug。</p>
+        <p>Bugfix：修复使用on挂载自定义钩子时，设置throttle后导致<strong>钩子无法被off解绑</strong>的bug。</p>
+        <p>Bugfix：修复Chrome调试工具在调试3D模型时，可能<strong>无法高亮当前选中的模型</strong>的bug。</p>
+        <p>Feature：现在在2D渲染时，可以在style中指定<strong>overflow为hidden</strong>来限定子Sprite的渲染范围。</p>
+        <p>Feature：为canvas实例增加fastclick选项，调用register注册时<strong>传入fastclick为true</strong>可以开启设置，将去除click事件的300ms延迟。</p>
         <p>Performance：调整部分底层实现，提升渲染和事件的性能。</p>
 
         <h2>历史版本</h2>
 
         <h3>0.5.10 (2018.9.9)</h3>
 
-        <p>Bugfix：修复pendulum和ease在结束后可能额外执行一帧，导致结束点有偏差的bug。</p>
+        <p>Bugfix：修复pendulum和ease在结束后可能额外执行一帧，导致<strong>结束点有偏差</strong>的bug。</p>
         <p>Feature：为transition增加<strong>then</strong>方法，结束时触发，例如Easycanvas.transition.linear(2, 8, 1000).then(Function)。</p>
         <p>Feature：为WebGL引入<strong>Three.js的loaders</strong>，用于加载fbx、dds等更多模型和资源文件，详见文档。</p>
 
         <h3>0.5.9 (2018.9.1)</h3>
 
-        <p>Bugfix：修复绘制文本时，textVerticalAlign不对齐的bug。</p>
-        <p>Performance：调整部分底层实现，提升渲染和事件的性能。</p>
-        <p>Feature：为2D的sprite增加<strong>backgroundColor</strong>属性，可以设置背景色。</p>
+        <p>Bugfix：修复绘制文本时，<strong>textVerticalAlign不对齐</strong>的bug。</p>
+        <p>Feature：为2D的Sprite增加<strong>backgroundColor</strong>属性，可以设置背景色。</p>
         <p>Feature：支持在<strong>微信小程序</strong>中使用（微信小游戏已在0.5.6版本支持）。</p>
         <p>Feature：为WebGL优化<strong>Shader性能</strong>：通过场景中的元素种类，自动调整shader语法。设置singleShader为true后开启，详见文档。</p>
         <p>Feature：为WebGL增加<strong>绘制像素点</strong>的API，详见文档。</p>
+        <p>Performance：调整部分底层实现，提升渲染和事件的性能。</p>
 
         <h3>0.5.8 (2018.8.11)</h3>
 
+        <p>Bugfix：修复2D渲染中，个别场景下没有智能跳过屏幕外Sprite绘制，导致<strong>性能浪费</strong>的问题。</p>
         <p>Feature：为WebGL增加<strong>调整摄像头位置和视角</strong>的API，详见文档。</p>
-        <p>Bugfix：修复2D渲染中，个别场景下没有智能跳过屏幕外Sprite绘制，导致性能浪费的问题。</p>
 
         <h3>0.5.7 (2018.7.29)</h3>
 
         <p>Bugfix：修复线性渐变时，终点小于起点会导致js卡死的bug，如Easycanvas.transition.linear(2, 1, 1000)。</p>
-        <p>Bugfix：修复2D渲染中，带有角度的Sprite部分位于屏幕外时，坐标计算的bug。</p>
+        <p>Bugfix：修复2D渲染中，<strong>处于屏幕边缘并且设置了角度的Sprite的坐标计算可能异常</strong>的bug。</p>
 
         <h3>0.5.6 (2018.7.25)</h3>
 
@@ -51,7 +55,7 @@ module.exports = `
 
         <h3>0.5.5</h3>
 
-        <p>Bugfix：修复指定Sprite.style.locate后，事件判定范围可能错误的bug。</p>
+        <p>Bugfix：修复指定Sprite.style.locate后，<strong>事件判定范围可能错误</strong>的bug。</p>
 
         <h3>0.5.0～0.5.4</h3>
 
