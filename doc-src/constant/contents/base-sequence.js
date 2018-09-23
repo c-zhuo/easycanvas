@@ -19,7 +19,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/Easycanvas/master/demos/Fire.png', function () {
+                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png', function () {
                         document.getElementById('content').innerText = '点击画布可以看到爆炸效果';
                     });
 
