@@ -24,7 +24,7 @@ module.exports = `
 
                     var $letterG = new Easycanvas.sprite({
                         content: {
-                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+                            img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
                         style: {
                             tx: 50, ty: 50, th: 150,
@@ -69,7 +69,7 @@ module.exports = `
                     });
 
                     Easycanvas.imgLoader(
-                        'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+                        'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         function (img) {
                             var $letterG = new Easycanvas.sprite({
                                 content: {
@@ -111,7 +111,7 @@ module.exports = `
                     var $letterG = new Easycanvas.sprite({
                         content: {
                             img: Easycanvas.imgPretreat(
-                                'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+                                'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                                 {
                                     conversion: function (pixel, x, y) {
                                         return {

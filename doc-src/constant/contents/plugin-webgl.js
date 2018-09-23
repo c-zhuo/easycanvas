@@ -55,7 +55,7 @@ module.exports = `
 
                     var $letterG = new Easycanvas.sprite({
                         content: {
-                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+                            img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
                         style: {
                             tw: 50,

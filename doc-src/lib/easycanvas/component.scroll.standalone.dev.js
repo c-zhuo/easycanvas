@@ -1,175 +1,206 @@
-(function l(r, e) {
-    if (typeof exports === "object" && typeof module === "object") module.exports = e(); else if (typeof define === "function" && define.amd) define([], e); else {
-        var s = e();
-        for (var o in s) (typeof exports === "object" ? exports : r)[o] = s[o];
+(function l(s, o) {
+    if (typeof exports === "object" && typeof module === "object") module.exports = o(); else if (typeof define === "function" && define.amd) define([], o); else {
+        var r = o();
+        for (var e in r) (typeof exports === "object" ? exports : s)[e] = r[e];
     }
 })(this, function() {
     return function(l) {
-        var r = {};
-        function e(s) {
-            if (r[s]) return r[s].exports;
-            var o = r[s] = {
+        var s = {};
+        function o(r) {
+            if (s[r]) return s[r].exports;
+            var e = s[r] = {
                 exports: {},
-                id: s,
+                id: r,
                 loaded: false
             };
-            l[s].call(o.exports, o, o.exports, e);
-            o.loaded = true;
-            return o.exports;
+            l[r].call(e.exports, e, e.exports, o);
+            e.loaded = true;
+            return e.exports;
         }
-        e.m = l;
-        e.c = r;
-        e.p = "";
-        return e(0);
+        o.m = l;
+        o.c = s;
+        o.p = "";
+        return o(0);
     }({
-        0: function(l, r, e) {
-            l.exports = e(31);
+        0: function(l, s, o) {
+            l.exports = o(30);
         },
-        31: function(l, r) {
+        30: function(l, s) {
             "use strict";
-            var e = Object.assign || function(l) {
-                for (var r = 1; r < arguments.length; r++) {
-                    var e = arguments[r];
-                    for (var s in e) {
-                        if (Object.prototype.hasOwnProperty.call(e, s)) {
-                            l[s] = e[s];
+            var o = Object.assign || function(l) {
+                for (var s = 1; s < arguments.length; s++) {
+                    var o = arguments[s];
+                    for (var r in o) {
+                        if (Object.prototype.hasOwnProperty.call(o, r)) {
+                            l[r] = o[r];
                         }
                     }
                 }
                 return l;
             };
-            var s = typeof window !== "undefined";
-            var o = {};
-            var c = false;
-            var t = false;
-            var n = void 0;
-            var a = {
-                loose: function l(r) {
-                    c = false;
+            var r = typeof window !== "undefined";
+            var e = void 0;
+            var c = void 0;
+            var t = {
+                loose: function l(s) {
+                    s.$scroll.touching = false;
                 },
-                looper: function l(r) {
-                    if (!r.$scroll || !r.$scroll.$scrolling) return;
-                    if (Math.abs(r.$scroll.speedX) > 1) {
-                        r.$scroll.speedX *= r.scroll.smooth || .8;
+                looper: function l(s) {
+                    if (!s.$scroll || !s.$scroll.$scrolling) return;
+                    if (Math.abs(s.$scroll.speedX) > 1) {
+                        s.$scroll.speedX *= s.scroll.smooth || .8;
                     } else {
-                        r.$scroll.speedX = 0;
+                        s.$scroll.speedX = 0;
                     }
-                    if (Math.abs(r.$scroll.speedY) > 1) {
-                        r.$scroll.speedY *= r.scroll.smooth || .8;
+                    if (Math.abs(s.$scroll.speedY) > 1) {
+                        s.$scroll.speedY *= s.scroll.smooth || .8;
                     } else {
-                        r.$scroll.speedY = 0;
+                        s.$scroll.speedY = 0;
                     }
-                    if (Math.abs(r.$scroll.speedX) <= 2 && Math.abs(r.$scroll.speedY) <= 2) {
-                        r.$scroll.$scrolling = false;
+                    if (Math.abs(s.$scroll.speedX) <= 2 && Math.abs(s.$scroll.speedY) <= 2) {
+                        s.$scroll.$scrolling = false;
                         return;
                     }
-                    if (c) return;
-                    r.scroll.scrollY -= r.$scroll.speedY;
-                    r.scroll.scrollX -= r.$scroll.speedX;
-                    var e = n.utils.funcOrValue(r.scroll.minScrollX, r);
-                    var s = n.utils.funcOrValue(r.scroll.maxScrollX, r);
-                    var o = n.utils.funcOrValue(r.scroll.minScrollY, r);
-                    var t = n.utils.funcOrValue(r.scroll.maxScrollY, r);
-                    if (!isNaN(o) && r.scroll.scrollY < o) {
-                        r.scroll.scrollY = o;
-                    } else if (!isNaN(t) && r.scroll.scrollY > t) {
-                        r.scroll.scrollY = t;
+                    if (s.$scroll.touching) return;
+                    s.scroll.scrollY -= s.$scroll.speedY;
+                    s.scroll.scrollX -= s.$scroll.speedX;
+                    var o = e.utils.funcOrValue(s.scroll.minScrollX, s);
+                    var r = e.utils.funcOrValue(s.scroll.maxScrollX, s);
+                    var c = e.utils.funcOrValue(s.scroll.minScrollY, s);
+                    var t = e.utils.funcOrValue(s.scroll.maxScrollY, s);
+                    if (!isNaN(c) && s.scroll.scrollY < c) {
+                        s.scroll.scrollY = c;
+                    } else if (!isNaN(t) && s.scroll.scrollY > t) {
+                        s.scroll.scrollY = t;
                     }
-                    if (!isNaN(e) && r.scroll.scrollX < e) {
-                        r.scroll.scrollX = e;
-                    } else if (!isNaN(s) && r.scroll.scrollX > s) {
-                        r.scroll.scrollX = s;
+                    if (!isNaN(o) && s.scroll.scrollX < o) {
+                        s.scroll.scrollX = o;
+                    } else if (!isNaN(r) && s.scroll.scrollX > r) {
+                        s.scroll.scrollX = r;
                     }
                 },
-                touch: function l(r, e) {
-                    if (!r.scroll.scrollable) return false;
-                    var s = Date.now();
-                    if (!c) {
-                        c = s;
-                        o.x = e.canvasX;
-                        o.y = e.canvasY;
-                        r.$scroll.speedX = 0;
-                        r.$scroll.speedY = 0;
+                touch: function l(s, o) {
+                    if (!s.scroll.scrollable) return false;
+                    var r = Date.now();
+                    if (!s.$scroll.touching) {
+                        s.$scroll.touching = r;
+                        s.$scroll.quickTouch = r;
+                        s.$scroll.startPos.x = o.canvasX;
+                        s.$scroll.startPos.y = o.canvasY;
+                        s.$scroll.speedX = 0;
+                        s.$scroll.speedY = 0;
                     } else {
-                        r.$scroll.$scrolling = true;
-                        var t = Math.abs(e.canvasX - o.x);
-                        var n = Math.abs(e.canvasY - o.y);
-                        var a = s - c;
-                        c = s;
-                        if (t >= 1 && a > 1) {
-                            r.$scroll.speedX += (e.canvasX - o.x) / a * 10;
+                        s.$scroll.$scrolling = true;
+                        var e = s.$scroll.startPos.x - o.canvasX;
+                        var c = s.$scroll.startPos.y - o.canvasY;
+                        var t = r - s.$scroll.touching;
+                        s.$scroll.touching = r;
+                        if (s.scroll.scrollX + e < s.scroll.minScrollX || s.scroll.scrollX + e > s.scroll.maxScrollX) {
+                            if (s.scroll.flexibleX) e >>= 3; else e = 0;
                         }
-                        if (n >= 1 && a > 1) {
-                            r.$scroll.speedY = (e.canvasY - o.y) * 3;
-                            r.scroll.scrollY += o.y - e.canvasY;
+                        if (s.scroll.scrollY + c < s.scroll.minScrollY || s.scroll.scrollY + c > s.scroll.maxScrollY) {
+                            if (s.scroll.flexibleY) c >>= 3; else c = 0;
                         }
-                        o.x = e.canvasX;
-                        o.y = e.canvasY;
-                        return true;
+                        if (Math.abs(e) >= 1 && t > 1) {
+                            s.$scroll.speedX = (o.canvasX - s.$scroll.startPos.x) * 3;
+                            s.scroll.scrollX += e;
+                        }
+                        if (Math.abs(c) >= 1 && t > 1) {
+                            s.$scroll.speedY = (o.canvasY - s.$scroll.startPos.y) * 3;
+                            s.scroll.scrollY += c;
+                        }
+                        s.$scroll.startPos.x = o.canvasX;
+                        s.$scroll.startPos.y = o.canvasY;
+                        if (Math.abs(e) > Math.abs(c) + 1) return 1; else if (Math.abs(e) < Math.abs(c) - 1) return 2;
                     }
                 },
-                wheel: function l(r, e) {
-                    if (!r.scroll.scrollable) return false;
-                    r.$scroll.$scrolling = true;
-                    r.$scroll.speedX = e.event.wheelDeltaX;
-                    r.$scroll.speedY = e.event.wheelDeltaY;
-                    return true;
+                wheel: function l(s, o) {
+                    if (!s.scroll.scrollable) return false;
+                    s.$scroll.$scrolling = true;
+                    s.$scroll.speedX = o.event.wheelDeltaX;
+                    s.$scroll.speedY = o.event.wheelDeltaY;
+                    o.stopPropagation();
                 }
             };
-            var i = function l(r) {
-                var s = r || {};
-                s.scroll = e({
+            var a = function l(s) {
+                var r = false;
+                var a = s || {};
+                a.scroll = o({
                     scrollX: 0,
                     scrollY: 0,
                     scrollable: true,
                     minScrollX: 0,
                     maxScrollX: 0,
                     minScrollY: 0,
-                    maxScrollY: 0
-                }, r.scroll);
-                var o = function l() {
-                    u.scroll.scrollY = t();
-                };
-                var c = true;
-                var i = function l() {
-                    c = !c;
-                };
-                s.events = {
-                    interceptor: function l(r) {
-                        if (!c) return r;
-                        if (r.type === "touchmove") {
-                            a.touch(this, r);
-                            r.$stopPropagation = true;
-                        } else if (r.type === "mousewheel") {
-                            a.wheel(this, r);
-                        } else if (r.type === "touchend" || r.type === "mouseup") {
-                            a.loose(this);
-                        } else if (r.type === "hold") {
-                            r.$stopPropagation = true;
-                        }
-                        if (t) {
-                            u.off("ticked", o);
-                            t = false;
-                        }
-                        return r;
+                    maxScrollY: 0,
+                    propagationX: false,
+                    propagationY: false
+                }, s.scroll);
+                var n = function l() {
+                    if (r) {
+                        f.scroll.scrollY = r();
+                    } else {
+                        f.off("ticked", l);
                     }
                 };
-                var u = new n.class.sprite(s);
-                u.on("ticked", function() {
-                    a.looper(u);
+                var i = false;
+                a.events = o({
+                    touchstart: function l(s) {
+                        t.loose(this);
+                        i = true;
+                        c = false;
+                        t.touch(this, s);
+                        if (!f.scroll.propagationX && !f.scroll.propagationY) {
+                            s.stopPropagation();
+                        }
+                    },
+                    touchmove: function l(s) {
+                        if (!i) return;
+                        if (c && this !== c) {
+                            return;
+                        }
+                        var o = t.touch(this, s);
+                        if (o === 1 && f.scroll.propagationY) {
+                            s.stopPropagation();
+                            c = this;
+                        } else if (o === 2 && f.scroll.propagationX) {
+                            s.stopPropagation();
+                            c = this;
+                        }
+                    },
+                    mousewheel: function l(s) {
+                        i = true;
+                        t.wheel(this, s);
+                        s.stopPropagation();
+                    },
+                    touchend: function l() {
+                        i = false;
+                        t.loose(this);
+                    },
+                    mouseup: function l() {
+                        i = false;
+                        t.loose(this);
+                    }
+                }, a.events || {});
+                var f = new e.class.sprite(a);
+                f.on("ticked", function() {
+                    t.looper(f);
                 });
-                u.on("handleToggle", i);
-                u.on("scrollTo", function(l, r) {
-                    t = n.transition.pendulum(u.scroll.scrollY, l, (r || 200) * 2, {
+                f.on("scrollTo", function(l, s) {
+                    r = e.transition.pendulum(f.scroll.scrollY, l, (s || 200) * 2, {
                         cycle: .5
+                    }).then(function() {
+                        r = false;
                     });
-                    u.on("ticked", o);
+                    f.on("ticked", n);
                 });
-                u.$scroll = {
+                f.$scroll = {
                     speedX: 0,
-                    speedY: 0
+                    speedY: 0,
+                    touching: false,
+                    startPos: {}
                 };
-                var f = u.add({
+                var u = f.add({
                     name: "scrolling-element",
                     style: {
                         tx: function l() {
@@ -180,22 +211,25 @@
                         }
                     }
                 });
-                u.add = f.add.bind(f);
-                u.clear = f.clear.bind(f);
-                u.getChildren = function() {
-                    return f.children;
+                f.add = u.add.bind(u);
+                f.clear = u.clear.bind(u);
+                f.getChildren = function() {
+                    return u.children;
                 };
-                return u;
+                return f;
             };
-            var u = function l(r, e) {
-                n = r;
-                r.class[e] = i;
+            var n = function l(s, o) {
+                e = s;
+                if (o) {
+                    s.class[o] = a;
+                }
+                return a;
             };
-            if (s && window.Easycanvas) {
-                n = Easycanvas;
-                Easycanvas.class.scroll = i;
+            if (r && window.Easycanvas) {
+                e = Easycanvas;
+                Easycanvas.class.scroll = a;
             } else {
-                l.exports = u;
+                l.exports = n;
             }
         }
     });

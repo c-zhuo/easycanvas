@@ -17,7 +17,7 @@ module.exports = `
                             height: 100%;
                             max-width: 100%;
                             background-color: #222;
-                            background-image: url(https://chenzhuo1992.github.io/tanyitan/bg.jpg);
+                            background-image: url(https://c-zhuo.github.io/tanyitan/bg.jpg);
                             background-size: auto 100%;
                             background-position: 50% 50%;
                         }
@@ -60,8 +60,8 @@ module.exports = `
                             touchend: shoot,
                         }
                     });
-                    var BLOCK3D = $app.imgLoader('https://chenzhuo1992.github.io/tanyitan/stone.jpg');
-                    var BALL3D = $app.imgLoader('https://chenzhuo1992.github.io/tanyitan/star.jpg');
+                    var BLOCK3D = $app.imgLoader('https://c-zhuo.github.io/tanyitan/stone.jpg');
+                    var BALL3D = $app.imgLoader('https://c-zhuo.github.io/tanyitan/star.jpg');
                     $app.start();
                     $app.add({
                         name: '得分',

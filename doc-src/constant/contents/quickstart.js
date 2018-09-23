@@ -14,10 +14,10 @@ module.exports = `
             <script src="http://your-path/easycanvas.standalone.prod.js"></script>
 
             <!-- 如果你只是想快速尝试demo -->
-            <script src="https://chenzhuo1992.github.io/easycanvas/lib/easycanvas/easycanvas.standalone.prod.js"></script>
+            <script src="https://c-zhuo.github.io/easycanvas/lib/easycanvas/easycanvas.standalone.prod.js"></script>
         </code>
 
-        <p>这两个js文件可以在<a href="https://github.com/chenzhuo1992/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>
+        <p>这两个js文件可以在<a href="https://github.com/c-zhuo/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>
 
         <p>或者通过npm包的方式引入，通过<strong>process.env.NODE_ENV</strong>这个环境变量来选择版本（当它不为<strong>production</strong>的时候，都会使用开发版本）。</p>
 
@@ -56,7 +56,7 @@ module.exports = `
 
                     var $letterG = new Easycanvas.sprite({
                         content: {
-                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
+                            img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
                         style: {
                             tw: 50,

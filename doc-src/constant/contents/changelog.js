@@ -13,7 +13,7 @@ module.exports = `
 
         <h2>当前版本</h2>
 
-        <h3>0.5.11 (2018.9.x)</h3>
+        <h3>0.6.0 (2018.9.23)</h3>
 
         <p>Bugfix：修复部分低版本安卓手机，<strong>event不能正确触发</strong>的bug。</p>
         <p>Performance：调整部分底层实现，提升渲染和事件的性能。</p>
