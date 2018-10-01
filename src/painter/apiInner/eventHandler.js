@@ -219,6 +219,9 @@ eventHandler = function (e, _$e) {
 
     looper(sortByIndex($canvas.children), $e, caughts);
 
+    utils.execFuncs($canvas.hooks.afterEvent, $canvas, $e);
+    $canvas.hooks.afterEvent = null;
+
     extend.call($canvas, $e, caughts);
 
     if (process.env.NODE_ENV !== 'production') {

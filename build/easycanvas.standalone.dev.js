@@ -1184,6 +1184,8 @@
             }
             var $ = [];
             u(f(i.children), y, $);
+            n.default.execFuncs(i.hooks.afterEvent, i, y);
+            i.hooks.afterEvent = null;
             c.call(i, y, $);
             if (true) {
                 if (window[o.default.devFlag] && window[o.default.devFlag].selectMode && $.length) {
