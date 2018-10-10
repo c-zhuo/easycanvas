@@ -1,0 +1,32 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+        $Painter.register(document.getElementById('foo'), {
+            fullScreen: true
+        });
+        $Painter.start();
+
+        window.sprite1 = $Painter.add({
+            name: 'house1',
+            content: {
+                img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
+            },
+            style: {
+                tw: 100, th: 150,
+                tx: 200,
+                ty: 100,
+                // opacity: Easycanvas.transition.pendulum(0.1, 1, 1000).loop(),
+                locate: 'center',
+                zIndex: 1,
+                border: '1 rgba(0, 220, 0, 1)'
+            },
+        });
+    </script>
+</body>
+

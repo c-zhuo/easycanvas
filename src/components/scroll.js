@@ -6,6 +6,7 @@
  * ********** **/
 
 const inBrowser = typeof window !== 'undefined';
+const devicePixelRatio = window.devicePixelRatio || 1;
 
 let ec;
 let mutipleScrollLock;
@@ -75,8 +76,8 @@ let scrollFuncs = {
         } else {
             $sprite.$scroll.$scrolling = true;
 
-            let deltaX = $sprite.$scroll.startPos.x - $e.canvasX;
-            let deltaY = $sprite.$scroll.startPos.y - $e.canvasY;
+            let deltaX = ($sprite.$scroll.startPos.x - $e.canvasX);
+            let deltaY = ($sprite.$scroll.startPos.y - $e.canvasY);
 
             let deltaTime = now - $sprite.$scroll.touching;
             $sprite.$scroll.touching = now;
@@ -93,17 +94,26 @@ let scrollFuncs = {
             }
 
             if (Math.abs(deltaX) >= 1 && deltaTime > 1) {
-                $sprite.$scroll.speedX = ($e.canvasX - $sprite.$scroll.startPos.x) * 3;
+                let newSpeedX = ($e.canvasX - $sprite.$scroll.startPos.x) * 6 / devicePixelRatio;
+                $sprite.$scroll.speedY = Math.abs(newSpeedX / 2) > Math.abs($sprite.$scroll.speedX) ? newSpeedX : $sprite.$scroll.speedX;
                 $sprite.scroll.scrollX += deltaX;
             }
             if (Math.abs(deltaY) >= 1 && deltaTime > 1) {
-                $sprite.$scroll.speedY = ($e.canvasY - $sprite.$scroll.startPos.y) * 3;
+                let newSpeedY = ($e.canvasY - $sprite.$scroll.startPos.y) * 6 / devicePixelRatio;
+                // $sprite.$scroll.speedY = Math.abs(newSpeedY) < Math.abs($sprite.$scroll.speedY / 2) ? $sprite.$scroll.speedY / 2 : newSpeedY;
+                $sprite.$scroll.speedY = Math.abs(newSpeedY / 2) > Math.abs($sprite.$scroll.speedY) ? newSpeedY : $sprite.$scroll.speedY;
                 $sprite.scroll.scrollY += deltaY;
             }
+
+        // $sprite.$scroll.speedX = ($sprite.$scroll.speedX + ($e.canvasX - startPos.x) * 2) / 2;
+
+        // let curSpeed = ($e.canvasY - startPos.y) * 3;
+        // $sprite.$scroll.speedY = ($sprite.$scroll.speedY + curSpeed) / 2;
 
             $sprite.$scroll.startPos.x = $e.canvasX;
             $sprite.$scroll.startPos.y = $e.canvasY;
 
+            // $e.event.preventDefault();
             if (Math.abs(deltaX) > Math.abs(deltaY) + 1) return 1;
             else if (Math.abs(deltaX) < Math.abs(deltaY) - 1) return 2;
         }
