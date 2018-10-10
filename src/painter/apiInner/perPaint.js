@@ -33,13 +33,12 @@ const extend = function () {
 module.exports = function (i, index) {
     i.$rendered = false;
 
+    utils.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
+
     if (utils.funcOrValue(i.style.visible, i) === false) {
-        utils.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
         utils.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
         return;
     }
-
-    utils.execFuncs(i.hooks.beforeTick, i, i.$tickedTimes);
 
     let $canvas = this;
 
@@ -116,7 +115,11 @@ module.exports = function (i, index) {
         settings.fillRect = _props.backgroundColor;
     }
 
-    if (_props.overflow && _props.overflow === 'hidden') {
+    if (_props.border) {
+        settings.line = _props.border;
+    }
+
+    if (_props.overflow === 'hidden') {
         settings.clip = true;
     }
 
@@ -158,13 +161,6 @@ module.exports = function (i, index) {
         }
     }
 
-    // ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach((key) => {
-    //     i.$cache[key] = _props[key];
-    // });
-    // for (let key in _props) {
-    //     i.$cache[key] = _props[key];
-    // }
-
     // TODO
     // if (_imgWidth > 10 && _imgHeight > 10) {
     //     // 太小的图不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”
@@ -183,8 +179,9 @@ module.exports = function (i, index) {
     //     }
     // }
 
+    let meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
+
     if (settings.clip) {
-        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
         if (meetResult) {
             let $paintSprite = {
                 $id: i.$id,
@@ -206,7 +203,6 @@ module.exports = function (i, index) {
     deliverChildren($canvas, _children, -1);
 
     if (settings.fillRect) {
-        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
         if (meetResult) {
             i.$rendered = true;
 
@@ -232,8 +228,8 @@ module.exports = function (i, index) {
             cutOutside($canvas, _props, _imgWidth, _imgHeight);
         }
 
-        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width - 1, $canvas.height - 1, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
-        if (meetResult) {
+        let meetResultAfterCut = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width - 1, $canvas.height - 1, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
+        if (meetResultAfterCut) {
             i.$rendered = true;
 
             /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
@@ -379,6 +375,27 @@ module.exports = function (i, index) {
         }
     }
 
+    if (settings.line) {
+        if (meetResult) {
+            i.$rendered = true;
+
+            let $paintSprite = {
+                $id: i.$id,
+                type: 'line',
+                settings: settings,
+                img: _img,
+                props: _props,
+            };
+
+            // if (process.env.NODE_ENV !== 'production') {
+            //     // 开发环境下，将元素挂载到$children里以供标记
+                $paintSprite.$origin = i;
+            // };
+
+            $canvas.$children.push($paintSprite);
+        }
+    }
+
     if (!_img && !_text) {
         i.$rendered = undefined;
     }
@@ -386,7 +403,6 @@ module.exports = function (i, index) {
     deliverChildren($canvas, _children, 1);
 
     if (settings.clip) {
-        var meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
         if (meetResult) {
             let $paintSprite = {
                 $id: i.$id,

@@ -41,7 +41,7 @@ const render = function ($sprite, i) {
     let isText = $sprite.type === 'text';
 
     // 一些扩展插件的绘制可能没有props
-    if (props && $sprite.type !== 'clip' && $sprite.type !== 'clipOver') {
+    if (props && $sprite.type !== 'clip' && $sprite.type !== 'clipOver' && $sprite.type !== 'line') {
         if (isText) {
             let length = props.content.length;
 
@@ -235,6 +235,16 @@ const render = function ($sprite, i) {
     } else if ($sprite.type === 'fillRect') { 
         ctx.fillStyle = settings.fillRect;
         ctx.fillRect(props.tx,props.ty,props.tw,props.th);
+    } else if ($sprite.type === 'line') {
+        ctx.beginPath();
+        ctx.strokeStyle = props.border.substr(props.border.indexOf(' ')) || 'black';
+        ctx.lineWidth = props.border.split(' ')[0] || 1;
+        ctx.moveTo(props.tx, props.ty);
+        ctx.lineTo(props.tx + props.tw, props.ty);
+        ctx.lineTo(props.tx + props.tw, props.ty + props.th);
+        ctx.lineTo(props.tx, props.ty + props.th);
+        ctx.lineTo(props.tx, props.ty);
+        ctx.stroke();
     } else if ($sprite.type === 'clipOver') {
         ctx.restore();
     }

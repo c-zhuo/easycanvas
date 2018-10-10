@@ -38,9 +38,12 @@ Easycanvas是一个轻量、高效率的渐进式canvas渲染库。将canvas与�
 - ☑ 支持加载dds图片（插件）
 - ☑ 支持微信小游戏（插件）
 - ☑ 支持微信小程序（插件）
-- ☐ Canvas UI组件
-- ☐ 更多功能的单元测试
 - ☐ 调试工具完善
+- ☐ CanvasUI基础组件
+- ☐ CanvasRouter路由（插件）
+- ☐ CanvasStore数据管理（插件）
+- ☐ 支持DefineProperty的数据绑定（插件）
+- ☐ 更多功能的单元测试
 - ☐ Webgl的3D渲染性能优化
 
 #### Changelog
