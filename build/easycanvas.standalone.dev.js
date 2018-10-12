@@ -22,7 +22,7 @@
         r.p = "";
         return r(0);
     }([ function(t, e, r) {
-        t.exports = r(35);
+        t.exports = r(36);
     }, function(t, e) {
         "use strict";
         var r = {
@@ -292,31 +292,33 @@
             return t && typeof Symbol === "function" && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
         };
         var a = r(1);
-        var o = w(a);
+        var o = T(a);
         var s = r(4);
-        var f = w(s);
+        var f = T(s);
         var l = r(19);
-        var u = w(l);
+        var u = T(l);
         var c = r(18);
-        var d = w(c);
+        var d = T(c);
         var h = r(16);
-        var v = w(h);
+        var v = T(h);
         var p = r(17);
-        var g = w(p);
+        var g = T(p);
         var y = r(20);
-        var $ = w(y);
+        var $ = T(y);
         var m = r(15);
-        var x = w(m);
-        function w(t) {
+        var x = T(m);
+        var w = r(31);
+        var b = T(w);
+        function T(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
         }
-        var b = function t(e) {
+        var k = function t(e) {
             if (e.children) {
                 e.children.forEach(function(r, i) {
                     if (!r.$id) {
-                        e.children[i] = new A(r);
+                        e.children[i] = new S(r);
                     }
                     if (e.$id && !e.$dom) {
                         e.children[i].$canvas = e.$canvas;
@@ -328,7 +330,7 @@
                 });
             }
         };
-        var T = function t(e) {
+        var A = function t(e) {
             var r = e || {};
             if (!r.$id) {
                 r.$id = Math.random().toString(36).substr(2);
@@ -372,37 +374,37 @@
                 r.name = r.name || "Unnamed Easycanvas Object";
             }
             r.children = r.children || [];
-            b(r);
+            k(r);
             r.$cache = {};
             r.$styleCacheTime = {};
             return r;
         };
-        var k = function t(e) {
+        var O = function t(e) {
             var r = this;
             this.$extendList.forEach(function(t) {
                 t.call(r, e);
             });
         };
-        var A = function t(e) {
-            var r = T(e);
+        var S = function t(e) {
+            var r = A(e);
             for (var i in r) {
                 if (Object.prototype.hasOwnProperty.call(r, i)) {
                     this[i] = r[i];
                 }
             }
-            k.call(this, r);
+            O.call(this, r);
             return this;
         };
-        A.prototype.$extendList = [];
-        A.prototype.add = function(t) {
+        S.prototype.$extendList = [];
+        S.prototype.add = function(t) {
             if (!t) {
                 return;
             }
             this.children.push(t);
-            b(this);
+            k(this);
             return this.children[this.children.length - 1];
         };
-        A.prototype.getRect = function() {
+        S.prototype.getRect = function() {
             var t = this;
             var e = {};
             f.default.txywh.forEach(function(r) {
@@ -427,7 +429,7 @@
             }
             return e;
         };
-        A.prototype.getSelfStyle = function(t) {
+        S.prototype.getSelfStyle = function(t) {
             var e = {};
             if (t) {
                 return o.default.funcOrValue(this.style[t], this);
@@ -437,7 +439,7 @@
             }
             return e;
         };
-        A.prototype.getStyle = function(t) {
+        S.prototype.getStyle = function(t) {
             var e = this;
             var r = e.$canvas.$lastPaintTime;
             if (e.$styleCacheTime[t] === r) {
@@ -468,7 +470,7 @@
             }
             return i;
         };
-        A.prototype.remove = function(t) {
+        S.prototype.remove = function(t) {
             if (t) {
                 this.$canvas.remove(t);
                 o.default.execFuncs(t.hooks.removed, t);
@@ -481,7 +483,7 @@
             }
             o.default.execFuncs(this.hooks.removed, this);
         };
-        A.prototype.update = function(t) {
+        S.prototype.update = function(t) {
             if (!t) return;
             for (var e in t) {
                 if (n(t[e]) === "object") {
@@ -493,7 +495,7 @@
                 }
             }
         };
-        A.prototype.getAllChildren = function(t) {
+        S.prototype.getAllChildren = function(t) {
             var e = this;
             var r = t ? [ e ] : [];
             e.children.forEach(function(t) {
@@ -501,27 +503,12 @@
             });
             return r;
         };
-        A.prototype.getOuterRect = function() {
-            var t = this;
-            var e = t.getRect();
-            e.tr = e.tx + e.tw;
-            e.tb = e.ty + e.th;
-            this.children.forEach(function(t) {
-                var r = t.getOuterRect();
-                if (r.tx < e.tx) e.tx = r.tx;
-                if (r.ty < e.ty) e.ty = r.ty;
-                if (r.tr > e.tr) e.tr = r.tr;
-                if (r.tb > e.tb) e.tb = r.tb;
-                e.tw = e.tr - e.tx;
-                e.th = e.tb - e.ty;
-            });
-            return e;
-        };
-        var O = 1;
-        var S = 2;
-        var M = 3;
-        A.prototype.combine = function(t) {
-            if (this.$combine) return O;
+        S.prototype.getOuterRect = b.default;
+        var M = 1;
+        var F = 2;
+        var E = 3;
+        S.prototype.combine = function(t) {
+            if (this.$combine) return M;
             var e = this;
             var r = this.$canvas;
             var n = e.getAllChildren(true);
@@ -530,7 +517,7 @@
                 var s = o.content.img;
                 if (s && s.src) {
                     if (o.content.img.width === 0 || s.complete === false || s.naturalHeight === 0) {
-                        return M;
+                        return E;
                     }
                 }
             }
@@ -543,8 +530,8 @@
             l.tr = Math.round(l.tr);
             l.tb = Math.round(l.tb);
             if (!t) {
-                if (l.tx < 0 || l.tr > r.width) return S;
-                if (l.ty < 0 || l.tb > r.height) return S;
+                if (l.tx < 0 || l.tr > r.width) return F;
+                if (l.ty < 0 || l.tb > r.height) return F;
             }
             r.paint();
             var u = r.$children.filter(function(t) {
@@ -589,20 +576,27 @@
             };
             r.$children = c;
             r.$render();
-            e.off("ticked", tryToCombine);
-            return O;
+            e.off("ticked", R);
+            return M;
         };
-        A.prototype.uncombine = function() {
+        S.prototype.uncombine = function() {
             i(this, this.$combine);
             this.$combine = false;
         };
-        A.prototype.nextTick = g.default;
-        A.prototype.on = u.default;
-        A.prototype.off = d.default;
-        A.prototype.clear = v.default;
-        A.prototype.trigger = $.default;
-        A.prototype.broadcast = x.default;
-        t.exports = A;
+        var R = function t() {
+            this.combine();
+        };
+        S.prototype.combineAsync = function() {
+            this.on("ticked", R, 200);
+            return this;
+        };
+        S.prototype.nextTick = g.default;
+        S.prototype.on = u.default;
+        S.prototype.off = d.default;
+        S.prototype.clear = v.default;
+        S.prototype.trigger = $.default;
+        S.prototype.broadcast = x.default;
+        t.exports = S;
     }, , function(t, e, r) {
         "use strict";
         var i = r(1);
@@ -1045,15 +1039,33 @@
                 l.$plugin = u;
             }
         }
+    }, function(t, e) {
+        "use strict";
+        t.exports = function() {
+            var t = this;
+            var e = t.getRect();
+            e.tr = e.tx + e.tw;
+            e.tb = e.ty + e.th;
+            this.children.forEach(function(t) {
+                var r = t.getOuterRect();
+                if (r.tx < e.tx) e.tx = r.tx;
+                if (r.ty < e.ty) e.ty = r.ty;
+                if (r.tr > e.tr) e.tr = r.tr;
+                if (r.tb > e.tb) e.tb = r.tb;
+                e.tw = e.tr - e.tx;
+                e.th = e.tb - e.ty;
+            });
+            return e;
+        };
     }, , , , , function(t, e, r) {
         "use strict";
         var i = r(4);
         var n = A(i);
-        var a = r(57);
+        var a = r(58);
         var o = A(a);
         var s = r(28);
         var f = A(s);
-        var l = r(99);
+        var l = r(100);
         var u = A(l);
         var c = r(1);
         var d = A(c);
@@ -1061,9 +1073,9 @@
         var v = A(h);
         var p = r(9);
         var g = A(p);
-        var y = r(98);
+        var y = r(99);
         var $ = A(y);
-        var m = r(100);
+        var m = r(101);
         var x = A(m);
         var w = r(13);
         var b = A(w);
@@ -1124,15 +1136,15 @@
         t.exports = O;
     }, , , , function(t, e, r) {
         "use strict";
-        var i = r(44);
+        var i = r(45);
         var n = h(i);
-        var a = r(46);
+        var a = r(47);
         var o = h(a);
-        var s = r(40);
+        var s = r(41);
         var f = h(s);
-        var l = r(45);
+        var l = r(46);
         var u = h(l);
-        var c = r(56);
+        var c = r(57);
         var d = h(c);
         function h(t) {
             return t && t.__esModule ? t : {
@@ -1489,11 +1501,11 @@
         var n = p(i);
         var a = r(4);
         var o = p(a);
-        var s = r(43);
+        var s = r(44);
         var f = p(s);
-        var l = r(41);
+        var l = r(42);
         var u = p(l);
-        var c = r(42);
+        var c = r(43);
         var d = p(c);
         var h = r(12);
         var v = p(h);
@@ -2020,17 +2032,17 @@
         };
     }, function(t, e, r) {
         "use strict";
-        var i = r(48);
+        var i = r(49);
         var n = R(i);
-        var a = r(52);
+        var a = r(53);
         var o = R(a);
-        var s = r(55);
+        var s = r(56);
         var f = R(s);
-        var l = r(49);
+        var l = r(50);
         var u = R(l);
         var c = r(16);
         var d = R(c);
-        var h = r(50);
+        var h = r(51);
         var v = R(h);
         var p = r(19);
         var g = R(p);
@@ -2042,11 +2054,11 @@
         var b = R(w);
         var T = r(17);
         var k = R(T);
-        var A = r(51);
+        var A = r(52);
         var O = R(A);
-        var S = r(53);
+        var S = r(54);
         var M = R(S);
-        var F = r(54);
+        var F = r(55);
         var E = R(F);
         function R(t) {
             return t && t.__esModule ? t : {
@@ -2392,11 +2404,11 @@
         };
     }, function(t, e, r) {
         "use strict";
-        var i = r(47);
+        var i = r(48);
         var n = c(i);
-        var a = r(39);
+        var a = r(40);
         var o = c(a);
-        var s = r(58);
+        var s = r(59);
         var f = c(s);
         var l = r(9);
         var u = c(l);

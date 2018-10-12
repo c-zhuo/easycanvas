@@ -6,10 +6,10 @@
  *         tx, ty, tw, th,
  *         zIndex, opacity, scale, rotate, rx, ry,
  *         sx, sy, sw, sh, locate, // useless for content.text
- *         fh, fv, fx, fy, // transfrom
- *         align, font, color, // useless for content.img
+ *         fh, fv, fx, fy, // transform
+ *         textAlign, textFont, color, // useless for content.img
  *         visible, // visible false equals inexistence
- *         mirrX, mirrY, // visible false equals inexistence
+ *         mirrX, mirrY,
  *     },
  *     content: {
  *         img,
@@ -45,6 +45,8 @@ import nextTick from '../painter/apiOuter/nextTick.js';
 import trigger from '../painter/apiOuter/trigger.js';
 import broadcast from '../painter/apiOuter/broadcast.js';
 // import bindDrag from '../painter/apiInner/bindDrag.js';
+
+import getOuterRect from './api.getOuterRect.js';
 
 const ChangeChildrenToSprite = function ($parent) {
     if ($parent.children) {
@@ -320,26 +322,7 @@ sprite.prototype.getAllChildren = function (includeSelf) {
     return childrenSet;
 };
 
-sprite.prototype.getOuterRect = function () {
-    let $sprite = this;
-
-    let rect = $sprite.getRect();
-    rect.tr = rect.tx + rect.tw;
-    rect.tb = rect.ty + rect.th;
-
-    this.children.forEach((child) => {
-        let childRect = child.getOuterRect();
-        if (childRect.tx < rect.tx) rect.tx = childRect.tx;
-        if (childRect.ty < rect.ty) rect.ty = childRect.ty;
-        if (childRect.tr > rect.tr) rect.tr = childRect.tr;
-        if (childRect.tb > rect.tb) rect.tb = childRect.tb;
-
-        rect.tw = rect.tr - rect.tx;
-        rect.th = rect.tb - rect.ty;
-    });
-
-    return rect;
-};
+sprite.prototype.getOuterRect = getOuterRect;
 
 const COMBINE_DONE = 1;
 const COMBINE_FAIL = 2;
@@ -470,15 +453,15 @@ sprite.prototype.uncombine = function () {
     this.$combine = false;
 };
 
-// const tryToCombine = function () {
-//     this.combine();
-// };
+const tryToCombine = function () {
+    this.combine();
+};
 
-// sprite.prototype.accelerate = function () {
-//     this.on('ticked', tryToCombine, 200);
+sprite.prototype.combineAsync = function () {
+    this.on('ticked', tryToCombine, 200);
 
-//     return this;
-// };
+    return this;
+};
 
 sprite.prototype.nextTick = nextTick;
 sprite.prototype.on = on;
