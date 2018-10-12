@@ -86,7 +86,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.5.11"
+            version: "0.6.0"
         };
     }, , , , , function(e, t) {
         "use strict";

@@ -146,7 +146,7 @@ module.exports = `
                         webgl: true, // 开启WebGL渲染
                     });
 
-                    var stone = $app.imgLoader('https://raw.githubusercontent.com/chenzhuo1992/tanyitan/3d/debug/docs/stone.jpg');
+                    var stone = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/stone.jpg');
 
                     var $stone1 = new Easycanvas.sprite({
                         style: {
@@ -212,7 +212,7 @@ module.exports = `
                             scaleX: Easycanvas.transition.pendulum(1, 2, 3000).loop(),
                             ry: Easycanvas.transition.linear(0, 360, 20000).loop(),
                             rz: 45,
-                            img: 'https://raw.githubusercontent.com/chenzhuo1992/tanyitan/3d/debug/docs/stone.jpg'
+                            img: 'https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/stone.jpg'
                         }),
                     });
 
