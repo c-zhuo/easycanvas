@@ -61,8 +61,6 @@ module.exports = function () {
         $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'END');
     }
 
-    this.fps++;
-
     utils.execFuncs($canvas.hooks.ticked, $canvas, [$canvas.$rafTime]);
 
     if ($canvas.hooks.nextTick) {

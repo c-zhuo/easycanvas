@@ -182,7 +182,7 @@ eventHandler = function (e, _$e) {
     };
 
     if ($canvas.fastclick) {
-        if ($e.type === 'click' && !$e.fakeClick) {
+        if ($e.type === 'click' && !$e.$fakeClick) {
             return;
         } else if ($e.type === 'touchstart') {
             fastclick.x = $e.canvasX;
@@ -191,7 +191,7 @@ eventHandler = function (e, _$e) {
         } else if ($e.type === 'touchend') {
             if (Math.abs(fastclick.x - $e.canvasX) < 30 && Math.abs(fastclick.y - $e.canvasY) < 30 && Date.now() - fastclick.timeStamp < 200) {
                 eventHandler.call(this, null, {
-                    fakeClick: true,
+                    $fakeClick: true,
                     type: 'click',
                     canvasX: fastclick.x,
                     canvasY: fastclick.y,

@@ -74,11 +74,15 @@ const render = function ($sprite, i) {
                     continue;
                 }
 
+                let tmpSpriteSettings = $tmpSprite.settings;
+
                 if (!$tmpSprite.type || $tmpSprite.type !== 'img') {
                     // 不是图片
-                    // fillRect可能还有透明度
-                    $tmpSprite.$cannotCover = true;
-                    continue;
+                    // 但fillRect可能还有透明度
+                    if (!($tmpSprite.type === 'fillRect' && tmpSpriteSettings.fillRect.indexOf('rgba') === -1)) {
+                        $tmpSprite.$cannotCover = true;
+                        continue;
+                    }
                 }
 
                 let tmpProps = $tmpSprite.props;
@@ -99,7 +103,6 @@ const render = function ($sprite, i) {
                     continue;
                 }
 
-                let tmpSpriteSettings = $tmpSprite.settings;
 
                 // 带rotate的元素暂时不考虑，需要复杂的计算
                 if (tmpSpriteSettings.globalAlpha !== 1 ||

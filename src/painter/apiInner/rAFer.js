@@ -23,7 +23,7 @@ module.exports = function (f) {
         this.fps = 0;
     }
 
-    tick(function (rafTime) {
+    tick((rafTime) => {
         this.$rafTime = rafTime;
         this.$rAFer(f);
         if (this.maxFps > 0 && this.maxFps < 60) {
@@ -37,6 +37,7 @@ module.exports = function (f) {
         } else {
             this.$lastPaintTime = Date.now();
         }
+        this.fps++;
         f();
-    }.bind(this));
+    });
 };
