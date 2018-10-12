@@ -30,9 +30,9 @@ module.exports = `
                         }
                     });
 
-                    var $letterG = new Easycanvas.class.sprite({
+                    var $letterG = new Easycanvas.sprite({
                         content: {
-                            img: 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true',
+                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
                         },
                         style: {
                             tw: function () {
@@ -88,9 +88,9 @@ module.exports = `
                         height: 400,
                     });
 
-                    var $parent = new Easycanvas.class.sprite({
+                    var $parent = new Easycanvas.sprite({
                         content: {
-                            img: 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true',
+                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
                         },
                         style: {
                             tw: 100,
@@ -100,9 +100,9 @@ module.exports = `
                         },
                     });
 
-                    var $child = new Easycanvas.class.sprite({
+                    var $child = new Easycanvas.sprite({
                         content: {
-                            img: 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true',
+                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
                         },
                         style: {
                             tw: function () {return 100;},
@@ -149,9 +149,9 @@ module.exports = `
                         height: 400,
                     });
 
-                    var $letterG = new Easycanvas.class.sprite({
+                    var $letterG = new Easycanvas.sprite({
                         content: {
-                            img: 'https://github.com/chenzhuo1992/easycanvas/blob/master/demos/G.png?raw=true',
+                            img: 'https://raw.githubusercontent.com/chenzhuo1992/easycanvas/master/demos/G.png',
                         },
                         style: {
                             tw: function () {

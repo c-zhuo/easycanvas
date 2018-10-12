@@ -7,10 +7,11 @@
  * ********** **/
 
 import tick from 'utils/tick.js';
+import transition from 'utils/transition.js';
 
 module.exports = function (f) {
     let time = Date.now();
-    window.Easycanvas.transition.$lastPaintTime = this.$nextTickTime = time;
+    transition.$lastPaintTime = this.$nextTickTime = time;
 
     // calculating fps
     if (time - this.fpsCalculateTime >= 1000) {

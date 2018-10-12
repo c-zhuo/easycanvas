@@ -11,6 +11,9 @@ import utils from 'utils/utils.js';
 import mathPointRotate from 'utils/math.point-rotate.js';
 
 const or = utils.firstValuable;
+
+const inBrowser = typeof window !== 'undefined';
+
 const getValueFromArrayOrStatic = function (physics, key, index) {
     return or(physics[key][index], physics[key]);
 };
@@ -21,7 +24,7 @@ const err = function (msg) {
 
 let cp = chipmunk;
 
-Easycanvas.extend(function (opt) {
+const init = function (opt) {
     if (!opt.physics) return;
 
     let sprite = this;
@@ -225,9 +228,9 @@ Easycanvas.extend(function (opt) {
 
         sprite.$physics.body && cp2ec(sprite.$physics.body, sprite);
     });
-});
+};
 
-let xy2Vect = function (pos) {
+const xy2Vect = function (pos) {
     // make a mark for debugging
     // $Painter.add({
     //     name: 'tmp1',
@@ -248,7 +251,7 @@ let xy2Vect = function (pos) {
     );
 };
 
-let cp2ec = function (body, sprite) {
+const cp2ec = function (body, sprite) {
     let pos = body.getPos();
     let vel = body.getVel();
 
@@ -450,4 +453,10 @@ function spritePhysicsOn ($sprite) {
             body.$sprite = $sprite;
         }
     }
+}
+
+if (inBrowser && window.Easycanvas) {
+    Easycanvas.extend(init);
+} else {
+    module.exports = init;
 }

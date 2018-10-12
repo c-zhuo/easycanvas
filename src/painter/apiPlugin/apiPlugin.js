@@ -96,7 +96,9 @@ module.exports = function () {
             },
 
             timeCollect ($canvas, type, startOrEnd) {
-                $canvas.$perf['$' + type] += (startOrEnd === 'START' ? -1 : 1) * Date.now();
+                // START与END必须在同一个event loop中，且位于相同的微任务队列中
+                // 否则会影响指标收集
+                $canvas.$perf['$' + type] += ((startOrEnd === 'START' || startOrEnd === 'PAUSE')? -1 : 1) * Date.now();
             },
 
             selectSprite (isChoosing, $canvas, $sprite) {
@@ -111,32 +113,39 @@ module.exports = function () {
                         content: {
                             img: $canvas.imgLoader(MaskCanvasBase64),
                         },
-                        style: {
-                        }
+                        style: {},
+                        webgl: undefined,
                     });
                 }
 
-                ['tx', 'ty', 'tw', 'th', 'rotate', 'rx', 'ry'].forEach(function (key) {
+                ['tx', 'ty', 'rotate', 'rx', 'ry', 'scale', 'tw', 'th', 'locate'].forEach(function (key) {
                     (function (_key) {
                         $selectMask.style[_key] = function () {
-                            return $sprite.$cache && $sprite.$cache[_key];
+                            if (_key === 'tw' || _key === 'th') {
+                                return $sprite.getStyle(_key) || $sprite.getRect()[_key];
+                            }
+                            return $sprite.getStyle(_key);
                         };
                     })(key);
                 });
+                window.$selectMask = $selectMask;
 
                 // mask of webgl
-                $selectMask.webgl = $sprite.webgl ? {} : false;
+                $selectMask.webgl = $sprite.webgl ? {} : undefined;
                 if ($selectMask.webgl) {
                     for (var key in $sprite.webgl) {
-                        $selectMask.webgl[key] = $sprite.webgl[key];
+                        (function (_key) {
+                            $selectMask.webgl[_key] = function () {
+                                if (typeof $sprite.webgl[_key] === 'function') {
+                                    return $sprite.webgl[_key].call($sprite);
+                                }
+                                return $sprite.webgl[_key];
+                            };
+                        })(key);
                     }
                     $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);
+                    $selectMask.webgl.opacity = 1;
                 }
-
-                // $sprite.$cache has calculated the 'scale' and 'locate'
-                // Here uses the default values
-                $selectMask.style.scale = 1;
-                $selectMask.style.locate = 'lt';
 
                 $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
                 $selectMask.style.visible = function () {
