@@ -77,14 +77,6 @@ const preAdd = function (item) {
     item.style.scale = item.style.scale || 1;
     // item.style.display = item.style.display;
 
-    let _img = utils.funcOrValue(item.content.img);
-    if (_img === undefined) {
-        _img = {
-            width: 0,
-            height: 0,
-        };
-    }
-
     constants.xywh.forEach(function (key) {
         item.style[key] = item.style[key] || 0;
     });
@@ -136,20 +128,20 @@ const preAdd = function (item) {
 let sprite = function (opt) {
     let _opt = preAdd(opt);
 
-	for (let i in _opt) {
-    	if (Object.prototype.hasOwnProperty.call(_opt, i)) {
-    		this[i] = _opt[i];
-    	}
-	}
+    for (let i in _opt) {
+        if (Object.prototype.hasOwnProperty.call(_opt, i)) {
+            this[i] = _opt[i];
+        }
+    }
 
-	return this;
+    return this;
 };
 
 sprite.prototype.add = function (child) {
-	this.children = this.children || [];
+    this.children = this.children || [];
 
-	child.$canvas = this.$canvas;
-	child.$parent = this;
+    child.$canvas = this.$canvas;
+    child.$parent = this;
 
     if (!child.$id) {
         child = new sprite(child);
@@ -163,23 +155,23 @@ sprite.prototype.add = function (child) {
         child.children[i].$parent = child;
     });
 
-	this.children.push(child);
+    this.children.push(child);
 
     return child;
 };
 
 sprite.prototype.remove = function (child) {
-	if (child) {
-		this.$canvas.remove(child);
+    if (child) {
+        this.$canvas.remove(child);
         utils.execFuncs(child.hooks.removed, child);
         return;
-	}
+    }
 
     if (this.$parent) {
-		this.$parent.remove(this);
-	} else {
-		this.$canvas.remove(this);
-	}
+        this.$parent.remove(this);
+    } else {
+        this.$canvas.remove(this);
+    }
     utils.execFuncs(this.hooks.removed, this);
 };
 
@@ -196,6 +188,18 @@ sprite.prototype.update = function (opt) {
         }
     }
 }
+
+sprite.prototype.rect = function () {
+    return this.$cache;
+};
+
+sprite.prototype.self = function () {
+    let res = {};
+    for (let key in this.style) {
+        res[key] = utils.funcOrValue(this.style[key], this);
+    }
+    return res;
+};
 
 sprite.prototype.on = on;
 sprite.prototype.off = off;

@@ -2,7 +2,7 @@
 
 var webpack = require('webpack');
 
-var config = require('./webpack.easycanvas.dist.js');
+var config = require('./webpack.easycanvas.local.js');
 
 config.output.filename = '[name].standalone.dev.js';
 

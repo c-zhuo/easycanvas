@@ -72,22 +72,25 @@ let physics = function (opt) {
 
     sprite.physicsOn = function () {
         sprite.$canvas.nextTick(() => {
-            if (!sprite.$physics) {
-                spritePhysicsOn(sprite);
-            }
+            // 第一帧没有$cache
+            sprite.$canvas.nextTick(() => {
+                if (!sprite.$physics) {
+                    spritePhysicsOn(sprite);
+                }
 
-            sprite.$physics.inSpace = true;
+                sprite.$physics.inSpace = true;
 
-            if (sprite.$physics.body) {
-                sprite.$physics.body.setPos(new cp.Vect(
-                    sprite.$cache.tx + sprite.$cache.tw / 2,
-                    -sprite.$cache.ty - sprite.$cache.th / 2
-                ));
-            }
+                if (sprite.$physics.body) {
+                    sprite.$physics.body.setPos(new cp.Vect(
+                        sprite.$cache.tx + sprite.$cache.tw / 2,
+                        -sprite.$cache.ty - sprite.$cache.th / 2
+                    ));
+                }
 
-            sprite.$physics.body && sprite.$physics.space.addBody(sprite.$physics.body);
-            sprite.$physics.shape && sprite.$physics.shape.forEach((s) => {
-                sprite.$physics.space[sprite.physics.static ? 'addStaticShape' : 'addShape'](s);
+                sprite.$physics.body && sprite.$physics.space.addBody(sprite.$physics.body);
+                sprite.$physics.shape && sprite.$physics.shape.forEach((s) => {
+                    sprite.$physics.space[sprite.physics.static ? 'addStaticShape' : 'addShape'](s);
+                });
             });
         });
     };
