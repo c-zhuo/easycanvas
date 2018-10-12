@@ -95,7 +95,8 @@ const preAdd = function (_item) {
         item.style[key] = item.style[key] || 0;
     });
 
-    item.inherit = item.inherit || ['tx', 'ty', 'scale', 'opacity'];
+    item.inherit = item.inherit;
+    // item.inherit = item.inherit || ['tx', 'ty', 'scale', 'opacity'];
     item.drag = item.drag || {};
 
     item.events = item.events || {};
@@ -109,10 +110,6 @@ const preAdd = function (_item) {
 
     item.events.eIndex = item.events.eIndex;
     // item.events.through = !!item.events.through;
-
-    item.scroll = item.scroll || {};
-    item.scroll.scrollX = item.scroll.scrollX || 0;
-    item.scroll.scrollY = item.scroll.scrollY || 0;
 
     item.hooks = item.hooks || {};
 
@@ -133,11 +130,6 @@ const preAdd = function (_item) {
     item.children = item.children || [];
 
     ChangeChildrenToSprite(item);
-
-    item.$scroll = {
-        speedX: 0,
-        speedY: 0,
-    };
 
     // item.$cache = {};
     // item.$styleCacheTime = {};
@@ -222,9 +214,14 @@ sprite.prototype.getRect = function () {
 //     return res && res[0];
 // };
 
-sprite.prototype.getSelfStyle = function ({locate}) {
+sprite.prototype.getSelfStyle = function (key) {
     let res = {};
-    for (var key in this.style) {
+
+    if (key) {
+        return utils.funcOrValue(this.style[key], this);
+    }
+
+    for (let key in this.style) {
         res[key] = utils.funcOrValue(this.style[key], this);
     }
 
@@ -242,24 +239,27 @@ sprite.prototype.getStyle = function (key) {
 
     let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
 
-    if ($sprite.$parent && $sprite.inherit.indexOf(key) >= 0) {
-        // 额外处理滚动
-        if (key === 'tx') {
-            currentValue -= $sprite.$parent.scroll.scrollX || 0;
-        } else if (key === 'ty') {
-            currentValue -= $sprite.$parent.scroll.scrollY || 0;
+    if ($sprite.$parent) {
+        let needInherit;
+
+        if ($sprite.inherit) {
+            needInherit = $sprite.inherit.indexOf(key) >= 0;
+        } else {
+            needInherit = key === 'tx' || key === 'ty' || key === 'scale' || key === 'opacity';
         }
 
-        if (key === 'tw' || key === 'th') {
-            return utils.firstValuable(currentValue, $sprite.$parent.getStyle(key));
-        } else if (key === 'opacity' || key === 'scale') {
-            return (
-                utils.firstValuable($sprite.$parent.getStyle(key), 1)
-            ) * utils.firstValuable(currentValue, 1);
-        } else {
-            return (
-                utils.firstValuable($sprite.$parent.getStyle(key), 0)
-            ) + utils.firstValuable(currentValue, 0);
+        if (needInherit) {
+            if (key === 'tw' || key === 'th') {
+                return utils.firstValuable(currentValue, $sprite.$parent.getStyle(key));
+            } else if (key === 'opacity' || key === 'scale') {
+                return (
+                    utils.firstValuable($sprite.$parent.getStyle(key), 1)
+                ) * utils.firstValuable(currentValue, 1);
+            } else {
+                return (
+                    utils.firstValuable($sprite.$parent.getStyle(key), 0)
+                ) + utils.firstValuable(currentValue, 0);
+            }
         }
     }
 

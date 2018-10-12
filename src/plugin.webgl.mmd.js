@@ -6,13 +6,13 @@
  *
  * ********** **/
 
-import Pmd from './plugins/mmd/Pmd.js';
-import PmdFileParser from './plugins/mmd/PmdFileParser.js';
-import PmdModelView from './plugins/mmd/PmdModelView_easycanvas.js';
-import PmdView from './plugins/mmd/PmdView_easycanvas.js';
-import Vmd from './plugins/mmd/Vmd.js';
-import VmdFileParser from './plugins/mmd/VmdFileParser.js';
-import Physics from './plugins/mmd/Physics.js';
+import Pmd from './plugin-webgl/mmd/Pmd.js';
+import PmdFileParser from './plugin-webgl/mmd/PmdFileParser.js';
+import PmdModelView from './plugin-webgl/mmd/PmdModelView_easycanvas.js';
+import PmdView from './plugin-webgl/mmd/PmdView_easycanvas.js';
+import Vmd from './plugin-webgl/mmd/Vmd.js';
+import VmdFileParser from './plugin-webgl/mmd/VmdFileParser.js';
+import Physics from './plugin-webgl/mmd/Physics.js';
 
 const err = function (msg) {
     console.error('[Easycanvas-webgl] ' + msg);

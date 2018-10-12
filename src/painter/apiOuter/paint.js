@@ -8,7 +8,7 @@
 import utils from 'utils/utils.js';
 
 module.exports = function () {
-    if (this.$pausing || document.hidden) return;
+    if (this.$pausing || (this.$inBrowser && document.hidden)) return;
 
     let $canvas = this;
 
