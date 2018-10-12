@@ -23,9 +23,15 @@
         return e(0);
     }({
         0: function(t, r, e) {
+<<<<<<< HEAD
             t.exports = e(95);
         },
         41: function(t, r, e) {
+=======
+            t.exports = e(92);
+        },
+        38: function(t, r, e) {
+>>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
             (function(r) {
                 "use strict";
                 var e = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(t) {
@@ -1124,9 +1130,15 @@
                     this.spectralColor = 0;
                 };
                 t.exports = on;
+<<<<<<< HEAD
             }).call(r, e(105).Buffer);
         },
         95: function(t, r, e) {
+=======
+            }).call(r, e(102).Buffer);
+        },
+        92: function(t, r, e) {
+>>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
             "use strict";
             var n = Object.assign || function(t) {
                 for (var r = 1; r < arguments.length; r++) {
@@ -1139,7 +1151,11 @@
                 }
                 return t;
             };
+<<<<<<< HEAD
             var i = e(41);
+=======
+            var i = e(38);
+>>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
             var a = o(i);
             function o(t) {
                 return t && t.__esModule ? t : {
@@ -1237,7 +1253,11 @@
                 };
             }
         },
+<<<<<<< HEAD
         104: function(t, r) {
+=======
+        101: function(t, r) {
+>>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
             "use strict";
             r.byteLength = u;
             r.toByteArray = h;
@@ -1323,12 +1343,21 @@
                 return o.join("");
             }
         },
+<<<<<<< HEAD
         105: function(t, r, e) {
             (function(t) {
                 "use strict";
                 var n = e(104);
                 var i = e(107);
                 var a = e(106);
+=======
+        102: function(t, r, e) {
+            (function(t) {
+                "use strict";
+                var n = e(101);
+                var i = e(104);
+                var a = e(103);
+>>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
                 r.Buffer = u;
                 r.SlowBuffer = b;
                 r.INSPECT_MAX_BYTES = 50;
@@ -2685,13 +2714,21 @@
                 return this;
             }());
         },
+<<<<<<< HEAD
         106: function(t, r) {
+=======
+        103: function(t, r) {
+>>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
             var e = {}.toString;
             t.exports = Array.isArray || function(t) {
                 return e.call(t) == "[object Array]";
             };
         },
+<<<<<<< HEAD
         107: function(t, r) {
+=======
+        104: function(t, r) {
+>>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
             r.read = function(t, r, e, n, i) {
                 var a, o;
                 var s = i * 8 - n - 1;

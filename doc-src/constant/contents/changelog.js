@@ -18,6 +18,7 @@ module.exports = `
         <p>Bugfix：修复部分低版本安卓手机，<strong>event不能正确触发</strong>的bug。</p>
         <p>Bugfix：修复使用on挂载自定义钩子时，设置throttle后导致<strong>钩子无法被off解绑</strong>的bug。</p>
         <p>Bugfix：修复Chrome调试工具在调试3D模型时，可能<strong>无法高亮当前选中的模型</strong>的bug。</p>
+        <p>Bugfix：修复第二次用imgLoader加载同一张图片时，<strong>图片没有加载成功就触发回调</strong>的bug。</p>
         <p>Feature：现在在2D渲染时，可以在style中指定<strong>overflow为hidden</strong>来限定子Sprite的渲染范围。</p>
         <p>Feature：为canvas实例增加fastclick选项，调用register注册时<strong>传入fastclick为true</strong>可以开启设置，将去除click事件的300ms延迟。</p>
         <p>Feature：提供button/scroll/text三个<strong>Canvas 2D UI组件</strong>，用法参考demo。</p>
