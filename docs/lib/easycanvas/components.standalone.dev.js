@@ -1,21 +1,21 @@
 (function e(l, r) {
     if (typeof exports === "object" && typeof module === "object") module.exports = r(); else if (typeof define === "function" && define.amd) define([], r); else {
-        var t = r();
-        for (var s in t) (typeof exports === "object" ? exports : l)[s] = t[s];
+        var s = r();
+        for (var t in s) (typeof exports === "object" ? exports : l)[t] = s[t];
     }
 })(this, function() {
     return function(e) {
         var l = {};
-        function r(t) {
-            if (l[t]) return l[t].exports;
-            var s = l[t] = {
+        function r(s) {
+            if (l[s]) return l[s].exports;
+            var t = l[s] = {
                 exports: {},
-                id: t,
+                id: s,
                 loaded: false
             };
-            e[t].call(s.exports, s, s.exports, r);
-            s.loaded = true;
-            return s.exports;
+            e[s].call(t.exports, t, t.exports, r);
+            t.loaded = true;
+            return t.exports;
         }
         r.m = e;
         r.c = l;
@@ -23,19 +23,19 @@
         return r(0);
     }({
         0: function(e, l, r) {
-            e.exports = r(31);
+            e.exports = r(34);
         },
         14: function(e, l) {
             "use strict";
             var r = {};
-            var t = function e(l, t) {
-                var s = l + JSON.stringify(t);
-                if (r[s]) {
-                    return r[s];
+            var s = function e(l, s) {
+                var t = l + JSON.stringify(s);
+                if (r[t]) {
+                    return r[t];
                 }
                 var o;
-                if (t.padding) {
-                    o = t.padding.split(" ");
+                if (s.padding) {
+                    o = s.padding.split(" ");
                     o = o.map(function(e) {
                         return parseInt(e);
                     });
@@ -45,32 +45,32 @@
                 } else {
                     o = [ 0, 0, 0, 0 ];
                 }
-                var n = t.minWidth || t.width || (t.size || 16) * l.length + o[1] + o[3] + 100;
-                var i = (t.size || 16) * Math.round(l.length) / n * (t.lineHeight || t.size) + o[0] + o[2] + 100;
-                var a = document.createElement("canvas");
-                a.width = n;
-                a.height = i;
-                var c = a.getContext("2d");
-                window.tempCanvas = a;
+                var a = s.minWidth || s.width || (s.size || 16) * l.length + o[1] + o[3] + 100;
+                var n = (s.size || 16) * Math.round(l.length) / a * (s.lineHeight || s.size) + o[0] + o[2] + 100;
+                var i = document.createElement("canvas");
+                i.width = a;
+                i.height = n;
+                var c = i.getContext("2d");
+                window.tempCanvas = i;
                 window.tempCtx = c;
                 c.textBaseline = "middle";
-                c.font = t.size + "px " + (t.family || "serif");
-                c.fillStyle = t.color || "#000";
-                c.textAlign = t.textAlign || "left";
+                c.font = s.size + "px " + (s.family || "serif");
+                c.fillStyle = s.color || "#000";
+                c.textAlign = s.textAlign || "left";
                 var f = 0;
-                var u = t.lineHeight ? (t.lineHeight - t.size) / 2 : 0;
+                var u = s.lineHeight ? (s.lineHeight - s.size) / 2 : 0;
                 var v = 0;
                 var p = 1;
                 var d = false;
                 var h = 0;
                 while (true) {
                     var g = c.measureText(l.slice(v, p)).width;
-                    if (g > t.width && l[p] !== " ") {
-                        if (t.overflow === "ellipsis") {
+                    if (g > s.width && l[p] !== " ") {
+                        if (s.overflow === "ellipsis") {
                             p -= 2;
-                            c.fillText(l.slice(v, p) + "...", f, u + t.size / 2);
-                            u += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 0);
-                            h = t.width - o[1] - o[3];
+                            c.fillText(l.slice(v, p) + "...", f, u + s.size / 2);
+                            u += s.size + (s.lineHeight ? (s.lineHeight - s.size) / 2 : 0);
+                            h = s.width - o[1] - o[3];
                             break;
                         } else {
                             if (p - v <= 1) {
@@ -78,35 +78,35 @@
                                 break;
                             }
                             p -= 1;
-                            c.fillText(l.slice(v, p), f, u + t.size / 2);
+                            c.fillText(l.slice(v, p), f, u + s.size / 2);
                             v = p;
                             if (l[v] === " ") v++;
                             p = v + 1;
-                            u += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 10);
+                            u += s.size + (s.lineHeight ? (s.lineHeight - s.size) / 2 : 10);
                         }
                     } else {
                         if (p > l.length - 1) {
                             if (g > h) h = g;
-                            c.fillText(l.slice(v, p), f, u + t.size / 2);
-                            u += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 0);
+                            c.fillText(l.slice(v, p), f, u + s.size / 2);
+                            u += s.size + (s.lineHeight ? (s.lineHeight - s.size) / 2 : 0);
                             break;
                         }
                         if (g > h) h = g;
                         p++;
                     }
                 }
-                u += Math.floor(t.size * .1);
+                u += Math.floor(s.size * .1);
                 var m = document.createElement("canvas");
-                m.width = Math.max(h + o[1] + o[3], t.minWidth || 0);
+                m.width = Math.max(h + o[1] + o[3], s.minWidth || 0);
                 m.height = u + o[0] + o[2];
                 var x = m.getContext("2d");
-                if (t.backgroundColor) {
-                    x.fillStyle = t.backgroundColor;
+                if (s.backgroundColor) {
+                    x.fillStyle = s.backgroundColor;
                     x.fillRect(0, 0, m.width, m.height);
                 }
-                x.drawImage(a, (m.width - h) / 2, o[0]);
-                if (t.border) {
-                    var w = t.border.split(" ");
+                x.drawImage(i, (m.width - h) / 2, o[0]);
+                if (s.border) {
+                    var w = s.border.split(" ");
                     x.beginPath();
                     x.moveTo(0, 0);
                     x.lineWidth = parseInt(w[0]);
@@ -117,52 +117,52 @@
                     x.lineTo(0, 0);
                     x.stroke();
                 }
-                r[s] = m;
+                r[t] = m;
                 return m;
             };
-            e.exports = t;
+            e.exports = s;
         },
-        31: function(e, l, r) {
+        34: function(e, l, r) {
             "use strict";
-            var t = r(32);
-            var s = c(t);
-            var o = r(33);
-            var n = c(o);
-            var i = r(34);
-            var a = c(i);
+            var s = r(35);
+            var t = c(s);
+            var o = r(36);
+            var a = c(o);
+            var n = r(37);
+            var i = c(n);
             function c(e) {
                 return e && e.__esModule ? e : {
                     default: e
                 };
             }
             e.exports = {
-                button: s.default,
-                scroll: n.default,
-                text: a.default
+                button: t.default,
+                scroll: a.default,
+                text: i.default
             };
         },
-        32: function(e, l, r) {
+        35: function(e, l, r) {
             "use strict";
-            var t = Object.assign || function(e) {
+            var s = Object.assign || function(e) {
                 for (var l = 1; l < arguments.length; l++) {
                     var r = arguments[l];
-                    for (var t in r) {
-                        if (Object.prototype.hasOwnProperty.call(r, t)) {
-                            e[t] = r[t];
+                    for (var s in r) {
+                        if (Object.prototype.hasOwnProperty.call(r, s)) {
+                            e[s] = r[s];
                         }
                     }
                 }
                 return e;
             };
-            var s = r(14);
-            var o = n(s);
-            function n(e) {
+            var t = r(14);
+            var o = a(t);
+            function a(e) {
                 return e && e.__esModule ? e : {
                     default: e
                 };
             }
-            var i = typeof window !== "undefined";
-            var a = {
+            var n = typeof window !== "undefined";
+            var i = {
                 padding: 0,
                 width: 300,
                 family: '"Helvetica Neue",Helvetica,Arial,sans-serif'
@@ -170,17 +170,17 @@
             var c = void 0;
             var f = function e(l) {
                 var r = void 0;
-                var s = l || {};
+                var t = l || {};
                 l.props = l.props || {};
-                var n = t(a, {
+                var a = s(i, {
                     minWidth: l.style.tw,
                     lineHeight: l.style.th,
                     padding: 0
                 }, l.props.normal);
-                var i = t({}, n, l.props.hovered);
-                var f = t({}, n, l.props.pressed);
-                var u = (0, o.default)(l.props.text || "", n);
-                var v = l.props.hovered && (0, o.default)(l.props.text || "", i);
+                var n = s({}, a, l.props.hovered);
+                var f = s({}, a, l.props.pressed);
+                var u = (0, o.default)(l.props.text || "", a);
+                var v = l.props.hovered && (0, o.default)(l.props.text || "", n);
                 var p = l.props.pressed && (0, o.default)(l.props.text || "", f);
                 var d = {};
                 l.events = l.events || {};
@@ -218,29 +218,30 @@
                 }
                 return f;
             };
-            if (i && window.Easycanvas) {
+            if (n && window.Easycanvas) {
                 c = Easycanvas;
                 Easycanvas.class.button = f;
             } else {
                 e.exports = u;
             }
         },
-        33: function(e, l) {
+        36: function(e, l) {
             "use strict";
             var r = Object.assign || function(e) {
                 for (var l = 1; l < arguments.length; l++) {
                     var r = arguments[l];
-                    for (var t in r) {
-                        if (Object.prototype.hasOwnProperty.call(r, t)) {
-                            e[t] = r[t];
+                    for (var s in r) {
+                        if (Object.prototype.hasOwnProperty.call(r, s)) {
+                            e[s] = r[s];
                         }
                     }
                 }
                 return e;
             };
-            var t = typeof window !== "undefined";
-            var s = void 0;
+            var s = typeof window !== "undefined";
+            var t = window.devicePixelRatio || 1;
             var o = void 0;
+            var a = void 0;
             var n = {
                 loose: function e(l) {
                     l.$scroll.touching = false;
@@ -264,54 +265,56 @@
                     if (l.$scroll.touching) return;
                     l.scroll.scrollY -= l.$scroll.speedY;
                     l.scroll.scrollX -= l.$scroll.speedX;
-                    var r = s.utils.funcOrValue(l.scroll.minScrollX, l);
-                    var t = s.utils.funcOrValue(l.scroll.maxScrollX, l);
-                    var o = s.utils.funcOrValue(l.scroll.minScrollY, l);
-                    var n = s.utils.funcOrValue(l.scroll.maxScrollY, l);
-                    if (!isNaN(o) && l.scroll.scrollY < o) {
-                        l.scroll.scrollY = o;
-                    } else if (!isNaN(n) && l.scroll.scrollY > n) {
-                        l.scroll.scrollY = n;
+                    var r = o.utils.funcOrValue(l.scroll.minScrollX, l);
+                    var s = o.utils.funcOrValue(l.scroll.maxScrollX, l);
+                    var t = o.utils.funcOrValue(l.scroll.minScrollY, l);
+                    var a = o.utils.funcOrValue(l.scroll.maxScrollY, l);
+                    if (!isNaN(t) && l.scroll.scrollY < t) {
+                        l.scroll.scrollY = t;
+                    } else if (!isNaN(a) && l.scroll.scrollY > a) {
+                        l.scroll.scrollY = a;
                     }
                     if (!isNaN(r) && l.scroll.scrollX < r) {
                         l.scroll.scrollX = r;
-                    } else if (!isNaN(t) && l.scroll.scrollX > t) {
-                        l.scroll.scrollX = t;
+                    } else if (!isNaN(s) && l.scroll.scrollX > s) {
+                        l.scroll.scrollX = s;
                     }
                 },
                 touch: function e(l, r) {
                     if (!l.scroll.scrollable) return false;
-                    var t = Date.now();
+                    var s = Date.now();
                     if (!l.$scroll.touching) {
-                        l.$scroll.touching = t;
-                        l.$scroll.quickTouch = t;
+                        l.$scroll.touching = s;
+                        l.$scroll.quickTouch = s;
                         l.$scroll.startPos.x = r.canvasX;
                         l.$scroll.startPos.y = r.canvasY;
                         l.$scroll.speedX = 0;
                         l.$scroll.speedY = 0;
                     } else {
                         l.$scroll.$scrolling = true;
-                        var s = l.$scroll.startPos.x - r.canvasX;
-                        var o = l.$scroll.startPos.y - r.canvasY;
-                        var n = t - l.$scroll.touching;
-                        l.$scroll.touching = t;
-                        if (l.scroll.scrollX + s < l.scroll.minScrollX || l.scroll.scrollX + s > l.scroll.maxScrollX) {
-                            if (l.scroll.flexibleX) s >>= 3; else s = 0;
+                        var o = l.$scroll.startPos.x - r.canvasX;
+                        var a = l.$scroll.startPos.y - r.canvasY;
+                        var n = s - l.$scroll.touching;
+                        l.$scroll.touching = s;
+                        if (l.scroll.scrollX + o < l.scroll.minScrollX || l.scroll.scrollX + o > l.scroll.maxScrollX) {
+                            if (l.scroll.flexibleX) o >>= 3; else o = 0;
                         }
-                        if (l.scroll.scrollY + o < l.scroll.minScrollY || l.scroll.scrollY + o > l.scroll.maxScrollY) {
-                            if (l.scroll.flexibleY) o >>= 3; else o = 0;
-                        }
-                        if (Math.abs(s) >= 1 && n > 1) {
-                            l.$scroll.speedX = (r.canvasX - l.$scroll.startPos.x) * 3;
-                            l.scroll.scrollX += s;
+                        if (l.scroll.scrollY + a < l.scroll.minScrollY || l.scroll.scrollY + a > l.scroll.maxScrollY) {
+                            if (l.scroll.flexibleY) a >>= 3; else a = 0;
                         }
                         if (Math.abs(o) >= 1 && n > 1) {
-                            l.$scroll.speedY = (r.canvasY - l.$scroll.startPos.y) * 3;
-                            l.scroll.scrollY += o;
+                            var i = (r.canvasX - l.$scroll.startPos.x) * 6 / t;
+                            l.$scroll.speedY = Math.abs(i / 2) > Math.abs(l.$scroll.speedX) ? i : l.$scroll.speedX;
+                            l.scroll.scrollX += o;
+                        }
+                        if (Math.abs(a) >= 1 && n > 1) {
+                            var c = (r.canvasY - l.$scroll.startPos.y) * 6 / t;
+                            l.$scroll.speedY = Math.abs(c / 2) > Math.abs(l.$scroll.speedY) ? c : l.$scroll.speedY;
+                            l.scroll.scrollY += a;
                         }
                         l.$scroll.startPos.x = r.canvasX;
                         l.$scroll.startPos.y = r.canvasY;
-                        if (Math.abs(s) > Math.abs(o) + 1) return 1; else if (Math.abs(s) < Math.abs(o) - 1) return 2;
+                        if (Math.abs(o) > Math.abs(a) + 1) return 1; else if (Math.abs(o) < Math.abs(a) - 1) return 2;
                     }
                 },
                 wheel: function e(l, r) {
@@ -323,9 +326,9 @@
                 }
             };
             var i = function e(l) {
-                var t = false;
-                var i = l || {};
-                i.scroll = r({
+                var s = false;
+                var t = l || {};
+                t.scroll = r({
                     scrollX: 0,
                     scrollY: 0,
                     scrollable: true,
@@ -336,19 +339,19 @@
                     propagationX: false,
                     propagationY: false
                 }, l.scroll);
-                var a = function e() {
-                    if (t) {
-                        f.scroll.scrollY = t();
+                var i = function e() {
+                    if (s) {
+                        f.scroll.scrollY = s();
                     } else {
                         f.off("ticked", e);
                     }
                 };
                 var c = false;
-                i.events = r({
+                t.events = r({
                     touchstart: function e(l) {
                         n.loose(this);
                         c = true;
-                        o = false;
+                        a = false;
                         n.touch(this, l);
                         if (!f.scroll.propagationX && !f.scroll.propagationY) {
                             l.stopPropagation();
@@ -356,16 +359,16 @@
                     },
                     touchmove: function e(l) {
                         if (!c) return;
-                        if (o && this !== o) {
+                        if (a && this !== a) {
                             return;
                         }
                         var r = n.touch(this, l);
                         if (r === 1 && f.scroll.propagationY) {
                             l.stopPropagation();
-                            o = this;
+                            a = this;
                         } else if (r === 2 && f.scroll.propagationX) {
                             l.stopPropagation();
-                            o = this;
+                            a = this;
                         }
                     },
                     mousewheel: function e(l) {
@@ -381,9 +384,9 @@
                         c = false;
                         n.loose(this);
                     }
-                }, i.events || {});
-                if (i.scroll.capture) {
-                    i.events.interceptor = function(e) {
+                }, t.events || {});
+                if (t.scroll.capture) {
+                    t.events.interceptor = function(e) {
                         if (f.events[e.type]) {
                             f.events[e.type].call(f, e);
                             return false;
@@ -391,18 +394,18 @@
                         return e;
                     };
                 }
-                var f = new s.class.sprite(i);
+                var f = new o.class.sprite(t);
                 f.on("ticked", function() {
                     n.looper(f);
                 });
                 f.on("scrollTo", function(e, l, r) {
-                    t = s.transition.pendulum(f.scroll.scrollY, e, (l || 200) * 2, {
+                    s = o.transition.pendulum(f.scroll.scrollY, e, (l || 200) * 2, {
                         cycle: .5
                     }).then(function() {
-                        t = false;
+                        s = false;
                         r && r();
                     });
-                    f.on("ticked", a);
+                    f.on("ticked", i);
                 });
                 f.$scroll = {
                     speedX: 0,
@@ -428,42 +431,42 @@
                 };
                 return f;
             };
-            var a = function e(l, r) {
-                s = l;
+            var c = function e(l, r) {
+                o = l;
                 if (r) {
                     l.class[r] = i;
                 }
                 return i;
             };
-            if (t && window.Easycanvas) {
-                s = Easycanvas;
+            if (s && window.Easycanvas) {
+                o = Easycanvas;
                 Easycanvas.class.scroll = i;
             } else {
-                e.exports = a;
+                e.exports = c;
             }
         },
-        34: function(e, l, r) {
+        37: function(e, l, r) {
             "use strict";
-            var t = Object.assign || function(e) {
+            var s = Object.assign || function(e) {
                 for (var l = 1; l < arguments.length; l++) {
                     var r = arguments[l];
-                    for (var t in r) {
-                        if (Object.prototype.hasOwnProperty.call(r, t)) {
-                            e[t] = r[t];
+                    for (var s in r) {
+                        if (Object.prototype.hasOwnProperty.call(r, s)) {
+                            e[s] = r[s];
                         }
                     }
                 }
                 return e;
             };
-            var s = r(14);
-            var o = n(s);
-            function n(e) {
+            var t = r(14);
+            var o = a(t);
+            function a(e) {
                 return e && e.__esModule ? e : {
                     default: e
                 };
             }
-            var i = typeof window !== "undefined";
-            var a = {
+            var n = typeof window !== "undefined";
+            var i = {
                 padding: 0,
                 width: 300,
                 lineHeight: 100,
@@ -473,11 +476,11 @@
             var c = void 0;
             var f = function e(l) {
                 var r = void 0;
-                var s = l || {};
+                var t = l || {};
                 r = new c.class.sprite({
                     name: l.name || "text",
                     content: {
-                        img: (0, o.default)(l.content.text, t({}, a, {
+                        img: (0, o.default)(l.content.text, s({}, i, {
                             lineHeight: l.props.size
                         }, l.props))
                     },
@@ -494,7 +497,7 @@
                 }
                 return f;
             };
-            if (i && window.Easycanvas) {
+            if (n && window.Easycanvas) {
                 c = Easycanvas;
                 Easycanvas.class.text = f;
             } else {

@@ -23,14 +23,14 @@
         return r(0);
     }({
         0: function(e, t, r) {
-            e.exports = r(94);
+            e.exports = r(97);
         },
         8: function(e, t, r) {
             "use strict";
             var a = r(25);
-            var n = r(70);
-            var i = r(69);
-            var o = r(66);
+            var n = r(73);
+            var i = r(72);
+            var o = r(69);
             e.exports = {
                 FileLoader: a.FileLoader,
                 LoaderUtils: n.LoaderUtils,
@@ -59,7 +59,7 @@
                 }
                 return e;
             };
-            var n = r(65);
+            var n = r(68);
             var i = r(26);
             var o = {};
             function s(e) {
@@ -276,7 +276,7 @@
             t.DefaultLoadingManager = a;
             t.LoadingManager = r;
         },
-        65: function(e, t) {
+        68: function(e, t) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -301,7 +301,7 @@
             };
             t.Cache = r;
         },
-        66: function(e, t, r) {
+        69: function(e, t, r) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -395,7 +395,7 @@
             });
             t.CompressedTextureLoader = s;
         },
-        67: function(e, t, r) {
+        70: function(e, t, r) {
             "use strict";
             var a = r(8);
             var n = i(a);
@@ -560,7 +560,7 @@
                 return r;
             };
         },
-        68: function(e, t, r) {
+        71: function(e, t, r) {
             "use strict";
             var a = Object.assign || function(e) {
                 for (var t = 1; t < arguments.length; t++) {
@@ -999,7 +999,7 @@
                 return i.default.FBXLoader;
             }();
         },
-        69: function(e, t) {
+        72: function(e, t) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -1119,7 +1119,7 @@
             });
             t.Interpolant = a;
         },
-        70: function(e, t) {
+        73: function(e, t) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -1143,7 +1143,7 @@
             };
             t.LoaderUtils = r;
         },
-        71: function(e, t, r) {
+        74: function(e, t, r) {
             "use strict";
             var a = Object.assign || function(e) {
                 for (var t = 1; t < arguments.length; t++) {
@@ -2041,13 +2041,13 @@
                 return e;
             }();
         },
-        94: function(e, t, r) {
+        97: function(e, t, r) {
             "use strict";
-            var a = r(71);
+            var a = r(74);
             var n = u(a);
-            var i = r(68);
+            var i = r(71);
             var o = u(i);
-            var s = r(67);
+            var s = r(70);
             var f = u(s);
             function u(e) {
                 return e && e.__esModule ? e : {
