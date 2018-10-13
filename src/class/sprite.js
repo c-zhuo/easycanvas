@@ -50,6 +50,9 @@ import getOuterRect from './api.getOuterRect.js';
 import combine from './api.combine.js';
 import uncombine from './api.uncombine.js';
 
+// 记录sprite创建的顺序，用于调试工具的排序
+let $addIndex = 0;
+
 const ChangeChildrenToSprite = function ($parent) {
     if ($parent.children) {
         $parent.children.forEach((child, i) => {
@@ -114,6 +117,10 @@ const preAdd = function (_item) {
                 console.warn(`[Easycanvas] Handler ${i} is not a function.`, item.events[i]);
             }
         }
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+        item.$addIndex = $addIndex++;
     }
 
     item.events.eIndex = item.events.eIndex;

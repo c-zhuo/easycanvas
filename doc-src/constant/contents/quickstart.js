@@ -87,6 +87,8 @@ module.exports = `
         <p>我们可以在events参数中指定一些事件监听函数，例如当点击了这个元素时，我们修改当前sprite的宽为100.</p>
 
         <p>后面将对painter类和sprite类的各个参数进行介绍和演示。</p>
+
+        <p class="tip">Tips：tx、ty、tw、th是绘制的x、y坐标以及宽度和高度，后面的版本中可能会替换为left、top、width、height四个参数。但是会提供一段可以向下兼容的方式来使用。</p>
     </article>
 
 `;

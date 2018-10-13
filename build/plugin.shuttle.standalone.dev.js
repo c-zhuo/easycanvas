@@ -23,11 +23,7 @@
         return n(0);
     }({
         0: function(t, e, n) {
-<<<<<<< HEAD
             t.exports = n(94);
-=======
-            t.exports = n(91);
->>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
         },
         1: function(t, e) {
             "use strict";
@@ -87,11 +83,7 @@
                 };
             };
         },
-<<<<<<< HEAD
         94: function(t, e, n) {
-=======
-        91: function(t, e, n) {
->>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
             "use strict";
             var a = n(1);
             var r = o(a);

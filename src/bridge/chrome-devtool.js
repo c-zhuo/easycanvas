@@ -35,6 +35,7 @@ if (process.env.NODE_ENV !== 'production') {
 
                         res[item.$id] = {
                             name: item.name,
+                            $addIndex: item.$addIndex,
                             parent: item.$parent && item.$parent.$id,
                             style: {},
                             children: item.children.filter((child) => {
@@ -75,11 +76,15 @@ if (process.env.NODE_ENV !== 'production') {
                         }
 
                         if (item.children) {
-                            item.children.forEach(pusher);
+                            item.children.sort((a, b) => {
+                                return a.$addIndex < b.$addIndex ? -1 : 1;
+                            }).forEach(pusher);
                         }
                     };
 
-                    children.forEach(pusher);
+                    children.sort((a, b) => {
+                        return a.$addIndex < b.$addIndex ? -1 : 1;
+                    }).forEach(pusher);
 
                 } else {
                     for (let c in devData.$canvas) {

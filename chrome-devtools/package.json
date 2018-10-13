@@ -10,10 +10,8 @@
   },
   "author": "chenzhuo04",
   "license": "ISC",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@hfe/vue-component-toggle": "0.1.1",
     "autoprefixer": "^6.7.6",
     "babel-core": "6.24.1",
     "babel-eslint": "7.2.3",

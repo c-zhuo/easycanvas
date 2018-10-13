@@ -5,8 +5,9 @@ import quickstartWxgame from './contents/quickstart-wxgame.js';
 import quickstartWxapp from './contents/quickstart-wxapp.js';
 import changelog from './contents/changelog.js';
 
-import inherit from './contents/base-inherit.js';
+import add from './contents/base-add.js';
 import image from './contents/base-image.js';
+import inherit from './contents/base-inherit.js';
 import events from './contents/base-events.js';
 import text from './contents/base-text.js';
 import sequence from './contents/base-sequence.js';
@@ -30,8 +31,9 @@ let content = `
     ${quickstartWxapp}
     ${changelog}
 
-    ${inherit}
+    ${add}
     ${image}
+    ${inherit}
     ${events}
     ${text}
     ${sequence}

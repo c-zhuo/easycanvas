@@ -1,5 +1,6 @@
 <template>
     <div class="instance"
+        id="{{ instanceId }}"
         :class="{
             selected: selected
         }">

@@ -33,7 +33,7 @@
 
 <script>
 import constants from 'constants';
-import vToggle from '@hfe/vue-component-toggle/src/index';
+import vToggle from './components/toggle.vue';
 import vMenuTree from './components/menu-tree.vue';
 import vMenuGraph from './components/menu-graph.vue';
 import Bus from './bus.js';
@@ -59,12 +59,6 @@ export default {
             set (newValue) {
                 this.$state.menu = newValue;
             },
-        },
-        canvas () {
-            return Object.keys(this.$state.elements);
-        },
-        firstCanvas () {
-            return Object.keys(this.$state.elements).length > 0 ? Object.keys(this.$state.elements)[0] : '';
         },
     },
     watch: {

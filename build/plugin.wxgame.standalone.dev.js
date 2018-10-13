@@ -23,15 +23,9 @@
         return n(0);
     }({
         0: function(e, t, n) {
-<<<<<<< HEAD
             e.exports = n(100);
         },
         88: function(e, t) {
-=======
-            e.exports = n(97);
-        },
-        85: function(e, t) {
->>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
             "use strict";
             var n = Object.assign || function(e) {
                 for (var t = 1; t < arguments.length; t++) {
@@ -1520,15 +1514,9 @@
                 t.default = n;
             } ]);
         },
-<<<<<<< HEAD
         100: function(e, t, n) {
             "use strict";
             n(88);
-=======
-        97: function(e, t, n) {
-            "use strict";
-            n(85);
->>>>>>> 1a4fa5bcf63ef16aa4cd47591324d0e5665caa06
         }
     });
 });

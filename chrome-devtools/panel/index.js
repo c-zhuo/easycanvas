@@ -17,23 +17,7 @@ const handlers =  {
 
     selectSprite: function (id, value) {
         window.$app.$actions.setSelectorActive(false);
-
-        const spriteId = value.sprite;
-        const canvasId = value.canvas;
-        window.$app.$actions.setInspectedInstance(spriteId, canvasId);
-
-        // 展开树形结构
-        const pusher = (id) => {
-            const index = window.$app.$state.treeElements.expansionMap.indexOf(id);
-            if (index < 0) {
-                window.$app.$state.treeElements.expansionMap.push(id);
-            }
-            if (window.$app.$state.elements[canvasId][id].parent) {
-                pusher(window.$app.$state.elements[canvasId][id].parent);
-            }
-        };
-
-        pusher(spriteId);
+        window.$app.$actions.setInspectedInstance(value.sprite, value.canvas);
     },
 };
 
@@ -113,7 +97,19 @@ Vue.use(require('easy-vuex'), {
         //         }, 100);
         //     }
         // },
+        getParentIdByChildId (spriteId, canvasId) {
+            return $app.$state.elements[canvasId].sprites[spriteId] &&
+                $app.$state.elements[canvasId].sprites[spriteId].parent;
+        },
         setInspectedInstance (spriteId, canvasId, app = window.$app) {
+            // 将选择的sprite的父级都展开，便于调试
+            let currentSpriteId = spriteId;
+            while (currentSpriteId = window.$app.$actions.getParentIdByChildId(currentSpriteId, canvasId)) {
+                if ($app.$state.treeElements.expansionMap.indexOf(currentSpriteId) === -1) {
+                    $app.$state.treeElements.expansionMap.push(currentSpriteId);
+                }
+            }
+
             app.$state.treeElements.inspectedInstance = {
                 id: spriteId,
                 canvasId: canvasId,
@@ -123,6 +119,15 @@ Vue.use(require('easy-vuex'), {
                 window['${constants.devFlag}'].$plugin.sendGlobalHook('${spriteId}', '${canvasId}');
             `;
             window.inspectedWindow.eval(sendGlobalHookCode);
+
+            let $spriteDomInTree = window.document.getElementById(spriteId);
+            let spriteDomRect = $spriteDomInTree.getBoundingClientRect();
+            let spriteParentDomRect = $spriteDomInTree.parentElement.getBoundingClientRect();
+
+            $spriteDomInTree.parentElement.scrollTo(
+                0,
+                $spriteDomInTree.parentElement.scrollTop + spriteDomRect.y + spriteDomRect.height - spriteParentDomRect.y - spriteParentDomRect.height
+            );
         },
         pause (canvasId, bol) {
             // 将某个canvas暂停（类似debugger; 对某帧进行调试，opt为true/false代表开启/关闭暂停，不传opt会进行toggle）

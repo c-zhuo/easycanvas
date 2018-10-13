@@ -10,9 +10,9 @@
                 </div>
                 <div
                     class="tabs-tab"
-                    :title="!debuggerCanvas ? 'Pause canvas' : 'Resume canvas'"
-                    :class="{ 'debugger-canvas': !debuggerCanvas, 'debugger-canvas-active': debuggerCanvas }"
-                    @click="toggleDebuggerCanvas">
+                    :title="!debuggingCanvasId ? 'Pause canvas' : 'Resume canvas'"
+                    :class="{ 'debugger-canvas': !debuggingCanvasId, 'debugger-canvas-active': debuggingCanvasId }"
+                    @click="toggleDebuggingCanvasId">
                 </div>
                 <div 
                     class="tabs-tab"
@@ -56,7 +56,7 @@ export default {
         window.A = this;
         return {
             activeCanvas: null,
-            debuggerCanvas: false,
+            debuggingCanvasId: false,
 
             maxVisibleElementsCount: 10,
         };
@@ -94,23 +94,15 @@ export default {
         elements () {
             return this.$state.elements[this.activeCanvas] ? this.$state.elements[this.activeCanvas].sprites : [];
         },
-        // firstCanvas () {
-        //     return Object.keys().length > 0 ? Object.keys(this.$state.elements)[0] : '';
-        // },
     },
     watch: {
         activeCanvas (val) {
-            this.debuggerCanvas = false;
+            this.debuggingCanvasId = false;
         },
         '$state.elements' (val) {
-            if (!this.activeCanvas && val && Object.keys(val).length) {
+            if (!this.$state.elements[this.activeCanvas] && val && Object.keys(val).length) {
                 this.activeCanvas = Object.keys(this.$state.elements)[0];
             }
-
-            // if (val !== '') {
-            //     // 当前没有选中canvas实例，自动选择第一个为实例
-            //     this.activeCanvas = val;
-            // }
         },
     },
     components: {
@@ -124,9 +116,9 @@ export default {
         chooseCanvas (canvasId) {
             this.activeCanvas = canvasId;
         },
-        toggleDebuggerCanvas () {
-            this.debuggerCanvas = !this.debuggerCanvas;
-            this.$actions.pause(this.activeCanvas || Object.keys(this.$state.elements)[0], this.debuggerCanvas);
+        toggleDebuggingCanvasId () {
+            this.debuggingCanvasId = !this.debuggingCanvasId;
+            this.$actions.pause(this.activeCanvas || Object.keys(this.$state.elements)[0], this.debuggingCanvasId);
         },
     }
 };
@@ -147,7 +139,7 @@ export default {
 }
 .content {
     padding: 10px 6px 40px;
-    height: calc(100% - 40px);
+    height: calc(100% - 70px);
     overflow: scroll;
 
     .content-showMore {
