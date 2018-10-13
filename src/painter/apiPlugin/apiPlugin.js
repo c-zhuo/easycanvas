@@ -47,6 +47,7 @@ module.exports = function () {
         const MaskCanvasBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
 
         let $selectMask = null;
+        let $selectOuterRect = null;
 
         const PerSecondCollects = [
             'paintArea',
@@ -121,6 +122,15 @@ module.exports = function () {
                         style: {},
                         webgl: undefined,
                     });
+
+                    $selectOuterRect = $canvas.add({
+                        name: constants.devFlag,
+                        style: {
+                            border: '2px red',
+                            // backgroundColor: 'yellow',
+                            locate: 'lt',
+                        },
+                    });
                 }
 
                 ['tx', 'ty', 'rotate', 'rx', 'ry', 'scale', 'tw', 'th', 'locate'].forEach(function (key) {
@@ -134,8 +144,20 @@ module.exports = function () {
                     })(key);
                 });
 
-                $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
+                ['tx', 'ty', 'tw', 'th'].forEach(function (key) {
+                    (function (_key) {
+                        $selectOuterRect.style[_key] = function () {
+                            return $sprite.getOuterRect()[_key]; // 1 for scale and others' default value
+                        };
+                    })(key);
+                });
+
+                $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER - 10;
+                $selectOuterRect.style.zIndex = Number.MAX_SAFE_INTEGER;
                 $selectMask.style.visible = function () {
+                    return window[constants.devFlag].selectMode;
+                };
+                $selectOuterRect.style.visible = function () {
                     return window[constants.devFlag].selectMode;
                 };
                 $selectMask.style.opacity = 0.8;
@@ -161,6 +183,7 @@ module.exports = function () {
 
                 if (isChoosing) {
                     $canvas.remove($selectMask);
+                    $canvas.remove($selectOuterRect);
                     $selectMask = null;
                     $emit({
                         name: 'selectSprite',
@@ -184,6 +207,7 @@ module.exports = function () {
                 if (!$selectMask) return;
 
                 $canvas.remove($selectMask);
+                $canvas.remove($selectOuterRect);
                 $selectMask = null;
             },
         };

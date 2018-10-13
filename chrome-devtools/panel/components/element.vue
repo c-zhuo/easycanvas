@@ -6,11 +6,12 @@
         }">
         <div class="self"
             @click.stop="select"
-            @mouseenter="enter"
-            @mouseleave="leave"
             :class="{ selected: selected }"
             :style="{ paddingLeft: depth * 15 + 'px' }">
-            <span class="content">
+            <span class="content"
+                @mouseenter="enter"
+                @mouseleave="leave"
+                >
                 <!-- arrow wrapper for better hit box -->
                 <span class="arrow-wrapper"
                     v-if="instance.children.length"
@@ -173,7 +174,7 @@ export default {
 
 .content {
     position: relative;
-    padding-left: 22px;
+    margin-left: 22px;
 
     .content-showMore {
         padding: 2px;
@@ -253,7 +254,7 @@ export default {
     width: 16px;
     height: 16px;
     top: 0;
-    left: 4px;
+    left: -18px;
 }
   
 

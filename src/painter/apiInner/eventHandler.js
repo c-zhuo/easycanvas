@@ -232,6 +232,10 @@ eventHandler = function (e, _$e) {
                 // 选中mask不算
                 chooseSprite = caughts[1];
             }
+            if (chooseSprite && chooseSprite.name === constants.devFlag) {
+                // 选中mask不算
+                chooseSprite = caughts[2];
+            }
 
             if (chooseSprite && $canvas.$plugin.selectSprite($e.type === 'click' || $e.type === 'touchend', $canvas, chooseSprite)) {
                 return;
