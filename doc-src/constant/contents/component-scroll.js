@@ -1,6 +1,6 @@
 module.exports = `
-    <article id="Scroll-滑动组件">
-        <h1>Scroll-滑动组件</h1>
+    <article id="滑动组件scroll">
+        <h1>滑动组件scroll</h1>
 
         <p>scroll提供了类似<strong>overflow: scroll;</strong>的功能。</p>
 
@@ -13,7 +13,7 @@ module.exports = `
             <!-- 注意放在easycanvas.js后；prod为线上压缩版、dev为开发版；开发版带有调试、警告信息 -->
 
             <script src="http://your-path/easycanvas.standalone.prod.js"></script>
-            <script src="http://your-path/component.scroll.standalone.prod.js"></script>
+            <script src="http://your-path/components.standalone.prod.js"></script>
 
             <!-- node环境引入 -->
 
@@ -32,34 +32,38 @@ module.exports = `
             <div class="code-2-demo bg-demo"></div>
             <code>
                 <head>
-                    <script src="./lib/easycanvas/component.scroll.standalone.prod.js"></script>
+                    <script src="./lib/easycanvas/components.standalone.prod.js"></script>
                 </head>
                 <body>
                     <canvas id="app"></canvas>
+                    <p id="eventName">中间的黑色框内的内容可以上下滚动</p>
                 </body>
 
                 <script>
                     var $app = new Easycanvas.painter();
                     $app.register(document.getElementById('app'), {
-                        fullScreen: true,
+                        width: 400,
+                        height: 400,
                     });
                     $app.start();
 
                     var $ScrollBox = $app.add(new Easycanvas.class.scroll({
                         name: 'ScrollBox',
                         style: {
-                            tx: 0,
+                            tx: 50,
                             ty: 0,
-                            tw: $app.width,
+                            tw: $app.width - 100,
                             th: $app.height,
                             locate: 'lt',
+                            border: '1 #666',
+                            zIndex: 2,
                         },
                         scroll: {
                             scrollable: true,
                             minScrollX: 0,
                             maxScrollX: 0,
                             minScrollY: 0,
-                            maxScrollY: $app.height,
+                            maxScrollY: 2000 - $app.height,
                         },
                     }));
 
@@ -71,7 +75,7 @@ module.exports = `
                                 img: imgSrc
                             },
                             style: {
-                                tx: $app.width / 2, ty: 100 + i * 300,
+                                tx: $app.width / 2 - 50, ty: 100 + i * 200,
                                 tw: 100 + i * 10, th: 100 + i * 10,
                             },
                             events: {
@@ -81,6 +85,27 @@ module.exports = `
                             }
                         });
                     }
+
+                    $app.add({
+                        content: {
+                            img: imgSrc
+                        },
+                        style: {
+                            tx: 0, ty: $app.height / 2,
+                            tw: $app.width / 2, th: $app.width / 2,
+                            zIndex: 1,
+                        },
+                    });
+                    $app.add({
+                        content: {
+                            img: imgSrc
+                        },
+                        style: {
+                            tx: $app.width, ty: $app.height / 2,
+                            tw: $app.width / 2, th: $app.width / 2,
+                            zIndex: 1,
+                        },
+                    });
                 </script>
             </code>
         </section>

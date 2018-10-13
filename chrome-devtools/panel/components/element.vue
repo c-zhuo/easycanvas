@@ -176,6 +176,9 @@ export default {
     position: relative;
     margin-left: 22px;
 
+    /* 便于选中 */
+    padding-right: 400px;
+
     .content-showMore {
         padding: 2px;
         width: 80px;

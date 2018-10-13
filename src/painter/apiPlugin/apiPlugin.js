@@ -47,7 +47,7 @@ module.exports = function () {
         const MaskCanvasBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
 
         let $selectMask = null;
-        let $selectOuterRect = null;
+        let $selectMaskParent = null;
 
         const PerSecondCollects = [
             'paintArea',
@@ -119,17 +119,38 @@ module.exports = function () {
                         content: {
                             img: $canvas.imgLoader(MaskCanvasBase64),
                         },
-                        style: {},
+                        style: {
+                            border () {
+                                if (this.getStyle('tw') < 2 && this.getStyle('th') < 2) {
+                                    return '10 rgba(0, 0, 255, 0.5)';
+                                }
+                                return '1 blue';
+                            }
+                        },
                         webgl: undefined,
                     });
 
-                    $selectOuterRect = $canvas.add({
+                    $selectMaskParent = $canvas.add({
                         name: constants.devFlag,
                         style: {
-                            border: '2px red',
                             // backgroundColor: 'yellow',
                             locate: 'lt',
                         },
+                        children: [{
+                            name: constants.devFlag,
+                            style: {
+                                locate: 'lt',
+                                tx: 0, ty: 0,
+                                tw () {
+                                    return $selectMask.getSelfStyle('tx') - this.$parent.getStyle('tx');
+                                },
+                                th () {
+                                    return $selectMask.getSelfStyle('ty') - this.$parent.getStyle('ty');
+                                },
+                                backgroundColor: 'rgba(140, 205, 255, 0.1)',
+                                border: '1 rgba(80, 120, 200, 0.9)',
+                            }
+                        }]
                     });
                 }
 
@@ -137,28 +158,30 @@ module.exports = function () {
                     (function (_key) {
                         $selectMask.style[_key] = function () {
                             if (_key === 'tw' || _key === 'th') {
-                                return $sprite.getStyle(_key) || $sprite.getRect()[_key];
+                                return $sprite.getStyle(_key) || $sprite.getRect()[_key] || 0.1; // 如果尺寸为0，会使用mask的图片尺寸，变成1
                             }
                             return $sprite.getStyle(_key);
                         };
                     })(key);
                 });
 
-                ['tx', 'ty', 'tw', 'th'].forEach(function (key) {
+                ['tx', 'ty'].forEach(function (key) {
                     (function (_key) {
-                        $selectOuterRect.style[_key] = function () {
-                            return $sprite.getOuterRect()[_key]; // 1 for scale and others' default value
+                        $selectMaskParent.style[_key] = function () {
+                            if (!$sprite.$parent) return 0;
+
+                            return $sprite.$parent.getStyle(_key);
                         };
                     })(key);
                 });
 
-                $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER - 10;
-                $selectOuterRect.style.zIndex = Number.MAX_SAFE_INTEGER;
+                $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
+                $selectMaskParent.style.zIndex = Number.MAX_SAFE_INTEGER - 1;
                 $selectMask.style.visible = function () {
                     return window[constants.devFlag].selectMode;
                 };
-                $selectOuterRect.style.visible = function () {
-                    return window[constants.devFlag].selectMode;
+                $selectMaskParent.style.visible = function () {
+                    return window[constants.devFlag].selectMode && $sprite.$parent;
                 };
                 $selectMask.style.opacity = 0.8;
 
@@ -183,7 +206,7 @@ module.exports = function () {
 
                 if (isChoosing) {
                     $canvas.remove($selectMask);
-                    $canvas.remove($selectOuterRect);
+                    $canvas.remove($selectMaskParent);
                     $selectMask = null;
                     $emit({
                         name: 'selectSprite',
@@ -207,7 +230,7 @@ module.exports = function () {
                 if (!$selectMask) return;
 
                 $canvas.remove($selectMask);
-                $canvas.remove($selectOuterRect);
+                $canvas.remove($selectMaskParent);
                 $selectMask = null;
             },
         };

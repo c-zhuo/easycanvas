@@ -36,17 +36,13 @@
                 tw: 400, th: 700,
                 locate: 'lt',
                 backgroundColor: '#ccc',
-                overflow: 'hidden'
+                overflowX: 'hidden',
+                overflowY: 'scroll'
             },
-            scroll: {
-                scrollable: true,
-                flexibleY: false,
-                minScrollX: 0,
-                maxScrollX: 0,
-                minScrollY: 0,
-                maxScrollY: 1000,
-                smooth: 0.9
-            }
+            // scroll: {
+            //     flexibleY: false,
+            //     // smooth: 0.9
+            // }
         }));
 
         $scroll.add({
@@ -66,7 +62,7 @@
         var ty = 10;
         for (var i = 0; i < 15; i++) {
             $scroll.add({
-                name: 'root',
+                name: 'G',
                 content: {
                     img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                 },
@@ -83,7 +79,14 @@
             ty += i * 10 + 60;
         }
 
-        $scroll.scroll.maxScrollY = ty - $scroll.getStyle('th');
+        // $scroll.scroll.maxScrollY = function () {
+        //     let bottomPosition = 0;
+        //     $scroll.getChildren().forEach((child) => {
+        //         let currentBottomPosition = child.getSelfStyle('ty') + child.getOuterRect().th - $scroll.getStyle('th');
+        //         if (currentBottomPosition > bottomPosition) bottomPosition = currentBottomPosition;
+        //     });
+        //     return bottomPosition;
+        // };
 
         // 按钮
 

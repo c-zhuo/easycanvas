@@ -59,8 +59,6 @@ let scrollFuncs = {
     },
 
     touch: function ($sprite, $e) {
-        if (!$sprite.scroll.scrollable) return false;
-
         let now = Date.now();
 
         if (!$sprite.$scroll.touching) {
@@ -82,14 +80,19 @@ let scrollFuncs = {
             let deltaTime = now - $sprite.$scroll.touching;
             $sprite.$scroll.touching = now;
 
-            if ($sprite.scroll.scrollX + deltaX < $sprite.scroll.minScrollX ||
-                $sprite.scroll.scrollX + deltaX > $sprite.scroll.maxScrollX) {
-                if ($sprite.scroll.flexibleX) deltaX >>= 3;
+            let minScrollX = ec.utils.funcOrValue($sprite.scroll.minScrollX, $sprite);
+            let maxScrollX = ec.utils.funcOrValue($sprite.scroll.maxScrollX, $sprite);
+            let minScrollY = ec.utils.funcOrValue($sprite.scroll.minScrollY, $sprite);
+            let maxScrollY = ec.utils.funcOrValue($sprite.scroll.maxScrollY, $sprite);
+
+            if ($sprite.scroll.scrollX + deltaX < minScrollX ||
+                $sprite.scroll.scrollX + deltaX > maxScrollX) {
+                if ($sprite.scroll.flexible || $sprite.scroll.flexibleX) deltaX >>= 3;
                 else deltaX = 0;
             }
-            if ($sprite.scroll.scrollY + deltaY < $sprite.scroll.minScrollY ||
-                $sprite.scroll.scrollY + deltaY > $sprite.scroll.maxScrollY) {
-                if ($sprite.scroll.flexibleY) deltaY >>= 3;
+            if ($sprite.scroll.scrollY + deltaY < minScrollY ||
+                $sprite.scroll.scrollY + deltaY > maxScrollY) {
+                if ($sprite.scroll.flexible || $sprite.scroll.flexibleY) deltaY >>= 3;
                 else deltaY = 0;
             }
 
@@ -120,7 +123,7 @@ let scrollFuncs = {
     },
 
     wheel: function ($sprite, $e) {
-        if (!$sprite.scroll.scrollable) return false;
+        if (!ec.utils.funcOrValue($sprite.scroll.scrollableY, $sprite)) return false;
 
         $sprite.$scroll.$scrolling = true;
 
@@ -140,14 +143,35 @@ const component = function (opt) {
     option.scroll = Object.assign({
         scrollX: 0,
         scrollY: 0,
-        scrollable: true,
+        scrollableX: function () {
+            return this.style.overflowX === 'scroll';
+        },
+        scrollableY: function () {
+            return this.style.overflowY === 'scroll';
+        },
         minScrollX: 0,
-        maxScrollX: 0,
+        maxScrollX: function () {
+            let max = 0;
+            this.getChildren().forEach((child) => {
+                let currentMax = child.getSelfStyle('tx') + child.getOuterRect().tw - this.getStyle('tw');
+                if (currentMax > max) max = currentMax;
+            });
+            return max;
+        },
         minScrollY: 0,
-        maxScrollY: 0,
+        maxScrollY: function () {
+            let max = 0;
+            this.getChildren().forEach((child) => {
+                let currentMax = child.getSelfStyle('ty') + child.getOuterRect().th - this.getStyle('th');
+                if (currentMax > max) max = currentMax;
+            });
+            return max;
+        },
         propagationX: false,
         propagationY: false,
     }, opt.scroll);
+
+    option.style.overflow = 'hidden';
 
     const autoScrollFunc = () => {
         if (autoScroll) {

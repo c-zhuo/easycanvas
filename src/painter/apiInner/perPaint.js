@@ -375,13 +375,18 @@ module.exports = function (i, index) {
         }
     }
 
-    if (settings.line) {
-        if (meetResult) {
-            i.$rendered = true;
 
+    if (!_img && !_text) {
+        i.$rendered = undefined;
+    }
+
+    deliverChildren($canvas, _children, 1);
+
+    if (settings.clip) {
+        if (meetResult) {
             let $paintSprite = {
                 $id: i.$id,
-                type: 'line',
+                type: 'clipOver',
                 settings: settings,
                 img: _img,
                 props: _props,
@@ -396,17 +401,13 @@ module.exports = function (i, index) {
         }
     }
 
-    if (!_img && !_text) {
-        i.$rendered = undefined;
-    }
-
-    deliverChildren($canvas, _children, 1);
-
-    if (settings.clip) {
+    if (settings.line) {
         if (meetResult) {
+            i.$rendered = true;
+
             let $paintSprite = {
                 $id: i.$id,
-                type: 'clipOver',
+                type: 'line',
                 settings: settings,
                 img: _img,
                 props: _props,

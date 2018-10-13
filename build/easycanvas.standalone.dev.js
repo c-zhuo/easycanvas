@@ -307,7 +307,8 @@
                 default: t
             };
         }
-        var S = function t(e) {
+        var S = 0;
+        var M = function t(e) {
             if (e.children) {
                 e.children.forEach(function(r, n) {
                     if (!r.$id) {
@@ -323,7 +324,7 @@
                 });
             }
         };
-        var M = function t(e) {
+        var F = function t(e) {
             var r = e || {};
             if (!r.$id) {
                 r.$id = Math.random().toString(36).substr(2);
@@ -352,6 +353,9 @@
                     }
                 }
             }
+            if (true) {
+                r.$addIndex = S++;
+            }
             r.events.eIndex = r.events.eIndex;
             r.hooks = r.hooks || {};
             if (true) {
@@ -367,25 +371,25 @@
                 r.name = r.name || "Unnamed Easycanvas Object";
             }
             r.children = r.children || [];
-            S(r);
+            M(r);
             r.$cache = {};
             r.$styleCacheTime = {};
             return r;
         };
-        var F = function t(e) {
+        var E = function t(e) {
             var r = this;
             this.$extendList.forEach(function(t) {
                 t.call(r, e);
             });
         };
         var R = function t(e) {
-            var r = M(e);
+            var r = F(e);
             for (var n in r) {
                 if (Object.prototype.hasOwnProperty.call(r, n)) {
                     this[n] = r[n];
                 }
             }
-            F.call(this, r);
+            E.call(this, r);
             return this;
         };
         R.prototype.$extendList = [];
@@ -394,7 +398,7 @@
                 return;
             }
             this.children.push(t);
-            S(this);
+            M(this);
             return this.children[this.children.length - 1];
         };
         R.prototype.getRect = function() {
@@ -820,6 +824,7 @@
                                 if (e.name === a.default.devFlag) return;
                                 r[e.$id] = {
                                     name: e.name,
+                                    $addIndex: e.$addIndex,
                                     parent: e.$parent && e.$parent.$id,
                                     style: {},
                                     children: e.children.filter(function(t) {
@@ -845,10 +850,14 @@
                                     });
                                 }
                                 if (e.children) {
-                                    e.children.forEach(t);
+                                    e.children.sort(function(t, e) {
+                                        return t.$addIndex < e.$addIndex ? -1 : 1;
+                                    }).forEach(t);
                                 }
                             };
-                            i.forEach(f);
+                            i.sort(function(t, e) {
+                                return t.$addIndex < e.$addIndex ? -1 : 1;
+                            }).forEach(f);
                         } else {
                             for (var u in l.$canvas) {
                                 r = n(r, l.$plugin.getSprite(u));
@@ -1340,6 +1349,9 @@
                     if (m.name === o.default.devFlag) {
                         m = $[1];
                     }
+                    if (m && m.name === o.default.devFlag) {
+                        m = $[2];
+                    }
                     if (m && n.$plugin.selectSprite(y.type === "click" || y.type === "touchend", n, m)) {
                         return;
                     }
@@ -1698,26 +1710,26 @@
                 var S = n.tx;
                 var M = n.ty;
                 var F = n.align || n.textAlign || "left";
-                var R = n.textFont || "14px Arial";
-                var E = parseInt(R);
-                var C = void 0;
-                var _ = n.lineHeight || E;
+                var E = n.textFont || "14px Arial";
+                var R = parseInt(E);
+                var I = void 0;
+                var C = n.lineHeight || R;
                 if (F === "center") {
                     S += n.tw / 2;
                 } else if (F === "right") {
                     S += n.tw;
                 }
                 if (n.textVerticalAlign === "top") {
-                    C = "top";
+                    I = "top";
                 } else if (n.textVerticalAlign === "bottom") {
-                    C = "bottom";
+                    I = "bottom";
                     M += n.th;
                 } else if (n.textVerticalAlign === "middle") {
                     M += n.th >> 1;
-                    C = "middle";
+                    I = "middle";
                 }
                 if (typeof o === "string" || typeof o === "number") {
-                    if (M + E * 2 > 0 && M - E * 2 < r.height) {
+                    if (M + R * 2 > 0 && M - R * 2 < r.height) {
                         r.$children.push({
                             $id: t.$id,
                             type: "text",
@@ -1726,10 +1738,10 @@
                                 tx: S,
                                 ty: M,
                                 content: String(o),
-                                fontsize: E,
+                                fontsize: R,
                                 align: F,
-                                baseline: C,
-                                font: R,
+                                baseline: I,
+                                font: E,
                                 color: n.color,
                                 type: n.textType
                             },
@@ -1746,10 +1758,10 @@
                                 tx: S + i.default.funcOrValue(e.tx, t),
                                 ty: M + i.default.funcOrValue(e.ty, t),
                                 content: i.default.funcOrValue(e.content, t),
-                                fontsize: E,
-                                baseline: C,
+                                fontsize: R,
+                                baseline: I,
                                 align: F,
-                                font: R,
+                                font: E,
                                 color: n.color,
                                 type: n.textType
                             },
@@ -1757,9 +1769,9 @@
                         });
                     });
                 } else if (o.type === "multline-text") {
-                    var I = o.text.split(/\t|\n/);
+                    var _ = o.text.split(/\t|\n/);
                     var V = [];
-                    I.forEach(function(t, e) {
+                    _.forEach(function(t, e) {
                         t = String.prototype.trim.apply(t);
                         if (o.config.start) {
                             t = t.replace(o.config.start, "");
@@ -1774,7 +1786,7 @@
                                 r = 0;
                             }
                             r++;
-                            i -= E * (y(t[r]) ? 1.05 : .6);
+                            i -= R * (y(t[r]) ? 1.05 : .6);
                         }
                         if (t || e) {
                             V.push(t);
@@ -1788,32 +1800,18 @@
                             props: {
                                 tx: S,
                                 ty: M,
-                                fontsize: E,
+                                fontsize: R,
                                 content: e,
-                                baseline: C,
+                                baseline: I,
                                 align: F,
-                                font: R,
+                                font: E,
                                 color: n.color,
                                 type: n.textType
                             },
                             $origin: t
                         });
-                        M += _ || E;
+                        M += C || R;
                     });
-                }
-            }
-            if (a.line) {
-                if (b) {
-                    t.$rendered = true;
-                    var P = {
-                        $id: t.$id,
-                        type: "line",
-                        settings: a,
-                        img: s,
-                        props: n
-                    };
-                    P.$origin = t;
-                    r.$children.push(P);
                 }
             }
             if (!s && !o) {
@@ -1822,9 +1820,23 @@
             (0, d.default)(r, l, 1);
             if (a.clip) {
                 if (b) {
-                    var H = {
+                    var P = {
                         $id: t.$id,
                         type: "clipOver",
+                        settings: a,
+                        img: s,
+                        props: n
+                    };
+                    P.$origin = t;
+                    r.$children.push(P);
+                }
+            }
+            if (a.line) {
+                if (b) {
+                    t.$rendered = true;
+                    var H = {
+                        $id: t.$id,
+                        type: "line",
                         settings: a,
                         img: s,
                         props: n
@@ -2058,39 +2070,39 @@
     }, function(t, e, r) {
         "use strict";
         var n = r(51);
-        var i = E(n);
+        var i = R(n);
         var a = r(55);
-        var o = E(a);
+        var o = R(a);
         var s = r(58);
-        var f = E(s);
+        var f = R(s);
         var l = r(52);
-        var u = E(l);
+        var u = R(l);
         var c = r(16);
-        var d = E(c);
+        var d = R(c);
         var h = r(53);
-        var v = E(h);
+        var v = R(h);
         var p = r(19);
-        var g = E(p);
+        var g = R(p);
         var y = r(18);
-        var $ = E(y);
+        var $ = R(y);
         var m = r(20);
-        var x = E(m);
+        var x = R(m);
         var w = r(15);
-        var b = E(w);
+        var b = R(w);
         var T = r(17);
-        var k = E(T);
+        var k = R(T);
         var A = r(54);
-        var O = E(A);
+        var O = R(A);
         var S = r(56);
-        var M = E(S);
+        var M = R(S);
         var F = r(57);
-        var R = E(F);
-        function E(t) {
+        var E = R(F);
+        function R(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
         }
-        var C = {
+        var I = {
             start: f.default,
             paint: u.default,
             add: i.default,
@@ -2098,7 +2110,7 @@
             register: O.default,
             clear: d.default,
             setFpsHandler: M.default,
-            setMaxFps: R.default,
+            setMaxFps: E.default,
             pause: v.default,
             on: g.default,
             off: $.default,
@@ -2106,7 +2118,7 @@
             broadcast: b.default,
             nextTick: k.default
         };
-        t.exports = C;
+        t.exports = I;
     }, function(t, e, r) {
         "use strict";
         var n = r(13);
@@ -2317,8 +2329,9 @@
                 });
                 var r = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==";
                 var n = null;
-                var i = [ "paintArea", "paintTimes", "paintTimeSpend", "preprocessTimeSpend", "loadArea", "jumpArea" ];
-                var a = {
+                var i = null;
+                var a = [ "paintArea", "paintTimes", "paintTimeSpend", "preprocessTimeSpend", "loadArea", "jumpArea" ];
+                var s = {
                     drawImage: function t(e, r) {
                         if (!window[o.default.devFlag].isPaintRecording) return;
                         if (r) {
@@ -2333,12 +2346,12 @@
                     register: function t(e) {
                         e.$id = Math.random().toString(36).substr(2);
                         e.$perf = {};
-                        i.forEach(function(t) {
+                        a.forEach(function(t) {
                             e.$perf[t] = 0;
                             e.$perf["$" + t] = 0;
                         });
                         setInterval(function() {
-                            i.forEach(function(t) {
+                            a.forEach(function(t) {
                                 e.$perf[t] = e.$perf["$" + t];
                                 e.$perf["$" + t] = 0;
                             });
@@ -2351,67 +2364,86 @@
                     timeCollect: function t(e, r, n) {
                         e.$perf["$" + r] += (n === "START" || n === "PAUSE" ? -1 : 1) * Date.now();
                     },
-                    selectSprite: function t(i, s, f) {
+                    selectSprite: function t(a, f, l) {
                         window[o.default.devFlag].MaskCanvasBase64 = r;
-                        if (!f || !window[o.default.devFlag].selectMode) {
-                            a.cancelSelectSprite(s);
+                        if (!l || !window[o.default.devFlag].selectMode) {
+                            s.cancelSelectSprite(f);
                             return false;
                         }
                         if (!n) {
-                            n = s.add({
+                            n = f.add({
                                 name: o.default.devFlag,
                                 content: {
-                                    img: s.imgLoader(r)
+                                    img: f.imgLoader(r)
                                 },
                                 style: {},
                                 webgl: undefined
+                            });
+                            i = f.add({
+                                name: o.default.devFlag,
+                                style: {
+                                    border: "2px red",
+                                    locate: "lt"
+                                }
                             });
                         }
                         [ "tx", "ty", "rotate", "rx", "ry", "scale", "tw", "th", "locate" ].forEach(function(t) {
                             (function(t) {
                                 n.style[t] = function() {
                                     if (t === "tw" || t === "th") {
-                                        return f.getStyle(t) || f.getRect()[t];
+                                        return l.getStyle(t) || l.getRect()[t];
                                     }
-                                    return f.getStyle(t);
+                                    return l.getStyle(t);
                                 };
                             })(t);
                         });
-                        n.style.zIndex = Number.MAX_SAFE_INTEGER;
+                        [ "tx", "ty", "tw", "th" ].forEach(function(t) {
+                            (function(t) {
+                                i.style[t] = function() {
+                                    return l.getOuterRect()[t];
+                                };
+                            })(t);
+                        });
+                        n.style.zIndex = Number.MAX_SAFE_INTEGER - 10;
+                        i.style.zIndex = Number.MAX_SAFE_INTEGER;
                         n.style.visible = function() {
                             return window[o.default.devFlag].selectMode;
                         };
+                        i.style.visible = function() {
+                            return window[o.default.devFlag].selectMode;
+                        };
                         n.style.opacity = .8;
-                        n.webgl = f.webgl ? {} : undefined;
+                        n.webgl = l.webgl ? {} : undefined;
                         if (n.webgl) {
-                            for (var l in f.webgl) {
+                            for (var u in l.webgl) {
                                 (function(t) {
                                     n.webgl[t] = function() {
-                                        if (typeof f.webgl[t] === "function") {
-                                            return f.webgl[t].call(f);
+                                        if (typeof l.webgl[t] === "function") {
+                                            return l.webgl[t].call(l);
                                         }
-                                        return f.webgl[t];
+                                        return l.webgl[t];
                                     };
-                                })(l);
+                                })(u);
                             }
-                            n.webgl.img = s.imgLoader(r);
+                            n.webgl.img = f.imgLoader(r);
                             n.webgl.colors = false;
                             n.style.zIndex = Number.MIN_SAFE_INTEGER;
                         }
-                        if (i) {
-                            s.remove(n);
+                        if (a) {
+                            f.remove(n);
+                            f.remove(i);
                             n = null;
                             e({
                                 name: "selectSprite",
-                                id: s.$id,
+                                id: f.$id,
                                 value: {
-                                    sprite: f.$id,
-                                    canvas: s.$id
+                                    sprite: l.$id,
+                                    canvas: f.$id
                                 }
                             });
                             window[o.default.devFlag].current = {
-                                $sprite: f,
-                                $canvas: s
+                                $sprite: l,
+                                $canvas: f
                             };
                             window[o.default.devFlag].selectMode = false;
                         }
@@ -2420,10 +2452,11 @@
                     cancelSelectSprite: function t(e) {
                         if (!n) return;
                         e.remove(n);
+                        e.remove(i);
                         n = null;
                     }
                 };
-                return a;
+                return s;
             }
         };
     }, function(t, e, r) {

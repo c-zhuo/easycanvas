@@ -24,7 +24,7 @@ const tree = `
     WebGL-其它格式的模型
     自定义插件（文档待补充）
     - Canvas UI组件
-    滑动组件scroll（用法暂时参考Demo）
+    滑动组件scroll
     按钮组件button（用法暂时参考Demo）
     文档待补充
 `;
