@@ -36,7 +36,7 @@
             <div
                 class="content-showMore"
                 v-if="visibleShowMore"
-                @click="maxVisibleElementsCount += 10">Show more</div>
+                @click="maxVisibleElementsCount += 20">Show more</div>
         </div>
     </div>
 </template>
@@ -56,7 +56,7 @@ export default {
     },
     data () {
         return {
-            maxVisibleElementsCount: 10,
+            maxVisibleElementsCount: 30,
         }
     },
     computed: {

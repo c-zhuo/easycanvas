@@ -121,13 +121,17 @@ Vue.use(require('easy-vuex'), {
             window.inspectedWindow.eval(sendGlobalHookCode);
 
             let $spriteDomInTree = window.document.getElementById(spriteId);
-            let spriteDomRect = $spriteDomInTree.getBoundingClientRect();
-            let spriteParentDomRect = $spriteDomInTree.parentElement.getBoundingClientRect();
+            // let spriteDomRect = $spriteDomInTree.getBoundingClientRect();
+            // let spriteParentDomRect = $spriteDomInTree.parentElement.getBoundingClientRect();
 
-            $spriteDomInTree.parentElement.scrollTo(
-                0,
-                $spriteDomInTree.parentElement.scrollTop + spriteDomRect.y + spriteDomRect.height - spriteParentDomRect.y - spriteParentDomRect.height
-            );
+            $spriteDomInTree.scrollIntoViewIfNeeded();
+            window.requestAnimationFrame(() => {
+                $spriteDomInTree.parentElement.scrollTo(0, $spriteDomInTree.parentElement.scrollTop - 40);
+            });
+            // $spriteDomInTree.parentElement.scrollTo(
+            //     0,
+            //     $spriteDomInTree.parentElement.scrollTop + spriteDomRect.y + spriteDomRect.height - spriteParentDomRect.y - spriteParentDomRect.height
+            // );
         },
         pause (canvasId, bol) {
             // 将某个canvas暂停（类似debugger; 对某帧进行调试，opt为true/false代表开启/关闭暂停，不传opt会进行toggle）

@@ -16121,10 +16121,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__webpack_require__(95), {
             window.inspectedWindow.eval(sendGlobalHookCode);
 
             var $spriteDomInTree = window.document.getElementById(spriteId);
-            var spriteDomRect = $spriteDomInTree.getBoundingClientRect();
-            var spriteParentDomRect = $spriteDomInTree.parentElement.getBoundingClientRect();
 
-            $spriteDomInTree.parentElement.scrollTo(0, $spriteDomInTree.parentElement.scrollTop + spriteDomRect.y + spriteDomRect.height - spriteParentDomRect.y - spriteParentDomRect.height);
+
+            $spriteDomInTree.scrollIntoViewIfNeeded();
+            window.requestAnimationFrame(function () {
+                $spriteDomInTree.parentElement.scrollTo(0, $spriteDomInTree.parentElement.scrollTop - 40);
+            });
         },
         pause: function pause(canvasId, bol) {
             var pauseCode = '\n                window[\'' + __WEBPACK_IMPORTED_MODULE_2_constants___default.a.devFlag + '\'].$plugin.pause(\'' + canvasId + '\', ' + bol + ');\n            ';
@@ -16346,7 +16348,7 @@ exports.default = {
     },
     data: function data() {
         return {
-            maxVisibleElementsCount: 10
+            maxVisibleElementsCount: 30
         };
     },
 
@@ -16525,7 +16527,7 @@ exports.default = {
             activeCanvas: null,
             debuggingCanvasId: false,
 
-            maxVisibleElementsCount: 10
+            maxVisibleElementsCount: 30
         };
     },
 
@@ -20008,13 +20010,13 @@ module.exports = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
 /* 108 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"instance\" id=\"{{ instanceId }}\" :class=\"{\n        selected: selected\n    }\" _v-04d9cf5e=\"\">\n    <div class=\"self\" @click.stop=\"select\" @mouseenter=\"enter\" @mouseleave=\"leave\" :class=\"{ selected: selected }\" :style=\"{ paddingLeft: depth * 15 + 'px' }\" _v-04d9cf5e=\"\">\n        <span class=\"content\" _v-04d9cf5e=\"\">\n            <!-- arrow wrapper for better hit box -->\n            <span class=\"arrow-wrapper\" v-if=\"instance.children.length\" @click.stop=\"toggle\" _v-04d9cf5e=\"\">\n                <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-04d9cf5e=\"\"></span>\n            </span>\n            <span class=\"render\" :title=\"instance.rendered ? '已渲染元素' : (instance.rendered === false ? '未渲染元素' : '容器元素')\" :class=\"{show: instance.rendered === true, hide: instance.rendered === false}\" _v-04d9cf5e=\"\"></span>                \n            <span class=\"angle-bracket\" _v-04d9cf5e=\"\">&lt;</span><span class=\"instance-name\" _v-04d9cf5e=\"\">{{ instance.name }}</span><span class=\"angle-bracket\" _v-04d9cf5e=\"\">&gt;</span>\n            <span class=\"info console\" v-if=\"selected\" _v-04d9cf5e=\"\">\n                id: {{ instanceId }}\n            </span>\n        </span>\n    </div>\n    <div v-if=\"expanded\" _v-04d9cf5e=\"\">\n        <v-element v-for=\"childId in instance.children\" v-show=\"$index < maxVisibleElementsCount\" :key=\"childId\" :canvas-id=\"canvasId\" :instance-id=\"childId\" :depth=\"depth + 1\" _v-04d9cf5e=\"\">\n        </v-element>\n        <div class=\"content-showMore\" v-if=\"visibleShowMore\" @click=\"maxVisibleElementsCount += 10\" _v-04d9cf5e=\"\">Show more</div>\n    </div>\n</div>\n";
+module.exports = "\n<div class=\"instance\" id=\"{{ instanceId }}\" :class=\"{\n        selected: selected\n    }\" _v-04d9cf5e=\"\">\n    <div class=\"self\" @click.stop=\"select\" @mouseenter=\"enter\" @mouseleave=\"leave\" :class=\"{ selected: selected }\" :style=\"{ paddingLeft: depth * 15 + 'px' }\" _v-04d9cf5e=\"\">\n        <span class=\"content\" _v-04d9cf5e=\"\">\n            <!-- arrow wrapper for better hit box -->\n            <span class=\"arrow-wrapper\" v-if=\"instance.children.length\" @click.stop=\"toggle\" _v-04d9cf5e=\"\">\n                <span class=\"arrow right\" :class=\"{ rotated: expanded }\" _v-04d9cf5e=\"\"></span>\n            </span>\n            <span class=\"render\" :title=\"instance.rendered ? '已渲染元素' : (instance.rendered === false ? '未渲染元素' : '容器元素')\" :class=\"{show: instance.rendered === true, hide: instance.rendered === false}\" _v-04d9cf5e=\"\"></span>                \n            <span class=\"angle-bracket\" _v-04d9cf5e=\"\">&lt;</span><span class=\"instance-name\" _v-04d9cf5e=\"\">{{ instance.name }}</span><span class=\"angle-bracket\" _v-04d9cf5e=\"\">&gt;</span>\n            <span class=\"info console\" v-if=\"selected\" _v-04d9cf5e=\"\">\n                id: {{ instanceId }}\n            </span>\n        </span>\n    </div>\n    <div v-if=\"expanded\" _v-04d9cf5e=\"\">\n        <v-element v-for=\"childId in instance.children\" v-show=\"$index < maxVisibleElementsCount\" :key=\"childId\" :canvas-id=\"canvasId\" :instance-id=\"childId\" :depth=\"depth + 1\" _v-04d9cf5e=\"\">\n        </v-element>\n        <div class=\"content-showMore\" v-if=\"visibleShowMore\" @click=\"maxVisibleElementsCount += 20\" _v-04d9cf5e=\"\">Show more</div>\n    </div>\n</div>\n";
 
 /***/ }),
 /* 109 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<section _v-15e3cd3e=\"\">\n    <div class=\"left\" _v-15e3cd3e=\"\">\n        <div class=\"tabs\" _v-15e3cd3e=\"\">\n            <div class=\"tabs-tab base64-selector\" title=\"Select an element in the page to inspect it\" :class=\"{ active: selectorActive }\" @click=\"chooseSelector\" _v-15e3cd3e=\"\">\n            </div>\n            <div class=\"tabs-tab\" :title=\"!debuggingCanvasId ? 'Pause canvas' : 'Resume canvas'\" :class=\"{ 'debugger-canvas': !debuggingCanvasId, 'debugger-canvas-active': debuggingCanvasId }\" @click=\"toggleDebuggingCanvasId\" _v-15e3cd3e=\"\">\n            </div>\n            <div class=\"tabs-tab\" v-for=\"(key, item) in canvas\" :key=\"index\" :class=\"{ active: key === activeCanvas }\" @click=\"chooseCanvas(key)\" _v-15e3cd3e=\"\">\n                {{item.name}}\n            </div>\n        </div>\n        <div class=\"content\" _v-15e3cd3e=\"\">\n            <template v-for=\"element in rootElement\">\n                <v-element v-if=\"$index < maxVisibleElementsCount\" :key=\"$key\" :canvas-id=\"activeCanvas\" :instance-id=\"$key\" :depth=\"0\" _v-15e3cd3e=\"\">\n                </v-element>\n            </template>\n            <div class=\"content-showMore\" v-if=\"visibleShowMore\" @click=\"maxVisibleElementsCount += 10\" _v-15e3cd3e=\"\">Show more</div>\n        </div>\n    </div>\n    <div class=\"right\" _v-15e3cd3e=\"\">\n        <v-detail _v-15e3cd3e=\"\"></v-detail>\n    </div>\n</section>\n";
+module.exports = "\n<section _v-15e3cd3e=\"\">\n    <div class=\"left\" _v-15e3cd3e=\"\">\n        <div class=\"tabs\" _v-15e3cd3e=\"\">\n            <div class=\"tabs-tab base64-selector\" title=\"Select an element in the page to inspect it\" :class=\"{ active: selectorActive }\" @click=\"chooseSelector\" _v-15e3cd3e=\"\">\n            </div>\n            <div class=\"tabs-tab\" :title=\"!debuggingCanvasId ? 'Pause canvas' : 'Resume canvas'\" :class=\"{ 'debugger-canvas': !debuggingCanvasId, 'debugger-canvas-active': debuggingCanvasId }\" @click=\"toggleDebuggingCanvasId\" _v-15e3cd3e=\"\">\n            </div>\n            <div class=\"tabs-tab\" v-for=\"(key, item) in canvas\" :key=\"index\" :class=\"{ active: key === activeCanvas }\" @click=\"chooseCanvas(key)\" _v-15e3cd3e=\"\">\n                {{item.name}}\n            </div>\n        </div>\n        <div class=\"content\" _v-15e3cd3e=\"\">\n            <template v-for=\"element in rootElement\">\n                <v-element v-if=\"$index < maxVisibleElementsCount\" :key=\"$key\" :canvas-id=\"activeCanvas\" :instance-id=\"$key\" :depth=\"0\" _v-15e3cd3e=\"\">\n                </v-element>\n            </template>\n            <div class=\"content-showMore\" v-if=\"visibleShowMore\" @click=\"maxVisibleElementsCount += 20\" _v-15e3cd3e=\"\">Show more</div>\n        </div>\n    </div>\n    <div class=\"right\" _v-15e3cd3e=\"\">\n        <v-detail _v-15e3cd3e=\"\"></v-detail>\n    </div>\n</section>\n";
 
 /***/ }),
 /* 110 */
