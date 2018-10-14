@@ -24,7 +24,7 @@ module.exports = function () {
         //     }
         // });
 
-        let $emit = function (passData) {
+        const $emit = function (passData) {
             passData.tabId = window[constants.devFlag].tabId;
 
             window.document.dispatchEvent(new CustomEvent(
@@ -36,6 +36,14 @@ module.exports = function () {
                     // cancelable: true
                 }
             ));
+        };
+
+        const textFont = '24px san-serif';
+        const measureText = function (text, size) {
+            var tempCanvas = document.createElement('canvas');
+            var tempCtx = tempCanvas.getContext('2d');
+            tempCtx.font = size || textFont;
+            return tempCtx.measureText(text).width;
         };
 
         setTimeout(() => {
@@ -114,6 +122,9 @@ module.exports = function () {
                 }
 
                 if (!$selectMask) {
+                    let tipsWidth = 0;
+                    let maskRect = {};
+
                     $selectMask = $canvas.add({
                         name: constants.devFlag,
                         content: {
@@ -128,6 +139,51 @@ module.exports = function () {
                             }
                         },
                         webgl: undefined,
+                        children: [{
+                            name: constants.devFlag,
+                            content: {
+                                text: $sprite.name,
+                            },
+                            inherit: [],
+                            style: {
+                                visible: this.name !== 'Unnamed Sprite',
+                                locate: 'center',
+                                tx () {
+                                    let res = maskRect.tx + maskRect.tw / 2;
+
+                                    if (res - tipsWidth / 2 < 10) {
+                                        res = tipsWidth / 2 + 10;
+                                    } else if (res + tipsWidth / 2 > this.$canvas.width - 10) {
+                                        res = this.$canvas.width - tipsWidth / 2 - 10;
+                                    }
+
+                                    return res;
+                                },
+                                ty () {
+                                    let res = maskRect.ty + maskRect.th + 20;
+                                    if (res + 20 > this.$canvas.height) {
+                                        res = maskRect.ty - 22;
+                                    }
+
+                                    return res;
+                                },
+                                tw () {
+                                    return tipsWidth;
+                                },
+                                th: 32,
+                                backgroundColor: 'black',
+                                textVerticalAlign: 'top',
+                                textAlign: 'center',
+                                textFont: textFont,
+                            },
+                            hooks: {
+                                beforeTick () {
+                                    maskRect = this.$parent.getRect();
+                                    this.content.text = '<' + $sprite.name + '> | ' + Math.floor(this.$parent.getStyle('tw')) + '×' + Math.floor(this.$parent.getStyle('th'));
+                                    tipsWidth = measureText(this.content.text) + 20;
+                                },
+                            },
+                        }]
                     });
 
                     $selectMaskParent = $canvas.add({

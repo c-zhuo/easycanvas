@@ -227,15 +227,16 @@ eventHandler = function (e, _$e) {
     if (process.env.NODE_ENV !== 'production') {
         // 开发者工具select模式下为选取元素
         if (window[constants.devFlag] && window[constants.devFlag].selectMode && caughts.length) {
-            let chooseSprite = caughts[0];
-            if (chooseSprite.name === constants.devFlag) {
-                // 选中mask不算
-                chooseSprite = caughts[1];
+            let devIndex = 0;
+            let chooseSprite = caughts[devIndex];
+            while (chooseSprite && chooseSprite.name === constants.devFlag) {
+                if (chooseSprite.name === constants.devFlag) {
+                    // 选中mask不算
+                    chooseSprite = caughts[++devIndex];
+                } else {
+                    break;
+                }
             }
-            // if (chooseSprite && chooseSprite.name === constants.devFlag) {
-            //     // 选中mask不算
-            //     chooseSprite = caughts[2];
-            // }
 
             if (chooseSprite && $canvas.$plugin.selectSprite($e.type === 'click' || $e.type === 'touchend', $canvas, chooseSprite)) {
                 return;

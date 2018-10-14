@@ -137,7 +137,9 @@ const textRendering = function (text, config) {
 
     // console.warn(Date.now() - now);
 
+    // 这块内存不会释放，后面需要优化
     cachePool[cacheFlag] = finalCanvas;
+
     return finalCanvas;
 
     // var image = new Image();

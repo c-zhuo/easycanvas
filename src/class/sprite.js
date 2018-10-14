@@ -139,7 +139,7 @@ const preAdd = function (_item) {
                 item.name = fileName[1];
             }
         }
-        item.name = item.name || 'Unnamed Easycanvas Object';
+        item.name = item.name || 'Unnamed Sprite';
     }
 
     item.children = item.children || [];
