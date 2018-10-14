@@ -55,6 +55,20 @@ module.exports = function () {
 
         const MaskCanvasBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';
 
+        const MaskTriangleCanvas = (function () {
+            var canvas = document.createElement('canvas');
+            canvas.width = 40;
+            canvas.height = 20;
+            var ctx = canvas.getContext('2d');
+            ctx.beginPath();
+            ctx.moveTo(0, 20);
+            ctx.lineTo(40, 20);
+            ctx.lineTo(20, 0);
+            ctx.closePath(); // draws last line of the triangle
+            ctx.fill();
+            return canvas;
+        })();
+
         let $selectMask = null;
         let $selectMaskParent = null;
 
@@ -146,6 +160,7 @@ module.exports = function () {
                             // sprite名字
                             name: constants.devFlag,
                             inherit: [],
+                            data: {},
                             style: {
                                 locate: 'center',
                                 tx () {
@@ -160,9 +175,9 @@ module.exports = function () {
                                     return res;
                                 },
                                 ty () {
-                                    let res = maskRect.ty + maskRect.th + 20;
-                                    if (res + 20 > this.$canvas.height) {
-                                        res = maskRect.ty - 22;
+                                    let res = maskRect.ty + maskRect.th + 30;
+                                    if (this.data.above = res + 30 > this.$canvas.height) {
+                                        res = maskRect.ty - 32;
                                     }
 
                                     return res;
@@ -183,6 +198,25 @@ module.exports = function () {
                                     tipsWidth = measureText(this.content.text) + 20;
                                 },
                             },
+                            children: [{
+                                name: constants.devFlag,
+                                content: {
+                                    img: MaskTriangleCanvas,
+                                },
+                                inherit: ['ty'],
+                                style: {
+                                    tx () {
+                                        return maskRect.tx + maskRect.tw / 2;
+                                    },
+                                    ty () {
+                                        return this.$parent.data.above ? 5 + 16 : -5 - 16;
+                                    },
+                                    tw: 20, th: 10,
+                                    rotate () {
+                                        return this.$parent.data.above ? 180 : 0;
+                                    },
+                                }
+                            }]
                         }, {
                             // 距离parent的距离标注
                             name: constants.devFlag,

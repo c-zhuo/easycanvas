@@ -247,7 +247,7 @@ const render = function ($sprite, i) {
         ctx.lineTo(props.tx + props.tw, props.ty);
         ctx.lineTo(props.tx + props.tw, props.ty + props.th);
         ctx.lineTo(props.tx, props.ty + props.th);
-        ctx.lineTo(props.tx, props.ty);
+        // ctx.lineTo(props.tx, props.ty);
 
         // let lineWidth = props.border.split(' ')[0] || 1;
         // ctx.lineWidth = lineWidth;
@@ -255,8 +255,9 @@ const render = function ($sprite, i) {
         // ctx.lineTo(props.tx + props.tw + lineWidth, props.ty - lineWidth);
         // ctx.lineTo(props.tx + props.tw + lineWidth, props.ty + props.th + lineWidth);
         // ctx.lineTo(props.tx - lineWidth, props.ty + props.th + lineWidth);
-        // ctx.lineTo(props.tx - lineWidth, props.ty - lineWidth);
+        // // ctx.lineTo(props.tx - lineWidth, props.ty - lineWidth);
 
+        ctx.closePath();
         ctx.stroke();
     } else if ($sprite.type === 'clipOver') {
         ctx.restore();
