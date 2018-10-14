@@ -105,7 +105,7 @@ module.exports = function () {
     // 拦截事件，确保children可以触发事件
     $sprite.events.$interceptor = $sprite.events.interceptor;
     $sprite.events.interceptor = function ($e) {
-        $sprite.children = $sprite.$combine.children;
+        $sprite.children = $sprite.$combine.children || [];
 
         $canvas.on('afterEvent', () => {
             $sprite.children = [];

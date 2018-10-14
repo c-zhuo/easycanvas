@@ -39,6 +39,7 @@ module.exports = function () {
         };
 
         const textFont = '24px san-serif';
+        const textFontSmall = '18px san-serif';
         const measureText = function (text, size) {
             var tempCanvas = document.createElement('canvas');
             var tempCtx = tempCanvas.getContext('2d');
@@ -178,7 +179,7 @@ module.exports = function () {
                             hooks: {
                                 beforeTick () {
                                     maskRect = this.$parent.getRect();
-                                    this.content.text = '<' + $sprite.name + '> | ' + Math.floor(this.$parent.getStyle('tw')) + '×' + Math.floor(this.$parent.getStyle('th'));
+                                    this.content.text = '<' + $sprite.name + '> | ' + Math.round(this.$parent.getStyle('tw')) + '×' + Math.round(this.$parent.getStyle('th'));
                                     tipsWidth = measureText(this.content.text) + 20;
                                 },
                             },
@@ -187,7 +188,9 @@ module.exports = function () {
                             name: constants.devFlag,
                             inherit: [],
                             style: {
-                                visible: this.name !== 'Unnamed Sprite',
+                                visible () {
+                                    return this.getStyle('tw') < this.data.value;
+                                },
                                 locate: 'center',
                                 tx () {
                                     let res = maskParentRect.tx + ($selectMask.getSelfStyle('tx') - $selectMaskParent.getSelfStyle('tx')) / 2;
@@ -198,19 +201,21 @@ module.exports = function () {
                                     return res;
                                 },
                                 tw () {
-                                    return measureText(this.content.text) + 10
+                                    return measureText(this.content.text, textFontSmall) + 10
                                 },
-                                th: 26,
+                                th: 20,
                                 backgroundColor: '#ddd',
                                 color: 'black',
                                 textVerticalAlign: 'middle',
                                 textAlign: 'center',
-                                textFont: textFont,
+                                textFont: textFontSmall,
                             },
+                            data: {},
                             hooks: {
                                 beforeTick () {
                                     maskParentRect = $selectMaskParent.getRect();
-                                    this.content.text = String(Math.round($selectMask.getSelfStyle('tx') - $selectMaskParent.getSelfStyle('tx')));
+                                    this.data.value = Math.round($selectMask.getSelfStyle('tx') - $selectMaskParent.getSelfStyle('tx'));
+                                    this.content.text = 'left: ' + String(this.data.value);
                                 },
                             },
                         }, {
@@ -218,7 +223,9 @@ module.exports = function () {
                             name: constants.devFlag,
                             inherit: [],
                             style: {
-                                visible: this.name !== 'Unnamed Sprite',
+                                visible () {
+                                    return this.getStyle('th') < this.data.value;
+                                },
                                 locate: 'center',
                                 tx () {
                                     let res = $selectMask.getSelfStyle('tx');
@@ -229,19 +236,21 @@ module.exports = function () {
                                     return res;
                                 },
                                 tw () {
-                                    return measureText(this.content.text) + 10
+                                    return measureText(this.content.text, textFontSmall) + 10
                                 },
-                                th: 26,
+                                th: 20,
                                 backgroundColor: '#ddd',
                                 color: 'black',
                                 textVerticalAlign: 'middle',
                                 textAlign: 'center',
-                                textFont: textFont,
+                                textFont: textFontSmall,
                             },
+                            data: {},
                             hooks: {
                                 beforeTick () {
                                     maskParentRect = $selectMaskParent.getRect();
-                                    this.content.text = String(Math.round($selectMask.getSelfStyle('ty') - $selectMaskParent.getSelfStyle('ty')));
+                                    this.data.value = Math.round($selectMask.getSelfStyle('ty') - $selectMaskParent.getSelfStyle('ty'));
+                                    this.content.text = 'top: ' + String(this.data.value);
                                 },
                             },
                         }]
