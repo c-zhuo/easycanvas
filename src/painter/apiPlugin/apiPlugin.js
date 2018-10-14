@@ -124,8 +124,10 @@ module.exports = function () {
                 if (!$selectMask) {
                     let tipsWidth = 0;
                     let maskRect = {};
+                    let maskParentRect = {};
 
                     $selectMask = $canvas.add({
+                        // 高亮
                         name: constants.devFlag,
                         content: {
                             img: $canvas.imgLoader(MaskCanvasBase64),
@@ -140,13 +142,10 @@ module.exports = function () {
                         },
                         webgl: undefined,
                         children: [{
+                            // sprite名字
                             name: constants.devFlag,
-                            content: {
-                                text: $sprite.name,
-                            },
                             inherit: [],
                             style: {
-                                visible: this.name !== 'Unnamed Sprite',
                                 locate: 'center',
                                 tx () {
                                     let res = maskRect.tx + maskRect.tw / 2;
@@ -181,6 +180,68 @@ module.exports = function () {
                                     maskRect = this.$parent.getRect();
                                     this.content.text = '<' + $sprite.name + '> | ' + Math.floor(this.$parent.getStyle('tw')) + '×' + Math.floor(this.$parent.getStyle('th'));
                                     tipsWidth = measureText(this.content.text) + 20;
+                                },
+                            },
+                        }, {
+                            // 距离parent的距离标注
+                            name: constants.devFlag,
+                            inherit: [],
+                            style: {
+                                visible: this.name !== 'Unnamed Sprite',
+                                locate: 'center',
+                                tx () {
+                                    let res = maskParentRect.tx + ($selectMask.getSelfStyle('tx') - $selectMaskParent.getSelfStyle('tx')) / 2;
+                                    return res;
+                                },
+                                ty () {
+                                    let res = $selectMask.getSelfStyle('ty');
+                                    return res;
+                                },
+                                tw () {
+                                    return measureText(this.content.text) + 10
+                                },
+                                th: 26,
+                                backgroundColor: '#ddd',
+                                color: 'black',
+                                textVerticalAlign: 'middle',
+                                textAlign: 'center',
+                                textFont: textFont,
+                            },
+                            hooks: {
+                                beforeTick () {
+                                    maskParentRect = $selectMaskParent.getRect();
+                                    this.content.text = String(Math.round($selectMask.getSelfStyle('tx') - $selectMaskParent.getSelfStyle('tx')));
+                                },
+                            },
+                        }, {
+                            // 距离parent的距离标注
+                            name: constants.devFlag,
+                            inherit: [],
+                            style: {
+                                visible: this.name !== 'Unnamed Sprite',
+                                locate: 'center',
+                                tx () {
+                                    let res = $selectMask.getSelfStyle('tx');
+                                    return res;
+                                },
+                                ty () {
+                                    let res = maskParentRect.ty + ($selectMask.getSelfStyle('ty') - $selectMaskParent.getSelfStyle('ty')) / 2;
+                                    return res;
+                                },
+                                tw () {
+                                    return measureText(this.content.text) + 10
+                                },
+                                th: 26,
+                                backgroundColor: '#ddd',
+                                color: 'black',
+                                textVerticalAlign: 'middle',
+                                textAlign: 'center',
+                                textFont: textFont,
+                            },
+                            hooks: {
+                                beforeTick () {
+                                    maskParentRect = $selectMaskParent.getRect();
+                                    this.content.text = String(Math.round($selectMask.getSelfStyle('ty') - $selectMaskParent.getSelfStyle('ty')));
                                 },
                             },
                         }]

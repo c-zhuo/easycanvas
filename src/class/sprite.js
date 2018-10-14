@@ -158,7 +158,7 @@ const extend = function (opt) {
     });
 };
 
-let sprite = function (opt) {
+const sprite = function (opt) {
     let _opt = preAdd(opt);
 
     for (let i in _opt) {
