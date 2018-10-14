@@ -66,17 +66,17 @@
         var r = 3.141593;
         t.exports = function(t, e, n, i, a, o) {
             var s = a ? -a / 180 * r : 0;
-            var f = t, l = e;
+            var l = t, f = e;
             if (a) {
-                f = (t - n) * Math.cos(s) - (e - i) * Math.sin(s) + n;
-                l = (t - n) * Math.sin(s) + (e - i) * Math.cos(s) + i;
+                l = (t - n) * Math.cos(s) - (e - i) * Math.sin(s) + n;
+                f = (t - n) * Math.sin(s) + (e - i) * Math.cos(s) + i;
             }
             if (o) {
-                return [ f, l ];
+                return [ l, f ];
             }
             return {
-                x: f,
-                y: l
+                x: l,
+                y: f
             };
         };
     }, , function(t, e) {
@@ -100,25 +100,25 @@
         var a = "processing";
         var o = 0;
         var s = function t(e, a, s) {
-            var f = s || {};
-            var l = t.cacheCanvas;
+            var l = s || {};
+            var f = t.cacheCanvas;
             if ((typeof e === "undefined" ? "undefined" : r(e)) === "object") {
                 var u = e;
-                f.callbackArgs = f.callbackArgs || [];
+                l.callbackArgs = l.callbackArgs || [];
                 t(u.shift(), function(e) {
-                    f.callbackArgs.push(e);
+                    l.callbackArgs.push(e);
                     if (u.length > 1) {
-                        t(u, a, f);
+                        t(u, a, l);
                     } else {
                         t(u[0], function(t) {
-                            f.callbackArgs.push(t);
-                            a(f.callbackArgs);
-                        }, f);
+                            l.callbackArgs.push(t);
+                            a(l.callbackArgs);
+                        }, l);
                     }
                 }, s);
                 return;
             }
-            var c = e + "_" + JSON.stringify(s) + "_" + l;
+            var c = e + "_" + JSON.stringify(s) + "_" + f;
             if (n[c]) {
                 if (a) {
                     if (n[c].width && a) {
@@ -134,7 +134,7 @@
                 }
             }
             var d = new Image();
-            if (f.block) {
+            if (l.block) {
                 d.src = e;
                 o++;
             } else if (o === 0) {
@@ -147,7 +147,7 @@
             }
             n[c] = d;
             var h = void 0;
-            if (f.canvas || f.alphaColor || l) {
+            if (l.canvas || l.alphaColor || f) {
                 h = document.createElement("canvas");
                 h.width = h.height || 0;
                 n[c] = h;
@@ -158,7 +158,7 @@
                 } else if (d.src.indexOf("data:image/jpg;") === 0) {
                     d.$noAlpha = true;
                 }
-                if (f.block) {
+                if (l.block) {
                     o--;
                     if (o === 0) {
                         i.forEach(function(t) {
@@ -167,13 +167,13 @@
                         i.splice(0);
                     }
                 }
-                if (h && (f.canvas || f.alphaColor || l)) {
+                if (h && (l.canvas || l.alphaColor || f)) {
                     var t = h.getContext("2d");
                     h.width = d.width;
                     h.height = d.height;
                     h.$noAlpha = d.$noAlpha;
                     t.drawImage(d, 0, 0);
-                    if (f.alphaColor) {
+                    if (l.alphaColor) {
                         var e = t.getImageData(0, 0, d.width, d.height);
                         var r = [];
                         for (var n = 0; n < e.data.length; n += 4) {
@@ -243,11 +243,11 @@
             };
         }
         var o = 3.141593;
-        t.exports = function(t, e, r, n, i, a, s, f, l) {
-            var u = l ? -l / 180 * o : 0;
-            if (l) {
-                t = (t - s) * Math.cos(l) - (e - f) * Math.sin(l) + s;
-                e = (t - s) * Math.sin(l) + (e - f) * Math.cos(l) + f;
+        t.exports = function(t, e, r, n, i, a, s, l, f) {
+            var u = f ? -f / 180 * o : 0;
+            if (f) {
+                t = (t - s) * Math.cos(f) - (e - l) * Math.sin(f) + s;
+                e = (t - s) * Math.sin(f) + (e - l) * Math.cos(f) + l;
             }
             return t >= r && t <= r + i && e >= n && e <= n + a;
         };
@@ -262,15 +262,15 @@
                 default: t
             };
         }
-        t.exports = function(t, e, r, n, i, a, s, f, l, u, c) {
-            var d = (0, o.default)(t, e, i, a, s, f, l, u, c) || (0, o.default)(t + r, e, i, a, s, f, l, u, c) || (0, 
-            o.default)(t, e + n, i, a, s, f, l, u, c) || (0, o.default)(t + r, e + n, i, a, s, f, l, u, c);
+        t.exports = function(t, e, r, n, i, a, s, l, f, u, c) {
+            var d = (0, o.default)(t, e, i, a, s, l, f, u, c) || (0, o.default)(t + r, e, i, a, s, l, f, u, c) || (0, 
+            o.default)(t, e + n, i, a, s, l, f, u, c) || (0, o.default)(t + r, e + n, i, a, s, l, f, u, c);
             if (d) return true;
-            var h = (0, o.default)(i, a, t, e, r, n, l, u, -c) || (0, o.default)(i + s, a, t, e, r, n, l, u, -c) || (0, 
-            o.default)(i, a + f, t, e, r, n, l, u, -c) || (0, o.default)(i + s, a + f, t, e, r, n, l, u, -c);
+            var h = (0, o.default)(i, a, t, e, r, n, f, u, -c) || (0, o.default)(i + s, a, t, e, r, n, f, u, -c) || (0, 
+            o.default)(i, a + l, t, e, r, n, f, u, -c) || (0, o.default)(i + s, a + l, t, e, r, n, f, u, -c);
             if (h) return true;
-            if (e > a && e + n < a + f && t < i && t + r > i + s) return true;
-            if (t > i && t + r < i + s && e < a && e + n > a + f) return true;
+            if (e > a && e + n < a + l && t < i && t + r > i + s) return true;
+            if (t > i && t + r < i + s && e < a && e + n > a + l) return true;
             return false;
         };
     }, function(t, e, r) {
@@ -281,33 +281,34 @@
             return t && typeof Symbol === "function" && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
         };
         var i = r(1);
-        var a = O(i);
+        var a = A(i);
         var o = r(4);
-        var s = O(o);
-        var f = r(19);
-        var l = O(f);
+        var s = A(o);
+        var l = r(19);
+        var f = A(l);
         var u = r(18);
-        var c = O(u);
+        var c = A(u);
         var d = r(16);
-        var h = O(d);
+        var h = A(d);
         var v = r(17);
-        var p = O(v);
+        var p = A(v);
         var g = r(20);
-        var y = O(g);
+        var y = A(g);
         var $ = r(15);
-        var m = O($);
-        var x = r(32);
-        var w = O(x);
+        var x = A($);
+        var m = r(32);
+        var w = A(m);
         var b = r(31);
-        var T = O(b);
+        var T = A(b);
         var k = r(33);
-        var A = O(k);
-        function O(t) {
+        var S = A(k);
+        function A(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
         }
-        var S = function t(e) {
+        var F = 0;
+        var M = function t(e) {
             if (e.children) {
                 e.children.forEach(function(r, n) {
                     if (!r.$id) {
@@ -323,7 +324,7 @@
                 });
             }
         };
-        var M = function t(e) {
+        var O = function t(e) {
             var r = e || {};
             if (!r.$id) {
                 r.$id = Math.random().toString(36).substr(2);
@@ -352,6 +353,9 @@
                     }
                 }
             }
+            if (true) {
+                r.$addIndex = F++;
+            }
             r.events.eIndex = r.events.eIndex;
             r.hooks = r.hooks || {};
             if (true) {
@@ -364,28 +368,28 @@
                         r.name = o[1];
                     }
                 }
-                r.name = r.name || "Unnamed Easycanvas Object";
+                r.name = r.name || "Unnamed Sprite";
             }
             r.children = r.children || [];
-            S(r);
+            M(r);
             r.$cache = {};
             r.$styleCacheTime = {};
             return r;
         };
-        var F = function t(e) {
+        var E = function t(e) {
             var r = this;
             this.$extendList.forEach(function(t) {
                 t.call(r, e);
             });
         };
         var R = function t(e) {
-            var r = M(e);
+            var r = O(e);
             for (var n in r) {
                 if (Object.prototype.hasOwnProperty.call(r, n)) {
                     this[n] = r[n];
                 }
             }
-            F.call(this, r);
+            E.call(this, r);
             return this;
         };
         R.prototype.$extendList = [];
@@ -394,7 +398,7 @@
                 return;
             }
             this.children.push(t);
-            S(this);
+            M(this);
             return this.children[this.children.length - 1];
         };
         R.prototype.getRect = function() {
@@ -498,17 +502,17 @@
         };
         R.prototype.getOuterRect = w.default;
         R.prototype.combine = T.default;
-        R.prototype.uncombine = A.default;
+        R.prototype.uncombine = S.default;
         R.prototype.combineAsync = function() {
             this.on("ticked", this.combine, 200);
             return this;
         };
         R.prototype.nextTick = p.default;
-        R.prototype.on = l.default;
+        R.prototype.on = f.default;
         R.prototype.off = c.default;
         R.prototype.clear = h.default;
         R.prototype.trigger = y.default;
-        R.prototype.broadcast = m.default;
+        R.prototype.broadcast = x.default;
         t.exports = R;
     }, , function(t, e, r) {
         "use strict";
@@ -635,60 +639,60 @@
                 var i = a(this);
                 var o = false;
                 var s = void 0;
-                var f = function() {
+                var l = function() {
                     var t = this.$lastPaintTime;
                     var a = (t - i) / n;
-                    var l = (r - e) * a + e;
+                    var f = (r - e) * a + e;
                     if (o) {
                         if (r > e) {
-                            while (l > r) {
-                                l -= r - e;
+                            while (f > r) {
+                                f -= r - e;
                             }
                         } else {
-                            while (l < r) {
-                                l += e - r;
+                            while (f < r) {
+                                f += e - r;
                             }
                         }
                     } else {
-                        if (r > e && l > r) {
-                            f.$done = true;
-                            l = r;
-                        } else if (r < e && l < r) {
-                            f.$done = true;
-                            l = r;
+                        if (r > e && f > r) {
+                            l.$done = true;
+                            f = r;
+                        } else if (r < e && f < r) {
+                            l.$done = true;
+                            f = r;
                         }
                     }
                     if (a >= 1 && s) {
-                        s.call(this, l);
+                        s.call(this, f);
                         s = null;
                     }
-                    return l;
+                    return f;
                 }.bind(this);
-                f.loop = function() {
+                l.loop = function() {
                     o = true;
-                    return f;
+                    return l;
                 };
-                f.restart = function() {
+                l.restart = function() {
                     i = a(this);
-                    return f;
+                    return l;
                 };
-                f.then = function(t) {
+                l.then = function(t) {
                     s = t;
-                    return f;
+                    return l;
                 };
-                return f;
+                return l;
             },
             pendulum: function t(e, r, n, o) {
                 var s = a(this);
-                var f = o || {};
-                f.start = f.start || 0;
-                var l = false;
+                var l = o || {};
+                l.start = l.start || 0;
+                var f = false;
                 var u = void 0;
-                var c = f.cycle || 1;
+                var c = l.cycle || 1;
                 var d = function() {
                     var t = a(this);
                     var o = (t - s) / n;
-                    if (!l) {
+                    if (!f) {
                         if (c) {
                             if (o > c) {
                                 o = c;
@@ -704,7 +708,7 @@
                             o %= c;
                         }
                     }
-                    var h = o * i * 2 - i / 2 + f.start / 360 * i;
+                    var h = o * i * 2 - i / 2 + l.start / 360 * i;
                     var v = (r - e) * (Math.sin(h) + 1) / 2 + e;
                     if (o >= c && u) {
                         u.call(this, v);
@@ -713,7 +717,7 @@
                     return v;
                 }.bind(this);
                 d.loop = function() {
-                    l = true;
+                    f = true;
                     return d;
                 };
                 d.restart = function() {
@@ -764,17 +768,17 @@
             }
         };
         var s = function t(e, r, i, a, s) {
-            var f = (0, n.funcOrValue)(e[r]);
+            var l = (0, n.funcOrValue)(e[r]);
             if (true) {
-                if (typeof f === "undefined") {
+                if (typeof l === "undefined") {
                     console.warn("[Easycanvas] start value in transition is undefined, using 0 instead.");
                 }
             }
-            f = f || 0;
-            e[r] = o[i].bind(t)(f, a, s);
+            l = l || 0;
+            e[r] = o[i].bind(t)(l, a, s);
         };
-        for (var f in o) {
-            s[f] = o[f];
+        for (var l in o) {
+            s[l] = o[l];
         }
         t.exports = s;
     }, function(t, e, r) {
@@ -791,17 +795,17 @@
             return t;
         };
         var i = r(4);
-        var a = f(i);
+        var a = l(i);
         var o = r(1);
-        var s = f(o);
-        function f(t) {
+        var s = l(o);
+        function l(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
         }
         if (true) {
             if (!window[a.default.devFlag]) {
-                var l = window[a.default.devFlag] = {
+                var f = window[a.default.devFlag] = {
                     isPaintRecording: false,
                     selectMode: false,
                     current: {},
@@ -811,15 +815,16 @@
                 };
                 var u = {
                     getSprite: function t(e) {
-                        if (!l.isPaintRecording) return [];
+                        if (!f.isPaintRecording) return [];
                         var r = {};
                         if (e) {
-                            var i = l.$canvas[e].children;
-                            var o = l.$canvas[e].$children;
-                            var f = function t(e) {
+                            var i = f.$canvas[e].children;
+                            var o = f.$canvas[e].$children;
+                            var l = function t(e) {
                                 if (e.name === a.default.devFlag) return;
                                 r[e.$id] = {
                                     name: e.name,
+                                    $addIndex: e.$addIndex,
                                     parent: e.$parent && e.$parent.$id,
                                     style: {},
                                     children: e.children.filter(function(t) {
@@ -845,25 +850,29 @@
                                     });
                                 }
                                 if (e.children) {
-                                    e.children.forEach(t);
+                                    e.children.sort(function(t, e) {
+                                        return t.$addIndex < e.$addIndex ? -1 : 1;
+                                    }).forEach(t);
                                 }
                             };
-                            i.forEach(f);
+                            i.sort(function(t, e) {
+                                return t.$addIndex < e.$addIndex ? -1 : 1;
+                            }).forEach(l);
                         } else {
-                            for (var u in l.$canvas) {
-                                r = n(r, l.$plugin.getSprite(u));
+                            for (var u in f.$canvas) {
+                                r = n(r, f.$plugin.getSprite(u));
                             }
                         }
                         return r;
                     },
                     selectSpriteById: function t(e, r) {
                         if (!r) {
-                            for (var n in l.$canvas) {
+                            for (var n in f.$canvas) {
                                 var i = u.selectSpriteById(e, n);
                                 if (i) {
                                     return {
                                         $sprite: i.$sprite || i,
-                                        $canvas: l.$canvas[n]
+                                        $canvas: f.$canvas[n]
                                     };
                                 }
                             }
@@ -876,18 +885,18 @@
                                 if (a) {
                                     return {
                                         $sprite: a.$sprite || a,
-                                        $canvas: l.$canvas[r]
+                                        $canvas: f.$canvas[r]
                                     };
                                 }
                             }
                             return false;
                         };
-                        var o = l.$canvas[r].children;
+                        var o = f.$canvas[r].children;
                         var s = a(o);
                         if (s) {
                             return {
                                 $sprite: s.$sprite || s,
-                                $canvas: l.$canvas[r]
+                                $canvas: f.$canvas[r]
                             };
                         }
                     },
@@ -900,7 +909,7 @@
                         n(o[r], i);
                     },
                     highlightSprite: function t(e, r, n) {
-                        l.selectMode = Boolean(r);
+                        f.selectMode = Boolean(r);
                         var i = u.selectSpriteById(e, n);
                         var a = i.$sprite;
                         var o = i.$canvas;
@@ -919,7 +928,7 @@
                         window.$1 = a;
                     },
                     pause: function t(e, r) {
-                        var n = l.$canvas[e];
+                        var n = f.$canvas[e];
                         n.$pausing = typeof r !== "undefined" ? r : !n.$pausing;
                     },
                     getPerf: function t() {
@@ -931,25 +940,25 @@
                                 devicePixelRatio: window.devicePixelRatio
                             }
                         };
-                        if (!l.isPaintRecording) return e;
-                        for (var r in l.$canvas) {
+                        if (!f.isPaintRecording) return e;
+                        for (var r in f.$canvas) {
                             e.canvas.push({
                                 $id: r,
-                                name: l.$canvas[r].name,
-                                perf: l.$canvas[r].$perf,
-                                fps: l.$canvas[r].lastFps,
+                                name: f.$canvas[r].name,
+                                perf: f.$canvas[r].$perf,
+                                fps: f.$canvas[r].lastFps,
                                 size: {
-                                    styleWidth: l.$canvas[r].$dom.getBoundingClientRect().width || parseInt(l.$canvas[r].$dom.style.width) || l.$canvas[r].$dom.width,
-                                    styleHeight: l.$canvas[r].$dom.getBoundingClientRect().height || parseInt(l.$canvas[r].$dom.style.height) || l.$canvas[r].$dom.height,
-                                    canvasWidth: l.$canvas[r].$dom.width,
-                                    canvasHeight: l.$canvas[r].$dom.height
+                                    styleWidth: f.$canvas[r].$dom.getBoundingClientRect().width || parseInt(f.$canvas[r].$dom.style.width) || f.$canvas[r].$dom.width,
+                                    styleHeight: f.$canvas[r].$dom.getBoundingClientRect().height || parseInt(f.$canvas[r].$dom.style.height) || f.$canvas[r].$dom.height,
+                                    canvasWidth: f.$canvas[r].$dom.width,
+                                    canvasHeight: f.$canvas[r].$dom.height
                                 }
                             });
                         }
                         return e;
                     }
                 };
-                l.$plugin = u;
+                f.$plugin = u;
             }
         }
     }, function(t, e) {
@@ -974,10 +983,10 @@
             var e = this.$canvas;
             var o = t.getAllChildren(true);
             for (var s = 0; s < o.length; s++) {
-                var f = o[s];
-                var l = f.content.img;
-                if (l && l.src) {
-                    if (f.content.img.width === 0 || l.complete === false || l.naturalHeight === 0) {
+                var l = o[s];
+                var f = l.content.img;
+                if (f && f.src) {
+                    if (l.content.img.width === 0 || f.complete === false || f.naturalHeight === 0) {
                         return a;
                     }
                 }
@@ -1028,7 +1037,7 @@
             });
             t.events.$interceptor = t.events.interceptor;
             t.events.interceptor = function(r) {
-                t.children = t.$combine.children;
+                t.children = t.$combine.children || [];
                 e.on("afterEvent", function() {
                     t.children = [];
                 });
@@ -1081,39 +1090,39 @@
     }, , , , , function(t, e, r) {
         "use strict";
         var n = r(4);
-        var i = A(n);
+        var i = S(n);
         var a = r(60);
-        var o = A(a);
+        var o = S(a);
         var s = r(28);
-        var f = A(s);
-        var l = r(102);
-        var u = A(l);
+        var l = S(s);
+        var f = r(102);
+        var u = S(f);
         var c = r(1);
-        var d = A(c);
+        var d = S(c);
         var h = r(29);
-        var v = A(h);
+        var v = S(h);
         var p = r(9);
-        var g = A(p);
+        var g = S(p);
         var y = r(101);
-        var $ = A(y);
-        var m = r(103);
-        var x = A(m);
+        var $ = S(y);
+        var x = r(103);
+        var m = S(x);
         var w = r(13);
-        var b = A(w);
+        var b = S(w);
         var T = r(30);
-        var k = A(T);
-        function A(t) {
+        var k = S(T);
+        function S(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
         }
-        var O = {
+        var A = {
             painter: o.default,
             imgLoader: g.default,
             imgPretreat: $.default,
-            multlineText: x.default,
+            multlineText: m.default,
             transition: v.default,
-            tick: f.default,
+            tick: l.default,
             utils: d.default,
             mirror: u.default,
             class: {
@@ -1123,24 +1132,24 @@
             $version: i.default.version,
             env: "develop"
         };
-        O.extend = function(t) {
-            var e = O.sprite.prototype.$extendList;
+        A.extend = function(t) {
+            var e = A.sprite.prototype.$extendList;
             if (e.indexOf(t) >= 0) return;
             e.push(t);
         };
-        O.use = function(t) {
-            var e = O.painter.prototype.$extendList;
+        A.use = function(t) {
+            var e = A.painter.prototype.$extendList;
             if (e.indexOf(t) >= 0) return;
             if (t.onUse) {
-                t.onUse(O);
+                t.onUse(A);
             }
             e.push(t);
         };
-        O.component = function(t, e) {
-            t(O, e);
+        A.component = function(t, e) {
+            t(A, e);
         };
-        var S = typeof window !== "undefined";
-        if (S) {
+        var F = typeof window !== "undefined";
+        if (F) {
             if (window.Easycanvas) {
                 console.warn("[Easycanvas] already loaded, it should be loaded only once.");
             } else {
@@ -1150,11 +1159,11 @@
                     }, 500);
                 }
                 if (true) {
-                    window.Easycanvas = O;
+                    window.Easycanvas = A;
                 }
             }
         }
-        t.exports = O;
+        t.exports = A;
     }, , , , function(t, e, r) {
         "use strict";
         var n = r(47);
@@ -1162,9 +1171,9 @@
         var a = r(49);
         var o = h(a);
         var s = r(43);
-        var f = h(s);
-        var l = r(48);
-        var u = h(l);
+        var l = h(s);
+        var f = r(48);
+        var u = h(f);
         var c = r(59);
         var d = h(c);
         function h(t) {
@@ -1174,7 +1183,7 @@
         }
         var v = {
             $render: o.default,
-            $eventHandler: f.default,
+            $eventHandler: l.default,
             $perPaint: i.default,
             $rAFer: u.default
         };
@@ -1193,7 +1202,7 @@
                 default: t
             };
         }
-        var f = function t(e) {
+        var l = function t(e) {
             return e.sort(function(t, e) {
                 if (true) {
                     if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
@@ -1203,7 +1212,7 @@
                 return i.default.funcOrValue(i.default.firstValuable(t.events.eIndex, t.style.zIndex), t) < i.default.funcOrValue(i.default.firstValuable(e.events.eIndex, e.style.zIndex), e) ? 1 : -1;
             });
         };
-        var l = function t(e, r) {
+        var f = function t(e, r) {
             var n = e.getRect();
             return i.default.pointInRect(r.canvasX, r.canvasY, n.tx, n.tx + n.tw, n.ty, n.ty + n.th);
         };
@@ -1214,14 +1223,14 @@
             for (var s = 0; s < a; s++) {
                 var u = e[s];
                 if (i.default.funcOrValue(u.style.visible, u) === false) continue;
-                if (l(u, r)) {
+                if (f(u, r)) {
                     if (u.events.interceptor) {
                         var c = i.default.firstValuable(u.events.interceptor.call(u, r), r);
                         if (!c || c.$stopPropagation) continue;
                     }
                 }
                 if (u.children.length) {
-                    t(f(u.children.filter(function(t) {
+                    t(l(u.children.filter(function(t) {
                         if (true) {
                             if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
                                 return i.default.funcOrValue(t.style.zIndex, t) >= 0;
@@ -1230,13 +1239,13 @@
                         return i.default.funcOrValue(i.default.firstValuable(t.events.eIndex, t.style.zIndex), t) >= 0;
                     })), r, n);
                 }
-                if (l(u, r)) {
+                if (f(u, r)) {
                     n.push(u);
                     var h = d(u, r);
                     if (r.$stopPropagation) break;
                 }
                 if (u.children.length) {
-                    t(f(u.children.filter(function(t) {
+                    t(l(u.children.filter(function(t) {
                         if (true) {
                             if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
                                 return i.default.funcOrValue(t.style.zIndex, t) < 0;
@@ -1276,7 +1285,7 @@
             var n = this;
             var a = void 0;
             var s = void 0;
-            var l = 1;
+            var f = 1;
             var d = 1;
             if (!r) {
                 if (!e.layerX && e.targetTouches && e.targetTouches[0]) {
@@ -1293,13 +1302,13 @@
                 if (this.$dom.getBoundingClientRect) {
                     var g = this.$dom.getBoundingClientRect();
                     g.width > g.height !== this.width > this.height;
-                    l = Math.floor(g[p ? "height" : "width"]) / this.width;
+                    f = Math.floor(g[p ? "height" : "width"]) / this.width;
                     d = Math.floor(g[p ? "width" : "height"]) / this.height;
                 }
             }
             var y = r || {
                 type: e.type,
-                canvasX: a / l,
+                canvasX: a / f,
                 canvasY: s / d,
                 event: e
             };
@@ -1330,15 +1339,20 @@
                 if (!y || y.$stopPropagation) return;
             }
             var $ = [];
-            u(f(n.children), y, $);
+            u(l(n.children), y, $);
             i.default.execFuncs(n.hooks.afterEvent, n, y);
             n.hooks.afterEvent = null;
             c.call(n, y, $);
             if (true) {
                 if (window[o.default.devFlag] && window[o.default.devFlag].selectMode && $.length) {
-                    var m = $[0];
-                    if (m.name === o.default.devFlag) {
-                        m = $[1];
+                    var x = 0;
+                    var m = $[x];
+                    while (m && m.name === o.default.devFlag) {
+                        if (m.name === o.default.devFlag) {
+                            m = $[++x];
+                        } else {
+                            break;
+                        }
                     }
                     if (m && n.$plugin.selectSprite(y.type === "click" || y.type === "touchend", n, m)) {
                         return;
@@ -1346,22 +1360,22 @@
                 }
             }
             if ((y.type === "mousemove" || y.type === "touchmove") && n.eLastMouseHover && $.indexOf(n.eLastMouseHover) === -1) {
-                var x = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
-                if (x) {
-                    x.call(n.eLastMouseHover, y);
+                var w = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
+                if (w) {
+                    w.call(n.eLastMouseHover, y);
                 }
             }
             n.eLastMouseHover = $[0];
             if (!$.length && n.eLastMouseHover) {
-                var w = n.eLastMouseHover["events"]["mouseout"];
-                if (w) {
-                    w.call(n.eLastMouseHover, y);
+                var b = n.eLastMouseHover["events"]["mouseout"];
+                if (b) {
+                    b.call(n.eLastMouseHover, y);
                 }
                 n.eLastMouseHover = null;
             }
-            var b = n.events[y.type];
-            if (b) {
-                if (b.call(n, y)) {
+            var T = n.events[y.type];
+            if (T) {
+                if (T.call(n, y)) {
                     n.eHoldingFlag = false;
                     return true;
                 }
@@ -1392,16 +1406,16 @@
                 e.th -= e.th * s;
             }
             if (e.tx < 0 && e.tw > -e.tx) {
-                var f = -e.tx / e.tw;
-                e.sx += e.sw * f;
-                e.sw -= e.sw * f;
+                var l = -e.tx / e.tw;
+                e.sx += e.sw * l;
+                e.sw -= e.sw * l;
                 e.tw = e.tw + e.tx;
                 e.tx = 0;
             }
             if (e.ty < 0 && e.th > -e.ty) {
-                var l = -e.ty / e.th;
-                e.sy += e.sh * l;
-                e.sh -= e.sh * l;
+                var f = -e.ty / e.th;
+                e.sy += e.sh * f;
+                e.sh -= e.sh * f;
                 e.th = e.th + e.ty;
                 e.ty = 0;
             }
@@ -1472,16 +1486,16 @@
                 var o = r.img;
                 var s = r.sequence;
                 r.sequence.index = r.sequence.index || 0;
-                var f = r.sequence.index || 0;
-                if (f < 0) f = 0;
-                var l = void 0, u = void 0;
+                var l = r.sequence.index || 0;
+                if (l < 0) l = 0;
+                var f = void 0, u = void 0;
                 if (s.w || s.h) {
                     if (s.w < 0) {
-                        l = o.width / (0 - s.w);
+                        f = o.width / (0 - s.w);
                     } else if (s.w > 0) {
-                        l = s.w;
+                        f = s.w;
                     } else {
-                        l = o.width;
+                        f = o.width;
                     }
                     if (s.h < 0) {
                         u = o.height / (0 - s.h);
@@ -1490,12 +1504,12 @@
                     } else {
                         u = o.height;
                     }
-                    var c = Math.floor(o.width / l);
+                    var c = Math.floor(o.width / f);
                     var d = Math.floor(o.height / u);
-                    r.sx = f % c * l;
-                    r.sy = Math.floor(f / c) % d * u;
+                    r.sx = l % c * f;
+                    r.sy = Math.floor(l / c) % d * u;
                 }
-                if (!s.loop && f > 0 && r.sx === 0 && r.sy === 0) {
+                if (!s.loop && l > 0 && r.sx === 0 && r.sy === 0) {
                     r.img = undefined;
                     if (s.onOver) {
                         s.onOver.call(t);
@@ -1509,9 +1523,9 @@
                     r.sequence.index++;
                     r.sequence.lastTickTime = e.$nextTickTime;
                 }
-                r.sw = r.sw || l;
+                r.sw = r.sw || f;
                 r.sh = r.sh || u;
-                r.tw = r.tw || l;
+                r.tw = r.tw || f;
                 r.th = r.th || u;
             }
             return r;
@@ -1523,9 +1537,9 @@
         var a = r(4);
         var o = p(a);
         var s = r(46);
-        var f = p(s);
-        var l = r(44);
-        var u = p(l);
+        var l = p(s);
+        var f = r(44);
+        var u = p(f);
         var c = r(45);
         var d = p(c);
         var h = r(12);
@@ -1557,13 +1571,13 @@
             }
             var r = this;
             $.call(t);
-            var n = (0, f.default)(t, r);
+            var n = (0, l.default)(t, r);
             var a = {
                 globalAlpha: i.default.firstValuable(n.opacity, 1)
             };
             var o = n.text;
             var s = n.img;
-            var l = i.default.funcOrValue(t.children, t);
+            var f = i.default.funcOrValue(t.children, t);
             var c = s ? s.width || 0 : 0;
             var h = s ? s.height || 0 : 0;
             n.tw = n.tw || n.sw || c;
@@ -1602,11 +1616,11 @@
             }
             if (n.rotate) {
                 var p = i.default.firstValuable(n.rx, n.tx + .5 * n.tw);
-                var m = i.default.firstValuable(n.ry, n.ty + .5 * n.th);
-                a.beforeRotate = [ p, m ];
+                var x = i.default.firstValuable(n.ry, n.ty + .5 * n.th);
+                a.beforeRotate = [ p, x ];
                 a.rotate = -n.rotate * Math.PI / 180;
                 a.rotate = Number(a.rotate.toFixed(4));
-                a.afterRotate = [ -p, -m ];
+                a.afterRotate = [ -p, -x ];
             }
             if (n.backgroundColor) {
                 a.fillRect = n.backgroundColor;
@@ -1618,11 +1632,11 @@
                 a.clip = true;
             }
             if (n.scale !== 1) {
-                var x = n.scale;
-                n.tx -= (x - 1) * n.tw >> 1;
-                n.ty -= (x - 1) * n.th >> 1;
-                n.tw *= x;
-                n.th *= x;
+                var m = n.scale;
+                n.tx -= (m - 1) * n.tw >> 1;
+                n.ty -= (m - 1) * n.th >> 1;
+                n.tw *= m;
+                n.th *= m;
             }
             if (n.mirrX) {
                 a.translate = [ r.width, 0 ];
@@ -1660,7 +1674,7 @@
                     r.$children.push(T);
                 }
             }
-            (0, d.default)(r, l, -1);
+            (0, d.default)(r, f, -1);
             if (a.fillRect) {
                 if (b) {
                     t.$rendered = true;
@@ -1679,33 +1693,33 @@
                 if (!n.rotate && !o) {
                     (0, u.default)(r, n, c, h);
                 }
-                var A = (0, v.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width - 1, r.height - 1, a.beforeRotate && a.beforeRotate[0], a.beforeRotate && a.beforeRotate[1], n.rotate);
-                if (A) {
+                var S = (0, v.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width - 1, r.height - 1, a.beforeRotate && a.beforeRotate[0], a.beforeRotate && a.beforeRotate[1], n.rotate);
+                if (S) {
                     t.$rendered = true;
-                    var O = {
+                    var A = {
                         $id: t.$id,
                         type: "img",
                         settings: a,
                         img: s,
                         props: n
                     };
-                    O.$origin = t;
-                    r.$children.push(O);
+                    A.$origin = t;
+                    r.$children.push(A);
                 }
             }
             if (o) {
                 t.$rendered = true;
-                var S = n.tx;
+                var F = n.tx;
                 var M = n.ty;
-                var F = n.align || n.textAlign || "left";
-                var R = n.textFont || "14px Arial";
-                var E = parseInt(R);
+                var O = n.align || n.textAlign || "left";
+                var E = n.textFont || "14px Arial";
+                var R = parseInt(E);
                 var C = void 0;
-                var _ = n.lineHeight || E;
-                if (F === "center") {
-                    S += n.tw / 2;
-                } else if (F === "right") {
-                    S += n.tw;
+                var I = n.lineHeight || R;
+                if (O === "center") {
+                    F += n.tw / 2;
+                } else if (O === "right") {
+                    F += n.tw;
                 }
                 if (n.textVerticalAlign === "top") {
                     C = "top";
@@ -1717,19 +1731,19 @@
                     C = "middle";
                 }
                 if (typeof o === "string" || typeof o === "number") {
-                    if (M + E * 2 > 0 && M - E * 2 < r.height) {
+                    if (M + R * 2 > 0 && M - R * 2 < r.height) {
                         r.$children.push({
                             $id: t.$id,
                             type: "text",
                             settings: a,
                             props: {
-                                tx: S,
+                                tx: F,
                                 ty: M,
                                 content: String(o),
-                                fontsize: E,
-                                align: F,
+                                fontsize: R,
+                                align: O,
                                 baseline: C,
-                                font: R,
+                                font: E,
                                 color: n.color,
                                 type: n.textType
                             },
@@ -1743,13 +1757,13 @@
                             type: "text",
                             settings: a,
                             props: {
-                                tx: S + i.default.funcOrValue(e.tx, t),
+                                tx: F + i.default.funcOrValue(e.tx, t),
                                 ty: M + i.default.funcOrValue(e.ty, t),
                                 content: i.default.funcOrValue(e.content, t),
-                                fontsize: E,
+                                fontsize: R,
                                 baseline: C,
-                                align: F,
-                                font: R,
+                                align: O,
+                                font: E,
                                 color: n.color,
                                 type: n.textType
                             },
@@ -1757,9 +1771,9 @@
                         });
                     });
                 } else if (o.type === "multline-text") {
-                    var I = o.text.split(/\t|\n/);
+                    var _ = o.text.split(/\t|\n/);
                     var V = [];
-                    I.forEach(function(t, e) {
+                    _.forEach(function(t, e) {
                         t = String.prototype.trim.apply(t);
                         if (o.config.start) {
                             t = t.replace(o.config.start, "");
@@ -1774,7 +1788,7 @@
                                 r = 0;
                             }
                             r++;
-                            i -= E * (y(t[r]) ? 1.05 : .6);
+                            i -= R * (y(t[r]) ? 1.05 : .6);
                         }
                         if (t || e) {
                             V.push(t);
@@ -1786,28 +1800,31 @@
                             type: "text",
                             settings: a,
                             props: {
-                                tx: S,
+                                tx: F,
                                 ty: M,
-                                fontsize: E,
+                                fontsize: R,
                                 content: e,
                                 baseline: C,
-                                align: F,
-                                font: R,
+                                align: O,
+                                font: E,
                                 color: n.color,
                                 type: n.textType
                             },
                             $origin: t
                         });
-                        M += _ || E;
+                        M += I || R;
                     });
                 }
             }
-            if (a.line) {
+            if (!s && !o) {
+                t.$rendered = undefined;
+            }
+            (0, d.default)(r, f, 1);
+            if (a.clip) {
                 if (b) {
-                    t.$rendered = true;
                     var P = {
                         $id: t.$id,
-                        type: "line",
+                        type: "clipOver",
                         settings: a,
                         img: s,
                         props: n
@@ -1816,15 +1833,12 @@
                     r.$children.push(P);
                 }
             }
-            if (!s && !o) {
-                t.$rendered = undefined;
-            }
-            (0, d.default)(r, l, 1);
-            if (a.clip) {
+            if (a.line) {
                 if (b) {
+                    t.$rendered = true;
                     var H = {
                         $id: t.$id,
-                        type: "clipOver",
+                        type: "line",
                         settings: a,
                         img: s,
                         props: n
@@ -1899,23 +1913,23 @@
             var n = this;
             var a = e.props;
             var s = void 0;
-            var f = e.type === "text";
+            var l = e.type === "text";
             if (a && e.type !== "clip" && e.type !== "clipOver" && e.type !== "line") {
-                if (f) {
-                    var l = a.content.length;
-                    s = a.fontsize * a.fontsize * 9 * l;
-                    a[5] = a.tx - a.fontsize * 1.5 * l;
+                if (l) {
+                    var f = a.content.length;
+                    s = a.fontsize * a.fontsize * 9 * f;
+                    a[5] = a.tx - a.fontsize * 1.5 * f;
                     if (a[5] < 0) a[5] = 0;
                     a[6] = a.ty - a.fontsize * 1.5;
                     if (a[6] < 0) a[6] = 0;
-                    a[7] = a.fontsize * 3 * l;
+                    a[7] = a.fontsize * 3 * f;
                     if (a[5] + a[7] > n.width) a[7] = n.width - a[5];
                     a[8] = a.fontsize * 3;
                     if (a[6] + a[8] > n.height) a[8] = n.height - a[6];
                 } else {
                     s = a.tw * a.th;
                 }
-                if ((s > 200 * 200 || f) && !e.settings.transform && !e.settings.rotate) {
+                if ((s > 200 * 200 || l) && !e.settings.transform && !e.settings.rotate) {
                     var u = n.$children;
                     for (var c = u.length - 1; c > r; c--) {
                         var d = u[c];
@@ -2042,7 +2056,7 @@
                 g.lineTo(a.tx + a.tw, a.ty);
                 g.lineTo(a.tx + a.tw, a.ty + a.th);
                 g.lineTo(a.tx, a.ty + a.th);
-                g.lineTo(a.tx, a.ty);
+                g.closePath();
                 g.stroke();
             } else if (e.type === "clipOver") {
                 g.restore();
@@ -2058,51 +2072,51 @@
     }, function(t, e, r) {
         "use strict";
         var n = r(51);
-        var i = E(n);
+        var i = R(n);
         var a = r(55);
-        var o = E(a);
+        var o = R(a);
         var s = r(58);
-        var f = E(s);
-        var l = r(52);
-        var u = E(l);
+        var l = R(s);
+        var f = r(52);
+        var u = R(f);
         var c = r(16);
-        var d = E(c);
+        var d = R(c);
         var h = r(53);
-        var v = E(h);
+        var v = R(h);
         var p = r(19);
-        var g = E(p);
+        var g = R(p);
         var y = r(18);
-        var $ = E(y);
-        var m = r(20);
-        var x = E(m);
+        var $ = R(y);
+        var x = r(20);
+        var m = R(x);
         var w = r(15);
-        var b = E(w);
+        var b = R(w);
         var T = r(17);
-        var k = E(T);
-        var A = r(54);
-        var O = E(A);
-        var S = r(56);
-        var M = E(S);
-        var F = r(57);
-        var R = E(F);
-        function E(t) {
+        var k = R(T);
+        var S = r(54);
+        var A = R(S);
+        var F = r(56);
+        var M = R(F);
+        var O = r(57);
+        var E = R(O);
+        function R(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
         }
         var C = {
-            start: f.default,
+            start: l.default,
             paint: u.default,
             add: i.default,
             remove: o.default,
-            register: O.default,
+            register: A.default,
             clear: d.default,
             setFpsHandler: M.default,
-            setMaxFps: R.default,
+            setMaxFps: E.default,
             pause: v.default,
             on: g.default,
             off: $.default,
-            trigger: x.default,
+            trigger: m.default,
             broadcast: b.default,
             nextTick: k.default
         };
@@ -2310,15 +2324,37 @@
                         detail: JSON.parse(JSON.stringify(r))
                     }));
                 };
+                var r = "24px san-serif";
+                var n = "18px san-serif";
+                var i = function t(e, n) {
+                    var i = document.createElement("canvas");
+                    var a = i.getContext("2d");
+                    a.font = n || r;
+                    return a.measureText(e).width;
+                };
                 setTimeout(function() {
                     e({
                         name: "init"
                     });
                 });
-                var r = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==";
-                var n = null;
-                var i = [ "paintArea", "paintTimes", "paintTimeSpend", "preprocessTimeSpend", "loadArea", "jumpArea" ];
-                var a = {
+                var a = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==";
+                var s = function() {
+                    var t = document.createElement("canvas");
+                    t.width = 40;
+                    t.height = 20;
+                    var e = t.getContext("2d");
+                    e.beginPath();
+                    e.moveTo(0, 20);
+                    e.lineTo(40, 20);
+                    e.lineTo(20, 0);
+                    e.closePath();
+                    e.fill();
+                    return t;
+                }();
+                var l = null;
+                var f = null;
+                var u = [ "paintArea", "paintTimes", "paintTimeSpend", "preprocessTimeSpend", "loadArea", "jumpArea" ];
+                var c = {
                     drawImage: function t(e, r) {
                         if (!window[o.default.devFlag].isPaintRecording) return;
                         if (r) {
@@ -2333,12 +2369,12 @@
                     register: function t(e) {
                         e.$id = Math.random().toString(36).substr(2);
                         e.$perf = {};
-                        i.forEach(function(t) {
+                        u.forEach(function(t) {
                             e.$perf[t] = 0;
                             e.$perf["$" + t] = 0;
                         });
                         setInterval(function() {
-                            i.forEach(function(t) {
+                            u.forEach(function(t) {
                                 e.$perf[t] = e.$perf["$" + t];
                                 e.$perf["$" + t] = 0;
                             });
@@ -2351,79 +2387,253 @@
                     timeCollect: function t(e, r, n) {
                         e.$perf["$" + r] += (n === "START" || n === "PAUSE" ? -1 : 1) * Date.now();
                     },
-                    selectSprite: function t(i, s, f) {
-                        window[o.default.devFlag].MaskCanvasBase64 = r;
-                        if (!f || !window[o.default.devFlag].selectMode) {
-                            a.cancelSelectSprite(s);
+                    selectSprite: function t(u, d, h) {
+                        window[o.default.devFlag].MaskCanvasBase64 = a;
+                        if (!h || !window[o.default.devFlag].selectMode) {
+                            c.cancelSelectSprite(d);
                             return false;
                         }
-                        if (!n) {
-                            n = s.add({
+                        if (!l) {
+                            var v = 0;
+                            var p = {};
+                            var g = {};
+                            l = d.add({
                                 name: o.default.devFlag,
                                 content: {
-                                    img: s.imgLoader(r)
+                                    img: d.imgLoader(a)
                                 },
-                                style: {},
-                                webgl: undefined
+                                style: {
+                                    border: function t() {
+                                        if (this.getStyle("tw") < 2 && this.getStyle("th") < 2) {
+                                            return "10 rgba(0, 0, 255, 0.5)";
+                                        }
+                                        return "1 blue";
+                                    }
+                                },
+                                webgl: undefined,
+                                children: [ {
+                                    name: o.default.devFlag,
+                                    inherit: [],
+                                    data: {},
+                                    style: {
+                                        locate: "center",
+                                        tx: function t() {
+                                            var e = p.tx + p.tw / 2;
+                                            if (e - v / 2 < 10) {
+                                                e = v / 2 + 10;
+                                            } else if (e + v / 2 > this.$canvas.width - 10) {
+                                                e = this.$canvas.width - v / 2 - 10;
+                                            }
+                                            return e;
+                                        },
+                                        ty: function t() {
+                                            var e = p.ty + p.th + 30;
+                                            if (this.data.above = e + 30 > this.$canvas.height) {
+                                                e = p.ty - 32;
+                                            }
+                                            return e;
+                                        },
+                                        tw: function t() {
+                                            return v;
+                                        },
+                                        th: 32,
+                                        color: "orange",
+                                        backgroundColor: "black",
+                                        textVerticalAlign: "top",
+                                        textAlign: "center",
+                                        textFont: r
+                                    },
+                                    hooks: {
+                                        beforeTick: function t() {
+                                            p = this.$parent.getRect();
+                                            this.content.text = "<" + h.name + "> | " + Math.round(this.$parent.getStyle("tw")) + "×" + Math.round(this.$parent.getStyle("th"));
+                                            v = i(this.content.text) + 20;
+                                        }
+                                    },
+                                    children: [ {
+                                        name: o.default.devFlag,
+                                        content: {
+                                            img: s
+                                        },
+                                        inherit: [ "ty" ],
+                                        style: {
+                                            tx: function t() {
+                                                return p.tx + p.tw / 2;
+                                            },
+                                            ty: function t() {
+                                                return this.$parent.data.above ? 5 + 16 : -5 - 16;
+                                            },
+                                            tw: 20,
+                                            th: 10,
+                                            rotate: function t() {
+                                                return this.$parent.data.above ? 180 : 0;
+                                            }
+                                        }
+                                    } ]
+                                }, {
+                                    name: o.default.devFlag,
+                                    inherit: [],
+                                    style: {
+                                        visible: function t() {
+                                            return this.getStyle("tw") < this.data.value;
+                                        },
+                                        locate: "center",
+                                        tx: function t() {
+                                            var e = g.tx + (l.getSelfStyle("tx") - f.getSelfStyle("tx")) / 2;
+                                            return e;
+                                        },
+                                        ty: function t() {
+                                            var e = l.getSelfStyle("ty");
+                                            return e;
+                                        },
+                                        tw: function t() {
+                                            return i(this.content.text, n) + 10;
+                                        },
+                                        th: 20,
+                                        backgroundColor: "#ddd",
+                                        color: "black",
+                                        textVerticalAlign: "middle",
+                                        textAlign: "center",
+                                        textFont: n
+                                    },
+                                    data: {},
+                                    hooks: {
+                                        beforeTick: function t() {
+                                            g = f.getRect();
+                                            this.data.value = Math.round(l.getSelfStyle("tx") - f.getSelfStyle("tx"));
+                                            this.content.text = "left: " + String(this.data.value);
+                                        }
+                                    }
+                                }, {
+                                    name: o.default.devFlag,
+                                    inherit: [],
+                                    style: {
+                                        visible: function t() {
+                                            return this.getStyle("th") < this.data.value;
+                                        },
+                                        locate: "center",
+                                        tx: function t() {
+                                            var e = l.getSelfStyle("tx");
+                                            return e;
+                                        },
+                                        ty: function t() {
+                                            var e = g.ty + (l.getSelfStyle("ty") - f.getSelfStyle("ty")) / 2;
+                                            return e;
+                                        },
+                                        tw: function t() {
+                                            return i(this.content.text, n) + 10;
+                                        },
+                                        th: 20,
+                                        backgroundColor: "#ddd",
+                                        color: "black",
+                                        textVerticalAlign: "middle",
+                                        textAlign: "center",
+                                        textFont: n
+                                    },
+                                    data: {},
+                                    hooks: {
+                                        beforeTick: function t() {
+                                            g = f.getRect();
+                                            this.data.value = Math.round(l.getSelfStyle("ty") - f.getSelfStyle("ty"));
+                                            this.content.text = "top: " + String(this.data.value);
+                                        }
+                                    }
+                                } ]
+                            });
+                            f = d.add({
+                                name: o.default.devFlag,
+                                style: {
+                                    locate: "lt"
+                                },
+                                children: [ {
+                                    name: o.default.devFlag,
+                                    style: {
+                                        locate: "lt",
+                                        tx: 0,
+                                        ty: 0,
+                                        tw: function t() {
+                                            return l.getSelfStyle("tx") - this.$parent.getStyle("tx");
+                                        },
+                                        th: function t() {
+                                            return l.getSelfStyle("ty") - this.$parent.getStyle("ty");
+                                        },
+                                        backgroundColor: "rgba(140, 205, 255, 0.1)",
+                                        border: "1 rgba(80, 120, 200, 0.9)"
+                                    }
+                                } ]
                             });
                         }
                         [ "tx", "ty", "rotate", "rx", "ry", "scale", "tw", "th", "locate" ].forEach(function(t) {
                             (function(t) {
-                                n.style[t] = function() {
+                                l.style[t] = function() {
                                     if (t === "tw" || t === "th") {
-                                        return f.getStyle(t) || f.getRect()[t];
+                                        return h.getStyle(t) || h.getRect()[t] || .1;
                                     }
-                                    return f.getStyle(t);
+                                    return h.getStyle(t);
                                 };
                             })(t);
                         });
-                        n.style.zIndex = Number.MAX_SAFE_INTEGER;
-                        n.style.visible = function() {
+                        [ "tx", "ty" ].forEach(function(t) {
+                            (function(t) {
+                                f.style[t] = function() {
+                                    if (!h.$parent) return 0;
+                                    return h.$parent.getStyle(t);
+                                };
+                            })(t);
+                        });
+                        l.style.zIndex = Number.MAX_SAFE_INTEGER;
+                        f.style.zIndex = Number.MAX_SAFE_INTEGER - 1;
+                        l.style.visible = function() {
                             return window[o.default.devFlag].selectMode;
                         };
-                        n.style.opacity = .8;
-                        n.webgl = f.webgl ? {} : undefined;
-                        if (n.webgl) {
-                            for (var l in f.webgl) {
+                        f.style.visible = function() {
+                            return window[o.default.devFlag].selectMode && h.$parent;
+                        };
+                        l.style.opacity = .8;
+                        l.webgl = h.webgl ? {} : undefined;
+                        if (l.webgl) {
+                            for (var y in h.webgl) {
                                 (function(t) {
-                                    n.webgl[t] = function() {
-                                        if (typeof f.webgl[t] === "function") {
-                                            return f.webgl[t].call(f);
+                                    l.webgl[t] = function() {
+                                        if (typeof h.webgl[t] === "function") {
+                                            return h.webgl[t].call(h);
                                         }
-                                        return f.webgl[t];
+                                        return h.webgl[t];
                                     };
-                                })(l);
+                                })(y);
                             }
-                            n.webgl.img = s.imgLoader(r);
-                            n.webgl.colors = false;
-                            n.style.zIndex = Number.MIN_SAFE_INTEGER;
+                            l.webgl.img = d.imgLoader(a);
+                            l.webgl.colors = false;
+                            l.style.zIndex = Number.MIN_SAFE_INTEGER;
                         }
-                        if (i) {
-                            s.remove(n);
-                            n = null;
+                        if (u) {
+                            d.remove(l);
+                            d.remove(f);
+                            l = null;
                             e({
                                 name: "selectSprite",
-                                id: s.$id,
+                                id: d.$id,
                                 value: {
-                                    sprite: f.$id,
-                                    canvas: s.$id
+                                    sprite: h.$id,
+                                    canvas: d.$id
                                 }
                             });
                             window[o.default.devFlag].current = {
-                                $sprite: f,
-                                $canvas: s
+                                $sprite: h,
+                                $canvas: d
                             };
                             window[o.default.devFlag].selectMode = false;
                         }
                         return true;
                     },
                     cancelSelectSprite: function t(e) {
-                        if (!n) return;
-                        e.remove(n);
-                        n = null;
+                        if (!l) return;
+                        e.remove(l);
+                        e.remove(f);
+                        l = null;
                     }
                 };
-                return a;
+                return c;
             }
         };
     }, function(t, e, r) {
@@ -2433,9 +2643,9 @@
         var a = r(42);
         var o = c(a);
         var s = r(61);
-        var f = c(s);
-        var l = r(9);
-        var u = c(l);
+        var l = c(s);
+        var f = r(9);
+        var u = c(f);
         function c(t) {
             return t && t.__esModule ? t : {
                 default: t
@@ -2443,8 +2653,8 @@
         }
         var d = function t(e) {
             this.imgLoader = u.default;
-            for (var r in f.default) {
-                this[r] = this[r] || JSON.parse(JSON.stringify(f.default[r]));
+            for (var r in l.default) {
+                this[r] = this[r] || JSON.parse(JSON.stringify(l.default[r]));
             }
             if (!e) {
                 return;
@@ -2516,16 +2726,16 @@
                     var o = a.data;
                     for (var s = o.length - 1; s >= 0; s -= 4) {
                         if (e && e.conversion) {
-                            var f = e.conversion({
+                            var l = e.conversion({
                                 r: o[s - 3],
                                 g: o[s - 2],
                                 b: o[s - 1],
                                 a: o[s]
                             }, (s + 1 >> 2) % n, Math.floor((s + 1 >> 2) / n));
-                            o[s - 3] = f.r;
-                            o[s - 2] = f.g;
-                            o[s - 1] = f.b;
-                            o[s - 0] = f.a;
+                            o[s - 3] = l.r;
+                            o[s - 2] = l.g;
+                            o[s - 1] = l.b;
+                            o[s - 0] = l.a;
                         }
                     }
                     t.getContext("2d").clearRect(0, 0, n, i);

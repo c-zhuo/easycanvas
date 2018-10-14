@@ -592,7 +592,7 @@ module.exports = {
     txywh: ['tx', 'ty', 'tw', 'th'],
     sxywh: ['sx', 'sy', 'sw', 'sh'],
     devFlag: '__EASYCANVAS_DEVTOOL__',
-    version: '0.6.0'
+    version: '0.6.1'
 };
 
 /***/ }),

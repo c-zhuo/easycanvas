@@ -26,7 +26,7 @@ module.exports = `
 
         <h2>使用</h2>
 
-        <p>可以通过为sprite类的webgl追加_3ds属性来导入3DS模型。_3ds属性的值为3DS文件的地址，将在sprite对象创建时发起加载，异步加载成功后进行渲染，如下例：</p>
+        <p>创建组件时，需要用Easycanvas.class.scroll来创建一个sprite。<strong>将style中的overflow设置为scroll可以指定允许滚动，也可以用overflowX和overflowY设置单个方向是否允许滚动</strong>，Demo如下：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -47,7 +47,7 @@ module.exports = `
                     });
                     $app.start();
 
-                    var $ScrollBox = $app.add(new Easycanvas.class.scroll({
+                    var $ScrollBox = $app.add(Easycanvas.class.scroll({
                         name: 'ScrollBox',
                         style: {
                             tx: 50,
@@ -55,15 +55,11 @@ module.exports = `
                             tw: $app.width - 100,
                             th: $app.height,
                             locate: 'lt',
-                            border: '1 #666',
-                            zIndex: 2,
-                        },
-                        scroll: {
-                            scrollable: true,
-                            minScrollX: 0,
-                            maxScrollX: 0,
-                            minScrollY: 0,
-                            maxScrollY: 2000 - $app.height,
+                            border: '1 #000',
+                            backgroundColor: '#ddd',
+                            overflowY: 'scroll',
+                            overflowX: 'hidden', // 因为默认值为hidden，可以不设置
+                            zIndex: 2
                         },
                     }));
 
@@ -105,9 +101,70 @@ module.exports = `
                             tw: $app.width / 2, th: $app.width / 2,
                             zIndex: 1,
                         },
+                        scroll: {
+                            smooth: 0.9
+                        }
+                    });
+
+                    $ScrollBox.trigger('scrollTo', 500, 300, () => {
+                        $ScrollBox.trigger('scrollTo', 0, 300);
                     });
                 </script>
             </code>
         </section>
+
+        <p>scroll组件拥有如下属性，例如<strong>创建对象时sprite.scroll.scrollY为0可以立即调整滚动位置到顶部</strong>。所有的API如下：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th align="left">API</th>
+                    <th align="left">描述</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="left">scrollX / scrollY</td>
+                    <td align="left">横、纵向滚动距离</td>
+                </tr>
+                <tr>
+                    <td align="left">minScrollX / minScrollY</td>
+                    <td align="left">横、纵向最小滚动距离，默认为0</td>
+                </tr>
+                <tr>
+                    <td align="left">maxScrollX / maxScrollY</td>
+                    <td align="left">横、纵向最大滚动距离，默认自适应，一旦赋值将取消自适应</td>
+                </tr>
+                <tr>
+                    <td align="left">flexible / flexibleX / flexibleY</td>
+                    <td align="left">是否开启弹性拉伸效果，默认为false</td>
+                </tr>
+                <tr>
+                    <td align="left">smooth</td>
+                    <td align="left">速度衰减系数，默认0.9，设置0代表立即停止，1代表不减速</td>
+                </tr>
+                <tr>
+                    <td align="left">capture</td>
+                    <td align="left">捕获内部的事件，默认false，为true时会阻止touchstart、touchmove、wheel等滚动相关事件在内部传递，在移动端可以提升滚动性能；注意：多个scroll嵌套时，外层设置为capture将阻止内部scroll的功能</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>scroll组件有一些事件，例如 sprite.trigger('scrollTo', 100， 500) 可以让容器在0.5秒的时间内滚动至100：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th align="left">API</th>
+                    <th align="left">描述</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="left">scrollTo(position, [duration], [callback])</td>
+                    <td align="left">纵向滚动至position位置，耗时duration（默认200毫秒），执行完成后触发callback回调</td>
+                </tr>
+            </tbody>
+        </table>
     </article>
 `;

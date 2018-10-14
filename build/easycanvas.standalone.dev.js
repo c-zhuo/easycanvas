@@ -86,7 +86,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.6.0"
+            version: "0.6.1"
         };
     }, , , , , function(t, e) {
         "use strict";
@@ -2437,6 +2437,7 @@
                                             return v;
                                         },
                                         th: 32,
+                                        color: "orange",
                                         backgroundColor: "black",
                                         textVerticalAlign: "top",
                                         textAlign: "center",

@@ -186,6 +186,7 @@ module.exports = function () {
                                     return tipsWidth;
                                 },
                                 th: 32,
+                                color: 'orange',
                                 backgroundColor: 'black',
                                 textVerticalAlign: 'top',
                                 textAlign: 'center',

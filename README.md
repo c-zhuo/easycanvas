@@ -48,7 +48,11 @@ Easycanvas是一个轻量、高效率的渐进式canvas渲染库。将canvas与�
 
 #### Changelog
 
-- [更新日志](https://c-zhuo.github.io/easycanvas/#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97%EF%BC%88Latest%EF%BC%9A2018-09-09%EF%BC%89).
+- [更新日志](https://c-zhuo.github.io/easycanvas/#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97%EF%BC%88Latest%EF%BC%9A2018-10-14%EF%BC%89).
+
+### Chrome调试工具
+
+Clone这个仓库，打开`Chrome://extensions`，然后将`chrome-devtools/dist`目录拽进去安装即可。
 
 ### Introduction
 
@@ -57,10 +61,6 @@ A lite(30kb+) canvas library, includes a Chrome plugin for debugging. Support ph
 ### More demos
 
 - `npm run dev`, then `localhost:8080/demos/demo1.html`.
-
-### Chrome Plugin
-
-Throw `./chrome-devtools/dist` to `Chrome://extensions`.
 
 ### How to use
 

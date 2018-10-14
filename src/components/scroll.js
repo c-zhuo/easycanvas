@@ -123,12 +123,10 @@ let scrollFuncs = {
     },
 
     wheel: function ($sprite, $e) {
-        if (!ec.utils.funcOrValue($sprite.scroll.scrollableY, $sprite)) return false;
+        $sprite.$scroll.speedX = ec.utils.funcOrValue($sprite.scroll.scrollableX, $sprite) ? $e.event.wheelDeltaX : 0;
+        $sprite.$scroll.speedY = ec.utils.funcOrValue($sprite.scroll.scrollableY, $sprite) ? $e.event.wheelDeltaY : 0;
 
         $sprite.$scroll.$scrolling = true;
-
-        $sprite.$scroll.speedX = $e.event.wheelDeltaX;
-        $sprite.$scroll.speedY = $e.event.wheelDeltaY;
 
         // $e.event.preventDefault();
         $e.stopPropagation();
@@ -144,16 +142,16 @@ const component = function (opt) {
         scrollX: 0,
         scrollY: 0,
         scrollableX: function () {
-            return this.style.overflowX === 'scroll';
+            return (this.style.overflowX || this.style.overflow) === 'scroll';
         },
         scrollableY: function () {
-            return this.style.overflowY === 'scroll';
+            return (this.style.overflowY || this.style.overflow) === 'scroll';
         },
         minScrollX: 0,
         maxScrollX: function () {
             let max = 0;
             this.getChildren().forEach((child) => {
-                let currentMax = child.getSelfStyle('tx') + child.getOuterRect().tw - this.getStyle('tw');
+                let currentMax = child.getSelfStyle('tx') + child.getSelfStyle('tw') - this.getStyle('tw');
                 if (currentMax > max) max = currentMax;
             });
             return max;
@@ -162,7 +160,7 @@ const component = function (opt) {
         maxScrollY: function () {
             let max = 0;
             this.getChildren().forEach((child) => {
-                let currentMax = child.getSelfStyle('ty') + child.getOuterRect().th - this.getStyle('th');
+                let currentMax = child.getSelfStyle('ty') + child.getSelfStyle('th') - this.getStyle('th');
                 if (currentMax > max) max = currentMax;
             });
             return max;
