@@ -1,3 +1,5 @@
+// <p>Feature：为Painter实例增加afterEvent钩子。</p>
+
 module.exports = `
     <article id="更新日志（Latest：2018-10-14）">
         <h1>更新</h1>
@@ -22,7 +24,6 @@ module.exports = `
         <p>Feature：为Sprite的style增加<strong>border属性，用于设置边框</strong>，文档待更新。</p>
         <p>Feature：为Sprite补充一些API，包含<strong>功能性API以及性能优化API</strong>，文档待更新。</p>
         <p>注：以上关于Chrome调试工具的改动不需要使用新版本Easycanvas，只需更新调试工具即可。</p>
-        // <p>Feature：为Painter实例增加afterEvent钩子。</p>
 
         <h2>历史版本</h2>
 
