@@ -60,39 +60,39 @@
                 var u = 0;
                 var f = t.lineHeight ? (t.lineHeight - t.size) / 2 : 0;
                 var v = 0;
-                var p = 1;
-                var d = false;
+                var d = 1;
+                var p = false;
                 var h = 0;
                 while (true) {
-                    var g = c.measureText(l.slice(v, p)).width;
-                    if (g > t.width && l[p] !== " ") {
+                    var g = c.measureText(l.slice(v, d)).width;
+                    if (g > t.width && l[d] !== " ") {
                         if (t.overflow === "ellipsis") {
-                            p -= 2;
-                            c.fillText(l.slice(v, p) + "...", u, f + t.size / 2);
+                            d -= 2;
+                            c.fillText(l.slice(v, d) + "...", u, f + t.size / 2);
                             f += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 0);
                             h = t.width - o[1] - o[3];
                             break;
                         } else {
-                            if (p - v <= 1) {
+                            if (d - v <= 1) {
                                 console.error("Width not enough.");
                                 break;
                             }
-                            p -= 1;
-                            c.fillText(l.slice(v, p), u, f + t.size / 2);
-                            v = p;
+                            d -= 1;
+                            c.fillText(l.slice(v, d), u, f + t.size / 2);
+                            v = d;
                             if (l[v] === " ") v++;
-                            p = v + 1;
+                            d = v + 1;
                             f += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 10);
                         }
                     } else {
-                        if (p > l.length - 1) {
+                        if (d > l.length - 1) {
                             if (g > h) h = g;
-                            c.fillText(l.slice(v, p), u, f + t.size / 2);
+                            c.fillText(l.slice(v, d), u, f + t.size / 2);
                             f += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 0);
                             break;
                         }
                         if (g > h) h = g;
-                        p++;
+                        d++;
                     }
                 }
                 f += Math.floor(t.size * .1);
@@ -181,22 +181,22 @@
                 var u = t({}, i, l.props.pressed);
                 var f = (0, o.default)(l.props.text || "", i);
                 var v = l.props.hovered && (0, o.default)(l.props.text || "", n);
-                var p = l.props.pressed && (0, o.default)(l.props.text || "", u);
-                var d = {};
+                var d = l.props.pressed && (0, o.default)(l.props.text || "", u);
+                var p = {};
                 l.events = l.events || {};
-                d.touchmove = d.mousemove = function() {
+                p.touchmove = p.mousemove = function() {
                     r.content.img = v || f;
                 };
-                d.touchstart = d.mousedown = function() {
-                    r.content.img = p || v || f;
+                p.touchstart = p.mousedown = function() {
+                    r.content.img = d || v || f;
                 };
-                d.touchend = d.touchout = d.mouseout = function() {
+                p.touchend = p.touchout = p.mouseout = function() {
                     r.content.img = f;
                 };
-                d.mouseup = function() {
+                p.mouseup = function() {
                     r.content.img = v || f;
                 };
-                d.click = function(e) {
+                p.click = function(e) {
                     l.events.click && l.events.click.call(r, e);
                 };
                 r = new c.class.sprite({
@@ -206,7 +206,7 @@
                     },
                     style: l.style,
                     props: l.props,
-                    events: d,
+                    events: p,
                     hooks: l.hooks
                 });
                 return r;
@@ -262,7 +262,13 @@
                         l.$scroll.$scrolling = false;
                         return;
                     }
-                    if (l.$scroll.touching) return;
+                    if (l.$scroll.touching) {
+                        if (Date.now() - l.$scroll.touching > 100) {
+                            l.$scroll.speedX *= .5;
+                            l.$scroll.speedY *= .5;
+                        }
+                        return;
+                    }
                     l.scroll.scrollY -= l.$scroll.speedY;
                     l.scroll.scrollX -= l.$scroll.speedX;
                     var r = o.utils.funcOrValue(l.scroll.minScrollX, l);
@@ -306,13 +312,13 @@
                             if (l.scroll.flexible || l.scroll.flexibleY) n >>= 3; else n = 0;
                         }
                         if (Math.abs(i) >= 1 && a > 1) {
-                            var p = (r.canvasX - l.$scroll.startPos.x) * 6 / s;
-                            l.$scroll.speedY = Math.abs(p / 2) > Math.abs(l.$scroll.speedX) ? p : l.$scroll.speedX;
+                            var d = (r.canvasX - l.$scroll.startPos.x) * 9 / s;
+                            l.$scroll.speedX = Math.abs(d / 2) > Math.abs(l.$scroll.speedX) ? d : l.$scroll.speedX;
                             l.scroll.scrollX += i;
                         }
                         if (Math.abs(n) >= 1 && a > 1) {
-                            var d = (r.canvasY - l.$scroll.startPos.y) * 6 / s;
-                            l.$scroll.speedY = Math.abs(d / 2) > Math.abs(l.$scroll.speedY) ? d : l.$scroll.speedY;
+                            var p = (r.canvasY - l.$scroll.startPos.y) * 9 / s;
+                            l.$scroll.speedY = Math.abs(p / 2) > Math.abs(l.$scroll.speedY) ? p : l.$scroll.speedY;
                             l.scroll.scrollY += n;
                         }
                         l.$scroll.startPos.x = r.canvasX;
@@ -334,10 +340,10 @@
                     scrollX: 0,
                     scrollY: 0,
                     scrollableX: function e() {
-                        return (this.style.overflowX || this.style.overflow) === "scroll";
+                        return (this.style.overflowX || this.style.overflow) !== "hidden";
                     },
                     scrollableY: function e() {
-                        return (this.style.overflowY || this.style.overflow) === "scroll";
+                        return (this.style.overflowY || this.style.overflow) !== "hidden";
                     },
                     minScrollX: 0,
                     maxScrollX: function e() {
@@ -362,7 +368,6 @@
                     propagationX: false,
                     propagationY: false
                 }, l.scroll);
-                s.style.overflow = "hidden";
                 var a = function e() {
                     if (t) {
                         u.scroll.scrollY = t();

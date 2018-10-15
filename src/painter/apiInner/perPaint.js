@@ -119,7 +119,7 @@ module.exports = function (i, index) {
         settings.line = _props.border;
     }
 
-    if (_props.overflow === 'hidden') {
+    if (_props.overflow && _props.overflow !== 'visible') {
         settings.clip = true;
     }
 

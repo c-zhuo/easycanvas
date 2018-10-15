@@ -1,7 +1,7 @@
 // <p>Feature：为Painter实例增加afterEvent钩子。</p>
 
 module.exports = `
-    <article id="更新日志（Latest：2018-10-14）">
+    <article id="更新日志（Latest：2018-10-15）">
         <h1>更新</h1>
 
         <p class="tip">Tips：小版本号为bugfix或增加API，中版本号可能包含个别不向下兼容的API调整。</p>
@@ -14,6 +14,16 @@ module.exports = `
 
         <h2>当前版本</h2>
 
+        <h3>0.6.2 (2018.10.15)</h3>
+
+        <p>Bugfix：修复了scroll组件在<strong>Chrome模拟移动端时无法用双指操作触摸板来进行滚动</strong>的bug。</p>
+        <p>Bugfix：修复了scroll组件在<strong>快速滑动、停止滑动、再松开手指后仍然快速滚动</strong>的bug。</p>
+        <p>Bugfix：修复了scroll组件在<strong>水平方向滚动异常</strong>的bug。</p>
+        <p>Bugfix：修复了scroll组件在<strong>overflow设置为scroll时子Sprite仍然可以画到scroll组件外部</strong>的bug。</p>
+        <p>Bugfix：修复了Chrome调试工具在<strong>PC端下无法选中某一Sprite进行调试</strong>的bug。</p>
+
+        <h2>历史版本</h2>
+
         <h3>0.6.1 (2018.10.14)</h3>
 
         <p>Bugfix：修复了<strong>刷新页面后需要重新在Chrome调试工具中选择实例</strong>才能查看Painter的信息的bug。</p>
@@ -23,9 +33,7 @@ module.exports = `
         <p>Feature：使用Chrome调试工具中选取页面上的Sprite时，将<strong>在调试工具中自动展开并定位到选择的Sprite</strong>。</p>
         <p>Feature：为Sprite的style增加<strong>border属性，用于设置边框</strong>，文档待更新。</p>
         <p>Feature：为Sprite补充一些API，包含<strong>功能性API以及性能优化API</strong>，文档待更新。</p>
-        <p>注：以上关于Chrome调试工具的改动不需要使用新版本Easycanvas，只需更新调试工具即可。</p>
-
-        <h2>历史版本</h2>
+        <p>注：部分改动需要更新调试工具，请重新拉取chrome-devtools目录。</p>
 
         <h3>0.6.0 (2018.9.24)</h3>
 

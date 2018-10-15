@@ -35,7 +35,14 @@ let scrollFuncs = {
             return;
         }
 
-        if ($sprite.$scroll.touching) return;
+        if ($sprite.$scroll.touching) {
+            if (Date.now() - $sprite.$scroll.touching > 100) {
+                // 已经有100毫秒没有touchmove事件了，认为停止移动，清空速度
+                $sprite.$scroll.speedX *= 0.5;
+                $sprite.$scroll.speedY *= 0.5;
+            }
+            return;
+        }
 
         $sprite.scroll.scrollY -= $sprite.$scroll.speedY;
         $sprite.scroll.scrollX -= $sprite.$scroll.speedX;
@@ -97,14 +104,14 @@ let scrollFuncs = {
             }
 
             if (Math.abs(deltaX) >= 1 && deltaTime > 1) {
-                let newSpeedX = ($e.canvasX - $sprite.$scroll.startPos.x) * 6 / devicePixelRatio;
-                $sprite.$scroll.speedY = Math.abs(newSpeedX / 2) > Math.abs($sprite.$scroll.speedX) ? newSpeedX : $sprite.$scroll.speedX;
+                let newSpeedX = ($e.canvasX - $sprite.$scroll.startPos.x) * 9 / devicePixelRatio;
+                $sprite.$scroll.speedX = Math.abs(newSpeedX / 2) > Math.abs($sprite.$scroll.speedX) ? newSpeedX : $sprite.$scroll.speedX;
                 $sprite.scroll.scrollX += deltaX;
             }
             if (Math.abs(deltaY) >= 1 && deltaTime > 1) {
-                let newSpeedY = ($e.canvasY - $sprite.$scroll.startPos.y) * 6 / devicePixelRatio;
-                // $sprite.$scroll.speedY = Math.abs(newSpeedY) < Math.abs($sprite.$scroll.speedY / 2) ? $sprite.$scroll.speedY / 2 : newSpeedY;
+                let newSpeedY = ($e.canvasY - $sprite.$scroll.startPos.y) * 9 / devicePixelRatio;
                 $sprite.$scroll.speedY = Math.abs(newSpeedY / 2) > Math.abs($sprite.$scroll.speedY) ? newSpeedY : $sprite.$scroll.speedY;
+                // $sprite.$scroll.speedY = newSpeedY;
                 $sprite.scroll.scrollY += deltaY;
             }
 
@@ -142,10 +149,10 @@ const component = function (opt) {
         scrollX: 0,
         scrollY: 0,
         scrollableX: function () {
-            return (this.style.overflowX || this.style.overflow) === 'scroll';
+            return (this.style.overflowX || this.style.overflow) !== 'hidden';
         },
         scrollableY: function () {
-            return (this.style.overflowY || this.style.overflow) === 'scroll';
+            return (this.style.overflowY || this.style.overflow) !== 'hidden';
         },
         minScrollX: 0,
         maxScrollX: function () {
@@ -168,8 +175,6 @@ const component = function (opt) {
         propagationX: false,
         propagationY: false,
     }, opt.scroll);
-
-    option.style.overflow = 'hidden';
 
     const autoScrollFunc = () => {
         if (autoScroll) {

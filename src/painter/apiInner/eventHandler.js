@@ -12,8 +12,8 @@
 import utils from 'utils/utils.js';
 import constants from 'constants';
 
-// const isMobile = typeof wx !== 'undefined' ||
-//     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isMobile = typeof wx !== 'undefined' ||
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 // transform
 // const mobileEvents = ['touchstart', 'touchmove', 'touchend'];
@@ -181,7 +181,7 @@ eventHandler = function (e, _$e) {
         event: e
     };
 
-    if ($canvas.fastclick) {
+    if (isMobile && $canvas.fastclick) {
         if ($e.type === 'click' && !$e.$fakeClick) {
             return;
         } else if ($e.type === 'touchstart') {
@@ -239,6 +239,7 @@ eventHandler = function (e, _$e) {
             }
 
             if (chooseSprite && $canvas.$plugin.selectSprite($e.type === 'click' || $e.type === 'touchend', $canvas, chooseSprite)) {
+                $e.stopPropagation();
                 return;
             }
         }

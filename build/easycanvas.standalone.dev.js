@@ -86,7 +86,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.6.1"
+            version: "0.6.2"
         };
     }, , , , , function(t, e) {
         "use strict";
@@ -307,8 +307,8 @@
                 default: t
             };
         }
-        var F = 0;
-        var M = function t(e) {
+        var M = 0;
+        var O = function t(e) {
             if (e.children) {
                 e.children.forEach(function(r, n) {
                     if (!r.$id) {
@@ -324,7 +324,7 @@
                 });
             }
         };
-        var O = function t(e) {
+        var F = function t(e) {
             var r = e || {};
             if (!r.$id) {
                 r.$id = Math.random().toString(36).substr(2);
@@ -354,7 +354,7 @@
                 }
             }
             if (true) {
-                r.$addIndex = F++;
+                r.$addIndex = M++;
             }
             r.events.eIndex = r.events.eIndex;
             r.hooks = r.hooks || {};
@@ -371,7 +371,7 @@
                 r.name = r.name || "Unnamed Sprite";
             }
             r.children = r.children || [];
-            M(r);
+            O(r);
             r.$cache = {};
             r.$styleCacheTime = {};
             return r;
@@ -383,7 +383,7 @@
             });
         };
         var R = function t(e) {
-            var r = O(e);
+            var r = F(e);
             for (var n in r) {
                 if (Object.prototype.hasOwnProperty.call(r, n)) {
                     this[n] = r[n];
@@ -398,7 +398,7 @@
                 return;
             }
             this.children.push(t);
-            M(this);
+            O(this);
             return this.children[this.children.length - 1];
         };
         R.prototype.getRect = function() {
@@ -1148,8 +1148,8 @@
         A.component = function(t, e) {
             t(A, e);
         };
-        var F = typeof window !== "undefined";
-        if (F) {
+        var M = typeof window !== "undefined";
+        if (M) {
             if (window.Easycanvas) {
                 console.warn("[Easycanvas] already loaded, it should be loaded only once.");
             } else {
@@ -1202,7 +1202,8 @@
                 default: t
             };
         }
-        var l = function t(e) {
+        var l = typeof wx !== "undefined" || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        var f = function t(e) {
             return e.sort(function(t, e) {
                 if (true) {
                     if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
@@ -1212,25 +1213,25 @@
                 return i.default.funcOrValue(i.default.firstValuable(t.events.eIndex, t.style.zIndex), t) < i.default.funcOrValue(i.default.firstValuable(e.events.eIndex, e.style.zIndex), e) ? 1 : -1;
             });
         };
-        var f = function t(e, r) {
+        var u = function t(e, r) {
             var n = e.getRect();
             return i.default.pointInRect(r.canvasX, r.canvasY, n.tx, n.tx + n.tw, n.ty, n.ty + n.th);
         };
-        var u = function t(e, r, n) {
+        var c = function t(e, r, n) {
             if (!e || !e.length) return;
             if (r.$stopPropagation) return;
             var a = e.length;
             for (var s = 0; s < a; s++) {
-                var u = e[s];
-                if (i.default.funcOrValue(u.style.visible, u) === false) continue;
-                if (f(u, r)) {
-                    if (u.events.interceptor) {
-                        var c = i.default.firstValuable(u.events.interceptor.call(u, r), r);
+                var l = e[s];
+                if (i.default.funcOrValue(l.style.visible, l) === false) continue;
+                if (u(l, r)) {
+                    if (l.events.interceptor) {
+                        var c = i.default.firstValuable(l.events.interceptor.call(l, r), r);
                         if (!c || c.$stopPropagation) continue;
                     }
                 }
-                if (u.children.length) {
-                    t(l(u.children.filter(function(t) {
+                if (l.children.length) {
+                    t(f(l.children.filter(function(t) {
                         if (true) {
                             if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
                                 return i.default.funcOrValue(t.style.zIndex, t) >= 0;
@@ -1239,13 +1240,13 @@
                         return i.default.funcOrValue(i.default.firstValuable(t.events.eIndex, t.style.zIndex), t) >= 0;
                     })), r, n);
                 }
-                if (f(u, r)) {
-                    n.push(u);
-                    var h = d(u, r);
+                if (u(l, r)) {
+                    n.push(l);
+                    var d = h(l, r);
                     if (r.$stopPropagation) break;
                 }
-                if (u.children.length) {
-                    t(l(u.children.filter(function(t) {
+                if (l.children.length) {
+                    t(f(l.children.filter(function(t) {
                         if (true) {
                             if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
                                 return i.default.funcOrValue(t.style.zIndex, t) < 0;
@@ -1256,7 +1257,7 @@
                 }
             }
         };
-        var c = function t(e, r) {
+        var d = function t(e, r) {
             var n = this;
             this.$extendList.forEach(function(t) {
                 if (t.onEvent) {
@@ -1264,7 +1265,7 @@
                 }
             });
         };
-        var d = function t(e, r) {
+        var h = function t(e, r) {
             if (!e.events || !e.events[r.type]) return;
             if (r.$stopPropagation) return;
             var n = e.events[r.type].call(e, r);
@@ -1275,18 +1276,18 @@
                 return true;
             }
         };
-        var h = {
+        var v = {
             x: 0,
             y: 0,
             timeStamp: 0
         };
-        var v;
-        v = function t(e, r) {
+        var p;
+        p = function t(e, r) {
             var n = this;
             var a = void 0;
             var s = void 0;
-            var f = 1;
-            var d = 1;
+            var u = 1;
+            var h = 1;
             if (!r) {
                 if (!e.layerX && e.targetTouches && e.targetTouches[0]) {
                     a = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
@@ -1298,90 +1299,91 @@
                     a = e.layerX;
                     s = e.layerY;
                 }
-                var p = false;
+                var g = false;
                 if (this.$dom.getBoundingClientRect) {
-                    var g = this.$dom.getBoundingClientRect();
-                    g.width > g.height !== this.width > this.height;
-                    f = Math.floor(g[p ? "height" : "width"]) / this.width;
-                    d = Math.floor(g[p ? "width" : "height"]) / this.height;
+                    var y = this.$dom.getBoundingClientRect();
+                    y.width > y.height !== this.width > this.height;
+                    u = Math.floor(y[g ? "height" : "width"]) / this.width;
+                    h = Math.floor(y[g ? "width" : "height"]) / this.height;
                 }
             }
-            var y = r || {
+            var $ = r || {
                 type: e.type,
-                canvasX: a / f,
-                canvasY: s / d,
+                canvasX: a / u,
+                canvasY: s / h,
                 event: e
             };
-            if (n.fastclick) {
-                if (y.type === "click" && !y.$fakeClick) {
+            if (l && n.fastclick) {
+                if ($.type === "click" && !$.$fakeClick) {
                     return;
-                } else if (y.type === "touchstart") {
-                    h.x = y.canvasX;
-                    h.y = y.canvasY;
-                    h.timeStamp = Date.now();
-                } else if (y.type === "touchend") {
-                    if (Math.abs(h.x - y.canvasX) < 30 && Math.abs(h.y - y.canvasY) < 30 && Date.now() - h.timeStamp < 200) {
-                        v.call(this, null, {
+                } else if ($.type === "touchstart") {
+                    v.x = $.canvasX;
+                    v.y = $.canvasY;
+                    v.timeStamp = Date.now();
+                } else if ($.type === "touchend") {
+                    if (Math.abs(v.x - $.canvasX) < 30 && Math.abs(v.y - $.canvasY) < 30 && Date.now() - v.timeStamp < 200) {
+                        p.call(this, null, {
                             $fakeClick: true,
                             type: "click",
-                            canvasX: h.x,
-                            canvasY: h.y,
+                            canvasX: v.x,
+                            canvasY: v.y,
                             event: e
                         });
                     }
                 }
             }
-            y.stopPropagation = function() {
-                y.$stopPropagation = true;
+            $.stopPropagation = function() {
+                $.$stopPropagation = true;
             };
             if (n.events.interceptor) {
-                y = i.default.firstValuable(n.events.interceptor.call(n, y), y);
-                if (!y || y.$stopPropagation) return;
+                $ = i.default.firstValuable(n.events.interceptor.call(n, $), $);
+                if (!$ || $.$stopPropagation) return;
             }
-            var $ = [];
-            u(l(n.children), y, $);
-            i.default.execFuncs(n.hooks.afterEvent, n, y);
+            var x = [];
+            c(f(n.children), $, x);
+            i.default.execFuncs(n.hooks.afterEvent, n, $);
             n.hooks.afterEvent = null;
-            c.call(n, y, $);
+            d.call(n, $, x);
             if (true) {
-                if (window[o.default.devFlag] && window[o.default.devFlag].selectMode && $.length) {
-                    var x = 0;
-                    var m = $[x];
-                    while (m && m.name === o.default.devFlag) {
-                        if (m.name === o.default.devFlag) {
-                            m = $[++x];
+                if (window[o.default.devFlag] && window[o.default.devFlag].selectMode && x.length) {
+                    var m = 0;
+                    var w = x[m];
+                    while (w && w.name === o.default.devFlag) {
+                        if (w.name === o.default.devFlag) {
+                            w = x[++m];
                         } else {
                             break;
                         }
                     }
-                    if (m && n.$plugin.selectSprite(y.type === "click" || y.type === "touchend", n, m)) {
+                    if (w && n.$plugin.selectSprite($.type === "click" || $.type === "touchend", n, w)) {
+                        $.stopPropagation();
                         return;
                     }
                 }
             }
-            if ((y.type === "mousemove" || y.type === "touchmove") && n.eLastMouseHover && $.indexOf(n.eLastMouseHover) === -1) {
-                var w = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
-                if (w) {
-                    w.call(n.eLastMouseHover, y);
+            if (($.type === "mousemove" || $.type === "touchmove") && n.eLastMouseHover && x.indexOf(n.eLastMouseHover) === -1) {
+                var b = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
+                if (b) {
+                    b.call(n.eLastMouseHover, $);
                 }
             }
-            n.eLastMouseHover = $[0];
-            if (!$.length && n.eLastMouseHover) {
-                var b = n.eLastMouseHover["events"]["mouseout"];
-                if (b) {
-                    b.call(n.eLastMouseHover, y);
+            n.eLastMouseHover = x[0];
+            if (!x.length && n.eLastMouseHover) {
+                var T = n.eLastMouseHover["events"]["mouseout"];
+                if (T) {
+                    T.call(n.eLastMouseHover, $);
                 }
                 n.eLastMouseHover = null;
             }
-            var T = n.events[y.type];
-            if (T) {
-                if (T.call(n, y)) {
+            var k = n.events[$.type];
+            if (k) {
+                if (k.call(n, $)) {
                     n.eHoldingFlag = false;
                     return true;
                 }
             }
         };
-        t.exports = v;
+        t.exports = p;
     }, function(t, e) {
         "use strict";
         t.exports = function(t, e, r, n) {
@@ -1628,7 +1630,7 @@
             if (n.border) {
                 a.line = n.border;
             }
-            if (n.overflow === "hidden") {
+            if (n.overflow && n.overflow !== "visible") {
                 a.clip = true;
             }
             if (n.scale !== 1) {
@@ -1709,39 +1711,39 @@
             }
             if (o) {
                 t.$rendered = true;
-                var F = n.tx;
-                var M = n.ty;
-                var O = n.align || n.textAlign || "left";
+                var M = n.tx;
+                var O = n.ty;
+                var F = n.align || n.textAlign || "left";
                 var E = n.textFont || "14px Arial";
                 var R = parseInt(E);
                 var C = void 0;
                 var I = n.lineHeight || R;
-                if (O === "center") {
-                    F += n.tw / 2;
-                } else if (O === "right") {
-                    F += n.tw;
+                if (F === "center") {
+                    M += n.tw / 2;
+                } else if (F === "right") {
+                    M += n.tw;
                 }
                 if (n.textVerticalAlign === "top") {
                     C = "top";
                 } else if (n.textVerticalAlign === "bottom") {
                     C = "bottom";
-                    M += n.th;
+                    O += n.th;
                 } else if (n.textVerticalAlign === "middle") {
-                    M += n.th >> 1;
+                    O += n.th >> 1;
                     C = "middle";
                 }
                 if (typeof o === "string" || typeof o === "number") {
-                    if (M + R * 2 > 0 && M - R * 2 < r.height) {
+                    if (O + R * 2 > 0 && O - R * 2 < r.height) {
                         r.$children.push({
                             $id: t.$id,
                             type: "text",
                             settings: a,
                             props: {
-                                tx: F,
-                                ty: M,
+                                tx: M,
+                                ty: O,
                                 content: String(o),
                                 fontsize: R,
-                                align: O,
+                                align: F,
                                 baseline: C,
                                 font: E,
                                 color: n.color,
@@ -1757,12 +1759,12 @@
                             type: "text",
                             settings: a,
                             props: {
-                                tx: F + i.default.funcOrValue(e.tx, t),
-                                ty: M + i.default.funcOrValue(e.ty, t),
+                                tx: M + i.default.funcOrValue(e.tx, t),
+                                ty: O + i.default.funcOrValue(e.ty, t),
                                 content: i.default.funcOrValue(e.content, t),
                                 fontsize: R,
                                 baseline: C,
-                                align: O,
+                                align: F,
                                 font: E,
                                 color: n.color,
                                 type: n.textType
@@ -1800,19 +1802,19 @@
                             type: "text",
                             settings: a,
                             props: {
-                                tx: F,
-                                ty: M,
+                                tx: M,
+                                ty: O,
                                 fontsize: R,
                                 content: e,
                                 baseline: C,
-                                align: O,
+                                align: F,
                                 font: E,
                                 color: n.color,
                                 type: n.textType
                             },
                             $origin: t
                         });
-                        M += I || R;
+                        O += I || R;
                     });
                 }
             }
@@ -2095,10 +2097,10 @@
         var k = R(T);
         var S = r(54);
         var A = R(S);
-        var F = r(56);
-        var M = R(F);
-        var O = r(57);
-        var E = R(O);
+        var M = r(56);
+        var O = R(M);
+        var F = r(57);
+        var E = R(F);
         function R(t) {
             return t && t.__esModule ? t : {
                 default: t
@@ -2111,7 +2113,7 @@
             remove: o.default,
             register: A.default,
             clear: d.default,
-            setFpsHandler: M.default,
+            setFpsHandler: O.default,
             setMaxFps: E.default,
             pause: v.default,
             on: g.default,
