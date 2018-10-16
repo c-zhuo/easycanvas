@@ -338,7 +338,7 @@ sprite.prototype.combine = combine;
 sprite.prototype.uncombine = uncombine;
 
 sprite.prototype.combineAsync = function () {
-    this.on('ticked', this.combine, 200);
+    this.on('ticked', this.combine, 100);
 
     return this;
 };

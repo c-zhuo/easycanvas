@@ -1,13 +1,23 @@
+import utils from 'utils/utils.js';
+
 const COMBINE_DONE = 1;
 const COMBINE_FAIL = 2;
 const COMBINE_DELAY = 3;
 
 module.exports = function () {
 // module.exports = function (force) {
-    if (this.$combine) return COMBINE_DONE;
-
     let $sprite = this;
+
+    if ($sprite.$combine) return COMBINE_DONE;
+
+    if (utils.funcOrValue($sprite.style.visible, $sprite) === false) return COMBINE_DELAY;
+
     let $canvas = this.$canvas;
+
+    let rect = $sprite.getRect();
+
+    if (rect.tx < 0 || rect.tr > $canvas.width) return COMBINE_FAIL;
+    if (rect.ty < 0 || rect.tb > $canvas.height) return COMBINE_FAIL;
 
     let allChildrenInCombine = $sprite.getAllChildren(true);
     for (let i = 0; i < allChildrenInCombine.length; i++) {
@@ -19,9 +29,11 @@ module.exports = function () {
                 return COMBINE_DELAY;
             }
         }
+        if ($child.getStyle('scale') !== 1) {
+            return COMBINE_DELAY;
+        }
     }
 
-    let rect = $sprite.getRect();
     let outerRect = $sprite.getOuterRect();
 
     outerRect.tx = Math.floor(outerRect.tx);
@@ -56,6 +68,11 @@ module.exports = function () {
     // }
 
     let originChildren = $canvas.$children;
+    let spriteOpacity = $sprite.getStyle('opacity');
+    $renders.forEach(($render) => {
+        $render.settings.$combineGlobalAlpha = $render.settings.globalAlpha;
+        $render.settings.globalAlpha = spriteOpacity > 0 ? $render.settings.globalAlpha / spriteOpacity : 1;
+    });
     $canvas.$children = $renders;
     $canvas.$paintContext.clearRect(0, 0, $canvas.width, $canvas.height);
     // if ($sprite.name === 'hotel-feature') {
@@ -63,6 +80,10 @@ module.exports = function () {
     //     debugger;
     // }
     $canvas.$render();
+
+    $renders.forEach(($render) => {
+        $render.settings.globalAlpha /= $render.settings.$combineGlobalAlpha;
+    });
 
     let canvas = document.createElement('canvas');
     // document.body.prepend(canvas);
@@ -94,7 +115,7 @@ module.exports = function () {
     let newTx = $sprite.getSelfStyle('tx') - (Math.floor(rect.tx) - outerRect.tx);
     let newTy = $sprite.getSelfStyle('ty') - (Math.floor(rect.ty) - outerRect.ty);
     $sprite.style = Object.assign({}, $sprite.style, {
-        opacity: 1,
+        // opacity: 1,
         scale: 1,
         tx: newTx,
         ty: newTy,

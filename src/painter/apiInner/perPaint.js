@@ -30,6 +30,15 @@ const extend = function () {
     });
 };
 
+const getScaledParent = function ($sprite) {
+    if (!$sprite || !$sprite.style) return;
+
+    let scale = utils.funcOrValue($sprite.style.scale, $sprite);
+
+    if (scale !== 1) return $sprite;
+    return getScaledParent($sprite.$parent);
+};
+
 module.exports = function (i, index) {
     i.$rendered = false;
 
@@ -125,10 +134,18 @@ module.exports = function (i, index) {
 
     if (_props.scale !== 1) {
         let scale = _props.scale;
-        _props.tx -= (scale - 1) * _props.tw >> 1;
-        _props.ty -= (scale - 1) * _props.th >> 1;
-        _props.tw *= scale;
-        _props.th *= scale;
+        let scaledParent = getScaledParent(i);
+
+        if (scaledParent) {
+            let scaleCenterX = scaledParent.getStyle('tx') + (scaledParent.getSelfStyle('tw') || 0) / 2;
+            let scaleCenterY = scaledParent.getStyle('ty') + (scaledParent.getSelfStyle('th') || 0) / 2;
+
+            _props.tx -= (scaleCenterX - _props.tx) * (scale - 1);
+            _props.ty -= (scaleCenterY - _props.ty) * (scale - 1);
+
+            _props.tw *= scale;
+            _props.th *= scale;
+        }
     }
 
     if (_props.mirrX) {
