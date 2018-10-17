@@ -307,8 +307,8 @@
                 default: t
             };
         }
-        var O = 0;
-        var M = function t(e) {
+        var M = 0;
+        var O = function t(e) {
             if (e.children) {
                 e.children.forEach(function(r, n) {
                     if (!r.$id) {
@@ -354,7 +354,7 @@
                 }
             }
             if (true) {
-                r.$addIndex = O++;
+                r.$addIndex = M++;
             }
             r.events.eIndex = r.events.eIndex;
             r.hooks = r.hooks || {};
@@ -371,7 +371,7 @@
                 r.name = r.name || "Unnamed Sprite";
             }
             r.children = r.children || [];
-            M(r);
+            O(r);
             r.$cache = {};
             r.$styleCacheTime = {};
             return r;
@@ -398,7 +398,7 @@
                 return;
             }
             this.children.push(t);
-            M(this);
+            O(this);
             return this.children[this.children.length - 1];
         };
         R.prototype.getRect = function() {
@@ -1021,9 +1021,10 @@
                 }
             });
             var v = e.$children;
-            h.forEach(function(e) {
-                e.settings.$combineGlobalAlpha /= e.settings.globalAlpha;
-                e.settings.globalAlpha /= t.getStyle("opacity");
+            var p = t.getStyle("opacity");
+            h.forEach(function(t) {
+                t.settings.$combineGlobalAlpha = t.settings.globalAlpha;
+                t.settings.globalAlpha = p > 0 ? t.settings.globalAlpha / p : 1;
             });
             e.$children = h;
             e.$paintContext.clearRect(0, 0, e.width, e.height);
@@ -1031,11 +1032,11 @@
             h.forEach(function(t) {
                 t.settings.globalAlpha /= t.settings.$combineGlobalAlpha;
             });
-            var p = document.createElement("canvas");
-            p.width = d.tw;
-            p.height = d.th;
-            var g = p.getContext("2d");
-            g.drawImage(e.$dom, d.tx, d.ty, d.tw, d.th, 0, 0, d.tw, d.th);
+            var g = document.createElement("canvas");
+            g.width = d.tw;
+            g.height = d.th;
+            var y = g.getContext("2d");
+            y.drawImage(e.$dom, d.tx, d.ty, d.tw, d.th, 0, 0, d.tw, d.th);
             t.$combine = {
                 content: t.content,
                 children: t.children,
@@ -1043,28 +1044,17 @@
             };
             t.children = [];
             t.content = {
-                img: p
+                img: g
             };
-            var y = t.getSelfStyle("tx") - (Math.floor(r.tx) - d.tx);
-            var $ = t.getSelfStyle("ty") - (Math.floor(r.ty) - d.ty);
+            var $ = t.getSelfStyle("tx") - (Math.floor(r.tx) - d.tx);
+            var x = t.getSelfStyle("ty") - (Math.floor(r.ty) - d.ty);
             t.style = n({}, t.style, {
                 scale: 1,
-                tx: y,
-                ty: $,
-                tw: p.width,
-                th: p.height
+                tx: $,
+                ty: x,
+                tw: g.width,
+                th: g.height
             });
-            t.events.$interceptor = t.events.interceptor;
-            t.events.interceptor = function(r) {
-                t.children = t.$combine.children || [];
-                e.on("afterEvent", function() {
-                    t.children = [];
-                });
-                if (t.events.$interceptor) {
-                    return t.events.$interceptor(r);
-                }
-                return r;
-            };
             e.$children = v;
             e.$render();
             t.off("ticked", this.combine);
@@ -1104,7 +1094,6 @@
         t.exports = function() {
             r(this, this.$combine);
             this.$combine = false;
-            this.events.$interceptor = false;
         };
     }, , , , , function(t, e, r) {
         "use strict";
@@ -1167,8 +1156,8 @@
         A.component = function(t, e) {
             t(A, e);
         };
-        var O = typeof window !== "undefined";
-        if (O) {
+        var M = typeof window !== "undefined";
+        if (M) {
             if (window.Easycanvas) {
                 console.warn("[Easycanvas] already loaded, it should be loaded only once.");
             } else {
@@ -1249,8 +1238,9 @@
                         if (!c || c.$stopPropagation) continue;
                     }
                 }
-                if (l.children.length) {
-                    t(f(l.children.filter(function(t) {
+                var d = l.$combine ? l.$combine.children : l.children;
+                if (d.length) {
+                    t(f(d.filter(function(t) {
                         if (true) {
                             if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
                                 return i.default.funcOrValue(t.style.zIndex, t) >= 0;
@@ -1259,13 +1249,28 @@
                         return i.default.funcOrValue(i.default.firstValuable(t.events.eIndex, t.style.zIndex), t) >= 0;
                     })), r, n);
                 }
-                if (u(l, r)) {
-                    n.push(l);
-                    var d = h(l, r);
-                    if (r.$stopPropagation) break;
+                if (r.$stopPropagation) break;
+                var v = l.events && l.events[r.type];
+                if ((v || "develop" !== "production") && u(l, r)) {
+                    if (true) {
+                        if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
+                            var p = 0;
+                            if (l.name !== o.default.devFlag) {
+                                r.stopPropagation();
+                                if (l.$canvas.$plugin.selectSprite(r.type === "click" || r.type === "touchend", l.$canvas, l)) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (v) {
+                        n.push(l);
+                        var g = h(l, r);
+                        if (r.$stopPropagation) break;
+                    }
                 }
-                if (l.children.length) {
-                    t(f(l.children.filter(function(t) {
+                if (d.length) {
+                    t(f(d.filter(function(t) {
                         if (true) {
                             if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
                                 return i.default.funcOrValue(t.style.zIndex, t) < 0;
@@ -1285,7 +1290,11 @@
             });
         };
         var h = function t(e, r) {
-            if (!e.events || !e.events[r.type]) return;
+            if (true) {
+                if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
+                    return false;
+                }
+            }
             if (r.$stopPropagation) return;
             var n = e.events[r.type].call(e, r);
             if (n === true) {
@@ -1304,43 +1313,43 @@
         p = function t(e, r) {
             var n = this;
             var a = void 0;
-            var s = void 0;
+            var o = void 0;
+            var s = 1;
             var u = 1;
-            var h = 1;
             if (!r) {
                 if (!e.layerX && e.targetTouches && e.targetTouches[0]) {
                     a = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;
-                    s = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
+                    o = e.targetTouches[0].pageY - e.currentTarget.offsetTop;
                 } else if (!e.layerX && e.changedTouches && e.changedTouches[0]) {
                     a = e.changedTouches[0].pageX - e.currentTarget.offsetLeft;
-                    s = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
+                    o = e.changedTouches[0].pageY - e.currentTarget.offsetTop;
                 } else {
                     a = e.layerX;
-                    s = e.layerY;
+                    o = e.layerY;
                 }
-                var g = false;
+                var h = false;
                 if (this.$dom.getBoundingClientRect) {
-                    var y = this.$dom.getBoundingClientRect();
-                    y.width > y.height !== this.width > this.height;
-                    u = Math.floor(y[g ? "height" : "width"]) / this.width;
-                    h = Math.floor(y[g ? "width" : "height"]) / this.height;
+                    var g = this.$dom.getBoundingClientRect();
+                    g.width > g.height !== this.width > this.height;
+                    s = Math.floor(g[h ? "height" : "width"]) / this.width;
+                    u = Math.floor(g[h ? "width" : "height"]) / this.height;
                 }
             }
-            var $ = r || {
+            var y = r || {
                 type: e.type,
-                canvasX: a / u,
-                canvasY: s / h,
+                canvasX: a / s,
+                canvasY: o / u,
                 event: e
             };
             if (l && n.fastclick) {
-                if ($.type === "click" && !$.$fakeClick) {
+                if (y.type === "click" && !y.$fakeClick) {
                     return;
-                } else if ($.type === "touchstart") {
-                    v.x = $.canvasX;
-                    v.y = $.canvasY;
+                } else if (y.type === "touchstart") {
+                    v.x = y.canvasX;
+                    v.y = y.canvasY;
                     v.timeStamp = Date.now();
-                } else if ($.type === "touchend") {
-                    if (Math.abs(v.x - $.canvasX) < 30 && Math.abs(v.y - $.canvasY) < 30 && Date.now() - v.timeStamp < 200) {
+                } else if (y.type === "touchend") {
+                    if (Math.abs(v.x - y.canvasX) < 30 && Math.abs(v.y - y.canvasY) < 30 && Date.now() - v.timeStamp < 200) {
                         p.call(this, null, {
                             $fakeClick: true,
                             type: "click",
@@ -1351,52 +1360,33 @@
                     }
                 }
             }
-            $.stopPropagation = function() {
-                $.$stopPropagation = true;
+            y.stopPropagation = function() {
+                y.$stopPropagation = true;
             };
             if (n.events.interceptor) {
-                $ = i.default.firstValuable(n.events.interceptor.call(n, $), $);
-                if (!$ || $.$stopPropagation) return;
+                y = i.default.firstValuable(n.events.interceptor.call(n, y), y);
+                if (!y || y.$stopPropagation) return;
             }
-            var x = [];
-            c(f(n.children), $, x);
-            i.default.execFuncs(n.hooks.afterEvent, n, $);
-            n.hooks.afterEvent = null;
-            d.call(n, $, x);
-            if (true) {
-                if (window[o.default.devFlag] && window[o.default.devFlag].selectMode && x.length) {
-                    var m = 0;
-                    var w = x[m];
-                    while (w && w.name === o.default.devFlag) {
-                        if (w.name === o.default.devFlag) {
-                            w = x[++m];
-                        } else {
-                            break;
-                        }
-                    }
-                    if (w && n.$plugin.selectSprite($.type === "click" || $.type === "touchend", n, w)) {
-                        $.stopPropagation();
-                        return;
-                    }
+            var $ = [];
+            c(f(n.children), y, $);
+            d.call(n, y, $);
+            if ((y.type === "mousemove" || y.type === "touchmove") && n.eLastMouseHover && $.indexOf(n.eLastMouseHover) === -1) {
+                var x = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
+                if (x) {
+                    x.call(n.eLastMouseHover, y);
                 }
             }
-            if (($.type === "mousemove" || $.type === "touchmove") && n.eLastMouseHover && x.indexOf(n.eLastMouseHover) === -1) {
-                var b = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
-                if (b) {
-                    b.call(n.eLastMouseHover, $);
-                }
-            }
-            n.eLastMouseHover = x[0];
-            if (!x.length && n.eLastMouseHover) {
-                var S = n.eLastMouseHover["events"]["mouseout"];
-                if (S) {
-                    S.call(n.eLastMouseHover, $);
+            n.eLastMouseHover = $[0];
+            if (!$.length && n.eLastMouseHover) {
+                var m = n.eLastMouseHover["events"]["mouseout"];
+                if (m) {
+                    m.call(n.eLastMouseHover, y);
                 }
                 n.eLastMouseHover = null;
             }
-            var T = n.events[$.type];
-            if (T) {
-                if (T.call(n, $)) {
+            var w = n.events[y.type];
+            if (w) {
+                if (w.call(n, y)) {
                     n.eHoldingFlag = false;
                     return true;
                 }
@@ -1655,7 +1645,7 @@
             if (n.border) {
                 a.line = n.border;
             }
-            if (n.overflow && n.overflow !== "visible") {
+            if ((n.overflow || n.overflowX || n.overflowY) && n.overflow !== "visible") {
                 a.clip = true;
             }
             if (n.scale !== 1) {
@@ -1695,30 +1685,30 @@
             var A = (0, v.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width, r.height, a.beforeRotate && a.beforeRotate[0], a.beforeRotate && a.beforeRotate[1], n.rotate);
             if (a.clip) {
                 if (A) {
-                    var O = {
+                    var M = {
                         $id: t.$id,
                         type: "clip",
                         settings: a,
                         img: s,
                         props: n
                     };
-                    O.$origin = t;
-                    r.$children.push(O);
+                    M.$origin = t;
+                    r.$children.push(M);
                 }
             }
             (0, d.default)(r, f, -1);
             if (a.fillRect) {
                 if (A) {
                     t.$rendered = true;
-                    var M = {
+                    var O = {
                         $id: t.$id,
                         type: "fillRect",
                         settings: a,
                         img: s,
                         props: n
                     };
-                    M.$origin = t;
-                    r.$children.push(M);
+                    O.$origin = t;
+                    r.$children.push(O);
                 }
             }
             if (c && n.opacity !== 0 && n.sw && n.sh) {
@@ -2127,8 +2117,8 @@
         var T = R(S);
         var k = r(54);
         var A = R(k);
-        var O = r(56);
-        var M = R(O);
+        var M = r(56);
+        var O = R(M);
         var F = r(57);
         var E = R(F);
         function R(t) {
@@ -2143,7 +2133,7 @@
             remove: o.default,
             register: A.default,
             clear: d.default,
-            setFpsHandler: M.default,
+            setFpsHandler: O.default,
             setMaxFps: E.default,
             pause: v.default,
             on: g.default,

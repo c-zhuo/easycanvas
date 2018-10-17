@@ -106,6 +106,7 @@ module.exports = function () {
         content: $sprite.content,
         children: $sprite.children,
         style: $sprite.style,
+        // events: $sprite.events, // 加不加都一样
     };
     $sprite.children = [];
     $sprite.content = {
@@ -123,21 +124,21 @@ module.exports = function () {
         th: canvas.height,
     });
 
-    // 拦截事件，确保children可以触发事件
-    $sprite.events.$interceptor = $sprite.events.interceptor;
-    $sprite.events.interceptor = function ($e) {
-        $sprite.children = $sprite.$combine.children || [];
+    // // 拦截事件，确保children可以触发事件
+    // $sprite.events.$interceptor = $sprite.events.interceptor;
+    // $sprite.events.interceptor = function ($e) {
+    //     // $sprite.children = $sprite.$combine.children || [];
 
-        $canvas.on('afterEvent', () => {
-            $sprite.children = [];
-        });
+    //     // $canvas.on('afterEvent', () => {
+    //     //     $sprite.children = [];
+    //     // });
 
-        if ($sprite.events.$interceptor) {
-            return $sprite.events.$interceptor($e);
-        }
+    //     if ($sprite.events.$interceptor) {
+    //         return $sprite.events.$interceptor($e);
+    //     }
 
-        return $e;
-    };
+    //     return $e;
+    // };
 
     // $canvas.paint();
     $canvas.$children = originChildren;

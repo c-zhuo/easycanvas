@@ -79,9 +79,11 @@ const looper = function (arr, e, caughts) {
             }
         }
 
-        if (item.children.length) {
+        let children = item.$combine ? item.$combine.children : item.children;
+
+        if (children.length) {
             // Children above
-            looper(sortByIndex(item.children.filter(function (a) {
+            looper(sortByIndex(children.filter(function (a) {
                 if (process.env.NODE_ENV !== 'production') {
                     if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
                         return utils.funcOrValue(a.style.zIndex, a) >= 0;
@@ -92,15 +94,34 @@ const looper = function (arr, e, caughts) {
             })), e, caughts);
         }
 
-        if (hitSprite(item, e)) {
-            caughts.push(item);
-            let result = triggerEventOnSprite(item, e);
-            if (e.$stopPropagation) break;
+        if (e.$stopPropagation) break;
+
+        let hasHandle = item.events && item.events[e.type];
+
+        if ((hasHandle || process.env.NODE_ENV !== 'production') && hitSprite(item, e)) {
+            if (process.env.NODE_ENV !== 'production') {
+                // 开发者工具select模式下为选取元素
+                if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
+                    let devIndex = 0;
+                    if (item.name !== constants.devFlag) {
+                        e.stopPropagation();
+                        if (item.$canvas.$plugin.selectSprite(e.type === 'click' || e.type === 'touchend', item.$canvas, item)) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (hasHandle) {
+                caughts.push(item);
+                let result = triggerEventOnSprite(item, e);
+                if (e.$stopPropagation) break;
+            }
         }
 
-        if (item.children.length) {
+        if (children.length) {
             // Children below
-            looper(sortByIndex(item.children.filter(function (a) {
+            looper(sortByIndex(children.filter(function (a) {
                 if (process.env.NODE_ENV !== 'production') {
                     if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
                         return utils.funcOrValue(a.style.zIndex, a) < 0;
@@ -122,7 +143,13 @@ const extend = function ($e, caughts) {
 };
 
 const triggerEventOnSprite = function ($sprite, $e) {
-    if (!$sprite.events || !$sprite.events[$e.type]) return;
+    if (process.env.NODE_ENV !== 'production') {
+        // 开发者工具select模式下为选取元素，不要触发事件
+        if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
+            return false;
+        }
+    }
+
     if ($e.$stopPropagation) return;
 
     let result = $sprite.events[$e.type].call($sprite, $e);
@@ -219,31 +246,10 @@ eventHandler = function (e, _$e) {
 
     looper(sortByIndex($canvas.children), $e, caughts);
 
-    utils.execFuncs($canvas.hooks.afterEvent, $canvas, $e);
-    $canvas.hooks.afterEvent = null;
+    // utils.execFuncs($canvas.hooks.afterEvent, $canvas, $e);
+    // $canvas.hooks.afterEvent = null;
 
     extend.call($canvas, $e, caughts);
-
-    if (process.env.NODE_ENV !== 'production') {
-        // 开发者工具select模式下为选取元素
-        if (window[constants.devFlag] && window[constants.devFlag].selectMode && caughts.length) {
-            let devIndex = 0;
-            let chooseSprite = caughts[devIndex];
-            while (chooseSprite && chooseSprite.name === constants.devFlag) {
-                if (chooseSprite.name === constants.devFlag) {
-                    // 选中mask不算
-                    chooseSprite = caughts[++devIndex];
-                } else {
-                    break;
-                }
-            }
-
-            if (chooseSprite && $canvas.$plugin.selectSprite($e.type === 'click' || $e.type === 'touchend', $canvas, chooseSprite)) {
-                $e.stopPropagation();
-                return;
-            }
-        }
-    }
 
     // Create a new event: 'hold' (suits both mobile and pc)
     // if (!$canvas.eHoldingFlag && ($e.type === 'mousedown' || $e.type === 'touchstart')) {
