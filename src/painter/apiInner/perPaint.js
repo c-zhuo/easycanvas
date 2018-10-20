@@ -72,6 +72,24 @@ module.exports = function (i, index) {
     _props.sw = _props.sw || _imgWidth;
     _props.sh = _props.sh || _imgHeight;
 
+    if (_props.scale !== 1) {
+        let scale = _props.scale;
+        let scaledParent = getScaledParent(i);
+
+        if (scaledParent) {
+            let scaledParentRect = scaledParent.getRect(i === scaledParent ? false : true);
+            let scaleCenterX = scaledParentRect.tx + scaledParentRect.tw / 2;
+            let scaleCenterY = scaledParentRect.ty + scaledParentRect.th / 2;
+
+            _props.tx -= (scaleCenterX - _props.tx) * (scale - 1);
+            _props.ty -= (scaleCenterY - _props.ty) * (scale - 1);
+            // _props.ty -= (scaleCenterY - (_props.ty + _props.th / 2)) * (scale - 1) + _props.th * (scale - 1) / 2;
+
+            _props.tw *= scale;
+            _props.th *= scale;
+        }
+    }
+
     if (_props.locate === 'lt') {
         // _props.tx = _props.tx;
         // _props.ty = _props.ty;
@@ -130,22 +148,6 @@ module.exports = function (i, index) {
 
     if ((_props.overflow || _props.overflowX || _props.overflowY) && _props.overflow !== 'visible') {
         settings.clip = true;
-    }
-
-    if (_props.scale !== 1) {
-        let scale = _props.scale;
-        let scaledParent = getScaledParent(i);
-
-        if (scaledParent) {
-            let scaleCenterX = scaledParent.getStyle('tx') + (scaledParent.getSelfStyle('tw') || 0) / 2;
-            let scaleCenterY = scaledParent.getStyle('ty') + (scaledParent.getSelfStyle('th') || 0) / 2;
-
-            _props.tx -= (scaleCenterX - _props.tx) * (scale - 1);
-            _props.ty -= (scaleCenterY - _props.ty) * (scale - 1);
-
-            _props.tw *= scale;
-            _props.th *= scale;
-        }
     }
 
     if (_props.mirrX) {

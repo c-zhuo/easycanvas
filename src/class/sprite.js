@@ -188,14 +188,14 @@ sprite.prototype.add = function (child) {
     return this.children[this.children.length - 1];
 };
 
-sprite.prototype.getRect = function () {
+sprite.prototype.getRect = function (notImg) {
     let res = {};
 
     constants.txywh.forEach((key) => {
         res[key] = this.getStyle(key);
     });
 
-    if (res.tw === 0 && this.content.img) {
+    if (res.tw === 0 && this.content.img && !notImg) {
         let img = utils.funcOrValue(this.content.img, this);
         res.tw = img.width;
         res.th = img.height;

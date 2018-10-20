@@ -54,11 +54,11 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                     img: img,
                 },
                 style: {
-                    tx: 0, ty: 500,
+                    tx: 0, ty: 500, // 实际100, 600
                     opacity: 1,
                     zIndex: 2,
-                    locate: 'lt',
-                    scale: 5
+                    locate: 'lt', // 原始中心115, 615
+                    scale: 5 // 实际宽高150，x40～190，y540～690
                 },
                 events: {
                     eIndex: -31,

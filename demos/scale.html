@@ -1,0 +1,228 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="foo" width="400" height="800"></canvas>
+
+    <script>
+        var $Painter = new Easycanvas.painter();
+
+        $Painter.register(document.getElementById('foo'));
+        $Painter.start();
+
+        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+            // create a sprite
+            window.sprite1 = $Painter.add({
+                name: '1',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 50, th: 50,
+                    tx: 50, ty: 50,
+                    opacity: 0.2,
+                    rotate: 10,
+                    scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
+                    locate: 'lt', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    mousemove: function (e) {
+                        // "this" means this sprite, as sprite1
+                        console.log(this, e);
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+            });
+
+            window.sprite2 = $Painter.add({
+                name: '2',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 50, th: 50,
+                    tx: 150, ty: 50,
+                    opacity: 0.2,
+                    rotate: 10,
+                    scale: Easycanvas.transition.pendulum(0.5, 3, 2500).loop(),
+                    locate: 'center', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    mousemove: function (e) {
+                        // "this" means this sprite, as sprite1
+                        console.log(this, e);
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+            });
+
+            window.sprite3 = $Painter.add({
+                name: '3',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 50, th: 50,
+                    tx: 250, ty: 50,
+                    opacity: 0.2,
+                    rotate: 10,
+                    scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
+                    locate: 'rd', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    mousemove: function (e) {
+                        // "this" means this sprite, as sprite1
+                        console.log(this, e);
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+            });
+
+            window.sprite4 = $Painter.add({
+                name: '4',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 50, th: 50,
+                    tx: 50, ty: 150,
+                    opacity: 0.2,
+                    rotate: 10,
+                    scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
+                    locate: 'lt', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    mousemove: function (e) {
+                        // "this" means this sprite, as sprite1
+                        console.log(this, e);
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+                children: [{
+                    name: '4.1',
+                    content: {
+                        img: img,
+                    },
+                    style: {
+                        tw: 50, th: 50,
+                        tx: 10, ty: 10,
+                        opacity: 0.2,
+                        rotate: 10,
+                        locate: 'lt', // default center
+                        zIndex: 1, // z-index of this image
+                    },
+                    events: {
+                        eIndex: 2, // event-index of this image
+                        mousemove: function (e) {
+                            // "this" means this sprite, as sprite1
+                            console.log(this, e);
+                        },
+                        // others: mousehold, mousedown, mouseout and touch events
+                    },
+                }]
+            });
+
+            window.sprite5 = $Painter.add({
+                name: '5',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 50, th: 50,
+                    tx: 150, ty: 150,
+                    opacity: 0.2,
+                    rotate: 10,
+                    scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
+                    locate: 'lt', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    mousemove: function (e) {
+                        // "this" means this sprite, as sprite1
+                        console.log(this, e);
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+                children: [{
+                    name: '5.1',
+                    content: {
+                        img: img,
+                    },
+                    style: {
+                        tw: 50, th: 50,
+                        tx: 10, ty: 10,
+                        opacity: 0.2,
+                        rotate: 10,
+                        scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
+                        locate: 'center', // default center
+                        zIndex: 1, // z-index of this image
+                    },
+                    events: {
+                        eIndex: 2, // event-index of this image
+                        mousemove: function (e) {
+                            // "this" means this sprite, as sprite1
+                            console.log(this, e);
+                        },
+                        // others: mousehold, mousedown, mouseout and touch events
+                    },
+                }]
+            });
+
+            window.sprite6 = $Painter.add({
+                name: '5',
+                content: {
+                    img: img,
+                },
+                style: {
+                    tw: 50, th: 50,
+                    tx: 250, ty: 150,
+                    opacity: 0.2,
+                    rotate: 60,
+                    locate: 'lt', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    mousemove: function (e) {
+                        // "this" means this sprite, as sprite1
+                        console.log(this, e);
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+                children: [{
+                    name: '5.1',
+                    content: {
+                        img: img,
+                    },
+                    style: {
+                        tx: 100, ty: 100,
+                        opacity: 0.2,
+                        rotate: 60,
+                        scale: Easycanvas.transition.pendulum(1, 2, 2000).loop(),
+                        locate: 'lt', // default center
+                        zIndex: 1, // z-index of this image
+                    },
+                    events: {
+                        eIndex: 2, // event-index of this image
+                        mousemove: function (e) {
+                            // "this" means this sprite, as sprite1
+                            console.log(this, e);
+                        },
+                        // others: mousehold, mousedown, mouseout and touch events
+                    },
+                }]
+            });
+        });
+    </script>
+</body>
+

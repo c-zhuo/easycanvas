@@ -12,6 +12,27 @@ import utils from 'utils/utils.js';
 // c.width = 750;
 // var d = c.getContext('2d');
 
+const diffRender = function (olds, news) {
+    if (!olds || olds.length !== news.length) {
+        return news;
+    }
+
+    for (let i = 0; i < olds.length; i++) {
+        let o = olds[i];
+        let n = news[i];
+
+        if (o.$id !== n.$id || o.img !== n.img) return news;
+        if (o.props && n.props) {
+            for (let prop in n.props) {
+                if (n.props[prop] !== o.props[prop]) return news;
+            }
+
+        }
+    }
+
+    return false;
+};
+
 module.exports = function () {
     if (this.$pausing || (this.$inBrowser && document.hidden)) return;
 
@@ -19,15 +40,8 @@ module.exports = function () {
 
     utils.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
 
-    if ($canvas.$paintContext.clearRect) {
-        // d.globalAlpha = 0.3;
-        // d.clearRect(0, 0, this.width, this.height);
-        // d.globalAlpha = 0.7;
-        // d.drawImage($canvas.$dom, 0,0);
-        $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
-    }
-
     if (!$canvas.$freezing) {
+        $canvas.$lastTickChildren = $canvas.$children;
         $canvas.$children = [];
 
         if (process.env.NODE_ENV !== 'production') {
@@ -52,7 +66,20 @@ module.exports = function () {
         $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'START');
     }
 
-    $canvas.$render();
+    let diffs = diffRender($canvas.$lastTickChildren, $canvas.$children);
+
+    if ($canvas.$paintContext.clearRect) {
+        if (diffs) {
+            // d.globalAlpha = 0.3;
+            // d.clearRect(0, 0, this.width, this.height);
+            // d.globalAlpha = 0.7;
+            // d.drawImage($canvas.$dom, 0,0);
+            $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
+            $canvas.$render();
+        }
+    } else {
+        $canvas.$render();
+    }
         // $canvas.$paintContext.globalAlpha = 0.3;
         // $canvas.$paintContext.drawImage(c,0,0);
         // $canvas.$paintContext.globalAlpha = 1;
