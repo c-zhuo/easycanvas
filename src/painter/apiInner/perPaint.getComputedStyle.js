@@ -34,12 +34,6 @@ module.exports = function ($sprite, $canvas) {
         $sprite.inherit.forEach(function (i) {
             _props[i] = $sprite.getStyle(i);
         });
-    // } else {
-    //     defaultInherit.forEach(function (i) {
-    //         if (typeof _props[i] === 'undefined') {
-    //             _props[i] = $sprite.getStyle(i);
-    //         }
-    //     });
     }
 
     // Maybe a plgin is better ?

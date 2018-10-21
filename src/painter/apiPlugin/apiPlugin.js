@@ -156,7 +156,7 @@ module.exports = function () {
                             }
                         },
                         webgl: undefined,
-                        children: [{
+                        children: !$canvas.$paintContext.clearRect ? [] : [{
                             // sprite名字
                             name: constants.devFlag,
                             inherit: [],

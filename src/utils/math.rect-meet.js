@@ -44,6 +44,13 @@ import pointInRect from './math.point-in-rect.js';
 // };
 
 module.exports = function (x1, y1, w1, h1, x2, y2, w2, h2, rx, ry, deg) {
+    if (!deg) {
+        if (y1 > y2 + h2) return false;
+        if (y2 > y1 + h1) return false;
+        if (x1 > x2 + w2) return false;
+        if (x2 > x1 + w1) return false;
+    }
+
     var aMeetB = pointInRect(x1, y1, x2, y2, w2, h2, rx, ry, deg) ||
         pointInRect(x1 + w1, y1, x2, y2, w2, h2, rx, ry, deg) ||
         pointInRect(x1, y1 + h1, x2, y2, w2, h2, rx, ry, deg) ||

@@ -1,0 +1,73 @@
+<head>
+    <script src="../build/index.js"></script>
+</head>
+
+<body>
+    <canvas id="app"></canvas>
+
+    <script>
+        // import Component from "easycanvas/build/components";
+
+        // window.Easycanvas = Easycanvas;
+        // Easycanvas.component(Component.text, "text");
+
+        function createCanvas (options) {
+           return new Easycanvas.painter(options);
+        }
+
+        function createSprite (options) {
+           return new Easycanvas.sprite(options);
+        }
+
+
+        const $app = new Easycanvas.painter({
+           el: '#app',
+           width: 750,
+           height: 1334
+        })
+
+        $app.start();
+
+        const $wrap = $app.add({});
+        // const $wrap = $app;
+
+        let colorObj = {
+                   0: '#0a0',
+                   1: '#a11',
+                   2: '#22a',
+                   3: '#a33',
+                   4: '#4a4',
+                   5: '#55a',
+                   6: '#a66',
+                   7: '#7a7',
+                   8: '#88a',
+                   9: '#a99'
+               }
+        console.log($wrap)
+        for (var i = 0; i < 600; i++) {
+           let $box = $wrap.add({
+               style: {
+                   tw: 700,
+                   th: 80,
+                   tx: 20,
+                   ty: i*100,
+                   locate: 'lt',
+                   backgroundColor: colorObj[i%10] || '#999',
+                   overflow: 'hidden',
+               }
+           })
+
+           $box.add({
+               style: {
+                   tw: 100,
+                   th: 50,
+                   tx: 5,
+                   ty: 5,
+                   backgroundColor: '#ffffff',
+                   locate: 'lt'
+               }
+           })
+        }
+    </script>
+</body>
+

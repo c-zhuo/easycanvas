@@ -55,17 +55,12 @@ module.exports = function (i, index) {
 
     let _props = getComputedStyle(i, $canvas);
 
-    let settings = {
-        globalAlpha: utils.firstValuable(_props.opacity, 1)
-    };
-
     let _text = _props.text;
     let _img = _props.img;
-
-    let _children = utils.funcOrValue(i.children, i);
-
     let _imgWidth = _img ? _img.width || 0 : 0;
     let _imgHeight = _img ? _img.height || 0 : 0;
+
+    let _children = utils.funcOrValue(i.children, i);
 
     _props.tw = _props.tw || _props.sw || _imgWidth;
     _props.th = _props.th || _props.sh || _imgHeight;
@@ -107,6 +102,22 @@ module.exports = function (i, index) {
         _props.ty -= _props.th >> 1;
     }
 
+    let settings = {};
+
+    if (_props.rotate) {
+        // 定点旋转
+        let transX = utils.firstValuable(_props.rx, _props.tx + 0.5 * _props.tw);
+        let transY = utils.firstValuable(_props.ry, _props.ty + 0.5 * _props.th);
+        settings.beforeRotate = [transX, transY];
+        settings.rotate = -_props.rotate * Math.PI / 180;
+        settings.rotate = Number(settings.rotate.toFixed(4));
+        settings.afterRotate = [-transX, -transY];
+    }
+
+    let meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
+
+    settings.globalAlpha = utils.firstValuable(_props.opacity, 1);
+
     if (_props.fh || _props.fv) {
         _props.fh = _props.fh || 0;
         _props.fv = _props.fv || 0;
@@ -128,26 +139,22 @@ module.exports = function (i, index) {
         }
     }
 
-    if (_props.rotate) {
-        // 定点旋转
-        let transX = utils.firstValuable(_props.rx, _props.tx + 0.5 * _props.tw);
-        let transY = utils.firstValuable(_props.ry, _props.ty + 0.5 * _props.th);
-        settings.beforeRotate = [transX, transY];
-        settings.rotate = -_props.rotate * Math.PI / 180;
-        settings.rotate = Number(settings.rotate.toFixed(4));
-        settings.afterRotate = [-transX, -transY];
-    }
-
     if (_props.backgroundColor) {
         settings.fillRect = _props.backgroundColor;
     }
 
     if (_props.border) {
+        // TODO：导致width扩大，判断是否超出范围时需要调整算法
         settings.line = _props.border;
     }
 
     if ((_props.overflow || _props.overflowX || _props.overflowY) && _props.overflow !== 'visible') {
         settings.clip = true;
+
+        if (!meetResult) {
+            utils.execFuncs(i.hooks.ticked, i, ++i.$tickedTimes);
+            return;
+        }
     }
 
     if (_props.mirrX) {
@@ -197,8 +204,6 @@ module.exports = function (i, index) {
     //         });
     //     }
     // }
-
-    let meetResult = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
 
     if (settings.clip) {
         if (meetResult) {

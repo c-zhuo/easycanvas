@@ -51,15 +51,19 @@ module.exports = function () {
             if (outerRect.ty < 0 || outerRect.tb > $canvas.height) return COMBINE_FAIL;
         // }
 
+        // 修改：这块不能绘制，paint有可能导致位置变动
         // 绘制一帧，清除连续combine时，前一个combine新产生的对象没有进入$canvas.$children，导致下一个combine获取不到的问题
-        $canvas.$lastTickChildren = false;
-        $canvas.paint();
+        // $canvas.$lastTickChildren = false;
+        // $canvas.paint();
 
         let $renders = $canvas.$children.filter(($child) => {
             for (let i = 0; i < allChildrenInCombine.length; i++) {
                 if (allChildrenInCombine[i].$id === $child.$id) return true;
             } 
         });
+        // if ($sprite.name === 'intro') {
+        //     console.warn('length', $renders.length);
+        // }
 
         let originChildren = $canvas.$children;
         let spriteOpacity = $sprite.getStyle('opacity');
@@ -119,6 +123,11 @@ module.exports = function () {
         // $canvas.$paintContext.clearRect(0, 0, $canvas.width, $canvas.height);
         // $canvas.$lastTickChildren = false;
         // $canvas.$render();
+
+        // 绘制一帧，清除连续combine时，前一个combine新产生的对象没有进入$canvas.$children，导致下一个combine获取不到的问题
+        $canvas.$lastTickChildren = false;
+        $canvas.paint();
+
 
         $canvas.$lastTickChildren = false;
         $canvas.paint();

@@ -13,6 +13,7 @@ import utils from 'utils/utils.js';
 // var d = c.getContext('2d');
 
 const diffRender = function (olds, news) {
+    return news;
     if (!olds || olds.length !== news.length) {
         return news;
     }
