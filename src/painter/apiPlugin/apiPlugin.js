@@ -159,7 +159,6 @@ module.exports = function () {
                         children: !$canvas.$paintContext.clearRect ? [] : [{
                             // sprite名字
                             name: constants.devFlag,
-                            inherit: [],
                             data: {},
                             style: {
                                 locate: 'center',
@@ -172,7 +171,7 @@ module.exports = function () {
                                         res = this.$canvas.width - tipsWidth / 2 - 10;
                                     }
 
-                                    return res;
+                                    return res - this.$parent.$cache.tx;
                                 },
                                 ty () {
                                     let res = maskRect.ty + maskRect.th + 30;
@@ -180,7 +179,7 @@ module.exports = function () {
                                         res = maskRect.ty - 32;
                                     }
 
-                                    return res;
+                                    return res - this.$parent.$cache.ty;
                                 },
                                 tw () {
                                     return tipsWidth;
@@ -204,10 +203,9 @@ module.exports = function () {
                                 content: {
                                     img: MaskTriangleCanvas,
                                 },
-                                inherit: ['ty'],
                                 style: {
                                     tx () {
-                                        return maskRect.tx + maskRect.tw / 2;
+                                        return maskRect.tx + maskRect.tw / 2 - this.$parent.$cache.tx;
                                     },
                                     ty () {
                                         return this.$parent.data.above ? 5 + 16 : -5 - 16;
@@ -221,7 +219,6 @@ module.exports = function () {
                         }, {
                             // 距离parent的距离标注
                             name: constants.devFlag,
-                            inherit: [],
                             style: {
                                 visible () {
                                     return this.getStyle('tw') < this.data.value;
@@ -229,11 +226,11 @@ module.exports = function () {
                                 locate: 'center',
                                 tx () {
                                     let res = maskParentRect.tx + ($selectMask.getSelfStyle('tx') - $selectMaskParent.getSelfStyle('tx')) / 2;
-                                    return res;
+                                    return res - this.$parent.$cache.tx;
                                 },
                                 ty () {
                                     let res = $selectMask.getSelfStyle('ty');
-                                    return res;
+                                    return res - this.$parent.$cache.ty;
                                 },
                                 tw () {
                                     return measureText(this.content.text, textFontSmall) + 10
@@ -256,7 +253,6 @@ module.exports = function () {
                         }, {
                             // 距离parent的距离标注
                             name: constants.devFlag,
-                            inherit: [],
                             style: {
                                 visible () {
                                     return this.getStyle('th') < this.data.value;
@@ -264,11 +260,11 @@ module.exports = function () {
                                 locate: 'center',
                                 tx () {
                                     let res = $selectMask.getSelfStyle('tx');
-                                    return res;
+                                    return res - this.$parent.$cache.tx;
                                 },
                                 ty () {
                                     let res = maskParentRect.ty + ($selectMask.getSelfStyle('ty') - $selectMaskParent.getSelfStyle('ty')) / 2;
-                                    return res;
+                                    return res - this.$parent.$cache.ty;
                                 },
                                 tw () {
                                     return measureText(this.content.text, textFontSmall) + 10

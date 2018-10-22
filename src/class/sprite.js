@@ -247,7 +247,11 @@ sprite.prototype.getStyle = function (key) {
     let $sprite = this;
     let lastPaintTime = $sprite.$canvas.$lastPaintTime;
 
-    if ($sprite.$styleCacheTime[key] === lastPaintTime) {
+    // if ($sprite.$styleCacheTime[key] === lastPaintTime) {
+    //     return $sprite.$cache[key];
+    // }
+
+    if ($sprite.$cache[key] !== undefined) {
         return $sprite.$cache[key];
     }
 
@@ -268,8 +272,8 @@ sprite.prototype.getStyle = function (key) {
             if (key === 'opacity' || key === 'scale') {
                 parentValue = utils.firstValuable(parentValue, 1);
 
-                $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
-                $sprite.$parent.$cache[key] = parentValue;
+                // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+                // $sprite.$parent.$cache[key] = parentValue;
 
                 return (
                     parentValue
@@ -277,8 +281,8 @@ sprite.prototype.getStyle = function (key) {
             } else {
                 parentValue = utils.firstValuable(parentValue, 0);
 
-                $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
-                $sprite.$parent.$cache[key] = parentValue;
+                // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+                // $sprite.$parent.$cache[key] = parentValue;
 
                 return (
                     parentValue

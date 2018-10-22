@@ -44,6 +44,7 @@ const utils = {
         //         return arguments[i];
         //     }
         // }
+        // return a === undefined ? (b === undefined ? c : b) : a;
         return typeof a === 'undefined' ? (typeof b === 'undefined' ? c : b) : a;
     },
 };

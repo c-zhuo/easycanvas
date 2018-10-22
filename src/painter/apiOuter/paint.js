@@ -13,7 +13,6 @@ import utils from 'utils/utils.js';
 // var d = c.getContext('2d');
 
 const diffRender = function (olds, news) {
-    return news;
     if (!olds || olds.length !== news.length) {
         return news;
     }
@@ -67,9 +66,8 @@ module.exports = function () {
         $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'START');
     }
 
-    let diffs = diffRender($canvas.$lastTickChildren, $canvas.$children);
-
     if ($canvas.$paintContext.clearRect) {
+        let diffs = diffRender($canvas.$lastTickChildren, $canvas.$children);
         if (diffs) {
             // d.globalAlpha = 0.3;
             // d.clearRect(0, 0, this.width, this.height);

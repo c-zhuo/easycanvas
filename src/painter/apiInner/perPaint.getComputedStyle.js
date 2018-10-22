@@ -14,21 +14,37 @@ import utils from 'utils/utils.js';
 // const inBrowser = typeof window !== 'undefined';
 
 module.exports = function ($sprite, $canvas) {
-    let _props = {};
+    // let _props = $sprite.$props = {};
 
-    for (let i in $sprite.content) {
-        _props[i] = utils.funcOrValue($sprite.content[i], $sprite);
-    }
+    // for (let key in $sprite.content) {
+    //     _props[key] = utils.funcOrValue($sprite.content[key], $sprite);
+    // }
 
     // 正常情况下，add阶段会进行string2object的转换
     // 此处是防止动态修改了某个img为string
-    if (typeof _props.img === 'string') {
-        _props.img = $sprite.content.img = $canvas.imgLoader(_props.img);
-    }
+    // if (typeof _props.img === 'string') {
+    //     _props.img = $sprite.content.img = $canvas.imgLoader(_props.img);
+    // }
 
-    for (let i in $sprite.style) {
-        _props[i] = $sprite.getStyle(i);
-    }
+    // for (let key in $sprite.style) {
+    //     // _props[key] = $sprite.getStyle(key);
+    //     if (key === 'tx' || key === 'ty') {
+    //         // _props[key] = $sprite.getStyle(key);
+    //         _props[key] = utils.funcOrValue($sprite.style[key], $sprite) || 0;
+    //         if ($sprite.$parent) {
+    //             _props[key] += utils.firstValuable($sprite.$parent.$cache[key], 0);
+    //         }
+    //         $sprite.$cache[key] = _props[key];
+    //     } else if (key === 'scale' || key === 'opacity') {
+    //         _props[key] = utils.firstValuable(utils.funcOrValue($sprite.style[key], $sprite), 1);
+    //         if ($sprite.$parent) {
+    //             _props[key] *= utils.firstValuable($sprite.$parent.$cache[key], 1);
+    //         }
+    //         $sprite.$cache[key] = _props[key];
+    //     } else {
+    //         _props[key] = utils.funcOrValue($sprite.style[key], $sprite);
+    //     }
+    // }
 
     if ($sprite.inherit) {
         $sprite.inherit.forEach(function (i) {

@@ -38,7 +38,6 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
             },
             {
                 // $children[2]
-                inherit: ['tx'],
                 content: {
                     img: img,
                 },
@@ -98,7 +97,7 @@ describe('Feature.scale Test.', function () {
             expect(getRenderTStyle($Painter.$children[1].props)).toBe('540,40,150,150');
 
             // tx/ty 100~130  ==>  85～145
-            expect(getRenderTStyle($Painter.$children[2].props)).toBe('85,85,60,60');
+            expect(getRenderTStyle($Painter.$children[2].props)).toBe('0,65,265,300');
 
             // if no more scale with last child, result is '140,140,150,150', center is (215,215)
             // scale 5 ==> size 750, 215 - 375 = -160

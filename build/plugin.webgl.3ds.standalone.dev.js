@@ -23,7 +23,7 @@
         return e(0);
     }({
         0: function(t, r, e) {
-            t.exports = e(95);
+            t.exports = e(94);
         },
         41: function(t, r, e) {
             (function(r) {
@@ -1124,9 +1124,9 @@
                     this.spectralColor = 0;
                 };
                 t.exports = on;
-            }).call(r, e(105).Buffer);
+            }).call(r, e(104).Buffer);
         },
-        95: function(t, r, e) {
+        94: function(t, r, e) {
             "use strict";
             var n = Object.assign || function(t) {
                 for (var r = 1; r < arguments.length; r++) {
@@ -1237,7 +1237,7 @@
                 };
             }
         },
-        104: function(t, r) {
+        103: function(t, r) {
             "use strict";
             r.byteLength = u;
             r.toByteArray = h;
@@ -1323,12 +1323,12 @@
                 return o.join("");
             }
         },
-        105: function(t, r, e) {
+        104: function(t, r, e) {
             (function(t) {
                 "use strict";
-                var n = e(104);
-                var i = e(107);
-                var a = e(106);
+                var n = e(103);
+                var i = e(106);
+                var a = e(105);
                 r.Buffer = u;
                 r.SlowBuffer = b;
                 r.INSPECT_MAX_BYTES = 50;
@@ -2685,13 +2685,13 @@
                 return this;
             }());
         },
-        106: function(t, r) {
+        105: function(t, r) {
             var e = {}.toString;
             t.exports = Array.isArray || function(t) {
                 return e.call(t) == "[object Array]";
             };
         },
-        107: function(t, r) {
+        106: function(t, r) {
             r.read = function(t, r, e, n, i) {
                 var a, o;
                 var s = i * 8 - n - 1;
