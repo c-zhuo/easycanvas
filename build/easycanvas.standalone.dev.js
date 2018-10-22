@@ -451,11 +451,7 @@
             var n = i.default.funcOrValue(e.style[t], e);
             if (e.$parent) {
                 var a = void 0;
-                if (e.inherit) {
-                    a = e.inherit.indexOf(t) >= 0;
-                } else {
-                    a = t === "tx" || t === "ty" || t === "scale" || t === "opacity";
-                }
+                a = t === "tx" || t === "ty" || t === "scale" || t === "opacity";
                 if (a) {
                     var o = e.$parent.getStyle(t);
                     if (t === "opacity" || t === "scale") {
@@ -1001,7 +997,7 @@
                     var c = o[u];
                     var d = c.content.img;
                     if (d && d.src) {
-                        if (d.width === 0 || d.complete === false || d.naturalHeight === 0) {
+                        if (!d.$painted || d.width === 0 || d.complete === false || d.naturalHeight === 0) {
                             return f;
                         }
                     }
@@ -1525,6 +1521,8 @@
             if (typeof n.img === "string") {
                 n.img = t.content.img = r.imgLoader(n.img);
             }
+            var i = n.text;
+            var o = n.img;
             n.tx = a.default.funcOrValue(t.style.tx, t) || 0;
             if (t.$parent) {
                 n.tx += a.default.firstValuable(t.$parent.$cache.tx, 0);
@@ -1535,10 +1533,18 @@
                 n.ty += a.default.firstValuable(t.$parent.$cache.ty, 0);
             }
             t.$cache.ty = n.ty;
-            n.tw = a.default.funcOrValue(t.style.tw, t) || 0;
-            n.th = a.default.funcOrValue(t.style.th, t) || 0;
-            n.sw = a.default.funcOrValue(t.style.sw, t) || 0;
-            n.sh = a.default.funcOrValue(t.style.sh, t) || 0;
+            var s = 0;
+            var f = 0;
+            if (o) {
+                s = o.width || 0;
+                f = o.height || 0;
+                n.sx = a.default.funcOrValue(t.style.sx, t) || 0;
+                n.sy = a.default.funcOrValue(t.style.sy, t) || 0;
+                n.sw = a.default.funcOrValue(t.style.sw, t) || s;
+                n.sh = a.default.funcOrValue(t.style.sh, t) || f;
+            }
+            n.tw = a.default.funcOrValue(t.style.tw, t) || n.sw || 0;
+            n.th = a.default.funcOrValue(t.style.th, t) || n.sh || 0;
             n.locate = a.default.funcOrValue(t.style.locate, t);
             n.rotate = a.default.funcOrValue(t.style.rotate, t) || 0;
             n.overflow = a.default.funcOrValue(t.style.overflow, t) || 0;
@@ -1549,17 +1555,7 @@
                 n.scale *= a.default.firstValuable(t.$parent.$cache.scale, 1);
             }
             t.$cache.scale = n.scale;
-            var i = n.text;
-            var o = n.img;
-            var s = o ? o.width || 0 : 0;
-            var f = o ? o.height || 0 : 0;
-            var c = a.default.funcOrValue(t.children, t);
-            n.tw = n.tw || n.sw || s;
-            n.th = n.th || n.sh || f;
-            n.sw = n.sw || s;
-            n.sh = n.sh || f;
-            n.sx = n.sx || 0;
-            n.sy = n.sy || 0;
+            var c = t.children;
             if (n.scale !== 1) {
                 var h = n.scale;
                 var $ = y(t);
@@ -1705,6 +1701,7 @@
                             img: o,
                             props: n
                         };
+                        o.$painted = true;
                         E.$origin = t;
                         r.$children.push(E);
                     }

@@ -27,7 +27,7 @@ module.exports = function () {
             let img = $child.content.img;
             if (img && img.src) {
                 // 兼容性TODO
-                if (img.width === 0 || img.complete === false || img.naturalHeight === 0) {
+                if (!img.$painted || img.width === 0 || img.complete === false || img.naturalHeight === 0) {
                     // 存在未加载完的子对象，不进行合并
                     return COMBINE_DELAY;
                 }

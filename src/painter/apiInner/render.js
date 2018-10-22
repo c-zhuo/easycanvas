@@ -103,7 +103,6 @@ const render = function ($sprite, i) {
                     continue;
                 }
 
-
                 // 带rotate的元素暂时不考虑，需要复杂的计算
                 if (tmpSpriteSettings.globalAlpha !== 1 ||
                     tmpSpriteSettings.globalCompositeOperation ||

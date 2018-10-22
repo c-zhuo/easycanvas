@@ -260,11 +260,11 @@ sprite.prototype.getStyle = function (key) {
     if ($sprite.$parent) {
         let needInherit;
 
-        if ($sprite.inherit) {
-            needInherit = $sprite.inherit.indexOf(key) >= 0;
-        } else {
+        // if ($sprite.inherit) {
+        //     needInherit = $sprite.inherit.indexOf(key) >= 0;
+        // } else {
             needInherit = key === 'tx' || key === 'ty' || key === 'scale' || key === 'opacity';
-        }
+        // }
 
         if (needInherit) {
             let parentValue = $sprite.$parent.getStyle(key);

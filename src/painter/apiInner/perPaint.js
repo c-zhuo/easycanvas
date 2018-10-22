@@ -64,6 +64,9 @@ module.exports = function ($sprite, index) {
         _props.img = $sprite.content.img = $canvas.imgLoader(_props.img);
     }
 
+    let _text = _props.text;
+    let _img = _props.img;
+
     _props.tx = utils.funcOrValue($sprite.style.tx, $sprite) || 0;
     if ($sprite.$parent) {
         _props.tx += utils.firstValuable($sprite.$parent.$cache.tx, 0);
@@ -76,10 +79,24 @@ module.exports = function ($sprite, index) {
     }
     $sprite.$cache.ty = _props.ty;
 
-    _props.tw = utils.funcOrValue($sprite.style.tw, $sprite) || 0;
-    _props.th = utils.funcOrValue($sprite.style.th, $sprite) || 0;
-    _props.sw = utils.funcOrValue($sprite.style.sw, $sprite) || 0;
-    _props.sh = utils.funcOrValue($sprite.style.sh, $sprite) || 0;
+    // 这块写的比较恶心，原因是forEach等写法的性能开销较大(长列表时每帧能浪费一倍的性能)
+    // 一个一个赋值虽然代码烦琐，但是性能最快
+    // 后面考虑构建时处理或者初始化时批量动态生成函数
+
+    let _imgWidth = 0;
+    let _imgHeight = 0;
+
+    if (_img) {
+        _imgWidth = _img.width || 0;
+        _imgHeight = _img.height || 0;
+        _props.sx = utils.funcOrValue($sprite.style.sx, $sprite) || 0;
+        _props.sy = utils.funcOrValue($sprite.style.sy, $sprite) || 0;
+        _props.sw = utils.funcOrValue($sprite.style.sw, $sprite) || _imgWidth;
+        _props.sh = utils.funcOrValue($sprite.style.sh, $sprite) || _imgHeight;
+    }
+
+    _props.tw = utils.funcOrValue($sprite.style.tw, $sprite) || _props.sw || 0;
+    _props.th = utils.funcOrValue($sprite.style.th, $sprite) || _props.sh || 0;
     _props.locate = utils.funcOrValue($sprite.style.locate, $sprite); // undefined和'center'效果一样;
     _props.rotate = utils.funcOrValue($sprite.style.rotate, $sprite) || 0;
 
@@ -93,19 +110,7 @@ module.exports = function ($sprite, index) {
     }
     $sprite.$cache.scale = _props.scale;
 
-    let _text = _props.text;
-    let _img = _props.img;
-    let _imgWidth = _img ? _img.width || 0 : 0;
-    let _imgHeight = _img ? _img.height || 0 : 0;
-
-    let _children = utils.funcOrValue($sprite.children, $sprite);
-
-    _props.tw = _props.tw || _props.sw || _imgWidth;
-    _props.th = _props.th || _props.sh || _imgHeight;
-    _props.sw = _props.sw || _imgWidth;
-    _props.sh = _props.sh || _imgHeight;
-    _props.sx = _props.sx || 0;
-    _props.sy = _props.sy || 0;
+    let _children = $sprite.children;
 
     if (_props.scale !== 1) {
         let scale = _props.scale;
@@ -319,6 +324,8 @@ module.exports = function ($sprite, index) {
                     img: _img,
                     props: _props,
                 };
+
+                _img.$painted = true;
 
                 // if (process.env.NODE_ENV !== 'production') {
                 //     // 开发环境下，将元素挂载到$children里以供标记
