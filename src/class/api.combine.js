@@ -97,6 +97,11 @@ module.exports = function () {
             outerRect.th,
         );
 
+        $sprite.children.forEach((child) => {
+            // 清空$cache，以免后续使用时（如事件处理）拿到了老的坐标
+            child.$cache = {};
+        });
+
         $sprite.$combine = {
             content: $sprite.content,
             children: $sprite.children,
@@ -128,9 +133,8 @@ module.exports = function () {
         $canvas.$lastTickChildren = false;
         $canvas.paint();
 
-
-        $canvas.$lastTickChildren = false;
-        $canvas.paint();
+        // $canvas.$lastTickChildren = false;
+        // $canvas.paint();
 
         $sprite.off('ticked', this.combine);
 

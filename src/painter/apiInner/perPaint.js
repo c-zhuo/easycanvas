@@ -176,7 +176,7 @@ module.exports = function ($sprite, index) {
         $sprite.$cache.opacity = _props.opacity;
 
         for (let key in $sprite.style) {
-            if (_props[key] !== undefined) continue;
+            if (typeof _props[key] !== 'undefined') continue;
             _props[key] = utils.funcOrValue($sprite.style[key], $sprite);
         }
 

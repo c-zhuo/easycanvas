@@ -33,8 +33,7 @@
                 },
                 funcOrValue: function t(e, n) {
                     if (typeof e === "function") {
-                        var a = e.call(n);
-                        return a;
+                        return e.call(n);
                     }
                     return e;
                 },
@@ -45,13 +44,11 @@
                         }
                     }
                     if (typeof e === "function") {
-                        return e.apply(a, r);
+                        e.apply(a, r);
                     } else if (n.isArray(e)) {
-                        var s = [];
-                        e.forEach(function(t) {
-                            s.push(t && t.apply(a, r));
+                        e.length && e.forEach(function(t) {
+                            t && t.apply(a, r);
                         });
-                        return s;
                     }
                 },
                 blend: [ "source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in", "destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity" ],

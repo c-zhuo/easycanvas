@@ -95,7 +95,7 @@ const preAdd = function (_item) {
     item.style.opacity = utils.firstValuable(item.style.opacity, 1);
 
     item.style.zIndex = item.style.zIndex || 0;
-    item.style.mirrX = item.style.mirrX || 0;
+    // item.style.mirrX = item.style.mirrX || 0;
 
     item.style.locate = item.style.locate || 'center';
     // item.style.rotate = item.style.rotate || 0;
@@ -106,9 +106,9 @@ const preAdd = function (_item) {
         item.style[key] = item.style[key] || 0;
     });
 
-    item.inherit = item.inherit;
+    // item.inherit = item.inherit;
     // item.inherit = item.inherit || ['tx', 'ty', 'scale', 'opacity'];
-    item.drag = item.drag || {};
+    // item.drag = item.drag || {};
 
     item.events = item.events || {};
     if (process.env.NODE_ENV !== 'production') {

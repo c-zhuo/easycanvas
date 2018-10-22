@@ -31,8 +31,7 @@
             },
             funcOrValue: function t(e, r) {
                 if (typeof e === "function") {
-                    var n = e.call(r);
-                    return n;
+                    return e.call(r);
                 }
                 return e;
             },
@@ -43,13 +42,11 @@
                     }
                 }
                 if (typeof e === "function") {
-                    return e.apply(n, a);
+                    e.apply(n, a);
                 } else if (r.isArray(e)) {
-                    var i = [];
-                    e.forEach(function(t) {
-                        i.push(t && t.apply(n, a));
+                    e.length && e.forEach(function(t) {
+                        t && t.apply(n, a);
                     });
-                    return i;
                 }
             },
             blend: [ "source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in", "destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity" ],
@@ -343,14 +340,11 @@
             r.style.scale = i.default.firstValuable(r.style.scale, 1);
             r.style.opacity = i.default.firstValuable(r.style.opacity, 1);
             r.style.zIndex = r.style.zIndex || 0;
-            r.style.mirrX = r.style.mirrX || 0;
             r.style.locate = r.style.locate || "center";
             var n = i.default.funcOrValue(r.content.img);
             s.default.xywh.forEach(function(t) {
                 r.style[t] = r.style[t] || 0;
             });
-            r.inherit = r.inherit;
-            r.drag = r.drag || {};
             r.events = r.events || {};
             if (true) {
                 for (var a in r.events) {
@@ -1037,6 +1031,9 @@
                 y.height = h.th;
                 var $ = y.getContext("2d");
                 $.drawImage(r.$dom, h.tx, h.ty, h.tw, h.th, 0, 0, h.tw, h.th);
+                e.children.forEach(function(t) {
+                    t.$cache = {};
+                });
                 e.$combine = {
                     content: e.content,
                     children: e.children,
@@ -1056,8 +1053,6 @@
                     th: y.height
                 });
                 r.$children = p;
-                r.$lastTickChildren = false;
-                r.paint();
                 r.$lastTickChildren = false;
                 r.paint();
                 e.off("ticked", t.combine);
@@ -1605,7 +1600,7 @@
                 }
                 t.$cache.opacity = n.opacity;
                 for (var O in t.style) {
-                    if (n[O] !== undefined) continue;
+                    if (typeof n[O] !== "undefined") continue;
                     n[O] = a.default.funcOrValue(t.style[O], t);
                 }
                 b.globalAlpha = a.default.firstValuable(n.opacity, 1);

@@ -26,7 +26,6 @@ const diffRender = function (olds, news) {
             for (let prop in n.props) {
                 if (n.props[prop] !== o.props[prop]) return news;
             }
-
         }
     }
 
