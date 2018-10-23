@@ -2177,7 +2177,7 @@
                 t.$plugin.timeCollect(t, "paintTimeSpend", "START");
             }
             if (t.$paintContext.clearRect) {
-                var e = o(t.$lastTickChildren, t.$children);
+                var e = t.$nodiff ? t.$children : o(t.$lastTickChildren, t.$children);
                 if (e) {
                     t.$paintContext.clearRect(0, 0, this.width, this.height);
                     t.$render();

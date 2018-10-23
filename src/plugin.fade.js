@@ -275,97 +275,103 @@ const transitions = {
     },
 };
 
-window.Easycanvas.class.sprite.prototype.fade = function ({type, ticks, subtype}) {
-    let sprite = this;
+const fade = function (Easycanvas) {
+    Easycanvas.class.sprite.prototype.fade = function ({type, ticks, subtype}) {
+        let sprite = this;
 
-    if (!sprite.$fade) {
-        sprite.$fade = {
-            originImg: sprite.content.img,
-            filterCanvas: document.createElement('canvas'),
-            middlewareCanvas: document.createElement('canvas'),
+        if (!sprite.$fade) {
+            sprite.$fade = {
+                originImg: sprite.content.img,
+                filterCanvas: document.createElement('canvas'),
+                middlewareCanvas: document.createElement('canvas'),
+            };
+
+            // if (typeof sprite.$fade.originImg === 'string') {
+            //     sprite.$fade.originImg = Easycanvas.imgLoader(sprite.$fade.originImg);
+            // }
+
+            sprite.$fade.filterCanvas.width = sprite.$fade.middlewareCanvas.width = sprite.style.tw;
+            sprite.$fade.filterCanvas.height = sprite.$fade.middlewareCanvas.height = sprite.style.th;
+            sprite.$fade.filterCxt = sprite.$fade.filterCanvas.getContext('2d');
+            sprite.$fade.middlewareCxt = sprite.$fade.middlewareCanvas.getContext('2d');
+
+            sprite.$fade.filterCxt.$canvas = sprite.$fade.filterCanvas;
+            sprite.$fade.middlewareCxt.$canvas = sprite.$fade.middlewareCanvas;
+        }
+
+        // debug
+        // let debugCanvasDom = sprite.$fade.middlewareCanvas;
+        // document.body.appendChild(debugCanvasDom);
+        // debugCanvasDom.style.position = 'fixed';
+        // debugCanvasDom.style.left = 0;
+        // debugCanvasDom.style.top = 0;
+        // debugCanvasDom.style.zIndex = 999;
+        // debugCanvasDom.style.width = '30%';
+        // debugCanvasDom.style.height = '30%';
+
+        const transition = {
+            ticks: 0,
+            progress: 0,
+            callback: false,
+            particleData: [],
         };
 
-        // if (typeof sprite.$fade.originImg === 'string') {
-        //     sprite.$fade.originImg = Easycanvas.imgLoader(sprite.$fade.originImg);
-        // }
+        transition.ticks = ticks || 60;
+        transition.subtype = subtype;
+        transition.size = Math.max(sprite.style.tw, sprite.style.th);
+        transition.minsize = Math.min(sprite.style.tw, sprite.style.th);
 
-        sprite.$fade.filterCanvas.width = sprite.$fade.middlewareCanvas.width = sprite.style.tw;
-        sprite.$fade.filterCanvas.height = sprite.$fade.middlewareCanvas.height = sprite.style.th;
-        sprite.$fade.filterCxt = sprite.$fade.filterCanvas.getContext('2d');
-        sprite.$fade.middlewareCxt = sprite.$fade.middlewareCanvas.getContext('2d');
-
-        sprite.$fade.filterCxt.$canvas = sprite.$fade.filterCanvas;
-        sprite.$fade.middlewareCxt.$canvas = sprite.$fade.middlewareCanvas;
-    }
-
-    // debug
-    // let debugCanvasDom = sprite.$fade.middlewareCanvas;
-    // document.body.appendChild(debugCanvasDom);
-    // debugCanvasDom.style.position = 'fixed';
-    // debugCanvasDom.style.left = 0;
-    // debugCanvasDom.style.top = 0;
-    // debugCanvasDom.style.zIndex = 999;
-    // debugCanvasDom.style.width = '30%';
-    // debugCanvasDom.style.height = '30%';
-
-    const transition = {
-        ticks: 0,
-        progress: 0,
-        callback: false,
-        particleData: [],
-    };
-
-    transition.ticks = ticks || 60;
-    transition.subtype = subtype;
-    transition.size = Math.max(sprite.style.tw, sprite.style.th);
-    transition.minsize = Math.min(sprite.style.tw, sprite.style.th);
-
-    // screenshot
-    {
-        var screenshot = document.createElement('canvas');
-        screenshot.width = utils.funcOrValue(sprite.style.tw, sprite);
-        screenshot.height = utils.funcOrValue(sprite.style.th, sprite);
-        var scrctx = screenshot.getContext('2d');
-        scrctx.drawImage(sprite.$canvas.$dom, sprite.getStyle('tx'), sprite.getStyle('ty'));
-        sprite.$fade.originImg = screenshot;
-        sprite.children = [];
-    }
-
-    sprite.content.img = sprite.$fade.filterCanvas;
-
-    sprite.on('beforeTick', function beforeTick () {
-        if (!sprite.$fade) {
-            return;
+        // screenshot
+        {
+            var screenshot = document.createElement('canvas');
+            screenshot.width = utils.funcOrValue(sprite.style.tw, sprite);
+            screenshot.height = utils.funcOrValue(sprite.style.th, sprite);
+            var scrctx = screenshot.getContext('2d');
+            scrctx.drawImage(sprite.$canvas.$dom, sprite.getStyle('tx'), sprite.getStyle('ty'));
+            sprite.$fade.originImg = screenshot;
+            sprite.children = [];
         }
 
-        transitions[type || 'drip'].call(sprite, transition, sprite.$fade.filterCxt, sprite.$fade.middlewareCxt);
+        sprite.content.img = sprite.$fade.filterCanvas;
 
-        if (transition.progress > 1) {
-            sprite.off('beforeTick', beforeTick);
-            sprite.style.opacity = 0;
-            // delete sprite.content.img;
-            delete sprite.$fade;
-
-            if (transition.callback) {
-                sprite.$canvas.nextTick(() => {
-                    transition.callback.call(sprite);
-                });
+        sprite.on('beforeTick', function beforeTick () {
+            if (!sprite.$fade) {
+                return;
             }
 
-            return;
+            transitions[type || 'drip'].call(sprite, transition, sprite.$fade.filterCxt, sprite.$fade.middlewareCxt);
+
+            if (transition.progress > 1) {
+                sprite.off('beforeTick', beforeTick);
+                sprite.style.opacity = 0;
+                // delete sprite.content.img;
+                delete sprite.$fade;
+
+                if (transition.callback) {
+                    sprite.$canvas.nextTick(() => {
+                        transition.callback.call(sprite);
+                    });
+                }
+
+                return;
+            }
+
+            transition.progress += 1 / (ticks || 100);
+        });
+
+        return {
+            then: function (callback) {
+                transition.callback = callback;
+            },
         }
+    };
 
-        transition.progress += 1 / (ticks || 100);
-    });
-
-    return {
-        then: function (callback) {
-            transition.callback = callback;
-        },
+    Easycanvas.class.sprite.prototype.fade.types = [];
+    for (var i in transitions) {
+        Easycanvas.class.sprite.prototype.fade.types.push(i);
     }
 };
 
-window.Easycanvas.class.sprite.prototype.fade.types = [];
-for (var i in transitions) {
-    window.Easycanvas.class.sprite.prototype.fade.types.push(i);
-}
+// fade(Easycanvas);
+
+module.exports = fade;

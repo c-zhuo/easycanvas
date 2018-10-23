@@ -66,7 +66,7 @@ module.exports = function () {
     }
 
     if ($canvas.$paintContext.clearRect) {
-        let diffs = diffRender($canvas.$lastTickChildren, $canvas.$children);
+        let diffs = $canvas.$nodiff ? $canvas.$children : diffRender($canvas.$lastTickChildren, $canvas.$children);
         if (diffs) {
             // d.globalAlpha = 0.3;
             // d.clearRect(0, 0, this.width, this.height);
