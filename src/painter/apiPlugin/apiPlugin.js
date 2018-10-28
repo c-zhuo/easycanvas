@@ -335,10 +335,10 @@ module.exports = function () {
                 $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;
                 $selectMaskParent.style.zIndex = Number.MAX_SAFE_INTEGER - 1;
                 $selectMask.style.visible = function () {
-                    return window[constants.devFlag].selectMode;
+                    return window[constants.devFlag].selectMode && $sprite.$canvas;
                 };
                 $selectMaskParent.style.visible = function () {
-                    return window[constants.devFlag].selectMode && $sprite.$parent;
+                    return window[constants.devFlag].selectMode && $sprite.$parent && $sprite.$parent.$canvas;
                 };
                 $selectMask.style.opacity = 0.8;
 

@@ -26,6 +26,12 @@ module.exports = function (dom, option) {
 
     dom = this.$dom = dom || this.$dom;
 
+    if (process.env.NODE_ENV !== 'production') {
+        if (!dom) {
+            console.error('[Easycanvas] Not found <canvas> element in "register" function.');
+        }
+    }
+
     // 修复iOS下click时闪烁
     // https://stackoverflow.com/questions/9526719/ipad-canvas-flickers-when-tapped
     // dom.style['webkitTapHighlightColor'] = 'rgba(0,0,0,0);';

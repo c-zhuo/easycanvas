@@ -1,5 +1,15 @@
 <head>
+    <style>
+        body {margin: 0; padding: 0;}
+        canvas {
+            border: 1px solid grey;
+            background-color: #eee;
+            background-size: auto 100%;
+            background-position: 50% 50%;
+        }
+    </style>
     <script src="../build/index.js"></script>
+    <script src="../build/components.js"></script>
 </head>
 
 <body>
@@ -10,7 +20,8 @@
         $Painter.register(document.getElementById('foo'), {
             events: {
                 click: function (e) {
-                    $Painter.add(createFire(e.canvasX, e.canvasY));
+                    var fireConfig = createFire(e.canvasX, e.canvasY);
+                    $Painter.add(fireConfig);
                 }
             }
         });
@@ -18,24 +29,21 @@
         var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png');
 
         var createFire = function (initX, initY) {
-            return {
+            return Easycanvas.class.sequence({
                 content: {
                     img: Fire,
-                    sequence: {
-                        w: -9,
-                        h: -1,
-                        // w: 323,
-                        // h: 360,
-                        interval: 50,
-                        loop: false,
-                    },
                 },
-
+                props: {
+                    frameWidth: -9,
+                    frameHeight: -1,
+                    interval: 50,
+                    loop: false,
+                },
                 style: {
                     tx: initX, ty: initY,
                     // tw: 120, th: 120,
                 },
-            };
+            });
         };
 
         $Painter.start();

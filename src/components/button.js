@@ -71,7 +71,7 @@ const component = function (opt) {
     };
 
     $sprite = new ec.class.sprite({
-        name: opt.name || 'button',
+        name: opt.name || ('button_' + opt.props.text),
         content: {
             img: buttonStyle.imageNormal,
         },

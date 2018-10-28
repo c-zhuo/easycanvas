@@ -23,7 +23,7 @@
         return s(0);
     }({
         0: function(t, e, s) {
-            t.exports = s(89);
+            t.exports = s(90);
         },
         1: function(t, e) {
             "use strict";
@@ -33,8 +33,7 @@
                 },
                 funcOrValue: function t(e, s) {
                     if (typeof e === "function") {
-                        var a = e.call(s);
-                        return a;
+                        return e.call(s);
                     }
                     return e;
                 },
@@ -45,13 +44,11 @@
                         }
                     }
                     if (typeof e === "function") {
-                        return e.apply(a, i);
+                        e.apply(a, i);
                     } else if (s.isArray(e)) {
-                        var r = [];
-                        e.forEach(function(t) {
-                            r.push(t && t.apply(a, i));
+                        e.length && e.forEach(function(t) {
+                            t && t.apply(a, i);
                         });
-                        return r;
                     }
                 },
                 blend: [ "source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in", "destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity" ],
@@ -64,7 +61,7 @@
             };
             t.exports = s;
         },
-        89: function(t, e, s) {
+        90: function(t, e, s) {
             "use strict";
             var a = s(1);
             var i = r(a);
@@ -239,70 +236,73 @@
                     s.drawImage(i.default.funcOrValue(this.$fade.originImg, this), 0, 0);
                 }
             };
-            window.Easycanvas.class.sprite.prototype.fade = function(t) {
-                var e = t.type, s = t.ticks, a = t.subtype;
-                var r = this;
-                if (!r.$fade) {
-                    r.$fade = {
-                        originImg: r.content.img,
-                        filterCanvas: document.createElement("canvas"),
-                        middlewareCanvas: document.createElement("canvas")
-                    };
-                    r.$fade.filterCanvas.width = r.$fade.middlewareCanvas.width = r.style.tw;
-                    r.$fade.filterCanvas.height = r.$fade.middlewareCanvas.height = r.style.th;
-                    r.$fade.filterCxt = r.$fade.filterCanvas.getContext("2d");
-                    r.$fade.middlewareCxt = r.$fade.middlewareCanvas.getContext("2d");
-                    r.$fade.filterCxt.$canvas = r.$fade.filterCanvas;
-                    r.$fade.middlewareCxt.$canvas = r.$fade.middlewareCanvas;
-                }
-                var l = {
-                    ticks: 0,
-                    progress: 0,
-                    callback: false,
-                    particleData: []
-                };
-                l.ticks = s || 60;
-                l.subtype = a;
-                l.size = Math.max(r.style.tw, r.style.th);
-                l.minsize = Math.min(r.style.tw, r.style.th);
-                {
-                    var o = document.createElement("canvas");
-                    o.width = i.default.funcOrValue(r.style.tw, r);
-                    o.height = i.default.funcOrValue(r.style.th, r);
-                    var n = o.getContext("2d");
-                    n.drawImage(r.$canvas.$dom, r.getStyle("tx"), r.getStyle("ty"));
-                    r.$fade.originImg = o;
-                    r.children = [];
-                }
-                r.content.img = r.$fade.filterCanvas;
-                r.on("beforeTick", function t() {
+            var n = function t(e) {
+                e.class.sprite.prototype.fade = function(t) {
+                    var e = t.type, s = t.ticks, a = t.subtype;
+                    var r = this;
                     if (!r.$fade) {
-                        return;
+                        r.$fade = {
+                            originImg: r.content.img,
+                            filterCanvas: document.createElement("canvas"),
+                            middlewareCanvas: document.createElement("canvas")
+                        };
+                        r.$fade.filterCanvas.width = r.$fade.middlewareCanvas.width = r.style.tw;
+                        r.$fade.filterCanvas.height = r.$fade.middlewareCanvas.height = r.style.th;
+                        r.$fade.filterCxt = r.$fade.filterCanvas.getContext("2d");
+                        r.$fade.middlewareCxt = r.$fade.middlewareCanvas.getContext("2d");
+                        r.$fade.filterCxt.$canvas = r.$fade.filterCanvas;
+                        r.$fade.middlewareCxt.$canvas = r.$fade.middlewareCanvas;
                     }
-                    h[e || "drip"].call(r, l, r.$fade.filterCxt, r.$fade.middlewareCxt);
-                    if (l.progress > 1) {
-                        r.off("beforeTick", t);
-                        r.style.opacity = 0;
-                        delete r.$fade;
-                        if (l.callback) {
-                            r.$canvas.nextTick(function() {
-                                l.callback.call(r);
-                            });
+                    var l = {
+                        ticks: 0,
+                        progress: 0,
+                        callback: false,
+                        particleData: []
+                    };
+                    l.ticks = s || 60;
+                    l.subtype = a;
+                    l.size = Math.max(r.style.tw, r.style.th);
+                    l.minsize = Math.min(r.style.tw, r.style.th);
+                    {
+                        var o = document.createElement("canvas");
+                        o.width = i.default.funcOrValue(r.style.tw, r);
+                        o.height = i.default.funcOrValue(r.style.th, r);
+                        var n = o.getContext("2d");
+                        n.drawImage(r.$canvas.$dom, r.getStyle("tx"), r.getStyle("ty"));
+                        r.$fade.originImg = o;
+                        r.children = [];
+                    }
+                    r.content.img = r.$fade.filterCanvas;
+                    r.on("beforeTick", function t() {
+                        if (!r.$fade) {
+                            return;
                         }
-                        return;
-                    }
-                    l.progress += 1 / (s || 100);
-                });
-                return {
-                    then: function t(e) {
-                        l.callback = e;
-                    }
+                        h[e || "drip"].call(r, l, r.$fade.filterCxt, r.$fade.middlewareCxt);
+                        if (l.progress > 1) {
+                            r.off("beforeTick", t);
+                            r.style.opacity = 0;
+                            delete r.$fade;
+                            if (l.callback) {
+                                r.$canvas.nextTick(function() {
+                                    l.callback.call(r);
+                                });
+                            }
+                            return;
+                        }
+                        l.progress += 1 / (s || 100);
+                    });
+                    return {
+                        then: function t(e) {
+                            l.callback = e;
+                        }
+                    };
                 };
+                e.class.sprite.prototype.fade.types = [];
+                for (var s in h) {
+                    e.class.sprite.prototype.fade.types.push(s);
+                }
             };
-            window.Easycanvas.class.sprite.prototype.fade.types = [];
-            for (var n in h) {
-                window.Easycanvas.class.sprite.prototype.fade.types.push(n);
-            }
+            t.exports = n;
         }
     });
 });

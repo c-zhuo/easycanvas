@@ -18,10 +18,10 @@ module.exports = `
             <!-- node环境引入 -->
 
             import Easycanvas from easycanvas;
-            import EasycanvasComponentScroll from easycanvas/build/component.scroll.js;
+            import EasycanvasComponentScroll from easycanvas/build/components.js;
 
             // node环境中引入，可以指定组件名称，作为“命名空间”，防止多个组件重复
-            Easycanvas.component(EasycanvasComponentScroll, 'scroll');
+            Easycanvas.component(EasycanvasComponentScroll.scroll, 'scroll');
         </code>
 
         <h2>使用</h2>

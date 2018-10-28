@@ -27,15 +27,17 @@ module.exports = `
                             tw: 400, th: 700,
                             locate: 'lt',
                             backgroundColor: '#ccc',
-                            overflow: 'hidden'
+                            overflowX: 'hidden',
+                            overflowY: 'scroll'
                         },
-                        scroll: {
-                            scrollable: true,
-                            smooth: 0.9
-                        }
+                        // scroll: {
+                        //     flexibleY: false,
+                        //     // smooth: 0.9
+                        // }
                     }));
 
                     $scroll.add({
+                        name: 'text',
                         content: {
                             text: 'Scroll Area',
                         },
@@ -51,7 +53,7 @@ module.exports = `
                     var ty = 10;
                     for (var i = 0; i < 15; i++) {
                         $scroll.add({
-                            name: 'root',
+                            name: 'G',
                             content: {
                                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                             },
@@ -67,8 +69,6 @@ module.exports = `
 
                         ty += i * 10 + 60;
                     }
-
-                    $scroll.scroll.maxScrollY = ty - $scroll.getStyle('th');
 
                     // 按钮
 
@@ -152,7 +152,11 @@ module.exports = `
                         },
                         events: {
                             click () {
-                                console.log(this.name);
+                                this.update({
+                                    props: {
+                                        text: Date.now()
+                                    }
+                                });
                             }
                         }
                     }));
@@ -161,10 +165,8 @@ module.exports = `
 
                     $app.add(Easycanvas.class.text({
                         name: 'text-1',
-                        content: {
-                            text: '这里是一段单行的文本',
-                        },
                         props: {
+                            text: '这里是一段单行的文本',
                             size: 24,
                             width: 240,
                         },
@@ -181,10 +183,8 @@ module.exports = `
 
                     $app.add(Easycanvas.class.text({
                         name: 'text-2',
-                        content: {
-                            text: '这里是一段很长的单行文本',
-                        },
                         props: {
+                            text: '这里是一段很长的单行文本',
                             size: 24,
                             width: 240,
                             overflow: 'ellipsis'
@@ -202,10 +202,8 @@ module.exports = `
 
                     $app.add(Easycanvas.class.text({
                         name: 'text-3',
-                        content: {
-                            text: '这里是一段多行文本abcdefg1234567！？：.,?',
-                        },
                         props: {
+                            text: '这里是一段多行文本abcdefg1234567！？：.,?',
                             size: 24,
                             width: 240,
                         },
@@ -222,10 +220,8 @@ module.exports = `
 
                     $app.add(Easycanvas.class.text({
                         name: 'text-4',
-                        content: {
-                            text: 'emoji🐶',
-                        },
                         props: {
+                            text: 'emoji🐶',
                             size: 24,
                         },
                         style: {
@@ -241,17 +237,15 @@ module.exports = `
 
                     $app.add(Easycanvas.class.text({
                         name: 'text-5',
-                        content: {
-                            text: 'padding 10px 30px',
-                        },
                         props: {
+                            text: 'padding 10px 30px',
                             size: 24,
                             padding: '10px 30px'
                         },
                         style: {
                             locate: 'lt',
                             tx: 500, ty: 470,
-                            backgroundColor: '#AAA',
+                            backgroundColor: '#FFF',
                         },
                         events: {
                             click () {
@@ -262,10 +256,8 @@ module.exports = `
 
                     $app.add(Easycanvas.class.text({
                         name: 'text-6',
-                        content: {
-                            text: 'text 24, lineHeight 72, text 24, lineHeight 72',
-                        },
                         props: {
+                            text: 'text 24, lineHeight 72, text 24, lineHeight 72',
                             size: 24,
                             lineHeight: 72,
                             width: 240,
@@ -273,7 +265,7 @@ module.exports = `
                         style: {
                             locate: 'lt',
                             tx: 500, ty: 540,
-                            backgroundColor: '#AAA',
+                            backgroundColor: '#FFF',
                         },
                         events: {
                             click () {
@@ -284,10 +276,8 @@ module.exports = `
 
                     $app.add(Easycanvas.class.text({
                         name: 'text-7',
-                        content: {
-                            text: 'color & font 颜色字体',
-                        },
                         props: {
+                            text: 'color & font 颜色字体',
                             size: 24,
                             color: '#F00',
                             family: 'cursive, KaiTi, Helvetica, "Hiragino Sans GB", "Microsoft Yahei", "微软雅黑", Arial, sans-serifsans-serif'

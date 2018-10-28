@@ -1,5 +1,8 @@
 import Easycanvas from 'src/index.js';
+import Components from 'src/components.js';
 import constants from 'karma/case.constant.js';
+
+Easycanvas.component(Components.sequence, 'sequence');
 
 var $canvas = document.createElement('canvas');
 $canvas.width = 888;
@@ -10,33 +13,30 @@ var $Painter = new Easycanvas.painter();
 $Painter.register($canvas, {
     events: {
         click: function (e) {
-            $Painter.add(createFire(e.canvasX, e.canvasY));
+            var fireConfig = createFire(e.canvasX, e.canvasY);
+            $Painter.add(fireConfig);
         }
     }
 });
 
 var Fire = Easycanvas.imgLoader(constants.fire);
-// var Fire = Easycanvas.imgLoader('./Fire.png');
 
 var createFire = function (initX, initY) {
-    return {
+    return Easycanvas.class.sequence({
         content: {
             img: Fire,
-            sequence: {
-                w: -9,
-                h: -1,
-                // w: 323,
-                // h: 360,
-                interval: 500,
-                loop: true
-            }
         },
-
+        props: {
+            frameWidth: -9,
+            frameHeight: -1,
+            interval: 50,
+            loop: false,
+        },
         style: {
             tx: initX, ty: initY,
             // tw: 120, th: 120,
         },
-    };
+    });
 };
 
 $Painter.start();

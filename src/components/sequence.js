@@ -8,83 +8,65 @@ const inBrowser = typeof window !== 'undefined';
 
 let ec;
 
-const setStyle = function (buttonStyle, config) {
-    buttonStyle.buttonStyleNormal = Object.assign(defaultStyle, {
-        minWidth: config.style.tw,
-        lineHeight: config.style.th,
-        padding: 0,
-    }, config.props.normal);
-    buttonStyle.buttonStyleHovered = Object.assign({},
-        buttonStyle.buttonStyleNormal, config.props.hovered);
-    buttonStyle.buttonStylePressed = Object.assign({},
-        buttonStyle.buttonStyleNormal, config.props.pressed);
-    // const buttonStyleToggled = Object.assign({}, buttonStyleNormal, opt.props.toggled);
-
-    buttonStyle.imageNormal = text2image(config.props.text || '', buttonStyle.buttonStyleNormal);
-    buttonStyle.imageHovered = config.props.hovered && text2image(config.props.text || '', buttonStyle.buttonStyleHovered);
-    buttonStyle.imagePressed = config.props.pressed && text2image(config.props.text || '', buttonStyle.buttonStylePressed);
-    // const imageToggled = text2image(opt.props.text || '', buttonStyleToggled);
-};
-
 const component = function (opt) {
-    let $sprite;
+    let $sprite = new ec.class.sprite(opt);
 
-    let option = opt || {};
-    opt.props = opt.props || {};
+    opt.props.index = opt.props.index || 0;
 
-    const buttonStyle = {
-        buttonStyleNormal: undefined,
-        buttonStyleHovered: undefined,
-        buttonStylePressed: undefined,
-        imageNormal: undefined,
-        imageHovered: undefined,
-        imagePressed: undefined,
-    };
+    $sprite.on('beforeTick', function () {
+        let _props = this.props;
+        let img = ec.utils.funcOrValue(this.content.img, this);
 
-    setStyle(buttonStyle, opt);
+        if (!img || !img.width) return;
 
-    const events = {};
-    opt.events = opt.events || {};
-    events.touchmove = events.mousemove = () => {
-        $sprite.content.img = buttonStyle.imageHovered || buttonStyle.imageNormal;
-    };
-    events.touchstart = events.mousedown = () => {
-        $sprite.content.img = buttonStyle.imagePressed || buttonStyle.imageHovered || buttonStyle.imageNormal;
-    };
-    events.touchend = events.touchout = events.mouseout = () => {
-        $sprite.content.img = buttonStyle.imageNormal;
-    };
-    events.mouseup = () => {
-        $sprite.content.img = buttonStyle.imageHovered || buttonStyle.imageNormal;
-    };
-    events.click = (e) => {
-        opt.events.click && opt.events.click.call($sprite, e);
-    };
+        // 确立index
+        let index = _props.index || 0;
+        if (index < 0) index = 0;
 
-    $sprite = new ec.class.sprite({
-        name: opt.name || 'button',
-        content: {
-            img: buttonStyle.imageNormal,
-        },
-        style: opt.style,
-        props: opt.props,
-        events: events,
-        hooks: opt.hooks,
+        // 计算每帧的宽高
+        let pw, ph;
+        if (_props.frameWidth || _props.frameHeight) {
+            if (_props.frameWidth < 0) {
+                pw = img.width / -_props.frameWidth;
+            } else {
+                pw = _props.frameWidth;
+            }
+            if (_props.frameHeight < 0) {
+                ph = img.height / -_props.frameHeight;
+            } else {
+                ph = _props.frameHeight;
+            }
+
+            let wTimes = Math.floor(img.width / pw);
+            let hTimes = Math.floor(img.height / ph);
+
+            this.style.sx = index % wTimes * pw;
+            this.style.sy = Math.floor(index / wTimes) % hTimes * ph;
+        }
+
+        // 不循环的精灵动画自动移除
+        if (!_props.loop && index > 0 && this.style.sx === 0 && this.style.sy === 0) {
+            this.style.img = undefined;
+            if (_props.onOver) {
+                _props.onOver.call(this);
+            } else {
+                this.remove();
+            }
+        }
+
+        // 判断是否应该下一帧
+        _props.lastFrameTime = _props.lastFrameTime || 0;
+        if (this.$canvas.$nextTickTime - _props.lastFrameTime >= ec.utils.funcOrValue(_props.interval, this)) {
+            _props.lastFrameTime = this.$canvas.$nextTickTime;
+            _props.index++;
+        }
+
+        // 默认的读取和绘制尺寸等于每帧尺寸
+        this.style.sw = this.style.sw || pw;
+        this.style.sh = this.style.sh || ph;
+        this.style.tw = this.style.tw || pw;
+        this.style.th = this.style.th || ph;
     });
-
-    // $sprite.on('ticked', () => {
-    //     if (ec.utils.funcOrValue($sprite.props.toggled, $sprite)) {
-    //         $sprite.content.img = imageToggled;
-    //     } else {
-    //         $sprite.content.img = imageNormal;
-    //     }
-    // });
-
-    $sprite.update = function (obj) {
-        this.__proto__.update.call(this, obj);
-        setStyle(buttonStyle, opt);
-        $sprite.content.img = buttonStyle.imageNormal;
-    };
 
     return $sprite;
 }
@@ -99,7 +81,7 @@ const init = function (Easycanvas, namespace) {
 
 if (inBrowser && window.Easycanvas) {
     ec = Easycanvas;
-    Easycanvas.class.button = component;
+    Easycanvas.class.sequence = component;
 } else {
     module.exports = init;
 }
