@@ -73,88 +73,88 @@
                 }
                 var d = 0;
                 var p = l.lineHeight ? (l.lineHeight - l.size) / 2 : 0;
-                var m = 0;
-                var g = 1;
+                var g = 0;
+                var m = 1;
                 var y = false;
                 var x = 0;
                 while (true) {
-                    var w = h.measureText(i.slice(m, g)).width;
+                    var w = h.measureText(i.slice(g, m)).width;
                     if (w > l.width) {
                         if (l.overflow === "ellipsis") {
-                            g -= 2;
-                            h.fillText(i.slice(m, g) + "...", d, p + l.size / 2);
+                            m -= 2;
+                            h.fillText(i.slice(g, m) + "...", d, p + l.size / 2);
                             if (true) {
-                                v.push("tempCtx.fillText('" + i.slice(m, g) + "...', " + d + ", " + (p + l.size / 2) + ")");
+                                v.push("tempCtx.fillText('" + i.slice(g, m) + "...', " + d + ", " + (p + l.size / 2) + ")");
                             }
                             p += l.size + (l.lineHeight ? (l.lineHeight - l.size) / 2 : 0);
                             x = l.width - a[1] - a[3];
                             break;
                         } else {
-                            g -= 1;
-                            h.fillText(i.slice(m, g), d, p + l.size / 2);
+                            m -= 1;
+                            h.fillText(i.slice(g, m), d, p + l.size / 2);
                             if (true) {
-                                v.push("tempCtx.fillText('" + i.slice(m, g) + "', " + d + ", " + (p + l.size / 2) + ")");
+                                v.push("tempCtx.fillText('" + i.slice(g, m) + "', " + d + ", " + (p + l.size / 2) + ")");
                             }
-                            m = g;
-                            g = m + 1;
+                            g = m;
+                            m = g + 1;
                             p += l.size + (l.lineHeight ? (l.lineHeight - l.size) / 2 : 10);
                         }
                     } else {
-                        if (g > i.length - 1) {
+                        if (m > i.length - 1) {
                             if (w > x) x = w;
-                            h.fillText(i.slice(m, g), d, p + l.size / 2);
+                            h.fillText(i.slice(g, m), d, p + l.size / 2);
                             if (true) {
-                                v.push("tempCtx.fillText('" + i.slice(m, g) + "', " + d + ", " + (p + l.size / 2) + ")");
+                                v.push("tempCtx.fillText('" + i.slice(g, m) + "', " + d + ", " + (p + l.size / 2) + ")");
                             }
                             p += l.size + (l.lineHeight ? (l.lineHeight - l.size) / 2 : 0);
                             break;
-                        } else if (i.slice(g, g + 1) === r) {
-                            h.fillText(i.slice(m, g), d, p + l.size / 2);
-                            g += 1;
-                            m = g;
-                            g = m + 1;
+                        } else if (i.slice(m, m + 1) === r) {
+                            h.fillText(i.slice(g, m), d, p + l.size / 2);
+                            m += 1;
+                            g = m;
+                            m = g + 1;
                             p += l.size + (l.lineHeight ? (l.lineHeight - l.size) / 2 : 10);
                         }
                         if (w > x) x = w;
-                        g++;
+                        m++;
                     }
                 }
-                var b = document.createElement("canvas");
-                b.width = Math.max(x + a[1] + a[3], l.minWidth || 0);
-                b.height = p + a[0] + a[2];
-                var $ = b.getContext("2d");
+                var $ = document.createElement("canvas");
+                $.width = Math.max(x + a[1] + a[3], l.minWidth || 0);
+                $.height = p + a[0] + a[2];
+                var b = $.getContext("2d");
                 if (true) {
                     v.push("var finalCanvas=document.createElement('canvas')");
-                    v.push("finalCanvas.width=" + b.width);
-                    v.push("finalCanvas.height=" + b.height);
+                    v.push("finalCanvas.width=" + $.width);
+                    v.push("finalCanvas.height=" + $.height);
                     v.push("var finalCtx = finalCanvas.getContext('2d')");
                 }
                 if (l.backgroundColor) {
-                    $.fillStyle = l.backgroundColor;
-                    $.fillRect(0, 0, b.width, b.height);
+                    b.fillStyle = l.backgroundColor;
+                    b.fillRect(0, 0, $.width, $.height);
                     if (true) {
-                        v.push("finalCtx.fillStyle=" + $.fillStyle);
-                        v.push("finalCtx.fillRect(0, 0, " + b.width + ", " + b.height + ")");
+                        v.push("finalCtx.fillStyle=" + b.fillStyle);
+                        v.push("finalCtx.fillRect(0, 0, " + $.width + ", " + $.height + ")");
                     }
                 }
-                $.drawImage(f, (b.width - x) / 2, a[0]);
+                b.drawImage(f, ($.width - x) / 2, a[0]);
                 if (l.border) {
                     var Y = l.border.split(" ");
-                    $.beginPath();
-                    $.moveTo(0, 0);
-                    $.lineWidth = parseInt(Y[0]);
-                    $.strokeStyle = Y[2] || Y[1];
-                    $.lineTo(b.width, 0);
-                    $.lineTo(b.width, b.height);
-                    $.lineTo(0, b.height);
-                    $.lineTo(0, 0);
-                    $.stroke();
+                    b.beginPath();
+                    b.moveTo(0, 0);
+                    b.lineWidth = parseInt(Y[0]);
+                    b.strokeStyle = Y[2] || Y[1];
+                    b.lineTo($.width, 0);
+                    b.lineTo($.width, $.height);
+                    b.lineTo(0, $.height);
+                    b.lineTo(0, 0);
+                    b.stroke();
                 }
                 if (true) {
-                    b.$origin = v;
+                    $.$origin = v;
                 }
-                s[o] = b;
-                return b;
+                s[o] = $;
+                return $;
             };
             e.exports = i;
         },
@@ -315,24 +315,21 @@
                     }
                     if (Math.abs(t.$scroll.speedX) <= 2 && Math.abs(t.$scroll.speedY) <= 2) {
                         t.$scroll.$scrolling = false;
+                        t.$scroll.$wheeling = false;
                         return;
                     }
                     if (t.$scroll.touching) {
-                        if (Date.now() - t.$scroll.touching > 100) {
-                            t.$scroll.speedX *= .5;
-                            t.$scroll.speedY *= .5;
-                        }
                         return;
                     }
                     t.scroll.scrollY -= t.$scroll.speedY;
                     t.scroll.scrollX -= t.$scroll.speedX;
-                    if (!t.$scroll.touching && Math.abs(t.$scroll.speedY) < 200 && t.scroll.anchors && t.scroll.anchors.length) {
+                    if (!t.$scroll.touching && !t.$scroll.$wheeling && Math.abs(t.$scroll.speedY) < 50 && t.scroll.anchors && t.scroll.anchors.length) {
                         var l = t.scroll.anchorsRange || 400;
                         for (var s = 0; s < t.scroll.anchors.length; s++) {
                             var r = t.scroll.anchors[s];
                             var o = t.scroll.scrollY - r;
                             if (o > 0 && o < l && t.$scroll.speedY > 0 || o < 0 && o > -l && t.$scroll.speedY < 0) {
-                                t.trigger("scrollTo", r, 300);
+                                t.trigger("scrollTo", r, 200);
                                 t.$scroll.speedY = 0;
                                 break;
                             }
@@ -355,6 +352,7 @@
                 },
                 touch: function e(t, l) {
                     var s = Date.now();
+                    t.$scroll.$wheeling = false;
                     if (!t.$scroll.touching) {
                         t.$scroll.touching = s;
                         t.$scroll.quickTouch = s;
@@ -379,13 +377,13 @@
                             if (t.scroll.flexible || t.scroll.flexibleY) a >>= 3; else a = 0;
                         }
                         if (Math.abs(o) >= 1 && n > 1) {
-                            var v = (l.canvasX - t.$scroll.startPos.x) * 9 / r;
-                            t.$scroll.speedX = Math.abs(v / 2) > Math.abs(t.$scroll.speedX) ? v : t.$scroll.speedX;
+                            var v = (l.canvasX - t.$scroll.startPos.x) * 9 / r / n * 20;
+                            t.$scroll.speedX = v;
                             t.scroll.scrollX += o;
                         }
                         if (Math.abs(a) >= 1 && n > 1) {
-                            var d = (l.canvasY - t.$scroll.startPos.y) * 9 / r;
-                            t.$scroll.speedY = Math.abs(d / 2) > Math.abs(t.$scroll.speedY) ? d : t.$scroll.speedY;
+                            var d = (l.canvasY - t.$scroll.startPos.y) * 9 / r / n * 20;
+                            t.$scroll.speedY = d;
                             t.scroll.scrollY += a;
                         }
                         t.$scroll.startPos.x = l.canvasX;
@@ -397,6 +395,7 @@
                     t.$scroll.speedX = i.utils.funcOrValue(t.scroll.scrollableX, t) ? l.event.wheelDeltaX : 0;
                     t.$scroll.speedY = i.utils.funcOrValue(t.scroll.scrollableY, t) ? l.event.wheelDeltaY : 0;
                     t.$scroll.$scrolling = true;
+                    t.$scroll.$wheeling = true;
                     l.stopPropagation();
                 }
             };

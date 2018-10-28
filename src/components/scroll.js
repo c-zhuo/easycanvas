@@ -11,6 +11,8 @@ const devicePixelRatio = window.devicePixelRatio || 1;
 let ec;
 let mutipleScrollLock;
 
+// $sprite.$scroll.$wheeling用于在Chrome移动端下适配双指滑动的wheel事件
+
 let scrollFuncs = {
     loose: function ($sprite) {
         $sprite.$scroll.touching = false;
@@ -32,38 +34,30 @@ let scrollFuncs = {
 
         if (Math.abs($sprite.$scroll.speedX) <= 2 && Math.abs($sprite.$scroll.speedY) <= 2) {
             $sprite.$scroll.$scrolling = false;
+            $sprite.$scroll.$wheeling = false;
             return;
         }
 
         if ($sprite.$scroll.touching) {
-            if (Date.now() - $sprite.$scroll.touching > 100) {
-                // 已经有100毫秒没有touchmove事件了，认为停止移动，清空速度
-                $sprite.$scroll.speedX *= 0.5;
-                $sprite.$scroll.speedY *= 0.5;
-            }
+            // 已经有100毫秒没有touchmove事件了，认为停止移动，清空速度
+            // $sprite.$scroll.speedX *= 0.8;
+            // $sprite.$scroll.speedY *= 0.8;
             return;
         }
 
         $sprite.scroll.scrollY -= $sprite.$scroll.speedY;
         $sprite.scroll.scrollX -= $sprite.$scroll.speedX;
 
-        if (!$sprite.$scroll.touching && Math.abs($sprite.$scroll.speedY) < 200 && $sprite.scroll.anchors && $sprite.scroll.anchors.length) {
+        if (!$sprite.$scroll.touching && !$sprite.$scroll.$wheeling && Math.abs($sprite.$scroll.speedY) < 50 && $sprite.scroll.anchors && $sprite.scroll.anchors.length) {
             let range = $sprite.scroll.anchorsRange || 400;
             for (let i = 0; i < $sprite.scroll.anchors.length; i++) {
                 let m = $sprite.scroll.anchors[i];
                 let delta = $sprite.scroll.scrollY - m;
-                // if (delta < range && delta > range / 2 && $sprite.$scroll.speedY > 0) $sprite.$scroll.speedY *= 1.4;
-                // if (delta < range && delta > range / 2 && $sprite.$scroll.speedY > 0) $sprite.$scroll.speedY *= 1.4;
-                // if (delta < range / 2 && delta > 0 && $sprite.$scroll.speedY > 0) $sprite.$scroll.speedY *= 0.6;
-                // if (delta < range / 4 && delta > 0 && $sprite.$scroll.speedY > 0) $sprite.$scroll.speedY *= 0.4;
-                // if (delta > -range && delta < -range / 2 && $sprite.$scroll.speedY < 0) $sprite.$scroll.speedY *= 1.4;
-                // if (delta > -range / 2 && delta < 0 && $sprite.$scroll.speedY < 0) $sprite.$scroll.speedY *= 0.6;
-                // if (delta > -range / 4 && delta < 0 && $sprite.$scroll.speedY < 0) $sprite.$scroll.speedY *= 0.4;
                 if (
                     (delta > 0 && delta < range && $sprite.$scroll.speedY > 0) ||
                     (delta < 0 && delta > -range && $sprite.$scroll.speedY < 0)
                 ) {
-                    $sprite.trigger('scrollTo', m, 300);
+                    $sprite.trigger('scrollTo', m, 200);
                     $sprite.$scroll.speedY = 0;
                     break;
                 }
@@ -90,6 +84,8 @@ let scrollFuncs = {
 
     touch: function ($sprite, $e) {
         let now = Date.now();
+
+        $sprite.$scroll.$wheeling = false;
 
         if (!$sprite.$scroll.touching) {
             // start scroll
@@ -127,14 +123,13 @@ let scrollFuncs = {
             }
 
             if (Math.abs(deltaX) >= 1 && deltaTime > 1) {
-                let newSpeedX = ($e.canvasX - $sprite.$scroll.startPos.x) * 9 / devicePixelRatio;
-                $sprite.$scroll.speedX = Math.abs(newSpeedX / 2) > Math.abs($sprite.$scroll.speedX) ? newSpeedX : $sprite.$scroll.speedX;
+                let newSpeedX = ($e.canvasX - $sprite.$scroll.startPos.x) * 9 / devicePixelRatio / deltaTime * 20;
+                $sprite.$scroll.speedX = newSpeedX;
                 $sprite.scroll.scrollX += deltaX;
             }
             if (Math.abs(deltaY) >= 1 && deltaTime > 1) {
-                let newSpeedY = ($e.canvasY - $sprite.$scroll.startPos.y) * 9 / devicePixelRatio;
-                $sprite.$scroll.speedY = Math.abs(newSpeedY / 2) > Math.abs($sprite.$scroll.speedY) ? newSpeedY : $sprite.$scroll.speedY;
-                // $sprite.$scroll.speedY = newSpeedY;
+                let newSpeedY = ($e.canvasY - $sprite.$scroll.startPos.y) * 9 / devicePixelRatio / deltaTime * 20;
+                $sprite.$scroll.speedY = newSpeedY;
                 $sprite.scroll.scrollY += deltaY;
             }
 
@@ -157,6 +152,7 @@ let scrollFuncs = {
         $sprite.$scroll.speedY = ec.utils.funcOrValue($sprite.scroll.scrollableY, $sprite) ? $e.event.wheelDeltaY : 0;
 
         $sprite.$scroll.$scrolling = true;
+        $sprite.$scroll.$wheeling = true;
 
         // $e.event.preventDefault();
         $e.stopPropagation();
