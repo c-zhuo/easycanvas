@@ -24,7 +24,6 @@
  *     children: [
  *         { Sprite }, { Sprite } ...
  *     ],
- *     inherit: ['tx', 'ty', ...] // inherit from parent, default is ['tx', 'ty', 'scale']
  *     hooks: {
  *         created, mounted, painted, ticked
  *     },
@@ -106,9 +105,7 @@ const preAdd = function (_item) {
         item.style[key] = item.style[key] || 0;
     });
 
-    // item.inherit = item.inherit;
     // item.inherit = item.inherit || ['tx', 'ty', 'scale', 'opacity'];
-    // item.drag = item.drag || {};
 
     item.events = item.events || {};
     if (process.env.NODE_ENV !== 'production') {
@@ -124,7 +121,6 @@ const preAdd = function (_item) {
     }
 
     item.events.eIndex = item.events.eIndex;
-    // item.events.through = !!item.events.through;
 
     item.hooks = item.hooks || {};
 

@@ -1,8 +1,8 @@
 module.exports = `
-    <article id="滑动组件scroll">
-        <h1>滑动组件scroll</h1>
+    <article id="滚动组件scroll">
+        <h1>滚动组件scroll</h1>
 
-        <p>scroll提供了类似<strong>overflow: scroll;</strong>的功能。</p>
+        <p>scroll提供了类似css中<strong>overflow: scroll;</strong>的功能。</p>
 
         <p class="tip">其原理是创建一个容器sprite，监听touch和wheel（鼠标滚轮）事件，调整内部的元素位置。</p>
 

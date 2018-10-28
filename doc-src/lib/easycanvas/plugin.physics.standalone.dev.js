@@ -23,7 +23,7 @@
         return e(0);
     }({
         0: function(t, i, e) {
-            t.exports = e(93);
+            t.exports = e(94);
         },
         1: function(t, i) {
             "use strict";
@@ -33,8 +33,7 @@
                 },
                 funcOrValue: function t(i, e) {
                     if (typeof i === "function") {
-                        var r = i.call(e);
-                        return r;
+                        return i.call(e);
                     }
                     return i;
                 },
@@ -45,13 +44,11 @@
                         }
                     }
                     if (typeof i === "function") {
-                        return i.apply(r, s);
+                        i.apply(r, s);
                     } else if (e.isArray(i)) {
-                        var n = [];
-                        i.forEach(function(t) {
-                            n.push(t && t.apply(r, s));
+                        i.length && i.forEach(function(t) {
+                            t && t.apply(r, s);
                         });
-                        return n;
                     }
                 },
                 blend: [ "source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in", "destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity" ],
@@ -83,7 +80,7 @@
                 };
             };
         },
-        39: function(t, i, e) {
+        40: function(t, i, e) {
             "use strict";
             var r = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(t) {
                 return typeof t;
@@ -3389,9 +3386,9 @@
                 };
             })();
         },
-        93: function(t, i, e) {
+        94: function(t, i, e) {
             "use strict";
-            var r = e(39);
+            var r = e(40);
             var s = c(r);
             var n = e(1);
             var a = c(n);

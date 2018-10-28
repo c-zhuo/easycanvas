@@ -10,7 +10,6 @@ import image from './contents/base-image.js';
 import inherit from './contents/base-inherit.js';
 import events from './contents/base-events.js';
 import text from './contents/base-text.js';
-import sequence from './contents/base-sequence.js';
 import hooks from './contents/base-hooks.js';
 import customEvent from './contents/base-customEvent.js';
 import sprite from './contents/base-sprite.js';
@@ -22,6 +21,7 @@ import pluginWebglMMD from './contents/plugin-webgl-mmd.js';
 import pluginWebglLoaders from './contents/plugin-webgl-loaders.js';
 
 import componentScroll from './contents/component-scroll.js';
+import componentSequence from './contents/component-sequence.js';
 
 let content = `
     ${demos}
@@ -36,7 +36,6 @@ let content = `
     ${inherit}
     ${events}
     ${text}
-    ${sequence}
     ${hooks}
     ${customEvent}
     ${sprite}
@@ -48,6 +47,7 @@ let content = `
     ${pluginWebglLoaders}
 
     ${componentScroll}
+    ${componentSequence}
 `;
 
 let splits = content.split(/<\/*code>/);

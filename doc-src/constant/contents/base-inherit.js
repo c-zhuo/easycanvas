@@ -220,57 +220,5 @@ module.exports = `
                 </script>
             </code>
         </section>
-
-        <p>可以通过修改inherit来改变要继承的属性，例如下面的例子。但是<strong>不建议这么做</strong>，这样可能会让代码不易理解，或是影响一些插件的正常使用。</p>
-
-        <section>
-            <div class="code-2-demo bg-demo"></div>
-            <code>
-                <body>
-                    <canvas id="app"></canvas>
-                </body>
-
-                <script>
-                    var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
-
-                    var $app = new Easycanvas.painter({
-                        el: '#app',
-                        width: 400,
-                        height: 400
-                    });
-
-                    var $parent = new Easycanvas.sprite({
-                        content: {
-                            img: G,
-                        },
-                        style: {
-                            tw: 50, th: 50,
-                            tx: 50, ty: Easycanvas.transition.pendulum(100, 150, 2000).loop(),
-                            opacity: 0.5, rotate: 180,
-                        },
-                    });
-
-                    var $child = new Easycanvas.sprite({
-                        content: {
-                            img: G,
-                        },
-                        style: {
-                            tw: 50, th: 50,
-                            ty: 100, tx: 100,
-                            rotate: 45,
-                        },
-                    });
-
-                    $child.inherit = ['tx', 'rotate'];
-                    // tx（渲染X坐标）会变为50+100=150
-                    // rotate（旋转角度）会变为180+45=225
-                    // 透明度不继承，为1
-
-                    $app.add($parent);
-                    $app.start();
-                    $parent.add($child);
-                </script>
-            </code>
-        </section>
     </article>
 `;

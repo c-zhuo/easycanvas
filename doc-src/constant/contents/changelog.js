@@ -1,7 +1,7 @@
 // <p>Feature：为Painter实例增加afterEvent钩子。</p>
 
 module.exports = `
-    <article id="更新日志（Latest：2018-10-15）">
+    <article id="更新日志（Latest：2018-10-28）">
         <h1>更新</h1>
 
         <p class="tip">Tips：小版本号为bugfix或增加API，中版本号可能包含个别不向下兼容的API调整。</p>
@@ -9,10 +9,19 @@ module.exports = `
         <h2>进行中</h2>
 
         <p>Feature：为WebGL增加<strong>事件监听</strong>功能。</p>
-        <p>Component：抽离<strong>精灵动画组件</strong>（支持2D与3D），支持更多API。Sprite.content.sequence（原精灵动画API）将不建议使用。</p>
         <p>文档补充：事件捕获等API的文档补充。</p>
 
         <h2>当前版本</h2>
+
+        <h3>0.7.0 (2018.10.28)</h3>
+
+        <p>Change：原精灵动画Sprite.content.sequence相关功能转移至<strong>精灵动画组件Easycanvas.class.sequence</strong>，详见文档。</p>
+        <p>Change：<strong>移除Sprite.inherit API</strong>，不再能修改Sprite的继承设置，以免滥用导致的维护成本升高。</p>
+        <p>Bugfix：修复了<strong>给Sprite设置缩放样式scale时，它的children的缩放中心和Sprite不同</strong>的bug。</p>
+        <p>Feature：增加<strong>生成快照（骨架屏）功能</strong>。可以在非生产环境调用Painter的skeleton方法，生成原生Javascript的Canvas相关API对当前应用的绘制，用于提升首屏速度。文档待更新。</p>
+        <p>Performance：调整部分底层逻辑和数据结构，<strong>大幅提升渲染性能，对于长列表可以降低40%的性能消耗</strong>。</p>
+
+        <h2>历史版本</h2>
 
         <h3>0.6.2 (2018.10.15)</h3>
 
@@ -22,8 +31,6 @@ module.exports = `
         <p>Bugfix：修复了scroll组件在<strong>overflow设置为scroll时子Sprite仍然可以画到scroll组件外部</strong>的bug。</p>
         <p>Bugfix：修复了Chrome调试工具在<strong>PC端下无法选中某一Sprite进行调试</strong>的bug。</p>
 
-        <h2>历史版本</h2>
-
         <h3>0.6.1 (2018.10.14)</h3>
 
         <p>Bugfix：修复了<strong>刷新页面后需要重新在Chrome调试工具中选择实例</strong>才能查看Painter的信息的bug。</p>
@@ -31,8 +38,8 @@ module.exports = `
         <p>Bugfix：修复了<strong>scroll组件在移动端不同设备下，触屏产生的滚动速度不同</strong>的bug。</p>
         <p>Feature：在Chrome调试工具中选中某一个Sprite时，将<strong>额外展示其尺寸、parent的定位点以及横纵偏移距离</strong>。</p>
         <p>Feature：使用Chrome调试工具中选取页面上的Sprite时，将<strong>在调试工具中自动展开并定位到选择的Sprite</strong>。</p>
-        <p>Feature：为Sprite的style增加<strong>border属性，用于设置边框</strong>，文档待更新。</p>
-        <p>Feature：为Sprite补充一些API，包含<strong>功能性API以及性能优化API</strong>，文档待更新。</p>
+        <p>Feature：为Sprite的style增加<strong>border属性，用于设置边框</strong>。</p>
+        <p>Feature：为Sprite补充一些API，包含<strong>功能性API以及性能优化API</strong>。</p>
         <p>注：部分改动需要更新调试工具，请重新拉取chrome-devtools目录。</p>
 
         <h3>0.6.0 (2018.9.24)</h3>
