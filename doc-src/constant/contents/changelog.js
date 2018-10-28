@@ -17,7 +17,7 @@ module.exports = `
 
         <p>Change：原精灵动画Sprite.content.sequence相关功能转移至<strong>精灵动画组件Easycanvas.class.sequence</strong>，详见文档。</p>
         <p>Change：<strong>移除Sprite.inherit API</strong>，不再能修改Sprite的继承设置，以免滥用导致的维护成本升高。</p>
-        <p>Bugfix：修复了<strong>给Sprite设置缩放样式scale时，它的children的缩放中心和Sprite不同</strong>的bug。</p>
+        <p>Bugfix：修复了<strong>向Sprite设置缩放样式scale时，它的children的缩放中心和Sprite不同</strong>的bug。</p>
         <p>Feature：增加<strong>生成快照（骨架屏）功能</strong>。可以在非生产环境调用Painter的skeleton方法，生成原生Javascript的Canvas相关API对当前应用的绘制，用于提升首屏速度。文档待更新。</p>
         <p>Performance：调整部分底层逻辑和数据结构，<strong>大幅提升渲染性能，对于长列表可以降低40%的性能消耗</strong>。</p>
 
