@@ -5,8 +5,7 @@ const utils = {
 
     funcOrValue: (funcOrValue, _this) => {
         if (typeof funcOrValue === 'function') {
-            let res = funcOrValue.call(_this);
-            return res;
+            return funcOrValue.call(_this);
         }
 
         return funcOrValue;
@@ -21,13 +20,19 @@ const utils = {
         }
 
         if (typeof funcOrArray === 'function') {
-            return funcOrArray.apply(_this, _arg);
+            // return funcOrArray.apply(_this, _arg);
+            funcOrArray.apply(_this, _arg);
         } else if (utils.isArray(funcOrArray)) {
-            let res = [];
-            funcOrArray.forEach((f) => {
-                res.push(f && f.apply(_this, _arg));
+            // 返回值没用到
+            // let res = [];
+            // funcOrArray.length && funcOrArray.forEach((f) => {
+            //     res.push(f && f.apply(_this, _arg));
+            // });
+            // return res;
+
+            funcOrArray.length && funcOrArray.forEach((f) => {
+                f && f.apply(_this, _arg);
             });
-            return res;
         }
     },
 
@@ -44,6 +49,7 @@ const utils = {
         //         return arguments[i];
         //     }
         // }
+        // return a === undefined ? (b === undefined ? c : b) : a;
         return typeof a === 'undefined' ? (typeof b === 'undefined' ? c : b) : a;
     },
 };

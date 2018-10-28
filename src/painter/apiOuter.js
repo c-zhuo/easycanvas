@@ -20,6 +20,7 @@ import nextTick from './apiOuter/nextTick.js';
 import register from './apiOuter/register.js';
 import setFpsHandler from './apiOuter/setFpsHandler.js';
 import setMaxFps from './apiOuter/setMaxFps.js';
+import skeleton from './apiOuter/skeleton.js';
 
 let apiOuter = {
     start,
@@ -37,5 +38,9 @@ let apiOuter = {
     broadcast,
     nextTick,
 };
+
+if (process.env.NODE_ENV !== 'production') {
+    apiOuter.skeleton = skeleton;
+}
 
 module.exports = apiOuter;

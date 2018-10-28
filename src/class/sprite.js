@@ -95,7 +95,7 @@ const preAdd = function (_item) {
     item.style.opacity = utils.firstValuable(item.style.opacity, 1);
 
     item.style.zIndex = item.style.zIndex || 0;
-    item.style.mirrX = item.style.mirrX || 0;
+    // item.style.mirrX = item.style.mirrX || 0;
 
     item.style.locate = item.style.locate || 'center';
     // item.style.rotate = item.style.rotate || 0;
@@ -106,9 +106,9 @@ const preAdd = function (_item) {
         item.style[key] = item.style[key] || 0;
     });
 
-    item.inherit = item.inherit;
+    // item.inherit = item.inherit;
     // item.inherit = item.inherit || ['tx', 'ty', 'scale', 'opacity'];
-    item.drag = item.drag || {};
+    // item.drag = item.drag || {};
 
     item.events = item.events || {};
     if (process.env.NODE_ENV !== 'production') {
@@ -188,14 +188,14 @@ sprite.prototype.add = function (child) {
     return this.children[this.children.length - 1];
 };
 
-sprite.prototype.getRect = function () {
+sprite.prototype.getRect = function (notImg) {
     let res = {};
 
     constants.txywh.forEach((key) => {
         res[key] = this.getStyle(key);
     });
 
-    if (res.tw === 0 && this.content.img) {
+    if (res.tw === 0 && this.content.img && !notImg) {
         let img = utils.funcOrValue(this.content.img, this);
         res.tw = img.width;
         res.th = img.height;
@@ -247,7 +247,11 @@ sprite.prototype.getStyle = function (key) {
     let $sprite = this;
     let lastPaintTime = $sprite.$canvas.$lastPaintTime;
 
-    if ($sprite.$styleCacheTime[key] === lastPaintTime) {
+    // if ($sprite.$styleCacheTime[key] === lastPaintTime) {
+    //     return $sprite.$cache[key];
+    // }
+
+    if ($sprite.$cache[key] !== undefined) {
         return $sprite.$cache[key];
     }
 
@@ -256,11 +260,11 @@ sprite.prototype.getStyle = function (key) {
     if ($sprite.$parent) {
         let needInherit;
 
-        if ($sprite.inherit) {
-            needInherit = $sprite.inherit.indexOf(key) >= 0;
-        } else {
+        // if ($sprite.inherit) {
+        //     needInherit = $sprite.inherit.indexOf(key) >= 0;
+        // } else {
             needInherit = key === 'tx' || key === 'ty' || key === 'scale' || key === 'opacity';
-        }
+        // }
 
         if (needInherit) {
             let parentValue = $sprite.$parent.getStyle(key);
@@ -268,8 +272,8 @@ sprite.prototype.getStyle = function (key) {
             if (key === 'opacity' || key === 'scale') {
                 parentValue = utils.firstValuable(parentValue, 1);
 
-                $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
-                $sprite.$parent.$cache[key] = parentValue;
+                // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+                // $sprite.$parent.$cache[key] = parentValue;
 
                 return (
                     parentValue
@@ -277,8 +281,8 @@ sprite.prototype.getStyle = function (key) {
             } else {
                 parentValue = utils.firstValuable(parentValue, 0);
 
-                $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
-                $sprite.$parent.$cache[key] = parentValue;
+                // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+                // $sprite.$parent.$cache[key] = parentValue;
 
                 return (
                     parentValue

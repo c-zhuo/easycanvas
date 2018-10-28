@@ -14,6 +14,7 @@ var sprite1;
 
 Easycanvas.imgLoader(constants.png30px, function (img) {
     sprite1 = $Painter.add({
+        name: '0',
         content: {
             img: img,
         },
@@ -31,10 +32,10 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
 
         children: [
             {
+                name: '1',
                 content: {
                     img: img,
                 },
-                inherit: ['opacity'],
                 style: {
                     tx: 500, ty: 0,
                     zIndex: 1,
@@ -49,16 +50,17 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                 }
             },
             {
+                name: '2',
                 // inherit: ['opacity'],
                 content: {
                     img: img,
                 },
                 style: {
-                    tx: 0, ty: 500,
+                    tx: 0, ty: 500, // 实际100, 600
                     opacity: 1,
                     zIndex: 2,
-                    locate: 'lt',
-                    scale: 5
+                    locate: 'lt', // 原始中心115, 615
+                    scale: 5 // 实际宽高150，x40～190，y540～690
                 },
                 events: {
                     eIndex: -31,
@@ -68,7 +70,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                 }
             },
             {
-                inherit: ['tx', 'ty', 'rotate'],
+                name: '3',
                 content: {
                     img: img,
                 },
@@ -100,10 +102,13 @@ describe('Feature.rendering Test.', function () {
         };
 
         setTimeout(() => {
+            $Painter.$children.forEach((i) => {
+                console.log(i.$origin.name);
+            });
             expect($Painter.$children.length).toBe(4);
             expect($Painter.$children[0].type).toBe('img');
             expect(getRenderStyle($Painter.$children[0].props)).toBe('0,0,30,30,100,100,30,30');
-            expect($Painter.$children[3].settings.rotate.toFixed(2)).toBe('-0.70');
+            expect($Painter.$children[3].settings.rotate).toBe(undefined);
             expect($Painter.$children[2].settings.rotate).toBe(undefined);
             expect(getRenderStyle($Painter.$children[2].props)).toBe('0,0,30,30,40,540,150,150');
             done();

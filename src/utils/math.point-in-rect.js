@@ -9,9 +9,9 @@ const PI = 3.141593;
 module.exports = function (x, y, x2, y2, w2, h2, rx, ry, deg) {
     let _deg = deg ? -deg / 180 * PI : 0;
 
-    if (deg) {
-        x = (x - rx) * Math.cos(deg) - (y - ry) * Math.sin(deg) + rx;
-        y = (x - rx) * Math.sin(deg) + (y - ry) * Math.cos(deg) + ry;
+    if (_deg) {
+        x = (x - rx) * Math.cos(_deg) - (y - ry) * Math.sin(_deg) + rx;
+        y = (x - rx) * Math.sin(_deg) + (y - ry) * Math.cos(_deg) + ry;
     }
 
     return x >= x2 && x <= x2 + w2 &&

@@ -1,19 +1,10 @@
 /** ********** *
  *
- * Button
- * - TODO: Toggle state.
+ * Sequence Sprite Animation
  *
  * ********** **/
 
-import text2image from './text2image.js';
-
 const inBrowser = typeof window !== 'undefined';
-
-const defaultStyle = {
-    padding: 0,
-    width: 300,
-    family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-};
 
 let ec;
 

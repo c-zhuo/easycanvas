@@ -51,6 +51,7 @@ const loader = function (url, callback, option) {
     // todo: 多个loader加载同一图片，目前只触发一个callback；待补充
 
     let i = new Image();
+
     if (_option.block) {
         i.src = url;
         blockingAmount++;

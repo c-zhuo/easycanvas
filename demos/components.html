@@ -170,7 +170,11 @@
             },
             events: {
                 click () {
-                    console.log(this.name);
+                    this.update({
+                        props: {
+                            text: Date.now()
+                        }
+                    });
                 }
             }
         }));
@@ -179,10 +183,8 @@
 
         $app.add(Easycanvas.class.text({
             name: 'text-1',
-            content: {
-                text: '这里是一段单行的文本',
-            },
             props: {
+                text: '这里是一段单行的文本',
                 size: 24,
                 width: 240,
             },
@@ -199,10 +201,8 @@
 
         $app.add(Easycanvas.class.text({
             name: 'text-2',
-            content: {
-                text: '这里是一段很长的单行文本',
-            },
             props: {
+                text: '这里是一段很长的单行文本',
                 size: 24,
                 width: 240,
                 overflow: 'ellipsis'
@@ -220,10 +220,8 @@
 
         $app.add(Easycanvas.class.text({
             name: 'text-3',
-            content: {
-                text: '这里是一段多行文本abcdefg1234567！？：.,?',
-            },
             props: {
+                text: '这里是一段多行文本abcdefg1234567！？：.,?',
                 size: 24,
                 width: 240,
             },
@@ -240,10 +238,8 @@
 
         $app.add(Easycanvas.class.text({
             name: 'text-4',
-            content: {
-                text: 'emoji🐶',
-            },
             props: {
+                text: 'emoji🐶',
                 size: 24,
             },
             style: {
@@ -259,10 +255,8 @@
 
         $app.add(Easycanvas.class.text({
             name: 'text-5',
-            content: {
-                text: 'padding 10px 30px',
-            },
             props: {
+                text: 'padding 10px 30px',
                 size: 24,
                 padding: '10px 30px'
             },
@@ -280,10 +274,8 @@
 
         $app.add(Easycanvas.class.text({
             name: 'text-6',
-            content: {
-                text: 'text 24, lineHeight 72, text 24, lineHeight 72',
-            },
             props: {
+                text: 'text 24, lineHeight 72, text 24, lineHeight 72',
                 size: 24,
                 lineHeight: 72,
                 width: 240,
@@ -302,10 +294,8 @@
 
         $app.add(Easycanvas.class.text({
             name: 'text-7',
-            content: {
-                text: 'color & font 颜色字体',
-            },
             props: {
+                text: 'color & font 颜色字体',
                 size: 24,
                 color: '#F00',
                 family: 'cursive, KaiTi, Helvetica, "Hiragino Sans GB", "Microsoft Yahei", "微软雅黑", Arial, sans-serifsans-serif'

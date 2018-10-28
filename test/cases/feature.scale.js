@@ -22,7 +22,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
             tx: 100, ty: 100,
             tw: 30, th: 30,
             locate: 'lt',
-            scale: 5,
+            scale: 5, // scale中心为115, 115
         },
         children: [
             {
@@ -31,14 +31,13 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                     img: img,
                 },
                 style: {
-                    tx: 100, ty: 0,
+                    tx: 100, ty: 0, // 200(115 + 85) => 540(115 + 85 * 5)
                     locate: 'lt',
                     zIndex: 3,
                 },
             },
             {
                 // $children[2]
-                inherit: ['tx'],
                 content: {
                     img: img,
                 },
@@ -95,15 +94,15 @@ describe('Feature.scale Test.', function () {
         setTimeout(() => {
             // tx/ty 100~130  ==>  tx/ty (100+130)/2 - 30*5/2 = 40
             expect(getRenderTStyle($Painter.$children[0].props)).toBe('40,40,150,150');
-            expect(getRenderTStyle($Painter.$children[1].props)).toBe('140,40,150,150');
+            expect(getRenderTStyle($Painter.$children[1].props)).toBe('540,40,150,150');
 
             // tx/ty 100~130  ==>  85～145
-            expect(getRenderTStyle($Painter.$children[2].props)).toBe('85,85,60,60');
+            expect(getRenderTStyle($Painter.$children[2].props)).toBe('0,65,265,300');
 
             // if no more scale with last child, result is '140,140,150,150', center is (215,215)
             // scale 5 ==> size 750, 215 - 375 = -160
             // result is -160,-160,750,750 ==> 0,0,590,590
-            expect(getRenderStyle($Painter.$children[3].props)).toBe('0,0,30,30,140,140,150,150');
+            expect(getRenderStyle($Painter.$children[3].props)).toBe('0,0,30,30,540,540,150,150');
             expect(getRenderStyle($Painter.$children[4].props)).toBe('6.4,6.4,23.6,23.6,0,0,590,590');
             // expect(getRenderStyle($Painter.$children[4].props)).toBe('6,6,24,24,0,0,590,590');
             done();

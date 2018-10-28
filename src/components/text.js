@@ -13,28 +13,28 @@ const defaultStyle = {
     padding: 0,
     width: 300,
     lineHeight: 100,
-    height: 100,
     family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
 };
 
 let ec;
 
-const component = function (opt) {
+const setImage = function ($sprite) {
+    $sprite.content.img = $sprite.props ? text2image($sprite.props.text, Object.assign({}, defaultStyle, {
+        lineHeight: $sprite.props.size,
+    }, $sprite.props)) : undefined;
+};
+
+const component = function (config) {
     let $sprite;
 
-    let option = opt || {};
+    $sprite = new ec.class.sprite(config);
 
-    $sprite = new ec.class.sprite({
-        name: opt.name || 'text',
-        content: {
-            img: text2image(opt.content.text, Object.assign({}, defaultStyle, {
-                lineHeight: opt.props.size,
-            }, opt.props)),
-        },
-        style: opt.style,
-        events: opt.events,
-        hooks: opt.hooks,
-    });
+    setImage($sprite);
+
+    $sprite.update = function (obj) {
+        this.__proto__.update.call(this, obj);
+        setImage(this);
+    };
 
     return $sprite;
 }
