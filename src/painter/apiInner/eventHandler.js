@@ -106,7 +106,7 @@ const looper = function (arr, e, caughts) {
                 }
             }
 
-            triggerEventOnSprite(item, e);
+            triggerEventOnSprite(item, e, caughts);
             e.stopPropagation();
             return;
         }
@@ -134,14 +134,16 @@ const extend = function ($e, caughts) {
     });
 };
 
-const triggerEventOnSprite = function ($sprite, $e) {
+const triggerEventOnSprite = function ($sprite, $e, caughts) {
+    caughts && caughts.push($sprite);
+
     if ($sprite.events[$e.type]) {
         $sprite.events[$e.type].call($sprite, $e);
         if ($e.$stopPropagation) return;
     }
 
     if ($sprite.$parent) {
-        triggerEventOnSprite($sprite.$parent, $e);
+        triggerEventOnSprite($sprite.$parent, $e, caughts);
     }
 };
 
@@ -226,6 +228,9 @@ eventHandler = function (e, _$e) {
     // }
 
     looper(sortByIndex($canvas.children), $e, caughts);
+    if ($e && !$e.$stopPropagation) {
+        triggerEventOnSprite($canvas, $e);
+    }
 
     // utils.execFuncs($canvas.hooks.afterEvent, $canvas, $e);
     // $canvas.hooks.afterEvent = null;
@@ -242,27 +247,27 @@ eventHandler = function (e, _$e) {
     // }// else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {
 
     // trigger 'mouseout' or 'touchout' event 
-    // if (
-    //     ($e.type === 'mousemove' || $e.type === 'touchmove') &&
-    //     $canvas.eLastMouseHover &&
-    //     caughts.indexOf($canvas.eLastMouseHover) === -1
-    // ) {
-    //     // touchout待移除（目前可能不触发）
-    //     let eMouseout = $canvas.eLastMouseHover['events']['mouseout'] || $canvas.eLastMouseHover['events']['touchout'];
-    //     if (eMouseout) {
-    //         eMouseout.call($canvas.eLastMouseHover, $e);
-    //     }
-    // }
-    // $canvas.eLastMouseHover = caughts[0];
+    if (
+        ($e.type === 'mousemove' || $e.type === 'touchmove') &&
+        $canvas.eLastMouseHover &&
+        caughts.indexOf($canvas.eLastMouseHover) === -1
+    ) {
+        // touchout待移除（目前可能不触发）
+        let eMouseout = $canvas.eLastMouseHover['events']['mouseout'] || $canvas.eLastMouseHover['events']['touchout'];
+        if (eMouseout) {
+            eMouseout.call($canvas.eLastMouseHover, $e);
+        }
+    }
+    $canvas.eLastMouseHover = caughts[0];
 
-    // if (!caughts.length && $canvas.eLastMouseHover) {
-    //     // hover更替，触发mouseout
-    //     let eMouseout = $canvas.eLastMouseHover['events']['mouseout'];
-    //     if (eMouseout) {
-    //         eMouseout.call($canvas.eLastMouseHover, $e);
-    //     }
-    //     $canvas.eLastMouseHover = null;
-    // }
+    if (!caughts.length && $canvas.eLastMouseHover) {
+        // hover更替，触发mouseout
+        let eMouseout = $canvas.eLastMouseHover['events']['mouseout'];
+        if (eMouseout) {
+            eMouseout.call($canvas.eLastMouseHover, $e);
+        }
+        $canvas.eLastMouseHover = null;
+    }
 
     // let handler = $canvas.events[$e.type];
     // if (handler) {

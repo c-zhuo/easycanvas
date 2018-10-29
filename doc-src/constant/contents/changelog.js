@@ -1,7 +1,7 @@
 // <p>Feature：为Painter实例增加afterEvent钩子。</p>
 
 module.exports = `
-    <article id="更新日志（Latest：2018-10-28）">
+    <article id="更新日志（Latest：2018-10-29）">
         <h1>更新</h1>
 
         <p class="tip">Tips：小版本号为bugfix或增加API，中版本号可能包含个别不向下兼容的API调整。</p>
@@ -13,7 +13,7 @@ module.exports = `
 
         <h2>当前版本</h2>
 
-        <h3>0.7.1 (2018.10.29)</h3>
+        <h3>0.7.2 (2018.10.29)</h3>
 
         <p>Change：<strong>事件的规则与DOM的事件保持一致</strong>，并会进行冒泡，可以通过stopPropagation方法阻止事件继续传递。移除了基础库自定义的hold和touchout事件。</p>
         <p>Bugfix：调整<strong>Scroll组件</strong>的速度参数，现在更接近HTML的原生滚动了。</p>

@@ -83,7 +83,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.7.1"
+            version: "0.7.2"
         };
     }, , , , , function(t, e) {
         "use strict";
@@ -311,11 +311,11 @@
             };
         }
         var O = 0;
-        var R = function t(e) {
+        var M = function t(e) {
             if (e.children) {
                 e.children.forEach(function(r, n) {
                     if (!r.$id) {
-                        e.children[n] = new V(r);
+                        e.children[n] = new F(r);
                     }
                     if (e.$id && !e.$dom) {
                         e.children[n].$canvas = e.$canvas;
@@ -327,7 +327,7 @@
                 });
             }
         };
-        var E = function t(e) {
+        var R = function t(e) {
             var r = e || {};
             if (!r.$id) {
                 r.$id = Math.random().toString(36).substr(2);
@@ -371,37 +371,37 @@
                 r.name = r.name || "Unnamed Sprite";
             }
             r.children = r.children || [];
-            R(r);
+            M(r);
             r.$cache = {};
             r.$styleCacheTime = {};
             return r;
         };
-        var F = function t(e) {
+        var E = function t(e) {
             var r = this;
             this.$extendList.forEach(function(t) {
                 t.call(r, e);
             });
         };
-        var V = function t(e) {
-            var r = E(e);
+        var F = function t(e) {
+            var r = R(e);
             for (var n in r) {
                 if (Object.prototype.hasOwnProperty.call(r, n)) {
                     this[n] = r[n];
                 }
             }
-            F.call(this, r);
+            E.call(this, r);
             return this;
         };
-        V.prototype.$extendList = [];
-        V.prototype.add = function(t) {
+        F.prototype.$extendList = [];
+        F.prototype.add = function(t) {
             if (!t) {
                 return;
             }
             this.children.push(t);
-            R(this);
+            M(this);
             return this.children[this.children.length - 1];
         };
-        V.prototype.getRect = function(t) {
+        F.prototype.getRect = function(t) {
             var e = this;
             var r = {};
             l.default.txywh.forEach(function(t) {
@@ -426,7 +426,7 @@
             }
             return r;
         };
-        V.prototype.getSelfStyle = function(t) {
+        F.prototype.getSelfStyle = function(t) {
             var e = {};
             if (t) {
                 return i.default.funcOrValue(this.style[t], this);
@@ -436,7 +436,7 @@
             }
             return e;
         };
-        V.prototype.getStyle = function(t) {
+        F.prototype.getStyle = function(t) {
             var e = this;
             var r = e.$canvas.$lastPaintTime;
             if (e.$cache[t] !== undefined) {
@@ -459,7 +459,7 @@
             }
             return n;
         };
-        V.prototype.remove = function(t) {
+        F.prototype.remove = function(t) {
             if (t) {
                 this.$canvas.remove(t);
                 i.default.execFuncs(t.hooks.removed, t);
@@ -472,7 +472,7 @@
             }
             i.default.execFuncs(this.hooks.removed, this);
         };
-        V.prototype.update = function(t) {
+        F.prototype.update = function(t) {
             if (!t) return;
             for (var e in t) {
                 if (n(t[e]) === "object") {
@@ -484,7 +484,7 @@
                 }
             }
         };
-        V.prototype.getAllChildren = function(t) {
+        F.prototype.getAllChildren = function(t) {
             var e = this;
             var r = t ? [ e ] : [];
             e.children.forEach(function(t) {
@@ -492,20 +492,20 @@
             });
             return r;
         };
-        V.prototype.getOuterRect = w.default;
-        V.prototype.combine = S.default;
-        V.prototype.uncombine = A.default;
-        V.prototype.combineAsync = function() {
+        F.prototype.getOuterRect = w.default;
+        F.prototype.combine = S.default;
+        F.prototype.uncombine = A.default;
+        F.prototype.combineAsync = function() {
             this.on("ticked", this.combine, 100);
             return this;
         };
-        V.prototype.nextTick = p.default;
-        V.prototype.on = f.default;
-        V.prototype.off = c.default;
-        V.prototype.clear = h.default;
-        V.prototype.trigger = y.default;
-        V.prototype.broadcast = x.default;
-        t.exports = V;
+        F.prototype.nextTick = p.default;
+        F.prototype.on = f.default;
+        F.prototype.off = c.default;
+        F.prototype.clear = h.default;
+        F.prototype.trigger = y.default;
+        F.prototype.broadcast = x.default;
+        t.exports = F;
     }, , function(t, e, r) {
         "use strict";
         var n = r(1);
@@ -1268,7 +1268,7 @@
                             continue;
                         }
                     }
-                    h(s, r);
+                    h(s, r, n);
                     r.stopPropagation();
                     return;
                 }
@@ -1292,13 +1292,14 @@
                 }
             });
         };
-        var h = function t(e, r) {
+        var h = function t(e, r, n) {
+            n && n.push(e);
             if (e.events[r.type]) {
                 e.events[r.type].call(e, r);
                 if (r.$stopPropagation) return;
             }
             if (e.$parent) {
-                t(e.$parent, r);
+                t(e.$parent, r, n);
             }
         };
         var v = {
@@ -1324,29 +1325,29 @@
                     i = e.layerX;
                     o = e.layerY;
                 }
-                var h = false;
+                var g = false;
                 if (this.$dom.getBoundingClientRect) {
-                    var g = this.$dom.getBoundingClientRect();
-                    g.width > g.height !== this.width > this.height;
-                    l = Math.floor(g[h ? "height" : "width"]) / this.width;
-                    u = Math.floor(g[h ? "width" : "height"]) / this.height;
+                    var y = this.$dom.getBoundingClientRect();
+                    y.width > y.height !== this.width > this.height;
+                    l = Math.floor(y[g ? "height" : "width"]) / this.width;
+                    u = Math.floor(y[g ? "width" : "height"]) / this.height;
                 }
             }
-            var y = r || {
+            var $ = r || {
                 type: e.type,
                 canvasX: i / l,
                 canvasY: o / u,
                 event: e
             };
             if (s && n.fastclick) {
-                if (y.type === "click" && !y.$fakeClick) {
+                if ($.type === "click" && !$.$fakeClick) {
                     return;
-                } else if (y.type === "touchstart") {
-                    v.x = y.canvasX;
-                    v.y = y.canvasY;
+                } else if ($.type === "touchstart") {
+                    v.x = $.canvasX;
+                    v.y = $.canvasY;
                     v.timeStamp = Date.now();
-                } else if (y.type === "touchend") {
-                    if (Math.abs(v.x - y.canvasX) < 30 && Math.abs(v.y - y.canvasY) < 30 && Date.now() - v.timeStamp < 200) {
+                } else if ($.type === "touchend") {
+                    if (Math.abs(v.x - $.canvasX) < 30 && Math.abs(v.y - $.canvasY) < 30 && Date.now() - v.timeStamp < 200) {
                         p.call(this, null, {
                             $fakeClick: true,
                             type: "click",
@@ -1357,16 +1358,33 @@
                     }
                 }
             }
-            y.stopPropagation = function() {
-                y.$stopPropagation = true;
+            $.stopPropagation = function() {
+                $.$stopPropagation = true;
             };
             if (n.events.interceptor) {
-                y = a.default.firstValuable(n.events.interceptor.call(n, y), y);
-                if (!y || y.$stopPropagation) return;
+                $ = a.default.firstValuable(n.events.interceptor.call(n, $), $);
+                if (!$ || $.$stopPropagation) return;
             }
-            var $ = [];
-            c(f(n.children), y, $);
-            d.call(n, y, $);
+            var x = [];
+            c(f(n.children), $, x);
+            if ($ && !$.$stopPropagation) {
+                h(n, $);
+            }
+            d.call(n, $, x);
+            if (($.type === "mousemove" || $.type === "touchmove") && n.eLastMouseHover && x.indexOf(n.eLastMouseHover) === -1) {
+                var m = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
+                if (m) {
+                    m.call(n.eLastMouseHover, $);
+                }
+            }
+            n.eLastMouseHover = x[0];
+            if (!x.length && n.eLastMouseHover) {
+                var w = n.eLastMouseHover["events"]["mouseout"];
+                if (w) {
+                    w.call(n.eLastMouseHover, $);
+                }
+                n.eLastMouseHover = null;
+            }
         };
         t.exports = p;
     }, function(t, e) {
@@ -1627,17 +1645,32 @@
                 }
                 if (true) {
                     if (l && f) {
-                        var R = n.tw * n.th / (n.sw * n.sh);
-                        if (!t.$perf.paintRate || R > t.$perf.paintRate) {
-                            t.$perf.paintRate = R;
+                        var M = n.tw * n.th / (n.sw * n.sh);
+                        if (!t.$perf.paintRate || M > t.$perf.paintRate) {
+                            t.$perf.paintRate = M;
                         }
                     }
                 }
                 if (b.clip) {
                     if (A) {
-                        var E = {
+                        var R = {
                             $id: t.$id,
                             type: "clip",
+                            settings: b,
+                            img: o,
+                            props: n
+                        };
+                        R.$origin = t;
+                        r.$children.push(R);
+                    }
+                }
+                c.length && (0, u.default)(r, c, -1);
+                if (b.fillRect) {
+                    if (A) {
+                        t.$rendered = true;
+                        var E = {
+                            $id: t.$id,
+                            type: "fillRect",
                             settings: b,
                             img: o,
                             props: n
@@ -1646,29 +1679,14 @@
                         r.$children.push(E);
                     }
                 }
-                c.length && (0, u.default)(r, c, -1);
-                if (b.fillRect) {
-                    if (A) {
-                        t.$rendered = true;
-                        var F = {
-                            $id: t.$id,
-                            type: "fillRect",
-                            settings: b,
-                            img: o,
-                            props: n
-                        };
-                        F.$origin = t;
-                        r.$children.push(F);
-                    }
-                }
                 if (l && n.opacity !== 0 && n.sw && n.sh) {
                     if (!n.rotate && !i) {
                         (0, s.default)(r, n, l, f);
                     }
-                    var V = (0, d.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width - 1, r.height - 1, b.beforeRotate && b.beforeRotate[0], b.beforeRotate && b.beforeRotate[1], n.rotate);
-                    if (V) {
+                    var F = (0, d.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width - 1, r.height - 1, b.beforeRotate && b.beforeRotate[0], b.beforeRotate && b.beforeRotate[1], n.rotate);
+                    if (F) {
                         t.$rendered = true;
-                        var _ = {
+                        var V = {
                             $id: t.$id,
                             type: "img",
                             settings: b,
@@ -1676,23 +1694,23 @@
                             props: n
                         };
                         o.$painted = true;
-                        _.$origin = t;
-                        r.$children.push(_);
+                        V.$origin = t;
+                        r.$children.push(V);
                     }
                 }
                 if (i) {
                     t.$rendered = true;
-                    var M = n.tx;
+                    var _ = n.tx;
                     var C = n.ty;
                     var I = n.align || n.textAlign || "left";
                     var P = n.textFont || "14px Arial";
                     var L = parseInt(P);
                     var z = "top";
-                    var j = n.lineHeight || L;
+                    var H = n.lineHeight || L;
                     if (I === "center") {
-                        M += n.tw / 2;
+                        _ += n.tw / 2;
                     } else if (I === "right") {
-                        M += n.tw;
+                        _ += n.tw;
                     }
                     if (n.textVerticalAlign === "top") {
                         z = "top";
@@ -1710,7 +1728,7 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: M,
+                                    tx: _,
                                     ty: C,
                                     content: String(i),
                                     fontsize: L,
@@ -1730,7 +1748,7 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: M + a.default.funcOrValue(e.tx, t),
+                                    tx: _ + a.default.funcOrValue(e.tx, t),
                                     ty: C + a.default.funcOrValue(e.ty, t),
                                     content: a.default.funcOrValue(e.content, t),
                                     fontsize: L,
@@ -1744,9 +1762,9 @@
                             });
                         });
                     } else if (i.type === "multline-text") {
-                        var H = i.text.split(/\t|\n/);
+                        var j = i.text.split(/\t|\n/);
                         var N = [];
-                        H.forEach(function(t, e) {
+                        j.forEach(function(t, e) {
                             t = String.prototype.trim.apply(t);
                             if (i.config.start) {
                                 t = t.replace(i.config.start, "");
@@ -1773,7 +1791,7 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: M,
+                                    tx: _,
                                     ty: C,
                                     fontsize: L,
                                     content: e,
@@ -1785,7 +1803,7 @@
                                 },
                                 $origin: t
                             });
-                            C += j || L;
+                            C += H || L;
                         });
                     }
                 }
@@ -2046,36 +2064,36 @@
     }, function(t, e, r) {
         "use strict";
         var n = r(51);
-        var a = M(n);
+        var a = _(n);
         var i = r(55);
-        var o = M(i);
+        var o = _(i);
         var l = r(59);
-        var s = M(l);
+        var s = _(l);
         var f = r(52);
-        var u = M(f);
+        var u = _(f);
         var c = r(16);
-        var d = M(c);
+        var d = _(c);
         var h = r(53);
-        var v = M(h);
+        var v = _(h);
         var p = r(19);
-        var g = M(p);
+        var g = _(p);
         var y = r(18);
-        var $ = M(y);
+        var $ = _(y);
         var x = r(20);
-        var m = M(x);
+        var m = _(x);
         var w = r(15);
-        var b = M(w);
+        var b = _(w);
         var S = r(17);
-        var k = M(S);
+        var k = _(S);
         var A = r(54);
-        var T = M(A);
+        var T = _(A);
         var O = r(56);
-        var R = M(O);
-        var E = r(57);
-        var F = M(E);
-        var V = r(58);
-        var _ = M(V);
-        function M(t) {
+        var M = _(O);
+        var R = r(57);
+        var E = _(R);
+        var F = r(58);
+        var V = _(F);
+        function _(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
@@ -2087,8 +2105,8 @@
             remove: o.default,
             register: T.default,
             clear: d.default,
-            setFpsHandler: R.default,
-            setMaxFps: F.default,
+            setFpsHandler: M.default,
+            setMaxFps: E.default,
             pause: v.default,
             on: g.default,
             off: $.default,
@@ -2097,7 +2115,7 @@
             nextTick: k.default
         };
         if (true) {
-            C.skeleton = _.default;
+            C.skeleton = V.default;
         }
         t.exports = C;
     }, function(t, e, r) {
