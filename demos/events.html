@@ -6,18 +6,31 @@
     <canvas id="foo" width="1200" height="2400"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('foo'));
+        $app.start();
 
         var img = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G30x30.png');
 
-        window.sprite1 = $Painter.add({
+        window.sprite1 = $app.add({
+            style: {
+                zIndex: 2,
+            },
+            events: {
+                click: function () {
+                    console.log('sprite1 trigger.');
+                }
+            },
         });
 
         window.sprite2 = sprite1.add({
             style: {
                 tw: 10, th: 20
+            },
+            events: {
+                click: function () {
+                    console.log('sprite2 trigger.');
+                }
             },
         });
 
@@ -28,13 +41,13 @@
             },
             events: {
                 click: function () {
-                    console.log('Cannot trigger.');
+                    console.log('sprite3 trigger.');
                 }
             },
         });
 
         window.sprite4 = sprite3.add({
-            name: 'sprite3',
+            name: 'sprite4',
             content: {
                 img: img,
             },
@@ -43,7 +56,24 @@
             },
             events: {
                 click: function () {
-                    console.log('Can trigger.');
+                    console.log('sprite4 trigger.');
+                }
+            },
+        });
+
+        window.sprite5 = $app.add({
+            name: 'sprite5',
+            content: {
+                img: img,
+            },
+            style: {
+                tx: 450, ty: 450,
+                tw: 120, th: 120,
+                locate: 'lt',
+            },
+            events: {
+                click: function () {
+                    console.log('sprite5 trigger.');
                 }
             },
         });

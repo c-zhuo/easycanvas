@@ -9,14 +9,14 @@ module.exports = function () {
     this.fpsCalculateTime = Date.now();
     this.$rAFer(this.paint.bind(this));
 
-    setInterval(() => {
-        if (this.eHoldingFlag) {
-            let $e = this.eHoldingFlag;
-            $e.type = 'hold';
+    // setInterval(() => {
+    //     if (this.eHoldingFlag) {
+    //         let $e = this.eHoldingFlag;
+    //         $e.type = 'hold';
 
-            this.$eventHandler.call(this, null, $e);
-        }
-    }, 100); // TODO
+    //         this.$eventHandler.call(this, null, $e);
+    //     }
+    // }, 100); // TODO
 
     return this;
 };

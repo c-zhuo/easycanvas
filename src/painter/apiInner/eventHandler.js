@@ -15,20 +15,6 @@ import constants from 'constants';
 const isMobile = typeof wx !== 'undefined' ||
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-// transform
-// const mobileEvents = ['touchstart', 'touchmove', 'touchend'];
-// const pcEvents = ['mousedown', 'mousemove', 'mouseup'];
-// const mobilePCTransform = function (type) {
-//     if (isMobile) {
-//         let index = pcEvents.indexOf(type);
-//         if (index >= 0) return mobileEvents[index];
-//     } else {
-//         let index = mobileEvents.indexOf(type);
-//         if (index >= 0) return pcEvents[index];
-//     }
-//     return type;
-// };
-
 /**
  * Sort sprite
  * - Order by eIndex dev-tool's in events' triggering
@@ -71,11 +57,21 @@ const looper = function (arr, e, caughts) {
     for (let i = 0; i < l; i++) {
         let item = arr[i];
         if (utils.funcOrValue(item.style.visible, item) === false) continue;
+        if (item.events && item.events.pointerEvents === 'none') continue;
 
         if (hitSprite(item, e)) {
-            if (item.events.interceptor) {
-                var $e = utils.firstValuable(item.events.interceptor.call(item, e), e);
-                if (!$e || $e.$stopPropagation) continue;
+            let interceptor = item.events.interceptor;
+
+            if (process.env.NODE_ENV !== 'production') {
+                if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
+                    // 选取Sprite时禁掉捕获，以免事件被阻止，导致无法选中
+                    interceptor = false;
+                }
+            }
+
+            if (interceptor) {
+                var result = utils.firstValuable(interceptor.call(item, e), e);
+                if (!result || result.$stopPropagation) return;
             }
         }
 
@@ -96,27 +92,23 @@ const looper = function (arr, e, caughts) {
 
         if (e.$stopPropagation) break;
 
-        let hasHandle = item.events && item.events[e.type];
-
-        if ((hasHandle || process.env.NODE_ENV !== 'production') && hitSprite(item, e)) {
+        if (hitSprite(item, e)) {
             if (process.env.NODE_ENV !== 'production') {
                 // 开发者工具select模式下为选取元素
                 if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
-                    let devIndex = 0;
                     if (item.name !== constants.devFlag) {
                         e.stopPropagation();
                         if (item.$canvas.$plugin.selectSprite(e.type === 'click' || e.type === 'touchend', item.$canvas, item)) {
-                            break;
+                            return;
                         }
                     }
+                    continue;
                 }
             }
 
-            if (hasHandle) {
-                caughts.push(item);
-                let result = triggerEventOnSprite(item, e);
-                if (e.$stopPropagation) break;
-            }
+            triggerEventOnSprite(item, e);
+            e.stopPropagation();
+            return;
         }
 
         if (children.length) {
@@ -143,24 +135,13 @@ const extend = function ($e, caughts) {
 };
 
 const triggerEventOnSprite = function ($sprite, $e) {
-    if (process.env.NODE_ENV !== 'production') {
-        // 开发者工具select模式下为选取元素，不要触发事件
-        if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
-            return false;
-        }
+    if ($sprite.events[$e.type]) {
+        $sprite.events[$e.type].call($sprite, $e);
+        if ($e.$stopPropagation) return;
     }
 
-    if ($e.$stopPropagation) return;
-
-    let result = $sprite.events[$e.type].call($sprite, $e);
-
-    if (result === true) {
-        // $sprite.$canvas.eHoldingFlag = false;
-        return true;
-    }
-
-    if ($sprite.events.stopPropagation) {
-        return true;
+    if ($sprite.$parent) {
+        triggerEventOnSprite($sprite.$parent, $e);
     }
 };
 
@@ -261,56 +242,35 @@ eventHandler = function (e, _$e) {
     // }// else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {
 
     // trigger 'mouseout' or 'touchout' event 
-    if (
-        ($e.type === 'mousemove' || $e.type === 'touchmove') &&
-        $canvas.eLastMouseHover &&
-        caughts.indexOf($canvas.eLastMouseHover) === -1
-    ) {
-        // touchout待移除（目前可能不触发）
-        let eMouseout = $canvas.eLastMouseHover['events']['mouseout'] || $canvas.eLastMouseHover['events']['touchout'];
-        if (eMouseout) {
-            eMouseout.call($canvas.eLastMouseHover, $e);
-        }
-    }
-    $canvas.eLastMouseHover = caughts[0];
-
-    // for (let i = 0; i < caughts.length; i++) {
-    //     if (!caughts[i]['events']) continue; // TODO to remove
-
-    //     let handler = caughts[i]['events'][$e.type];
-    //     if (handler) {
-    //         let result = handler.call(caughts[i], $e);
-    //         // stop then chain and cancel 'hold' event's flag
-    //         if (result === true) {
-    //             $canvas.eHoldingFlag = false;
-    //             return result;
-    //         // } else if (result === 'drag') {
-    //         //     $canvas.eHoldingFlag = false;
-    //         //     return result;
-    //         }
-    //     }
-
-    //     if (caughts[i].events.through === false) {
-    //         return;
+    // if (
+    //     ($e.type === 'mousemove' || $e.type === 'touchmove') &&
+    //     $canvas.eLastMouseHover &&
+    //     caughts.indexOf($canvas.eLastMouseHover) === -1
+    // ) {
+    //     // touchout待移除（目前可能不触发）
+    //     let eMouseout = $canvas.eLastMouseHover['events']['mouseout'] || $canvas.eLastMouseHover['events']['touchout'];
+    //     if (eMouseout) {
+    //         eMouseout.call($canvas.eLastMouseHover, $e);
     //     }
     // }
+    // $canvas.eLastMouseHover = caughts[0];
 
-    if (!caughts.length && $canvas.eLastMouseHover) {
-        // hover更替，触发mouseout
-        let eMouseout = $canvas.eLastMouseHover['events']['mouseout'];
-        if (eMouseout) {
-            eMouseout.call($canvas.eLastMouseHover, $e);
-        }
-        $canvas.eLastMouseHover = null;
-    }
+    // if (!caughts.length && $canvas.eLastMouseHover) {
+    //     // hover更替，触发mouseout
+    //     let eMouseout = $canvas.eLastMouseHover['events']['mouseout'];
+    //     if (eMouseout) {
+    //         eMouseout.call($canvas.eLastMouseHover, $e);
+    //     }
+    //     $canvas.eLastMouseHover = null;
+    // }
 
-    let handler = $canvas.events[$e.type];
-    if (handler) {
-        if (handler.call($canvas, $e)) {
-            $canvas.eHoldingFlag = false;
-            return true;
-        }
-    }
+    // let handler = $canvas.events[$e.type];
+    // if (handler) {
+    //     if (handler.call($canvas, $e)) {
+    //         $canvas.eHoldingFlag = false;
+    //         return true;
+    //     }
+    // }
 };
 
 module.exports = eventHandler;

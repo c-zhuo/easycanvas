@@ -349,7 +349,7 @@ module.exports = function ($sprite, index) {
             let textAlign = _props.align || _props.textAlign || 'left';
             let textFont = _props.textFont || '14px Arial';
             let textFontsize = parseInt(textFont);
-            let textBaseline;
+            let textBaseline = 'top';
             // let textFontsize = parseInt(textFont) * _props.scale;
             // textFont = textFontsize + 'px Arial';
             let textLineHeight = _props.lineHeight || textFontsize;
@@ -364,13 +364,10 @@ module.exports = function ($sprite, index) {
             // Change css-align to canvas-align style
             if (_props.textVerticalAlign === 'top') {
                 textBaseline = 'top';
-                // textTy += textFontsize + (textLineHeight - textFontsize) / 2;
             } else if (_props.textVerticalAlign === 'bottom') {
                 textBaseline = 'bottom';
                 textTy += _props.th;
-                // textTy += _props.th - (textLineHeight - textFontsize) / 2;
             } else if (_props.textVerticalAlign === 'middle') {
-                // textTy += _props.th / 2 + textFontsize / 2;
                 textTy += _props.th >> 1;
                 textBaseline = 'middle';
             }

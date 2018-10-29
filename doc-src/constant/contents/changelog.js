@@ -13,6 +13,13 @@ module.exports = `
 
         <h2>当前版本</h2>
 
+        <h3>0.7.1 (2018.10.29)</h3>
+
+        <p>Change：<strong>事件的规则与DOM的事件保持一致</strong>，并会进行冒泡，可以通过stopPropagation方法阻止事件继续传递。移除了基础库自定义的hold和touchout事件。</p>
+        <p>Bugfix：调整<strong>Scroll组件</strong>的速度参数，现在更接近HTML的原生滚动了。</p>
+
+        <h2>历史版本</h2>
+
         <h3>0.7.0 (2018.10.28)</h3>
 
         <p>Change：原精灵动画Sprite.content.sequence相关功能转移至<strong>精灵动画组件Easycanvas.class.sequence</strong>，详见文档。</p>
@@ -20,8 +27,6 @@ module.exports = `
         <p>Bugfix：修复了<strong>向Sprite设置缩放样式scale时，它的children的缩放中心和Sprite不同</strong>的bug。</p>
         <p>Feature：增加<strong>生成快照（骨架屏）功能</strong>。可以在非生产环境调用Painter的skeleton方法，生成原生Javascript的Canvas相关API对当前应用的绘制，用于提升首屏速度。文档待更新。</p>
         <p>Performance：调整部分底层逻辑和数据结构，<strong>大幅提升渲染性能，对于长列表可以降低40%的性能消耗</strong>。</p>
-
-        <h2>历史版本</h2>
 
         <h3>0.6.2 (2018.10.15)</h3>
 

@@ -311,7 +311,7 @@
             };
         }
         var O = 0;
-        var M = function t(e) {
+        var F = function t(e) {
             if (e.children) {
                 e.children.forEach(function(r, n) {
                     if (!r.$id) {
@@ -327,7 +327,7 @@
                 });
             }
         };
-        var F = function t(e) {
+        var R = function t(e) {
             var r = e || {};
             if (!r.$id) {
                 r.$id = Math.random().toString(36).substr(2);
@@ -371,25 +371,25 @@
                 r.name = r.name || "Unnamed Sprite";
             }
             r.children = r.children || [];
-            M(r);
+            F(r);
             r.$cache = {};
             r.$styleCacheTime = {};
             return r;
         };
-        var R = function t(e) {
+        var E = function t(e) {
             var r = this;
             this.$extendList.forEach(function(t) {
                 t.call(r, e);
             });
         };
         var V = function t(e) {
-            var r = F(e);
+            var r = R(e);
             for (var n in r) {
                 if (Object.prototype.hasOwnProperty.call(r, n)) {
                     this[n] = r[n];
                 }
             }
-            R.call(this, r);
+            E.call(this, r);
             return this;
         };
         V.prototype.$extendList = [];
@@ -398,7 +398,7 @@
                 return;
             }
             this.children.push(t);
-            M(this);
+            F(this);
             return this.children[this.children.length - 1];
         };
         V.prototype.getRect = function(t) {
@@ -1231,15 +1231,22 @@
             for (var l = 0; l < i; l++) {
                 var s = e[l];
                 if (a.default.funcOrValue(s.style.visible, s) === false) continue;
+                if (s.events && s.events.pointerEvents === "none") continue;
                 if (u(s, r)) {
-                    if (s.events.interceptor) {
-                        var c = a.default.firstValuable(s.events.interceptor.call(s, r), r);
-                        if (!c || c.$stopPropagation) continue;
+                    var c = s.events.interceptor;
+                    if (true) {
+                        if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
+                            c = false;
+                        }
+                    }
+                    if (c) {
+                        var d = a.default.firstValuable(c.call(s, r), r);
+                        if (!d || d.$stopPropagation) return;
                     }
                 }
-                var d = s.$combine ? s.$combine.children : s.children;
-                if (d.length) {
-                    t(f(d.filter(function(t) {
+                var v = s.$combine ? s.$combine.children : s.children;
+                if (v.length) {
+                    t(f(v.filter(function(t) {
                         if (true) {
                             if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
                                 return a.default.funcOrValue(t.style.zIndex, t) >= 0;
@@ -1249,27 +1256,24 @@
                     })), r, n);
                 }
                 if (r.$stopPropagation) break;
-                var v = s.events && s.events[r.type];
-                if ((v || "develop" !== "production") && u(s, r)) {
+                if (u(s, r)) {
                     if (true) {
                         if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
-                            var p = 0;
                             if (s.name !== o.default.devFlag) {
                                 r.stopPropagation();
                                 if (s.$canvas.$plugin.selectSprite(r.type === "click" || r.type === "touchend", s.$canvas, s)) {
-                                    break;
+                                    return;
                                 }
                             }
+                            continue;
                         }
                     }
-                    if (v) {
-                        n.push(s);
-                        var g = h(s, r);
-                        if (r.$stopPropagation) break;
-                    }
+                    h(s, r);
+                    r.stopPropagation();
+                    return;
                 }
-                if (d.length) {
-                    t(f(d.filter(function(t) {
+                if (v.length) {
+                    t(f(v.filter(function(t) {
                         if (true) {
                             if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
                                 return a.default.funcOrValue(t.style.zIndex, t) < 0;
@@ -1289,18 +1293,12 @@
             });
         };
         var h = function t(e, r) {
-            if (true) {
-                if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
-                    return false;
-                }
+            if (e.events[r.type]) {
+                e.events[r.type].call(e, r);
+                if (r.$stopPropagation) return;
             }
-            if (r.$stopPropagation) return;
-            var n = e.events[r.type].call(e, r);
-            if (n === true) {
-                return true;
-            }
-            if (e.events.stopPropagation) {
-                return true;
+            if (e.$parent) {
+                t(e.$parent, r);
             }
         };
         var v = {
@@ -1369,27 +1367,6 @@
             var $ = [];
             c(f(n.children), y, $);
             d.call(n, y, $);
-            if ((y.type === "mousemove" || y.type === "touchmove") && n.eLastMouseHover && $.indexOf(n.eLastMouseHover) === -1) {
-                var x = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
-                if (x) {
-                    x.call(n.eLastMouseHover, y);
-                }
-            }
-            n.eLastMouseHover = $[0];
-            if (!$.length && n.eLastMouseHover) {
-                var m = n.eLastMouseHover["events"]["mouseout"];
-                if (m) {
-                    m.call(n.eLastMouseHover, y);
-                }
-                n.eLastMouseHover = null;
-            }
-            var w = n.events[y.type];
-            if (w) {
-                if (w.call(n, y)) {
-                    n.eHoldingFlag = false;
-                    return true;
-                }
-            }
         };
         t.exports = p;
     }, function(t, e) {
@@ -1650,38 +1627,38 @@
                 }
                 if (true) {
                     if (l && f) {
-                        var M = n.tw * n.th / (n.sw * n.sh);
-                        if (!t.$perf.paintRate || M > t.$perf.paintRate) {
-                            t.$perf.paintRate = M;
+                        var F = n.tw * n.th / (n.sw * n.sh);
+                        if (!t.$perf.paintRate || F > t.$perf.paintRate) {
+                            t.$perf.paintRate = F;
                         }
                     }
                 }
                 if (b.clip) {
                     if (A) {
-                        var F = {
+                        var R = {
                             $id: t.$id,
                             type: "clip",
                             settings: b,
                             img: o,
                             props: n
                         };
-                        F.$origin = t;
-                        r.$children.push(F);
+                        R.$origin = t;
+                        r.$children.push(R);
                     }
                 }
                 c.length && (0, u.default)(r, c, -1);
                 if (b.fillRect) {
                     if (A) {
                         t.$rendered = true;
-                        var R = {
+                        var E = {
                             $id: t.$id,
                             type: "fillRect",
                             settings: b,
                             img: o,
                             props: n
                         };
-                        R.$origin = t;
-                        r.$children.push(R);
+                        E.$origin = t;
+                        r.$children.push(E);
                     }
                 }
                 if (l && n.opacity !== 0 && n.sw && n.sh) {
@@ -1705,26 +1682,26 @@
                 }
                 if (i) {
                     t.$rendered = true;
-                    var E = n.tx;
+                    var M = n.tx;
                     var C = n.ty;
                     var I = n.align || n.textAlign || "left";
                     var P = n.textFont || "14px Arial";
                     var L = parseInt(P);
-                    var H = void 0;
-                    var z = n.lineHeight || L;
+                    var z = "top";
+                    var H = n.lineHeight || L;
                     if (I === "center") {
-                        E += n.tw / 2;
+                        M += n.tw / 2;
                     } else if (I === "right") {
-                        E += n.tw;
+                        M += n.tw;
                     }
                     if (n.textVerticalAlign === "top") {
-                        H = "top";
+                        z = "top";
                     } else if (n.textVerticalAlign === "bottom") {
-                        H = "bottom";
+                        z = "bottom";
                         C += n.th;
                     } else if (n.textVerticalAlign === "middle") {
                         C += n.th >> 1;
-                        H = "middle";
+                        z = "middle";
                     }
                     if (typeof i === "string" || typeof i === "number") {
                         if (C + L * 2 > 0 && C - L * 2 < r.height) {
@@ -1733,12 +1710,12 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: E,
+                                    tx: M,
                                     ty: C,
                                     content: String(i),
                                     fontsize: L,
                                     align: I,
-                                    baseline: H,
+                                    baseline: z,
                                     font: P,
                                     color: n.color,
                                     type: n.textType
@@ -1753,11 +1730,11 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: E + a.default.funcOrValue(e.tx, t),
+                                    tx: M + a.default.funcOrValue(e.tx, t),
                                     ty: C + a.default.funcOrValue(e.ty, t),
                                     content: a.default.funcOrValue(e.content, t),
                                     fontsize: L,
-                                    baseline: H,
+                                    baseline: z,
                                     align: I,
                                     font: P,
                                     color: n.color,
@@ -1796,11 +1773,11 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: E,
+                                    tx: M,
                                     ty: C,
                                     fontsize: L,
                                     content: e,
-                                    baseline: H,
+                                    baseline: z,
                                     align: I,
                                     font: P,
                                     color: n.color,
@@ -1808,7 +1785,7 @@
                                 },
                                 $origin: t
                             });
-                            C += z || L;
+                            C += H || L;
                         });
                     }
                 }
@@ -2069,36 +2046,36 @@
     }, function(t, e, r) {
         "use strict";
         var n = r(51);
-        var a = E(n);
+        var a = M(n);
         var i = r(55);
-        var o = E(i);
+        var o = M(i);
         var l = r(59);
-        var s = E(l);
+        var s = M(l);
         var f = r(52);
-        var u = E(f);
+        var u = M(f);
         var c = r(16);
-        var d = E(c);
+        var d = M(c);
         var h = r(53);
-        var v = E(h);
+        var v = M(h);
         var p = r(19);
-        var g = E(p);
+        var g = M(p);
         var y = r(18);
-        var $ = E(y);
+        var $ = M(y);
         var x = r(20);
-        var m = E(x);
+        var m = M(x);
         var w = r(15);
-        var b = E(w);
+        var b = M(w);
         var S = r(17);
-        var k = E(S);
+        var k = M(S);
         var A = r(54);
-        var T = E(A);
+        var T = M(A);
         var O = r(56);
-        var M = E(O);
-        var F = r(57);
-        var R = E(F);
+        var F = M(O);
+        var R = r(57);
+        var E = M(R);
         var V = r(58);
-        var _ = E(V);
-        function E(t) {
+        var _ = M(V);
+        function M(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
@@ -2110,8 +2087,8 @@
             remove: o.default,
             register: T.default,
             clear: d.default,
-            setFpsHandler: M.default,
-            setMaxFps: R.default,
+            setFpsHandler: F.default,
+            setMaxFps: E.default,
             pause: v.default,
             on: g.default,
             off: $.default,

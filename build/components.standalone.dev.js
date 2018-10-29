@@ -139,11 +139,11 @@
                 }
                 b.drawImage(f, ($.width - x) / 2, a[0]);
                 if (l.border) {
-                    var Y = l.border.split(" ");
+                    var S = l.border.split(" ");
                     b.beginPath();
                     b.moveTo(0, 0);
-                    b.lineWidth = parseInt(Y[0]);
-                    b.strokeStyle = Y[2] || Y[1];
+                    b.lineWidth = parseInt(S[0]);
+                    b.strokeStyle = S[2] || S[1];
                     b.lineTo($.width, 0);
                     b.lineTo($.width, $.height);
                     b.lineTo(0, $.height);
@@ -294,10 +294,9 @@
                 return e;
             };
             var s = typeof window !== "undefined";
-            var r = window.devicePixelRatio || 1;
+            var r = void 0;
             var i = void 0;
-            var o = void 0;
-            var a = {
+            var o = {
                 loose: function e(t) {
                     t.$scroll.touching = false;
                 },
@@ -313,7 +312,7 @@
                     } else {
                         t.$scroll.speedY = 0;
                     }
-                    if (Math.abs(t.$scroll.speedX) <= 2 && Math.abs(t.$scroll.speedY) <= 2) {
+                    if (Math.abs(t.$scroll.speedX) <= 1 && Math.abs(t.$scroll.speedY) <= 1) {
                         t.$scroll.$scrolling = false;
                         t.$scroll.$wheeling = false;
                         return;
@@ -326,19 +325,19 @@
                     if (!t.$scroll.touching && !t.$scroll.$wheeling && Math.abs(t.$scroll.speedY) < 50 && t.scroll.anchors && t.scroll.anchors.length) {
                         var l = t.scroll.anchorsRange || 400;
                         for (var s = 0; s < t.scroll.anchors.length; s++) {
-                            var r = t.scroll.anchors[s];
-                            var o = t.scroll.scrollY - r;
+                            var i = t.scroll.anchors[s];
+                            var o = t.scroll.scrollY - i;
                             if (o > 0 && o < l && t.$scroll.speedY > 0 || o < 0 && o > -l && t.$scroll.speedY < 0) {
-                                t.trigger("scrollTo", r, 200);
+                                t.trigger("scrollTo", i, 200);
                                 t.$scroll.speedY = 0;
                                 break;
                             }
                         }
                     }
-                    var a = i.utils.funcOrValue(t.scroll.minScrollX, t);
-                    var n = i.utils.funcOrValue(t.scroll.maxScrollX, t);
-                    var c = i.utils.funcOrValue(t.scroll.minScrollY, t);
-                    var u = i.utils.funcOrValue(t.scroll.maxScrollY, t);
+                    var a = r.utils.funcOrValue(t.scroll.minScrollX, t);
+                    var n = r.utils.funcOrValue(t.scroll.maxScrollX, t);
+                    var c = r.utils.funcOrValue(t.scroll.minScrollY, t);
+                    var u = r.utils.funcOrValue(t.scroll.maxScrollY, t);
                     if (!isNaN(c) && t.scroll.scrollY < c) {
                         t.scroll.scrollY = c;
                     } else if (!isNaN(u) && t.scroll.scrollY > u) {
@@ -356,53 +355,55 @@
                     if (!t.$scroll.touching) {
                         t.$scroll.touching = s;
                         t.$scroll.quickTouch = s;
+                        t.$scroll.lastTouchSpeed = 0;
                         t.$scroll.startPos.x = l.canvasX;
                         t.$scroll.startPos.y = l.canvasY;
                         t.$scroll.speedX = 0;
                         t.$scroll.speedY = 0;
                     } else {
                         t.$scroll.$scrolling = true;
-                        var o = t.$scroll.startPos.x - l.canvasX;
-                        var a = t.$scroll.startPos.y - l.canvasY;
-                        var n = s - t.$scroll.touching;
+                        var i = t.$scroll.startPos.x - l.canvasX;
+                        var o = t.$scroll.startPos.y - l.canvasY;
+                        var a = s - t.$scroll.touching;
                         t.$scroll.touching = s;
-                        var c = i.utils.funcOrValue(t.scroll.minScrollX, t);
-                        var u = i.utils.funcOrValue(t.scroll.maxScrollX, t);
-                        var f = i.utils.funcOrValue(t.scroll.minScrollY, t);
-                        var h = i.utils.funcOrValue(t.scroll.maxScrollY, t);
-                        if (t.scroll.scrollX + o < c || t.scroll.scrollX + o > u) {
-                            if (t.scroll.flexible || t.scroll.flexibleX) o >>= 3; else o = 0;
+                        var n = r.utils.funcOrValue(t.scroll.minScrollX, t);
+                        var c = r.utils.funcOrValue(t.scroll.maxScrollX, t);
+                        var u = r.utils.funcOrValue(t.scroll.minScrollY, t);
+                        var f = r.utils.funcOrValue(t.scroll.maxScrollY, t);
+                        if (t.scroll.scrollX + i < n || t.scroll.scrollX + i > c) {
+                            if (t.scroll.flexible || t.scroll.flexibleX) i >>= 3; else i = 0;
                         }
-                        if (t.scroll.scrollY + a < f || t.scroll.scrollY + a > h) {
-                            if (t.scroll.flexible || t.scroll.flexibleY) a >>= 3; else a = 0;
+                        if (t.scroll.scrollY + o < u || t.scroll.scrollY + o > f) {
+                            if (t.scroll.flexible || t.scroll.flexibleY) o >>= 3; else o = 0;
                         }
-                        if (Math.abs(o) >= 1 && n > 1) {
-                            var v = (l.canvasX - t.$scroll.startPos.x) * 9 / r / n * 20;
-                            t.$scroll.speedX = v;
-                            t.scroll.scrollX += o;
+                        if (Math.abs(i) >= 1 && a > 1) {
+                            var h = (l.canvasX - t.$scroll.startPos.x) / a * 20;
+                            t.$scroll.speedX = h;
+                            t.scroll.scrollX += i;
                         }
-                        if (Math.abs(a) >= 1 && n > 1) {
-                            var d = (l.canvasY - t.$scroll.startPos.y) * 9 / r / n * 20;
-                            t.$scroll.speedY = d;
-                            t.scroll.scrollY += a;
+                        if (Math.abs(o) >= 1 && a > 1) {
+                            var v = (l.canvasY - t.$scroll.startPos.y) / a * 20;
+                            t.$scroll.speedY = (t.$scroll.lastTouchSpeed + v) / (t.$scroll.lastTouchSpeed ? 2 : 1);
+                            t.$scroll.lastTouchSpeed = v;
+                            t.scroll.scrollY += o;
                         }
                         t.$scroll.startPos.x = l.canvasX;
                         t.$scroll.startPos.y = l.canvasY;
-                        if (Math.abs(o) > Math.abs(a) + 1) return 1; else if (Math.abs(o) < Math.abs(a) - 1) return 2;
+                        if (Math.abs(i) > Math.abs(o) + 1) return 1; else if (Math.abs(i) < Math.abs(o) - 1) return 2;
                     }
                 },
                 wheel: function e(t, l) {
-                    t.$scroll.speedX = i.utils.funcOrValue(t.scroll.scrollableX, t) ? l.event.wheelDeltaX : 0;
-                    t.$scroll.speedY = i.utils.funcOrValue(t.scroll.scrollableY, t) ? l.event.wheelDeltaY : 0;
+                    t.$scroll.speedX = r.utils.funcOrValue(t.scroll.scrollableX, t) ? l.event.wheelDeltaX : 0;
+                    t.$scroll.speedY = r.utils.funcOrValue(t.scroll.scrollableY, t) ? l.event.wheelDeltaY : 0;
                     t.$scroll.$scrolling = true;
                     t.$scroll.$wheeling = true;
                     l.stopPropagation();
                 }
             };
-            var n = function e(t) {
+            var a = function e(t) {
                 var s = false;
-                var r = t || {};
-                r.scroll = l({
+                var a = t || {};
+                a.scroll = l({
                     scrollX: 0,
                     scrollY: 0,
                     scrollableX: function e() {
@@ -442,46 +443,46 @@
                     }
                 };
                 var c = false;
-                r.events = l({
+                a.events = l({
                     touchstart: function e(t) {
-                        a.loose(this);
+                        o.loose(this);
                         c = true;
-                        o = false;
-                        a.touch(this, t);
+                        i = false;
+                        o.touch(this, t);
                         if (!u.scroll.propagationX && !u.scroll.propagationY) {
                             t.stopPropagation();
                         }
                     },
                     touchmove: function e(t) {
                         if (!c) return;
-                        if (o && this !== o) {
+                        if (i && this !== i) {
                             return;
                         }
-                        var l = a.touch(this, t);
+                        var l = o.touch(this, t);
                         if (l === 1 && u.scroll.propagationY) {
                             t.stopPropagation();
-                            o = this;
+                            i = this;
                         } else if (l === 2 && u.scroll.propagationX) {
                             t.stopPropagation();
-                            o = this;
+                            i = this;
                         }
                     },
                     mousewheel: function e(t) {
                         c = true;
-                        a.wheel(this, t);
+                        o.wheel(this, t);
                         t.stopPropagation();
                     },
                     touchend: function e() {
                         c = false;
-                        a.loose(this);
+                        o.loose(this);
                     },
                     mouseup: function e() {
                         c = false;
-                        a.loose(this);
+                        o.loose(this);
                     }
-                }, r.events || {});
-                if (r.scroll.capture) {
-                    r.events.interceptor = function(e) {
+                }, a.events || {});
+                if (a.scroll.capture) {
+                    a.events.interceptor = function(e) {
                         if (u.events[e.type]) {
                             u.events[e.type].call(u, e);
                             return false;
@@ -489,12 +490,12 @@
                         return e;
                     };
                 }
-                var u = new i.class.sprite(r);
+                var u = new r.class.sprite(a);
                 u.on("ticked", function() {
-                    a.looper(u);
+                    o.looper(u);
                 });
                 u.on("scrollTo", function(e, t, l) {
-                    s = i.transition.pendulum(u.scroll.scrollY, e, (t || 200) * 2, {
+                    s = r.transition.pendulum(u.scroll.scrollY, e, (t || 200) * 2, {
                         cycle: .5
                     }).then(function() {
                         s = false;
@@ -506,7 +507,8 @@
                     speedX: 0,
                     speedY: 0,
                     touching: false,
-                    startPos: {}
+                    startPos: {},
+                    lastTouchSpeed: 0
                 };
                 var f = u.add({
                     name: "scrolling-element",
@@ -526,18 +528,18 @@
                 };
                 return u;
             };
-            var c = function e(t, l) {
-                i = t;
+            var n = function e(t, l) {
+                r = t;
                 if (l) {
-                    t.class[l] = n;
+                    t.class[l] = a;
                 }
-                return n;
+                return a;
             };
             if (s && window.Easycanvas) {
-                i = Easycanvas;
-                Easycanvas.class.scroll = n;
+                r = Easycanvas;
+                Easycanvas.class.scroll = a;
             } else {
-                e.exports = c;
+                e.exports = n;
             }
         },
         37: function(e, t) {
