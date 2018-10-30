@@ -37,12 +37,12 @@
 import utils from 'utils/utils.js';
 import constants from 'constants';
 
-import on from '../painter/apiOuter/on.js';
-import off from '../painter/apiOuter/off.js';
+import on from './api.on.js';
+import off from './api.off.js';
 import clear from '../painter/apiOuter/clear.js';
 import nextTick from '../painter/apiOuter/nextTick.js';
-import trigger from '../painter/apiOuter/trigger.js';
-import broadcast from '../painter/apiOuter/broadcast.js';
+import trigger from './api.trigger.js';
+import broadcast from './api.broadcast.js';
 // import bindDrag from '../painter/apiInner/bindDrag.js';
 
 import getOuterRect from './api.getOuterRect.js';

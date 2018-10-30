@@ -287,21 +287,21 @@
         var i = T(a);
         var o = r(4);
         var l = T(o);
-        var s = r(19);
+        var s = r(31);
         var f = T(s);
-        var u = r(18);
+        var u = r(30);
         var c = T(u);
-        var d = r(16);
+        var d = r(15);
         var h = T(d);
-        var v = r(17);
+        var v = r(16);
         var p = T(v);
-        var g = r(20);
+        var g = r(32);
         var y = T(g);
-        var $ = r(15);
+        var $ = r(27);
         var x = T($);
-        var m = r(32);
+        var m = r(29);
         var w = T(m);
-        var b = r(31);
+        var b = r(28);
         var S = T(b);
         var k = r(33);
         var A = T(k);
@@ -501,27 +501,7 @@
         F.prototype.trigger = y.default;
         F.prototype.broadcast = x.default;
         t.exports = F;
-    }, , function(t, e, r) {
-        "use strict";
-        var n = r(1);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = function() {
-            var t = Array.prototype.slice.call(arguments);
-            var e = t.shift();
-            if (this.hooks[e]) {
-                a.default.execFuncs(this.hooks[e], this, t);
-            }
-            t.unshift(e);
-            this.children && this.children.forEach(function(e) {
-                e.broadcast.apply(e, t);
-            });
-        };
-    }, function(t, e) {
+    }, , function(t, e) {
         "use strict";
         t.exports = function() {
             this.children.forEach(function(t) {
@@ -537,75 +517,6 @@
                 this.off("ticked", e);
             };
             this.on("ticked", e);
-        };
-    }, function(t, e, r) {
-        "use strict";
-        var n = r(1);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = function(t, e) {
-            if (!this.hooks[t]) return;
-            if (this.hooks[t] === e || this.hooks[t].$handle === e || !e) {
-                delete this.hooks[t];
-            } else if (a.default.isArray(this.hooks[t])) {
-                if (this.hooks[t].indexOf(e) >= 0) {
-                    this.hooks[t][this.hooks[t].indexOf(e)] = undefined;
-                } else if (this.hooks[t].indexOf(e.$handle) >= 0) {
-                    this.hooks[t][this.hooks[t].indexOf(e.$handle)] = undefined;
-                }
-            }
-        };
-    }, function(t, e, r) {
-        "use strict";
-        var n = r(1);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = function(t, e, r) {
-            var n = e;
-            if (r) {
-                var i = this;
-                n = function t() {
-                    var a = Date.now();
-                    if (a > n.$lastTriggerTime + r) {
-                        n.$lastTriggerTime = a;
-                        var o = Array.prototype.slice.call(arguments);
-                        e.apply(i, o);
-                    }
-                };
-                n.$lastTriggerTime = -1;
-                n.$handle = e;
-            }
-            if (!this.hooks[t]) {
-                this.hooks[t] = n;
-            } else if (a.default.isArray(this.hooks[t])) {
-                this.hooks[t].push(n);
-            } else {
-                this.hooks[t] = [ this.hooks[t], n ];
-            }
-        };
-    }, function(t, e, r) {
-        "use strict";
-        var n = r(1);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = function() {
-            var t = Array.prototype.slice.call(arguments);
-            var e = t.shift();
-            if (this.hooks[e]) {
-                return a.default.execFuncs(this.hooks[e], this, t);
-            }
         };
     }, , , , , , , , function(t, e) {
         "use strict";
@@ -950,6 +861,26 @@
         }
     }, function(t, e, r) {
         "use strict";
+        var n = r(1);
+        var a = i(n);
+        function i(t) {
+            return t && t.__esModule ? t : {
+                default: t
+            };
+        }
+        t.exports = function() {
+            var t = Array.prototype.slice.call(arguments);
+            var e = t.shift();
+            if (this.hooks[e]) {
+                a.default.execFuncs(this.hooks[e], this, t);
+            }
+            t.unshift(e);
+            this.children && this.children.forEach(function(e) {
+                e.broadcast.apply(e, t);
+            });
+        };
+    }, function(t, e, r) {
+        "use strict";
         var n = Object.assign || function(t) {
             for (var e = 1; e < arguments.length; e++) {
                 var r = arguments[e];
@@ -1072,6 +1003,75 @@
             });
             return n;
         };
+    }, function(t, e, r) {
+        "use strict";
+        var n = r(1);
+        var a = i(n);
+        function i(t) {
+            return t && t.__esModule ? t : {
+                default: t
+            };
+        }
+        t.exports = function(t, e) {
+            if (!this.hooks[t]) return;
+            if (this.hooks[t] === e || this.hooks[t].$handle === e || !e) {
+                delete this.hooks[t];
+            } else if (a.default.isArray(this.hooks[t])) {
+                if (this.hooks[t].indexOf(e) >= 0) {
+                    this.hooks[t][this.hooks[t].indexOf(e)] = undefined;
+                } else if (this.hooks[t].indexOf(e.$handle) >= 0) {
+                    this.hooks[t][this.hooks[t].indexOf(e.$handle)] = undefined;
+                }
+            }
+        };
+    }, function(t, e, r) {
+        "use strict";
+        var n = r(1);
+        var a = i(n);
+        function i(t) {
+            return t && t.__esModule ? t : {
+                default: t
+            };
+        }
+        t.exports = function(t, e, r) {
+            var n = e;
+            if (r) {
+                var i = this;
+                n = function t() {
+                    var a = Date.now();
+                    if (a > n.$lastTriggerTime + r) {
+                        n.$lastTriggerTime = a;
+                        var o = Array.prototype.slice.call(arguments);
+                        e.apply(i, o);
+                    }
+                };
+                n.$lastTriggerTime = -1;
+                n.$handle = e;
+            }
+            if (!this.hooks[t]) {
+                this.hooks[t] = n;
+            } else if (a.default.isArray(this.hooks[t])) {
+                this.hooks[t].push(n);
+            } else {
+                this.hooks[t] = [ this.hooks[t], n ];
+            }
+        };
+    }, function(t, e, r) {
+        "use strict";
+        var n = r(1);
+        var a = i(n);
+        function i(t) {
+            return t && t.__esModule ? t : {
+                default: t
+            };
+        }
+        t.exports = function() {
+            var t = Array.prototype.slice.call(arguments);
+            var e = t.shift();
+            if (this.hooks[e]) {
+                return a.default.execFuncs(this.hooks[e], this, t);
+            }
+        };
     }, function(t, e) {
         "use strict";
         var r = Object.assign || function(t) {
@@ -1095,13 +1095,13 @@
         var a = A(n);
         var i = r(60);
         var o = A(i);
-        var l = r(28);
+        var l = r(24);
         var s = A(l);
         var f = r(102);
         var u = A(f);
         var c = r(1);
         var d = A(c);
-        var h = r(29);
+        var h = r(25);
         var v = A(h);
         var p = r(9);
         var g = A(p);
@@ -1111,7 +1111,7 @@
         var m = A(x);
         var w = r(13);
         var b = A(w);
-        var S = r(30);
+        var S = r(26);
         var k = A(S);
         function A(t) {
             return t && t.__esModule ? t : {
@@ -1838,9 +1838,9 @@
         };
     }, function(t, e, r) {
         "use strict";
-        var n = r(28);
+        var n = r(24);
         var a = l(n);
-        var i = r(29);
+        var i = r(25);
         var o = l(i);
         function l(t) {
             return t && t.__esModule ? t : {
@@ -2059,60 +2059,52 @@
     }, function(t, e, r) {
         "use strict";
         var n = r(54);
-        var a = _(n);
+        var a = A(n);
         var i = r(58);
-        var o = _(i);
+        var o = A(i);
         var l = r(51);
-        var s = _(l);
-        var f = r(16);
-        var u = _(f);
+        var s = A(l);
+        var f = r(15);
+        var u = A(f);
         var c = r(52);
-        var d = _(c);
-        var h = r(19);
-        var v = _(h);
-        var p = r(18);
-        var g = _(p);
-        var y = r(20);
-        var $ = _(y);
-        var x = r(15);
-        var m = _(x);
-        var w = r(17);
-        var b = _(w);
-        var S = r(53);
-        var k = _(S);
-        var A = r(55);
-        var T = _(A);
-        var O = r(56);
-        var M = _(O);
-        var R = r(57);
-        var E = _(R);
-        var F = r(13);
-        var V = _(F);
-        function _(t) {
+        var d = A(c);
+        var h = r(16);
+        var v = A(h);
+        var p = r(53);
+        var g = A(p);
+        var y = r(55);
+        var $ = A(y);
+        var x = r(56);
+        var m = A(x);
+        var w = r(57);
+        var b = A(w);
+        var S = r(13);
+        var k = A(S);
+        function A(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
         }
-        var C = {
+        var T = {
             start: o.default,
             paint: s.default,
-            add: V.default.prototype.add,
+            add: k.default.prototype.add,
             remove: a.default,
-            register: k.default,
+            register: g.default,
             clear: u.default,
-            setFpsHandler: T.default,
-            setMaxFps: M.default,
+            setFpsHandler: $.default,
+            setMaxFps: m.default,
             pause: d.default,
-            on: v.default,
-            off: g.default,
-            trigger: $.default,
-            broadcast: m.default,
-            nextTick: b.default
+            on: k.default.prototype.on,
+            off: k.default.prototype.off,
+            trigger: k.default.prototype.trigger,
+            broadcast: k.default.prototype.broadcast,
+            nextTick: v.default
         };
         if (true) {
-            C.skeleton = E.default;
+            T.skeleton = b.default;
         }
-        t.exports = C;
+        t.exports = T;
     }, function(t, e, r) {
         "use strict";
         var n = r(1);
@@ -2322,8 +2314,8 @@
                 r.forEach(function(t) {
                     var r = t.props;
                     var n = t.settings;
-                    e += "_.globalAlpha=" + n.globalAlpha + ";";
                     if (t.type === "img") {
+                        e += "_.globalAlpha=" + n.globalAlpha + ";";
                         if (t.img && t.img.$origin) {
                             e += t.img.$origin.join(";") + ";";
                             e += "_.drawImage(tempCanvas, " + r.sx + ", " + r.sy + ", " + r.sw + ", " + r.sh + ", " + r.tx + ", " + r.ty + ", " + r.tw + ", " + r.th + ");";
@@ -2337,6 +2329,7 @@
                             e += "_.fillRect(" + r.tx + ", " + r.ty + ", " + r.tw + ", " + r.th + ");";
                         }
                     } else if (t.type === "fillRect") {
+                        e += "_.globalAlpha=" + n.globalAlpha + ";";
                         e += "_.fillStyle='" + n.fillRect + "';";
                         e += "_.fillRect(" + r.tx + ", " + r.ty + ", " + r.tw + ", " + r.th + ");";
                     }

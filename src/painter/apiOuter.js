@@ -12,10 +12,10 @@ import start from './apiOuter/start.js';
 import paint from './apiOuter/paint.js';
 import clear from './apiOuter/clear.js';
 import pause from './apiOuter/pause.js';
-import on from './apiOuter/on.js';
-import off from './apiOuter/off.js';
-import trigger from './apiOuter/trigger.js';
-import broadcast from './apiOuter/broadcast.js';
+// import on from './apiOuter/on.js';
+// import off from './apiOuter/off.js';
+// import trigger from './apiOuter/trigger.js';
+// import broadcast from './apiOuter/broadcast.js';
 import nextTick from './apiOuter/nextTick.js';
 import register from './apiOuter/register.js';
 import setFpsHandler from './apiOuter/setFpsHandler.js';
@@ -34,10 +34,10 @@ let apiOuter = {
     setFpsHandler,
     setMaxFps,
     pause,
-    on,
-    off,
-    trigger,
-    broadcast,
+    on: sprite.prototype.on,
+    off: sprite.prototype.off,
+    trigger: sprite.prototype.trigger,
+    broadcast: sprite.prototype.broadcast,
     nextTick,
 };
 

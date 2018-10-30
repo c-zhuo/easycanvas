@@ -29,7 +29,7 @@ var createFire = function (initX, initY) {
         props: {
             frameWidth: -9,
             frameHeight: -1,
-            interval: 50,
+            interval: 200,
             loop: false,
         },
         style: {

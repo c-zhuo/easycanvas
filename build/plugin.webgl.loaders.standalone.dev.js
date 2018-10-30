@@ -27,7 +27,7 @@
         },
         8: function(e, t, r) {
             "use strict";
-            var a = r(25);
+            var a = r(21);
             var n = r(73);
             var i = r(72);
             var o = r(69);
@@ -42,7 +42,7 @@
                 RGBA_S3TC_DXT5_Format: 33779
             };
         },
-        25: function(e, t, r) {
+        21: function(e, t, r) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -60,7 +60,7 @@
                 return e;
             };
             var n = r(68);
-            var i = r(26);
+            var i = r(22);
             var o = {};
             function s(e) {
                 this.manager = e !== undefined ? e : i.DefaultLoadingManager;
@@ -220,7 +220,7 @@
             });
             t.FileLoader = s;
         },
-        26: function(e, t) {
+        22: function(e, t) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -318,8 +318,8 @@
                 }
                 return e;
             };
-            var n = r(25);
-            var i = r(26);
+            var n = r(21);
+            var i = r(22);
             var o = 1006;
             function s(e) {
                 this.manager = e !== undefined ? e : i.DefaultLoadingManager;
