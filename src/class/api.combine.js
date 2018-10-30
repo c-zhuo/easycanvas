@@ -15,7 +15,7 @@ module.exports = function () {
 
         let $canvas = this.$canvas;
 
-        let rect = $sprite.getRect();
+        let rect = $sprite.getRect(false, true);
 
         if (rect.tx < 0 || rect.tr > $canvas.width) return COMBINE_FAIL;
         if (rect.ty < 0 || rect.tb > $canvas.height) return COMBINE_FAIL;
@@ -37,7 +37,7 @@ module.exports = function () {
             }
         }
 
-        let outerRect = $sprite.getOuterRect();
+        let outerRect = $sprite.getOuterRect(false, true);
 
         outerRect.tx = Math.floor(outerRect.tx);
         outerRect.ty = Math.floor(outerRect.ty);

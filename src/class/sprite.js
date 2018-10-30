@@ -184,11 +184,11 @@ sprite.prototype.add = function (child) {
     return this.children[this.children.length - 1];
 };
 
-sprite.prototype.getRect = function (notImg) {
+sprite.prototype.getRect = function (notImg, fromCache) {
     let res = {};
 
     constants.txywh.forEach((key) => {
-        res[key] = this.getStyle(key);
+        res[key] = this.getStyle(key, fromCache);
     });
 
     if (res.tw === 0 && this.content.img && !notImg) {
@@ -239,51 +239,41 @@ sprite.prototype.getSelfStyle = function (key) {
     return res;
 };
 
-sprite.prototype.getStyle = function (key) {
+sprite.prototype.getStyle = function (key, fromCache) {
     let $sprite = this;
-    let lastPaintTime = $sprite.$canvas.$lastPaintTime;
+    // let lastPaintTime = $sprite.$canvas.$lastPaintTime;
 
     // if ($sprite.$styleCacheTime[key] === lastPaintTime) {
     //     return $sprite.$cache[key];
     // }
 
-    if ($sprite.$cache[key] !== undefined) {
+    if (fromCache && $sprite.$cache[key] !== undefined) {
         return $sprite.$cache[key];
     }
 
     let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
 
     if ($sprite.$parent) {
-        let needInherit;
+        let parentValue = $sprite.$parent.getStyle(key);
 
-        // if ($sprite.inherit) {
-        //     needInherit = $sprite.inherit.indexOf(key) >= 0;
-        // } else {
-            needInherit = key === 'tx' || key === 'ty' || key === 'scale' || key === 'opacity';
-        // }
+        if (key === 'tx' || key === 'ty') {
+            parentValue = utils.firstValuable(parentValue, 0);
 
-        if (needInherit) {
-            let parentValue = $sprite.$parent.getStyle(key);
+            // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+            // $sprite.$parent.$cache[key] = parentValue;
 
-            if (key === 'opacity' || key === 'scale') {
-                parentValue = utils.firstValuable(parentValue, 1);
+            return (
+                parentValue
+            ) + utils.firstValuable(currentValue, 0);
+        } else if (key === 'scale' || key === 'opacity') {
+            parentValue = utils.firstValuable(parentValue, 1);
 
-                // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
-                // $sprite.$parent.$cache[key] = parentValue;
+            // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+            // $sprite.$parent.$cache[key] = parentValue;
 
-                return (
-                    parentValue
-                ) * utils.firstValuable(currentValue, 1);
-            } else {
-                parentValue = utils.firstValuable(parentValue, 0);
-
-                // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
-                // $sprite.$parent.$cache[key] = parentValue;
-
-                return (
-                    parentValue
-                ) + utils.firstValuable(currentValue, 0);
-            }
+            return (
+                parentValue
+            ) * utils.firstValuable(currentValue, 1);
         }
     }
 

@@ -1,12 +1,12 @@
-module.exports = function () {
+module.exports = function (notImg, fromCache) {
     let $sprite = this;
 
-    let rect = $sprite.getRect();
+    let rect = $sprite.getRect(notImg, fromCache);
     rect.tr = rect.tx + rect.tw;
     rect.tb = rect.ty + rect.th;
 
     this.children.forEach((child) => {
-        let childRect = child.getOuterRect();
+        let childRect = child.getOuterRect(notImg, fromCache);
         if (childRect.tx < rect.tx) rect.tx = childRect.tx;
         if (childRect.ty < rect.ty) rect.ty = childRect.ty;
         if (childRect.tr > rect.tr) rect.tr = childRect.tr;

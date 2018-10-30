@@ -401,30 +401,30 @@
             M(this);
             return this.children[this.children.length - 1];
         };
-        F.prototype.getRect = function(t) {
-            var e = this;
-            var r = {};
+        F.prototype.getRect = function(t, e) {
+            var r = this;
+            var n = {};
             l.default.txywh.forEach(function(t) {
-                r[t] = e.getStyle(t);
+                n[t] = r.getStyle(t, e);
             });
-            if (r.tw === 0 && this.content.img && !t) {
-                var n = i.default.funcOrValue(this.content.img, this);
-                r.tw = n.width;
-                r.th = n.height;
+            if (n.tw === 0 && this.content.img && !t) {
+                var a = i.default.funcOrValue(this.content.img, this);
+                n.tw = a.width;
+                n.th = a.height;
             }
-            var a = this.getStyle("locate");
-            if (a === "lt") {} else if (a === "ld") {
-                r.ty -= r.th;
-            } else if (a === "rt") {
-                r.tx -= r.tw;
-            } else if (a === "rd") {
-                r.tx -= r.tw;
-                r.ty -= r.th;
+            var o = this.getStyle("locate");
+            if (o === "lt") {} else if (o === "ld") {
+                n.ty -= n.th;
+            } else if (o === "rt") {
+                n.tx -= n.tw;
+            } else if (o === "rd") {
+                n.tx -= n.tw;
+                n.ty -= n.th;
             } else {
-                r.tx -= r.tw >> 1;
-                r.ty -= r.th >> 1;
+                n.tx -= n.tw >> 1;
+                n.ty -= n.th >> 1;
             }
-            return r;
+            return n;
         };
         F.prototype.getSelfStyle = function(t) {
             var e = {};
@@ -436,25 +436,20 @@
             }
             return e;
         };
-        F.prototype.getStyle = function(t) {
-            var e = this;
-            var r = e.$canvas.$lastPaintTime;
-            if (e.$cache[t] !== undefined) {
-                return e.$cache[t];
+        F.prototype.getStyle = function(t, e) {
+            var r = this;
+            if (e && r.$cache[t] !== undefined) {
+                return r.$cache[t];
             }
-            var n = i.default.funcOrValue(e.style[t], e);
-            if (e.$parent) {
-                var a = void 0;
-                a = t === "tx" || t === "ty" || t === "scale" || t === "opacity";
-                if (a) {
-                    var o = e.$parent.getStyle(t);
-                    if (t === "opacity" || t === "scale") {
-                        o = i.default.firstValuable(o, 1);
-                        return o * i.default.firstValuable(n, 1);
-                    } else {
-                        o = i.default.firstValuable(o, 0);
-                        return o + i.default.firstValuable(n, 0);
-                    }
+            var n = i.default.funcOrValue(r.style[t], r);
+            if (r.$parent) {
+                var a = r.$parent.getStyle(t);
+                if (t === "tx" || t === "ty") {
+                    a = i.default.firstValuable(a, 0);
+                    return a + i.default.firstValuable(n, 0);
+                } else if (t === "scale" || t === "opacity") {
+                    a = i.default.firstValuable(a, 1);
+                    return a * i.default.firstValuable(n, 1);
                 }
             }
             return n;
@@ -983,7 +978,7 @@
                 if (e.$combine) return l;
                 if (i.default.funcOrValue(e.style.visible, e) === false) return f;
                 var r = t.$canvas;
-                var a = e.getRect();
+                var a = e.getRect(false, true);
                 if (a.tx < 0 || a.tr > r.width) return s;
                 if (a.ty < 0 || a.tb > r.height) return s;
                 var o = e.getAllChildren(true);
@@ -999,7 +994,7 @@
                         return f;
                     }
                 }
-                var h = e.getOuterRect();
+                var h = e.getOuterRect(false, true);
                 h.tx = Math.floor(h.tx);
                 h.ty = Math.floor(h.ty);
                 h.tw = Math.round(h.tw);
@@ -1061,21 +1056,21 @@
         };
     }, function(t, e) {
         "use strict";
-        t.exports = function() {
-            var t = this;
-            var e = t.getRect();
-            e.tr = e.tx + e.tw;
-            e.tb = e.ty + e.th;
-            this.children.forEach(function(t) {
-                var r = t.getOuterRect();
-                if (r.tx < e.tx) e.tx = r.tx;
-                if (r.ty < e.ty) e.ty = r.ty;
-                if (r.tr > e.tr) e.tr = r.tr;
-                if (r.tb > e.tb) e.tb = r.tb;
-                e.tw = e.tr - e.tx;
-                e.th = e.tb - e.ty;
+        t.exports = function(t, e) {
+            var r = this;
+            var n = r.getRect(t, e);
+            n.tr = n.tx + n.tw;
+            n.tb = n.ty + n.th;
+            this.children.forEach(function(r) {
+                var a = r.getOuterRect(t, e);
+                if (a.tx < n.tx) n.tx = a.tx;
+                if (a.ty < n.ty) n.ty = a.ty;
+                if (a.tr > n.tr) n.tr = a.tr;
+                if (a.tb > n.tb) n.tb = a.tb;
+                n.tw = n.tr - n.tx;
+                n.th = n.tb - n.ty;
             });
-            return e;
+            return n;
         };
     }, function(t, e) {
         "use strict";

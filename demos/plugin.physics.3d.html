@@ -13,6 +13,16 @@
         background: black;
         overflow: hidden;
     }
+    .fps {
+        position: absolute;
+        top: 0;
+        right: 100px;
+        max-width: 80%;
+        z-index: 2;
+        background-color: white;
+        color: red;
+        overflow: scroll;
+    }
     canvas {
         border: 1px solid grey;
         height: 100%;
@@ -25,6 +35,7 @@
     }
 </style>
 <body>
+    <div class="fps"></div>
     <canvas id="el"></canvas>
 </body>
 
@@ -51,7 +62,14 @@
     var blockArray = [];
 
     var $Painter = new Easycanvas.painter();
-
+    var $fpsBox = document.getElementsByClassName('fps')[0];
+    $Painter.fpsHandler = function (fps) {
+        if ($Painter.$perf && $Painter.$perf.preprocessTimeSpend) {
+            $fpsBox.innerText = fps + 'fps,' + $Painter.$perf.preprocessTimeSpend + ',' + $Painter.$perf.paintTimeSpend;
+        } else {
+            $fpsBox.innerText = fps;
+        }
+    };
     // 初始化easycanvas实例
     $Painter.register(el, {
         webgl: {
