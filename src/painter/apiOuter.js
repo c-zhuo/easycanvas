@@ -39,6 +39,7 @@ let apiOuter = {
     trigger: sprite.prototype.trigger,
     broadcast: sprite.prototype.broadcast,
     nextTick,
+    getAllChildren: sprite.prototype.getAllChildren,
 };
 
 if (process.env.NODE_ENV !== 'production') {

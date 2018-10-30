@@ -1520,7 +1520,7 @@
             t.$cache.ty = n.ty;
             var l = 0;
             var f = 0;
-            if (o) {
+            if (o && o.width) {
                 l = o.width || 0;
                 f = o.height || 0;
                 n.sx = a.default.funcOrValue(t.style.sx, t) || 0;
@@ -1652,7 +1652,6 @@
                             $id: t.$id,
                             type: "clip",
                             settings: b,
-                            img: o,
                             props: n
                         };
                         R.$origin = t;
@@ -1667,7 +1666,6 @@
                             $id: t.$id,
                             type: "fillRect",
                             settings: b,
-                            img: o,
                             props: n
                         };
                         E.$origin = t;
@@ -1812,7 +1810,6 @@
                             $id: t.$id,
                             type: "clipOver",
                             settings: b,
-                            img: o,
                             props: n
                         };
                         B.$origin = t;
@@ -2099,7 +2096,8 @@
             off: k.default.prototype.off,
             trigger: k.default.prototype.trigger,
             broadcast: k.default.prototype.broadcast,
-            nextTick: v.default
+            nextTick: v.default,
+            getAllChildren: k.default.prototype.getAllChildren
         };
         if (true) {
             T.skeleton = b.default;

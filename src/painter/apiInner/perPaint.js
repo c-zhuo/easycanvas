@@ -86,7 +86,7 @@ module.exports = function ($sprite, index) {
     let _imgWidth = 0;
     let _imgHeight = 0;
 
-    if (_img) {
+    if (_img && _img.width) {
         _imgWidth = _img.width || 0;
         _imgHeight = _img.height || 0;
         _props.sx = utils.funcOrValue($sprite.style.sx, $sprite) || 0;
@@ -130,14 +130,10 @@ module.exports = function ($sprite, index) {
     }
 
     if (_props.locate === 'lt') {
-        // _props.tx = _props.tx;
-        // _props.ty = _props.ty;
     } else if (_props.locate === 'ld') {
-        // _props.tx = _props.tx;
         _props.ty -= _props.th;
     } else if (_props.locate === 'rt') {
         _props.tx -= _props.tw;
-        // _props.ty = _props.ty;
     } else if (_props.locate === 'rd') {
         _props.tx -= _props.tw;
         _props.ty -= _props.th;
@@ -274,7 +270,6 @@ module.exports = function ($sprite, index) {
                     $id: $sprite.$id,
                     type: 'clip',
                     settings: settings,
-                    img: _img,
                     props: _props,
                 };
 
@@ -297,7 +292,6 @@ module.exports = function ($sprite, index) {
                     $id: $sprite.$id,
                     type: 'fillRect',
                     settings: settings,
-                    img: _img,
                     props: _props,
                 };
 
@@ -474,7 +468,6 @@ module.exports = function ($sprite, index) {
                     $id: $sprite.$id,
                     type: 'clipOver',
                     settings: settings,
-                    img: _img,
                     props: _props,
                 };
 

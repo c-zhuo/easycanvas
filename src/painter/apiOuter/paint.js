@@ -23,6 +23,23 @@ const diffRender = function (olds, news) {
 
         if (o.$id !== n.$id || o.img !== n.img) return news;
         if (o.props && n.props) {
+            // if (o.props.opacity !== n.props.opacity) return news;
+            // if (o.props.rotate !== n.props.rotate) return news;
+            // if (o.props.sh !== n.props.sh) return news;
+            // if (o.props.sw !== n.props.sw) return news;
+            // if (o.props.sx !== n.props.sx) return news;
+            // if (o.props.sy !== n.props.sy) return news;
+            // if (o.props.th !== n.props.th) return news;
+            // if (o.props.tw !== n.props.tw) return news;
+            // if (o.props.tx !== n.props.tx) return news;
+            // if (o.props.ty !== n.props.ty) return news;
+            // if (o.props.text !== n.props.text) return news;
+            // if (o.props.align !== n.props.align) return news;
+            // if (o.props.baseline !== n.props.baseline) return news;
+            // if (o.props.color !== n.props.color) return news;
+            // if (o.props.type !== n.props.type) return news;
+            // if (o.props.font !== n.props.font) return news;
+
             for (let prop in n.props) {
                 if (n.props[prop] !== o.props[prop]) return news;
             }
