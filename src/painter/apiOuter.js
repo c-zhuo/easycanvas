@@ -6,7 +6,7 @@
  *
  * ********** **/
 
-import add from './apiOuter/add.js';
+// import add from './apiOuter/add.js';
 import remove from './apiOuter/remove.js';
 import start from './apiOuter/start.js';
 import paint from './apiOuter/paint.js';
@@ -22,10 +22,12 @@ import setFpsHandler from './apiOuter/setFpsHandler.js';
 import setMaxFps from './apiOuter/setMaxFps.js';
 import skeleton from './apiOuter/skeleton.js';
 
+import sprite from 'class/sprite.js';
+
 let apiOuter = {
     start,
     paint,
-    add,
+    add: sprite.prototype.add,
     remove,
     register,
     clear,

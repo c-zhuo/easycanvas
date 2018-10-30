@@ -1093,11 +1093,11 @@
         "use strict";
         var n = r(4);
         var a = A(n);
-        var i = r(61);
+        var i = r(60);
         var o = A(i);
         var l = r(28);
         var s = A(l);
-        var f = r(103);
+        var f = r(102);
         var u = A(f);
         var c = r(1);
         var d = A(c);
@@ -1105,9 +1105,9 @@
         var v = A(h);
         var p = r(9);
         var g = A(p);
-        var y = r(102);
+        var y = r(101);
         var $ = A(y);
-        var x = r(104);
+        var x = r(103);
         var m = A(x);
         var w = r(13);
         var b = A(w);
@@ -1176,7 +1176,7 @@
         var s = h(l);
         var f = r(48);
         var u = h(f);
-        var c = r(60);
+        var c = r(59);
         var d = h(c);
         function h(t) {
             return t && t.__esModule ? t : {
@@ -2058,35 +2058,35 @@
         };
     }, function(t, e, r) {
         "use strict";
-        var n = r(51);
+        var n = r(54);
         var a = _(n);
-        var i = r(55);
+        var i = r(58);
         var o = _(i);
-        var l = r(59);
+        var l = r(51);
         var s = _(l);
-        var f = r(52);
+        var f = r(16);
         var u = _(f);
-        var c = r(16);
+        var c = r(52);
         var d = _(c);
-        var h = r(53);
+        var h = r(19);
         var v = _(h);
-        var p = r(19);
+        var p = r(18);
         var g = _(p);
-        var y = r(18);
+        var y = r(20);
         var $ = _(y);
-        var x = r(20);
+        var x = r(15);
         var m = _(x);
-        var w = r(15);
+        var w = r(17);
         var b = _(w);
-        var S = r(17);
+        var S = r(53);
         var k = _(S);
-        var A = r(54);
+        var A = r(55);
         var T = _(A);
         var O = r(56);
         var M = _(O);
         var R = r(57);
         var E = _(R);
-        var F = r(58);
+        var F = r(13);
         var V = _(F);
         function _(t) {
             return t && t.__esModule ? t : {
@@ -2094,35 +2094,25 @@
             };
         }
         var C = {
-            start: s.default,
-            paint: u.default,
-            add: a.default,
-            remove: o.default,
-            register: T.default,
-            clear: d.default,
-            setFpsHandler: M.default,
-            setMaxFps: E.default,
-            pause: v.default,
-            on: g.default,
-            off: $.default,
-            trigger: m.default,
-            broadcast: b.default,
-            nextTick: k.default
+            start: o.default,
+            paint: s.default,
+            add: V.default.prototype.add,
+            remove: a.default,
+            register: k.default,
+            clear: u.default,
+            setFpsHandler: T.default,
+            setMaxFps: M.default,
+            pause: d.default,
+            on: v.default,
+            off: g.default,
+            trigger: $.default,
+            broadcast: m.default,
+            nextTick: b.default
         };
         if (true) {
-            C.skeleton = V.default;
+            C.skeleton = E.default;
         }
         t.exports = C;
-    }, function(t, e, r) {
-        "use strict";
-        var n = r(13);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = a.default.prototype.add;
     }, function(t, e, r) {
         "use strict";
         var n = r(1);
@@ -2697,7 +2687,7 @@
         var a = c(n);
         var i = r(43);
         var o = c(i);
-        var l = r(62);
+        var l = r(61);
         var s = c(l);
         var f = r(9);
         var u = c(f);

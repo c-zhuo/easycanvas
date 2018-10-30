@@ -26,9 +26,10 @@ if (process.env.NODE_ENV !== 'production') {
             let props = $child.props;
             let settings = $child.settings;
 
-            sekeletonString += `_.globalAlpha=${settings.globalAlpha};`;
 
             if ($child.type === 'img') {
+                sekeletonString += `_.globalAlpha=${settings.globalAlpha};`;
+
                 if ($child.img && $child.img.$origin) {
                     // is canvas
                     sekeletonString += $child.img.$origin.join(';') + ';';
@@ -43,6 +44,8 @@ if (process.env.NODE_ENV !== 'production') {
                     sekeletonString += `_.fillRect(${props.tx}, ${props.ty}, ${props.tw}, ${props.th});`;
                 }
             } else if ($child.type === 'fillRect') {
+                sekeletonString += `_.globalAlpha=${settings.globalAlpha};`;
+
                 sekeletonString += `_.fillStyle='${settings.fillRect}';`;
                 sekeletonString += `_.fillRect(${props.tx}, ${props.ty}, ${props.tw}, ${props.th});`;
             }
