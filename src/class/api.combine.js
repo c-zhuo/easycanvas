@@ -121,6 +121,7 @@ module.exports = function () {
             ty: newTy,
             tw: canvas.width,
             th: canvas.height,
+            backgroundColor: undefined,
         });
 
         // $canvas.paint();
@@ -140,4 +141,6 @@ module.exports = function () {
 
         return COMBINE_DONE;
     });
+
+    return this;
 };

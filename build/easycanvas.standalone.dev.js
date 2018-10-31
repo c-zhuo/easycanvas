@@ -976,7 +976,8 @@
                     tx: x,
                     ty: m,
                     tw: y.width,
-                    th: y.height
+                    th: y.height,
+                    backgroundColor: undefined
                 });
                 r.$children = p;
                 r.$lastTickChildren = false;
@@ -984,6 +985,7 @@
                 e.off("ticked", t.combine);
                 return l;
             });
+            return this;
         };
     }, function(t, e) {
         "use strict";
@@ -1823,7 +1825,6 @@
                             $id: t.$id,
                             type: "line",
                             settings: b,
-                            img: o,
                             props: n
                         };
                         D.$origin = t;
@@ -1915,35 +1916,40 @@
                 }
                 if ((l > 200 * 200 || s) && !e.settings.transform && !e.settings.rotate) {
                     var u = n.$children;
-                    for (var c = u.length - 1; c > r; c--) {
-                        var d = u[c];
-                        if (d.$cannotCover) {
+                    var c = u.length;
+                    for (var d = r + 1; d < c; d++) {
+                        var h = u[d];
+                        if (h.$cannotCover) {
                             continue;
                         }
-                        var h = d.settings;
-                        if (!d.type || d.type !== "img") {
-                            if (!(d.type === "fillRect" && h.fillRect.indexOf("rgba") === -1)) {
-                                d.$cannotCover = true;
+                        if (h.type === "clip") {
+                            while (d < c && u[++d].type !== "clipOver") {}
+                            continue;
+                        }
+                        var v = h.settings;
+                        if (!h.type || h.type !== "img") {
+                            if (!(h.type === "fillRect" && v.fillRect.indexOf("rgba") === -1)) {
+                                h.$cannotCover = true;
                                 continue;
                             }
                         }
-                        var v = d.props;
-                        if (v.tw * v.th < 200 * 200) {
-                            d.$cannotCover = true;
+                        var p = h.props;
+                        if (p.tw * p.th < 200 * 200) {
+                            h.$cannotCover = true;
                             continue;
                         }
-                        if (v.tw * v.th < l) {
+                        if (p.tw * p.th < l) {
                             continue;
                         }
-                        if (d.img && !d.img.$noAlpha) {
-                            d.$cannotCover = true;
+                        if (h.img && !h.img.$noAlpha) {
+                            h.$cannotCover = true;
                             continue;
                         }
-                        if (h.globalAlpha !== 1 || h.globalCompositeOperation || h.transform || h.rotate) {
-                            d.$cannotCover = true;
+                        if (v.globalAlpha !== 1 || v.globalCompositeOperation || v.transform || v.rotate) {
+                            h.$cannotCover = true;
                             continue;
                         }
-                        if (a.default.pointInRect(i.tx, i.ty, v.tx, v.tx + v.tw, v.ty, v.ty + v.th) && a.default.pointInRect(i.tx + i.tw, i.ty + i.th, v.tx, v.tx + v.tw, v.ty, v.ty + v.th)) {
+                        if (a.default.pointInRect(i.tx, i.ty, p.tx, p.tx + p.tw, p.ty, p.ty + p.th) && a.default.pointInRect(i.tx + i.tw, i.ty + i.th, p.tx, p.tx + p.tw, p.ty, p.ty + p.th)) {
                             if (true) {
                                 e.$origin.$useless = true;
                             }
@@ -1952,8 +1958,8 @@
                     }
                 }
             }
-            var p = e.settings || {};
-            if (o.call(n, e, p)) {
+            var g = e.settings || {};
+            if (o.call(n, e, g)) {
                 return;
             }
             if (true) {
@@ -1961,92 +1967,92 @@
                     e.$origin.$useless = false;
                 }
             }
-            var g = n.$paintContext;
+            var y = n.$paintContext;
             if (e.type === "clip") {
-                g.save();
-                g.beginPath();
-                g.moveTo(i.tx, i.ty);
-                g.lineTo(i.tx + i.tw, i.ty);
-                g.lineTo(i.tx + i.tw, i.ty + i.th);
-                g.lineTo(i.tx, i.ty + i.th);
-                g.lineTo(i.tx, i.ty);
-                g.closePath();
-                g.clip();
+                y.save();
+                y.beginPath();
+                y.moveTo(i.tx, i.ty);
+                y.lineTo(i.tx + i.tw, i.ty);
+                y.lineTo(i.tx + i.tw, i.ty + i.th);
+                y.lineTo(i.tx, i.ty + i.th);
+                y.lineTo(i.tx, i.ty);
+                y.closePath();
+                y.clip();
             }
-            var y = false;
-            if (p.globalCompositeOperation) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            var $ = false;
+            if (g.globalCompositeOperation) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.globalCompositeOperation = p.globalCompositeOperation;
+                y.globalCompositeOperation = g.globalCompositeOperation;
             }
-            if (p.globalAlpha !== 1 && !isNaN(p.globalAlpha)) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.globalAlpha !== 1 && !isNaN(g.globalAlpha)) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.globalAlpha = p.globalAlpha;
+                y.globalAlpha = g.globalAlpha;
             }
-            if (p.translate) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.translate) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.translate(p.translate[0] || 0, p.translate[1] || 0);
+                y.translate(g.translate[0] || 0, g.translate[1] || 0);
             }
-            if (p.rotate) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.rotate) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.translate(p.beforeRotate[0] || 0, p.beforeRotate[1] || 0);
-                g.rotate(p.rotate || 0);
-                g.translate(p.afterRotate[0] || 0, p.afterRotate[1] || 0);
+                y.translate(g.beforeRotate[0] || 0, g.beforeRotate[1] || 0);
+                y.rotate(g.rotate || 0);
+                y.translate(g.afterRotate[0] || 0, g.afterRotate[1] || 0);
             }
-            if (p.scale) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.scale) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.scale(p.scale[0] || 1, p.scale[1] || 1);
+                y.scale(g.scale[0] || 1, g.scale[1] || 1);
             }
-            if (p.transform) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.transform) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.transform(1, p.transform.fh, p.transform.fv, 1, p.transform.fx, p.transform.fy);
+                y.transform(1, g.transform.fh, g.transform.fv, 1, g.transform.fx, g.transform.fy);
             }
             if (e.type === "img") {
-                g.drawImage(e.img, i.sx, i.sy, i.sw, i.sh, i.tx, i.ty, i.tw, i.th);
+                y.drawImage(e.img, i.sx, i.sy, i.sw, i.sh, i.tx, i.ty, i.tw, i.th);
                 if (true) {
                     n.$plugin.drawImage(n, i);
                 }
             } else if (e.type === "text" && i.content) {
-                g.font = i.font;
-                g.fillStyle = i.color || "white";
-                g.textAlign = i.align;
-                g.textBaseline = i.baseline;
-                g[i.type || "fillText"](i.content, i.tx, i.ty);
+                y.font = i.font;
+                y.fillStyle = i.color || "white";
+                y.textAlign = i.align;
+                y.textBaseline = i.baseline;
+                y[i.type || "fillText"](i.content, i.tx, i.ty);
             } else if (e.type === "fillRect") {
-                g.fillStyle = p.fillRect;
-                g.fillRect(i.tx, i.ty, i.tw, i.th);
+                y.fillStyle = g.fillRect;
+                y.fillRect(i.tx, i.ty, i.tw, i.th);
             } else if (e.type === "line") {
-                g.beginPath();
-                g.strokeStyle = i.border.substr(i.border.indexOf(" ")) || "black";
-                g.lineWidth = i.border.split(" ")[0] || 1;
-                g.moveTo(i.tx, i.ty);
-                g.lineTo(i.tx + i.tw, i.ty);
-                g.lineTo(i.tx + i.tw, i.ty + i.th);
-                g.lineTo(i.tx, i.ty + i.th);
-                g.closePath();
-                g.stroke();
+                y.beginPath();
+                y.strokeStyle = i.border.substr(i.border.indexOf(" ")) || "black";
+                y.lineWidth = i.border.split(" ")[0] || 1;
+                y.moveTo(i.tx, i.ty);
+                y.lineTo(i.tx + i.tw, i.ty);
+                y.lineTo(i.tx + i.tw, i.ty + i.th);
+                y.lineTo(i.tx, i.ty + i.th);
+                y.closePath();
+                y.stroke();
             } else if (e.type === "clipOver") {
-                g.restore();
+                y.restore();
             }
-            if (y) {
-                g.restore();
+            if ($) {
+                y.restore();
             }
         };
         t.exports = function() {

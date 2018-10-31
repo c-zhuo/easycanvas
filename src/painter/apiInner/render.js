@@ -65,12 +65,23 @@ const render = function ($sprite, i) {
             !$sprite.settings.rotate
         ) {
             let $children = $canvas.$children;
+            let l = $children.length;
 
-            for (let j = $children.length - 1; j > i; j--) {
+            for (let j = i + 1; j < l; j++) {
                 let $tmpSprite = $children[j];
 
                 if ($tmpSprite.$cannotCover) {
                     // 被判断为不能遮挡当前绘制的直接跳过
+                    continue;
+                }
+
+                if ($tmpSprite.type === 'clip') {
+                    // clip到clipOver之间的不进行判断
+                    // 这些sprite可能无法遮挡当前要绘制的sprite
+                    while (j < l && $children[++j].type !== 'clipOver') {
+                        // do nothing
+                        // 仅仅是j自增1
+                    }
                     continue;
                 }
 

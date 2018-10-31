@@ -488,7 +488,6 @@ module.exports = function ($sprite, index) {
                     $id: $sprite.$id,
                     type: 'line',
                     settings: settings,
-                    img: _img,
                     props: _props,
                 };
 

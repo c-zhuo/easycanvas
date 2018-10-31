@@ -12,6 +12,10 @@ let mutipleScrollLock;
 
 // $sprite.$scroll.$wheeling用于在Chrome移动端下适配双指滑动的wheel事件
 
+const absMin = function (a, b) {
+    return Math.abs(a) < Math.abs(b) ? a : b;
+};
+
 let scrollFuncs = {
     loose: function ($sprite) {
         $sprite.$scroll.touching = false;
@@ -95,6 +99,7 @@ let scrollFuncs = {
             $sprite.$scroll.startPos.x = $e.canvasX;
             $sprite.$scroll.startPos.y = $e.canvasY;
 
+            $sprite.$scroll.lastScrollSpeed = $sprite.$scroll.speedX || $sprite.$scroll.speedY;
             $sprite.$scroll.speedX = 0;
             $sprite.$scroll.speedY = 0;
         } else {
@@ -122,17 +127,37 @@ let scrollFuncs = {
                 else deltaY = 0;
             }
 
-            if (Math.abs(deltaX) >= 1 && deltaTime > 1) {
-                let newSpeedX = ($e.canvasX - $sprite.$scroll.startPos.x) / deltaTime * 20;
-                $sprite.$scroll.speedX = newSpeedX;
+            if (ec.utils.funcOrValue($sprite.scroll.scrollableX, $sprite) && Math.abs(deltaX) >= 1 && deltaTime > 1) {
+                let newSpeedX = ($e.canvasX - $sprite.$scroll.startPos.x) / deltaTime * 25;
+
+                if ($sprite.$scroll.lastScrollSpeed * newSpeedX > 0 && Math.abs(newSpeedX) > 15) {
+                    // 连续同向滚动，速度增加
+                    newSpeedX += absMin(newSpeedX, $sprite.$scroll.lastScrollSpeed);
+                }
+
+                $sprite.$scroll.speedX = ($sprite.$scroll.lastTouchSpeed + newSpeedX) / ($sprite.$scroll.lastTouchSpeed ? 2 : 1);
+
+                $sprite.$scroll.lastTouchSpeed = newSpeedX;
                 $sprite.scroll.scrollX += deltaX;
             }
-            if (Math.abs(deltaY) >= 1 && deltaTime > 1) {
-                let newSpeedY = ($e.canvasY - $sprite.$scroll.startPos.y) / deltaTime * 20;
+            if (ec.utils.funcOrValue($sprite.scroll.scrollableY, $sprite) && Math.abs(deltaY) >= 1 && deltaTime > 1) {
+                let newSpeedY = ($e.canvasY - $sprite.$scroll.startPos.y) / deltaTime * 25;
+
+                if ($sprite.$scroll.lastScrollSpeed * newSpeedY > 0 && Math.abs(newSpeedY) > 15) {
+                    // 连续同向滚动，速度增加
+                    newSpeedY += absMin(newSpeedY, $sprite.$scroll.lastScrollSpeed);
+                }
+
                 $sprite.$scroll.speedY = ($sprite.$scroll.lastTouchSpeed + newSpeedY) / ($sprite.$scroll.lastTouchSpeed ? 2 : 1);
+
                 $sprite.$scroll.lastTouchSpeed = newSpeedY;
                 $sprite.scroll.scrollY += deltaY;
             }
+
+        // $sprite.$scroll.speedX = ($sprite.$scroll.speedX + ($e.canvasX - startPos.x) * 2) / 2;
+
+        // let curSpeed = ($e.canvasY - startPos.y) * 3;
+        // $sprite.$scroll.speedY = ($sprite.$scroll.speedY + curSpeed) / 2;
 
             $sprite.$scroll.startPos.x = $e.canvasX;
             $sprite.$scroll.startPos.y = $e.canvasY;
@@ -164,10 +189,10 @@ const component = function (opt) {
         scrollX: 0,
         scrollY: 0,
         scrollableX: function () {
-            return (this.style.overflowX || this.style.overflow) !== 'hidden';
+            return (this.style.overflowX || this.style.overflow) !== 'visible';
         },
         scrollableY: function () {
-            return (this.style.overflowY || this.style.overflow) !== 'hidden';
+            return (this.style.overflowY || this.style.overflow) !== 'visible';
         },
         minScrollX: 0,
         maxScrollX: function () {
@@ -297,7 +322,8 @@ const component = function (opt) {
         speedY: 0,
         touching: false,
         startPos: {},
-        lastTouchSpeed: 0,
+        lastTouchSpeed: 0, // 记录用户上一次touch产生的速度，用于平滑的速度计算
+        lastScrollSpeed: 0, // 记录用户上一次touch最终的速度，判断连续相同方向scroll时速度叠加
     };
 
     let $scrollingElement = $sprite.add({
