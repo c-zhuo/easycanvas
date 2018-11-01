@@ -58,7 +58,10 @@ module.exports = function ($sprite, index) {
     let _props = $sprite.$props = {};
 
     _props.img = utils.funcOrValue($sprite.content.img, $sprite);
-    _props.text = utils.funcOrValue($sprite.content.text, $sprite);
+    if ($sprite.content.text) {
+        // text大部分sprite没有，if一下提升效率
+        _props.text = utils.funcOrValue($sprite.content.text, $sprite);
+    }
 
     if (typeof _props.img === 'string') {
         _props.img = $sprite.content.img = $canvas.imgLoader(_props.img);
@@ -93,6 +96,12 @@ module.exports = function ($sprite, index) {
         _props.sy = utils.funcOrValue($sprite.style.sy, $sprite) || 0;
         _props.sw = utils.funcOrValue($sprite.style.sw, $sprite) || _imgWidth;
         _props.sh = utils.funcOrValue($sprite.style.sh, $sprite) || _imgHeight;
+
+        // 太小的图其实应该不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”
+        _props.sx = Math.round(_props.sx);
+        _props.sy = Math.round(_props.sy);
+        _props.sw = Math.round(_props.sw);
+        _props.sh = Math.round(_props.sh);
     }
 
     _props.tw = utils.funcOrValue($sprite.style.tw, $sprite) || _props.sw || 0;
@@ -141,6 +150,12 @@ module.exports = function ($sprite, index) {
         _props.tx -= _props.tw >> 1;
         _props.ty -= _props.th >> 1;
     }
+
+    // 不能干掉，否则combine的时候可能模糊
+    _props.tx = Math.round(_props.tx);
+    _props.ty = Math.round(_props.ty);
+    _props.tw = Math.round(_props.tw);
+    _props.th = Math.round(_props.th);
 
     let settings = {};
 
@@ -246,15 +261,6 @@ module.exports = function ($sprite, index) {
             }
         }
 
-        // TODO
-        // if (_imgWidth > 10 && _imgHeight > 10) {
-        //     // 太小的图不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”
-        //     constants.xywh.forEach(function (key) {
-        //         _props[key] = Math.round(_props[key]);
-        //         // _props[key] >>= 0;
-        //     });
-        // }
-
         // if (process.env.NODE_ENV !== 'production') {
         //     if (!$sprite.$cache.base64 && _img && _img.src) {
         //         $sprite.$cache.base64 = 'processing';
@@ -269,7 +275,7 @@ module.exports = function ($sprite, index) {
                 let $paintSprite = {
                     $id: $sprite.$id,
                     type: 'clip',
-                    settings: settings,
+                    // settings: settings,
                     props: _props,
                 };
 
@@ -307,6 +313,7 @@ module.exports = function ($sprite, index) {
         if (_imgWidth && _props.opacity !== 0 && _props.sw && _props.sh) {
             if (!_props.rotate && !_text) {
                 cutOutside($canvas, _props, _imgWidth, _imgHeight);
+                // cut的结果没有取整，要看是否需要
             }
 
             let meetResultAfterCut = rectMeet(_props.tx, _props.ty, _props.tw, _props.th, 0, 0, $canvas.width - 1, $canvas.height - 1, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
@@ -467,7 +474,7 @@ module.exports = function ($sprite, index) {
                 let $paintSprite = {
                     $id: $sprite.$id,
                     type: 'clipOver',
-                    settings: settings,
+                    // settings: settings,
                     props: _props,
                 };
 

@@ -5,7 +5,7 @@
  * ********** **/
 
 module.exports = function ($canvas, props, imgWidth, imgHeight) {
-    // source
+    // source在图片外
     if (props.sx < 0 && props.sw) {
         let cutRate = (-props.sx / props.sw);
         props.tx += props.tw * cutRate;
@@ -29,7 +29,7 @@ module.exports = function ($canvas, props, imgWidth, imgHeight) {
         props.th -= props.th * cutRate;
     }
 
-    // target
+    // target在画布外
     // TODO
     if (props.tx < 0 && props.tw > -props.tx) {
         let cutRate = (-props.tx / props.tw);
