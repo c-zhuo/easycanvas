@@ -83,7 +83,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.7.2"
+            version: "0.7.3"
         };
     }, , , , , function(t, e) {
         "use strict";
@@ -131,6 +131,7 @@
                 }
             }
             var d = new Image();
+            d._complete = false;
             if (s.block) {
                 d.src = e;
                 o++;
@@ -149,7 +150,8 @@
                 h.width = h.height || 0;
                 n[c] = h;
             }
-            d.onload = function() {
+            d.onload = function(t) {
+                d._complete = true;
                 if (d.src.substr(-3) === "jpg" || d.src.substr(-3) === "jpeg" || d.src.substr(-3) === "bmp") {
                     d.$noAlpha = true;
                 } else if (d.src.indexOf("data:image/jpg;") === 0) {
@@ -165,22 +167,22 @@
                     }
                 }
                 if (h && (s.canvas || s.alphaColor || f)) {
-                    var t = h.getContext("2d");
+                    var e = h.getContext("2d");
                     h.width = d.width;
                     h.height = d.height;
                     h.$noAlpha = d.$noAlpha;
-                    t.drawImage(d, 0, 0);
+                    e.drawImage(d, 0, 0);
                     if (s.alphaColor) {
-                        var e = t.getImageData(0, 0, d.width, d.height);
-                        var r = [];
-                        for (var n = 0; n < e.data.length; n += 4) {
-                            var l = e.data[n] + e.data[n + 1] + e.data[n + 2];
-                            var u = 1;
-                            if (e.data[n] < u && e.data[n + 1] < u && e.data[n + 2] < u) {
-                                e.data[n + 3] = Math.floor(l / 255);
+                        var r = e.getImageData(0, 0, d.width, d.height);
+                        var n = [];
+                        for (var l = 0; l < r.data.length; l += 4) {
+                            var u = r.data[l] + r.data[l + 1] + r.data[l + 2];
+                            var c = 1;
+                            if (r.data[l] < c && r.data[l + 1] < c && r.data[l + 2] < c) {
+                                r.data[l + 3] = Math.floor(u / 255);
                             }
                         }
-                        t.putImageData(e, 0, 0);
+                        e.putImageData(r, 0, 0);
                         h.$noAlpha = false;
                     }
                     d = h;
@@ -315,7 +317,7 @@
             if (e.children) {
                 e.children.forEach(function(r, n) {
                     if (!r.$id) {
-                        e.children[n] = new F(r);
+                        e.children[n] = new E(r);
                     }
                     if (e.$id && !e.$dom) {
                         e.children[n].$canvas = e.$canvas;
@@ -327,7 +329,7 @@
                 });
             }
         };
-        var R = function t(e) {
+        var _ = function t(e) {
             var r = e || {};
             if (!r.$id) {
                 r.$id = Math.random().toString(36).substr(2);
@@ -376,24 +378,24 @@
             r.$styleCacheTime = {};
             return r;
         };
-        var E = function t(e) {
+        var R = function t(e) {
             var r = this;
             this.$extendList.forEach(function(t) {
                 t.call(r, e);
             });
         };
-        var F = function t(e) {
-            var r = R(e);
+        var E = function t(e) {
+            var r = _(e);
             for (var n in r) {
                 if (Object.prototype.hasOwnProperty.call(r, n)) {
                     this[n] = r[n];
                 }
             }
-            E.call(this, r);
+            R.call(this, r);
             return this;
         };
-        F.prototype.$extendList = [];
-        F.prototype.add = function(t) {
+        E.prototype.$extendList = [];
+        E.prototype.add = function(t) {
             if (!t) {
                 return;
             }
@@ -401,7 +403,7 @@
             M(this);
             return this.children[this.children.length - 1];
         };
-        F.prototype.getRect = function(t, e) {
+        E.prototype.getRect = function(t, e) {
             var r = this;
             var n = {};
             l.default.txywh.forEach(function(t) {
@@ -426,7 +428,7 @@
             }
             return n;
         };
-        F.prototype.getSelfStyle = function(t) {
+        E.prototype.getSelfStyle = function(t) {
             var e = {};
             if (t) {
                 return i.default.funcOrValue(this.style[t], this);
@@ -436,7 +438,7 @@
             }
             return e;
         };
-        F.prototype.getStyle = function(t, e) {
+        E.prototype.getStyle = function(t, e) {
             var r = this;
             if (e && r.$cache[t] !== undefined) {
                 return r.$cache[t];
@@ -454,7 +456,7 @@
             }
             return n;
         };
-        F.prototype.remove = function(t) {
+        E.prototype.remove = function(t) {
             if (t) {
                 this.$canvas.remove(t);
                 i.default.execFuncs(t.hooks.removed, t);
@@ -467,7 +469,7 @@
             }
             i.default.execFuncs(this.hooks.removed, this);
         };
-        F.prototype.update = function(t) {
+        E.prototype.update = function(t) {
             if (!t) return;
             for (var e in t) {
                 if (n(t[e]) === "object") {
@@ -479,7 +481,7 @@
                 }
             }
         };
-        F.prototype.getAllChildren = function(t) {
+        E.prototype.getAllChildren = function(t) {
             var e = this;
             var r = t ? [ e ] : [];
             e.children.forEach(function(t) {
@@ -487,20 +489,20 @@
             });
             return r;
         };
-        F.prototype.getOuterRect = w.default;
-        F.prototype.combine = S.default;
-        F.prototype.uncombine = A.default;
-        F.prototype.combineAsync = function() {
+        E.prototype.getOuterRect = w.default;
+        E.prototype.combine = S.default;
+        E.prototype.uncombine = A.default;
+        E.prototype.combineAsync = function() {
             this.on("ticked", this.combine, 100);
             return this;
         };
-        F.prototype.nextTick = p.default;
-        F.prototype.on = f.default;
-        F.prototype.off = c.default;
-        F.prototype.clear = h.default;
-        F.prototype.trigger = y.default;
-        F.prototype.broadcast = x.default;
-        t.exports = F;
+        E.prototype.nextTick = p.default;
+        E.prototype.on = f.default;
+        E.prototype.off = c.default;
+        E.prototype.clear = h.default;
+        E.prototype.trigger = y.default;
+        E.prototype.broadcast = x.default;
+        t.exports = E;
     }, , function(t, e) {
         "use strict";
         t.exports = function() {
@@ -1266,7 +1268,6 @@
                         }
                     }
                     h(s, r, n);
-                    r.stopPropagation();
                     return;
                 }
                 if (v.length) {
@@ -1512,6 +1513,7 @@
             }
             var i = n.text;
             var o = n.img;
+            if (o && o._complete === false) o = false;
             n.tx = a.default.funcOrValue(t.style.tx, t) || 0;
             if (t.$parent) {
                 n.tx += a.default.firstValuable(t.$parent.$cache.tx, 0);
@@ -1660,37 +1662,37 @@
                 }
                 if (b.clip) {
                     if (A) {
-                        var R = {
+                        var _ = {
                             $id: t.$id,
                             type: "clip",
                             props: n
                         };
-                        R.$origin = t;
-                        r.$children.push(R);
+                        _.$origin = t;
+                        r.$children.push(_);
                     }
                 }
                 c.length && (0, u.default)(r, c, -1);
                 if (b.fillRect) {
                     if (A) {
                         t.$rendered = true;
-                        var E = {
+                        var R = {
                             $id: t.$id,
                             type: "fillRect",
                             settings: b,
                             props: n
                         };
-                        E.$origin = t;
-                        r.$children.push(E);
+                        R.$origin = t;
+                        r.$children.push(R);
                     }
                 }
                 if (l && n.opacity !== 0 && n.sw && n.sh) {
                     if (!n.rotate && !i) {
                         (0, s.default)(r, n, l, f);
                     }
-                    var F = (0, d.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width - 1, r.height - 1, b.beforeRotate && b.beforeRotate[0], b.beforeRotate && b.beforeRotate[1], n.rotate);
-                    if (F) {
+                    var E = (0, d.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width - 1, r.height - 1, b.beforeRotate && b.beforeRotate[0], b.beforeRotate && b.beforeRotate[1], n.rotate);
+                    if (E) {
                         t.$rendered = true;
-                        var V = {
+                        var F = {
                             $id: t.$id,
                             type: "img",
                             settings: b,
@@ -1698,47 +1700,47 @@
                             props: n
                         };
                         o.$painted = true;
-                        V.$origin = t;
-                        r.$children.push(V);
+                        F.$origin = t;
+                        r.$children.push(F);
                     }
                 }
                 if (i) {
                     t.$rendered = true;
-                    var _ = n.tx;
+                    var V = n.tx;
                     var C = n.ty;
                     var I = n.align || n.textAlign || "left";
-                    var P = n.textFont || "14px Arial";
-                    var L = parseInt(P);
-                    var z = "top";
-                    var H = n.lineHeight || L;
+                    var L = n.textFont || "14px Arial";
+                    var P = parseInt(L);
+                    var H = "top";
+                    var z = n.lineHeight || P;
                     if (I === "center") {
-                        _ += n.tw / 2;
+                        V += n.tw / 2;
                     } else if (I === "right") {
-                        _ += n.tw;
+                        V += n.tw;
                     }
                     if (n.textVerticalAlign === "top") {
-                        z = "top";
+                        H = "top";
                     } else if (n.textVerticalAlign === "bottom") {
-                        z = "bottom";
+                        H = "bottom";
                         C += n.th;
                     } else if (n.textVerticalAlign === "middle") {
                         C += n.th >> 1;
-                        z = "middle";
+                        H = "middle";
                     }
                     if (typeof i === "string" || typeof i === "number") {
-                        if (C + L * 2 > 0 && C - L * 2 < r.height) {
+                        if (C + P * 2 > 0 && C - P * 2 < r.height) {
                             r.$children.push({
                                 $id: t.$id,
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: _,
+                                    tx: V,
                                     ty: C,
                                     content: String(i),
-                                    fontsize: L,
+                                    fontsize: P,
                                     align: I,
-                                    baseline: z,
-                                    font: P,
+                                    baseline: H,
+                                    font: L,
                                     color: n.color,
                                     type: n.textType
                                 },
@@ -1752,13 +1754,13 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: _ + a.default.funcOrValue(e.tx, t),
+                                    tx: V + a.default.funcOrValue(e.tx, t),
                                     ty: C + a.default.funcOrValue(e.ty, t),
                                     content: a.default.funcOrValue(e.content, t),
-                                    fontsize: L,
-                                    baseline: z,
+                                    fontsize: P,
+                                    baseline: H,
                                     align: I,
-                                    font: P,
+                                    font: L,
                                     color: n.color,
                                     type: n.textType
                                 },
@@ -1783,7 +1785,7 @@
                                     r = 0;
                                 }
                                 r++;
-                                a -= L * (p(t[r]) ? 1.05 : .6);
+                                a -= P * (p(t[r]) ? 1.05 : .6);
                             }
                             if (t || e) {
                                 N.push(t);
@@ -1795,19 +1797,19 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: _,
+                                    tx: V,
                                     ty: C,
-                                    fontsize: L,
+                                    fontsize: P,
                                     content: e,
-                                    baseline: z,
+                                    baseline: H,
                                     align: I,
-                                    font: P,
+                                    font: L,
                                     color: n.color,
                                     type: n.textType
                                 },
                                 $origin: t
                             });
-                            C += H || L;
+                            C += z || P;
                         });
                     }
                 }
@@ -1906,58 +1908,44 @@
             var n = this;
             var i = e.props;
             var l = void 0;
-            var s = e.type === "text";
-            if (i && e.type !== "clip" && e.type !== "clipOver" && e.type !== "line") {
-                if (s) {
-                    var f = i.content.length;
-                    l = i.fontsize * i.fontsize * 9 * f;
-                    i[5] = i.tx - i.fontsize * 1.5 * f;
-                    if (i[5] < 0) i[5] = 0;
-                    i[6] = i.ty - i.fontsize * 1.5;
-                    if (i[6] < 0) i[6] = 0;
-                    i[7] = i.fontsize * 3 * f;
-                    if (i[5] + i[7] > n.width) i[7] = n.width - i[5];
-                    i[8] = i.fontsize * 3;
-                    if (i[6] + i[8] > n.height) i[8] = n.height - i[6];
-                } else {
-                    l = i.tw * i.th;
-                }
-                if ((l > 200 * 200 || s) && !e.settings.transform && !e.settings.rotate) {
-                    var u = n.$children;
-                    var c = u.length;
-                    for (var d = r + 1; d < c; d++) {
-                        var h = u[d];
-                        if (h.$cannotCover) {
+            if (i && e.type !== "clip" && e.type !== "text" && e.type !== "clipOver" && e.type !== "line") {
+                l = i.tw * i.th;
+                if (l > 200 * 200 && !e.settings.transform && !e.settings.rotate) {
+                    var s = n.$children;
+                    var f = s.length;
+                    for (var u = r + 1; u < f; u++) {
+                        var c = s[u];
+                        if (c.$cannotCover) {
                             continue;
                         }
-                        if (h.type === "clip") {
-                            while (d < c && u[++d].type !== "clipOver") {}
+                        if (c.type === "clip") {
+                            while (u < f && s[++u].type !== "clipOver") {}
                             continue;
                         }
-                        var v = h.settings;
-                        if (!h.type || h.type !== "img") {
-                            if (!(h.type === "fillRect" && v.fillRect.indexOf("rgba") === -1)) {
-                                h.$cannotCover = true;
+                        var d = c.settings;
+                        if (!c.type || c.type !== "img") {
+                            if (!(c.type === "fillRect" && d.fillRect.indexOf("rgba") === -1)) {
+                                c.$cannotCover = true;
                                 continue;
                             }
                         }
-                        var p = h.props;
-                        if (p.tw * p.th < 200 * 200) {
-                            h.$cannotCover = true;
+                        var h = c.props;
+                        if (h.tw * h.th < 200 * 200) {
+                            c.$cannotCover = true;
                             continue;
                         }
-                        if (p.tw * p.th < l) {
+                        if (h.tw * h.th < l) {
                             continue;
                         }
-                        if (h.img && !h.img.$noAlpha) {
-                            h.$cannotCover = true;
+                        if (c.img && !c.img.$noAlpha) {
+                            c.$cannotCover = true;
                             continue;
                         }
-                        if (v.globalAlpha !== 1 || v.globalCompositeOperation || v.transform || v.rotate) {
-                            h.$cannotCover = true;
+                        if (d.globalAlpha !== 1 || d.globalCompositeOperation || d.transform || d.rotate) {
+                            c.$cannotCover = true;
                             continue;
                         }
-                        if (a.default.pointInRect(i.tx, i.ty, p.tx, p.tx + p.tw, p.ty, p.ty + p.th) && a.default.pointInRect(i.tx + i.tw, i.ty + i.th, p.tx, p.tx + p.tw, p.ty, p.ty + p.th)) {
+                        if (a.default.pointInRect(i.tx, i.ty, h.tx, h.tx + h.tw, h.ty, h.ty + h.th) && a.default.pointInRect(i.tx + i.tw, i.ty + i.th, h.tx, h.tx + h.tw, h.ty, h.ty + h.th)) {
                             if (true) {
                                 e.$origin.$useless = true;
                             }
@@ -1966,8 +1954,8 @@
                     }
                 }
             }
-            var g = e.settings || {};
-            if (o.call(n, e, g)) {
+            var v = e.settings || {};
+            if (o.call(n, e, v)) {
                 return;
             }
             if (true) {
@@ -1975,92 +1963,92 @@
                     e.$origin.$useless = false;
                 }
             }
-            var y = n.$paintContext;
+            var p = n.$paintContext;
             if (e.type === "clip") {
-                y.save();
-                y.beginPath();
-                y.moveTo(i.tx, i.ty);
-                y.lineTo(i.tx + i.tw, i.ty);
-                y.lineTo(i.tx + i.tw, i.ty + i.th);
-                y.lineTo(i.tx, i.ty + i.th);
-                y.lineTo(i.tx, i.ty);
-                y.closePath();
-                y.clip();
+                p.save();
+                p.beginPath();
+                p.moveTo(i.tx, i.ty);
+                p.lineTo(i.tx + i.tw, i.ty);
+                p.lineTo(i.tx + i.tw, i.ty + i.th);
+                p.lineTo(i.tx, i.ty + i.th);
+                p.lineTo(i.tx, i.ty);
+                p.closePath();
+                p.clip();
             }
-            var $ = false;
-            if (g.globalCompositeOperation) {
-                if (!$) {
-                    y.save();
-                    $ = true;
+            var g = false;
+            if (v.globalCompositeOperation) {
+                if (!g) {
+                    p.save();
+                    g = true;
                 }
-                y.globalCompositeOperation = g.globalCompositeOperation;
+                p.globalCompositeOperation = v.globalCompositeOperation;
             }
-            if (g.globalAlpha !== 1 && !isNaN(g.globalAlpha)) {
-                if (!$) {
-                    y.save();
-                    $ = true;
+            if (v.globalAlpha !== 1 && !isNaN(v.globalAlpha)) {
+                if (!g) {
+                    p.save();
+                    g = true;
                 }
-                y.globalAlpha = g.globalAlpha;
+                p.globalAlpha = v.globalAlpha;
             }
-            if (g.translate) {
-                if (!$) {
-                    y.save();
-                    $ = true;
+            if (v.translate) {
+                if (!g) {
+                    p.save();
+                    g = true;
                 }
-                y.translate(g.translate[0] || 0, g.translate[1] || 0);
+                p.translate(v.translate[0] || 0, v.translate[1] || 0);
             }
-            if (g.rotate) {
-                if (!$) {
-                    y.save();
-                    $ = true;
+            if (v.rotate) {
+                if (!g) {
+                    p.save();
+                    g = true;
                 }
-                y.translate(g.beforeRotate[0] || 0, g.beforeRotate[1] || 0);
-                y.rotate(g.rotate || 0);
-                y.translate(g.afterRotate[0] || 0, g.afterRotate[1] || 0);
+                p.translate(v.beforeRotate[0] || 0, v.beforeRotate[1] || 0);
+                p.rotate(v.rotate || 0);
+                p.translate(v.afterRotate[0] || 0, v.afterRotate[1] || 0);
             }
-            if (g.scale) {
-                if (!$) {
-                    y.save();
-                    $ = true;
+            if (v.scale) {
+                if (!g) {
+                    p.save();
+                    g = true;
                 }
-                y.scale(g.scale[0] || 1, g.scale[1] || 1);
+                p.scale(v.scale[0] || 1, v.scale[1] || 1);
             }
-            if (g.transform) {
-                if (!$) {
-                    y.save();
-                    $ = true;
+            if (v.transform) {
+                if (!g) {
+                    p.save();
+                    g = true;
                 }
-                y.transform(1, g.transform.fh, g.transform.fv, 1, g.transform.fx, g.transform.fy);
+                p.transform(1, v.transform.fh, v.transform.fv, 1, v.transform.fx, v.transform.fy);
             }
             if (e.type === "img") {
-                y.drawImage(e.img, i.sx, i.sy, i.sw, i.sh, i.tx, i.ty, i.tw, i.th);
+                p.drawImage(e.img, i.sx, i.sy, i.sw, i.sh, i.tx, i.ty, i.tw, i.th);
                 if (true) {
                     n.$plugin.drawImage(n, i);
                 }
             } else if (e.type === "text" && i.content) {
-                y.font = i.font;
-                y.fillStyle = i.color || "white";
-                y.textAlign = i.align;
-                y.textBaseline = i.baseline;
-                y[i.type || "fillText"](i.content, i.tx, i.ty);
+                p.font = i.font;
+                p.fillStyle = i.color || "white";
+                p.textAlign = i.align;
+                p.textBaseline = i.baseline;
+                p[i.type || "fillText"](i.content, i.tx, i.ty);
             } else if (e.type === "fillRect") {
-                y.fillStyle = g.fillRect;
-                y.fillRect(i.tx, i.ty, i.tw, i.th);
+                p.fillStyle = v.fillRect;
+                p.fillRect(i.tx, i.ty, i.tw, i.th);
             } else if (e.type === "line") {
-                y.beginPath();
-                y.strokeStyle = i.border.substr(i.border.indexOf(" ")) || "black";
-                y.lineWidth = i.border.split(" ")[0] || 1;
-                y.moveTo(i.tx, i.ty);
-                y.lineTo(i.tx + i.tw, i.ty);
-                y.lineTo(i.tx + i.tw, i.ty + i.th);
-                y.lineTo(i.tx, i.ty + i.th);
-                y.closePath();
-                y.stroke();
+                p.beginPath();
+                p.strokeStyle = i.border.substr(i.border.indexOf(" ")) || "black";
+                p.lineWidth = i.border.split(" ")[0] || 1;
+                p.moveTo(i.tx, i.ty);
+                p.lineTo(i.tx + i.tw, i.ty);
+                p.lineTo(i.tx + i.tw, i.ty + i.th);
+                p.lineTo(i.tx, i.ty + i.th);
+                p.closePath();
+                p.stroke();
             } else if (e.type === "clipOver") {
-                y.restore();
+                p.restore();
             }
-            if ($) {
-                y.restore();
+            if (g) {
+                p.restore();
             }
         };
         t.exports = function() {

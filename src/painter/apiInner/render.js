@@ -38,29 +38,29 @@ const render = function ($sprite, i) {
         Jump useless paintings, by calculating border size
     */
     let currentSize;
-    let isText = $sprite.type === 'text';
+    // let isText = $sprite.type === 'text';
 
     // 一些扩展插件的绘制可能没有props
-    if (props && $sprite.type !== 'clip' && $sprite.type !== 'clipOver' && $sprite.type !== 'line') {
-        if (isText) {
-            let length = props.content.length;
+    if (props && $sprite.type !== 'clip' && $sprite.type !== 'text' && $sprite.type !== 'clipOver' && $sprite.type !== 'line') {
+        // if (isText) {
+        //     let length = props.content.length;
 
-            currentSize = props.fontsize * props.fontsize * 9 * length;
+        //     currentSize = props.fontsize * props.fontsize * 9 * length;
 
-            props[5] = props.tx - props.fontsize * 1.5 * length;
-            if (props[5] < 0) props[5] = 0;
-            props[6] = props.ty - props.fontsize * 1.5;
-            if (props[6] < 0) props[6] = 0;
-            props[7] = props.fontsize * 3 * length;
-            if (props[5] + props[7] > $canvas.width) props[7] = $canvas.width - props[5];
-            props[8] = props.fontsize * 3;
-            if (props[6] + props[8] > $canvas.height) props[8] = $canvas.height - props[6];
-        } else {
+        //     props.tx = props.tx - props.fontsize * 1.5 * length;
+        //     if (props.tx < 0) props.tx = 0;
+        //     props.ty = props.ty - props.fontsize * 1.5;
+        //     if (props.ty < 0) props.ty = 0;
+        //     props.tw = props.fontsize * 3 * length;
+        //     if (props.tx + props.tw > $canvas.width) props.tw = $canvas.width - props.tx;
+        //     props.th = props.fontsize * 3;
+        //     if (props.ty + props.th > $canvas.height) props.th = $canvas.height - props.ty;
+        // } else {
             currentSize = props.tw * props.th;
-        }
+        // }
 
         // 当前图层不太小的时候，判断是否可以跳过绘制
-        if ((currentSize > 200 * 200 || isText) &&
+        if ((currentSize > 200 * 200) &&
             !$sprite.settings.transform &&
             !$sprite.settings.rotate
         ) {

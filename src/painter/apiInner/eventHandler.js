@@ -107,7 +107,7 @@ const looper = function (arr, e, caughts) {
             }
 
             triggerEventOnSprite(item, e, caughts);
-            e.stopPropagation();
+            // e.stopPropagation();
             return;
         }
 
@@ -228,6 +228,7 @@ eventHandler = function (e, _$e) {
     // }
 
     looper(sortByIndex($canvas.children), $e, caughts);
+
     if ($e && !$e.$stopPropagation) {
         triggerEventOnSprite($canvas, $e);
     }

@@ -70,6 +70,9 @@ module.exports = function ($sprite, index) {
     let _text = _props.text;
     let _img = _props.img;
 
+    // img有宽高，但是没有onload时，仍不能绘制
+    if (_img && _img._complete === false) _img = false;
+
     _props.tx = utils.funcOrValue($sprite.style.tx, $sprite) || 0;
     if ($sprite.$parent) {
         _props.tx += utils.firstValuable($sprite.$parent.$cache.tx, 0);

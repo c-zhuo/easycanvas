@@ -287,21 +287,21 @@
         var i = T(a);
         var o = r(4);
         var l = T(o);
-        var s = r(19);
+        var s = r(31);
         var f = T(s);
-        var u = r(18);
+        var u = r(30);
         var c = T(u);
-        var d = r(16);
+        var d = r(15);
         var h = T(d);
-        var v = r(17);
+        var v = r(16);
         var p = T(v);
-        var g = r(20);
+        var g = r(32);
         var y = T(g);
-        var $ = r(15);
+        var $ = r(27);
         var x = T($);
-        var m = r(32);
+        var m = r(29);
         var w = T(m);
-        var b = r(31);
+        var b = r(28);
         var S = T(b);
         var k = r(33);
         var A = T(k);
@@ -401,30 +401,30 @@
             M(this);
             return this.children[this.children.length - 1];
         };
-        F.prototype.getRect = function(t) {
-            var e = this;
-            var r = {};
+        F.prototype.getRect = function(t, e) {
+            var r = this;
+            var n = {};
             l.default.txywh.forEach(function(t) {
-                r[t] = e.getStyle(t);
+                n[t] = r.getStyle(t, e);
             });
-            if (r.tw === 0 && this.content.img && !t) {
-                var n = i.default.funcOrValue(this.content.img, this);
-                r.tw = n.width;
-                r.th = n.height;
+            if (n.tw === 0 && this.content.img && !t) {
+                var a = i.default.funcOrValue(this.content.img, this);
+                n.tw = a.width;
+                n.th = a.height;
             }
-            var a = this.getStyle("locate");
-            if (a === "lt") {} else if (a === "ld") {
-                r.ty -= r.th;
-            } else if (a === "rt") {
-                r.tx -= r.tw;
-            } else if (a === "rd") {
-                r.tx -= r.tw;
-                r.ty -= r.th;
+            var o = this.getStyle("locate");
+            if (o === "lt") {} else if (o === "ld") {
+                n.ty -= n.th;
+            } else if (o === "rt") {
+                n.tx -= n.tw;
+            } else if (o === "rd") {
+                n.tx -= n.tw;
+                n.ty -= n.th;
             } else {
-                r.tx -= r.tw >> 1;
-                r.ty -= r.th >> 1;
+                n.tx -= n.tw >> 1;
+                n.ty -= n.th >> 1;
             }
-            return r;
+            return n;
         };
         F.prototype.getSelfStyle = function(t) {
             var e = {};
@@ -436,25 +436,20 @@
             }
             return e;
         };
-        F.prototype.getStyle = function(t) {
-            var e = this;
-            var r = e.$canvas.$lastPaintTime;
-            if (e.$cache[t] !== undefined) {
-                return e.$cache[t];
+        F.prototype.getStyle = function(t, e) {
+            var r = this;
+            if (e && r.$cache[t] !== undefined) {
+                return r.$cache[t];
             }
-            var n = i.default.funcOrValue(e.style[t], e);
-            if (e.$parent) {
-                var a = void 0;
-                a = t === "tx" || t === "ty" || t === "scale" || t === "opacity";
-                if (a) {
-                    var o = e.$parent.getStyle(t);
-                    if (t === "opacity" || t === "scale") {
-                        o = i.default.firstValuable(o, 1);
-                        return o * i.default.firstValuable(n, 1);
-                    } else {
-                        o = i.default.firstValuable(o, 0);
-                        return o + i.default.firstValuable(n, 0);
-                    }
+            var n = i.default.funcOrValue(r.style[t], r);
+            if (r.$parent) {
+                var a = r.$parent.getStyle(t);
+                if (t === "tx" || t === "ty") {
+                    a = i.default.firstValuable(a, 0);
+                    return a + i.default.firstValuable(n, 0);
+                } else if (t === "scale" || t === "opacity") {
+                    a = i.default.firstValuable(a, 1);
+                    return a * i.default.firstValuable(n, 1);
                 }
             }
             return n;
@@ -506,27 +501,7 @@
         F.prototype.trigger = y.default;
         F.prototype.broadcast = x.default;
         t.exports = F;
-    }, , function(t, e, r) {
-        "use strict";
-        var n = r(1);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = function() {
-            var t = Array.prototype.slice.call(arguments);
-            var e = t.shift();
-            if (this.hooks[e]) {
-                a.default.execFuncs(this.hooks[e], this, t);
-            }
-            t.unshift(e);
-            this.children && this.children.forEach(function(e) {
-                e.broadcast.apply(e, t);
-            });
-        };
-    }, function(t, e) {
+    }, , function(t, e) {
         "use strict";
         t.exports = function() {
             this.children.forEach(function(t) {
@@ -542,75 +517,6 @@
                 this.off("ticked", e);
             };
             this.on("ticked", e);
-        };
-    }, function(t, e, r) {
-        "use strict";
-        var n = r(1);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = function(t, e) {
-            if (!this.hooks[t]) return;
-            if (this.hooks[t] === e || this.hooks[t].$handle === e || !e) {
-                delete this.hooks[t];
-            } else if (a.default.isArray(this.hooks[t])) {
-                if (this.hooks[t].indexOf(e) >= 0) {
-                    this.hooks[t][this.hooks[t].indexOf(e)] = undefined;
-                } else if (this.hooks[t].indexOf(e.$handle) >= 0) {
-                    this.hooks[t][this.hooks[t].indexOf(e.$handle)] = undefined;
-                }
-            }
-        };
-    }, function(t, e, r) {
-        "use strict";
-        var n = r(1);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = function(t, e, r) {
-            var n = e;
-            if (r) {
-                var i = this;
-                n = function t() {
-                    var a = Date.now();
-                    if (a > n.$lastTriggerTime + r) {
-                        n.$lastTriggerTime = a;
-                        var o = Array.prototype.slice.call(arguments);
-                        e.apply(i, o);
-                    }
-                };
-                n.$lastTriggerTime = -1;
-                n.$handle = e;
-            }
-            if (!this.hooks[t]) {
-                this.hooks[t] = n;
-            } else if (a.default.isArray(this.hooks[t])) {
-                this.hooks[t].push(n);
-            } else {
-                this.hooks[t] = [ this.hooks[t], n ];
-            }
-        };
-    }, function(t, e, r) {
-        "use strict";
-        var n = r(1);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = function() {
-            var t = Array.prototype.slice.call(arguments);
-            var e = t.shift();
-            if (this.hooks[e]) {
-                return a.default.execFuncs(this.hooks[e], this, t);
-            }
         };
     }, , , , , , , , function(t, e) {
         "use strict";
@@ -955,6 +861,26 @@
         }
     }, function(t, e, r) {
         "use strict";
+        var n = r(1);
+        var a = i(n);
+        function i(t) {
+            return t && t.__esModule ? t : {
+                default: t
+            };
+        }
+        t.exports = function() {
+            var t = Array.prototype.slice.call(arguments);
+            var e = t.shift();
+            if (this.hooks[e]) {
+                a.default.execFuncs(this.hooks[e], this, t);
+            }
+            t.unshift(e);
+            this.children && this.children.forEach(function(e) {
+                e.broadcast.apply(e, t);
+            });
+        };
+    }, function(t, e, r) {
+        "use strict";
         var n = Object.assign || function(t) {
             for (var e = 1; e < arguments.length; e++) {
                 var r = arguments[e];
@@ -983,7 +909,7 @@
                 if (e.$combine) return l;
                 if (i.default.funcOrValue(e.style.visible, e) === false) return f;
                 var r = t.$canvas;
-                var a = e.getRect();
+                var a = e.getRect(false, true);
                 if (a.tx < 0 || a.tr > r.width) return s;
                 if (a.ty < 0 || a.tb > r.height) return s;
                 var o = e.getAllChildren(true);
@@ -999,7 +925,7 @@
                         return f;
                     }
                 }
-                var h = e.getOuterRect();
+                var h = e.getOuterRect(false, true);
                 h.tx = Math.floor(h.tx);
                 h.ty = Math.floor(h.ty);
                 h.tw = Math.round(h.tw);
@@ -1050,7 +976,8 @@
                     tx: x,
                     ty: m,
                     tw: y.width,
-                    th: y.height
+                    th: y.height,
+                    backgroundColor: undefined
                 });
                 r.$children = p;
                 r.$lastTickChildren = false;
@@ -1058,24 +985,94 @@
                 e.off("ticked", t.combine);
                 return l;
             });
+            return this;
         };
     }, function(t, e) {
         "use strict";
-        t.exports = function() {
-            var t = this;
-            var e = t.getRect();
-            e.tr = e.tx + e.tw;
-            e.tb = e.ty + e.th;
-            this.children.forEach(function(t) {
-                var r = t.getOuterRect();
-                if (r.tx < e.tx) e.tx = r.tx;
-                if (r.ty < e.ty) e.ty = r.ty;
-                if (r.tr > e.tr) e.tr = r.tr;
-                if (r.tb > e.tb) e.tb = r.tb;
-                e.tw = e.tr - e.tx;
-                e.th = e.tb - e.ty;
+        t.exports = function(t, e) {
+            var r = this;
+            var n = r.getRect(t, e);
+            n.tr = n.tx + n.tw;
+            n.tb = n.ty + n.th;
+            this.children.forEach(function(r) {
+                var a = r.getOuterRect(t, e);
+                if (a.tx < n.tx) n.tx = a.tx;
+                if (a.ty < n.ty) n.ty = a.ty;
+                if (a.tr > n.tr) n.tr = a.tr;
+                if (a.tb > n.tb) n.tb = a.tb;
+                n.tw = n.tr - n.tx;
+                n.th = n.tb - n.ty;
             });
-            return e;
+            return n;
+        };
+    }, function(t, e, r) {
+        "use strict";
+        var n = r(1);
+        var a = i(n);
+        function i(t) {
+            return t && t.__esModule ? t : {
+                default: t
+            };
+        }
+        t.exports = function(t, e) {
+            if (!this.hooks[t]) return;
+            if (this.hooks[t] === e || this.hooks[t].$handle === e || !e) {
+                delete this.hooks[t];
+            } else if (a.default.isArray(this.hooks[t])) {
+                if (this.hooks[t].indexOf(e) >= 0) {
+                    this.hooks[t][this.hooks[t].indexOf(e)] = undefined;
+                } else if (this.hooks[t].indexOf(e.$handle) >= 0) {
+                    this.hooks[t][this.hooks[t].indexOf(e.$handle)] = undefined;
+                }
+            }
+        };
+    }, function(t, e, r) {
+        "use strict";
+        var n = r(1);
+        var a = i(n);
+        function i(t) {
+            return t && t.__esModule ? t : {
+                default: t
+            };
+        }
+        t.exports = function(t, e, r) {
+            var n = e;
+            if (r) {
+                var i = this;
+                n = function t() {
+                    var a = Date.now();
+                    if (a > n.$lastTriggerTime + r) {
+                        n.$lastTriggerTime = a;
+                        var o = Array.prototype.slice.call(arguments);
+                        e.apply(i, o);
+                    }
+                };
+                n.$lastTriggerTime = -1;
+                n.$handle = e;
+            }
+            if (!this.hooks[t]) {
+                this.hooks[t] = n;
+            } else if (a.default.isArray(this.hooks[t])) {
+                this.hooks[t].push(n);
+            } else {
+                this.hooks[t] = [ this.hooks[t], n ];
+            }
+        };
+    }, function(t, e, r) {
+        "use strict";
+        var n = r(1);
+        var a = i(n);
+        function i(t) {
+            return t && t.__esModule ? t : {
+                default: t
+            };
+        }
+        t.exports = function() {
+            var t = Array.prototype.slice.call(arguments);
+            var e = t.shift();
+            if (this.hooks[e]) {
+                return a.default.execFuncs(this.hooks[e], this, t);
+            }
         };
     }, function(t, e) {
         "use strict";
@@ -1098,25 +1095,25 @@
         "use strict";
         var n = r(4);
         var a = A(n);
-        var i = r(61);
+        var i = r(60);
         var o = A(i);
-        var l = r(28);
+        var l = r(24);
         var s = A(l);
-        var f = r(103);
+        var f = r(102);
         var u = A(f);
         var c = r(1);
         var d = A(c);
-        var h = r(29);
+        var h = r(25);
         var v = A(h);
         var p = r(9);
         var g = A(p);
-        var y = r(102);
+        var y = r(101);
         var $ = A(y);
-        var x = r(104);
+        var x = r(103);
         var m = A(x);
         var w = r(13);
         var b = A(w);
-        var S = r(30);
+        var S = r(26);
         var k = A(S);
         function A(t) {
             return t && t.__esModule ? t : {
@@ -1181,7 +1178,7 @@
         var s = h(l);
         var f = r(48);
         var u = h(f);
-        var c = r(60);
+        var c = r(59);
         var d = h(c);
         function h(t) {
             return t && t.__esModule ? t : {
@@ -1507,7 +1504,9 @@
             g.call(t);
             var n = t.$props = {};
             n.img = a.default.funcOrValue(t.content.img, t);
-            n.text = a.default.funcOrValue(t.content.text, t);
+            if (t.content.text) {
+                n.text = a.default.funcOrValue(t.content.text, t);
+            }
             if (typeof n.img === "string") {
                 n.img = t.content.img = r.imgLoader(n.img);
             }
@@ -1525,13 +1524,17 @@
             t.$cache.ty = n.ty;
             var l = 0;
             var f = 0;
-            if (o) {
+            if (o && o.width) {
                 l = o.width || 0;
                 f = o.height || 0;
                 n.sx = a.default.funcOrValue(t.style.sx, t) || 0;
                 n.sy = a.default.funcOrValue(t.style.sy, t) || 0;
                 n.sw = a.default.funcOrValue(t.style.sw, t) || l;
                 n.sh = a.default.funcOrValue(t.style.sh, t) || f;
+                n.sx = Math.round(n.sx);
+                n.sy = Math.round(n.sy);
+                n.sw = Math.round(n.sw);
+                n.sh = Math.round(n.sh);
             }
             n.tw = a.default.funcOrValue(t.style.tw, t) || n.sw || 0;
             n.th = a.default.funcOrValue(t.style.th, t) || n.sh || 0;
@@ -1570,6 +1573,10 @@
                 n.tx -= n.tw >> 1;
                 n.ty -= n.th >> 1;
             }
+            n.tx = Math.round(n.tx);
+            n.ty = Math.round(n.ty);
+            n.tw = Math.round(n.tw);
+            n.th = Math.round(n.th);
             var b = {};
             if (n.rotate) {
                 n.rx = a.default.firstValuable(a.default.funcOrValue(t.style.rx, t), n.tx + .5 * n.tw);
@@ -1656,8 +1663,6 @@
                         var R = {
                             $id: t.$id,
                             type: "clip",
-                            settings: b,
-                            img: o,
                             props: n
                         };
                         R.$origin = t;
@@ -1672,7 +1677,6 @@
                             $id: t.$id,
                             type: "fillRect",
                             settings: b,
-                            img: o,
                             props: n
                         };
                         E.$origin = t;
@@ -1816,8 +1820,6 @@
                         var B = {
                             $id: t.$id,
                             type: "clipOver",
-                            settings: b,
-                            img: o,
                             props: n
                         };
                         B.$origin = t;
@@ -1831,7 +1833,6 @@
                             $id: t.$id,
                             type: "line",
                             settings: b,
-                            img: o,
                             props: n
                         };
                         D.$origin = t;
@@ -1843,9 +1844,9 @@
         };
     }, function(t, e, r) {
         "use strict";
-        var n = r(28);
+        var n = r(24);
         var a = l(n);
-        var i = r(29);
+        var i = r(25);
         var o = l(i);
         function l(t) {
             return t && t.__esModule ? t : {
@@ -1923,35 +1924,40 @@
                 }
                 if ((l > 200 * 200 || s) && !e.settings.transform && !e.settings.rotate) {
                     var u = n.$children;
-                    for (var c = u.length - 1; c > r; c--) {
-                        var d = u[c];
-                        if (d.$cannotCover) {
+                    var c = u.length;
+                    for (var d = r + 1; d < c; d++) {
+                        var h = u[d];
+                        if (h.$cannotCover) {
                             continue;
                         }
-                        var h = d.settings;
-                        if (!d.type || d.type !== "img") {
-                            if (!(d.type === "fillRect" && h.fillRect.indexOf("rgba") === -1)) {
-                                d.$cannotCover = true;
+                        if (h.type === "clip") {
+                            while (d < c && u[++d].type !== "clipOver") {}
+                            continue;
+                        }
+                        var v = h.settings;
+                        if (!h.type || h.type !== "img") {
+                            if (!(h.type === "fillRect" && v.fillRect.indexOf("rgba") === -1)) {
+                                h.$cannotCover = true;
                                 continue;
                             }
                         }
-                        var v = d.props;
-                        if (v.tw * v.th < 200 * 200) {
-                            d.$cannotCover = true;
+                        var p = h.props;
+                        if (p.tw * p.th < 200 * 200) {
+                            h.$cannotCover = true;
                             continue;
                         }
-                        if (v.tw * v.th < l) {
+                        if (p.tw * p.th < l) {
                             continue;
                         }
-                        if (d.img && !d.img.$noAlpha) {
-                            d.$cannotCover = true;
+                        if (h.img && !h.img.$noAlpha) {
+                            h.$cannotCover = true;
                             continue;
                         }
-                        if (h.globalAlpha !== 1 || h.globalCompositeOperation || h.transform || h.rotate) {
-                            d.$cannotCover = true;
+                        if (v.globalAlpha !== 1 || v.globalCompositeOperation || v.transform || v.rotate) {
+                            h.$cannotCover = true;
                             continue;
                         }
-                        if (a.default.pointInRect(i.tx, i.ty, v.tx, v.tx + v.tw, v.ty, v.ty + v.th) && a.default.pointInRect(i.tx + i.tw, i.ty + i.th, v.tx, v.tx + v.tw, v.ty, v.ty + v.th)) {
+                        if (a.default.pointInRect(i.tx, i.ty, p.tx, p.tx + p.tw, p.ty, p.ty + p.th) && a.default.pointInRect(i.tx + i.tw, i.ty + i.th, p.tx, p.tx + p.tw, p.ty, p.ty + p.th)) {
                             if (true) {
                                 e.$origin.$useless = true;
                             }
@@ -1960,8 +1966,8 @@
                     }
                 }
             }
-            var p = e.settings || {};
-            if (o.call(n, e, p)) {
+            var g = e.settings || {};
+            if (o.call(n, e, g)) {
                 return;
             }
             if (true) {
@@ -1969,92 +1975,92 @@
                     e.$origin.$useless = false;
                 }
             }
-            var g = n.$paintContext;
+            var y = n.$paintContext;
             if (e.type === "clip") {
-                g.save();
-                g.beginPath();
-                g.moveTo(i.tx, i.ty);
-                g.lineTo(i.tx + i.tw, i.ty);
-                g.lineTo(i.tx + i.tw, i.ty + i.th);
-                g.lineTo(i.tx, i.ty + i.th);
-                g.lineTo(i.tx, i.ty);
-                g.closePath();
-                g.clip();
+                y.save();
+                y.beginPath();
+                y.moveTo(i.tx, i.ty);
+                y.lineTo(i.tx + i.tw, i.ty);
+                y.lineTo(i.tx + i.tw, i.ty + i.th);
+                y.lineTo(i.tx, i.ty + i.th);
+                y.lineTo(i.tx, i.ty);
+                y.closePath();
+                y.clip();
             }
-            var y = false;
-            if (p.globalCompositeOperation) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            var $ = false;
+            if (g.globalCompositeOperation) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.globalCompositeOperation = p.globalCompositeOperation;
+                y.globalCompositeOperation = g.globalCompositeOperation;
             }
-            if (p.globalAlpha !== 1 && !isNaN(p.globalAlpha)) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.globalAlpha !== 1 && !isNaN(g.globalAlpha)) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.globalAlpha = p.globalAlpha;
+                y.globalAlpha = g.globalAlpha;
             }
-            if (p.translate) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.translate) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.translate(p.translate[0] || 0, p.translate[1] || 0);
+                y.translate(g.translate[0] || 0, g.translate[1] || 0);
             }
-            if (p.rotate) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.rotate) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.translate(p.beforeRotate[0] || 0, p.beforeRotate[1] || 0);
-                g.rotate(p.rotate || 0);
-                g.translate(p.afterRotate[0] || 0, p.afterRotate[1] || 0);
+                y.translate(g.beforeRotate[0] || 0, g.beforeRotate[1] || 0);
+                y.rotate(g.rotate || 0);
+                y.translate(g.afterRotate[0] || 0, g.afterRotate[1] || 0);
             }
-            if (p.scale) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.scale) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.scale(p.scale[0] || 1, p.scale[1] || 1);
+                y.scale(g.scale[0] || 1, g.scale[1] || 1);
             }
-            if (p.transform) {
-                if (!y) {
-                    g.save();
-                    y = true;
+            if (g.transform) {
+                if (!$) {
+                    y.save();
+                    $ = true;
                 }
-                g.transform(1, p.transform.fh, p.transform.fv, 1, p.transform.fx, p.transform.fy);
+                y.transform(1, g.transform.fh, g.transform.fv, 1, g.transform.fx, g.transform.fy);
             }
             if (e.type === "img") {
-                g.drawImage(e.img, i.sx, i.sy, i.sw, i.sh, i.tx, i.ty, i.tw, i.th);
+                y.drawImage(e.img, i.sx, i.sy, i.sw, i.sh, i.tx, i.ty, i.tw, i.th);
                 if (true) {
                     n.$plugin.drawImage(n, i);
                 }
             } else if (e.type === "text" && i.content) {
-                g.font = i.font;
-                g.fillStyle = i.color || "white";
-                g.textAlign = i.align;
-                g.textBaseline = i.baseline;
-                g[i.type || "fillText"](i.content, i.tx, i.ty);
+                y.font = i.font;
+                y.fillStyle = i.color || "white";
+                y.textAlign = i.align;
+                y.textBaseline = i.baseline;
+                y[i.type || "fillText"](i.content, i.tx, i.ty);
             } else if (e.type === "fillRect") {
-                g.fillStyle = p.fillRect;
-                g.fillRect(i.tx, i.ty, i.tw, i.th);
+                y.fillStyle = g.fillRect;
+                y.fillRect(i.tx, i.ty, i.tw, i.th);
             } else if (e.type === "line") {
-                g.beginPath();
-                g.strokeStyle = i.border.substr(i.border.indexOf(" ")) || "black";
-                g.lineWidth = i.border.split(" ")[0] || 1;
-                g.moveTo(i.tx, i.ty);
-                g.lineTo(i.tx + i.tw, i.ty);
-                g.lineTo(i.tx + i.tw, i.ty + i.th);
-                g.lineTo(i.tx, i.ty + i.th);
-                g.closePath();
-                g.stroke();
+                y.beginPath();
+                y.strokeStyle = i.border.substr(i.border.indexOf(" ")) || "black";
+                y.lineWidth = i.border.split(" ")[0] || 1;
+                y.moveTo(i.tx, i.ty);
+                y.lineTo(i.tx + i.tw, i.ty);
+                y.lineTo(i.tx + i.tw, i.ty + i.th);
+                y.lineTo(i.tx, i.ty + i.th);
+                y.closePath();
+                y.stroke();
             } else if (e.type === "clipOver") {
-                g.restore();
+                y.restore();
             }
-            if (y) {
-                g.restore();
+            if ($) {
+                y.restore();
             }
         };
         t.exports = function() {
@@ -2063,71 +2069,54 @@
         };
     }, function(t, e, r) {
         "use strict";
-        var n = r(51);
-        var a = _(n);
-        var i = r(55);
-        var o = _(i);
-        var l = r(59);
-        var s = _(l);
-        var f = r(52);
-        var u = _(f);
-        var c = r(16);
-        var d = _(c);
-        var h = r(53);
-        var v = _(h);
-        var p = r(19);
-        var g = _(p);
-        var y = r(18);
-        var $ = _(y);
-        var x = r(20);
-        var m = _(x);
-        var w = r(15);
-        var b = _(w);
-        var S = r(17);
-        var k = _(S);
-        var A = r(54);
-        var T = _(A);
-        var O = r(56);
-        var M = _(O);
-        var R = r(57);
-        var E = _(R);
-        var F = r(58);
-        var V = _(F);
-        function _(t) {
+        var n = r(54);
+        var a = A(n);
+        var i = r(58);
+        var o = A(i);
+        var l = r(51);
+        var s = A(l);
+        var f = r(15);
+        var u = A(f);
+        var c = r(52);
+        var d = A(c);
+        var h = r(16);
+        var v = A(h);
+        var p = r(53);
+        var g = A(p);
+        var y = r(55);
+        var $ = A(y);
+        var x = r(56);
+        var m = A(x);
+        var w = r(57);
+        var b = A(w);
+        var S = r(13);
+        var k = A(S);
+        function A(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
         }
-        var C = {
-            start: s.default,
-            paint: u.default,
-            add: a.default,
-            remove: o.default,
-            register: T.default,
-            clear: d.default,
-            setFpsHandler: M.default,
-            setMaxFps: E.default,
-            pause: v.default,
-            on: g.default,
-            off: $.default,
-            trigger: m.default,
-            broadcast: b.default,
-            nextTick: k.default
+        var T = {
+            start: o.default,
+            paint: s.default,
+            add: k.default.prototype.add,
+            remove: a.default,
+            register: g.default,
+            clear: u.default,
+            setFpsHandler: $.default,
+            setMaxFps: m.default,
+            pause: d.default,
+            on: k.default.prototype.on,
+            off: k.default.prototype.off,
+            trigger: k.default.prototype.trigger,
+            broadcast: k.default.prototype.broadcast,
+            nextTick: v.default,
+            getAllChildren: k.default.prototype.getAllChildren
         };
         if (true) {
-            C.skeleton = V.default;
+            T.skeleton = b.default;
         }
-        t.exports = C;
-    }, function(t, e, r) {
-        "use strict";
-        var n = r(13);
-        var a = i(n);
-        function i(t) {
-            return t && t.__esModule ? t : {
-                default: t
-            };
-        }
-        t.exports = a.default.prototype.add;
+        t.exports = T;
     }, function(t, e, r) {
         "use strict";
         var n = r(1);
@@ -2337,8 +2326,8 @@
                 r.forEach(function(t) {
                     var r = t.props;
                     var n = t.settings;
-                    e += "_.globalAlpha=" + n.globalAlpha + ";";
                     if (t.type === "img") {
+                        e += "_.globalAlpha=" + n.globalAlpha + ";";
                         if (t.img && t.img.$origin) {
                             e += t.img.$origin.join(";") + ";";
                             e += "_.drawImage(tempCanvas, " + r.sx + ", " + r.sy + ", " + r.sw + ", " + r.sh + ", " + r.tx + ", " + r.ty + ", " + r.tw + ", " + r.th + ");";
@@ -2352,6 +2341,7 @@
                             e += "_.fillRect(" + r.tx + ", " + r.ty + ", " + r.tw + ", " + r.th + ");";
                         }
                     } else if (t.type === "fillRect") {
+                        e += "_.globalAlpha=" + n.globalAlpha + ";";
                         e += "_.fillStyle='" + n.fillRect + "';";
                         e += "_.fillRect(" + r.tx + ", " + r.ty + ", " + r.tw + ", " + r.th + ");";
                     }
@@ -2702,7 +2692,7 @@
         var a = c(n);
         var i = r(43);
         var o = c(i);
-        var l = r(62);
+        var l = r(61);
         var s = c(l);
         var f = r(9);
         var u = c(f);

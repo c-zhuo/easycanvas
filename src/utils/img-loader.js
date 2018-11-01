@@ -51,6 +51,7 @@ const loader = function (url, callback, option) {
     // todo: 多个loader加载同一图片，目前只触发一个callback；待补充
 
     let i = new Image();
+    i._complete = false;
 
     if (_option.block) {
         i.src = url;
@@ -73,7 +74,10 @@ const loader = function (url, callback, option) {
         Cache[cacheNamespace] = tempCanvas;
     }
 
-    i.onload = function () {
+
+    i.onload = function (e) {
+        i._complete = true;
+
         if (i.src.substr(-3) === 'jpg' || i.src.substr(-3) === 'jpeg' || i.src.substr(-3) === 'bmp') {
             i.$noAlpha = true;
         } else if (i.src.indexOf('data:image/jpg;') === 0) {

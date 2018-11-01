@@ -1,7 +1,7 @@
 // <p>Feature：为Painter实例增加afterEvent钩子。</p>
 
 module.exports = `
-    <article id="更新日志（Latest：2018-10-29）">
+    <article id="更新日志（Latest：2018-11-1）">
         <h1>更新</h1>
 
         <p class="tip">Tips：小版本号为bugfix或增加API，中版本号可能包含个别不向下兼容的API调整。</p>
@@ -13,12 +13,20 @@ module.exports = `
 
         <h2>当前版本</h2>
 
+        <h3>0.7.3 (2018.11.1)</h3>
+
+        <p>Bugfix：修复<strong>在content.img中通过url直接加载图片并且页面后续无交互时图片可能渲染失败</strong>的bug。</p>
+        <p>Bugfix：修复<strong>在Sprite触发的事件无法正确冒泡到Painter</strong>（只会冒泡到Painter的一级child）的bug。</p>
+        <p>Bugfix：修复<strong>文本渲染时可能模糊</strong>的bug。</p>
+        <p>Bugfix：修复<strong>overflow为hidden的Sprite在特定情况下会遮挡外部的Sprite</strong>的bug。</p>
+        <p>Bugfix：修复<strong>getStyle获取的样式不是最新样式</strong>（而是读取了上一次Sprite可见时的缓存）的bug。</p>
+
+        <h2>历史版本</h2>
+
         <h3>0.7.2 (2018.10.29)</h3>
 
         <p>Change：<strong>事件的规则与DOM的事件保持一致</strong>，并会进行冒泡，可以通过stopPropagation方法阻止事件继续传递。移除了基础库自定义的hold和touchout事件。</p>
         <p>Bugfix：调整<strong>Scroll组件</strong>的速度参数，现在更接近HTML的原生滚动了。</p>
-
-        <h2>历史版本</h2>
 
         <h3>0.7.0 (2018.10.28)</h3>
 
