@@ -6,6 +6,8 @@ module.exports = function (notImg, fromCache) {
     rect.tb = rect.ty + rect.th;
 
     this.children.forEach((child) => {
+        if (child.$cache.visible === false) return;
+
         let childRect = child.getOuterRect(notImg, fromCache);
         if (childRect.tx < rect.tx) rect.tx = childRect.tx;
         if (childRect.ty < rect.ty) rect.ty = childRect.ty;

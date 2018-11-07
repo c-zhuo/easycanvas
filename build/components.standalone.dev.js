@@ -73,50 +73,50 @@
                 }
                 var v = 0;
                 var p = t.lineHeight ? (t.lineHeight - t.size) / 2 : 0;
-                var g = 0;
-                var m = 1;
+                var m = 0;
+                var g = 1;
                 var y = false;
                 var x = 0;
                 while (true) {
-                    var $ = h.measureText(o.slice(g, m)).width;
+                    var $ = h.measureText(o.slice(m, g)).width;
                     if ($ > t.width) {
                         if (t.overflow === "ellipsis") {
-                            m -= 2;
-                            h.fillText(o.slice(g, m) + "...", v, p + t.size / 2);
+                            g -= 2;
+                            h.fillText(o.slice(m, g) + "...", v, p + t.size / 2);
                             if (true) {
-                                d.push("tempCtx.fillText('" + o.slice(g, m) + "...', " + v + ", " + (p + t.size / 2) + ")");
+                                d.push("tempCtx.fillText('" + o.slice(m, g) + "...', " + v + ", " + (p + t.size / 2) + ")");
                             }
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 0);
                             x = t.width - a[1] - a[3];
                             break;
                         } else {
-                            m -= 1;
-                            h.fillText(o.slice(g, m), v, p + t.size / 2);
+                            g -= 1;
+                            h.fillText(o.slice(m, g), v, p + t.size / 2);
                             if (true) {
-                                d.push("tempCtx.fillText('" + o.slice(g, m) + "', " + v + ", " + (p + t.size / 2) + ")");
+                                d.push("tempCtx.fillText('" + o.slice(m, g) + "', " + v + ", " + (p + t.size / 2) + ")");
                             }
-                            g = m;
-                            m = g + 1;
+                            m = g;
+                            g = m + 1;
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 10);
                         }
                     } else {
-                        if (m > o.length - 1) {
+                        if (g > o.length - 1) {
                             if ($ > x) x = $;
-                            h.fillText(o.slice(g, m), v, p + t.size / 2);
+                            h.fillText(o.slice(m, g), v, p + t.size / 2);
                             if (true) {
-                                d.push("tempCtx.fillText('" + o.slice(g, m) + "', " + v + ", " + (p + t.size / 2) + ")");
+                                d.push("tempCtx.fillText('" + o.slice(m, g) + "', " + v + ", " + (p + t.size / 2) + ")");
                             }
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 0);
                             break;
-                        } else if (o.slice(m, m + 1) === r) {
-                            h.fillText(o.slice(g, m), v, p + t.size / 2);
-                            m += 1;
-                            g = m;
-                            m = g + 1;
+                        } else if (o.slice(g, g + 1) === r) {
+                            h.fillText(o.slice(m, g), v, p + t.size / 2);
+                            g += 1;
+                            m = g;
+                            g = m + 1;
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 10);
                         }
                         if ($ > x) x = $;
-                        m++;
+                        g++;
                     }
                 }
                 var w = document.createElement("canvas");
@@ -345,6 +345,8 @@
                         l.scroll.scrollY = c;
                     } else if (!isNaN(u) && l.scroll.scrollY > u) {
                         l.scroll.scrollY = u;
+                        l.broadcast("scrolledToBottom");
+                        l.$scroll.speedY = 0;
                     }
                     if (!isNaN(a) && l.scroll.scrollX < a) {
                         l.scroll.scrollX = a;

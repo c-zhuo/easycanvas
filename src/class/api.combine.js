@@ -5,11 +5,18 @@ const COMBINE_FAIL = 2;
 const COMBINE_DELAY = 3;
 
 module.exports = function () {
-// module.exports = function (force) {
-    setTimeout(() => {
-        let $sprite = this;
+    let $sprite = this;
 
-        if ($sprite.$combine) return COMBINE_DONE;
+    if ($sprite.$combine) {
+        return COMBINE_DONE;
+    }
+
+    setTimeout(() => {
+        if ($sprite.$combine) {
+            // 日历组件会走到这里，原因未知，做一下兜底
+            // TODO
+            return COMBINE_DONE;
+        }
 
         if (utils.funcOrValue($sprite.style.visible, $sprite) === false) return COMBINE_DELAY;
 
@@ -17,8 +24,8 @@ module.exports = function () {
 
         let rect = $sprite.getRect(false, true);
 
-        if (rect.tx < 0 || rect.tr > $canvas.width) return COMBINE_FAIL;
-        if (rect.ty < 0 || rect.tb > $canvas.height) return COMBINE_FAIL;
+        if (rect.tx < 0 || rect.tx + rect.tw > $canvas.width) return COMBINE_FAIL;
+        if (rect.ty < 0 || rect.ty + rect.th > $canvas.height) return COMBINE_FAIL;
 
         let allChildrenInCombine = $sprite.getAllChildren(true);
 
@@ -50,6 +57,8 @@ module.exports = function () {
             if (outerRect.tx < 0 || outerRect.tr > $canvas.width) return COMBINE_FAIL;
             if (outerRect.ty < 0 || outerRect.tb > $canvas.height) return COMBINE_FAIL;
         // }
+
+        $sprite.off('ticked', this.combine);
 
         // 修改：这块不能绘制，paint有可能导致位置变动
         // 绘制一帧，清除连续combine时，前一个combine新产生的对象没有进入$canvas.$children，导致下一个combine获取不到的问题
@@ -136,8 +145,6 @@ module.exports = function () {
 
         // $canvas.$lastTickChildren = false;
         // $canvas.paint();
-
-        $sprite.off('ticked', this.combine);
 
         return COMBINE_DONE;
     });

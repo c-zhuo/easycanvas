@@ -76,6 +76,12 @@ const looper = function (arr, e, caughts) {
         }
 
         let children = item.$combine ? item.$combine.children : item.children;
+        if (process.env.NODE_ENV !== 'production') {
+            if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
+                // 选取Sprite时不选取内部Sprite
+                children = item.children;
+            }
+        }
 
         if (children.length) {
             // Children above
@@ -107,7 +113,7 @@ const looper = function (arr, e, caughts) {
             }
 
             triggerEventOnSprite(item, e, caughts);
-            // e.stopPropagation();
+            e.stopPropagation();
             return;
         }
 
@@ -144,6 +150,11 @@ const triggerEventOnSprite = function ($sprite, $e, caughts) {
 
     if ($sprite.$parent) {
         triggerEventOnSprite($sprite.$parent, $e, caughts);
+    } else {
+        if ($sprite.$canvas && !$e.$stopPropagation) {
+            triggerEventOnSprite($sprite.$canvas, $e);
+            $e.stopPropagation();
+        }
     }
 };
 
@@ -229,10 +240,6 @@ eventHandler = function (e, _$e) {
 
     looper(sortByIndex($canvas.children), $e, caughts);
 
-    if ($e && !$e.$stopPropagation) {
-        triggerEventOnSprite($canvas, $e);
-    }
-
     // utils.execFuncs($canvas.hooks.afterEvent, $canvas, $e);
     // $canvas.hooks.afterEvent = null;
 
@@ -270,13 +277,13 @@ eventHandler = function (e, _$e) {
         $canvas.eLastMouseHover = null;
     }
 
-    // let handler = $canvas.events[$e.type];
-    // if (handler) {
-    //     if (handler.call($canvas, $e)) {
-    //         $canvas.eHoldingFlag = false;
-    //         return true;
-    //     }
-    // }
+    let handler = $canvas.events[$e.type];
+    if (handler && !$e.$stopPropagation) {
+        if (handler.call($canvas, $e)) {
+            $canvas.eHoldingFlag = false;
+            return true;
+        }
+    }
 };
 
 module.exports = eventHandler;

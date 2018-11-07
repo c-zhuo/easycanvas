@@ -19,7 +19,10 @@ module.exports = function () {
 
     arg.unshift(name);
 
-    this.children && this.children.forEach((child) => {
+    // let children = this.$combine ? this.$combine.children : this.children;
+    let children = this.children;
+
+    children && children.forEach((child) => {
         child.broadcast.apply(child, arg);
     });
 };

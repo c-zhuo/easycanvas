@@ -328,6 +328,10 @@ sprite.prototype.combine = combine;
 sprite.prototype.uncombine = uncombine;
 
 sprite.prototype.combineAsync = function () {
+    if (this.$combine || this.$combine === 0) return this;
+    this.$combine = 0;
+
+    this.off('ticked', this.combine);
     this.on('ticked', this.combine, 100);
 
     return this;

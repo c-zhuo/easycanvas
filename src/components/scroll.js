@@ -76,6 +76,9 @@ let scrollFuncs = {
             $sprite.scroll.scrollY = minScrollY;
         } else if (!isNaN(maxScrollY) && $sprite.scroll.scrollY > maxScrollY) {
             $sprite.scroll.scrollY = maxScrollY;
+
+            $sprite.broadcast('scrolledToBottom');
+            $sprite.$scroll.speedY = 0;
         }
 
         if (!isNaN(minScrollX) && $sprite.scroll.scrollX < minScrollX) {

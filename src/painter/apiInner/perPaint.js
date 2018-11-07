@@ -45,6 +45,8 @@ module.exports = function ($sprite, index) {
     utils.execFuncs($sprite.hooks.beforeTick, $sprite, $sprite.$tickedTimes);
 
     if (utils.funcOrValue($sprite.style.visible, $sprite) === false) {
+        $sprite.$cache = {};
+        $sprite.$cache.visible = false;
         utils.execFuncs($sprite.hooks.ticked, $sprite, ++$sprite.$tickedTimes);
         return;
     }
@@ -55,7 +57,7 @@ module.exports = function ($sprite, index) {
 
     // getComputedStyle(i, $canvas);
 
-    let _props = $sprite.$props = {};
+    let _props = {};
 
     _props.img = utils.funcOrValue($sprite.content.img, $sprite);
     if ($sprite.content.text) {
