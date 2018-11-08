@@ -936,15 +936,20 @@
                         return f;
                     }
                 }
-                var h = e.getOuterRect(false, true);
-                h.tx = Math.floor(h.tx);
-                h.ty = Math.floor(h.ty);
-                h.tw = Math.round(h.tw);
-                h.th = Math.round(h.th);
-                h.tr = Math.round(h.tr);
-                h.tb = Math.round(h.tb);
-                if (h.tx < 0 || h.tr > r.width) return s;
-                if (h.ty < 0 || h.tb > r.height) return s;
+                var h = void 0;
+                if (i.default.funcOrValue(e.style.overflow, e) !== "hidden") {
+                    h = e.getOuterRect(false, true);
+                    h.tx = Math.floor(h.tx);
+                    h.ty = Math.floor(h.ty);
+                    h.tw = Math.round(h.tw);
+                    h.th = Math.round(h.th);
+                    h.tr = Math.round(h.tr);
+                    h.tb = Math.round(h.tb);
+                    if (h.tx < 0 || h.tr > r.width) return s;
+                    if (h.ty < 0 || h.tb > r.height) return s;
+                } else {
+                    h = a;
+                }
                 e.off("ticked", t.combine);
                 var v = r.$children.filter(function(t) {
                     for (var e = 0; e < o.length; e++) {
@@ -954,6 +959,7 @@
                 var p = r.$children;
                 var g = e.getStyle("opacity");
                 v.forEach(function(t) {
+                    if (!t.settings) return;
                     t.settings.$combineGlobalAlpha = t.settings.globalAlpha;
                     t.settings.globalAlpha = g > 0 ? t.settings.globalAlpha / g : 1;
                 });
@@ -962,6 +968,7 @@
                 r.$lastTickChildren = false;
                 r.$render();
                 v.forEach(function(t) {
+                    if (!t.settings) return;
                     t.settings.globalAlpha = t.settings.$combineGlobalAlpha;
                 });
                 var y = document.createElement("canvas");
@@ -1720,7 +1727,7 @@
                     var R = (0, d.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width - 1, r.height - 1, b.beforeRotate && b.beforeRotate[0], b.beforeRotate && b.beforeRotate[1], n.rotate);
                     if (R) {
                         t.$rendered = true;
-                        var E = {
+                        var V = {
                             $id: t.$id,
                             type: "img",
                             settings: b,
@@ -1728,13 +1735,13 @@
                             props: n
                         };
                         o.$painted = true;
-                        E.$origin = t;
-                        r.$children.push(E);
+                        V.$origin = t;
+                        r.$children.push(V);
                     }
                 }
                 if (i) {
                     t.$rendered = true;
-                    var V = n.tx;
+                    var E = n.tx;
                     var C = n.ty;
                     var I = n.align || n.textAlign || "left";
                     var P = n.textFont || "14px Arial";
@@ -1742,9 +1749,9 @@
                     var H = "top";
                     var z = n.lineHeight || L;
                     if (I === "center") {
-                        V += n.tw / 2;
+                        E += n.tw / 2;
                     } else if (I === "right") {
-                        V += n.tw;
+                        E += n.tw;
                     }
                     if (n.textVerticalAlign === "top") {
                         H = "top";
@@ -1762,7 +1769,7 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: V,
+                                    tx: E,
                                     ty: C,
                                     content: String(i),
                                     fontsize: L,
@@ -1782,7 +1789,7 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: V + a.default.funcOrValue(e.tx, t),
+                                    tx: E + a.default.funcOrValue(e.tx, t),
                                     ty: C + a.default.funcOrValue(e.ty, t),
                                     content: a.default.funcOrValue(e.content, t),
                                     fontsize: L,
@@ -1825,7 +1832,7 @@
                                 type: "text",
                                 settings: b,
                                 props: {
-                                    tx: V,
+                                    tx: E,
                                     ty: C,
                                     fontsize: L,
                                     content: e,

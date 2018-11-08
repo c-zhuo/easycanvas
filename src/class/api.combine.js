@@ -44,19 +44,24 @@ module.exports = function () {
             }
         }
 
-        let outerRect = $sprite.getOuterRect(false, true);
+        let outerRect;
+        if (utils.funcOrValue($sprite.style.overflow, $sprite) !== 'hidden') {
+            outerRect = $sprite.getOuterRect(false, true);
 
-        outerRect.tx = Math.floor(outerRect.tx);
-        outerRect.ty = Math.floor(outerRect.ty);
-        outerRect.tw = Math.round(outerRect.tw);
-        outerRect.th = Math.round(outerRect.th);
-        outerRect.tr = Math.round(outerRect.tr);
-        outerRect.tb = Math.round(outerRect.tb);
+            outerRect.tx = Math.floor(outerRect.tx);
+            outerRect.ty = Math.floor(outerRect.ty);
+            outerRect.tw = Math.round(outerRect.tw);
+            outerRect.th = Math.round(outerRect.th);
+            outerRect.tr = Math.round(outerRect.tr);
+            outerRect.tb = Math.round(outerRect.tb);
 
-        // if (!force) {
-            if (outerRect.tx < 0 || outerRect.tr > $canvas.width) return COMBINE_FAIL;
-            if (outerRect.ty < 0 || outerRect.tb > $canvas.height) return COMBINE_FAIL;
-        // }
+            // if (!force) {
+                if (outerRect.tx < 0 || outerRect.tr > $canvas.width) return COMBINE_FAIL;
+                if (outerRect.ty < 0 || outerRect.tb > $canvas.height) return COMBINE_FAIL;
+            // }
+        } else {
+            outerRect = rect;
+        }
 
         $sprite.off('ticked', this.combine);
 
@@ -77,6 +82,8 @@ module.exports = function () {
         let originChildren = $canvas.$children;
         let spriteOpacity = $sprite.getStyle('opacity');
         $renders.forEach(($render) => {
+            if(!$render.settings) return;
+
             $render.settings.$combineGlobalAlpha = $render.settings.globalAlpha;
             $render.settings.globalAlpha = spriteOpacity > 0 ? $render.settings.globalAlpha / spriteOpacity : 1;
         });
@@ -86,6 +93,8 @@ module.exports = function () {
         $canvas.$render();
 
         $renders.forEach(($render) => {
+            if(!$render.settings) return;
+
             $render.settings.globalAlpha = $render.settings.$combineGlobalAlpha;
         });
 
