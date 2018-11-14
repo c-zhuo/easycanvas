@@ -1,5 +1,5 @@
 // Math.PI wastes some performace
-const PI = 3.141593;
+const PI = Math.PI;
 
 import { funcOrValue } from './utils.js';
 

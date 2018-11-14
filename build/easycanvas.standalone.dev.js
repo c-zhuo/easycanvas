@@ -533,7 +533,7 @@
     }, function(t, e, r) {
         "use strict";
         var n = r(1);
-        var a = 3.141593;
+        var a = Math.PI;
         var i = function t(e) {
             return e.$lastPaintTime || Date.now();
         };
