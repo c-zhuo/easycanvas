@@ -124,7 +124,6 @@ const textRendering = function (_text, config) {
             if (width > realWidth) realWidth = width;
             endIndex++;
         }
-
     }
 
     // const firstValuable = (a, b) => {
@@ -158,16 +157,90 @@ const textRendering = function (_text, config) {
     // document.body.prepend(finalCanvas);
 
     if (config.border) {
-        var border = config.border.split(' ');
+        let border = config.border.split(' ');
+
+        let borderStyle = border.pop();
+        // ctx.setLineDash([5, 3]);/*dashes are 5px and spaces are 3px*/
+        if (border[border.length - 1] === 'solid') border.pop();
+
+        let borderTop = border[0];
+        let borderRight = border[1] || borderTop;
+        let borderBottom = border[2] || borderTop;
+        let borderLeft = border[3] || borderRight || borderTop;
+
+        borderTop = parseInt(borderTop);
+        borderRight = parseInt(borderRight);
+        borderBottom = parseInt(borderBottom);
+        borderLeft = parseInt(borderLeft);
+
+        let borderRadius = config.borderRadius || 0;
+
         finalCtx.beginPath();
-        finalCtx.moveTo(0, 0);
-        finalCtx.lineWidth = parseInt(border[0]);
-        finalCtx.strokeStyle = border[2] || border[1];
-        finalCtx.lineTo(finalCanvas.width, 0);
-        finalCtx.lineTo(finalCanvas.width, finalCanvas.height);
-        finalCtx.lineTo(0, finalCanvas.height);
-        finalCtx.lineTo(0, 0);
+        finalCtx.strokeStyle = borderStyle;
+
+        if (borderTop) {
+            finalCtx.lineWidth = borderTop;
+            finalCtx.moveTo(borderLeft ? borderRadius : 0, 0);
+            finalCtx.lineTo(finalCanvas.width - (borderRight ? borderRadius : 0), 0);
+        }
+        if (borderRight) {
+            finalCtx.lineWidth = borderRight;
+            finalCtx.moveTo(finalCanvas.width, borderTop ? borderRadius : 0);
+            finalCtx.lineTo(finalCanvas.width, finalCanvas.height - (borderBottom ? borderRadius : 0));
+        }
+        if (borderBottom) {
+            finalCtx.lineWidth = borderBottom;
+            finalCtx.moveTo(borderLeft ? borderRadius : 0, finalCanvas.height);
+            finalCtx.lineTo(finalCanvas.width - (borderRight ? borderRadius : 0), finalCanvas.height);
+        }
+        if (borderLeft) {
+            finalCtx.lineWidth = borderLeft;
+            finalCtx.moveTo(0, borderTop ? borderRadius : 0);
+            finalCtx.lineTo(0, finalCanvas.height - (borderBottom ? borderRadius : 0));
+        }
+
         finalCtx.stroke();
+
+        if (borderRadius) {
+            console.log(borderRadius);
+            let c = document.createElement('canvas');
+            let size = Math.min(finalCanvas.width, finalCanvas.height);
+            c.width = c.height = size;
+            let ctx = c.getContext('2d');
+            ctx.beginPath();
+            ctx.strokeStyle = borderStyle;
+            ctx.arc(size >> 1, size >> 1, (size >> 1) - 1, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            if (borderTop && borderRight) {
+                finalCtx.drawImage(
+                    c,
+                    size >> 1, 0, size >> 1, size >> 1,
+                    finalCanvas.width - borderRadius, 0, borderRadius, borderRadius
+                );
+            }
+            if (borderBottom && borderRight) {
+                finalCtx.drawImage(
+                    c,
+                    size >> 1, size >> 1, size >> 1, size >> 1,
+                    finalCanvas.width - borderRadius, finalCanvas.height - borderRadius, borderRadius, borderRadius
+                );
+            }
+            if (borderTop && borderLeft) {
+                finalCtx.drawImage(
+                    c,
+                    0, 0, size >> 1, size >> 1,
+                    0, 0, borderRadius, borderRadius
+                );
+            }
+            if (borderBottom && borderLeft) {
+                finalCtx.drawImage(
+                    c,
+                    0, size >> 1, size >> 1, size >> 1,
+                    0, finalCanvas.height - borderRadius, borderRadius, borderRadius
+                );
+            }
+        }
 
         // TODO
         // if (process.env.NODE_ENV !== 'production') {
