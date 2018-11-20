@@ -79,7 +79,6 @@ module.exports = function () {
         //     console.warn('length', $renders.length);
         // }
 
-        let originChildren = $canvas.$children;
         let spriteOpacity = $sprite.getStyle('opacity');
         $renders.forEach(($render) => {
             if(!$render.settings) return;
@@ -87,10 +86,18 @@ module.exports = function () {
             $render.settings.$combineGlobalAlpha = $render.settings.globalAlpha;
             $render.settings.globalAlpha = spriteOpacity > 0 ? $render.settings.globalAlpha / spriteOpacity : 1;
         });
-        $canvas.$children = $renders;
-        $canvas.$paintContext.clearRect(0, 0, $canvas.width, $canvas.height);
-        $canvas.$lastTickChildren = false;
-        $canvas.$render();
+
+        let combinerCanvas = $canvas.$combinerCanvas;
+        if (!combinerCanvas) {
+            combinerCanvas = $canvas.$combinerCanvas = document.createElement('canvas');
+            combinerCanvas.width = $canvas.width;
+            combinerCanvas.height = $canvas.height;
+            // document.body.prepend(canvas);
+        }
+        let combineCtx = combinerCanvas.getContext('2d');
+        combineCtx.clearRect(0, 0, $canvas.width, $canvas.height);
+
+        $canvas.$render(combineCtx, $renders);
 
         $renders.forEach(($render) => {
             if(!$render.settings) return;
@@ -104,7 +111,7 @@ module.exports = function () {
         canvas.height = outerRect.th;
         let ctx = canvas.getContext('2d');
         ctx.drawImage(
-            $canvas.$dom,
+            combinerCanvas,
             outerRect.tx,
             outerRect.ty,
             outerRect.tw,
@@ -117,6 +124,7 @@ module.exports = function () {
 
         $sprite.children.forEach((child) => {
             // 清空$cache，以免后续使用时（如事件处理）拿到了老的坐标
+            // [RISK]但是可能导致一些transition的变量有偏差
             child.$cache = {};
         });
 
@@ -141,19 +149,6 @@ module.exports = function () {
             th: canvas.height,
             backgroundColor: undefined,
         });
-
-        // $canvas.paint();
-        $canvas.$children = originChildren;
-        // $canvas.$paintContext.clearRect(0, 0, $canvas.width, $canvas.height);
-        // $canvas.$lastTickChildren = false;
-        // $canvas.$render();
-
-        // 绘制一帧，清除连续combine时，前一个combine新产生的对象没有进入$canvas.$children，导致下一个combine获取不到的问题
-        $canvas.$lastTickChildren = false;
-        $canvas.paint();
-
-        // $canvas.$lastTickChildren = false;
-        // $canvas.paint();
 
         return COMBINE_DONE;
     });

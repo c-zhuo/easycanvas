@@ -73,88 +73,136 @@
                 }
                 var v = 0;
                 var p = t.lineHeight ? (t.lineHeight - t.size) / 2 : 0;
-                var m = 0;
-                var g = 1;
+                var g = 0;
+                var m = 1;
                 var y = false;
-                var x = 0;
+                var w = 0;
                 while (true) {
-                    var $ = h.measureText(o.slice(m, g)).width;
-                    if ($ > t.width) {
+                    var x = h.measureText(o.slice(g, m)).width;
+                    if (x > t.width) {
                         if (t.overflow === "ellipsis") {
-                            g -= 2;
-                            h.fillText(o.slice(m, g) + "...", v, p + t.size / 2);
+                            m -= 2;
+                            h.fillText(o.slice(g, m) + "...", v, p + t.size / 2);
                             if (true) {
-                                d.push("tempCtx.fillText('" + o.slice(m, g) + "...', " + v + ", " + (p + t.size / 2) + ")");
+                                d.push("tempCtx.fillText('" + o.slice(g, m) + "...', " + v + ", " + (p + t.size / 2) + ")");
                             }
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 0);
-                            x = t.width - a[1] - a[3];
+                            w = t.width - a[1] - a[3];
                             break;
                         } else {
-                            g -= 1;
-                            h.fillText(o.slice(m, g), v, p + t.size / 2);
+                            m -= 1;
+                            h.fillText(o.slice(g, m), v, p + t.size / 2);
                             if (true) {
-                                d.push("tempCtx.fillText('" + o.slice(m, g) + "', " + v + ", " + (p + t.size / 2) + ")");
+                                d.push("tempCtx.fillText('" + o.slice(g, m) + "', " + v + ", " + (p + t.size / 2) + ")");
                             }
-                            m = g;
-                            g = m + 1;
+                            g = m;
+                            m = g + 1;
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 10);
                         }
                     } else {
-                        if (g > o.length - 1) {
-                            if ($ > x) x = $;
-                            h.fillText(o.slice(m, g), v, p + t.size / 2);
+                        if (m > o.length - 1) {
+                            if (x > w) w = x;
+                            h.fillText(o.slice(g, m), v, p + t.size / 2);
                             if (true) {
-                                d.push("tempCtx.fillText('" + o.slice(m, g) + "', " + v + ", " + (p + t.size / 2) + ")");
+                                d.push("tempCtx.fillText('" + o.slice(g, m) + "', " + v + ", " + (p + t.size / 2) + ")");
                             }
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 0);
                             break;
-                        } else if (o.slice(g, g + 1) === r) {
-                            h.fillText(o.slice(m, g), v, p + t.size / 2);
-                            g += 1;
-                            m = g;
-                            g = m + 1;
+                        } else if (o.slice(m, m + 1) === r) {
+                            h.fillText(o.slice(g, m), v, p + t.size / 2);
+                            m += 1;
+                            g = m;
+                            m = g + 1;
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 10);
                         }
-                        if ($ > x) x = $;
-                        g++;
+                        if (x > w) w = x;
+                        m++;
                     }
                 }
-                var w = document.createElement("canvas");
-                w.width = Math.max(x + a[1] + a[3], t.minWidth || 0);
-                w.height = p + a[0] + a[2];
-                var b = w.getContext("2d");
+                var $ = document.createElement("canvas");
+                $.width = Math.max(w + a[1] + a[3], t.minWidth || 0);
+                $.height = p + a[0] + a[2];
+                var b = $.getContext("2d");
                 if (true) {
                     d.push("var finalCanvas=document.createElement('canvas')");
-                    d.push("finalCanvas.width=" + w.width);
-                    d.push("finalCanvas.height=" + w.height);
+                    d.push("finalCanvas.width=" + $.width);
+                    d.push("finalCanvas.height=" + $.height);
                     d.push("var finalCtx = finalCanvas.getContext('2d')");
                 }
                 if (t.backgroundColor) {
                     b.fillStyle = t.backgroundColor;
-                    b.fillRect(0, 0, w.width, w.height);
+                    b.fillRect(0, 0, $.width, $.height);
                     if (true) {
                         d.push("finalCtx.fillStyle=" + b.fillStyle);
-                        d.push("finalCtx.fillRect(0, 0, " + w.width + ", " + w.height + ")");
+                        d.push("finalCtx.fillRect(0, 0, " + $.width + ", " + $.height + ")");
                     }
                 }
-                b.drawImage(f, (w.width - x) / 2, a[0]);
+                b.drawImage(f, ($.width - w) / 2, a[0]);
                 if (t.border) {
                     var S = t.border.split(" ");
+                    var Y = S.pop();
+                    if (S[S.length - 1] === "solid") S.pop();
+                    var X = S[0];
+                    var T = S[1] || X;
+                    var C = S[2] || X;
+                    var H = S[3] || T || X;
+                    X = parseInt(X);
+                    T = parseInt(T);
+                    C = parseInt(C);
+                    H = parseInt(H);
+                    var N = t.borderRadius || 0;
                     b.beginPath();
-                    b.moveTo(0, 0);
-                    b.lineWidth = parseInt(S[0]);
-                    b.strokeStyle = S[2] || S[1];
-                    b.lineTo(w.width, 0);
-                    b.lineTo(w.width, w.height);
-                    b.lineTo(0, w.height);
-                    b.lineTo(0, 0);
+                    b.strokeStyle = Y;
+                    if (X) {
+                        b.lineWidth = X;
+                        b.moveTo(H ? N : 0, 0);
+                        b.lineTo($.width - (T ? N : 0), 0);
+                    }
+                    if (T) {
+                        b.lineWidth = T;
+                        b.moveTo($.width, X ? N : 0);
+                        b.lineTo($.width, $.height - (C ? N : 0));
+                    }
+                    if (C) {
+                        b.lineWidth = C;
+                        b.moveTo(H ? N : 0, $.height);
+                        b.lineTo($.width - (T ? N : 0), $.height);
+                    }
+                    if (H) {
+                        b.lineWidth = H;
+                        b.moveTo(0, X ? N : 0);
+                        b.lineTo(0, $.height - (C ? N : 0));
+                    }
                     b.stroke();
+                    if (N) {
+                        console.log(N);
+                        var O = document.createElement("canvas");
+                        var P = Math.min($.width, $.height);
+                        O.width = O.height = P;
+                        var M = O.getContext("2d");
+                        M.beginPath();
+                        M.strokeStyle = Y;
+                        M.arc(P >> 1, P >> 1, (P >> 1) - 1, 0, 2 * Math.PI);
+                        M.stroke();
+                        if (X && T) {
+                            b.drawImage(O, P >> 1, 0, P >> 1, P >> 1, $.width - N, 0, N, N);
+                        }
+                        if (C && T) {
+                            b.drawImage(O, P >> 1, P >> 1, P >> 1, P >> 1, $.width - N, $.height - N, N, N);
+                        }
+                        if (X && H) {
+                            b.drawImage(O, 0, 0, P >> 1, P >> 1, 0, 0, N, N);
+                        }
+                        if (C && H) {
+                            b.drawImage(O, 0, P >> 1, P >> 1, P >> 1, 0, $.height - N, N, N);
+                        }
+                    }
                 }
                 if (true) {
-                    w.$origin = d;
+                    $.$origin = d;
                 }
-                s[i] = w;
-                return w;
+                s[i] = $;
+                return $;
             };
             e.exports = o;
         },
