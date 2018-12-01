@@ -2,6 +2,9 @@ module.exports = `
         <section class="demo-box">
             <div class="code-2-demo bg-demo">精灵动画：爆炸效果</div>
             <code>
+                <head>
+                    <script src="./lib/easycanvas/components.standalone.prod.js"></script>
+                </head>
                 <body>
                     <canvas id="app"></canvas>
                     <p id="content">点击画布可以看到爆炸效果（爆炸图加载中，请稍等）</p>

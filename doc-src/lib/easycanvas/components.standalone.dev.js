@@ -75,11 +75,12 @@
                 var p = t.lineHeight ? (t.lineHeight - t.size) / 2 : 0;
                 var g = 0;
                 var m = 1;
-                var y = false;
+                var y = 0;
                 var w = 0;
+                var x = 1;
                 while (true) {
-                    var x = h.measureText(o.slice(g, m)).width;
-                    if (x > t.width) {
+                    w = h.measureText(o.slice(g, m)).width;
+                    if (w > t.width) {
                         if (t.overflow === "ellipsis") {
                             m -= 2;
                             h.fillText(o.slice(g, m) + "...", v, p + t.size / 2);
@@ -87,7 +88,8 @@
                                 d.push("tempCtx.fillText('" + o.slice(g, m) + "...', " + v + ", " + (p + t.size / 2) + ")");
                             }
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 0);
-                            w = t.width - a[1] - a[3];
+                            x++;
+                            y = t.width - a[1] - a[3];
                             break;
                         } else {
                             m -= 1;
@@ -98,10 +100,11 @@
                             g = m;
                             m = g + 1;
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 10);
+                            x++;
                         }
                     } else {
                         if (m > o.length - 1) {
-                            if (x > w) w = x;
+                            if (w > y) y = w;
                             h.fillText(o.slice(g, m), v, p + t.size / 2);
                             if (true) {
                                 d.push("tempCtx.fillText('" + o.slice(g, m) + "', " + v + ", " + (p + t.size / 2) + ")");
@@ -114,13 +117,16 @@
                             g = m;
                             m = g + 1;
                             p += t.size + (t.lineHeight ? (t.lineHeight - t.size) / 2 : 10);
+                            x++;
                         }
-                        if (x > w) w = x;
+                        if (w > y) y = w;
                         m++;
                     }
                 }
                 var $ = document.createElement("canvas");
-                $.width = Math.max(w + a[1] + a[3], t.minWidth || 0);
+                $.lastLineLeft = w;
+                $.lineCount = x;
+                $.width = Math.max(y + a[1] + a[3], t.minWidth || 0);
                 $.height = p + a[0] + a[2];
                 var b = $.getContext("2d");
                 if (true) {
@@ -137,7 +143,7 @@
                         d.push("finalCtx.fillRect(0, 0, " + $.width + ", " + $.height + ")");
                     }
                 }
-                b.drawImage(f, ($.width - w) / 2, a[0]);
+                b.drawImage(f, ($.width - y) / 2, a[0]);
                 if (t.border) {
                     var S = t.border.split(" ");
                     var Y = S.pop();
@@ -175,7 +181,6 @@
                     }
                     b.stroke();
                     if (N) {
-                        console.log(N);
                         var O = document.createElement("canvas");
                         var P = Math.min($.width, $.height);
                         O.width = O.height = P;
