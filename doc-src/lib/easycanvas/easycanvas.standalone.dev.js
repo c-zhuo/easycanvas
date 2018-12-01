@@ -83,7 +83,7 @@
             txywh: [ "tx", "ty", "tw", "th" ],
             sxywh: [ "sx", "sy", "sw", "sh" ],
             devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.7.3"
+            version: "0.7.4"
         };
     }, , , , , function(t, e) {
         "use strict";
@@ -305,8 +305,8 @@
         var w = T(m);
         var b = r(28);
         var S = T(b);
-        var k = r(33);
-        var A = T(k);
+        var A = r(33);
+        var k = T(A);
         function T(t) {
             return t && t.__esModule ? t : {
                 default: t
@@ -329,7 +329,7 @@
                 });
             }
         };
-        var _ = function t(e) {
+        var F = function t(e) {
             var r = e || {};
             if (!r.$id) {
                 r.$id = Math.random().toString(36).substr(2);
@@ -378,20 +378,20 @@
             r.$styleCacheTime = {};
             return r;
         };
-        var R = function t(e) {
+        var _ = function t(e) {
             var r = this;
             this.$extendList.forEach(function(t) {
                 t.call(r, e);
             });
         };
         var E = function t(e) {
-            var r = _(e);
+            var r = F(e);
             for (var n in r) {
                 if (Object.prototype.hasOwnProperty.call(r, n)) {
                     this[n] = r[n];
                 }
             }
-            R.call(this, r);
+            _.call(this, r);
             return this;
         };
         E.prototype.$extendList = [];
@@ -491,8 +491,11 @@
         };
         E.prototype.getOuterRect = w.default;
         E.prototype.combine = S.default;
-        E.prototype.uncombine = A.default;
+        E.prototype.uncombine = k.default;
         E.prototype.combineAsync = function() {
+            if (this.$combine || this.$combine === 0) return this;
+            this.$combine = 0;
+            this.off("ticked", this.combine);
             this.on("ticked", this.combine, 100);
             return this;
         };
@@ -530,7 +533,7 @@
     }, function(t, e, r) {
         "use strict";
         var n = r(1);
-        var a = 3.141593;
+        var a = Math.PI;
         var i = function t(e) {
             return e.$lastPaintTime || Date.now();
         };
@@ -877,7 +880,8 @@
                 a.default.execFuncs(this.hooks[e], this, t);
             }
             t.unshift(e);
-            this.children && this.children.forEach(function(e) {
+            var r = this.children;
+            r && r.forEach(function(e) {
                 e.broadcast.apply(e, t);
             });
         };
@@ -906,14 +910,19 @@
         var f = 3;
         t.exports = function() {
             var t = this;
+            var e = this;
+            if (e.$combine) {
+                return l;
+            }
             setTimeout(function() {
-                var e = t;
-                if (e.$combine) return l;
+                if (e.$combine) {
+                    return l;
+                }
                 if (i.default.funcOrValue(e.style.visible, e) === false) return f;
                 var r = t.$canvas;
                 var a = e.getRect(false, true);
-                if (a.tx < 0 || a.tr > r.width) return s;
-                if (a.ty < 0 || a.tb > r.height) return s;
+                if (a.tx < 0 || a.tx + a.tw > r.width) return s;
+                if (a.ty < 0 || a.ty + a.th > r.height) return s;
                 var o = e.getAllChildren(true);
                 for (var u = 0; u < o.length; u++) {
                     var c = o[u];
@@ -927,38 +936,50 @@
                         return f;
                     }
                 }
-                var h = e.getOuterRect(false, true);
-                h.tx = Math.floor(h.tx);
-                h.ty = Math.floor(h.ty);
-                h.tw = Math.round(h.tw);
-                h.th = Math.round(h.th);
-                h.tr = Math.round(h.tr);
-                h.tb = Math.round(h.tb);
-                if (h.tx < 0 || h.tr > r.width) return s;
-                if (h.ty < 0 || h.tb > r.height) return s;
+                var h = void 0;
+                if (i.default.funcOrValue(e.style.overflow, e) !== "hidden") {
+                    h = e.getOuterRect(false, true);
+                    h.tx = Math.floor(h.tx);
+                    h.ty = Math.floor(h.ty);
+                    h.tw = Math.round(h.tw);
+                    h.th = Math.round(h.th);
+                    h.tr = Math.round(h.tr);
+                    h.tb = Math.round(h.tb);
+                    if (h.tx < 0 || h.tr > r.width) return s;
+                    if (h.ty < 0 || h.tb > r.height) return s;
+                } else {
+                    h = a;
+                }
+                e.off("ticked", t.combine);
                 var v = r.$children.filter(function(t) {
                     for (var e = 0; e < o.length; e++) {
                         if (o[e].$id === t.$id) return true;
                     }
                 });
-                var p = r.$children;
-                var g = e.getStyle("opacity");
+                var p = e.getStyle("opacity");
                 v.forEach(function(t) {
+                    if (!t.settings) return;
                     t.settings.$combineGlobalAlpha = t.settings.globalAlpha;
-                    t.settings.globalAlpha = g > 0 ? t.settings.globalAlpha / g : 1;
+                    t.settings.globalAlpha = p > 0 ? t.settings.globalAlpha / p : 1;
                 });
-                r.$children = v;
-                r.$paintContext.clearRect(0, 0, r.width, r.height);
-                r.$lastTickChildren = false;
-                r.$render();
+                var g = r.$combinerCanvas;
+                if (!g) {
+                    g = r.$combinerCanvas = document.createElement("canvas");
+                    g.width = r.width;
+                    g.height = r.height;
+                }
+                var y = g.getContext("2d");
+                y.clearRect(0, 0, r.width, r.height);
+                r.$render(y, v);
                 v.forEach(function(t) {
+                    if (!t.settings) return;
                     t.settings.globalAlpha = t.settings.$combineGlobalAlpha;
                 });
-                var y = document.createElement("canvas");
-                y.width = h.tw;
-                y.height = h.th;
-                var $ = y.getContext("2d");
-                $.drawImage(r.$dom, h.tx, h.ty, h.tw, h.th, 0, 0, h.tw, h.th);
+                var $ = document.createElement("canvas");
+                $.width = h.tw;
+                $.height = h.th;
+                var x = $.getContext("2d");
+                x.drawImage(g, h.tx, h.ty, h.tw, h.th, 0, 0, h.tw, h.th);
                 e.children.forEach(function(t) {
                     t.$cache = {};
                 });
@@ -969,22 +990,18 @@
                 };
                 e.children = [];
                 e.content = {
-                    img: y
+                    img: $
                 };
-                var x = e.getSelfStyle("tx") - (Math.floor(a.tx) - h.tx);
-                var m = e.getSelfStyle("ty") - (Math.floor(a.ty) - h.ty);
+                var m = e.getSelfStyle("tx") - (Math.floor(a.tx) - h.tx);
+                var w = e.getSelfStyle("ty") - (Math.floor(a.ty) - h.ty);
                 e.style = n({}, e.style, {
                     scale: 1,
-                    tx: x,
-                    ty: m,
-                    tw: y.width,
-                    th: y.height,
+                    tx: m,
+                    ty: w,
+                    tw: $.width,
+                    th: $.height,
                     backgroundColor: undefined
                 });
-                r.$children = p;
-                r.$lastTickChildren = false;
-                r.paint();
-                e.off("ticked", t.combine);
                 return l;
             });
             return this;
@@ -997,6 +1014,7 @@
             n.tr = n.tx + n.tw;
             n.tb = n.ty + n.th;
             this.children.forEach(function(r) {
+                if (r.$cache.visible === false) return;
                 var a = r.getOuterRect(t, e);
                 if (a.tx < n.tx) n.tx = a.tx;
                 if (a.ty < n.ty) n.ty = a.ty;
@@ -1090,34 +1108,35 @@
             return t;
         };
         t.exports = function() {
+            if (!this.$combine) return;
             r(this, this.$combine);
             this.$combine = false;
         };
     }, , , , , , function(t, e, r) {
         "use strict";
         var n = r(4);
-        var a = A(n);
+        var a = k(n);
         var i = r(60);
-        var o = A(i);
+        var o = k(i);
         var l = r(24);
-        var s = A(l);
+        var s = k(l);
         var f = r(102);
-        var u = A(f);
+        var u = k(f);
         var c = r(1);
-        var d = A(c);
+        var d = k(c);
         var h = r(25);
-        var v = A(h);
+        var v = k(h);
         var p = r(9);
-        var g = A(p);
+        var g = k(p);
         var y = r(101);
-        var $ = A(y);
+        var $ = k(y);
         var x = r(103);
-        var m = A(x);
+        var m = k(x);
         var w = r(13);
-        var b = A(w);
+        var b = k(w);
         var S = r(26);
-        var k = A(S);
-        function A(t) {
+        var A = k(S);
+        function k(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
@@ -1244,6 +1263,11 @@
                     }
                 }
                 var v = s.$combine ? s.$combine.children : s.children;
+                if (true) {
+                    if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
+                        v = s.children;
+                    }
+                }
                 if (v.length) {
                     t(f(v.filter(function(t) {
                         if (true) {
@@ -1268,6 +1292,7 @@
                         }
                     }
                     h(s, r, n);
+                    r.stopPropagation();
                     return;
                 }
                 if (v.length) {
@@ -1298,6 +1323,11 @@
             }
             if (e.$parent) {
                 t(e.$parent, r, n);
+            } else {
+                if (e.$canvas && !r.$stopPropagation) {
+                    t(e.$canvas, r);
+                    r.stopPropagation();
+                }
             }
         };
         var v = {
@@ -1323,29 +1353,29 @@
                     i = e.layerX;
                     o = e.layerY;
                 }
-                var g = false;
+                var h = false;
                 if (this.$dom.getBoundingClientRect) {
-                    var y = this.$dom.getBoundingClientRect();
-                    y.width > y.height !== this.width > this.height;
-                    l = Math.floor(y[g ? "height" : "width"]) / this.width;
-                    u = Math.floor(y[g ? "width" : "height"]) / this.height;
+                    var g = this.$dom.getBoundingClientRect();
+                    g.width > g.height !== this.width > this.height;
+                    l = Math.floor(g[h ? "height" : "width"]) / this.width;
+                    u = Math.floor(g[h ? "width" : "height"]) / this.height;
                 }
             }
-            var $ = r || {
+            var y = r || {
                 type: e.type,
                 canvasX: i / l,
                 canvasY: o / u,
                 event: e
             };
             if (s && n.fastclick) {
-                if ($.type === "click" && !$.$fakeClick) {
+                if (y.type === "click" && !y.$fakeClick) {
                     return;
-                } else if ($.type === "touchstart") {
-                    v.x = $.canvasX;
-                    v.y = $.canvasY;
+                } else if (y.type === "touchstart") {
+                    v.x = y.canvasX;
+                    v.y = y.canvasY;
                     v.timeStamp = Date.now();
-                } else if ($.type === "touchend") {
-                    if (Math.abs(v.x - $.canvasX) < 30 && Math.abs(v.y - $.canvasY) < 30 && Date.now() - v.timeStamp < 200) {
+                } else if (y.type === "touchend") {
+                    if (Math.abs(v.x - y.canvasX) < 30 && Math.abs(v.y - y.canvasY) < 30 && Date.now() - v.timeStamp < 200) {
                         p.call(this, null, {
                             $fakeClick: true,
                             type: "click",
@@ -1356,32 +1386,36 @@
                     }
                 }
             }
-            $.stopPropagation = function() {
-                $.$stopPropagation = true;
+            y.stopPropagation = function() {
+                y.$stopPropagation = true;
             };
             if (n.events.interceptor) {
-                $ = a.default.firstValuable(n.events.interceptor.call(n, $), $);
-                if (!$ || $.$stopPropagation) return;
+                y = a.default.firstValuable(n.events.interceptor.call(n, y), y);
+                if (!y || y.$stopPropagation) return;
             }
-            var x = [];
-            c(f(n.children), $, x);
-            if ($ && !$.$stopPropagation) {
-                h(n, $);
-            }
-            d.call(n, $, x);
-            if (($.type === "mousemove" || $.type === "touchmove") && n.eLastMouseHover && x.indexOf(n.eLastMouseHover) === -1) {
-                var m = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
-                if (m) {
-                    m.call(n.eLastMouseHover, $);
+            var $ = [];
+            c(f(n.children), y, $);
+            d.call(n, y, $);
+            if ((y.type === "mousemove" || y.type === "touchmove") && n.eLastMouseHover && $.indexOf(n.eLastMouseHover) === -1) {
+                var x = n.eLastMouseHover["events"]["mouseout"] || n.eLastMouseHover["events"]["touchout"];
+                if (x) {
+                    x.call(n.eLastMouseHover, y);
                 }
             }
-            n.eLastMouseHover = x[0];
-            if (!x.length && n.eLastMouseHover) {
-                var w = n.eLastMouseHover["events"]["mouseout"];
-                if (w) {
-                    w.call(n.eLastMouseHover, $);
+            n.eLastMouseHover = $[0];
+            if (!$.length && n.eLastMouseHover) {
+                var m = n.eLastMouseHover["events"]["mouseout"];
+                if (m) {
+                    m.call(n.eLastMouseHover, y);
                 }
                 n.eLastMouseHover = null;
+            }
+            var w = n.events[y.type];
+            if (w && !y.$stopPropagation) {
+                if (w.call(n, y)) {
+                    n.eHoldingFlag = false;
+                    return true;
+                }
             }
         };
         t.exports = p;
@@ -1498,12 +1532,14 @@
             t.$rendered = false;
             a.default.execFuncs(t.hooks.beforeTick, t, t.$tickedTimes);
             if (a.default.funcOrValue(t.style.visible, t) === false) {
+                t.$cache = {};
+                t.$cache.visible = false;
                 a.default.execFuncs(t.hooks.ticked, t, ++t.$tickedTimes);
                 return;
             }
             var r = this;
             g.call(t);
-            var n = t.$props = {};
+            var n = {};
             n.img = a.default.funcOrValue(t.content.img, t);
             if (t.content.text) {
                 n.text = a.default.funcOrValue(t.content.text, t);
@@ -1584,15 +1620,15 @@
                 n.rx = a.default.firstValuable(a.default.funcOrValue(t.style.rx, t), n.tx + .5 * n.tw);
                 n.ry = a.default.firstValuable(a.default.funcOrValue(t.style.ry, t), n.ty + .5 * n.th);
                 var S = a.default.firstValuable(n.rx, n.tx + .5 * n.tw);
-                var k = a.default.firstValuable(n.ry, n.ty + .5 * n.th);
-                b.beforeRotate = [ S, k ];
+                var A = a.default.firstValuable(n.ry, n.ty + .5 * n.th);
+                b.beforeRotate = [ S, A ];
                 b.rotate = -n.rotate * Math.PI / 180;
                 b.rotate = Number(b.rotate.toFixed(4));
-                b.afterRotate = [ -S, -k ];
+                b.afterRotate = [ -S, -A ];
             }
-            var A = (0, d.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width, r.height, b.beforeRotate && b.beforeRotate[0], b.beforeRotate && b.beforeRotate[1], n.rotate);
+            var k = (0, d.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width, r.height, b.beforeRotate && b.beforeRotate[0], b.beforeRotate && b.beforeRotate[1], n.rotate);
             var T = (n.overflow || n.overflowX || n.overflowY) && n.overflow !== "visible";
-            if (!A && !i) {
+            if (!k && !i) {
                 if (!T) {
                     t.$rendered = undefined;
                     c.length && (0, u.default)(r, c, -1);
@@ -1661,28 +1697,28 @@
                     }
                 }
                 if (b.clip) {
-                    if (A) {
-                        var _ = {
+                    if (k) {
+                        var F = {
                             $id: t.$id,
                             type: "clip",
                             props: n
                         };
-                        _.$origin = t;
-                        r.$children.push(_);
+                        F.$origin = t;
+                        r.$children.push(F);
                     }
                 }
                 c.length && (0, u.default)(r, c, -1);
                 if (b.fillRect) {
-                    if (A) {
+                    if (k) {
                         t.$rendered = true;
-                        var R = {
+                        var _ = {
                             $id: t.$id,
                             type: "fillRect",
                             settings: b,
                             props: n
                         };
-                        R.$origin = t;
-                        r.$children.push(R);
+                        _.$origin = t;
+                        r.$children.push(_);
                     }
                 }
                 if (l && n.opacity !== 0 && n.sw && n.sh) {
@@ -1692,7 +1728,7 @@
                     var E = (0, d.default)(n.tx, n.ty, n.tw, n.th, 0, 0, r.width - 1, r.height - 1, b.beforeRotate && b.beforeRotate[0], b.beforeRotate && b.beforeRotate[1], n.rotate);
                     if (E) {
                         t.$rendered = true;
-                        var F = {
+                        var R = {
                             $id: t.$id,
                             type: "img",
                             settings: b,
@@ -1700,8 +1736,8 @@
                             props: n
                         };
                         o.$painted = true;
-                        F.$origin = t;
-                        r.$children.push(F);
+                        R.$origin = t;
+                        r.$children.push(R);
                     }
                 }
                 if (i) {
@@ -1709,10 +1745,10 @@
                     var V = n.tx;
                     var C = n.ty;
                     var I = n.align || n.textAlign || "left";
-                    var L = n.textFont || "14px Arial";
-                    var P = parseInt(L);
+                    var P = n.textFont || "14px Arial";
+                    var L = parseInt(P);
                     var H = "top";
-                    var z = n.lineHeight || P;
+                    var z = n.lineHeight || L;
                     if (I === "center") {
                         V += n.tw / 2;
                     } else if (I === "right") {
@@ -1728,7 +1764,7 @@
                         H = "middle";
                     }
                     if (typeof i === "string" || typeof i === "number") {
-                        if (C + P * 2 > 0 && C - P * 2 < r.height) {
+                        if (C + L * 2 > 0 && C - L * 2 < r.height) {
                             r.$children.push({
                                 $id: t.$id,
                                 type: "text",
@@ -1737,10 +1773,10 @@
                                     tx: V,
                                     ty: C,
                                     content: String(i),
-                                    fontsize: P,
+                                    fontsize: L,
                                     align: I,
                                     baseline: H,
-                                    font: L,
+                                    font: P,
                                     color: n.color,
                                     type: n.textType
                                 },
@@ -1757,10 +1793,10 @@
                                     tx: V + a.default.funcOrValue(e.tx, t),
                                     ty: C + a.default.funcOrValue(e.ty, t),
                                     content: a.default.funcOrValue(e.content, t),
-                                    fontsize: P,
+                                    fontsize: L,
                                     baseline: H,
                                     align: I,
-                                    font: L,
+                                    font: P,
                                     color: n.color,
                                     type: n.textType
                                 },
@@ -1769,7 +1805,7 @@
                         });
                     } else if (i.type === "multline-text") {
                         var j = i.text.split(/\t|\n/);
-                        var N = [];
+                        var B = [];
                         j.forEach(function(t, e) {
                             t = String.prototype.trim.apply(t);
                             if (i.config.start) {
@@ -1780,18 +1816,18 @@
                             while (t.length && r < t.length) {
                                 if (a <= 0) {
                                     a = n.tw;
-                                    N.push(t.substr(0, r));
+                                    B.push(t.substr(0, r));
                                     t = t.substr(r);
                                     r = 0;
                                 }
                                 r++;
-                                a -= P * (p(t[r]) ? 1.05 : .6);
+                                a -= L * (p(t[r]) ? 1.05 : .6);
                             }
                             if (t || e) {
-                                N.push(t);
+                                B.push(t);
                             }
                         });
-                        N.forEach(function(e) {
+                        B.forEach(function(e) {
                             r.$children.push({
                                 $id: t.$id,
                                 type: "text",
@@ -1799,17 +1835,17 @@
                                 props: {
                                     tx: V,
                                     ty: C,
-                                    fontsize: P,
+                                    fontsize: L,
                                     content: e,
                                     baseline: H,
                                     align: I,
-                                    font: L,
+                                    font: P,
                                     color: n.color,
                                     type: n.textType
                                 },
                                 $origin: t
                             });
-                            C += z || P;
+                            C += z || L;
                         });
                     }
                 }
@@ -1818,18 +1854,18 @@
                 }
                 c.length && (0, u.default)(r, c, 1);
                 if (b.clip) {
-                    if (A) {
-                        var B = {
+                    if (k) {
+                        var N = {
                             $id: t.$id,
                             type: "clipOver",
                             props: n
                         };
-                        B.$origin = t;
-                        r.$children.push(B);
+                        N.$origin = t;
+                        r.$children.push(N);
                     }
                 }
                 if (b.line) {
-                    if (A) {
+                    if (k) {
                         t.$rendered = true;
                         var D = {
                             $id: t.$id,
@@ -1904,182 +1940,180 @@
             });
             return a;
         };
-        var l = function t(e, r) {
-            var n = this;
-            var i = e.props;
-            var l = void 0;
-            if (i && e.type !== "clip" && e.type !== "text" && e.type !== "clipOver" && e.type !== "line") {
-                l = i.tw * i.th;
-                if (l > 200 * 200 && !e.settings.transform && !e.settings.rotate) {
-                    var s = n.$children;
-                    var f = s.length;
-                    for (var u = r + 1; u < f; u++) {
-                        var c = s[u];
-                        if (c.$cannotCover) {
-                            continue;
-                        }
-                        if (c.type === "clip") {
-                            while (u < f && s[++u].type !== "clipOver") {}
-                            continue;
-                        }
-                        var d = c.settings;
-                        if (!c.type || c.type !== "img") {
-                            if (!(c.type === "fillRect" && d.fillRect.indexOf("rgba") === -1)) {
+        t.exports = function(t, e) {
+            var r = this;
+            var n = e || r.$children;
+            n.forEach(function(e, i) {
+                var l = e.props;
+                var s = void 0;
+                if (l && e.type !== "clip" && e.type !== "text" && e.type !== "clipOver" && e.type !== "line") {
+                    s = l.tw * l.th;
+                    if (s > 200 * 200 && !e.settings.transform && !e.settings.rotate) {
+                        var f = n.length;
+                        for (var u = i + 1; u < f; u++) {
+                            var c = n[u];
+                            if (c.$cannotCover) {
+                                continue;
+                            }
+                            if (c.type === "clip") {
+                                while (u < f && n[++u].type !== "clipOver") {}
+                                continue;
+                            }
+                            var d = c.settings;
+                            if (!c.type || c.type !== "img") {
+                                if (!(c.type === "fillRect" && d.fillRect.indexOf("rgba") === -1)) {
+                                    c.$cannotCover = true;
+                                    continue;
+                                }
+                            }
+                            var h = c.props;
+                            if (h.tw * h.th < 200 * 200) {
                                 c.$cannotCover = true;
                                 continue;
                             }
-                        }
-                        var h = c.props;
-                        if (h.tw * h.th < 200 * 200) {
-                            c.$cannotCover = true;
-                            continue;
-                        }
-                        if (h.tw * h.th < l) {
-                            continue;
-                        }
-                        if (c.img && !c.img.$noAlpha) {
-                            c.$cannotCover = true;
-                            continue;
-                        }
-                        if (d.globalAlpha !== 1 || d.globalCompositeOperation || d.transform || d.rotate) {
-                            c.$cannotCover = true;
-                            continue;
-                        }
-                        if (a.default.pointInRect(i.tx, i.ty, h.tx, h.tx + h.tw, h.ty, h.ty + h.th) && a.default.pointInRect(i.tx + i.tw, i.ty + i.th, h.tx, h.tx + h.tw, h.ty, h.ty + h.th)) {
-                            if (true) {
-                                e.$origin.$useless = true;
+                            if (h.tw * h.th < s) {
+                                continue;
                             }
-                            return;
+                            if (c.img && !c.img.$noAlpha) {
+                                c.$cannotCover = true;
+                                continue;
+                            }
+                            if (d.globalAlpha !== 1 || d.globalCompositeOperation || d.transform || d.rotate) {
+                                c.$cannotCover = true;
+                                continue;
+                            }
+                            if (a.default.pointInRect(l.tx, l.ty, h.tx, h.tx + h.tw, h.ty, h.ty + h.th) && a.default.pointInRect(l.tx + l.tw, l.ty + l.th, h.tx, h.tx + h.tw, h.ty, h.ty + h.th)) {
+                                if (true) {
+                                    e.$origin.$useless = true;
+                                }
+                                return;
+                            }
                         }
                     }
                 }
-            }
-            var v = e.settings || {};
-            if (o.call(n, e, v)) {
-                return;
-            }
-            if (true) {
-                if (e.$origin) {
-                    e.$origin.$useless = false;
+                var v = e.settings || {};
+                if (o.call(r, e, v)) {
+                    return;
                 }
-            }
-            var p = n.$paintContext;
-            if (e.type === "clip") {
-                p.save();
-                p.beginPath();
-                p.moveTo(i.tx, i.ty);
-                p.lineTo(i.tx + i.tw, i.ty);
-                p.lineTo(i.tx + i.tw, i.ty + i.th);
-                p.lineTo(i.tx, i.ty + i.th);
-                p.lineTo(i.tx, i.ty);
-                p.closePath();
-                p.clip();
-            }
-            var g = false;
-            if (v.globalCompositeOperation) {
-                if (!g) {
-                    p.save();
-                    g = true;
-                }
-                p.globalCompositeOperation = v.globalCompositeOperation;
-            }
-            if (v.globalAlpha !== 1 && !isNaN(v.globalAlpha)) {
-                if (!g) {
-                    p.save();
-                    g = true;
-                }
-                p.globalAlpha = v.globalAlpha;
-            }
-            if (v.translate) {
-                if (!g) {
-                    p.save();
-                    g = true;
-                }
-                p.translate(v.translate[0] || 0, v.translate[1] || 0);
-            }
-            if (v.rotate) {
-                if (!g) {
-                    p.save();
-                    g = true;
-                }
-                p.translate(v.beforeRotate[0] || 0, v.beforeRotate[1] || 0);
-                p.rotate(v.rotate || 0);
-                p.translate(v.afterRotate[0] || 0, v.afterRotate[1] || 0);
-            }
-            if (v.scale) {
-                if (!g) {
-                    p.save();
-                    g = true;
-                }
-                p.scale(v.scale[0] || 1, v.scale[1] || 1);
-            }
-            if (v.transform) {
-                if (!g) {
-                    p.save();
-                    g = true;
-                }
-                p.transform(1, v.transform.fh, v.transform.fv, 1, v.transform.fx, v.transform.fy);
-            }
-            if (e.type === "img") {
-                p.drawImage(e.img, i.sx, i.sy, i.sw, i.sh, i.tx, i.ty, i.tw, i.th);
                 if (true) {
-                    n.$plugin.drawImage(n, i);
+                    if (e.$origin) {
+                        e.$origin.$useless = false;
+                    }
                 }
-            } else if (e.type === "text" && i.content) {
-                p.font = i.font;
-                p.fillStyle = i.color || "white";
-                p.textAlign = i.align;
-                p.textBaseline = i.baseline;
-                p[i.type || "fillText"](i.content, i.tx, i.ty);
-            } else if (e.type === "fillRect") {
-                p.fillStyle = v.fillRect;
-                p.fillRect(i.tx, i.ty, i.tw, i.th);
-            } else if (e.type === "line") {
-                p.beginPath();
-                p.strokeStyle = i.border.substr(i.border.indexOf(" ")) || "black";
-                p.lineWidth = i.border.split(" ")[0] || 1;
-                p.moveTo(i.tx, i.ty);
-                p.lineTo(i.tx + i.tw, i.ty);
-                p.lineTo(i.tx + i.tw, i.ty + i.th);
-                p.lineTo(i.tx, i.ty + i.th);
-                p.closePath();
-                p.stroke();
-            } else if (e.type === "clipOver") {
-                p.restore();
-            }
-            if (g) {
-                p.restore();
-            }
-        };
-        t.exports = function() {
-            var t = this;
-            t.$children.forEach(l.bind(t));
+                var p = t || r.$paintContext;
+                if (e.type === "clip") {
+                    p.save();
+                    p.beginPath();
+                    p.moveTo(l.tx, l.ty);
+                    p.lineTo(l.tx + l.tw, l.ty);
+                    p.lineTo(l.tx + l.tw, l.ty + l.th);
+                    p.lineTo(l.tx, l.ty + l.th);
+                    p.lineTo(l.tx, l.ty);
+                    p.closePath();
+                    p.clip();
+                }
+                var g = false;
+                if (v.globalCompositeOperation) {
+                    if (!g) {
+                        p.save();
+                        g = true;
+                    }
+                    p.globalCompositeOperation = v.globalCompositeOperation;
+                }
+                if (p.$globalAlpha !== v.globalAlpha) {
+                    p.$globalAlpha = p.globalAlpha = v.globalAlpha;
+                }
+                if (v.translate) {
+                    if (!g) {
+                        p.save();
+                        g = true;
+                    }
+                    p.translate(v.translate[0] || 0, v.translate[1] || 0);
+                }
+                if (v.rotate) {
+                    if (!g) {
+                        p.save();
+                        g = true;
+                    }
+                    p.translate(v.beforeRotate[0] || 0, v.beforeRotate[1] || 0);
+                    p.rotate(v.rotate || 0);
+                    p.translate(v.afterRotate[0] || 0, v.afterRotate[1] || 0);
+                }
+                if (v.scale) {
+                    if (!g) {
+                        p.save();
+                        g = true;
+                    }
+                    p.scale(v.scale[0] || 1, v.scale[1] || 1);
+                }
+                if (v.transform) {
+                    if (!g) {
+                        p.save();
+                        g = true;
+                    }
+                    p.transform(1, v.transform.fh, v.transform.fv, 1, v.transform.fx, v.transform.fy);
+                }
+                if (e.type === "img") {
+                    p.drawImage(e.img, l.sx, l.sy, l.sw, l.sh, l.tx, l.ty, l.tw, l.th);
+                    if (true) {
+                        if (r.$plugin) {
+                            r.$plugin.drawImage(r, l);
+                        }
+                    }
+                } else if (e.type === "text" && l.content) {
+                    p.font = l.font;
+                    p.fillStyle = l.color || "white";
+                    p.textAlign = l.align;
+                    p.textBaseline = l.baseline;
+                    p[l.type || "fillText"](l.content, l.tx, l.ty);
+                } else if (e.type === "fillRect") {
+                    p.fillStyle = v.fillRect;
+                    p.fillRect(l.tx, l.ty, l.tw, l.th);
+                } else if (e.type === "line") {
+                    p.beginPath();
+                    var y = l.border.substr(l.border.indexOf(" ")) || "black";
+                    p.strokeStyle = y;
+                    p.lineWidth = l.border.split(" ")[0] || 1;
+                    p.moveTo(l.tx, l.ty);
+                    p.lineTo(l.tx + l.tw, l.ty);
+                    p.lineTo(l.tx + l.tw, l.ty + l.th);
+                    p.lineTo(l.tx, l.ty + l.th);
+                    p.closePath();
+                    p.stroke();
+                } else if (e.type === "clipOver") {
+                    p.restore();
+                }
+                if (g) {
+                    p.$globalAlpha = false;
+                    p.restore();
+                }
+            });
         };
     }, function(t, e, r) {
         "use strict";
         var n = r(54);
-        var a = A(n);
+        var a = k(n);
         var i = r(58);
-        var o = A(i);
+        var o = k(i);
         var l = r(51);
-        var s = A(l);
+        var s = k(l);
         var f = r(15);
-        var u = A(f);
+        var u = k(f);
         var c = r(52);
-        var d = A(c);
+        var d = k(c);
         var h = r(16);
-        var v = A(h);
+        var v = k(h);
         var p = r(53);
-        var g = A(p);
+        var g = k(p);
         var y = r(55);
-        var $ = A(y);
+        var $ = k(y);
         var x = r(56);
-        var m = A(x);
+        var m = k(x);
         var w = r(57);
-        var b = A(w);
+        var b = k(w);
         var S = r(13);
-        var k = A(S);
-        function A(t) {
+        var A = k(S);
+        function k(t) {
             return t && t.__esModule ? t : {
                 default: t
             };
@@ -2087,19 +2121,19 @@
         var T = {
             start: o.default,
             paint: s.default,
-            add: k.default.prototype.add,
+            add: A.default.prototype.add,
             remove: a.default,
             register: g.default,
             clear: u.default,
             setFpsHandler: $.default,
             setMaxFps: m.default,
             pause: d.default,
-            on: k.default.prototype.on,
-            off: k.default.prototype.off,
-            trigger: k.default.prototype.trigger,
-            broadcast: k.default.prototype.broadcast,
+            on: A.default.prototype.on,
+            off: A.default.prototype.off,
+            trigger: A.default.prototype.trigger,
+            broadcast: A.default.prototype.broadcast,
             nextTick: v.default,
-            getAllChildren: k.default.prototype.getAllChildren
+            getAllChildren: A.default.prototype.getAllChildren
         };
         if (true) {
             T.skeleton = b.default;

@@ -9,9 +9,20 @@ module.exports = `
         <h2>进行中</h2>
 
         <p>Feature：为WebGL增加<strong>事件监听</strong>功能。</p>
+        <p>Feature：提供文字转图片和Sprite的组件，支持border等css属性。</p>
         <p>文档补充：事件捕获等API的文档补充。</p>
 
         <h2>当前版本</h2>
+
+        <h3>0.7.4 (2018.11.28)</h3>
+
+        <p>Bugfix：修复调用<strong>Sprite.combine</strong>时，处于运动中的对象可能出现错位的bug。</p>
+        <p>Bugfix：修复调用<strong>Sprite.combine</strong>时，可能丢失个别Sprite的bug。</p>
+        <p>Bugfix：调整<strong>Sprite.combine</strong>的逻辑以提升性能。</p>
+        <p>Bugfix：修复<strong>Scroll组件</strong>滚动至底部时，现在将在内部广播“scrolledToBottom”事件。</p>
+        <p>Bugfix：修复<strong>Easycanvas.transition</strong>中涉及了三角函数的动画播放至最后一帧时，出现1px的偏差的bug。</p>
+
+        <h2>历史版本</h2>
 
         <h3>0.7.3 (2018.11.1)</h3>
 
@@ -20,8 +31,6 @@ module.exports = `
         <p>Bugfix：修复<strong>文本渲染时可能模糊</strong>的bug。</p>
         <p>Bugfix：修复<strong>overflow为hidden的Sprite在特定情况下会遮挡外部的Sprite</strong>的bug。</p>
         <p>Bugfix：修复<strong>getStyle获取的样式不是最新样式</strong>（而是读取了上一次Sprite可见时的缓存）的bug。</p>
-
-        <h2>历史版本</h2>
 
         <h3>0.7.2 (2018.10.29)</h3>
 

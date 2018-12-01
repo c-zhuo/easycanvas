@@ -13,33 +13,34 @@ module.exports = `
                         document.getElementById('content').innerText = '点击画布可以看到爆炸效果';
                     });
 
-                    var $app = new Easycanvas.painter({
-                        el: '#app',
-                        width: 400,
-                        height: 400,
+                    var $app = new Easycanvas.painter();
+                    $app.register(document.getElementById('app'), {
                         events: {
                             click: function (e) {
-                                this.add(createFire(e.canvasX, e.canvasY));
+                                var fireConfig = createFire(e.canvasX, e.canvasY);
+                                $app.add(fireConfig);
                             }
-                        },
+                        }
                     });
 
+                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png');
+
                     var createFire = function (initX, initY) {
-                        return {
+                        return Easycanvas.class.sequence({
                             content: {
                                 img: Fire,
-                                sequence: {
-                                    w: -9,
-                                    h: -1,
-                                    interval: 40,
-                                    loop: false,
-                                },
                             },
-
+                            props: {
+                                frameWidth: -9,
+                                frameHeight: -1,
+                                interval: 50,
+                                loop: false,
+                            },
                             style: {
                                 tx: initX, ty: initY,
+                                tw: 120, th: 120,
                             },
-                        };
+                        });
                     };
 
                     $app.start();

@@ -69,15 +69,15 @@ const textRendering = function (_text, config) {
     var startIndex = 0;
     var endIndex = 1;
 
-    // 下次写完文本后换行标记
-    var needNextLine = false;
     // 用-来替换空格
     var realWidth = 0;
+    var lastLineLeft = 0;
+    var lineCount = 1;
 
     while (true) {
-        let width = tempCtx.measureText(text.slice(startIndex, endIndex)).width;
+        lastLineLeft = tempCtx.measureText(text.slice(startIndex, endIndex)).width;
 
-        if (width > config.width) {
+        if (lastLineLeft > config.width) {
             if (config.overflow === 'ellipsis') {
                 // 最后一个字换成三个点
                 endIndex -= 2;
@@ -87,6 +87,7 @@ const textRendering = function (_text, config) {
                 }
 
                 drawY += config.size + (config.lineHeight ? (config.lineHeight - config.size) / 2 : 0);
+                lineCount++;
 
                 realWidth = config.width - padding[1] - padding[3];
                 break;
@@ -101,10 +102,11 @@ const textRendering = function (_text, config) {
                 startIndex = endIndex;
                 endIndex = startIndex + 1;
                 drawY += config.size + (config.lineHeight ? (config.lineHeight - config.size) / 2 : 10);
+                lineCount++;
             }
         } else {
             if (endIndex > text.length - 1) {
-                if (width > realWidth) realWidth = width;
+                if (lastLineLeft > realWidth) realWidth = lastLineLeft;
                 tempCtx.fillText(text.slice(startIndex, endIndex), drawX, drawY + config.size / 2);
                 if (process.env.NODE_ENV !== 'production') {
                     context.push(`tempCtx.fillText('${text.slice(startIndex, endIndex)}', ${drawX}, ${drawY + config.size / 2})`);
@@ -119,9 +121,10 @@ const textRendering = function (_text, config) {
                 startIndex = endIndex;
                 endIndex = startIndex + 1;
                 drawY += config.size + (config.lineHeight ? (config.lineHeight - config.size) / 2 : 10);
+                lineCount++;
             }
 
-            if (width > realWidth) realWidth = width;
+            if (lastLineLeft > realWidth) realWidth = lastLineLeft;
             endIndex++;
         }
     }
@@ -131,6 +134,8 @@ const textRendering = function (_text, config) {
     // },
 
     var finalCanvas = document.createElement('canvas');
+    finalCanvas.lastLineLeft = lastLineLeft;
+    finalCanvas.lineCount = lineCount;
     finalCanvas.width = Math.max(realWidth + padding[1] + padding[3], config.minWidth || 0);
     finalCanvas.height = drawY + padding[0] + padding[2];
     var finalCtx = finalCanvas.getContext('2d');
@@ -202,7 +207,6 @@ const textRendering = function (_text, config) {
         finalCtx.stroke();
 
         if (borderRadius) {
-            console.log(borderRadius);
             let c = document.createElement('canvas');
             let size = Math.min(finalCanvas.width, finalCanvas.height);
             c.width = c.height = size;
