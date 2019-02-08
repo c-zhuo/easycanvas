@@ -32,8 +32,8 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 50, th: 50,
-                            ty: 50, tx: Easycanvas.transition.pendulum(50, 150, 4000).loop(),
+                            width: 50, height: 50,
+                            top: 50, left: Easycanvas.transition.pendulum(50, 150, 4000).loop(),
                         },
                         // 可以通过children属性来指定它的子节点sprite
                         children: [{
@@ -41,8 +41,8 @@ module.exports = `
                                 img: G,
                             },
                             style: {
-                                tw: 20, th: 20,
-                                tx: 50, ty: 0,
+                                left: 50, top: 0,
+                                width: 20, height: 20,
                             }
                         }],
                     });
@@ -56,8 +56,8 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 20, th: 20,
-                            tx: 50, ty: 50,
+                            width: 20, height: 20,
+                            left: 50, top: 50,
                         }
                     }));
                 </script>
@@ -90,8 +90,8 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 50, th: 50,
-                            ty: 50, tx: Easycanvas.transition.pendulum(50, 150, 4000).loop(),
+                            width: 50, height: 50,
+                            top: 50, left: Easycanvas.transition.pendulum(50, 150, 4000).loop(),
                         },
                         // 这里通过children增加第一个子sprite
                         children: [{
@@ -99,8 +99,8 @@ module.exports = `
                                 img: G,
                             },
                             style: {
-                                tw: 20, th: 20,
-                                tx: 100, ty: 0,
+                                width: 20, height: 20,
+                                left: 100, top: 0,
                             },
                             events: {
                                 click: function () {
@@ -116,8 +116,8 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 20, th: 20,
-                            tx: 100, ty: 80,
+                            width: 20, height: 20,
+                            left: 100, top: 80,
                         },
                         events: {
                             click: function () {
@@ -160,9 +160,7 @@ module.exports = `
 
         <h2>继承</h2>
 
-        <p>子sprite的绘制坐标tx、ty会继承父级sprite，而透明度、缩放将相乘处理。在上面的例子中，children之所以左右摇摆，就是因为parent节点的tx在左右移动。</p>
-
-        <p><strong>默认情况下，tx（渲染的X坐标）、ty（渲染的Y坐标）、scale（缩放）、opacity（透明度）会继承。</strong>当父子sprite同时具有属性时，坐标会相加，透明度和缩放会相乘。例如下例：</p>
+        <p>子sprite的最终位置left、top由它自身属性和父级sprite相加得来，透明度opacity、缩放scale将相乘处理。在上面的例子中，children之所以左右摇摆，就是因为parent节点的left在左右移动。</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -186,10 +184,10 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 50, th: 50,
+                            width: 50, height: 50,
                             // 这里让x和y坐标从30线性变化到50，并循环（到50之后会立即变为30，开始下一次线性过度）
-                            tx: Easycanvas.transition.linear(30, 50, 1000).loop(),
-                            ty: Easycanvas.transition.linear(30, 50, 1000).loop(),
+                            left: Easycanvas.transition.linear(30, 50, 1000).loop(),
+                            top: Easycanvas.transition.linear(30, 50, 1000).loop(),
                         },
                     });
 
@@ -202,8 +200,8 @@ module.exports = `
                                 img: G,
                             },
                             style: {
-                                tw: 50, th: 50,
-                                ty: 20, tx: 20,
+                                width: 50, height: 50,
+                                top: 20, left: 20,
                                 opacity: 0.7,
                                 // 让子sprite被父sprite遮挡
                                 zIndex: -1

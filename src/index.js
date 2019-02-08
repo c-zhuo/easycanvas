@@ -23,7 +23,7 @@ const Easycanvas = {
     mirror,
     // 这个class只是为了兼容老版本写法“new Easycanvas.class.sprite(opt);”
     class: {
-        sprite: sprite
+        sprite: sprite,
     },
     sprite,
     $version: constants.version,
@@ -50,9 +50,9 @@ Easycanvas.use = function (pluginHook) {
     $extendList.push(pluginHook);
 };
 
-Easycanvas.component = function (componentInit, namespace) {
-    componentInit(Easycanvas, namespace);
-};
+// Easycanvas.component = function (componentInit, namespace) {
+//     componentInit(Easycanvas, namespace);
+// };
 
 // if (process.env.NODE_ENV !== 'production') {
 //     Easycanvas.$warn = (() => {

@@ -13,19 +13,19 @@
 </style>
 
 <body>
-    <canvas id="foo" width="600" height="600"></canvas>
+    <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             webgl: true,
         });
-        $Painter.start();
+        $app.start();
 
         for (var x = 1; x <= 2; x ++) {
-            $Painter.add(new Easycanvas.class.sprite({
+            $app.add(new Easycanvas.class.sprite({
                 style: {
-                    tx: 250 + x * 50, ty: 300,
+                    left: 250 + x * 50, top: 300,
                     zIndex: Math.random(),
                 },
                 webgl: {
@@ -45,9 +45,9 @@
             }));
         }
 
-        $Painter.add(new Easycanvas.class.sprite({
+        $app.add(new Easycanvas.class.sprite({
             style: {
-                tx: 200, ty: 350,
+                left: 200, top: 350,
                 zIndex: Math.random(),
             },
             webgl: {

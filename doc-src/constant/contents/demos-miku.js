@@ -24,7 +24,7 @@ module.exports = `
 
                     var miku = $app.add(new Easycanvas.class.sprite({
                         style: {
-                            tx: 180, ty: 350,
+                            left: 180, top: 350,
                         },
                         webgl: {
                             imgPath: '../resource/mmd/model/mokou/',

@@ -15,11 +15,11 @@
 </style>
 
 <body>
-    <canvas id="foo" width="800" height="1200"></canvas>
+    <canvas id="app" width="800" height="1200"></canvas>
 
     <script>
         var $app = new Easycanvas.painter();
-        $app.register(document.getElementById('foo'), {
+        $app.register(document.getElementById('app'), {
             webgl: {
               light: !true,
             },
@@ -28,7 +28,7 @@
 
         var $box = $app.add({
             style: {
-                tx: 400, ty: 1120,
+                left: 400, top: 1120,
             },
         });
 

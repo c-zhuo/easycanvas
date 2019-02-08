@@ -1,5 +1,5 @@
 module.exports = `
-    <article id="快速开始（微信小程序环境）">
+    <article id="在微信小程序环境使用">
         <h1>快速开始</h1>
 
         <h2>在微信小程序中引入</h2>
@@ -9,8 +9,8 @@ module.exports = `
         <p><strong>注意：目前只能引入prod版本，不支持开发者工具</strong>，未来版本将支持引入开发版进行调试。</p>
 
         <code>
-            import Easycanvas from './libs/easycanvas.standalone.prod.js';
-            import EasycanvasWxapp from './libs/plugin.wxapp.standalone.prod.js';
+            import Easycanvas from './your-path/easycanvas.standalone.prod.js';
+            import EasycanvasWxapp from './your-path/plugin.wxapp.standalone.prod.js';
 
             Easycanvas.use(EasycanvasWxapp);
         </code>
@@ -35,24 +35,24 @@ module.exports = `
                     class="canvas"></canvas>
 
                 // 微信小程序js里调用
-                var $App;
+                var $app;
 
                 foo: function () {
                     var context = wx.createCanvasContext('app');
 
-                    $App = new Easycanvas.painter();
-                    $App.$dom = context;
-                    $App.$paintContext = context;
-                    $App.register();
+                    $app = new Easycanvas.painter();
+                    $app.$dom = context;
+                    $app.$paintContext = context;
+                    $app.register();
 
-                    $App.on('ticked', function () {
+                    $app.on('ticked', function () {
                         context.draw()
                     });
                 }
 
-                // 将WXML的func函数传给$App
+                // 将WXML的func函数传给$app
                 func: function (e) {
-                    $App.handle(e);
+                    $app.handle(e);
                 }
             </code>
         </section>

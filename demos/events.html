@@ -3,11 +3,11 @@
 </head>
 
 <body>
-    <canvas id="foo" width="1200" height="2400"></canvas>
+    <canvas id="app" width="1200" height="2400"></canvas>
 
     <script>
         var $app = new Easycanvas.painter();
-        $app.register(document.getElementById('foo'));
+        $app.register(document.getElementById('app'));
         $app.start();
 
         var img = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G30x30.png');
@@ -25,7 +25,7 @@
 
         window.sprite2 = sprite1.add({
             style: {
-                tw: 10, th: 20
+                width: 10, height: 20
             },
             events: {
                 click: function () {
@@ -37,7 +37,7 @@
         window.sprite3 = sprite2.add({
             name: 'sprite3',
             style: {
-                tx: 500, ty: 500,
+                left: 500, top: 500,
             },
             events: {
                 click: function () {
@@ -67,8 +67,8 @@
                 img: img,
             },
             style: {
-                tx: 450, ty: 450,
-                tw: 120, th: 120,
+                left: 450, top: 450,
+                width: 120, height: 120,
                 locate: 'lt',
             },
             events: {

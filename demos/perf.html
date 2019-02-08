@@ -47,10 +47,10 @@
         for (var i = 0; i < 600; i++) {
            let $box = $wrap.add({
                style: {
-                   tw: 700,
-                   th: 80,
-                   tx: 20,
-                   ty: i*100,
+                   width: 700,
+                   height: 80,
+                   left: 20,
+                   top: i*100,
                    locate: 'lt',
                    backgroundColor: colorObj[i%10] || '#999',
                    // overflow: 'hidden',
@@ -59,10 +59,10 @@
 
            $box.add({
                style: {
-                   tw: 100,
-                   th: 50,
-                   tx: 5,
-                   ty: 5,
+                   width: 100,
+                   height: 50,
+                   left: 5,
+                   top: 5,
                    backgroundColor: '#ffffff',
                    locate: 'lt'
                }

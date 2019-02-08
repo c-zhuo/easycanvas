@@ -77,6 +77,7 @@ module.exports = function () {
             'paintTimes',
             'paintTimeSpend',
             'preprocessTimeSpend',
+            'custom',
             'loadArea',
             'jumpArea',
         ];
@@ -125,7 +126,7 @@ module.exports = function () {
             timeCollect ($canvas, type, startOrEnd) {
                 // START与END必须在同一个event loop中，且位于相同的微任务队列中
                 // 否则会影响指标收集
-                $canvas.$perf['$' + type] += ((startOrEnd === 'START' || startOrEnd === 'PAUSE')? -1 : 1) * Date.now();
+                $canvas.$perf['$' + type] += ((startOrEnd === 'START' || startOrEnd === 'PAUSE')? -1 : 1) * (performance ? performance.now() : Date.now());
             },
 
             selectSprite (isChoosing, $canvas, $sprite) {
@@ -135,6 +136,13 @@ module.exports = function () {
                     ApiPlugin.cancelSelectSprite($canvas);
                     return false;
                 }
+
+                // let originScale = $sprite.style.scale;
+                // $sprite.style.scale = Easycanvas.transition.linear(1, 1.2, 100).then(() => {
+                //     $sprite.style.scale = Easycanvas.transition.linear(1.2, 1, 100).then(() => {
+                //         $sprite.style.scale = originScale;
+                //     });
+                // });
 
                 if (!$selectMask) {
                     let tipsWidth = 0;
@@ -149,7 +157,7 @@ module.exports = function () {
                         },
                         style: {
                             border () {
-                                if (this.getStyle('tw') < 2 && this.getStyle('th') < 2) {
+                                if (this.getStyle('width') < 2 && this.getStyle('height') < 2) {
                                     return '10 rgba(0, 0, 255, 0.5)';
                                 }
                                 return '1 blue';
@@ -162,8 +170,8 @@ module.exports = function () {
                             data: {},
                             style: {
                                 locate: 'center',
-                                tx () {
-                                    let res = maskRect.tx + maskRect.tw / 2;
+                                left () {
+                                    let res = maskRect.left + maskRect.width / 2;
 
                                     if (res - tipsWidth / 2 < 10) {
                                         res = tipsWidth / 2 + 10;
@@ -171,20 +179,20 @@ module.exports = function () {
                                         res = this.$canvas.width - tipsWidth / 2 - 10;
                                     }
 
-                                    return res - this.$parent.$cache.tx;
+                                    return res - this.$parent.$cache.left;
                                 },
-                                ty () {
-                                    let res = maskRect.ty + maskRect.th + 30;
+                                top () {
+                                    let res = maskRect.top + maskRect.height + 30;
                                     if (this.data.above = res + 30 > this.$canvas.height) {
-                                        res = maskRect.ty - 32;
+                                        res = maskRect.top - 32;
                                     }
 
-                                    return res - this.$parent.$cache.ty;
+                                    return res - this.$parent.$cache.top;
                                 },
-                                tw () {
+                                width () {
                                     return tipsWidth;
                                 },
-                                th: 32,
+                                height: 32,
                                 color: 'orange',
                                 backgroundColor: 'black',
                                 textVerticalAlign: 'top',
@@ -194,7 +202,7 @@ module.exports = function () {
                             hooks: {
                                 beforeTick () {
                                     maskRect = this.$parent.getRect();
-                                    this.content.text = '<' + $sprite.name + '> | ' + Math.round(this.$parent.getStyle('tw')) + '×' + Math.round(this.$parent.getStyle('th'));
+                                    this.content.text = '<' + $sprite.name + '> | ' + Math.round(this.$parent.getStyle('width')) + '×' + Math.round(this.$parent.getStyle('height'));
                                     tipsWidth = measureText(this.content.text) + 20;
                                 },
                             },
@@ -204,13 +212,13 @@ module.exports = function () {
                                     img: MaskTriangleCanvas,
                                 },
                                 style: {
-                                    tx () {
-                                        return maskRect.tx + maskRect.tw / 2 - this.$parent.$cache.tx;
+                                    left () {
+                                        return maskRect.left + maskRect.width / 2 - this.$parent.$cache.left;
                                     },
-                                    ty () {
+                                    top () {
                                         return this.$parent.data.above ? 5 + 16 : -5 - 16;
                                     },
-                                    tw: 20, th: 10,
+                                    width: 20, height: 10,
                                     rotate () {
                                         return this.$parent.data.above ? 180 : 0;
                                     },
@@ -221,21 +229,21 @@ module.exports = function () {
                             name: constants.devFlag,
                             style: {
                                 visible () {
-                                    return this.getStyle('tw') < this.data.value;
+                                    return this.getStyle('width') < this.data.value;
                                 },
                                 locate: 'center',
-                                tx () {
-                                    let res = maskParentRect.tx + ($selectMask.getSelfStyle('tx') - $selectMaskParent.getSelfStyle('tx')) / 2;
-                                    return res - this.$parent.$cache.tx;
+                                left () {
+                                    let res = maskParentRect.left + ($selectMask.getSelfStyle('left') - $selectMaskParent.getSelfStyle('left')) / 2;
+                                    return res - this.$parent.$cache.left;
                                 },
-                                ty () {
-                                    let res = $selectMask.getSelfStyle('ty');
-                                    return res - this.$parent.$cache.ty;
+                                top () {
+                                    let res = $selectMask.getSelfStyle('top');
+                                    return res - this.$parent.$cache.top;
                                 },
-                                tw () {
+                                width () {
                                     return measureText(this.content.text, textFontSmall) + 10
                                 },
-                                th: 20,
+                                height: 20,
                                 backgroundColor: '#ddd',
                                 color: 'black',
                                 textVerticalAlign: 'middle',
@@ -246,7 +254,7 @@ module.exports = function () {
                             hooks: {
                                 beforeTick () {
                                     maskParentRect = $selectMaskParent.getRect();
-                                    this.data.value = Math.round($selectMask.getSelfStyle('tx') - $selectMaskParent.getSelfStyle('tx'));
+                                    this.data.value = Math.round($selectMask.getSelfStyle('left') - $selectMaskParent.getSelfStyle('left'));
                                     this.content.text = 'left: ' + String(this.data.value);
                                 },
                             },
@@ -255,21 +263,21 @@ module.exports = function () {
                             name: constants.devFlag,
                             style: {
                                 visible () {
-                                    return this.getStyle('th') < this.data.value;
+                                    return this.getStyle('height') < this.data.value;
                                 },
                                 locate: 'center',
-                                tx () {
-                                    let res = $selectMask.getSelfStyle('tx');
-                                    return res - this.$parent.$cache.tx;
+                                left () {
+                                    let res = $selectMask.getSelfStyle('left');
+                                    return res - this.$parent.$cache.left;
                                 },
-                                ty () {
-                                    let res = maskParentRect.ty + ($selectMask.getSelfStyle('ty') - $selectMaskParent.getSelfStyle('ty')) / 2;
-                                    return res - this.$parent.$cache.ty;
+                                top () {
+                                    let res = maskParentRect.top + ($selectMask.getSelfStyle('top') - $selectMaskParent.getSelfStyle('top')) / 2;
+                                    return res - this.$parent.$cache.top;
                                 },
-                                tw () {
+                                width () {
                                     return measureText(this.content.text, textFontSmall) + 10
                                 },
-                                th: 20,
+                                height: 20,
                                 backgroundColor: '#ddd',
                                 color: 'black',
                                 textVerticalAlign: 'middle',
@@ -280,7 +288,7 @@ module.exports = function () {
                             hooks: {
                                 beforeTick () {
                                     maskParentRect = $selectMaskParent.getRect();
-                                    this.data.value = Math.round($selectMask.getSelfStyle('ty') - $selectMaskParent.getSelfStyle('ty'));
+                                    this.data.value = Math.round($selectMask.getSelfStyle('top') - $selectMaskParent.getSelfStyle('top'));
                                     this.content.text = 'top: ' + String(this.data.value);
                                 },
                             },
@@ -297,12 +305,12 @@ module.exports = function () {
                             name: constants.devFlag,
                             style: {
                                 locate: 'lt',
-                                tx: 0, ty: 0,
-                                tw () {
-                                    return $selectMask.getSelfStyle('tx') - this.$parent.getStyle('tx');
+                                left: 0, top: 0,
+                                width () {
+                                    return $selectMask.getSelfStyle('left') - this.$parent.getStyle('left');
                                 },
-                                th () {
-                                    return $selectMask.getSelfStyle('ty') - this.$parent.getStyle('ty');
+                                height () {
+                                    return $selectMask.getSelfStyle('top') - this.$parent.getStyle('top');
                                 },
                                 backgroundColor: 'rgba(140, 205, 255, 0.1)',
                                 border: '1 rgba(80, 120, 200, 0.9)',
@@ -311,10 +319,10 @@ module.exports = function () {
                     });
                 }
 
-                ['tx', 'ty', 'rotate', 'rx', 'ry', 'scale', 'tw', 'th', 'locate'].forEach(function (key) {
+                ['left', 'top', 'rotate', 'rx', 'ry', 'scale', 'width', 'height', 'locate'].forEach(function (key) {
                     (function (_key) {
                         $selectMask.style[_key] = function () {
-                            if (_key === 'tw' || _key === 'th') {
+                            if (_key === 'width' || _key === 'height') {
                                 return $sprite.getStyle(_key) || $sprite.getRect()[_key] || 0.1; // 如果尺寸为0，会使用mask的图片尺寸，变成1
                             }
                             return $sprite.getStyle(_key);
@@ -322,7 +330,7 @@ module.exports = function () {
                     })(key);
                 });
 
-                ['tx', 'ty'].forEach(function (key) {
+                ['left', 'top'].forEach(function (key) {
                     (function (_key) {
                         $selectMaskParent.style[_key] = function () {
                             if (!$sprite.$parent) return 0;

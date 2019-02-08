@@ -5,14 +5,14 @@
 </head>
 
 <body>
-    <canvas id="foo"></canvas>
+    <canvas id="app"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             fullScreen: true
         });
-        $Painter.start();
+        $app.start();
 
         var $below = Easycanvas.sprite({
             name: 'bgbelow',
@@ -22,12 +22,12 @@
             style: {
                 locate: 'lt',
                 zIndex: 1,
-                tw: document.body.clientWidth,
-                th: document.body.clientHeight
+                width: document.body.clientWidth,
+                height: document.body.clientHeight
             },
         });
 
-        $Painter.add($below);
+        $app.add($below);
         
         var $mid = Easycanvas.class.fade({
             name: 'bgbelow',
@@ -37,12 +37,12 @@
             style: {
                 locate: 'lt',
                 zIndex: 2,
-                tw: document.body.clientWidth,
-                th: document.body.clientHeight
+                width: document.body.clientWidth,
+                height: document.body.clientHeight
             },
         });
 
-        $Painter.add($mid);
+        $app.add($mid);
         
         var $above = Easycanvas.class.fade({
             name: 'bgabove',
@@ -52,8 +52,8 @@
             style: {
                 locate: 'lt',
                 zIndex: 3,
-                tw: document.body.clientWidth,
-                th: document.body.clientHeight
+                width: document.body.clientWidth,
+                height: document.body.clientHeight
             },
             // children: [{
             //     content: {
@@ -62,13 +62,13 @@
             //     style: {
             //         locate: 'lt',
             //         zIndex: 1,
-            //         tw: 200,
-            //         th: 200,
+            //         width: 200,
+            //         height: 200,
             //     },
             // }]
         });
 
-        $Painter.add($above);
+        $app.add($above);
 
         setTimeout(() => {
             $above

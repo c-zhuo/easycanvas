@@ -14,25 +14,25 @@
 </style>
 
 <body>
-    <canvas id="foo" width="600" height="600"></canvas>
+    <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             webgl: {
               light: true,
             },
         });
-        $Painter.start();
+        $app.start();
 
         for (var x = 1; x <= 1; x ++) {
-            $Painter.add(new Easycanvas.class.sprite({
+            $app.add(new Easycanvas.class.sprite({
                 style: {
-                    tx: x * 100, ty: 500,
+                    left: x * 100, top: 500,
                     zIndex: Math.random(),
                 },
                 webgl: {
-                    imgPath: '../resource/mmd/model/mokou/',
+                    imgPaheight: '../resource/mmd/model/mokou/',
                     pmd: '../resource/mmd/model/default/miku_v2.pmd',
                     // pmd: '../resource/c.pmx',
                     // pmd: '../resource/mmd/model/mokou/mokou_A.pmd',
@@ -42,7 +42,7 @@
             }));
         }
 
-        $Painter.children[0].vmdStart('../resource/mmd/vmd/wavefile_v2.vmd');
+        $app.children[0].vmdStart('../resource/mmd/vmd/wavefile_v2.vmd');
     </script>
 </body>
 

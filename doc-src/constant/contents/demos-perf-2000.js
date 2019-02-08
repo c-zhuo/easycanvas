@@ -24,9 +24,9 @@ module.exports = `
                                     img: ball,
                                 },
                                 style: {
-                                    tx: Easycanvas.transition.pendulum(0, 400, Math.random() * 5000 + 5000).loop(),
-                                    ty: Easycanvas.transition.pendulum(400, 0, Math.random() * 5000 + 5000).loop(),
-                                    tw: 20, th: 20,
+                                    left: Easycanvas.transition.pendulum(0, 400, Math.random() * 5000 + 5000).loop(),
+                                    top: Easycanvas.transition.pendulum(400, 0, Math.random() * 5000 + 5000).loop(),
+                                    width: 20, height: 20,
                                     zIndex: j,
                                 },
                             });

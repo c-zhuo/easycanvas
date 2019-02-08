@@ -3,35 +3,35 @@
 </head>
 
 <body>
-    <canvas id="foo" width="800" height="1400"></canvas>
+    <canvas id="app" width="800" height="1400"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'));
+        $app.start();
 
         var G = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
         var r = Easycanvas.transition.pendulum(-90, 90, 1000).loop();
 
-        var sprite1 = $Painter.add({
+        var sprite1 = $app.add({
             content: {
                 img: G,
             },
             style: {
                 rotate: r,
                 rx: 250, ry: 200,
-                tx: 250, ty: 200,
+                left: 250, top: 200,
             }
         });
 
-        var sprite2 = $Painter.add({
+        var sprite2 = $app.add({
             content: {
                 img: G,
             },
             style: {
                 rotate: r,
                 rx: 500, ry: Easycanvas.transition.pendulum(100, 700, 700),
-                tx: 500, ty: 200,
+                left: 500, top: 200,
             }
         });
 

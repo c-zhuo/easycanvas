@@ -30,6 +30,7 @@ module.exports = `
                     // 记录鼠标轨迹
                     var mouse = {x: 300, y: 50};
                     var mouseRecord = function ($e) {
+                        console.log($e);
                         mouse.x = $e.canvasX;
                         mouse.y = Math.max(30, $e.canvasY);
                     };
@@ -56,36 +57,44 @@ module.exports = `
                         }
                     });
                     $app.start();
+
+                    var $fpsBox = document.getElementsByClassName('fps')[0];
+                    $app.fpsHandler = function (fps) {
+                        if ($app.$perf && $app.$perf.preprocessTimeSpend) {
+                            $fpsBox.innerText = fps + 'fps,' + $app.$perf.preprocessTimeSpend + ',' + $app.$perf.paintTimeSpend;
+                        } else {
+                            $fpsBox.innerText = fps;
+                        }
+                    };
+
                     $app.add({
-                        name: '得分',
                         content: {
                             text: function () {
                                 return '得分:' + score;
                             }
                         },
                         style: {
-                            tx: 5, ty: 15, zIndex: 99,
+                            left: 5, top: 5,
                             textAlign: 'left', textVerticalAlign: 'top',
-                            color: 'red'
+                            color: 'black'
                         }
                     });
                     $app.add({
-                        name: '小球个数',
                         content: {
                             text: function () {
                                 return '小球个数:' + ballCount;
                             }
                         },
                         style: {
-                            tx: 5, ty: 35, zIndex: 99,
-                            textAlign: 'left', textVerticalAlign: 'top',
-                            color: 'red'
+                            left: 395, top: 5,
+                            textAlign: 'right', textVerticalAlign: 'top',
+                            color: 'black'
                         }
                     });
                     // 初始化easycanvas物理引擎
                     var $space = new Easycanvas.class.sprite({
                         physics: {
-                            gravity: 2,
+                            gravitop: 2,
                             accuracy: 2,
                         },
                     });
@@ -95,6 +104,7 @@ module.exports = `
                     var startAim = function () {
                         for (var i = 0; i < 7; i ++) {
                             $app.add({
+                                name: 'aim',
                                 content: {
                                     img: BALL,
                                 },
@@ -102,13 +112,13 @@ module.exports = `
                                     gap: i / 6,
                                 },
                                 style: {
-                                    tx: function () {
+                                    left: function () {
                                         return 200 + (mouse.x - 200) * this.data.gap;
                                     },
-                                    ty: function () {
+                                    top: function () {
                                         return 20 + (mouse.y - 20) * this.data.gap;
                                     },
-                                    tw: 20, th: 20,
+                                    width: 20, height: 20,
                                     opacity: 0.4,
                                 },
                                 hooks: {
@@ -153,10 +163,10 @@ module.exports = `
                                 collisionType: BALL_TYPE,
                             },
                             style: {
-                                tw: ballSize, th: ballSize,
-                                sx: 0, sy: 0,
-                                tx: 200,
-                                ty: 20,
+                                width: ballSize, height: ballSize,
+                                cutLeft: 0, cutTop: 0,
+                                left: 200,
+                                top: 20,
                                 zIndex: 1,
                             },
                             hooks: {
@@ -180,8 +190,8 @@ module.exports = `
                                                     canShoot = true;
                                                     blockArray.forEach(function (block) {
                                                         block.physicsOff();
-                                                        block.style.ty -= 50;
-                                                        if (block.style.ty < 50) {
+                                                        block.style.top -= 50;
+                                                        if (block.style.top < 50) {
                                                             if (block.name === 'block') {
                                                                 canShoot = false;
                                                             } else {
@@ -289,9 +299,9 @@ module.exports = `
                                 static: true,
                             },
                             style: {
-                                tw: 30, th: 30,
-                                tx: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
-                                ty: boolAddToBottom ? 500 : height - 100 - Math.floor(Math.random() * 100),
+                                width: 30, height: 30,
+                                left: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
+                                top: boolAddToBottom ? 500 : height - 100 - Math.floor(Math.random() * 100),
                                 locate: 'lt',
                                 zIndex: Math.random(),
                                 rotate: deg,
@@ -305,7 +315,7 @@ module.exports = `
                                     textAlign: 'center',
                                     textVerticalAlign: 'middle',
                                     textFont: '28px Arial',
-                                    tx: 15, ty: 10
+                                    left: 15, top: 10
                                 }
                             }]
                         }));
@@ -333,9 +343,9 @@ module.exports = `
                                 static: true,
                             },
                             style: {
-                                tw: 30, th: 30,
-                                tx: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
-                                ty: 500,
+                                width: 30, height: 30,
+                                left: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
+                                top: 500,
                                 locate: 'center',
                                 zIndex: 2,
                                 fv: Easycanvas.transition.pendulum(0, 0.2, 200).loop(),
@@ -363,13 +373,14 @@ module.exports = `
                             static: true
                         },
                         style: {
-                            tx: 0, ty: 0, tw: width, th: height,
+                            left: 0, top: 0, width: width, height: height,
                             locate: 'lt',
                         },
                     }));
                     borderSprite.physicsOn();
                     // 下半部分的边，摩擦大、弹性小
                     var bottomSprite = $space.add(new Easycanvas.class.sprite({
+                        name: 'border',
                         physics: {
                             shape: [
                                 [[0, height], [width, height]],
@@ -382,7 +393,7 @@ module.exports = `
                             static: true
                         },
                         style: {
-                            tx: 0, ty: 0, tw: width, th: height,
+                            left: 0, top: 0, width: width, height: height,
                             locate: 'lt',
                         },
                     }));

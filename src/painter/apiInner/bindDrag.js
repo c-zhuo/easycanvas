@@ -54,8 +54,8 @@
 //         $sprite.events[isMobile ? 'touchmove' : 'mousemove'] = function (e) {
 //             let worked = $sprite.drag.draggingFlag && $sprite.drag.dragable;
 //             if (worked) {
-//                 this.style.tx += e.canvasX - startDragPosition.x;
-//                 this.style.ty += e.canvasY - startDragPosition.y;
+//                 this.style.left += e.canvasX - startDragPosition.x;
+//                 this.style.top += e.canvasY - startDragPosition.y;
 
 //                 // 立即更新cache，否则拖拽太快可能触发跟不上
 //                 this.$canvas.$flags.dragging = this;

@@ -11,6 +11,7 @@ document.body.appendChild(document.createElement('style')).innerHTML = css;
 
 const DefaultPage = '一些demo';
 const DemoableCodeClassName = 'code-2-demo';
+const JSXDemoableCodeClassName = 'code-2-demo-jsx';
 
 const Analyze = function (str) {
     if (window.location.port) return;
@@ -68,6 +69,7 @@ const Analyze = function (str) {
             $ace: null,
             demoVisible: false,
             hasDemo: false,
+            isDebuggingJSX: false,
         },
         computed: {
             content () {
@@ -77,35 +79,7 @@ const Analyze = function (str) {
 
                 let $content = this.contentDom.querySelector('#' + this.currentTitle);
                 if ($content) {
-                    // if ($content.className === 'demo') {
-                    //     let iframeHtmlCodes = `
-                    //         <html>
-                    //         <head>
-                    //             <style>canvas {border:1px solid #ddd;}</style>
-                    //             <script src="./lib/easycanvas/easycanvas.standalone.prod.js"></script>
-                    //         </head>
-                    //         <body>
-                    //             ${$content.innerHTML}
-                    //         </body>
-                    //         </html>
-                    //     `;
-
-                    //     // 清除之前的interval等
-
-                    //     // 不延迟的话上面的那行不生效
-                    //     setTimeout(() => {
-                    //         let $tempDemoIframe = document.querySelector('#temp-demo-iframe');
-                    //         $tempDemoIframe.contentWindow.location.href = 'about:blank';
-                    //         $tempDemoIframe.contentWindow.document.open();
-                    //         $tempDemoIframe.contentWindow.document.write(iframeHtmlCodes);
-                    //         $tempDemoIframe.contentWindow.document.close();
-                    //     }, 100);
-
-                    //     return '<iframe id="temp-demo-iframe" style="width: 100%; height: 100%; border: 0"></iframe>';
-                    // }
-
                     return $content.innerHTML;
-
                 }
 
                 return '';
@@ -113,8 +87,8 @@ const Analyze = function (str) {
         },
         mounted () {
             var editor = ace.edit(document.querySelector('.ace'), {
-                mode: "ace/mode/html",
-                selectionStyle: "text"
+                mode: 'ace/mode/html',
+                selectionStyle: 'text'
             });
             window.editor = editor;
 
@@ -122,9 +96,12 @@ const Analyze = function (str) {
             this.$ace = editor;
 
             document.body.onclick = function (e) {
-                if (~e.target.className.indexOf(DemoableCodeClassName)) {
+                if (e.target.className.indexOf(DemoableCodeClassName) !== -1) {
                     let demoCode = e.target.nextElementSibling.innerText;
                     demoCode = demoCode.replace(new RegExp(String.fromCharCode(160), 'g'), String.fromCharCode(32))
+
+                    this.isDebuggingJSX = e.target.className.indexOf(JSXDemoableCodeClassName) !== -1;
+
                     this.debug(demoCode);
                     this.showDemo();
                 }
@@ -195,20 +172,57 @@ const Analyze = function (str) {
                 } else {
                     code = this.$ace.getValue();
                 }
+
                 this.$ace.clearSelection();
                 this.$ace.moveCursorTo(0, 0);
 
-                let iframeHtmlCodes = `
-                    <html>
-                    <head>
-                        <style>body {margin: 0;} canvas {border:1px solid #ddd;}</style>
-                        <script src="./lib/easycanvas/easycanvas.standalone.prod.js"></script>
-                    </head>
-                    <body>
-                        ${code}
-                    </body>
-                    </html>
-                `;
+                const JavaScriptMode = ace.require(this.isDebuggingJSX ? 'ace/mode/jsx' : 'ace/mode/html').Mode;
+                this.$ace.session.setMode(new JavaScriptMode());
+
+                let iframeHtmlCodes;
+
+                if (this.isDebuggingJSX) {
+                    // todo: 检测window.EasycanvasJSXTransformer等是否被js文件初始化完
+
+                    // transform jsx to js in browser
+                    // code = code.replace(/\<script>([\s\S]*)\<\/script\>/gm, function (outer, inner) {
+                    //     console.log(inner);
+                    //     const result = '<script>\n' + window.EasycanvasJSXTransformer(inner) + '\n</script>';
+                    //     console.log(result);
+
+                    //     return result;
+                    // });
+                    code = window.EasycanvasJSXTransformer(code);
+                    code = Babel.transform(code, { presets: ['es2015'] }).code;
+
+                    iframeHtmlCodes = `
+                        <html>
+                        <head>
+                            <style>body {margin: 0;} canvas {border:1px solid #ddd;}</style>
+                            <script src="./lib/easycanvas/easycanvas.standalone.prod.js"></script>
+                            <script src="./lib/easycanvas/components.standalone.prod.js"></script>
+                        </head>
+                        <body>
+                            <canvas id="app"></canvas>
+                            <script>
+                                ${code}
+                            </script>
+                        </body>
+                        </html>
+                    `;
+                } else {
+                    iframeHtmlCodes = `
+                        <html>
+                        <head>
+                            <style>body {margin: 0;} canvas {border:1px solid #ddd;}</style>
+                            <script src="./lib/easycanvas/easycanvas.standalone.prod.js"></script>
+                        </head>
+                        <body>
+                            ${code}
+                        </body>
+                        </html>
+                    `;
+                }
 
                 // 清除之前的interval等
                 this.$iframe.contentWindow.location.href = 'about:blank';
@@ -220,15 +234,9 @@ const Analyze = function (str) {
                     this.$iframe.contentWindow.document.close();
                 }, 100);
 
+                // console.log(iframeHtmlCodes);
                 Analyze('debug');
             },
         },
-        // watch: {
-        //     demoVisible (val) {
-        //         if (val) {
-
-        //         }
-        //     }
-        // }
     })
 })();

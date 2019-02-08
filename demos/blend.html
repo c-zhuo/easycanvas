@@ -3,42 +3,42 @@
 </head>
 
 <body>
-    <canvas id="foo"></canvas>
+    <canvas id="app"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             fullScreen: true
         });
-        $Painter.start();
+        $app.start();
 
         Easycanvas.imgLoader.cacheCanvas = true;
 
-        window.sprite1 = $Painter.add({
+        window.sprite1 = $app.add({
             name: 'house1',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
             },
             style: {
-                tw: 300 * 1.5, th: 450 * 1.5,
-                sx: 0, sy: 0, // source position, default 0
-                tx: 200,
-                ty: 100,
+                width: 300 * 1.5, height: 450 * 1.5,
+                cutLeft: 0, cutTop: 0, // source position, default 0
+                left: 200,
+                top: 100,
                 opacity: 1,
                 locate: 'center', // default center
                 zIndex: 1, // z-index of this image
             },
         });
-        window.sprite2 = $Painter.add({
+        window.sprite2 = $app.add({
             name: 'cloud1',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
             },
             style: {
-                tw: 400 * 1.5, th: 250 * 1.5,
-                sx: 0, sy: 0, // source position, default 0
-                tx: Easycanvas.transition.pendulum(0, 500, 5000).loop(),
-                ty: 100,
+                width: 400 * 1.5, height: 250 * 1.5,
+                cutLeft: 0, cutTop: 0, // source position, default 0
+                left: Easycanvas.transition.pendulum(0, 500, 5000).loop(),
+                top: 100,
                 opacity: 0.9,
                 blend: 12,
                 locate: 'center', // default center
@@ -46,31 +46,31 @@
             },
         });
 
-        window.sprite3 = $Painter.add({
+        window.sprite3 = $app.add({
             name: 'house2',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
             },
             style: {
-                tw: 300 * 1.5, th: 450 * 1.5,
-                sx: 0, sy: 0, // source position, default 0
-                tx: 200,
-                ty: 400 * 1.5,
+                width: 300 * 1.5, height: 450 * 1.5,
+                cutLeft: 0, cutTop: 0, // source position, default 0
+                left: 200,
+                top: 400 * 1.5,
                 opacity: 1,
                 locate: 'center', // default center
                 zIndex: 1, // z-index of this image
             },
         });
-        window.sprite4 = $Painter.add({
+        window.sprite4 = $app.add({
             name: 'cloud2',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
             },
             style: {
-                tw: 400 * 1.5, th: 250 * 1.5,
-                sx: 0, sy: 0, // source position, default 0
-                tx: Easycanvas.transition.pendulum(0, 500, 5000).loop(),
-                ty: 400 * 1.5,
+                width: 400 * 1.5, height: 250 * 1.5,
+                cutLeft: 0, cutTop: 0, // source position, default 0
+                left: Easycanvas.transition.pendulum(0, 500, 5000).loop(),
+                top: 400 * 1.5,
                 opacity: 0.9,
                 locate: 'center', // default center
                 zIndex: 2, // z-index of this image
@@ -78,7 +78,7 @@
         });
 
 
-        $Painter.add({
+        $app.add({
             name: 'bg',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
@@ -86,8 +86,8 @@
             style: {
                 locate: 'lt', // default center
                 zIndex: -1, // z-index of this image
-                tw: document.body.clientWidth,
-                th: document.body.clientHeight
+                width: document.body.clientWidth,
+                height: document.body.clientHeight
             },
         });
         

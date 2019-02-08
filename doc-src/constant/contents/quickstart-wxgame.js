@@ -1,5 +1,5 @@
 module.exports = `
-    <article id="快速开始（微信小游戏环境）">
+    <article id="在微信小游戏环境使用">
         <h1>快速开始</h1>
 
         <h2>在微信小游戏中引入</h2>
@@ -35,14 +35,14 @@ module.exports = `
                         img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                     },
                     style: {
-                        tw: 50,
-                        th: 50,
-                        tx: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
-                        ty: 100,
+                        width: 50,
+                        height: 50,
+                        left: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
+                        top: 100,
                     },
                     events: {
                         click: function (e) {
-                            this.style.tw = 100;
+                            this.style.width = 100;
                             return true;
                         },
                     },

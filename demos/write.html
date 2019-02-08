@@ -15,14 +15,14 @@
 </style>
 
 <body>
-    <canvas id="foo" width="600" height="600"></canvas>
+    <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             webgl2: {
                 // fudgeFactor: 1,
-                // depth: 1000,
+                // depheight: 1000,
                 // camera: {
                 //     // rx: 300,
                 //     // ry: 300,
@@ -34,14 +34,14 @@
                 // }
             },
         });
-        $Painter.start();
+        $app.start();
 
-        var G = $Painter.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
+        var G = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
 
-        var sprite = $Painter.add({
+        var sprite = $app.add({
             style: {
-                tx: 250, ty: 290,
-                tw: 160, th: 20,
+                left: 250, top: 290,
+                width: 160, height: 20,
                 locate: 'center',
                 textAlign: 'right',
                 textFont: '44px monospace',
@@ -70,15 +70,15 @@
                     text: 'llOOO啊.zxcv',
                 },
                 style: {
-                    tx: -100, ty: 100,
+                    left: -100, top: 100,
                 },
             }]
         });
 
-        sprite = $Painter.add({
+        sprite = $app.add({
             style: {
-                tx: 250, ty: 200,
-                tw: 160, th: 20,
+                left: 250, top: 200,
+                width: 160, height: 20,
                 locate: 'center',
                 textAlign: 'right',
                 textFont: '44px monospace',
@@ -90,11 +90,11 @@
             },
         });
 
-        sprite = $Painter.add({
+        sprite = $app.add({
             style: {
-                tx: Easycanvas.transition.pendulum(-200, 200, 13000).loop(),
-                ty: Easycanvas.transition.pendulum(-200, 200, 16000).loop(),
-                tw: 160, th: 20,
+                left: Easycanvas.transition.pendulum(-200, 200, 13000).loop(),
+                top: Easycanvas.transition.pendulum(-200, 200, 16000).loop(),
+                width: 160, height: 20,
                 locate: 'center',
                 textAlign: 'right',
                 textFont: '44px Courier New',
@@ -148,10 +148,10 @@
 
             // sprite.add({
             //     style: {
-            //         // tx: Math.random() * 500, ty: 500,
-            //         tx: Math.random() * 6000 - 3000,
-            //         ty: Math.random() * 6000 - 3000,
-            //         // tx: 300, ty: 300,
+            //         // left: Math.random() * 500, top: 500,
+            //         left: Math.random() * 6000 - 3000,
+            //         top: Math.random() * 6000 - 3000,
+            //         // left: 300, top: 300,
             //         zIndex: 9,
             //     },
             //     content: {
@@ -159,14 +159,14 @@
             //     },
             //     webgl: ball,
             // });
-            var stone = $Painter.imgLoader('https://c-zhuo.github.io/tanyitan/stone.jpg');
+            var stone = $app.imgLoader('https://c-zhuo.github.io/tanyitan/stone.jpg');
 
-            $Painter.add({
+            $app.add({
                 style: {
-                    tx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-                    ty: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-                    tx: Math.random() * 600,
-                    ty: Math.random() * 600,
+                    left: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                    top: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                    left: Math.random() * 600,
+                    top: Math.random() * 600,
                     zIndex: 10,
                 },
                 content: {
@@ -190,16 +190,16 @@
             });
         }
 
-        // var container = $Painter;
+        // var container = $app;
         // var lastChild = null;
         // for (var i = 0; i <= 2000; i++) {
         //     if (i % 500 === 400) container = lastChild;
         //     lastChild = container.add({
         //         style: {
-        //             tx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-        //             ty: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-        //             tx: Math.random() * 600 - 4000,
-        //             ty: Math.random() * 600,
+        //             left: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+        //             top: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+        //             left: Math.random() * 600 - 4000,
+        //             top: Math.random() * 600,
         //             zIndex: 10,
         //         },
         //         events: {

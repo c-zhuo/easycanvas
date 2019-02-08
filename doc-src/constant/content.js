@@ -1,6 +1,7 @@
 import demos from './contents/demos.js';
 import intro from './contents/intro.js';
 import quickstart from './contents/quickstart.js';
+import quickstartJSX from './contents/quickstart-jsx.js';
 import quickstartWxgame from './contents/quickstart-wxgame.js';
 import quickstartWxapp from './contents/quickstart-wxapp.js';
 import changelog from './contents/changelog.js';
@@ -27,6 +28,7 @@ let content = `
     ${demos}
     ${intro}
     ${quickstart}
+    ${quickstartJSX}
     ${quickstartWxgame}
     ${quickstartWxapp}
     ${changelog}

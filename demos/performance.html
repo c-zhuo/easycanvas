@@ -1,34 +1,34 @@
 <body>
     <script src="../build/index.js"></script>
     <script src="../build/plugin.webgl.js"></script>
-    <canvas id="foo" width="800" height="1800" style="width: 800px; height: 1800px;"></canvas>
+    <canvas id="app" width="800" height="1800" style="width: 800px; height: 1800px;"></canvas>
 
     <script>
         var COUNT = 2000;
 
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             name: 'main',
             webgl: !true
         });
-        $Painter.start();
-        $Painter.fpsHandler = console.log;
+        $app.start();
+        $app.fpsHandler = console.log;
 
-        $Painter.imgLoader.cacheCanvas = true;
+        $app.imgLoader.cacheCanvas = true;
         var demoPicUrl = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/block.jpg';
 
-        $Painter.imgLoader(demoPicUrl, function (img) {
+        $app.imgLoader(demoPicUrl, function (img) {
             // create a sprite
             for (var i = 0; i <= COUNT; i++)
-                $Painter.add({
+                $app.add({
                     content: {
                         img: img,
                     },
                     style: {
-                        tx: Easycanvas.transition.pendulum(500 - Math.random() * 1000, 500 - Math.random() * 1000, Math.random() * 3000 + 2000).loop(),
-                        ty: (Math.random() * 500),
-                        tw: (50 + Math.random() * 200),
-                        th: (50 + Math.random() * 200),
+                        left: Easycanvas.transition.pendulum(500 - Math.random() * 1000, 500 - Math.random() * 1000, Math.random() * 3000 + 2000).loop(),
+                        top: (Math.random() * 500),
+                        width: (50 + Math.random() * 200),
+                        height: (50 + Math.random() * 200),
                         // rotate: Math.random() * 360,
                         zIndex: Math.random(),
                         // rotate: 40,
@@ -52,10 +52,10 @@
         //                 img: img,
         //             },
         //             style: {
-        //                 tx: Easycanvas.transition.pendulum(Math.random() * 500, Math.random() * 500, 1000).loop(),
-        //                 ty: (Math.random() * 500),
-        //                 tw: (Math.random() * 200),
-        //                 th: (Math.random() * 200),
+        //                 left: Easycanvas.transition.pendulum(Math.random() * 500, Math.random() * 500, 1000).loop(),
+        //                 top: (Math.random() * 500),
+        //                 width: (Math.random() * 200),
+        //                 height: (Math.random() * 200),
         //                 zIndex: Math.random(),
         //                 locate: 'lt',
         //                 opacity: 0.1,

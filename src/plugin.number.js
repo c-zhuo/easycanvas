@@ -6,16 +6,16 @@ let number = function (opt) {
     sprite.style = opt.style;
     sprite.content.img = opt.number;
 
-    sprite.style.sx = 0;
-    sprite.style.sw = sprite.style.sw || opt.number.width;
-    sprite.style.sh = Math.floor(sprite.style.sh || (opt.number.height / 10));
+    sprite.style.cutLeft = 0;
+    sprite.style.cutWidth = sprite.style.cutWidth || opt.number.width;
+    sprite.style.cutHeight = Math.floor(sprite.cutHeight || (opt.number.height / 10));
 
     var tick = 0;
 
     var data = {
         tick: Math.floor((opt.interval || 1000) / 16.6),
         heightRate: 1,
-        numberHeight: sprite.style.sh,
+        numberHeight: sprite.cutHeight,
         current: 0,
         stop: false,
     };
@@ -32,12 +32,12 @@ let number = function (opt) {
 
     sprite.setCurrentValue = function (value) {
         data.current = value;
-        sprite.style.sy = data.current * data.heightRate * data.numberHeight;
+        sprite.style.cutTop = data.current * data.heightRate * data.numberHeight;
     };
 
     sprite.scrollToValue = function (value, time) {
         data.current = value;
-        sprite.style.sy = _ec.transition.linear(sprite.getStyle('sy'), data.current * data.heightRate * data.numberHeight, time || 200);
+        sprite.style.cutTop = _ec.transition.linear(sprite.getStyle('sy'), data.current * data.heightRate * data.numberHeight, time || 200);
     };
 
     sprite.stop = function () {
@@ -47,7 +47,7 @@ let number = function (opt) {
     sprite.restart = function () {
         data.stop = false;
         data.current = 0;
-        sprite.style.sy = 0;
+        sprite.style.cutTop = 0;
         tick = 0;
     };
 
@@ -57,9 +57,9 @@ let number = function (opt) {
             tick = 1;
             data.current++;
 
-            sprite.style.sy = data.current * data.heightRate * data.numberHeight;
+            sprite.style.cutTop = data.current * data.heightRate * data.numberHeight;
             if (data.current > 9) {
-                sprite.style.sy = 0;
+                sprite.style.cutTop = 0;
                 data.current = 0;
             }
         }

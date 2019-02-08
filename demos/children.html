@@ -3,23 +3,23 @@
 </head>
 
 <body>
-    <canvas id="foo" width="1200" height="2400"></canvas>
+    <canvas id="app" width="1200" height="2400"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'));
+        $app.start();
 
         Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G30x30.png', function (img) {
             // create a sprite
-            window.sprite1 = $Painter.add({
+            window.sprite1 = $app.add({
                 name: 'sprite1',
                 content: {
                     // img: img,
                 },
                 style: {
-                    tw: 100,
-                    tx: 100, ty: 100,
+                    width: 100,
+                    left: 100, top: 100,
                     locate: 'lt',
                     opacity: 0.5,
                     rotate: 40,
@@ -36,9 +36,8 @@
                         content: {
                             img: img,
                         },
-                        inherit: ['opacity'],
                         style: {
-                            tx: 500, ty: 0,
+                            left: 500, top: 0,
                             zIndex: 1,
                             opacity: 0.5,
                             locate: 'center',
@@ -52,12 +51,11 @@
                     },
                     {
                         name: 'c2',
-                        // inherit: ['opacity'],
                         content: {
                             img: img,
                         },
                         style: {
-                            tx: 0, ty: 500,
+                            left: 0, top: 500,
                             opacity: 1,
                             zIndex: 2,
                             locate: 'lt',
@@ -72,12 +70,11 @@
                     },
                     {
                         name: 'c3',
-                        inherit: ['tx', 'ty', 'rotate'],
                         content: {
                             img: img,
                         },
                         style: {
-                            tx: 500, ty: 500,
+                            left: 500, top: 500,
                             opacity: 0.7,
                             zIndex: 3,
                             locate: 'center',
@@ -92,7 +89,7 @@
                     },
                 ],
             });
-            window.sprite2 = $Painter.add({
+            window.sprite2 = $app.add({
                 name: 'sprite2',
             });
         });

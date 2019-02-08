@@ -40,8 +40,8 @@ module.exports = `
                                 loop: false,
                             },
                             style: {
-                                tx: initX, ty: initY,
-                                tw: 120, th: 120,
+                                left: initX, top: initY,
+                                width: 120, height: 120,
                             },
                         });
                     };

@@ -3,24 +3,24 @@
 </head>
 
 <body>
-    <canvas id="foo"></canvas>
+    <canvas id="app"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             fullScreen: true
         });
-        $Painter.start();
+        $app.start();
 
         var G = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
 
-        var sprite1 = $Painter.add({
+        var sprite1 = $app.add({
             content: {
                 img: G,
             },
             style: {
                 rx: 250, ry: 200,
-                tx: 250, ty: 200,
+                left: 250, top: 200,
             },
             drag: {
                 dragable: true,

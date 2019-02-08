@@ -23,7 +23,7 @@
         return t(0);
     }({
         0: function(r, e, t) {
-            r.exports = t(96);
+            r.exports = t(156);
         },
         1: function(r, e) {
             "use strict";
@@ -61,7 +61,7 @@
             };
             r.exports = t;
         },
-        2: function(r, e) {
+        5: function(r, e) {
             "use strict";
             var t = 3.141593;
             r.exports = function(r, e, a, n, i, o) {
@@ -80,7 +80,7 @@
                 };
             };
         },
-        3: function(r, e) {
+        10: function(r, e) {
             "use strict";
             var t = function r(e, t) {
                 var a = e.length;
@@ -108,7 +108,55 @@
                 err: u
             };
         },
-        6: function(r, e) {
+        11: function(r, e, t) {
+            "use strict";
+            var a = t(5);
+            var n = u(a);
+            var i = t(16);
+            var o = u(i);
+            function u(r) {
+                return r && r.__esModule ? r : {
+                    default: r
+                };
+            }
+            r.exports = function(r, e, t, a, n, i, u, l, c, v, f) {
+                if (!f) {
+                    if (e > i + l) return false;
+                    if (i > e + a) return false;
+                    if (r > n + u) return false;
+                    if (n > r + t) return false;
+                }
+                var s = (0, o.default)(r, e, n, i, u, l, c, v, f) || (0, o.default)(r + t, e, n, i, u, l, c, v, f) || (0, 
+                o.default)(r, e + a, n, i, u, l, c, v, f) || (0, o.default)(r + t, e + a, n, i, u, l, c, v, f);
+                if (s) return true;
+                var d = (0, o.default)(n, i, r, e, t, a, c, v, -f) || (0, o.default)(n + u, i, r, e, t, a, c, v, -f) || (0, 
+                o.default)(n, i + l, r, e, t, a, c, v, -f) || (0, o.default)(n + u, i + l, r, e, t, a, c, v, -f);
+                if (d) return true;
+                if (e > i && e + a < i + l && r < n && r + t > n + u) return true;
+                if (r > n && r + t < n + u && e < i && e + a > i + l) return true;
+                return false;
+            };
+        },
+        16: function(r, e, t) {
+            "use strict";
+            var a = t(5);
+            var n = i(a);
+            function i(r) {
+                return r && r.__esModule ? r : {
+                    default: r
+                };
+            }
+            var o = 3.141593;
+            r.exports = function(r, e, t, a, n, i, u, l, c) {
+                var v = c ? -c / 180 * o : 0;
+                if (v) {
+                    r = (r - u) * Math.cos(v) - (e - l) * Math.sin(v) + u;
+                    e = (r - u) * Math.sin(v) + (e - l) * Math.cos(v) + l;
+                }
+                return r >= t && r <= t + n && e >= a && e <= a + i;
+            };
+        },
+        33: function(r, e) {
             "use strict";
             r.exports = function() {
                 "use strict";
@@ -848,7 +896,7 @@
                 };
             };
         },
-        10: function(r, e) {
+        37: function(r, e) {
             "use strict";
             var t = "processing";
             var a = {};
@@ -883,57 +931,9 @@
             }
             r.exports = n;
         },
-        11: function(r, e, t) {
+        58: function(r, e, t) {
             "use strict";
-            var a = t(2);
-            var n = i(a);
-            function i(r) {
-                return r && r.__esModule ? r : {
-                    default: r
-                };
-            }
-            var o = 3.141593;
-            r.exports = function(r, e, t, a, n, i, u, l, c) {
-                var v = c ? -c / 180 * o : 0;
-                if (v) {
-                    r = (r - u) * Math.cos(v) - (e - l) * Math.sin(v) + u;
-                    e = (r - u) * Math.sin(v) + (e - l) * Math.cos(v) + l;
-                }
-                return r >= t && r <= t + n && e >= a && e <= a + i;
-            };
-        },
-        12: function(r, e, t) {
-            "use strict";
-            var a = t(2);
-            var n = u(a);
-            var i = t(11);
-            var o = u(i);
-            function u(r) {
-                return r && r.__esModule ? r : {
-                    default: r
-                };
-            }
-            r.exports = function(r, e, t, a, n, i, u, l, c, v, f) {
-                if (!f) {
-                    if (e > i + l) return false;
-                    if (i > e + a) return false;
-                    if (r > n + u) return false;
-                    if (n > r + t) return false;
-                }
-                var s = (0, o.default)(r, e, n, i, u, l, c, v, f) || (0, o.default)(r + t, e, n, i, u, l, c, v, f) || (0, 
-                o.default)(r, e + a, n, i, u, l, c, v, f) || (0, o.default)(r + t, e + a, n, i, u, l, c, v, f);
-                if (s) return true;
-                var d = (0, o.default)(n, i, r, e, t, a, c, v, -f) || (0, o.default)(n + u, i, r, e, t, a, c, v, -f) || (0, 
-                o.default)(n, i + l, r, e, t, a, c, v, -f) || (0, o.default)(n + u, i + l, r, e, t, a, c, v, -f);
-                if (d) return true;
-                if (e > i && e + a < i + l && r < n && r + t > n + u) return true;
-                if (r > n && r + t < n + u && e < i && e + a > i + l) return true;
-                return false;
-            };
-        },
-        23: function(r, e, t) {
-            "use strict";
-            var a = t(86);
+            var a = t(148);
             var n = i(a);
             function i(r) {
                 return r && r.__esModule ? r : {
@@ -1011,7 +1011,7 @@
                 r.enableVertexAttribArray(r.colorLocation);
             };
         },
-        75: function(r, e, t) {
+        137: function(r, e, t) {
             "use strict";
             var a = Object.assign || function(r) {
                 for (var e = 1; e < arguments.length; e++) {
@@ -1026,11 +1026,11 @@
             };
             var n = t(1);
             var i = f(n);
-            var o = t(10);
+            var o = t(37);
             var u = f(o);
-            var l = t(6);
+            var l = t(33);
             var c = f(l);
-            var v = t(3);
+            var v = t(10);
             function f(r) {
                 return r && r.__esModule ? r : {
                     default: r
@@ -1120,7 +1120,7 @@
                 }
             };
         },
-        76: function(r, e) {
+        138: function(r, e) {
             "use strict";
             var t = function r(e, t, a) {
                 var n = e.createTexture();
@@ -1169,11 +1169,11 @@
                 }
             };
         },
-        77: function(r, e, t) {
+        139: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = o(a);
-            var i = t(3);
+            var i = t(10);
             function o(r) {
                 return r && r.__esModule ? r : {
                     default: r
@@ -1192,8 +1192,8 @@
                         }
                     }
                     var t = {
-                        tx: r.getStyle("tx"),
-                        ty: r.getStyle("ty"),
+                        tx: r.getStyle("left"),
+                        ty: r.getStyle("top"),
                         tz: n.default.funcOrValue(r.webgl.tz, r) || 0
                     };
                     for (var a in r.webgl) {
@@ -1219,16 +1219,16 @@
                 }
             };
         },
-        78: function(r, e, t) {
+        140: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = s(a);
-            var i = t(12);
+            var i = t(11);
             var o = s(i);
-            var u = t(3);
-            var l = t(81);
+            var u = t(10);
+            var l = t(143);
             var c = s(l);
-            var v = t(80);
+            var v = t(142);
             var f = s(v);
             function s(r) {
                 return r && r.__esModule ? r : {
@@ -1304,13 +1304,13 @@
                 }
             };
         },
-        79: function(r, e, t) {
+        141: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = l(a);
-            var i = t(87);
+            var i = t(149);
             var o = l(i);
-            var u = t(3);
+            var u = t(10);
             function l(r) {
                 return r && r.__esModule ? r : {
                     default: r
@@ -1347,14 +1347,14 @@
                 };
             };
         },
-        80: function(r, e, t) {
+        142: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = v(a);
-            var i = t(6);
+            var i = t(33);
             var o = v(i);
-            var u = t(3);
-            var l = t(23);
+            var u = t(10);
+            var l = t(58);
             var c = v(l);
             function v(r) {
                 return r && r.__esModule ? r : {
@@ -1394,14 +1394,14 @@
                 p.drawArrays(p.TRIANGLES, 0, 6);
             };
         },
-        81: function(r, e, t) {
+        143: function(r, e, t) {
             "use strict";
             var a = t(1);
             var n = v(a);
-            var i = t(6);
+            var i = t(33);
             var o = v(i);
-            var u = t(3);
-            var l = t(23);
+            var u = t(10);
+            var l = t(58);
             var c = v(l);
             function v(r) {
                 return r && r.__esModule ? r : {
@@ -1532,43 +1532,43 @@
                 }
             };
         },
-        82: function(r, e) {
+        144: function(r, e) {
             "use strict";
             r.exports = function(r, e, t) {
                 var a = "\n        precision mediump float;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        uniform sampler2D u_texture;\n\n        " + (e && "\n            varying vec3 v_normal;\n            uniform vec3 u_reverseLightDirection;\n        " || "") + "\n\n        void main() {\n            " + (e && "\n                vec3 normal = normalize(v_normal);\n                float light = dot(normal, u_reverseLightDirection);\n            " || "") + "\n\n            " + ([ "gl_FragColor = v_color;", "gl_FragColor = texture2D(u_texture, v_texcoord);" ][r] || "") + "\n\n            " + (t === 0 && "\n                float dist = distance( gl_PointCoord, vec2(0.5) );\n                float alpha = 1.0 - smoothstep(0.1,0.5,dist);\n                // float alpha = 1.0 - smoothstep(0.45,0.5,dist);\n                gl_FragColor.a *= alpha;\n            " || "") + "\n\n            " + (e && "\n                light += 2.0;\n                light *= 0.5;\n                gl_FragColor.rgb *= light;\n            " || "") + "\n        }\n    ";
                 return a;
             };
         },
-        83: function(r, e) {
+        145: function(r, e) {
             "use strict";
             r.exports = function(r, e) {
                 var t = "\n        precision mediump float;\n\n        uniform int f_shaderType;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        uniform sampler2D u_texture;\n\n        " + (e && "\n            varying vec3 v_normal;\n            uniform vec3 u_reverseLightDirection;\n        " || "") + "\n\n        void main() {\n            " + (e && "\n                vec3 normal = normalize(v_normal);\n                float light = dot(normal, u_reverseLightDirection);\n            " || "") + "\n\n            " + ([ "gl_FragColor = v_color;", "gl_FragColor = texture2D(u_texture, v_texcoord);" ][r] || "") + "\n\n            if (f_shaderType == 0) {\n                float dist = distance( gl_PointCoord, vec2(0.5) );\n                float alpha = 1.0 - smoothstep(0.1,0.5,dist);\n                gl_FragColor.a *= alpha;\n            }\n\n            " + (e && "\n                light += 2.0;\n                light *= 0.5;\n                gl_FragColor.rgb *= light;\n            " || "") + "\n        }\n    ";
                 return t;
             };
         },
-        84: function(r, e) {
+        146: function(r, e) {
             "use strict";
             r.exports = function(r, e, t) {
                 var a = "\n        precision mediump float;\n        attribute vec4 a_position;\n        " + ([ "attribute vec4 a_color;", "attribute vec2 a_texcoord;" ][r] || "") + "\n\n        " + (t === 0 && "\n            attribute float u_size; // 点精灵大小\n        " || "") + "\n\n        " + (e && "\n            attribute vec3 a_normal;\n            uniform mat4 u_worldViewProjection;\n            uniform mat4 u_worldInverseTranspose;\n        " || "") + "\n\n        uniform float u_fudgeFactor; // 透射\n\n        uniform mat4 u_matrix;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        " + (e && "\n            varying vec3 v_normal;\n        " || "") + "\n\n        void main() {\n            // Multiply the position by the matrix.\n            // gl_Position = u_matrix * a_position;\n\n            // 透射\n            // 调整除数\n            vec4 position = u_matrix * a_position;\n            // 由于裁减空间中的 Z 值是 -1 到 +1 的，所以 +1 是为了让 zToDivideBy 变成 0 到 +2 * fudgeFactor\n            float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // 透射\n\n            " + (e ? "gl_Position = u_worldViewProjection * a_position;" : "gl_Position = vec4(position.xy / zToDivideBy, position.zw);") + "\n\n            // gl_Position = u_worldViewProjection * vec4(position.xy / zToDivideBy, position.zw);\n\n            " + ([ "v_color = a_color;", "v_texcoord = a_texcoord;" ][r] || "") + "\n\n            " + (t === 0 && "\n                gl_PointSize = u_size;\n            " || "") + "\n\n            " + (e && "\n                v_normal = mat3(u_worldInverseTranspose) * a_normal;\n            " || "") + "\n        }\n    ";
                 return a;
             };
         },
-        85: function(r, e) {
+        147: function(r, e) {
             "use strict";
             r.exports = function(r, e) {
                 var t = "\n        precision mediump float;\n\n        uniform int v_shaderType;\n\n        attribute vec4 a_position;\n        " + ([ "attribute vec4 a_color;", "attribute vec2 a_texcoord;" ][r] || "") + "\n\n        attribute float u_size; // 点精灵大小\n\n        " + (e && "\n            attribute vec3 a_normal;\n            uniform mat4 u_worldViewProjection;\n            uniform mat4 u_worldInverseTranspose;\n        " || "") + "\n\n        uniform float u_fudgeFactor; // 透射\n\n        uniform mat4 u_matrix;\n\n        " + ([ "varying vec4 v_color;", "varying vec2 v_texcoord;" ][r] || "") + "\n\n        " + (e && "\n            varying vec3 v_normal;\n        " || "") + "\n\n        void main() {\n            // Multiply the position by the matrix.\n            // gl_Position = u_matrix * a_position;\n\n            // 透射\n            // 调整除数\n            vec4 position = u_matrix * a_position;\n            // 由于裁减空间中的 Z 值是 -1 到 +1 的，所以 +1 是为了让 zToDivideBy 变成 0 到 +2 * fudgeFactor\n            float zToDivideBy = 1.0 + position.z * u_fudgeFactor; // 透射\n\n            " + (e ? "gl_Position = u_worldViewProjection * a_position;" : "gl_Position = vec4(position.xy / zToDivideBy, position.zw);") + "\n\n            // gl_Position = u_worldViewProjection * vec4(position.xy / zToDivideBy, position.zw);\n\n            if (v_shaderType == 0) {\n                gl_PointSize = u_size;\n            } else {\n            }\n\n            " + ([ "v_color = a_color;", "v_texcoord = a_texcoord;" ][r] || "") + "\n\n            " + (e && "\n                v_normal = mat3(u_worldInverseTranspose) * a_normal;\n            " || "") + "\n        }\n    ";
                 return t;
             };
         },
-        86: function(r, e, t) {
+        148: function(r, e, t) {
             "use strict";
-            var a = t(84);
+            var a = t(146);
             var n = f(a);
-            var i = t(85);
+            var i = t(147);
             var o = f(i);
-            var u = t(82);
+            var u = t(144);
             var l = f(u);
-            var c = t(83);
+            var c = t(145);
             var v = f(c);
             function f(r) {
                 return r && r.__esModule ? r : {
@@ -1584,7 +1584,7 @@
                 }
             };
         },
-        87: function(r, e, t) {
+        149: function(r, e, t) {
             "use strict";
             var a = Object.assign || function(r) {
                 for (var e = 1; e < arguments.length; e++) {
@@ -1597,7 +1597,7 @@
                 }
                 return r;
             };
-            var n = t(3);
+            var n = t(10);
             var i = new Uint16Array([ 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23 ]);
             var o = new Float32Array((0, n.arrayRepeat)([ 1, 0, 0, 0, 0, 1, 1, 1 ], 6));
             var u = 6;
@@ -1803,17 +1803,17 @@
             }
             r.exports = d;
         },
-        96: function(r, e, t) {
+        156: function(r, e, t) {
             "use strict";
-            var a = t(76);
+            var a = t(138);
             var n = d(a);
-            var i = t(79);
+            var i = t(141);
             var o = d(i);
-            var u = t(75);
+            var u = t(137);
             var l = d(u);
-            var c = t(77);
+            var c = t(139);
             var v = d(c);
-            var f = t(78);
+            var f = t(140);
             var s = d(f);
             function d(r) {
                 return r && r.__esModule ? r : {

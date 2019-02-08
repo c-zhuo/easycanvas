@@ -15,8 +15,8 @@ module.exports = `
 
                     var $background = $app.add({
                         style: {
-                            tx: 400, ty: 400,
-                            tw: 400, th: 400,
+                            left: 400, top: 400,
+                            width: 400, height: 400,
                             backgroundColor: 'orange',
                         },
                     });
@@ -28,8 +28,8 @@ module.exports = `
                             text: demoString + ' 1'
                         },
                         style: {
-                            tx: 400, ty: 400,
-                            tw: 400, th: 400,
+                            left: 400, top: 400,
+                            width: 400, height: 400,
                             color: '#000',
                             textAlign: 'left',
                             textFont: '22px serif',
@@ -41,8 +41,8 @@ module.exports = `
                             text: demoString + ' 2'
                         },
                         style: {
-                            tx: 400, ty: 400,
-                            tw: 400, th: 400,
+                            left: 400, top: 400,
+                            width: 400, height: 400,
                             color: 'red',
                             textAlign: 'left',
                             textVerticalAlign: 'top',
@@ -55,8 +55,8 @@ module.exports = `
                             text: demoString + ' 3'
                         },
                         style: {
-                            tx: 400, ty: 400,
-                            tw: 400, th: 400,
+                            left: 400, top: 400,
+                            width: 400, height: 400,
                             color: 'blue',
                             textAlign: 'right',
                             textVerticalAlign: 'top',
@@ -69,8 +69,8 @@ module.exports = `
                             text: demoString + ' 4'
                         },
                         style: {
-                            tx: 400, ty: 400,
-                            tw: 400, th: 400,
+                            left: 400, top: 400,
+                            width: 400, height: 400,
                             color: '#FFF',
                             textAlign: 'left',
                             textVerticalAlign: 'bottom',
@@ -83,8 +83,8 @@ module.exports = `
                             text: demoString + ' 5'
                         },
                         style: {
-                            tx: 400, ty: 400,
-                            tw: 400, th: 400,
+                            left: 400, top: 400,
+                            width: 400, height: 400,
                             color: 'rgb(0, 255, 0)',
                             textAlign: 'right',
                             textVerticalAlign: 'bottom',
@@ -101,8 +101,8 @@ module.exports = `
                             text: demoString + ' 6'
                         },
                         style: {
-                            tx: 400, ty: 400,
-                            tw: 400, th: 400,
+                            left: 400, top: 400,
+                            width: 400, height: 400,
                             color: function () {
                                 return '#' + getRandomNumberIn16() + getRandomNumberIn16() + getRandomNumberIn16();
                             },

@@ -15,16 +15,16 @@ var sprite1 = $Painter.add({
         img: constants.png10px,
     },
     style: {
-        tx: Math.random() * 100, ty: Math.random() * 100,
+        left: Math.random() * 100, top: Math.random() * 100,
     },
     children: [
         {
             style: {
-                tx: 0, ty: 0,
+                left: 0, top: 0,
             },
             hooks: {
                 beforeTick () {
-                    this.style.tx++;
+                    this.style.left++;
                 },
             }
         },
@@ -38,16 +38,16 @@ var sprite3 = $Painter.add({
         img: constants.png10px,
     },
     style: {
-        tx: 0, ty: 0,
+        left: 0, top: 0,
     },
 });
 
 sprite2.on('custom', (number) => {
-    sprite2.style.ty = number;
+    sprite2.style.top = number;
 });
 
 sprite3.on('custom', (number) => {
-    sprite3.style.ty = number;
+    sprite3.style.top = number;
 });
 
 sprite3.on('fromSelf', (number) => {
@@ -71,9 +71,9 @@ describe('Feature.hooks Test.', function () {
         setTimeout(() => {
             expect($Painter.$children.length).toBe(2);
             expect(sprite3.style.opacity).toBe(0.3);
-            expect(sprite2.style.ty).toBe(75);
-            expect(sprite3.style.ty).toBe(0);
-            expect(sprite2.style.tx > 2).toBe(true);
+            expect(sprite2.style.top).toBe(75);
+            expect(sprite3.style.top).toBe(0);
+            expect(sprite2.style.left > 2).toBe(true);
             expect(sprite3.style.zIndex).toBe(0);
             expect(sprite2.style.zIndex).toBe(-30);
             done();

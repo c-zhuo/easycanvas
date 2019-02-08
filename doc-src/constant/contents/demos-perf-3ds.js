@@ -42,8 +42,8 @@ module.exports = `
                                     var $role = $app.add({
                                         name: model.img,
                                         style: {
-                                            tx: 60 + i % 10 * 30,
-                                            ty: parseInt(i / 10) * 100 + 50,
+                                            left: 60 + i % 10 * 30,
+                                            top: parseInt(i / 10) * 100 + 50,
                                         },
                                         webgl: window.Easycanvas.webglShapes.custom(roleShape),
                                     });

@@ -38,8 +38,8 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 100, th: 100,
-                            tx: 100, ty: 100,
+                            width: 100, height: 100,
+                            left: 100, top: 100,
                         },
                         events: {
                             contextmenu: function ($e) {
@@ -97,7 +97,7 @@ module.exports = `
 
                     var sprite2 = sprite1.add({
                         style: {
-                            tw: 10, th: 20
+                            width: 10, height: 20
                         },
                         events: {
                             click: function ($e) {
@@ -113,8 +113,8 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tx: 100, ty: 100,
-                            tw: 50, th: 50,
+                            left: 100, top: 100,
+                            width: 50, height: 50,
                         },
                         events: {
                             click: function () {
@@ -129,8 +129,8 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tx: 100, ty: 100,
-                            tw: 150, th: 150,
+                            left: 100, top: 100,
+                            width: 150, height: 150,
                             zIndex: 1,
                         },
                         events: {
@@ -169,8 +169,8 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 100, th: 100, ty: 100,
-                            tx: 100, rotate: 0, zIndex: 1,
+                            width: 100, height: 100, top: 100,
+                            left: 100, rotate: 0, zIndex: 1,
                         },
                         events: {
                             click: function () {
@@ -184,8 +184,8 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 100, th: 100, ty: 100,
-                            tx: 150, rotate: 0, zIndex: 2,
+                            width: 100, height: 100, top: 100,
+                            left: 150, rotate: 0, zIndex: 2,
                         },
                         events: {
                             eIndex: -1,

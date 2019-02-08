@@ -13,15 +13,15 @@
 </head>
 
 <body>
-    <canvas id="foo" width="1200" height="1600"></canvas>
+    <canvas id="app" width="1200" height="1600"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             events: {
                 click: function (e) {
                     var fireConfig = createFire(e.canvasX, e.canvasY);
-                    $Painter.add(fireConfig);
+                    $app.add(fireConfig);
                 }
             }
         });
@@ -34,19 +34,19 @@
                     img: Fire,
                 },
                 props: {
-                    frameWidth: -9,
+                    framewidth: -9,
                     frameHeight: -1,
                     interval: 50,
                     loop: false,
                 },
                 style: {
-                    tx: initX, ty: initY,
-                    // tw: 120, th: 120,
+                    left: initX, top: initY,
+                    // width: 120, height: 120,
                 },
             });
         };
 
-        $Painter.start();
+        $app.start();
     </script>
 </body>
 

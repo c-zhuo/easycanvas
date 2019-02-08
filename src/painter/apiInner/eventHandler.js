@@ -40,8 +40,8 @@ const hitSprite = function ($sprite, e) {
 
     return utils.pointInRect(
         e.canvasX, e.canvasY,
-        rect.tx, rect.tx + rect.tw,
-        rect.ty, rect.ty + rect.th
+        rect.left, rect.left + rect.width,
+        rect.top, rect.top + rect.height
     );
 };
 
@@ -75,7 +75,7 @@ const looper = function (arr, e, caughts) {
             }
         }
 
-        let children = item.$combine ? item.$combine.children : item.children;
+        let children = item.$combine && item.$combine.children ? item.$combine.children : item.children;
         if (process.env.NODE_ENV !== 'production') {
             if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
                 // 选取Sprite时不选取内部Sprite

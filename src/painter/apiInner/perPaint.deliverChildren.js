@@ -19,6 +19,8 @@ module.exports = function ($canvas, children, part) {
     }).sort(function (a, b) {
         let za = utils.funcOrValue(a.style.zIndex, a);
         let zb = utils.funcOrValue(b.style.zIndex, b);
+        // let za = a.style.zIndex;
+        // let zb = b.style.zIndex;
         if (za === zb) return 0;
         return za > zb ? 1 : -1;
     }).forEach(function (c, _index) {

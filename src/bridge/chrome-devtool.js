@@ -70,7 +70,7 @@ if (process.env.NODE_ENV !== 'production') {
 
                         if (item.webgl) {
                             res[item.$id].webgl = {};
-                            ['rx', 'ry', 'rz', 'tx', 'ty', 'tz'].forEach((key) => {
+                            ['rx', 'ry', 'rz', 'x', 'y', 'z'].forEach((key) => {
                                 res[item.$id].webgl[key] = utils.funcOrValue(item.webgl[key], item);
                             });
                         }

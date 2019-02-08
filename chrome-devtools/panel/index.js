@@ -11,10 +11,6 @@ const handlers =  {
         }
     },
 
-    // drawImage: function (id, value) {
-        
-    // },
-
     selectSprite: function (id, value) {
         window.$app.$actions.setSelectorActive(false);
         window.$app.$actions.setInspectedInstance(value.sprite, value.canvas);
@@ -59,20 +55,10 @@ Vue.use(require('easy-vuex'), {
         },
         setIsPaintRecording (status, app = window.$app) {
             app.$state.isPaintRecording = status;
-            // app.$actions.orderContent(
-            //     `
-            //         window.__EASYCANVAS_DEVTOOL__.isPaintRecording = ${app.$state.isPaintRecording};
-            //     `
-            // );
             window.inspectedWindow.eval(`window.__EASYCANVAS_DEVTOOL__.isPaintRecording = ${app.$state.isPaintRecording};`);
         },
         setSelectorActive (status, app = window.$app) {
             app.$state.selectorActive = status;
-            // app.$actions.orderContent(
-            //     `
-            //         window.__EASYCANVAS_DEVTOOL__.selectMode = ${app.$state.selectorActive};
-            //     `
-            // );
             window.inspectedWindow.eval(`window.__EASYCANVAS_DEVTOOL__.selectMode = ${app.$state.selectorActive};`);
         },
         // orderContent (code, callback, app = window.$app) {
@@ -121,17 +107,11 @@ Vue.use(require('easy-vuex'), {
             window.inspectedWindow.eval(sendGlobalHookCode);
 
             let $spriteDomInTree = window.document.getElementById(spriteId);
-            // let spriteDomRect = $spriteDomInTree.getBoundingClientRect();
-            // let spriteParentDomRect = $spriteDomInTree.parentElement.getBoundingClientRect();
 
             $spriteDomInTree.scrollIntoViewIfNeeded();
             window.requestAnimationFrame(() => {
                 $spriteDomInTree.parentElement.scrollTo(0, $spriteDomInTree.parentElement.scrollTop - 40);
             });
-            // $spriteDomInTree.parentElement.scrollTo(
-            //     0,
-            //     $spriteDomInTree.parentElement.scrollTop + spriteDomRect.y + spriteDomRect.height - spriteParentDomRect.y - spriteParentDomRect.height
-            // );
         },
         pause (canvasId, bol) {
             // 将某个canvas暂停（类似debugger; 对某帧进行调试，opt为true/false代表开启/关闭暂停，不传opt会进行toggle）

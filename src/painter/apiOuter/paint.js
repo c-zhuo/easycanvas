@@ -6,63 +6,74 @@
  * ********** **/
 
 import utils from 'utils/utils.js';
+import constants from 'constants';
 
 // var c = document.createElement('canvas');
 // c.height = 1334;
 // c.width = 750;
 // var d = c.getContext('2d');
 
-const diffRender = function (olds, news) {
-    if (!olds || olds.length !== news.length) {
-        return news;
-    }
+// 新老props相同指针，此处判断不再有意义
+// const diffRender = function (olds, news) {//debugger;return news; //TODO!!!
+//     if (!olds || olds.length !== news.length) {
+//         return news;
+//     }
 
-    for (let i = 0; i < olds.length; i++) {
-        let o = olds[i];
-        let n = news[i];
+//     for (let i = 0; i < olds.length; i++) {
+//         let o = olds[i];
+//         let n = news[i];
 
-        if (o.$id !== n.$id || o.img !== n.img) return news;
-        if (o.props && n.props) {
-            // if (o.props.opacity !== n.props.opacity) return news;
-            // if (o.props.rotate !== n.props.rotate) return news;
-            // if (o.props.sh !== n.props.sh) return news;
-            // if (o.props.sw !== n.props.sw) return news;
-            // if (o.props.sx !== n.props.sx) return news;
-            // if (o.props.sy !== n.props.sy) return news;
-            // if (o.props.th !== n.props.th) return news;
-            // if (o.props.tw !== n.props.tw) return news;
-            // if (o.props.tx !== n.props.tx) return news;
-            // if (o.props.ty !== n.props.ty) return news;
-            // if (o.props.text !== n.props.text) return news;
-            // if (o.props.align !== n.props.align) return news;
-            // if (o.props.baseline !== n.props.baseline) return news;
-            // if (o.props.color !== n.props.color) return news;
-            // if (o.props.type !== n.props.type) return news;
-            // if (o.props.font !== n.props.font) return news;
+//         if (o.$id !== n.$id || o.img !== n.img) return news;
+//         if (o.props && n.props) {
+//             // if (o.props.opacity !== n.props.opacity) return news;
+//             // if (o.props.rotate !== n.props.rotate) return news;
+//             // if (o.props.sh !== n.props.sh) return news;
+//             // if (o.props.sw !== n.props.sw) return news;
+//             // if (o.props.sx !== n.props.sx) return news;
+//             // if (o.props.sy !== n.props.sy) return news;
+//             // if (o.props.th !== n.props.th) return news;
+//             // if (o.props.tw !== n.props.tw) return news;
+//             // if (o.props.tx !== n.props.tx) return news;
+//             // if (o.props.ty !== n.props.ty) return news;
+//             // if (o.props.text !== n.props.text) return news;
+//             // if (o.props.align !== n.props.align) return news;
+//             // if (o.props.baseline !== n.props.baseline) return news;
+//             // if (o.props.color !== n.props.color) return news;
+//             // if (o.props.type !== n.props.type) return news;
+//             // if (o.props.font !== n.props.font) return news;
 
-            for (let prop in n.props) {
-                if (n.props[prop] !== o.props[prop]) return news;
-            }
-        }
-    }
+//             for (let prop in n.props) {
+//                 if (n.props[prop] !== o.props[prop]) return news;
+//             }
+//         }
+//     }
 
-    return false;
-};
+//     return false;
+// };
 
 module.exports = function () {
     if (this.$pausing || (this.$inBrowser && document.hidden)) return;
 
     let $canvas = this;
 
+    if (process.env.NODE_ENV !== 'production') {
+        $canvas.$plugin.timeCollect($canvas, 'custom', 'START');
+    }
+
     utils.execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]);
+    // $canvas.broadcast('beforeTick', $canvas.$rafTime);
+
+    if (process.env.NODE_ENV !== 'production') {
+        $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'START');
+    }
+
+    $canvas.children.forEach(($sprite) => {
+        $sprite.recalculate();
+    });
 
     if (!$canvas.$freezing) {
         $canvas.$lastTickChildren = $canvas.$children;
         $canvas.$children = [];
-
-        if (process.env.NODE_ENV !== 'production') {
-            $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'START');
-        }
 
         this.children.sort(function (a, b) {
             let za = utils.funcOrValue(a.style.zIndex, a);
@@ -72,10 +83,10 @@ module.exports = function () {
         }).forEach(function (perItem, index) {
             $canvas.$perPaint(perItem, index);
         });
+    }
 
-        if (process.env.NODE_ENV !== 'production') {
-            $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'END');
-        }
+    if (process.env.NODE_ENV !== 'production') {
+        $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'END');
     }
 
     if (process.env.NODE_ENV !== 'production') {
@@ -83,15 +94,15 @@ module.exports = function () {
     }
 
     if ($canvas.$paintContext.clearRect) {
-        let diffs = $canvas.$nodiff ? $canvas.$children : diffRender($canvas.$lastTickChildren, $canvas.$children);
-        if (diffs) {
+        // let diffs = $canvas.$nodiff ? $canvas.$children : diffRender($canvas.$lastTickChildren, $canvas.$children);
+        // if (diffs) {
             // d.globalAlpha = 0.3;
             // d.clearRect(0, 0, this.width, this.height);
             // d.globalAlpha = 0.7;
             // d.drawImage($canvas.$dom, 0,0);
             $canvas.$paintContext.clearRect(0, 0, this.width, this.height);
             $canvas.$render();
-        }
+        // }
     } else {
         $canvas.$render();
     }
@@ -104,9 +115,14 @@ module.exports = function () {
     }
 
     utils.execFuncs($canvas.hooks.ticked, $canvas, [$canvas.$rafTime]);
+    // $canvas.broadcast('ticked', $canvas.$rafTime);
 
     if ($canvas.hooks.nextTick) {
         utils.execFuncs($canvas.hooks.nextTick, $canvas, [$canvas.$rafTime]);
         delete $canvas.hooks.nextTick;
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+        $canvas.$plugin.timeCollect($canvas, 'custom', 'END');
     }
 };

@@ -50,10 +50,10 @@ module.exports = `
                     var $ScrollBox = $app.add(Easycanvas.class.scroll({
                         name: 'ScrollBox',
                         style: {
-                            tx: 50,
-                            ty: 0,
-                            tw: $app.width - 100,
-                            th: $app.height,
+                            left: 50,
+                            top: 0,
+                            width: $app.width - 100,
+                            height: $app.height,
                             locate: 'lt',
                             border: '1 #000',
                             backgroundColor: '#ddd',
@@ -71,8 +71,8 @@ module.exports = `
                                 img: imgSrc
                             },
                             style: {
-                                tx: $app.width / 2 - 50, ty: 100 + i * 200,
-                                tw: 100 + i * 10, th: 100 + i * 10,
+                                left: $app.width / 2 - 50, top: 100 + i * 200,
+                                width: 100 + i * 10, height: 100 + i * 10,
                             },
                             events: {
                                 click: function () {
@@ -87,8 +87,8 @@ module.exports = `
                             img: imgSrc
                         },
                         style: {
-                            tx: 0, ty: $app.height / 2,
-                            tw: $app.width / 2, th: $app.width / 2,
+                            left: 0, top: $app.height / 2,
+                            width: $app.width / 2, height: $app.width / 2,
                             zIndex: 1,
                         },
                     });
@@ -97,8 +97,8 @@ module.exports = `
                             img: imgSrc
                         },
                         style: {
-                            tx: $app.width, ty: $app.height / 2,
-                            tw: $app.width / 2, th: $app.width / 2,
+                            left: $app.width, top: $app.height / 2,
+                            width: $app.width / 2, height: $app.width / 2,
                             zIndex: 1,
                         },
                         scroll: {
@@ -106,8 +106,8 @@ module.exports = `
                         }
                     });
 
-                    $ScrollBox.trigger('scrollTo', 500, 300, () => {
-                        $ScrollBox.trigger('scrollTo', 0, 300);
+                    $ScrollBox.trigger('scrollTo', 0, 500, 300, () => {
+                        $ScrollBox.trigger('scrollTo', 0, 0, 300);
                     });
                 </script>
             </code>
@@ -150,7 +150,7 @@ module.exports = `
             </tbody>
         </table>
 
-        <p>scroll组件有一些事件，例如 sprite.trigger('scrollTo', 100， 500) 可以让容器在0.5秒的时间内滚动至100：</p>
+        <p>scroll组件有一些事件，例如 sprite.trigger('scrollTo', 0, 100, 500) 可以让容器在0.5秒的时间内滚动至100：</p>
 
         <table>
             <thead>
@@ -161,7 +161,7 @@ module.exports = `
             </thead>
             <tbody>
                 <tr>
-                    <td align="left">scrollTo(position, [duration], [callback])</td>
+                    <td align="left">scrollTo(left, top, [duration])[.then(callback)]</td>
                     <td align="left">纵向滚动至position位置，耗时duration（默认200毫秒），执行完成后触发callback回调</td>
                 </tr>
             </tbody>

@@ -6,11 +6,11 @@
 </head>
 
 <body>
-    <canvas id="foo" width="400" height="800"></canvas>
+    <canvas id="app" width="400" height="800"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        var dom = document.getElementById('foo');
+        var $app = new Easycanvas.painter();
+        var dom = document.getElementById('app');
 
         var h = document.body.clientHeight;
         var w = document.body.clientWidth;
@@ -43,12 +43,12 @@
             };
         }
 
-        $Painter.register(dom, option);
-        $Painter.start();
+        $app.register(dom, option);
+        $app.start();
 
         Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
-            window.sprite1 = $Painter.add({
+            window.sprite1 = $app.add({
                 name: 'root',
                 content: {
                     img: img,
@@ -57,9 +57,9 @@
                 //     scrollable: true
                 // },
                 style: {
-                    tw: $Painter.width, th: $Painter.height,
-                    sx: 0, sy: 0, // source position, default 0
-                    tx: 0, ty: 0,
+                    width: $app.width, height: $app.height,
+                    cutLeft: 0, cutTop: 0, // source position, default 0
+                    left: 0, top: 0,
                     opacity: 1,
                     locate: 'lt', // default center
                     zIndex: 1, // z-index of this image
@@ -79,13 +79,13 @@
                     img: Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png'),
                 },
                 style: {
-                    tx: 0.28 * longer, ty: 0.2 * shorter,
-                    tw: 0.1 * longer, th: 0.04 * shorter,
+                    left: 0.28 * longer, top: 0.2 * shorter,
+                    width: 0.1 * longer, height: 0.04 * shorter,
                 },
                 events: {
                     click: function (e) {
                         console.log(2, e);
-                        this.style.tx += 10;
+                        this.style.left += 10;
                     }
                 }
             });

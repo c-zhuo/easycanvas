@@ -3,29 +3,29 @@
 </head>
 
 <body>
-    <canvas id="foo" width="400" height="300"></canvas>
+    <canvas id="app" width="400" height="300"></canvas>
     <canvas id="bar" width="400" height="300"></canvas>
 
     <script>
-        var $Painter1 = new Easycanvas.painter();
-        $Painter1.register(document.getElementById('foo'));
-        $Painter1.start();
-        var $Painter2 = new Easycanvas.painter();
-        $Painter2.register(document.getElementById('bar'));
-        $Painter2.start();
+        var $app1 = new Easycanvas.painter();
+        $app1.register(document.getElementById('app'));
+        $app1.start();
+        var $app2 = new Easycanvas.painter();
+        $app2.register(document.getElementById('bar'));
+        $app2.start();
 
         Easycanvas.imgLoader('https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=3494948977,3852880561&fm=85&s=65541BC6473FBFD608E4858B030060C3&w=121&h=75&img.JPEG', function (img) {
             // create a sprite
-            window.sprite1 = $Painter1.add({
+            window.sprite1 = $app1.add({
                 name: 'root1',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 250, th: 130,
-                    sx: 0, sy: 0, // source position, default 0
-                    tx: Easycanvas.transition.pendulum(111, 222, 1000).loop(),
-                    ty: $Painter1.height / 10,
+                    width: 250, height: 130,
+                    cutLeft: 0, cutTop: 0, // source position, default 0
+                    left: Easycanvas.transition.pendulum(111, 222, 1000).loop(),
+                    top: $app1.height / 10,
                     opacity: 1,
                     rotate: 20,
                     locate: 'center', // default center
@@ -43,16 +43,16 @@
                     // others: mousehold, mousedown, mouseout and touch events
                 },
             });
-            window.sprite2 = $Painter2.add({
+            window.sprite2 = $app2.add({
                 name: 'root2',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 250, th: 130,
-                    sx: 0, sy: 0, // source position, default 0
-                    tx: Easycanvas.transition.pendulum(333, 444, 1000).loop(),
-                    ty: $Painter2.height / 10,
+                    width: 250, height: 130,
+                    cutLeft: 0, cutTop: 0, // source position, default 0
+                    left: Easycanvas.transition.pendulum(333, 444, 1000).loop(),
+                    top: $app2.height / 10,
                     opacity: 1,
                     rotate: 20,
                     locate: 'center', // default center

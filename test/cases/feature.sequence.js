@@ -2,8 +2,6 @@ import Easycanvas from 'src/index.js';
 import Components from 'src/components.js';
 import constants from 'karma/case.constant.js';
 
-Easycanvas.component(Components.sequence, 'sequence');
-
 var $canvas = document.createElement('canvas');
 $canvas.width = 888;
 $canvas.height = 888;
@@ -22,7 +20,7 @@ $Painter.register($canvas, {
 var Fire = Easycanvas.imgLoader(constants.fire);
 
 var createFire = function (initX, initY) {
-    return Easycanvas.class.sequence({
+    return Easycanvas.class.Sequence({
         content: {
             img: Fire,
         },
@@ -33,8 +31,8 @@ var createFire = function (initX, initY) {
             loop: false,
         },
         style: {
-            tx: initX, ty: initY,
-            // tw: 120, th: 120,
+            left: initX, top: initY,
+            // width: 120, height: 120,
         },
     });
 };
@@ -53,10 +51,10 @@ describe('Feature.sequenceDiagram Test.', function () {
             // $Painter.$dom.dispatchEvent(evt);
             expect($Painter.$children.length).toBe(1);
             expect($Painter.$children[0].type).toBe('img');
-            expect($Painter.$children[0].props.sw).toBe(Math.round(Fire.width / 9));
-            expect($Painter.$children[0].props.sh).toBe(Math.round(Fire.height));
-            expect($Painter.$children[0].props.tx).toBe(Math.round(posX - Fire.width / 9 / 2));
-            expect($Painter.$children[0].props.ty).toBe(Math.round(posY - Fire.height / 2));
+            expect($Painter.$children[0].props.cutWidth).toBe(Math.round(Fire.width / 9));
+            expect($Painter.$children[0].props.cutHeight).toBe(Math.round(Fire.height));
+            expect($Painter.$children[0].props.left).toBe(Math.round(posX - Fire.width / 9 / 2));
+            expect($Painter.$children[0].props.top).toBe(Math.round(posY - Fire.height / 2));
             done();
         }, constants.waitForUpdateTime * 2);
     });

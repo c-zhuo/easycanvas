@@ -10,12 +10,13 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
-                        el: '#app',
-                        width: 800,
-                        height: 800
-                    });
+                    var $app = new Easycanvas.painter();
+                    var dom = document.getElementById('app');
 
+                    $app.register(dom, {
+                        width: 800,
+                        height: 800,
+                    });
                     $app.start();
 
                     // 滚动
@@ -23,17 +24,13 @@ module.exports = `
                     var $scroll = $app.add(Easycanvas.class.scroll({
                         name: 'scroll-box',
                         style: {
-                            tx: 50, ty: 50,
-                            tw: 400, th: 700,
+                            left: 50, top: 50,
+                            width: 400, height: 700,
                             locate: 'lt',
                             backgroundColor: '#ccc',
                             overflowX: 'hidden',
                             overflowY: 'scroll'
                         },
-                        // scroll: {
-                        //     flexibleY: false,
-                        //     // smooth: 0.9
-                        // }
                     }));
 
                     $scroll.add({
@@ -42,7 +39,7 @@ module.exports = `
                             text: 'Scroll Area',
                         },
                         style: {
-                            tx: 400, ty: 0,
+                            left: 400, top: 0,
                             textFont: '36px Helvetica',
                             textAlign: 'right',
                             textVerticalAlign: 'top',
@@ -50,7 +47,7 @@ module.exports = `
                         }
                     })
 
-                    var ty = 10;
+                    var imgTop = 10;
                     for (var i = 0; i < 15; i++) {
                         $scroll.add({
                             name: 'G',
@@ -58,26 +55,26 @@ module.exports = `
                                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                             },
                             style: {
-                                tw: i * 10 + 50,
-                                th: i * 10 + 50,
-                                tx: Easycanvas.transition.pendulum(10, i * 20, 2000).loop(),
-                                ty: ty,
+                                width: i * 10 + 50,
+                                height: i * 10 + 50,
+                                left: Easycanvas.transition.pendulum(10, i * 20, 2000).loop(),
+                                top: imgTop,
                                 locate: 'lt',
                                 zIndex: 1,
                             }
                         });
 
-                        ty += i * 10 + 60;
+                        imgTop += i * 10 + 60;
                     }
 
                     // 按钮
 
-                    $app.add(Easycanvas.class.button({
+                    $app.add(new Easycanvas.class.button({
                         name: 'button-1',
                         props: {
                             text: 'click',
                             normal: {
-                                size: 24,
+                                fontSize: 24,
                                 color: '#2eb6a8',
                                 border: '4px solid #2eb6a8',
                                 family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
@@ -89,8 +86,8 @@ module.exports = `
                         },
                         style: {
                             locate: 'lt',
-                            tx: 500, ty: 50,
-                            tw: 100, th: 50,
+                            left: 500, top: 50,
+                            width: 100, height: 50,
                         },
                         events: {
                             click () {
@@ -104,7 +101,7 @@ module.exports = `
                         props: {
                             text: 'hover',
                             normal: {
-                                size: 24,
+                                fontSize: 24,
                                 color: '#2eb6a8',
                                 border: '4px solid #2eb6a8',
                                 family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
@@ -116,8 +113,8 @@ module.exports = `
                         },
                         style: {
                             locate: 'lt',
-                            tx: 620, ty: 50,
-                            tw: 100, th: 50,
+                            left: 620, top: 50,
+                            width: 100, height: 50,
                         },
                         events: {
                             click () {
@@ -131,7 +128,7 @@ module.exports = `
                         props: {
                             text: 'hover & click',
                             normal: {
-                                size: 24,
+                                fontSize: 24,
                                 color: '#2eb6a8',
                                 border: '4px solid #2eb6a8',
                                 family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
@@ -147,8 +144,8 @@ module.exports = `
                         },
                         style: {
                             locate: 'lt',
-                            tx: 500, ty: 120,
-                            tw: 220, th: 50,
+                            left: 500, top: 120,
+                            width: 220, height: 50,
                         },
                         events: {
                             click () {
@@ -167,12 +164,12 @@ module.exports = `
                         name: 'text-1',
                         props: {
                             text: '这里是一段单行的文本',
-                            size: 24,
-                            width: 240,
                         },
                         style: {
                             locate: 'lt',
-                            tx: 500, ty: 220,
+                            left: 500, top: 220,
+                            width: 240,
+                            fontSize: 24,
                         },
                         events: {
                             click () {
@@ -185,13 +182,13 @@ module.exports = `
                         name: 'text-2',
                         props: {
                             text: '这里是一段很长的单行文本',
-                            size: 24,
-                            width: 240,
-                            overflow: 'ellipsis'
                         },
                         style: {
                             locate: 'lt',
-                            tx: 500, ty: 270,
+                            left: 500, top: 270,
+                            width: 240,
+                            fontSize: 24,
+                            textOverflow: 'ellipsis'
                         },
                         events: {
                             click () {
@@ -204,12 +201,12 @@ module.exports = `
                         name: 'text-3',
                         props: {
                             text: '这里是一段多行文本abcdefg1234567！？：.,?',
-                            size: 24,
-                            width: 240,
                         },
                         style: {
                             locate: 'lt',
-                            tx: 500, ty: 320,
+                            left: 500, top: 320,
+                            width: 240,
+                            fontSize: 24,
                         },
                         events: {
                             click () {
@@ -222,11 +219,11 @@ module.exports = `
                         name: 'text-4',
                         props: {
                             text: 'emoji🐶',
-                            size: 24,
                         },
                         style: {
                             locate: 'lt',
-                            tx: 500, ty: 420,
+                            left: 500, top: 420,
+                            fontSize: 24,
                         },
                         events: {
                             click () {
@@ -239,12 +236,12 @@ module.exports = `
                         name: 'text-5',
                         props: {
                             text: 'padding 10px 30px',
-                            size: 24,
-                            padding: '10px 30px'
                         },
                         style: {
                             locate: 'lt',
-                            tx: 500, ty: 470,
+                            left: 500, top: 470,
+                            fontSize: 24,
+                            padding: '10px 30px',
                             backgroundColor: '#FFF',
                         },
                         events: {
@@ -258,13 +255,13 @@ module.exports = `
                         name: 'text-6',
                         props: {
                             text: 'text 24, lineHeight 72, text 24, lineHeight 72',
-                            size: 24,
-                            lineHeight: 72,
-                            width: 240,
                         },
                         style: {
                             locate: 'lt',
-                            tx: 500, ty: 540,
+                            left: 500, top: 540,
+                            width: 240,
+                            fontSize: 24,
+                            lineHeight: 72,
                             backgroundColor: '#FFF',
                         },
                         events: {
@@ -278,13 +275,13 @@ module.exports = `
                         name: 'text-7',
                         props: {
                             text: 'color & font 颜色字体',
-                            size: 24,
-                            color: '#F00',
-                            family: 'cursive, KaiTi, Helvetica, "Hiragino Sans GB", "Microsoft Yahei", "微软雅黑", Arial, sans-serifsans-serif'
                         },
                         style: {
                             locate: 'lt',
-                            tx: 500, ty: 700,
+                            left: 500, top: 700,
+                            fontSize: 24,
+                            color: '#F00',
+                            fontFamily: 'cursive, KaiTi, Helvetica, "Hiragino Sans GB", "Microsoft Yahei", "微软雅黑", Arial, sans-serifsans-serif'
                         },
                         events: {
                             click () {

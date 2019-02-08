@@ -23,9 +23,15 @@ const extend = function ($sprite, settings) {
     return stopDefault;
 };
 
-module.exports = function (_ctx, _children) {
+module.exports = function (_ctx, _children, renderAll) {
     let $canvas = this;
     let $children = _children || $canvas.$children;
+
+    if (!renderAll && !$canvas.webgl) {
+        $children = $children.filter(($child) => {
+            return $child.props.$insight !== false;
+        });
+    }
 
     $children.forEach(($sprite, i) => {
         /*
@@ -49,16 +55,16 @@ module.exports = function (_ctx, _children) {
 
             //     currentSize = props.fontsize * props.fontsize * 9 * length;
 
-            //     props.tx = props.tx - props.fontsize * 1.5 * length;
-            //     if (props.tx < 0) props.tx = 0;
-            //     props.ty = props.ty - props.fontsize * 1.5;
-            //     if (props.ty < 0) props.ty = 0;
-            //     props.tw = props.fontsize * 3 * length;
-            //     if (props.tx + props.tw > $canvas.width) props.tw = $canvas.width - props.tx;
-            //     props.th = props.fontsize * 3;
-            //     if (props.ty + props.th > $canvas.height) props.th = $canvas.height - props.ty;
+            //     props.left = props.left - props.fontsize * 1.5 * length;
+            //     if (props.left < 0) props.left = 0;
+            //     props.top = props.top - props.fontsize * 1.5;
+            //     if (props.top < 0) props.top = 0;
+            //     props.width = props.fontsize * 3 * length;
+            //     if (props.left + props.width > $canvas.width) props.width = $canvas.width - props.left;
+            //     props.height = props.fontsize * 3;
+            //     if (props.top + props.height > $canvas.height) props.height = $canvas.height - props.top;
             // } else {
-                currentSize = props.tw * props.th;
+                currentSize = props.width * props.height;
             // }
 
             // 当前图层不太小的时候，判断是否可以跳过绘制
@@ -99,13 +105,13 @@ module.exports = function (_ctx, _children) {
 
                     let tmpProps = $tmpSprite.props;
 
-                    if (tmpProps.tw * tmpProps.th < 200 * 200) {
+                    if (tmpProps.width * tmpProps.height < 200 * 200) {
                         // 太小的图片不认为可以遮挡
                         $tmpSprite.$cannotCover = true;
                         continue;
                     }
 
-                    if (tmpProps.tw * tmpProps.th < currentSize) {
+                    if (tmpProps.width * tmpProps.height < currentSize) {
                         continue;
                     }
 
@@ -125,13 +131,13 @@ module.exports = function (_ctx, _children) {
                     }
 
                     if (utils.pointInRect(
-                            props.tx, props.ty,
-                            tmpProps.tx, tmpProps.tx + tmpProps.tw,
-                            tmpProps.ty, tmpProps.ty + tmpProps.th,
+                            props.left, props.top,
+                            tmpProps.left, tmpProps.left + tmpProps.width,
+                            tmpProps.top, tmpProps.top + tmpProps.height,
                         ) && utils.pointInRect(
-                            props.tx + props.tw, props.ty + props.th,
-                            tmpProps.tx, tmpProps.tx + tmpProps.tw,
-                            tmpProps.ty, tmpProps.ty + tmpProps.th,
+                            props.left + props.width, props.top + props.height,
+                            tmpProps.left, tmpProps.left + tmpProps.width,
+                            tmpProps.top, tmpProps.top + tmpProps.height,
                         )
                     ) {
                         if (process.env.NODE_ENV !== 'production') {
@@ -165,13 +171,13 @@ module.exports = function (_ctx, _children) {
         if ($sprite.type === 'clip') { 
             ctx.save();
             // rect会导致FPS逐渐降低，怀疑未清理导致
-            // ctx.rect(props.tx, props.ty, props.tw, props.th);
+            // ctx.rect(props.left, props.ty, props.width, props.height);
             ctx.beginPath();
-            ctx.moveTo(props.tx, props.ty);
-            ctx.lineTo(props.tx + props.tw, props.ty);
-            ctx.lineTo(props.tx + props.tw, props.ty + props.th);
-            ctx.lineTo(props.tx, props.ty + props.th);
-            ctx.lineTo(props.tx, props.ty);
+            ctx.moveTo(props.left, props.top);
+            ctx.lineTo(props.left + props.width, props.top);
+            ctx.lineTo(props.left + props.width, props.top + props.height);
+            ctx.lineTo(props.left, props.top + props.height);
+            ctx.lineTo(props.left, props.top);
             ctx.closePath();
             ctx.clip();
         }
@@ -239,7 +245,7 @@ module.exports = function (_ctx, _children) {
         }
 
         if ($sprite.type === 'img') {
-            ctx.drawImage($sprite.img,props.sx,props.sy,props.sw,props.sh,props.tx,props.ty,props.tw,props.th);
+            ctx.drawImage($sprite.img, props.cutLeft, props.cutTop, props.cutWidth, props.cutHeight, props.left, props.top, props.width, props.height);
             if (process.env.NODE_ENV !== 'production') {
                 if ($canvas.$plugin) {
                     $canvas.$plugin.drawImage($canvas, props);
@@ -250,10 +256,10 @@ module.exports = function (_ctx, _children) {
             ctx.fillStyle = props.color || 'white';
             ctx.textAlign = props.align;
             ctx.textBaseline = props.baseline;
-            ctx[props.type || 'fillText'](props.content, props.tx, props.ty);
+            ctx[props.type || 'fillText'](props.content, props.left, props.top);
         } else if ($sprite.type === 'fillRect') { 
             ctx.fillStyle = settings.fillRect;
-            ctx.fillRect(props.tx,props.ty,props.tw,props.th);
+            ctx.fillRect(props.left,props.top,props.width,props.height);
         } else if ($sprite.type === 'line') {
             ctx.beginPath();
 
@@ -263,19 +269,19 @@ module.exports = function (_ctx, _children) {
             //     ctx._strokeStyle = ctx.strokeStyle = strokeStyle;
 
             ctx.lineWidth = props.border.split(' ')[0] || 1;
-            ctx.moveTo(props.tx, props.ty);
-            ctx.lineTo(props.tx + props.tw, props.ty);
-            ctx.lineTo(props.tx + props.tw, props.ty + props.th);
-            ctx.lineTo(props.tx, props.ty + props.th);
-            // ctx.lineTo(props.tx, props.ty);
+            ctx.moveTo(props.left, props.top);
+            ctx.lineTo(props.left + props.width, props.top);
+            ctx.lineTo(props.left + props.width, props.top + props.height);
+            ctx.lineTo(props.left, props.top + props.height);
+            // ctx.lineTo(props.left, props.top);
 
             // let lineWidth = props.border.split(' ')[0] || 1;
             // ctx.lineWidth = lineWidth;
-            // ctx.moveTo(props.tx - lineWidth, props.ty - lineWidth);
-            // ctx.lineTo(props.tx + props.tw + lineWidth, props.ty - lineWidth);
-            // ctx.lineTo(props.tx + props.tw + lineWidth, props.ty + props.th + lineWidth);
-            // ctx.lineTo(props.tx - lineWidth, props.ty + props.th + lineWidth);
-            // // ctx.lineTo(props.tx - lineWidth, props.ty - lineWidth);
+            // ctx.moveTo(props.left - lineWidth, props.top - lineWidth);
+            // ctx.lineTo(props.left + props.width + lineWidth, props.top - lineWidth);
+            // ctx.lineTo(props.left + props.width + lineWidth, props.top + props.height + lineWidth);
+            // ctx.lineTo(props.left - lineWidth, props.top + props.height + lineWidth);
+            // // ctx.lineTo(props.left - lineWidth, props.top - lineWidth);
 
             ctx.closePath();
             ctx.stroke();

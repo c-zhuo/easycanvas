@@ -19,7 +19,7 @@ var $sp1 = $Painter.add({
         img: constants.png10px,
     },
     style: {
-        tx: 10, ty: 0,
+        left: 10, top: 0,
         locate: 'lt',
     },
 });
@@ -29,7 +29,7 @@ var $sp2 = $Painter.add({
         img: $Painter.imgLoader(constants.png10px + '   ', null, {canvas: true}),
     },
     style: {
-        tx: 20, ty: 0,
+        left: 20, top: 0,
         locate: 'lt',
     },
 });
@@ -41,7 +41,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
             img: img,
         },
         style: {
-            tx: 30, ty: 0,
+            left: 30, top: 0,
             locate: 'lt',
         },
     });

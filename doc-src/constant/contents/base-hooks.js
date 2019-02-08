@@ -25,17 +25,17 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 100, th: 100, tx: 200, ty: 200, rotate: 0,
+                            width: 100, height: 100, left: 200, top: 200, rotate: 0,
                         },
                         hooks: {
-                            beforeTick: function (tickIndex) {
-                                this.style.tx += Math.random() * 10 - 5;
-                                this.style.ty += Math.random() * 10 - 5;
+                            beforeTick: function (ticks) {
+                                this.style.left += Math.random() * 10 - 5;
+                                this.style.top += Math.random() * 10 - 5;
 
-                                this.style.tx = (this.style.tx + this.$canvas.width) % this.$canvas.width;
-                                this.style.ty = (this.style.ty + this.$canvas.height) % this.$canvas.height;
+                                this.style.left = (this.style.left + this.$canvas.width) % this.$canvas.width;
+                                this.style.top = (this.style.top + this.$canvas.height) % this.$canvas.height;
 
-                                this.style.rotate = tickIndex;
+                                this.style.rotate = ticks;
                             },
                         },
                     });
@@ -46,7 +46,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>tick状态钩子拥有一个参数，代表当前的tick数：beforeTick从0开始自增，ticked从1开始自增。</p>
+        <p>tick状态钩子拥有一个参数，代表当前canvas累计的帧数：beforeTick的tick从0开始自增，ticked从1开始自增。</p>
 
         <p>可以使用sprite的on与off来进行动态的钩子注册和解绑，并且可以设置throttle，例如下面这个beforeTick的钩子每200毫秒只会触发一次：</p>
 
@@ -71,16 +71,16 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 100, th: 100, tx: 200, ty: 200, rotate: 0,
+                            width: 100, height: 100, left: 200, top: 200, rotate: 0,
                         },
                     });
 
                     $foo.on('beforeTick', function () {
-                        this.style.tx += Math.random() * 10 - 5;
-                        this.style.ty += Math.random() * 10 - 5;
+                        this.style.left += Math.random() * 10 - 5;
+                        this.style.top += Math.random() * 10 - 5;
 
-                        this.style.tx %= this.$canvas.width;
-                        this.style.ty %= this.$canvas.height;
+                        this.style.left %= this.$canvas.width;
+                        this.style.top %= this.$canvas.height;
 
                         this.style.rotate += Math.random() * 10;
                     }, 200);

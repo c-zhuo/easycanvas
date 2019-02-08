@@ -3,7 +3,7 @@
  * Sprite Structure
  * {
  *     style: {
- *         tx, ty, tw, th,
+ *         left, top, width, height,
  *         zIndex, opacity, scale, rotate, rx, ry,
  *         sx, sy, sw, sh, locate, // useless for content.text
  *         fh, fv, fx, fy, // transform
@@ -43,11 +43,13 @@ import clear from '../painter/apiOuter/clear.js';
 import nextTick from '../painter/apiOuter/nextTick.js';
 import trigger from './api.trigger.js';
 import broadcast from './api.broadcast.js';
+import distribute from './api.distribute.js';
 // import bindDrag from '../painter/apiInner/bindDrag.js';
 
 import getOuterRect from './api.getOuterRect.js';
 import combine from './api.combine.js';
 import uncombine from './api.uncombine.js';
+import recalculate from './api.recalculate.js';
 
 // 记录sprite创建的顺序，用于调试工具的排序
 let $addIndex = 0;
@@ -75,7 +77,7 @@ const ChangeChildrenToSprite = function ($parent) {
 };
 
 // Set default values to sprite
-const preAdd = function (_item) {
+const preAdd = function (_item, $instance) {
     let item = _item || {};
 
     if (!item.$id) {
@@ -88,8 +90,6 @@ const preAdd = function (_item) {
 
     item.style = item.style || {};
 
-    item.style.tx = item.style.tx || 0;
-    item.style.ty = item.style.ty || 0;
     item.style.scale = utils.firstValuable(item.style.scale, 1);
     item.style.opacity = utils.firstValuable(item.style.opacity, 1);
 
@@ -101,10 +101,70 @@ const preAdd = function (_item) {
 
     let _img = utils.funcOrValue(item.content.img);
 
-    constants.xywh.forEach((key) => {
-        item.style[key] = item.style[key] || 0;
+    $instance.$cache = {}; // 当前最终style
+    $instance.$render = {}; // 当前渲染style
+    $instance.$style = {}; // 当前自身style
+    $instance.$needUpdate = {};
+
+    item.hooks = item.hooks || {};
+
+    constants.styles.concat(['visible']).forEach((key) => {
+        $instance.$cache[key] = undefined;
+        $instance.$style[key] = item.style[key];
+
+        if (typeof item.style[key] === 'function') {
+            $instance.$style[key] = item.style[key].bind($instance);
+        }
+
+        if (constants.xywh.indexOf(key) > -1) {
+            $instance.$style[key] = $instance.$style[key] || 0;
+        } else if (['opacity', 'scale'].indexOf(key) > -1) {
+            $instance.$style[key] = utils.firstValuable($instance.$style[key], 1);
+        }
+
+        $instance.$needUpdate[key] = 1;
+
+        Object.defineProperty(item.style, key, {
+            get () {
+                return $instance.$style[key];
+            },
+
+            set (v) {
+                if ($instance.$style[key] === v) return;
+
+                $instance.$style[key] = v;
+
+                $instance.$needUpdate[key] = 1;
+            },
+        });
     });
 
+    // ['img', 'text'].forEach((key) => {
+    //     $instance.$cache[key] = undefined;
+    //     $instance.$style[key] = item.content[key];
+    //     $instance.$needUpdate = true;
+
+    //     let lastSelfValue;
+    //     let needRecalculate = true;
+
+    //     if (typeof item.content[key] === 'function') {
+    //         $instance.$style[key] = item.content[key].bind($instance);
+    //     }
+
+    //     Object.defineProperty(item.content, key, {
+    //         get () {
+    //             return $instance.$style[key];
+    //         },
+
+    //         set (v) {
+    //             if ($instance.$style[key] === v) return;
+
+    //             $instance.$style[key] = v;
+
+    //             $instance.$needUpdate = true;
+    //         },
+    //     });
+    // });
     // item.inherit = item.inherit || ['tx', 'ty', 'scale', 'opacity'];
 
     item.events = item.events || {};
@@ -121,8 +181,6 @@ const preAdd = function (_item) {
     }
 
     item.events.eIndex = item.events.eIndex;
-
-    item.hooks = item.hooks || {};
 
     if (process.env.NODE_ENV !== 'production') {
         item.$perf = {};
@@ -142,7 +200,6 @@ const preAdd = function (_item) {
 
     ChangeChildrenToSprite(item);
 
-    item.$cache = {};
     item.$styleCacheTime = {};
 
     return item;
@@ -155,7 +212,7 @@ const extend = function (opt) {
 };
 
 const sprite = function (opt) {
-    let _opt = preAdd(opt);
+    let _opt = preAdd(opt, this);
 
     for (let i in _opt) {
         if (Object.prototype.hasOwnProperty.call(_opt, i)) {
@@ -191,25 +248,28 @@ sprite.prototype.getRect = function (notImg, fromCache) {
         res[key] = this.getStyle(key, fromCache);
     });
 
-    if (res.tw === 0 && this.content.img && !notImg) {
+    if (res.width === 0 && this.content.img && !notImg) {
         let img = utils.funcOrValue(this.content.img, this);
-        res.tw = img.width;
-        res.th = img.height;
+        res.width = img.width;
+        res.height = img.height;
     }
 
     let locate = this.getStyle('locate');
     if (locate === 'lt') {
     } else if (locate === 'ld') {
-        res.ty -= res.th;
+        res.top -= res.height;
     } else if (locate === 'rt') {
-        res.tx -= res.tw;
+        res.left -= res.width;
     } else if (locate === 'rd') {
-        res.tx -= res.tw;
-        res.ty -= res.th;
+        res.left -= res.width;
+        res.top -= res.height;
     } else { // center
-        res.tx -= res.tw >> 1;
-        res.ty -= res.th >> 1;
+        res.left -= res.width >> 1;
+        res.top -= res.height >> 1;
     }
+
+    res.right = this.$canvas.width - res.left - res.width;
+    res.bottom = this.$canvas.height - res.top - res.height;
 
     return res;
 };
@@ -251,12 +311,12 @@ sprite.prototype.getStyle = function (key, fromCache) {
         return $sprite.$cache[key];
     }
 
-    let currentValue = utils.funcOrValue($sprite.style[key], $sprite);
+    let currentValue = utils.funcOrValue($sprite.$style[key], $sprite);
 
     if ($sprite.$parent) {
         let parentValue = $sprite.$parent.getStyle(key);
 
-        if (key === 'tx' || key === 'ty') {
+        if (key === 'left' || key === 'top') {
             parentValue = utils.firstValuable(parentValue, 0);
 
             // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
@@ -274,6 +334,12 @@ sprite.prototype.getStyle = function (key, fromCache) {
             return (
                 parentValue
             ) * utils.firstValuable(currentValue, 1);
+        } else if (key === 'visible') {
+            if (parentValue === false) return false;
+            // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+            // $sprite.$parent.$cache[key] = parentValue;
+
+            return currentValue;
         }
     }
 
@@ -301,12 +367,18 @@ sprite.prototype.update = function (opt) {
     for (var i in opt) {
         if (typeof opt[i] === 'object') {
             for (var j in opt[i]) {
+                if (!this[i]) {
+                    this[i] = {};
+                }
+
                 this[i][j] = opt[i][j];
             }
         } else {
             this[i] = opt[i];
         }
     }
+
+    this.recalculate(true); // force update
 };
 
 sprite.prototype.getAllChildren = function (includeSelf) {
@@ -321,6 +393,22 @@ sprite.prototype.getAllChildren = function (includeSelf) {
     return childrenSet;
 };
 
+sprite.prototype.getAllVisibleChildren = function (includeSelf) {
+    let $sprite = this;
+
+    if (utils.funcOrValue($sprite.style.visible, $sprite) === false) {
+        return [];
+    }
+
+    let childrenSet = includeSelf ? [$sprite] : [];
+
+    $sprite.children.forEach((child) => {
+        childrenSet = childrenSet.concat(child.getAllVisibleChildren(true));
+    });
+
+    return childrenSet;
+};
+
 sprite.prototype.getOuterRect = getOuterRect;
 
 sprite.prototype.combine = combine;
@@ -328,11 +416,21 @@ sprite.prototype.combine = combine;
 sprite.prototype.uncombine = uncombine;
 
 sprite.prototype.combineAsync = function () {
-    if (this.$combine || this.$combine === 0) return this;
-    this.$combine = 0;
+    if (this.$combine) return this;
+    this.$combine = 9;
 
     this.off('ticked', this.combine);
     this.on('ticked', this.combine, 100);
+
+    return this;
+};
+
+sprite.prototype.recalculate = recalculate;
+
+sprite.prototype.refresh = function () {
+    for (let key in $sprite.$style) {
+        $sprite.$cache[key] = sprite.get($sprite.$style[key], $sprite);
+    }
 
     return this;
 };
@@ -343,5 +441,6 @@ sprite.prototype.off = off;
 sprite.prototype.clear = clear;
 sprite.prototype.trigger = trigger;
 sprite.prototype.broadcast = broadcast;
+sprite.prototype.distribute = distribute;
 
 module.exports = sprite;

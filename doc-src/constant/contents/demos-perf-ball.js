@@ -18,8 +18,8 @@ module.exports = `
                     var ball = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/ball.png';
 
                     $app.events.mousemove = function (e) {
-                        $root.style.tx = e.canvasX;
-                        $root.style.ty = e.canvasY;
+                        $root.style.left = e.canvasX;
+                        $root.style.top = e.canvasY;
                     };
 
                     var $root = $app.add({
@@ -27,8 +27,8 @@ module.exports = `
                             img: ball,
                         },
                         style: {
-                            tx: 200, ty: 200,
-                            tw: 20, th: 20,
+                            left: 200, top: 200,
+                            width: 20, height: 20,
                         },
                     });
 
@@ -39,15 +39,15 @@ module.exports = `
                                     img: ball,
                                 },
                                 style: {
-                                    tx: 200, ty: 200,
-                                    tw: 20, th: 20,
+                                    left: 200, top: 200,
+                                    width: 20, height: 20,
                                     zIndex: j + 1,
                                     rotate: j,
                                 },
                                 hooks: {
                                     ticked: function () {
-                                        this.style.tx = (this.getStyle('tx') + $app.children[j].getStyle('tx')) / 2;
-                                        this.style.ty = (this.getStyle('ty') + $app.children[j].getStyle('ty')) / 2;
+                                        this.style.left = (this.getStyle('left') + $app.children[j].getStyle('left')) / 2;
+                                        this.style.top = (this.getStyle('top') + $app.children[j].getStyle('top')) / 2;
                                     },
                                 }
                             });

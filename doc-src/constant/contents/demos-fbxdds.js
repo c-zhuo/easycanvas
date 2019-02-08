@@ -24,7 +24,7 @@ module.exports = `
 
                     var $box = $app.add({
                         style: {
-                            tx: 400, ty: 700,
+                            left: 400, top: 700,
                         },
                     });
 

@@ -18,8 +18,8 @@ Easycanvas.imgLoader(constants.png10px, function (img) {
         },
         style: {
             locate: 'lt',
-            sx: 0, sy: 0,
-            tx: undefined, ty: 77,
+            cutLeft: 0,
+            left: undefined, top: 77,
         },
     };
     sprite1 = $Painter.add(obj);
@@ -30,8 +30,8 @@ describe('Featrue.add Test.', function () {
         setTimeout(() => {
             let children = $Painter.children;
             expect(children.length).toBe(1);
-            expect(children[0].style.tx).toBe(0);
-            expect(children[0].style.ty).toBe(77);
+            expect(children[0].style.left).toBe(0);
+            expect(children[0].style.top).toBe(77);
             expect(children[0].style.opacity).toBe(1);
             expect(children[0].style.rotate).toBe(undefined);
             expect(children[0].style.zIndex).toBe(0);
@@ -49,9 +49,9 @@ describe('Featrue.add Test.', function () {
             expect($children[0].type).toBe('img');
             expect($children[0].props.img.tagName).toBe('IMG');
             expect($children[0].props.img.width).toBe(10);
-            expect($children[0].props.tw).toBe(10);
-            expect($children[0].props.tx).toBe(0);
-            expect($children[0].props.ty).toBe(77);
+            expect($children[0].props.width).toBe(10);
+            expect($children[0].props.left).toBe(0);
+            expect($children[0].props.top).toBe(77);
             done();
         }, constants.waitForUpdateTime);
     });

@@ -24,29 +24,29 @@ const transitions = {
         let subtype = transition.subtype || 1;
 
         // ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-        // ctx.fillRect(0, 0, this.style.tw, this.style.th);
-        ctx.clearRect(0, 0, this.style.tw, this.style.th);
+        // ctx.fillRect(0, 0, this.style.width, this.style.height);
+        ctx.clearRect(0, 0, this.style.width, this.style.height);
 
         ctx.globalCompositeOperation = 'source-over';
         ctx.globalAlpha = 1;
         subtype === 1 &&
             ctx.drawImage(particleImage,
-                (this.style.tw >> 1) - (this.style.tw >> 1) * transition.progress * 2,
-                (this.style.th >> 1) - (this.style.th >> 1) * transition.progress * 2,
-                this.style.tw * transition.progress * 2,
-                this.style.th * transition.progress * 2,
+                (this.style.width >> 1) - (this.style.width >> 1) * transition.progress * 2,
+                (this.style.height >> 1) - (this.style.height >> 1) * transition.progress * 2,
+                this.style.width * transition.progress * 2,
+                this.style.height * transition.progress * 2,
             );
         subtype !== 1 &&
             ctx.drawImage(particleImage,
-                (this.style.tw >> 1) - (this.style.tw >> 1) * (1 - transition.progress) * 2,
-                (this.style.th >> 1) - (this.style.th >> 1) * (1 - transition.progress) * 2,
-                this.style.tw * (1 - transition.progress) * 2,
-                this.style.th * (1 - transition.progress) * 2,
+                (this.style.width >> 1) - (this.style.width >> 1) * (1 - transition.progress) * 2,
+                (this.style.height >> 1) - (this.style.height >> 1) * (1 - transition.progress) * 2,
+                this.style.width * (1 - transition.progress) * 2,
+                this.style.height * (1 - transition.progress) * 2,
             );
 
         ctx.globalCompositeOperation = subtype === 1 ? 'source-out' : 'source-in';
         ctx.globalAlpha = Math.max(1 - transition.progress, 0);
-        ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0, this.style.tw, this.style.th);
+        ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0, this.style.width, this.style.height);
     },
 
     // 开门效果
@@ -56,20 +56,20 @@ const transitions = {
         let rx = 0, ry = 0;
         // 1234上右下左
         if (subtype === 1) {
-            rx = this.style.tw / 2;
+            rx = this.style.width / 2;
         } else if (subtype === 2) {
-            rx = this.style.tw;
-            ry = this.style.th / 2;
+            rx = this.style.width;
+            ry = this.style.height / 2;
         } else if (subtype === 3) {
-            rx = this.style.tw / 2;
-            ry = this.style.th;
+            rx = this.style.width / 2;
+            ry = this.style.height;
         } else if (subtype === 4) {
-            ry = this.style.th / 2;
+            ry = this.style.height / 2;
         }
 
-        ctx.clearRect(0, 0, this.style.tw, this.style.th);
+        ctx.clearRect(0, 0, this.style.width, this.style.height);
         // ctx.fillStyle = 'rgba(0,0,0, 0.1)';
-        // ctx.fillRect(0, 0, this.style.tw, this.style.th);
+        // ctx.fillRect(0, 0, this.style.width, this.style.height);
 
         ctx.save();
 
@@ -77,8 +77,8 @@ const transitions = {
         ctx.rotate((subtype < 3 ? 1 : -1) * 90 * 3.14 / 180 * transition.progress);
         ctx.translate(-rx, -ry);
         ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this),
-            0, 0, rx || this.style.tw, this.style.th - ry || ry,
-            0, 0, rx || this.style.tw, this.style.th - ry || ry);
+            0, 0, rx || this.style.width, this.style.height - ry || ry,
+            0, 0, rx || this.style.width, this.style.height - ry || ry);
 
         ctx.restore();
 
@@ -88,8 +88,8 @@ const transitions = {
         ctx.rotate((subtype < 3 ? -1 : 1) * 90 * 3.14 / 180 * transition.progress);
         ctx.translate(-rx, -ry);
         ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this),
-            subtype < 4 ? this.style.tw - rx : 0, subtype < 3 ? ry : (subtype < 4 ? 0 : ry), this.style.tw - rx || rx, this.style.th - ry || ry,
-            subtype < 4 ? this.style.tw - rx : 0, subtype < 3 ? ry : (subtype < 4 ? 0 : ry), this.style.tw - rx || rx, this.style.th - ry || ry);
+            subtype < 4 ? this.style.width - rx : 0, subtype < 3 ? ry : (subtype < 4 ? 0 : ry), this.style.width - rx || rx, this.style.height - ry || ry,
+            subtype < 4 ? this.style.width - rx : 0, subtype < 3 ? ry : (subtype < 4 ? 0 : ry), this.style.width - rx || rx, this.style.height - ry || ry);
 
         ctx.restore();
     },
@@ -101,17 +101,17 @@ const transitions = {
         let rx = 0, ry = 0;
         // 1234上右下左
         if (subtype === 1) {
-            rx = this.style.tw;
+            rx = this.style.width;
         } else if (subtype === 2) {
-            rx = this.style.tw;
-            ry = this.style.th;
+            rx = this.style.width;
+            ry = this.style.height;
         } else if (subtype === 3) {
-            ry = this.style.th;
+            ry = this.style.height;
         }
 
-        ctx.clearRect(0, 0, this.style.tw, this.style.th);
+        ctx.clearRect(0, 0, this.style.width, this.style.height);
         // ctx.fillStyle = 'rgba(0,0,0, 0.1)';
-        // ctx.fillRect(0, 0, this.style.tw, this.style.th);
+        // ctx.fillRect(0, 0, this.style.width, this.style.height);
 
         ctx.save();
 
@@ -119,7 +119,7 @@ const transitions = {
         ctx.rotate(90 * 3.14 / 180 * transition.progress);
         ctx.translate(-rx, -ry);
         ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this),
-            0, 0, this.style.tw, this.style.th);
+            0, 0, this.style.width, this.style.height);
 
         ctx.restore();
     },
@@ -130,10 +130,10 @@ const transitions = {
 
         let subtype = transition.subtype || 1;
         // 1234 上左下右
-        subtype === 1 && ctx.clearRect(0, 0, this.style.tw, transition.progress * this.style.th);
-        subtype === 2 && ctx.clearRect(0, 0, transition.progress * this.style.tw, this.style.th);
-        subtype === 3 && ctx.clearRect(0, (1 - transition.progress) * this.style.th, this.style.tw, this.style.th);
-        subtype === 4 && ctx.clearRect((1 - transition.progress) * this.style.tw, 0, this.style.tw, this.style.th);
+        subtype === 1 && ctx.clearRect(0, 0, this.style.width, transition.progress * this.style.height);
+        subtype === 2 && ctx.clearRect(0, 0, transition.progress * this.style.width, this.style.height);
+        subtype === 3 && ctx.clearRect(0, (1 - transition.progress) * this.style.height, this.style.width, this.style.height);
+        subtype === 4 && ctx.clearRect((1 - transition.progress) * this.style.width, 0, this.style.width, this.style.height);
     },
 
     // 带渐变的印刷效果
@@ -147,50 +147,50 @@ const transitions = {
 
         let subtype = transition.subtype || 1;
         // 1234 上下左右
-        subtype === 1 && ctx2.fillRect(0, 0, this.style.tw, progress * this.style.th);
-        subtype === 2 && ctx2.fillRect(0, 0, progress * this.style.tw, this.style.th);
-        subtype === 3 && ctx2.fillRect(0, (1 - progress) * this.style.th, this.style.tw, this.style.th);
-        subtype === 4 && ctx2.fillRect((1 - progress) * this.style.tw, 0, this.style.tw, this.style.th);
+        subtype === 1 && ctx2.fillRect(0, 0, this.style.width, progress * this.style.height);
+        subtype === 2 && ctx2.fillRect(0, 0, progress * this.style.width, this.style.height);
+        subtype === 3 && ctx2.fillRect(0, (1 - progress) * this.style.height, this.style.width, this.style.height);
+        subtype === 4 && ctx2.fillRect((1 - progress) * this.style.width, 0, this.style.width, this.style.height);
 
         ctx.globalCompositeOperation = 'source-over';
-        ctx.clearRect(0, 0, this.style.tw, this.style.th);
+        ctx.clearRect(0, 0, this.style.width, this.style.height);
         ctx.drawImage(ctx2.$canvas, 0, 0);
         ctx.globalCompositeOperation = 'source-out';
         ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0);
 
         // let subtype = transition.subtype;
         // // 1234 上下左右
-        // subtype === 1 && ctx.clearRect(0, 0, this.style.tw, transition.progress * this.style.th);
-        // subtype === 2 && ctx.clearRect(0, (1 - transition.progress) * this.style.th, this.style.tw, this.style.th);
-        // subtype === 3 && ctx.clearRect(0, 0, transition.progress * this.style.tw, this.style.th);
-        // subtype === 4 && ctx.clearRect((1 - transition.progress) * this.style.tw, 0, this.style.tw, this.style.th);
+        // subtype === 1 && ctx.clearRect(0, 0, this.style.width, transition.progress * this.style.height);
+        // subtype === 2 && ctx.clearRect(0, (1 - transition.progress) * this.style.height, this.style.width, this.style.height);
+        // subtype === 3 && ctx.clearRect(0, 0, transition.progress * this.style.width, this.style.height);
+        // subtype === 4 && ctx.clearRect((1 - transition.progress) * this.style.width, 0, this.style.width, this.style.height);
     },
 
     // 笔划扩散效果
     sweep: function (transition, ctx, ctx2) {
         if (!transition.particleData.length) {
             let subtype = transition.subtype || 1;
-            let hwRate = this.style.th / this.style.tw;
+            let hwRate = this.style.height / this.style.width;
 
-            for (var i = 0; i < this.style.tw / 50; i++) {
+            for (var i = 0; i < this.style.width / 50; i++) {
                 subtype === 1 && transition.particleData.push({
-                    x: 50 * i + Math.random() * this.style.tw / 5 / 2 - this.style.tw / 5,
-                    y: 50 * hwRate * i + Math.random() * this.style.th / 5 / 2 - this.style.th / 5,
+                    x: 50 * i + Math.random() * this.style.width / 5 / 2 - this.style.width / 5,
+                    y: 50 * hwRate * i + Math.random() * this.style.height / 5 / 2 - this.style.height / 5,
                     size: 100 - i
                 });
                 subtype === 2 && transition.particleData.push({
-                    x: this.style.tw - (50 * i + Math.random() * this.style.tw / 5 / 2 - this.style.tw / 5),
-                    y: 50 * hwRate * i + Math.random() * this.style.th / 5 / 2 - this.style.th / 5,
+                    x: this.style.width - (50 * i + Math.random() * this.style.width / 5 / 2 - this.style.width / 5),
+                    y: 50 * hwRate * i + Math.random() * this.style.height / 5 / 2 - this.style.height / 5,
                     size: 100 - i
                 });
                 subtype === 3 && transition.particleData.push({
-                    x: this.style.tw / 2,
-                    y: 50 * hwRate * i + Math.random() * this.style.th / 5 / 2 - this.style.th / 5,
+                    x: this.style.width / 2,
+                    y: 50 * hwRate * i + Math.random() * this.style.height / 5 / 2 - this.style.height / 5,
                     size: 100 - i
                 });
                 subtype === 4 && transition.particleData.push({
-                    x: 50 * hwRate * i + Math.random() * this.style.tw / 5 / 2 - this.style.tw / 5,
-                    y: this.style.th / 2,
+                    x: 50 * hwRate * i + Math.random() * this.style.width / 5 / 2 - this.style.width / 5,
+                    y: this.style.height / 2,
                     size: 100 - i
                 });
             }
@@ -198,7 +198,7 @@ const transitions = {
 
         // ctx2.fillStyle = 'rgba(0, 0, 0, 0)';
         ctx2.fillStyle = 'rgba(0, 0, 0, 0.005)';
-        ctx2.fillRect(0, 0, this.style.tw, this.style.th);
+        ctx2.fillRect(0, 0, this.style.width, this.style.height);
 
         ctx2.globalAlpha = transition.progress * transition.progress;
 
@@ -216,16 +216,16 @@ const transitions = {
         });
 
         ctx.globalCompositeOperation = 'source-over';
-        ctx.clearRect(0, 0, this.style.tw, this.style.th);
+        ctx.clearRect(0, 0, this.style.width, this.style.height);
         ctx.drawImage(ctx2.$canvas, 0, 0);
         ctx.globalCompositeOperation = 'source-out';
-        ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0, this.style.tw, this.style.th);
+        ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0, this.style.width, this.style.height);
     },
 
     // 流淌淡出效果
     flow: function (transition, ctx, ctx2) {
         if (!transition.particleData.length) {
-            for (var i = 0; i < this.style.tw / 50; i++) {
+            for (var i = 0; i < this.style.width / 50; i++) {
                 transition.particleData.push({
                     x: -100 + i * 50 + Math.random() * 40 - 20,
                     y: -Math.random() * 200 - 300,
@@ -235,7 +235,7 @@ const transitions = {
         }
 
         ctx2.fillStyle = 'rgba(0, 0, 0, 0.01)';
-        ctx2.fillRect(0, 0, this.style.tw, this.style.th);
+        ctx2.fillRect(0, 0, this.style.width, this.style.height);
         transition.particleData.forEach((p) => {
             ctx2.drawImage(particleImage,
                 p.x,
@@ -243,32 +243,32 @@ const transitions = {
                 200,
                 200,
             );
-            p.y += 1 / transition.ticks * this.style.th + p.extra;
+            p.y += 1 / transition.ticks * this.style.height + p.extra;
         });
 
         ctx.globalCompositeOperation = 'source-over';
-        ctx.clearRect(0, 0, this.style.tw, this.style.th);
+        ctx.clearRect(0, 0, this.style.width, this.style.height);
         ctx.drawImage(ctx2.$canvas, 0, 0);
         ctx.globalCompositeOperation = 'source-out';
-        ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0, this.style.tw, this.style.th);
+        ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0, this.style.width, this.style.height);
     },
 
     // 螺旋渐变
     spiral: function (transition, ctx, ctx2) {
         let subtype = transition.subtype || 1;
 
-        ctx2.translate(this.style.tw / 2, this.style.th / 2);
+        ctx2.translate(this.style.width / 2, this.style.height / 2);
         ctx2.rotate(360 / transition.ticks * 3 * 3.14 / 180 * transition.progress);
-        ctx2.translate(-this.style.tw / 2, -this.style.th / 2);
+        ctx2.translate(-this.style.width / 2, -this.style.height / 2);
 
         ctx2.globalAlpha = transition.progress * transition.progress;
         ctx2.fillStyle = 'rgba(0, 0, 0, 1)';
         ctx2.fillRect(
-            this.style.tw / 2 - transition.size * transition.progress / 2, this.style.th / 2 - transition.size * transition.progress / 2,
+            this.style.width / 2 - transition.size * transition.progress / 2, this.style.height / 2 - transition.size * transition.progress / 2,
             transition.size * transition.progress, transition.size * transition.progress);
 
         ctx.globalCompositeOperation = 'source-over';
-        ctx.clearRect(0, 0, this.style.tw, this.style.th);
+        ctx.clearRect(0, 0, this.style.width, this.style.height);
         ctx.drawImage(ctx2.$canvas, 0, 0);
         ctx.globalCompositeOperation = 'source-out';
         ctx.drawImage(utils.funcOrValue(this.$fade.originImg, this), 0, 0);
@@ -292,8 +292,8 @@ const fade = function (Easycanvas) {
             //     sprite.$fade.originImg = Easycanvas.imgLoader(sprite.$fade.originImg);
             // }
 
-            sprite.$fade.filterCanvas.width = sprite.$fade.middlewareCanvas.width = sprite.style.tw;
-            sprite.$fade.filterCanvas.height = sprite.$fade.middlewareCanvas.height = sprite.style.th;
+            sprite.$fade.filterCanvas.width = sprite.$fade.middlewareCanvas.width = sprite.style.width;
+            sprite.$fade.filterCanvas.height = sprite.$fade.middlewareCanvas.height = sprite.style.height;
             sprite.$fade.filterCxt = sprite.$fade.filterCanvas.getContext('2d');
             sprite.$fade.middlewareCxt = sprite.$fade.middlewareCanvas.getContext('2d');
 
@@ -320,14 +320,14 @@ const fade = function (Easycanvas) {
 
         transition.ticks = ticks || 60;
         transition.subtype = subtype;
-        transition.size = Math.max(sprite.style.tw, sprite.style.th);
-        transition.minsize = Math.min(sprite.style.tw, sprite.style.th);
+        transition.size = Math.max(sprite.style.width, sprite.style.height);
+        transition.minsize = Math.min(sprite.style.width, sprite.style.height);
 
         // screenshot
         {
             var screenshot = document.createElement('canvas');
-            screenshot.width = utils.funcOrValue(sprite.style.tw, sprite);
-            screenshot.height = utils.funcOrValue(sprite.style.th, sprite);
+            screenshot.width = utils.funcOrValue(sprite.style.width, sprite);
+            screenshot.height = utils.funcOrValue(sprite.style.height, sprite);
             var scrctx = screenshot.getContext('2d');
             // scrctx.drawImage(sprite.$canvas.$dom, sprite.getStyle('tx'), sprite.getStyle('ty'), sprite.getStyle('tw'), sprite.getStyle('th'));
             // scrctx.drawImage(sprite.$canvas.$dom, sprite.$props.tx, sprite.$props.ty);

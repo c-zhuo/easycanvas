@@ -4,18 +4,17 @@
  *
  * ********** **/
 
-const inBrowser = typeof window !== 'undefined';
-
-let ec;
+import Sprite from '../class/sprite.js';
+import { funcOrValue } from 'utils/utils.js';
 
 const component = function (opt) {
-    let $sprite = new ec.class.sprite(opt);
+    let $sprite = new Sprite(opt);
 
     opt.props.index = opt.props.index || 0;
 
     $sprite.on('beforeTick', function () {
         let _props = this.props;
-        let img = ec.utils.funcOrValue(this.content.img, this);
+        let img = funcOrValue(this.content.img, this);
 
         if (!img || !img.width) return;
 
@@ -40,12 +39,12 @@ const component = function (opt) {
             let wTimes = Math.floor(img.width / pw);
             let hTimes = Math.floor(img.height / ph);
 
-            this.style.sx = index % wTimes * pw;
-            this.style.sy = Math.floor(index / wTimes) % hTimes * ph;
+            this.style.cutLeft = index % wTimes * pw;
+            this.style.cutTop = Math.floor(index / wTimes) % hTimes * ph;
         }
 
         // 不循环的精灵动画自动移除
-        if (!_props.loop && index > 0 && this.style.sx === 0 && this.style.sy === 0) {
+        if (!_props.loop && index > 0 && this.style.cutLeft === 0 && this.style.cutTop === 0) {
             this.style.img = undefined;
             if (_props.onOver) {
                 _props.onOver.call(this);
@@ -56,32 +55,32 @@ const component = function (opt) {
 
         // 判断是否应该下一帧
         _props.lastFrameTime = _props.lastFrameTime || 0;
-        if (this.$canvas.$nextTickTime - _props.lastFrameTime >= ec.utils.funcOrValue(_props.interval, this)) {
+        if (this.$canvas.$nextTickTime - _props.lastFrameTime >= funcOrValue(_props.interval, this)) {
             _props.lastFrameTime = this.$canvas.$nextTickTime;
             _props.index++;
         }
 
         // 默认的读取和绘制尺寸等于每帧尺寸
-        this.style.sw = this.style.sw || pw;
-        this.style.sh = this.style.sh || ph;
-        this.style.tw = this.style.tw || pw;
-        this.style.th = this.style.th || ph;
+        this.style.cutWidth = this.style.cutWidth || pw;
+        this.style.cutHeight = this.style.cutHeight || ph;
+        this.style.width = this.style.width || pw;
+        this.style.height = this.style.height || ph;
     });
 
     return $sprite;
 }
 
-const init = function (Easycanvas, namespace) {
-    ec = Easycanvas;
-    if (namespace) {
-        Easycanvas.class[namespace] = component;
-    }
-    return component;
-};
+// const init = function (Easycanvas, namespace) {
+//     ec = Easycanvas;
+//     if (namespace) {
+//         Easycanvas.class[namespace] = component;
+//     }
+//     return component;
+// };
 
+const inBrowser = typeof window !== 'undefined';
 if (inBrowser && window.Easycanvas) {
-    ec = Easycanvas;
-    Easycanvas.class.sequence = component;
-} else {
-    module.exports = init;
+    Easycanvas.class.Sequence = component;
 }
+
+module.exports = component;

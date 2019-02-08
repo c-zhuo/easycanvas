@@ -3,46 +3,46 @@
 </head>
 
 <body>
-    <canvas id="foo" width="400" height="800"></canvas>
+    <canvas id="app" width="400" height="800"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
+        var $app = new Easycanvas.painter();
 
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        $app.register(document.getElementById('app'));
+        $app.start();
 
-        $Painter.add({
+        $app.add({
             style: {
-                tx: 0, ty: 0,
-                tw: 1000, th: 1000,
+                left: 0, top: 0,
+                width: 1000, height: 1000,
                 backgroundColor: 'white',
                 zIndex: 10,
             }
         });
 
-        $Painter.add({
+        $app.add({
             content: {
                 text: 1234,
             },
             style: {
-                tx: 100, ty: 200,
-                tw: 200, th: 200,
+                left: 100, top: 200,
+                width: 200, height: 200,
                 zIndex: -10,
             }
         });
 
         Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
-            window.sprite1 = $Painter.add({
+            window.sprite1 = $app.add({
                 name: 'root',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 222, th: 200,
-                    sx: 0, sy: 0, // source position, default 0
-                    tx: 50,
-                    ty: 80,
+                    width: 222, height: 200,
+                    cutLeft: 0, cutTop: 0, // source position, default 0
+                    left: 50,
+                    top: 80,
                     opacity: 0.5,
                     locate: 'lt', // default center
                     zIndex: 1, // z-index of this image

@@ -12,12 +12,25 @@
 </style>
 
 <body>
-    <canvas id="foo"></canvas>
+    <canvas id="app"></canvas>
     <canvas id="$cut"></canvas>
+    <div class="fps"></div>
+    <style>
+        .fps {
+            position: absolute;
+            font-size: 30px;
+            top: 0;
+            right: 100px;
+            z-index: 2;
+            background-color: white;
+            color: red;
+        }
+    </style>
+
 
     <script>
-        var $app = new Easycanvas.painter({
-            el: '#foo',
+        var $pp = new Easycanvas.painter({
+            el: '#app',
             fullScreen: true,
             webgl: {
                 camera: {
@@ -36,9 +49,19 @@
             },
         });
 
-        // $app.add({
+        var $fpsBox = document.getElementsByClassName('fps')[0];
+        $pp.fpsHandler = function (fps) {
+            if ($pp.$perf && $pp.$perf.preprocessTimeSpend) {
+                $fpsBox.innerText = fps + 'fps,' + $pp.$perf.preprocessTimeSpend + ',' + $pp.$perf.paintTimeSpend;
+            } else {
+                $fpsBox.innerText = fps;
+            }
+        };
+
+
+        // $pp.add({
         //     style: {
-        //         tx: 0, ty: 0,
+        //         left: 0, top: 0,
         //     },
         //     webgl: window.Easycanvas.webglShapes.ball({
         //         r: 250, b: 20,
@@ -49,16 +72,16 @@
 
         // Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
         //     // create a sprite
-        //     window.sprite2d = $app.add({
+        //     window.sprite2d = $pp.add({
         //         name: '2d',
         //         content: {
         //             img: img,
         //         },
         //         style: {
-        //             tw: 250, th: 130,
-        //             sx: 0, sy: 0, // source position, default 0
-        //             tx: Easycanvas.transition.pendulum(111, 222, 2500).loop(),
-        //             ty: 80,
+        //             width: 250, height: 130,
+        //             cutLeft: 0, cutTop: 0, // source position, default 0
+        //             left: Easycanvas.transition.pendulum(111, 222, 2500).loop(),
+        //             top: 80,
         //             opacity: 1,
         //             rotate: 20,
         //             locate: 'center', // default center
@@ -80,10 +103,10 @@
             // 目前现象是zIndex会影响事件顺序，但是取色时应该不影响才对
             var zIndex = Math.random();
             var tz = Math.random() * 1000 - 500;
-            $app.add({
+            $pp.add({
                 style: {
-                    tx: Math.random() * 1000 - 500,
-                    ty: Math.random() * 1000 - 500,
+                    left: Math.random() * 1000 - 500,
+                    top: Math.random() * 1000 - 500,
                     zIndex: zIndex
                 },
                 webgl: window.Easycanvas.webglShapes.block({
@@ -111,7 +134,7 @@
             });
         }
 
-        $app.start();
+        $pp.start();
 
         // var $cut = new Easycanvas.painter({
         //     el: '#cut',
@@ -119,7 +142,7 @@
         // });
 
         var interval = 2000;
-        var current = $app.webgl.camera.current;
+        var current = $pp.webgl.camera.current;
 
         function changeCamera () {
             Easycanvas.transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);

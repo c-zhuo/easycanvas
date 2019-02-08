@@ -7,7 +7,7 @@
 
 <style>
     body, html {
-        /*opacity: 0.5;*/
+        opacity: 0.5;
         margin: 0;
         text-align: center;
         background: black;
@@ -61,17 +61,17 @@
     var score = 0, ballLeft = 0, ballCount = 5;
     var blockArray = [];
 
-    var $Painter = new Easycanvas.painter();
+    var $app = new Easycanvas.painter();
     var $fpsBox = document.getElementsByClassName('fps')[0];
-    $Painter.fpsHandler = function (fps) {
-        if ($Painter.$perf && $Painter.$perf.preprocessTimeSpend) {
-            $fpsBox.innerText = fps + 'fps,' + $Painter.$perf.preprocessTimeSpend + ',' + $Painter.$perf.paintTimeSpend;
+    $app.fpsHandler = function (fps) {
+        if ($app.$perf && $app.$perf.preprocessTimeSpend) {
+            $fpsBox.innerText = fps + 'fps,' + $app.$perf.preprocessTimeSpend + ',' + $app.$perf.paintTimeSpend;
         } else {
             $fpsBox.innerText = fps;
         }
     };
     // 初始化easycanvas实例
-    $Painter.register(el, {
+    $app.register(el, {
         webgl: {
             fudgeFactor: 1,
         },
@@ -79,14 +79,14 @@
         height: height,
     });
 
-    var SUN = $Painter.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/sun.png');
-    var METEORITE = $Painter.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/meteorite.png');
-    var EFFECT = $Painter.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/effect.png');
-    var BLOCK3D = $Painter.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/stone.jpg');
-    var BALL3D = $Painter.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/star.jpg');
+    var SUN = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/sun.png');
+    var METEORITE = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/meteorite.png');
+    var EFFECT = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/effect.png');
+    var BLOCK3D = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/stone.jpg');
+    var BALL3D = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/star.jpg');
     // 图片
-    var BALL = $Painter.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/ball.png');
-    var BLOCK = $Painter.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/block.jpg');
+    var BALL = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/ball.png');
+    var BLOCK = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/block.jpg');
 
 
     function game () {
@@ -94,12 +94,12 @@
         // 用于碰撞检测
         var BALL_TYPE = 1, BLOCK_TYPE = 2, BORDER_TYPE = 3, BOTTOM_TYPE = 4, BONUS_TYPE = 5;
 
-        $Painter.start();
+        $app.start();
 
-        $Painter.events.mousemove = $Painter.events.touchmove = mouseRecord;
-        $Painter.events.mouseup = $Painter.events.touchend = shoot;
+        $app.events.mousemove = $app.events.touchmove = mouseRecord;
+        $app.events.mouseup = $app.events.touchend = shoot;
 
-        $Painter.add({
+        $app.add({
             name: '得分',
             content: {
                 text: function () {
@@ -107,12 +107,12 @@
                 }
             },
             style: {
-                tx: 5, ty: 5, zIndex: 99,
+                left: 5, top: 5, zIndex: 99,
                 textAlign: 'left', textVerticalAlign: 'top',
                 color: 'white'
             }
         });
-        $Painter.add({
+        $app.add({
             name: '小球个数',
             content: {
                 text: function () {
@@ -120,7 +120,7 @@
                 }
             },
             style: {
-                tx: 395, ty: 5, zIndex: 99,
+                left: 395, top: 5, zIndex: 99,
                 textAlign: 'right', textVerticalAlign: 'top',
                 color: 'white'
             }
@@ -130,17 +130,17 @@
         var $space = new Easycanvas.sprite({
             name: '物理空间',
             physics: {
-                gravity: 2,
+                gravitop: 2,
                 accuracy: 2,
             },
         });
-        $Painter.add($space);
+        $app.add($space);
         $space.launch();
 
         // 显示瞄准轨迹
         var startAim = function () {
             for (var i = 0; i < 7; i ++) {
-                $Painter.add({
+                $app.add({
                     name: '瞄准小球',
                     content: {
                         // img: BALL,
@@ -162,13 +162,13 @@
                         img: BALL3D,
                     }),
                     style: {
-                        tx: function () {
+                        left: function () {
                             return 200 + (mouse.x - 200) * this.data.gap;
                         },
-                        ty: function () {
+                        top: function () {
                             return 20 + (mouse.y - 20) * this.data.gap;
                         },
-                        tw: 20, th: 20,
+                        width: 20, height: 20,
                         opacity: 0.4,
                     },
                     hooks: {
@@ -184,7 +184,7 @@
         function shoot () {
             if (!canShoot) return;
 
-            $Painter.broadcast('shoot');
+            $app.broadcast('shoot');
             canShoot = false;
 
             // 防止过程中鼠标移动引起多个小球方向不同
@@ -218,10 +218,10 @@
                     collisionType: BALL_TYPE,
                 },
                 style: {
-                    tw: ballSize, th: ballSize,
-                    sx: 0, sy: 0,
-                    tx: 200,
-                    ty: 20,
+                    width: ballSize, height: ballSize,
+                    cutLeft: 0, cutTop: 0,
+                    left: 200,
+                    top: 20,
                     zIndex: 1,
                 },
                 webgl: window.Easycanvas.webglShapes.ball({
@@ -262,7 +262,7 @@
                                         blockArray.forEach(function (block) {
                                             block.physicsOff();
 
-                                            if (block.style.ty < 100) {
+                                            if (block.style.top < 100) {
                                                 if (block.name === '物理方块') {
                                                     canShoot = false;
                                                 } else {
@@ -272,14 +272,14 @@
                                                 }
                                             } else {
                                                 setTimeout(function () {
-                                                    block.style.ty = block.style.ty();
+                                                    block.style.top = block.style.top();
                                                     block.webgl.rz = -block.style.rotate;
                                                     block.physicsOn();
                                                 }, 300)
                                             }
 
                                             block.webgl.rz = Easycanvas.transition.linear(-block.style.rotate, -block.style.rotate + 360, 100 + Math.random() * 200);
-                                            block.style.ty = Easycanvas.transition.linear(block.style.ty, block.style.ty - 50, 100 + Math.random() * 200);
+                                            block.style.top = Easycanvas.transition.linear(block.style.top, block.style.top - 50, 100 + Math.random() * 200);
                                         });
 
                                         if (!canShoot) {
@@ -332,15 +332,15 @@
 
                                 score++;
                                 if (!block.children[0].content.text) {
-                                    collisionEffectGroup(block.style.tx, block.style.ty);
+                                    collisionEffectGroup(block.style.left, block.style.top);
 
                                     // 把方块撞成0了，先隐藏
                                     block.physicsOff();
                                     block.children[0].style.visible = false;
                                     blockArray.splice(blockArray.indexOf(block), 1);
 
-                                    block.webgl.tx = Easycanvas.transition.linear(this.style.tx, width / 2 + 40 - Math.random() * 80, Math.random() * 200 + 1000);
-                                    block.webgl.ty = Easycanvas.transition.linear(this.style.ty + 20, height / 2 + 40 - Math.random() * 80, Math.random() * 200 + 600);
+                                    block.webgl.tx = Easycanvas.transition.linear(this.style.left, width / 2 + 40 - Math.random() * 80, Math.random() * 200 + 1000);
+                                    block.webgl.ty = Easycanvas.transition.linear(this.style.top + 20, height / 2 + 40 - Math.random() * 80, Math.random() * 200 + 600);
                                     block.webgl.tz = Easycanvas.transition.linear(0, 9950, Math.random() * 400 + 200);
                                     block.webgl.rx = Easycanvas.transition.linear(0, 360, 600);
 
@@ -411,8 +411,8 @@
                     static: true,
                 },
                 style: {
-                    tw: blockSize, th: blockSize,
-                    tx: tx, ty: ty,
+                    width: blockSize, height: blockSize,
+                    left: tx, top: ty,
                     locate: 'lt',
                     zIndex: Math.random(),
                     rotate: deg,
@@ -428,7 +428,7 @@
                         textAlign: 'center',
                         textVerticalAlign: 'middle',
                         textFont: '16px Arial',
-                        tx: 15, ty: 15,
+                        left: 15, top: 15,
                         zIndex: 2,
                     }
                 }],
@@ -437,8 +437,8 @@
                     rz: -deg,
                     rx: Easycanvas.transition.linear(Math.random() * 1000, 20, Math.random() * 200 + transitionTime),
                     ry: Easycanvas.transition.linear(Math.random() * 1000, 20, Math.random() * 200 + transitionTime),
-                    tx: tx + 20,
-                    ty: Easycanvas.transition.linear(Math.random() * 300, ty + 10, Math.random() * 200 + transitionTime),
+                    left: tx + 20,
+                    top: Easycanvas.transition.linear(Math.random() * 300, ty + 10, Math.random() * 200 + transitionTime),
                     tz: Easycanvas.transition.linear(-10000, 0, Math.random() * 200 + transitionTime),
                     img: isBig ? SUN : BLOCK3D,
                     // colors: [255,255,100,10],
@@ -447,8 +447,8 @@
 
             setTimeout(function () {
                 sprite.children[0].style.visible = true;
-                sprite.webgl.ty = function () {
-                    return sprite.getStyle('ty') + 10;
+                sprite.webgl.top = function () {
+                    return sprite.getStyle('top') + 10;
                 };
             }, transitionTime + 200);
 
@@ -485,9 +485,9 @@
                     img: BALL3D,
                 }),
                 style: {
-                    tw: 30, th: 30,
-                    tx: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
-                    ty: 500,
+                    width: 30, height: 30,
+                    left: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
+                    top: 500,
                     locate: 'center',
                     zIndex: 2,
                     fv: Easycanvas.transition.pendulum(0, 0.2, 200).loop(),
@@ -518,7 +518,7 @@
                 static: true
             },
             style: {
-                tx: 0, ty: 0, tw: width, th: height,
+                left: 0, top: 0, width: width, height: height,
                 locate: 'lt',
             },
         }));
@@ -539,7 +539,7 @@
                 static: true
             },
             style: {
-                tx: 0, ty: 0, tw: width, th: height,
+                left: 0, top: 0, width: width, height: height,
                 locate: 'lt',
             },
         }));
@@ -553,7 +553,7 @@
     game();
 
     function backgroundEffect () {
-        var $effects = $Painter.add({
+        var $effects = $app.add({
             name: '背景效果容器',
             style: {
                 zIndex: -1,
@@ -569,8 +569,8 @@
             var $sun = new Easycanvas.sprite({
                 name: '太阳',
                 style: {
-                    tx: 240 - Math.random() * 80,
-                    ty: 380 - Math.random() * 160,
+                    left: 240 - Math.random() * 80,
+                    top: 380 - Math.random() * 160,
                     zIndex: lastZIndex--,
                 },
                 webgl: window.Easycanvas.webglShapes.ball({
@@ -592,7 +592,7 @@
     }
     backgroundEffect();
 
-    var $collisionEffect = $Painter.add({
+    var $collisionEffect = $app.add({
         name: '碰撞光效',
         style: {zIndex: 10},
     });
@@ -600,9 +600,9 @@
         var $tempCollisionEffect = $collisionEffect.add({
             name: '碰光圈',
             style: {
-                tx: x, ty: y,
-                tw: Easycanvas.transition.linear(20, 360, 300),
-                th: Easycanvas.transition.linear(20, 360, 300),
+                left: x, top: y,
+                width: Easycanvas.transition.linear(20, 360, 300),
+                height: Easycanvas.transition.linear(20, 360, 300),
                 zIndex: 9999,
             },
             content: {

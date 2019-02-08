@@ -1,43 +1,42 @@
 import utils from 'utils/utils.js';
+import constants from 'constants';
 
+const COMBINE_ING = 9;
 const COMBINE_DONE = 1;
 const COMBINE_FAIL = 2;
 const COMBINE_DELAY = 3;
 
-module.exports = function () {
+module.exports = function () {//return;
     let $sprite = this;
 
-    if ($sprite.$combine) {
+    if ($sprite.$combine !== COMBINE_ING) {
         return COMBINE_DONE;
     }
 
     setTimeout(() => {
-        if ($sprite.$combine) {
+        if ($sprite.$combine !== COMBINE_ING) {
             // 日历组件会走到这里，原因未知，做一下兜底
             // TODO
             return COMBINE_DONE;
         }
 
-        if (utils.funcOrValue($sprite.style.visible, $sprite) === false) return COMBINE_DELAY;
+        if ($sprite.getStyle('visible') === false) return COMBINE_DELAY;
+// if ($sprite.name === '热门'){debugger;}
 
         let $canvas = this.$canvas;
 
         let rect = $sprite.getRect(false, true);
 
-        if (rect.tx < 0 || rect.tx + rect.tw > $canvas.width) return COMBINE_FAIL;
-        if (rect.ty < 0 || rect.ty + rect.th > $canvas.height) return COMBINE_FAIL;
+        if (rect.tw > $canvas.width) return COMBINE_FAIL;
+        if (rect.th > $canvas.height) return COMBINE_FAIL;
 
         let allChildrenInCombine = $sprite.getAllChildren(true);
 
         for (let i = 0; i < allChildrenInCombine.length; i++) {
             let $child = allChildrenInCombine[i];
-            let img = $child.content.img;
-            if (img && img.src) {
-                // 兼容性TODO
-                if (!img.$painted || img.width === 0 || img.complete === false || img.naturalHeight === 0) {
-                    // 存在未加载完的子对象，不进行合并
-                    return COMBINE_DELAY;
-                }
+            if ($child.content.img && !$child.$render._imgWidth) {
+                // 存在未加载完的子对象，不进行合并
+                return COMBINE_DELAY;
             }
             if ($child.getStyle('scale') !== 1) {
                 return COMBINE_DELAY;
@@ -48,27 +47,22 @@ module.exports = function () {
         if (utils.funcOrValue($sprite.style.overflow, $sprite) !== 'hidden') {
             outerRect = $sprite.getOuterRect(false, true);
 
-            outerRect.tx = Math.floor(outerRect.tx);
-            outerRect.ty = Math.floor(outerRect.ty);
-            outerRect.tw = Math.round(outerRect.tw);
-            outerRect.th = Math.round(outerRect.th);
-            outerRect.tr = Math.round(outerRect.tr);
-            outerRect.tb = Math.round(outerRect.tb);
+            outerRect.left = Math.floor(outerRect.left);
+            outerRect.top = Math.floor(outerRect.top);
+            outerRect.width = Math.round(outerRect.width);
+            outerRect.height = Math.round(outerRect.height);
+            outerRect.right = Math.round(outerRect.right);
+            outerRect.bottom = Math.round(outerRect.bottom);
 
             // if (!force) {
-                if (outerRect.tx < 0 || outerRect.tr > $canvas.width) return COMBINE_FAIL;
-                if (outerRect.ty < 0 || outerRect.tb > $canvas.height) return COMBINE_FAIL;
+                if (outerRect.width > $canvas.width) return COMBINE_FAIL;
+                if (outerRect.height > $canvas.height) return COMBINE_FAIL;
             // }
         } else {
             outerRect = rect;
         }
 
         $sprite.off('ticked', this.combine);
-
-        // 修改：这块不能绘制，paint有可能导致位置变动
-        // 绘制一帧，清除连续combine时，前一个combine新产生的对象没有进入$canvas.$children，导致下一个combine获取不到的问题
-        // $canvas.$lastTickChildren = false;
-        // $canvas.paint();
 
         let $renders = $canvas.$children.filter(($child) => {
             for (let i = 0; i < allChildrenInCombine.length; i++) {
@@ -85,6 +79,13 @@ module.exports = function () {
 
             $render.settings.$combineGlobalAlpha = $render.settings.globalAlpha;
             $render.settings.globalAlpha = spriteOpacity > 0 ? $render.settings.globalAlpha / spriteOpacity : 1;
+
+            if (!$render.props.$moved) {
+                // 多个渲染对象来自同一个$sprite，那么在perPaint里计算出来的props是同一份引用
+                $render.props.$moved = true;
+                $render.props.left -= outerRect.left;
+                $render.props.top -= outerRect.top;
+            }
         });
 
         let combinerCanvas = $canvas.$combinerCanvas;
@@ -96,57 +97,60 @@ module.exports = function () {
         }
         let combineCtx = combinerCanvas.getContext('2d');
         combineCtx.clearRect(0, 0, $canvas.width, $canvas.height);
+        // combineCtx.translate(outerRect.tx, outerRect.ty);
 
-        $canvas.$render(combineCtx, $renders);
+        $canvas.$render(combineCtx, $renders, true/* renderAll */);
 
         $renders.forEach(($render) => {
             if(!$render.settings) return;
 
             $render.settings.globalAlpha = $render.settings.$combineGlobalAlpha;
         });
+        // combineCtx.translate(-outerRect.tx, -outerRect.ty);
 
         let canvas = document.createElement('canvas');
         // document.body.prepend(canvas);
-        canvas.width = outerRect.tw;
-        canvas.height = outerRect.th;
+        canvas.width = outerRect.width;
+        canvas.height = outerRect.height;
         let ctx = canvas.getContext('2d');
         ctx.drawImage(
             combinerCanvas,
-            outerRect.tx,
-            outerRect.ty,
-            outerRect.tw,
-            outerRect.th,
             0,
             0,
-            outerRect.tw,
-            outerRect.th,
+            outerRect.width,
+            outerRect.height,
+            0,
+            0,
+            outerRect.width,
+            outerRect.height,
         );
 
-        $sprite.children.forEach((child) => {
-            // 清空$cache，以免后续使用时（如事件处理）拿到了老的坐标
-            // [RISK]但是可能导致一些transition的变量有偏差
-            child.$cache = {};
-        });
+        // $sprite.children.forEach((child) => {
+        //     // 清空$cache，以免后续使用时（如事件处理）拿到了老的坐标
+        //     // [RISK]但是可能导致一些transition的变量有偏差
+        //     child.$cache = {};
+        // });
 
         $sprite.$combine = {
             content: $sprite.content,
             children: $sprite.children,
-            style: $sprite.style,
+            style: Object.assign({}, $sprite.style),
         };
         $sprite.children = [];
         $sprite.content = {
             img: canvas,
         };
 
-        let newTx = $sprite.getSelfStyle('tx') - (Math.floor(rect.tx) - outerRect.tx);
-        let newTy = $sprite.getSelfStyle('ty') - (Math.floor(rect.ty) - outerRect.ty);
-        $sprite.style = Object.assign({}, $sprite.style, {
+        let newLeft = $sprite.getSelfStyle('left') - (Math.floor(rect.left) - outerRect.left);
+        let newTop = $sprite.getSelfStyle('top') - (Math.floor(rect.top) - outerRect.top);
+
+        Object.assign($sprite.style, {
             // opacity: 1,
             scale: 1,
-            tx: newTx,
-            ty: newTy,
-            tw: canvas.width,
-            th: canvas.height,
+            left: newLeft,
+            top: newTop,
+            width: canvas.width,
+            height: canvas.height,
             backgroundColor: undefined,
         });
 

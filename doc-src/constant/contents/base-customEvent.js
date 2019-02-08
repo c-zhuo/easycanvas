@@ -30,7 +30,7 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 100, th: 100, tx: 100, ty: 100, rotate: 0,
+                            width: 100, height: 100, left: 100, top: 100, rotate: 0,
                         },
                     });
 
@@ -39,7 +39,7 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 50, th: 50, tx: 50, ty: 100, rotate: 0,
+                            width: 50, height: 50, left: 50, top: 100, rotate: 0,
                         },
                     });
                     var $child2 = $parent.add({
@@ -47,7 +47,7 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 50, th: 50, tx: 125, ty: 100, rotate: 0,
+                            width: 50, height: 50, left: 125, top: 100, rotate: 0,
                         },
                     });
 
@@ -101,7 +101,7 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 100, th: 100, tx: 100, ty: 100, rotate: 0,
+                            width: 100, height: 100, left: 100, top: 100, rotate: 0,
                         },
                     });
 
@@ -110,7 +110,7 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 50, th: 50, tx: 50, ty: 100, rotate: 0,
+                            width: 50, height: 50, left: 50, top: 100, rotate: 0,
                         },
                     });
                     var $child2 = $parent.add({
@@ -118,7 +118,7 @@ module.exports = `
                             img: G,
                         },
                         style: {
-                            tw: 50, th: 50, tx: 125, ty: 100, rotate: 0,
+                            width: 50, height: 50, left: 125, top: 100, rotate: 0,
                         },
                     });
 

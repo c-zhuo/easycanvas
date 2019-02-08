@@ -3,6 +3,7 @@ var glob = require('glob');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var docConfig = require('./webpack.config.doc.js');
+var base = require('./webpack.config.base.js');
 
 var js = glob.sync('./doc-src/main.js').reduce(function (prev, curr) {
     prev[curr.slice(2, -3).replace('src', 'src')] = [curr];
@@ -22,8 +23,7 @@ var html = glob.sync('./doc-src/*.html').map(function (item) {
 
 var config = docConfig;
 config.entry = js;
-config.plugins = config.plugins.concat([
-    ]).concat(html);
+config.plugins = config.plugins.concat(html);
 
 config.debug = true;
 config.bail = false;
@@ -33,20 +33,6 @@ config.plugins = config.plugins.concat([
     new webpack.NoErrorsPlugin()
 ]);
 
-config.devServer = {
-    host: '0.0.0.0',
-    // contentBase: path.resolve('./readme'), // static files
-    historyApiFallback: true,
-    inline: true,
-    hot: true,
-    disableHostCheck: true,
-    stats: {
-        colors: true,
-        modules: false,
-        children: false,
-        chunks: false,
-        chunkModules: false
-    }
-};
+config.devServer = base.devServer;
 
 module.exports = config;

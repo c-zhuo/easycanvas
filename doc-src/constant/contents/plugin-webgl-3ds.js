@@ -56,7 +56,7 @@ module.exports = `
 
                     $app.add(new Easycanvas.class.sprite({
                         style: {
-                            tx: 200, ty: 200,
+                            left: 200, top: 200,
                         },
                         webgl: {
                             _3dsImg: {
@@ -97,7 +97,7 @@ module.exports = `
 
                     $app.add(new Easycanvas.class.sprite({
                         style: {
-                            tx: 200, ty: 200,
+                            left: 200, top: 200,
                         },
                         webgl: {
                             _3dsImg: {
@@ -173,8 +173,8 @@ module.exports = `
                                 $app.add({
                                     name: model.img,
                                     style: {
-                                        tx: 60 + i % 5 * 70,
-                                        ty: i >= 5 ? 300 : 100,
+                                        left: 60 + i % 5 * 70,
+                                        top: i >= 5 ? 300 : 100,
                                     },
                                     webgl: window.Easycanvas.webglShapes.custom(roleShape),
                                 });

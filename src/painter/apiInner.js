@@ -10,7 +10,6 @@ import $perPaint from './apiInner/perPaint.js';
 import $render from './apiInner/render.js';
 import $eventHandler from './apiInner/eventHandler.js';
 // import $bindDrag from './apiInner/bindDrag.js';
-import $rAFer from './apiInner/rAFer.js';
 
 import $apiPlugin from './apiPlugin/apiPlugin.js';
 
@@ -19,7 +18,6 @@ let apiInner = {
     $eventHandler,
     $perPaint,
     // $bindDrag,
-    $rAFer,
 };
 
 if (process.env.NODE_ENV !== 'production') {

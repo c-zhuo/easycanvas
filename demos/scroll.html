@@ -4,21 +4,21 @@
 </head>
 
 <body>
-    <canvas id="foo" width="800" height="1600"></canvas>
+    <canvas id="app" width="800" height="1600"></canvas>
 
     <script>
-        var $App = new Easycanvas.painter();
-        $App.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             fullScreen: true,
         });
-        $App.start();
+        $app.start();
 
-        // var $ScrollBox = $App.add({
+        // var $ScrollBox = $app.add({
         //     style: {
-        //         tx: 0,
-        //         ty: 0,
-        //         tw: $App.width,
-        //         th: $App.height,
+        //         left: 0,
+        //         top: 0,
+        //         width: $app.width,
+        //         height: $app.height,
         //         locate: 'lt',
         //     },
         //     scroll: {
@@ -26,7 +26,7 @@
         //         minScrollX: 0,
         //         maxScrollX: 0,
         //         minScrollY: 0,
-        //         maxScrollY: $App.height,
+        //         maxScrollY: $app.height,
         //     },
         //     events: {
         //         // interceptor: function ($e) {
@@ -37,13 +37,13 @@
         //         // }
         //     },
         // });
-        var $ScrollBox = $App.add(new Easycanvas.class.scroll({
+        var $ScrollBox = $app.add(new Easycanvas.class.scroll({
             name: 'ScrollBox',
             style: {
-                tx: 0,
-                ty: 0,
-                tw: $App.width,
-                th: $App.height,
+                left: 0,
+                top: 0,
+                width: $app.width,
+                height: $app.height,
                 locate: 'lt',
             },
             scroll: {
@@ -51,7 +51,7 @@
                 minScrollX: 0,
                 maxScrollX: 0,
                 minScrollY: 0,
-                maxScrollY: $App.height,
+                maxScrollY: $app.height,
             },
         }));
 
@@ -63,8 +63,8 @@
                     img: imgSrc
                 },
                 style: {
-                    tx: $App.width / 2, ty: 100 + i * 300,
-                    tw: 100 + i * 10, th: 100 + i * 10,
+                    left: $app.width / 2, top: 100 + i * 300,
+                    width: 100 + i * 10, height: 100 + i * 10,
                 },
                 events: {
                     click: function () {

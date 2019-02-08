@@ -19,7 +19,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
             img: img,
         },
         style: {
-            tx: 100, ty: 100,
+            left: 100, top: 100,
             locate: 'lt',
             opacity: 0.5,
             rotate: 40,
@@ -37,7 +37,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                     img: img,
                 },
                 style: {
-                    tx: 500, ty: 0,
+                    left: 500, top: 0,
                     zIndex: 1,
                     opacity: 0.5,
                     locate: 'center',
@@ -56,7 +56,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                     img: img,
                 },
                 style: {
-                    tx: 0, ty: 500, // 实际100, 600
+                    left: 0, top: 500, // 实际100, 600
                     opacity: 1,
                     zIndex: 2,
                     locate: 'lt', // 原始中心115, 615
@@ -75,7 +75,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                     img: img,
                 },
                 style: {
-                    tx: 500, ty: 500,
+                    left: 500, top: 500,
                     opacity: 0.7,
                     zIndex: 3,
                     locate: 'center',
@@ -96,8 +96,8 @@ describe('Feature.rendering Test.', function () {
     it('Basic props inherit correctly.', function (done) {
         let getRenderStyle = function (props) {
             return [
-                props.sx, props.sy, props.sw, props.sh,
-                props.tx, props.ty, props.tw, props.th,
+                props.cutLeft, props.cutTop, props.cutWidth, props.cutHeight,
+                props.left, props.top, props.width, props.height,
             ].join(',');
         };
 

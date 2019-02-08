@@ -5,9 +5,10 @@
  *
  * ********** **/
 
-const inBrowser = typeof window !== 'undefined';
+import Sprite from '../class/sprite.js';
+import { funcOrValue } from 'utils/utils.js';
+import transition from 'utils/transition.js';
 
-let ec;
 let mutipleScrollLock;
 
 // $sprite.$scroll.$wheeling用于在Chrome移动端下适配双指滑动的wheel事件
@@ -67,10 +68,10 @@ let scrollFuncs = {
             }
         }
 
-        let minScrollX = ec.utils.funcOrValue($sprite.scroll.minScrollX, $sprite);
-        let maxScrollX = ec.utils.funcOrValue($sprite.scroll.maxScrollX, $sprite);
-        let minScrollY = ec.utils.funcOrValue($sprite.scroll.minScrollY, $sprite);
-        let maxScrollY = ec.utils.funcOrValue($sprite.scroll.maxScrollY, $sprite);
+        let minScrollX = funcOrValue($sprite.scroll.minScrollX, $sprite);
+        let maxScrollX = funcOrValue($sprite.scroll.maxScrollX, $sprite);
+        let minScrollY = funcOrValue($sprite.scroll.minScrollY, $sprite);
+        let maxScrollY = funcOrValue($sprite.scroll.maxScrollY, $sprite);
 
         if (!isNaN(minScrollY) && $sprite.scroll.scrollY < minScrollY) {
             $sprite.scroll.scrollY = minScrollY;
@@ -114,10 +115,10 @@ let scrollFuncs = {
             let deltaTime = now - $sprite.$scroll.touching;
             $sprite.$scroll.touching = now;
 
-            let minScrollX = ec.utils.funcOrValue($sprite.scroll.minScrollX, $sprite);
-            let maxScrollX = ec.utils.funcOrValue($sprite.scroll.maxScrollX, $sprite);
-            let minScrollY = ec.utils.funcOrValue($sprite.scroll.minScrollY, $sprite);
-            let maxScrollY = ec.utils.funcOrValue($sprite.scroll.maxScrollY, $sprite);
+            let minScrollX = funcOrValue($sprite.scroll.minScrollX, $sprite);
+            let maxScrollX = funcOrValue($sprite.scroll.maxScrollX, $sprite);
+            let minScrollY = funcOrValue($sprite.scroll.minScrollY, $sprite);
+            let maxScrollY = funcOrValue($sprite.scroll.maxScrollY, $sprite);
 
             if ($sprite.scroll.scrollX + deltaX < minScrollX ||
                 $sprite.scroll.scrollX + deltaX > maxScrollX) {
@@ -130,7 +131,7 @@ let scrollFuncs = {
                 else deltaY = 0;
             }
 
-            if (ec.utils.funcOrValue($sprite.scroll.scrollableX, $sprite) && Math.abs(deltaX) >= 1 && deltaTime > 1) {
+            if (funcOrValue($sprite.scroll.scrollableX, $sprite) && Math.abs(deltaX) >= 1 && deltaTime > 1) {
                 let newSpeedX = ($e.canvasX - $sprite.$scroll.startPos.x) / deltaTime * 25;
 
                 if ($sprite.$scroll.lastScrollSpeed * newSpeedX > 0 && Math.abs(newSpeedX) > 15) {
@@ -143,7 +144,7 @@ let scrollFuncs = {
                 $sprite.$scroll.lastTouchSpeed = newSpeedX;
                 $sprite.scroll.scrollX += deltaX;
             }
-            if (ec.utils.funcOrValue($sprite.scroll.scrollableY, $sprite) && Math.abs(deltaY) >= 1 && deltaTime > 1) {
+            if (funcOrValue($sprite.scroll.scrollableY, $sprite) && Math.abs(deltaY) >= 1 && deltaTime > 1) {
                 let newSpeedY = ($e.canvasY - $sprite.$scroll.startPos.y) / deltaTime * 25;
 
                 if ($sprite.$scroll.lastScrollSpeed * newSpeedY > 0 && Math.abs(newSpeedY) > 15) {
@@ -172,8 +173,8 @@ let scrollFuncs = {
     },
 
     wheel: function ($sprite, $e) {
-        $sprite.$scroll.speedX = ec.utils.funcOrValue($sprite.scroll.scrollableX, $sprite) ? $e.event.wheelDeltaX : 0;
-        $sprite.$scroll.speedY = ec.utils.funcOrValue($sprite.scroll.scrollableY, $sprite) ? $e.event.wheelDeltaY : 0;
+        $sprite.$scroll.speedX = funcOrValue($sprite.scroll.scrollableX, $sprite) ? $e.event.wheelDeltaX : 0;
+        $sprite.$scroll.speedY = funcOrValue($sprite.scroll.scrollableY, $sprite) ? $e.event.wheelDeltaY : 0;
 
         $sprite.$scroll.$scrolling = true;
         $sprite.$scroll.$wheeling = true;
@@ -184,7 +185,8 @@ let scrollFuncs = {
 };
 
 const component = function (opt) {
-    let autoScroll = false;
+    let autoScrollX = false;
+    let autoScrollY = false;
 
     let option = opt || {};
 
@@ -201,7 +203,7 @@ const component = function (opt) {
         maxScrollX: function () {
             let max = 0;
             this.getChildren().forEach((child) => {
-                let currentMax = child.getSelfStyle('tx') + child.getSelfStyle('tw') - this.getStyle('tw');
+                let currentMax = child.getSelfStyle('left') + child.getSelfStyle('width') - this.getStyle('width');
                 if (currentMax > max) max = currentMax;
             });
             return max;
@@ -210,7 +212,7 @@ const component = function (opt) {
         maxScrollY: function () {
             let max = 0;
             this.getChildren().forEach((child) => {
-                let currentMax = child.getSelfStyle('ty') + child.getSelfStyle('th') - this.getStyle('th');
+                let currentMax = child.getSelfStyle('top') + child.getSelfStyle('height') - this.getStyle('height');
                 if (currentMax > max) max = currentMax;
             });
             return max;
@@ -220,9 +222,14 @@ const component = function (opt) {
     }, opt.scroll);
 
     const autoScrollFunc = () => {
-        if (autoScroll) {
-            $sprite.scroll.scrollY = autoScroll();
-        } else {
+        if (autoScrollX) {
+            $sprite.scroll.scrollX = autoScrollX();
+        }
+        if (autoScrollY) {
+            $sprite.scroll.scrollY = autoScrollY();
+        }
+
+        if (!autoScrollX && !autoScrollY) {
             $sprite.off('ticked', autoScrollFunc);
         }
     };
@@ -295,7 +302,7 @@ const component = function (opt) {
         };
     }
 
-    let $sprite = new ec.class.sprite(option);
+    let $sprite = new Sprite(option);
 
     $sprite.on('ticked', () => {
         scrollFuncs.looper($sprite);
@@ -303,21 +310,44 @@ const component = function (opt) {
 
     // $sprite.on('handleToggle', handleToggle);
 
-    $sprite.on('scrollTo', (position, duration, callback) => {
-        autoScroll = ec.transition.pendulum(
+    $sprite.on('scrollTo', (left, top, duration) => {
+        let callback;
+
+        autoScrollX = transition.ease(
             $sprite.scroll.scrollY,
-            position,
-            (duration || 200) * 2,
+            left,
+            duration || 200,
             {
                 cycle: 0.5,
             }
         ).then(() => {
-            autoScroll = false;
+            autoScrollX = false;
 
             callback && callback();
+            callback = false;
+        });
+
+        autoScrollY = transition.ease(
+            $sprite.scroll.scrollY,
+            top,
+            duration || 200,
+            {
+                cycle: 0.5,
+            }
+        ).then(() => {
+            autoScrollY = false;
+
+            callback && callback();
+            callback = false;
         });
 
         $sprite.on('ticked', autoScrollFunc);
+
+        return {
+            then (cb) {
+                callback = cb;
+            },
+        }
     });
 
     $sprite.$scroll = {
@@ -332,10 +362,10 @@ const component = function (opt) {
     let $scrollingElement = $sprite.add({
         name: 'scrolling-element',
         style: {
-            tx: function () {
+            left: function () {
                 return -this.$parent.scroll.scrollX;
             },
-            ty: function () {
+            top: function () {
                 return -this.$parent.scroll.scrollY;
             },
         }
@@ -350,18 +380,18 @@ const component = function (opt) {
     return $sprite;
 }
 
-const init = function (Easycanvas, namespace) {
-    ec = Easycanvas;
-    if (namespace) {
-        Easycanvas.class[namespace] = component;
-    }
+// const init = function (Easycanvas, namespace) {
+//     ec = Easycanvas;
+//     if (namespace) {
+//         Easycanvas.class[namespace] = component;
+//     }
 
-    return component;
-};
+//     return component;
+// };
 
+const inBrowser = typeof window !== 'undefined';
 if (inBrowser && window.Easycanvas) {
-    ec = Easycanvas;
-    Easycanvas.class.scroll = component;
-} else {
-    module.exports = init;
+    Easycanvas.class.Scroll = component;
 }
+
+module.exports = component;

@@ -13,7 +13,7 @@ module.exports = function ($sprite, sync) {
     $sprite.style.visible = false;
     $sprite.$removing = true;
 
-    setTimeout(() => {
+    // setTimeout(() => {
         if ($sprite.$parent) {
             $sprite.$parent.children = $sprite.$parent.children.filter((child) => {
                 return child.$removing !== true;
@@ -28,14 +28,14 @@ module.exports = function ($sprite, sync) {
             $sprite.$canvas = undefined;
             $sprite.$parent = undefined;
             $sprite.$tickedTimes = undefined;
-            $sprite.$cache = undefined;
+            $sprite.$cache = {}; // ??
             $sprite.$rendered = false;
             if (process.env.NODE_ENV !== 'production') {
                 $sprite.$perf = undefined;
             }
             utils.execFuncs($sprite.hooks.removed, $sprite, $sprite.$tickedTimes);
         }
-    });
+    // });
 
     if (sync) {
         this.children.splice(this.children.indexOf($sprite), 1);

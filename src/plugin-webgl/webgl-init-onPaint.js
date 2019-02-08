@@ -18,8 +18,8 @@ module.exports = function () {
         }
 
         let _webgl = {
-            tx: $sprite.getStyle('tx'),
-            ty: $sprite.getStyle('ty'),
+            tx: $sprite.getStyle('left'),
+            ty: $sprite.getStyle('top'),
             tz: utils.funcOrValue($sprite.webgl.tz, $sprite) || 0,
         };
 

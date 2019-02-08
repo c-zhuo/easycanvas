@@ -3,30 +3,30 @@
 </head>
 
 <body>
-    <canvas id="foo" width="500" height="400"></canvas>
+    <canvas id="app" width="500" height="400"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'));
+        $app.start();
 
         Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
-            var sprite1 = $Painter.add({
+            var sprite1 = $app.add({
                 content: {
                     img: img,
                 },
 
                 style: {
-                    sx: 0, sy: 0,
-                    tx: Easycanvas.transition.oneByOne(
+                    cutLeft: 0, cutTop: 0,
+                    left: Easycanvas.transition.oneByOne(
                         [
                             Easycanvas.transition.linear(10, 200, 1000),
                             Easycanvas.transition.pendulum(50, 400, 1000),
                             // Easycanvas.transition.pendulum(50, 400, 500),
                         ]
                     ).loop(),
-                    ty: 0,
+                    top: 0,
 
                     locate: 'lt', // default center
                 },

@@ -12,7 +12,7 @@
     <canvas id="app" style="width: 100%"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter({
+        var $app = new Easycanvas.painter({
             el: '#app',
             width: 500,
             height: 500
@@ -35,12 +35,12 @@
                 ),
             },
             style: {
-                tx: 100, ty: 100,
+                left: 100, top: 100,
             },
         });
 
-        $Painter.add($letterG);
-        $Painter.start();
+        $app.add($letterG);
+        $app.start();
     </script>
 </body>
 

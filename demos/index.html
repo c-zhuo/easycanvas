@@ -14,29 +14,29 @@
 </style>
 
 <body>
-    <canvas id="foo" width="600" height="600"></canvas>
+    <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             webgl: true,
             fullScreen: true,
         }).start();
 
         var texture2img = {
-            'Material #45': $Painter.imgLoader('../resource/game_char/4.jpg'),
-            'Material #46': $Painter.imgLoader('../resource/game_char/3.jpg'),
-            'Material #49': $Painter.imgLoader('../resource/game_char/6.jpg'),
-            'Material #51': $Painter.imgLoader('../resource/game_char/8.jpg'),
+            'Material #45': $app.imgLoader('../resource/game_char/4.jpg'),
+            'Material #46': $app.imgLoader('../resource/game_char/3.jpg'),
+            'Material #49': $app.imgLoader('../resource/game_char/6.jpg'),
+            'Material #51': $app.imgLoader('../resource/game_char/8.jpg'),
         };
 
         Easycanvas.loader3ds('../resource/game_char/sunnvfashi.3DS', function (data) {
 
-            var woman = $Painter.add({
+            var woman = $app.add({
                 name: 'woman',
                 style: {
-                    tx: 200,
-                    ty: 350,
+                    left: 200,
+                    top: 350,
                 },
                 webgl: {
                     rx: 90, ry: 0, rz: Easycanvas.transition.linear(0, 360, 5000).loop(),
@@ -72,18 +72,18 @@
             });
         });
 
-        $Painter.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+        $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
-            window.sprite1 = $Painter.add({
+            window.sprite1 = $app.add({
                 name: 'letter_G',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 200, th: 200,
-                    sx: 0, sy: 0, // source position, default 0
-                    tx: Easycanvas.transition.pendulum(300, 400, 2500).loop(),
-                    ty: 300,
+                    width: 200, height: 200,
+                    cutLeft: 0, cutTop: 0, // source position, default 0
+                    left: Easycanvas.transition.pendulum(300, 400, 2500).loop(),
+                    top: 300,
                     opacity: 1,
                     rotate: 20,
                     locate: 'center', // default center

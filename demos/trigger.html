@@ -3,12 +3,12 @@
 </head>
 
 <body>
-    <canvas id="foo" width="1200" height="2400"></canvas>
+    <canvas id="app" width="1200" height="2400"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'));
+        $app.start();
 
         Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
@@ -18,7 +18,7 @@
                     img: img,
                 },
                 style: {
-                    tx: 100, ty: 100,
+                    left: 100, top: 100,
                     locate: 'lt',
                     opacity: 0.5,
                     rotate: 40,
@@ -37,7 +37,7 @@
                         },
                         inherit: ['opacity'],
                         style: {
-                            tx: 500, ty: 0,
+                            left: 500, top: 0,
                             zIndex: 1,
                             opacity: 0.5,
                             locate: 'center',
@@ -56,7 +56,7 @@
                             img: img,
                         },
                         style: {
-                            tx: 0, ty: 500,
+                            left: 0, top: 500,
                             opacity: 1,
                             zIndex: 1,
                             locate: 'lt',
@@ -79,7 +79,7 @@
                     img: img,
                 },
                 style: {
-                    tx: 500, ty: 500,
+                    left: 500, top: 500,
                     opacity: 0.7,
                     zIndex: 1,
                     locate: 'center',
@@ -95,13 +95,13 @@
 
             window.sprite1.children.push(child3);
 
-            window.sprite1 = $Painter.add(window.sprite1);
+            window.sprite1 = $app.add(window.sprite1);
 
-            window.sprite2 = $Painter.add({
+            window.sprite2 = $app.add({
                 name: 'sprite2',
             });
 
-            $Painter.nextTick(function () {
+            $app.nextTick(function () {
                 sprite1.children[0].on('del', function (a, b) {
                     console.log(a, b)
                     this.remove();

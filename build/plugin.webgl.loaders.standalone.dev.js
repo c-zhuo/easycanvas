@@ -23,14 +23,14 @@
         return r(0);
     }({
         0: function(e, t, r) {
-            e.exports = r(97);
+            e.exports = r(157);
         },
-        8: function(e, t, r) {
+        35: function(e, t, r) {
             "use strict";
-            var a = r(21);
-            var n = r(73);
-            var i = r(72);
-            var o = r(69);
+            var a = r(56);
+            var n = r(135);
+            var i = r(134);
+            var o = r(131);
             e.exports = {
                 FileLoader: a.FileLoader,
                 LoaderUtils: n.LoaderUtils,
@@ -42,7 +42,7 @@
                 RGBA_S3TC_DXT5_Format: 33779
             };
         },
-        21: function(e, t, r) {
+        56: function(e, t, r) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -59,8 +59,8 @@
                 }
                 return e;
             };
-            var n = r(68);
-            var i = r(22);
+            var n = r(130);
+            var i = r(57);
             var o = {};
             function s(e) {
                 this.manager = e !== undefined ? e : i.DefaultLoadingManager;
@@ -220,7 +220,7 @@
             });
             t.FileLoader = s;
         },
-        22: function(e, t) {
+        57: function(e, t) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -276,7 +276,7 @@
             t.DefaultLoadingManager = a;
             t.LoadingManager = r;
         },
-        68: function(e, t) {
+        130: function(e, t) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -301,7 +301,7 @@
             };
             t.Cache = r;
         },
-        69: function(e, t, r) {
+        131: function(e, t, r) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -318,8 +318,8 @@
                 }
                 return e;
             };
-            var n = r(21);
-            var i = r(22);
+            var n = r(56);
+            var i = r(57);
             var o = 1006;
             function s(e) {
                 this.manager = e !== undefined ? e : i.DefaultLoadingManager;
@@ -395,9 +395,9 @@
             });
             t.CompressedTextureLoader = s;
         },
-        70: function(e, t, r) {
+        132: function(e, t, r) {
             "use strict";
-            var a = r(8);
+            var a = r(35);
             var n = i(a);
             function i(e) {
                 return e && e.__esModule ? e : {
@@ -560,7 +560,7 @@
                 return r;
             };
         },
-        71: function(e, t, r) {
+        133: function(e, t, r) {
             "use strict";
             var a = Object.assign || function(e) {
                 for (var t = 1; t < arguments.length; t++) {
@@ -573,7 +573,7 @@
                 }
                 return e;
             };
-            var n = r(8);
+            var n = r(35);
             var i = o(n);
             function o(e) {
                 return e && e.__esModule ? e : {
@@ -999,7 +999,7 @@
                 return i.default.FBXLoader;
             }();
         },
-        72: function(e, t) {
+        134: function(e, t) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -1119,7 +1119,7 @@
             });
             t.Interpolant = a;
         },
-        73: function(e, t) {
+        135: function(e, t) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -1143,7 +1143,7 @@
             };
             t.LoaderUtils = r;
         },
-        74: function(e, t, r) {
+        136: function(e, t, r) {
             "use strict";
             var a = Object.assign || function(e) {
                 for (var t = 1; t < arguments.length; t++) {
@@ -1156,7 +1156,7 @@
                 }
                 return e;
             };
-            var n = r(8);
+            var n = r(35);
             var i = o(n);
             function o(e) {
                 return e && e.__esModule ? e : {
@@ -2041,13 +2041,13 @@
                 return e;
             }();
         },
-        97: function(e, t, r) {
+        157: function(e, t, r) {
             "use strict";
-            var a = r(74);
+            var a = r(136);
             var n = u(a);
-            var i = r(71);
+            var i = r(133);
             var o = u(i);
-            var s = r(70);
+            var s = r(132);
             var f = u(s);
             function u(e) {
                 return e && e.__esModule ? e : {

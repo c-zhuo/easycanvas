@@ -45,8 +45,8 @@ module.exports = `
                     for (var i = 0; i < 500; i++) {
                         var $random = new Easycanvas.class.sprite({
                             style: {
-                                tx: Easycanvas.transition.pendulum(Math.random() * 400, Math.random() * 400, Math.random() * 5000 + 15000).loop(),
-                                ty: Easycanvas.transition.pendulum(Math.random() * 400, Math.random() * 400, Math.random() * 5000 + 15000).loop(),
+                                left: Easycanvas.transition.pendulum(Math.random() * 400, Math.random() * 400, Math.random() * 5000 + 15000).loop(),
+                                top: Easycanvas.transition.pendulum(Math.random() * 400, Math.random() * 400, Math.random() * 5000 + 15000).loop(),
                             },
                             webgl: Easycanvas.webglShapes.custom({
                                 vertices: vertices,

@@ -23,1225 +23,13 @@
         return e(0);
     }({
         0: function(t, r, e) {
-            t.exports = e(95);
+            t.exports = e(155);
         },
-        42: function(t, r, e) {
-            (function(r) {
-                "use strict";
-                var e = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(t) {
-                    return typeof t;
-                } : function(t) {
-                    return t && typeof Symbol === "function" && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
-                };
-                var n = 0;
-                var i = 19789;
-                var a = 11565;
-                var o = 11581;
-                var s = 15786;
-                var f = 15871;
-                var u = 49725;
-                var h = 2;
-                var l = 5;
-                var v = 16;
-                var p = 17;
-                var d = 18;
-                var g = 19;
-                var y = 48;
-                var w = 49;
-                var b = 15677;
-                var _ = 15678;
-                var m = 256;
-                var A = 5120;
-                var E = 5136;
-                var B = 5152;
-                var k = 5168;
-                var R = 5184;
-                var U = 5200;
-                var C = 5216;
-                var S = 5376;
-                var T = 8448;
-                var I = 4352;
-                var P = 4608;
-                var M = 4864;
-                var L = 4353;
-                var x = 4609;
-                var D = 4865;
-                var O = 8704;
-                var Y = 8720;
-                var N = 8962;
-                var F = 8960;
-                var j = 8976;
-                var V = 8705;
-                var z = 8963;
-                var W = 8961;
-                var G = 45055;
-                var H = 40960;
-                var X = 40976;
-                var q = 40992;
-                var J = 41008;
-                var Z = 41024;
-                var K = 41025;
-                var Q = 41040;
-                var $ = 41042;
-                var tt = 41536;
-                var rt = 41043;
-                var et = 41216;
-                var nt = 41552;
-                var it = 41092;
-                var at = 41089;
-                var ot = 41090;
-                var st = 41091;
-                var ft = 41093;
-                var ut = 41096;
-                var ht = 41098;
-                var lt = 41100;
-                var ct = 41102;
-                var vt = 41095;
-                var pt = 41472;
-                var dt = 41760;
-                var gt = 41790;
-                var yt = 41770;
-                var wt = 41786;
-                var bt = 41761;
-                var _t = 41792;
-                var mt = 41772;
-                var At = 41488;
-                var Et = 41762;
-                var Bt = 41794;
-                var kt = 41774;
-                var Rt = 41520;
-                var Ut = 41764;
-                var Ct = 41796;
-                var St = 41776;
-                var Tt = 41476;
-                var It = 41765;
-                var Pt = 41800;
-                var Mt = 41778;
-                var Lt = 41788;
-                var xt = 41766;
-                var Dt = 41798;
-                var Ot = 41780;
-                var Yt = 41789;
-                var Nt = 41768;
-                var Ft = 41802;
-                var jt = 41782;
-                var Vt = 41504;
-                var zt = 41804;
-                var Wt = 41784;
-                var Gt = 41744;
-                var Ht = 41728;
-                var Xt = 41809;
-                var qt = 41811;
-                var Jt = 41812;
-                var Zt = 41814;
-                var Kt = 41816;
-                var Qt = 41818;
-                var $t = 41820;
-                var tr = 41824;
-                var rr = 41826;
-                var er = 41828;
-                var nr = 41830;
-                var ir = 41832;
-                var ar = 16384;
-                var or = 17920;
-                var sr = 17952;
-                var fr = 18010;
-                var ur = 18009;
-                var hr = 18011;
-                var lr = 18004;
-                var cr = 17957;
-                var vr = 17936;
-                var pr = 18006;
-                var dr = 17968;
-                var gr = 17985;
-                var yr = 18e3;
-                var wr = 18001;
-                var br = 18007;
-                var _r = 18003;
-                var mr = 18002;
-                var Ar = 18008;
-                var Er = 17959;
-                var Br = 18176;
-                var kr = 18192;
-                var Rr = 18208;
-                var Ur = 16400;
-                var Cr = 16401;
-                var Sr = 16402;
-                var Tr = 16407;
-                var Ir = 16403;
-                var Pr = 16404;
-                var Mr = 16405;
-                var Lr = 16406;
-                var xr = 16640;
-                var Dr = 16656;
-                var Or = 16657;
-                var Yr = 16672;
-                var Nr = 16688;
-                var Fr = 16720;
-                var jr = 16784;
-                var Vr = 16704;
-                var zr = 16736;
-                var Wr = 16741;
-                var Gr = 16752;
-                var Hr = 45056;
-                var Xr = 45066;
-                var qr = 45064;
-                var Jr = 45065;
-                var Zr = 45057;
-                var Kr = 45058;
-                var Qr = 45059;
-                var $r = 45060;
-                var te = 45061;
-                var re = 45062;
-                var ee = 45063;
-                var ne = 45104;
-                var ie = 45072;
-                var ae = 45075;
-                var oe = 45073;
-                var se = 45077;
-                var fe = 45076;
-                var ue = 45088;
-                var he = 45093;
-                var le = 45089;
-                var ce = 45090;
-                var ve = 45094;
-                var pe = 45091;
-                var de = 45092;
-                var ge = 45095;
-                var ye = 45096;
-                var we = 45097;
-                var be = 20480;
-                var _e = 20496;
-                var me = 20497;
-                var Ae = 20512;
-                var Ee = 24576;
-                var Be = 24581;
-                var ke = 24592;
-                var Re = 24608;
-                var Ue = 24624;
-                var Ce = 24640;
-                var Se = 24656;
-                var Te = 24672;
-                var Ie = 24688;
-                var Pe = 24704;
-                var Me = 24720;
-                var Le = 24736;
-                var xe = 24832;
-                var De = 24848;
-                var Oe = 24864;
-                var Ye = 24880;
-                var Ne = 24896;
-                var Fe = 24912;
-                var je = 24928;
-                var Ve = 12288;
-                var ze = 12304;
-                var We = 12320;
-                var Ge = 12336;
-                var He = 12352;
-                var Xe = 12368;
-                var qe = 12384;
-                var Je = 12400;
-                var Ze = 12416;
-                var Ke = 12432;
-                var Qe = 28672;
-                var $e = 28688;
-                var tn = 28673;
-                var rn = 28689;
-                var en = 28690;
-                var nn = 28704;
-                var an = 28720;
-                var on = function t(r, e) {
-                    this.element = r;
-                    this.debug = e != undefined ? e : false;
-                    this.position = 0;
-                    this.meshes = [];
-                    this.materials = {};
-                };
-                var sn;
-                (function(t) {
-                    var n = this;
-                    var i = {
-                        ArrayBuffer: typeof ArrayBuffer !== "undefined",
-                        DataView: typeof DataView !== "undefined" && ("getFloat64" in DataView.prototype || "getFloat64" in new DataView(new ArrayBuffer(1))),
-                        NodeBuffer: typeof r !== "undefined" && "readInt16LE" in r.prototype
-                    };
-                    var a = {
-                        Int8: 1,
-                        Int16: 2,
-                        Int32: 4,
-                        Uint8: 1,
-                        Uint16: 2,
-                        Uint32: 4,
-                        Float32: 4,
-                        Float64: 8
-                    };
-                    var o = {
-                        Int8: "Int8",
-                        Int16: "Int16",
-                        Int32: "Int32",
-                        Uint8: "UInt8",
-                        Uint16: "UInt16",
-                        Uint32: "UInt32",
-                        Float32: "Float",
-                        Float64: "Double"
-                    };
-                    sn = function t(e, s, f, u) {
-                        if (!(this instanceof sn)) {
-                            throw new Error("jDataView constructor may not be called as a function");
-                        }
-                        this.buffer = e = sn.wrapBuffer(e);
-                        this._isArrayBuffer = i.ArrayBuffer && e instanceof ArrayBuffer;
-                        this._isDataView = i.DataView && this._isArrayBuffer;
-                        this._isNodeBuffer = i.NodeBuffer && e instanceof r;
-                        if (!this._isNodeBuffer && !this._isArrayBuffer && !(e instanceof Array)) {
-                            throw new TypeError("jDataView buffer has an incompatible type");
-                        }
-                        this._littleEndian = Boolean(u);
-                        var h = this._isArrayBuffer ? e.byteLength : e.length;
-                        if (s === undefined) {
-                            s = 0;
-                        }
-                        this.byteOffset = s;
-                        if (f === undefined) {
-                            f = h - s;
-                        }
-                        this.byteLength = f;
-                        if (!this._isDataView) {
-                            if (typeof s !== "number") {
-                                throw new TypeError("jDataView byteOffset is not a number");
-                            }
-                            if (typeof f !== "number") {
-                                throw new TypeError("jDataView byteLength is not a number");
-                            }
-                            if (s < 0) {
-                                throw new Error("jDataView byteOffset is negative");
-                            }
-                            if (f < 0) {
-                                throw new Error("jDataView byteLength is negative");
-                            }
-                        }
-                        if (this._isDataView) {
-                            this._view = new DataView(e, s, f);
-                        }
-                        this._start = s;
-                        if (s + f > h) {
-                            throw new Error("jDataView (byteOffset + byteLength) value is out of bounds");
-                        }
-                        this._offset = 0;
-                        if (this._isDataView) {
-                            for (var l in a) {
-                                if (!a.hasOwnProperty(l)) {
-                                    continue;
-                                }
-                                (function(t, r) {
-                                    var e = a[t];
-                                    r["get" + t] = function(n, i) {
-                                        if (i === undefined) {
-                                            i = r._littleEndian;
-                                        }
-                                        if (n === undefined) {
-                                            n = r._offset;
-                                        }
-                                        r._offset = n + e;
-                                        return r._view["get" + t](n, i);
-                                    };
-                                    r["set" + t] = function(n, i, a) {
-                                        if (a === undefined) {
-                                            a = r._littleEndian;
-                                        }
-                                        if (n === undefined) {
-                                            n = r._offset;
-                                        }
-                                        r._offset = n + e;
-                                        r._view["set" + t](n, i, a);
-                                    };
-                                })(l, this);
-                            }
-                        } else if (this._isNodeBuffer) {
-                            for (var l in a) {
-                                if (!a.hasOwnProperty(l)) {
-                                    continue;
-                                }
-                                (function(t, r) {
-                                    var e = a[t];
-                                    r["get" + t] = function(n, i) {
-                                        if (i === undefined) {
-                                            i = r._littleEndian;
-                                        }
-                                        if (n === undefined) {
-                                            n = r._offset;
-                                        }
-                                        var a;
-                                        if (t === "Int8" || t === "Uint8") {
-                                            a = "read" + o[t];
-                                        } else if (i) {
-                                            a = "read" + o[t] + "LE";
-                                        } else {
-                                            a = "read" + o[t] + "BE";
-                                        }
-                                        r._offset = n + e;
-                                        return r.buffer[a](r._start + n);
-                                    };
-                                    r["set" + t] = function(n, i, a) {
-                                        if (a === undefined) {
-                                            a = r._littleEndian;
-                                        }
-                                        if (n === undefined) {
-                                            n = r._offset;
-                                        }
-                                        var s;
-                                        if (t === "Int8" || t === "Uint8") {
-                                            s = "write" + o[t];
-                                        } else if (a) {
-                                            s = "write" + o[t] + "LE";
-                                        } else {
-                                            s = "write" + o[t] + "BE";
-                                        }
-                                        r._offset = n + e;
-                                        r.buffer[s](i, r._start + n);
-                                    };
-                                })(l, this);
-                            }
-                        } else if (this._isArrayBuffer) {
-                            for (var l in a) {
-                                if (!a.hasOwnProperty(l)) {
-                                    continue;
-                                }
-                                (function(t, r) {
-                                    var e = a[t];
-                                    r["get" + t] = function(i, a) {
-                                        if (a === undefined) {
-                                            a = r._littleEndian;
-                                        }
-                                        if (i === undefined) {
-                                            i = r._offset;
-                                        }
-                                        var o, s;
-                                        if (e === 1 || (r._start + i) % e === 0 && a) {
-                                            o = r.buffer;
-                                            s = r._start + i;
-                                            r._offset = i + e;
-                                        } else {
-                                            o = new Uint8Array(r.getBytes(e, i, a)).buffer;
-                                            s = 0;
-                                        }
-                                        return new n[t + "Array"](o, s, 1)[0];
-                                    };
-                                    r["set" + t] = function(i, a, o) {
-                                        if (o === undefined) {
-                                            o = r._littleEndian;
-                                        }
-                                        if (i === undefined) {
-                                            i = r._offset;
-                                        }
-                                        var s = n[t + "Array"];
-                                        if (e === 1 || (r._start + i) % e === 0 && o) {
-                                            new s(r.buffer, r._start + i, 1)[0] = a;
-                                            r._offset = i + e;
-                                        } else {
-                                            var f = new Uint8Array(e);
-                                            new s(f.buffer, 0, 1)[0] = a;
-                                            r.setBytes(i, f, o);
-                                        }
-                                    };
-                                })(l, this);
-                            }
-                        } else {
-                            for (var l in a) {
-                                if (!a.hasOwnProperty(l)) {
-                                    continue;
-                                }
-                                (function(t, r) {
-                                    var e = a[t];
-                                    r["get" + t] = function(n, i) {
-                                        if (i === undefined) {
-                                            i = r._littleEndian;
-                                        }
-                                        if (n === undefined) {
-                                            n = r._offset;
-                                        }
-                                        if (typeof n !== "number") {
-                                            throw new TypeError("jDataView byteOffset is not a number");
-                                        }
-                                        if (n + e > r.byteLength) {
-                                            throw new Error("jDataView (byteOffset + size) value is out of bounds");
-                                        }
-                                        return r["_get" + t](n, i);
-                                    };
-                                    r["set" + t] = function(n, i, a) {
-                                        if (a === undefined) {
-                                            a = r._littleEndian;
-                                        }
-                                        if (n === undefined) {
-                                            n = r._offset;
-                                        }
-                                        r._offset = n + e;
-                                        if (typeof n !== "number") {
-                                            throw new TypeError("jDataView byteOffset is not a number");
-                                        }
-                                        if (n + e > r.byteLength) {
-                                            throw new Error("jDataView (byteOffset + size) value is out of bounds");
-                                        }
-                                        r["_set" + t.replace("Uint", "Int")](n, i, a);
-                                    };
-                                })(l, this);
-                            }
-                        }
-                        for (var l in a) {
-                            if (!a.hasOwnProperty(l)) {
-                                continue;
-                            }
-                            (function(t, r) {
-                                r["write" + t] = function(r, e) {
-                                    this["set" + t](undefined, r, e);
-                                };
-                            })(l, this);
-                        }
-                    };
-                    sn.wrapBuffer = function(t) {
-                        switch (typeof t === "undefined" ? "undefined" : e(t)) {
-                          case "string":
-                            t = Array.prototype.map.call(t, function(t) {
-                                return t.charCodeAt(0) & 255;
-                            });
-                            break;
-
-                          case "number":
-                            t = {
-                                length: t
-                            };
-                            break;
-                        }
-                        if ("length" in t && !(i.NodeBuffer && t instanceof r || i.ArrayBuffer && t instanceof ArrayBuffer)) {
-                            if (i.NodeBuffer) {
-                                t = new r(t);
-                            } else if (i.ArrayBuffer) {
-                                var n = t instanceof Uint8Array ? t : new Uint8Array(t);
-                                t = n.buffer;
-                            } else {
-                                if (!(t instanceof Array)) {
-                                    t = Array.prototype.slice.call(t);
-                                }
-                                for (var a = 0, o = t.length; a < o; a++) {
-                                    t[a] &= 255;
-                                }
-                            }
-                        }
-                        return t;
-                    };
-                    sn.createBuffer = function() {
-                        return sn.wrapBuffer(arguments);
-                    };
-                    sn.prototype = {
-                        compatibility: i,
-                        _getBytes: function t(r, e, n) {
-                            var i;
-                            if (n === undefined) {
-                                n = this._littleEndian;
-                            }
-                            if (e === undefined) {
-                                e = this._offset;
-                            }
-                            if (r === undefined) {
-                                r = this.byteLength - e;
-                            }
-                            if (typeof e !== "number") {
-                                throw new TypeError("jDataView byteOffset is not a number");
-                            }
-                            if (r < 0 || e + r > this.byteLength) {
-                                throw new Error("jDataView length or (byteOffset+length) value is out of bounds");
-                            }
-                            e += this._start;
-                            if (this._isArrayBuffer) {
-                                i = new Uint8Array(this.buffer, e, r);
-                            } else {
-                                i = this.buffer.slice(e, e + r);
-                            }
-                            if (!n && r > 1) {
-                                if (!(i instanceof Array)) {
-                                    i = Array.prototype.slice.call(i);
-                                }
-                                i.reverse();
-                            }
-                            this._offset = e - this._start + r;
-                            return i;
-                        },
-                        getBytes: function t(r, e, n) {
-                            var i = this._getBytes.apply(this, arguments);
-                            if (!(i instanceof Array)) {
-                                i = Array.prototype.slice.call(i);
-                            }
-                            return i;
-                        },
-                        setBytes: function t(e, n, i) {
-                            var a = n.length;
-                            if (i === undefined) {
-                                i = this._littleEndian;
-                            }
-                            if (e === undefined) {
-                                e = this._offset;
-                            }
-                            if (typeof e !== "number") {
-                                throw new TypeError("jDataView byteOffset is not a number");
-                            }
-                            if (a < 0 || e + a > this.byteLength) {
-                                throw new Error("jDataView length or (byteOffset+length) value is out of bounds");
-                            }
-                            if (!i && a > 1) {
-                                n = Array.prototype.slice.call(n).reverse();
-                            }
-                            e += this._start;
-                            if (this._isArrayBuffer) {
-                                new Uint8Array(this.buffer, e, a).set(n);
-                            } else {
-                                if (this._isNodeBuffer) {
-                                    new r(n).copy(this.buffer, e);
-                                } else {
-                                    for (var o = 0; o < a; o++) {
-                                        this.buffer[e + o] = n[o];
-                                    }
-                                }
-                            }
-                            this._offset = e - this._start + a;
-                        },
-                        writeBytes: function t(r, e) {
-                            this.setBytes(undefined, r, e);
-                        },
-                        getString: function t(r, e) {
-                            return String.fromCharCode.apply(null, this._getBytes(r, e, true));
-                        },
-                        setString: function t(r, e) {
-                            this.setBytes(r, Array.prototype.map.call(e, function(t) {
-                                return t.charCodeAt(0) & 255;
-                            }), true);
-                        },
-                        writeString: function t(r) {
-                            this.setString(undefined, r);
-                        },
-                        getChar: function t(r) {
-                            return this.getString(1, r);
-                        },
-                        setChar: function t(r, e) {
-                            this.setString.apply(this, arguments);
-                        },
-                        writeChar: function t(r) {
-                            this.setChar(undefined, r);
-                        },
-                        tell: function t() {
-                            return this._offset;
-                        },
-                        seek: function t(r) {
-                            if (typeof r !== "number") {
-                                throw new TypeError("jDataView byteOffset is not a number");
-                            }
-                            if (r < 0 || r > this.byteLength) {
-                                throw new Error("jDataView byteOffset value is out of bounds");
-                            }
-                            return this._offset = r;
-                        },
-                        slice: function t(r, e, n) {
-                            return n ? new sn(this.getBytes(e - r, r), undefined, undefined, true) : new sn(this.buffer, this._start + r, e - r, this._littleEndian);
-                        },
-                        _getFloat64: function t(r, e) {
-                            var n = this._getBytes(8, r, e), i = 1 - 2 * (n[7] >> 7), a = ((n[7] << 1 & 255) << 3 | n[6] >> 4) - ((1 << 10) - 1), o = (n[6] & 15) * Math.pow(2, 48) + n[5] * Math.pow(2, 40) + n[4] * Math.pow(2, 32) + n[3] * Math.pow(2, 24) + n[2] * Math.pow(2, 16) + n[1] * Math.pow(2, 8) + n[0];
-                            if (a === 1024) {
-                                if (o !== 0) {
-                                    return NaN;
-                                } else {
-                                    return i * Infinity;
-                                }
-                            }
-                            if (a === -1023) {
-                                return i * o * Math.pow(2, -1022 - 52);
-                            }
-                            return i * (1 + o * Math.pow(2, -52)) * Math.pow(2, a);
-                        },
-                        _getFloat32: function t(r, e) {
-                            var n = this._getBytes(4, r, e), i = 1 - 2 * (n[3] >> 7), a = (n[3] << 1 & 255 | n[2] >> 7) - 127, o = (n[2] & 127) << 16 | n[1] << 8 | n[0];
-                            if (a === 128) {
-                                if (o !== 0) {
-                                    return NaN;
-                                } else {
-                                    return i * Infinity;
-                                }
-                            }
-                            if (a === -127) {
-                                return i * o * Math.pow(2, -126 - 23);
-                            }
-                            return i * (1 + o * Math.pow(2, -23)) * Math.pow(2, a);
-                        },
-                        _getInt32: function t(r, e) {
-                            var n = this._getBytes(4, r, e);
-                            return n[3] << 24 | n[2] << 16 | n[1] << 8 | n[0];
-                        },
-                        _getUint32: function t(r, e) {
-                            return this._getInt32(r, e) >>> 0;
-                        },
-                        _getInt16: function t(r, e) {
-                            return this._getUint16(r, e) << 16 >> 16;
-                        },
-                        _getUint16: function t(r, e) {
-                            var n = this._getBytes(2, r, e);
-                            return n[1] << 8 | n[0];
-                        },
-                        _getInt8: function t(r) {
-                            return this._getUint8(r) << 24 >> 24;
-                        },
-                        _getUint8: function t(r) {
-                            return this._getBytes(1, r)[0];
-                        },
-                        _setBinaryFloat: function t(r, e, n, i, a) {
-                            var o = e < 0 ? 1 : 0, s, f, u = ~(-1 << i - 1), h = 1 - u;
-                            if (e < 0) {
-                                e = -e;
-                            }
-                            if (e === 0) {
-                                s = h - 1;
-                                f = 0;
-                            } else if (isNaN(e)) {
-                                s = u + 1;
-                                f = 1;
-                            } else if (e === Infinity) {
-                                s = u + 1;
-                                f = 0;
-                            } else {
-                                s = Math.floor(Math.log(e) / Math.LN2);
-                                if (s > h && s <= u) {
-                                    f = Math.floor((e * Math.pow(2, -s) - 1) * Math.pow(2, n));
-                                } else {
-                                    f = Math.floor(e * Math.pow(2, n - h));
-                                    s = h - 1;
-                                }
-                            }
-                            s += u;
-                            var l = [];
-                            while (n >= 8) {
-                                l.push(f % 256);
-                                f = Math.floor(f / 256);
-                                n -= 8;
-                            }
-                            s = s << n | f;
-                            i += n;
-                            while (i >= 8) {
-                                l.push(s & 255);
-                                s >>>= 8;
-                                i -= 8;
-                            }
-                            l.push(o << i | s);
-                            this.setBytes(r, l, a);
-                        },
-                        _setFloat32: function t(r, e, n) {
-                            this._setBinaryFloat(r, e, 23, 8, n);
-                        },
-                        _setFloat64: function t(r, e, n) {
-                            this._setBinaryFloat(r, e, 52, 11, n);
-                        },
-                        _setInt32: function t(r, e, n) {
-                            this.setBytes(r, [ e & 255, e >>> 8 & 255, e >>> 16 & 255, e >>> 24 ], n);
-                        },
-                        _setInt16: function t(r, e, n) {
-                            this.setBytes(r, [ e & 255, e >>> 8 ], n);
-                        },
-                        _setInt8: function t(r, e) {
-                            this.setBytes(r, [ e ]);
-                        }
-                    };
-                })();
-                (function() {
-                    var t = on.prototype;
-                    t.readFile = function(t) {
-                        this.position = 0;
-                        this.meshes = [];
-                        this.materials = {};
-                        var r = new sn(t, 0, undefined, true);
-                        var e = this.readChunk(r);
-                        var n = 0;
-                        switch (e.id) {
-                          case s:
-                          case u:
-                          case i:
-                            n = this.nextChunk(r, e);
-                            while (n != 0) {
-                                switch (n) {
-                                  case h:
-                                    this.mesh_version = this.readDWord(r);
-                                    this.log("M3D_VERSION " + this.mesh_version);
-                                    break;
-
-                                  case b:
-                                    this.resetPosition(r);
-                                    this.log("MDATA");
-                                    this.readMDATA(r);
-                                    break;
-
-                                  case Hr:
-                                  default:
-                                    this.log("Unknown chunk: " + n.toString(16));
-                                    break;
-                                }
-                                n = this.nextChunk(r, e);
-                            }
-                            break;
-
-                          default:
-                            this.log("Unknown main chunk: " + n.toString(16));
-                            break;
-                        }
-                        this.log("parsed #" + this.meshes.length + " meshes!");
-                    };
-                    t.readMDATA = function(t) {
-                        var r = this.readChunk(t);
-                        var e = this.nextChunk(t, r);
-                        while (e != 0) {
-                            switch (e) {
-                              case _:
-                                this.mesh_version = this.readInt(t);
-                                this.log("MESH_VERSION: " + this.mesh_version);
-                                break;
-
-                              case m:
-                                this.master_scale = this.readFloat(t);
-                                this.log("MASTER_SCALE: " + this.master_scale);
-                                break;
-
-                              case ar:
-                                this.resetPosition(t);
-                                this.log("NAMED OBJECT");
-                                this.readNamedObject(t);
-                                break;
-
-                              case G:
-                                this.resetPosition(t);
-                                this.log("MATERIAL ENTRY");
-                                this.readMaterialEntry(t);
-                                break;
-
-                              default:
-                                this.log("Unknown MDATA chunk: " + e.toString(16));
-                                break;
-                            }
-                            e = this.nextChunk(t, r);
-                        }
-                    };
-                    t.readMaterialEntry = function(t) {
-                        var r = this.readChunk(t);
-                        var e = this.nextChunk(t, r);
-                        var n = new ln();
-                        while (e != 0) {
-                            switch (e) {
-                              case H:
-                                n.name = this.readString(t, 64);
-                                this.log(" -> name: " + n.name);
-                                break;
-
-                              case X:
-                                n.ambientColor = this.readColor(t);
-                                this.log(" -> ambientColor: " + n.ambientColor.toString(16));
-                                break;
-
-                              case q:
-                                n.diffuseColor = this.readColor(t);
-                                this.log(" -> diffuseColor: " + n.diffuseColor.toString(16));
-                                break;
-
-                              case J:
-                                n.specularColor = this.readColor(t);
-                                this.log(" -> specularColor: " + n.specularColor.toString(16));
-                                break;
-
-                              default:
-                                this.log(" -> Unknown material chunk: " + e.toString(16));
-                                break;
-                            }
-                            e = this.nextChunk(t, r);
-                        }
-                        this.endChunk(r);
-                        this.materials[n.name] = n;
-                    };
-                    t.readColor = function(t) {
-                        var r = this.readChunk(t);
-                        var e = 0;
-                        switch (r.id) {
-                          case p:
-                          case d:
-                            var n = this.readByte(t);
-                            var i = this.readByte(t);
-                            var a = this.readByte(t);
-                            e = n << 16 | i << 8 | a;
-                            break;
-
-                          case v:
-                          case g:
-                            var n = this.readFloat(t);
-                            var i = this.readFloat(t);
-                            var a = this.readFloat(t);
-                            e = Math.floor(n * 255) << 16 | Math.floor(i * 255) << 8 | Math.floor(a * 255);
-                            break;
-
-                          default:
-                            this.log("Unknown color chunk: " + c.toString(16));
-                            break;
-                        }
-                        this.endChunk(r);
-                        return e;
-                    };
-                    t.readMesh = function(t) {
-                        var r = this.readChunk(t);
-                        var e = this.nextChunk(t, r);
-                        var n = new hn();
-                        var i, a;
-                        while (e != 0) {
-                            switch (e) {
-                              case Wr:
-                                n.color = this.readByte(t);
-                                this.log(" -> color: " + n.color);
-                                break;
-
-                              case Dr:
-                                n.points = this.readWord(t);
-                                n.pointL = [];
-                                this.log(" -> #points: " + n.points + " " + this.position);
-                                for (i = 0; i < n.points; i++) {
-                                    var o = [];
-                                    for (a = 0; a < 3; a++) {
-                                        o.push(this.readFloat(t));
-                                    }
-                                    n.pointL.push(o);
-                                }
-                                break;
-
-                              case Yr:
-                                this.resetPosition(t);
-                                this.readFaceArray(t, n);
-                                break;
-
-                              case Vr:
-                                n.texels = this.readWord(t);
-                                n.texelL = [];
-                                this.log(" -> #texels: " + n.texels);
-                                for (i = 0; i < n.texels; i++) {
-                                    n.texelL.push([ this.readFloat(t), this.readFloat(t) ]);
-                                }
-                                break;
-
-                              case zr:
-                              case Or:
-                              case Gr:
-                              default:
-                                this.log(" -> Unknown mesh chunk: " + e.toString(16));
-                                break;
-                            }
-                            e = this.nextChunk(t, r);
-                        }
-                        this.endChunk(r);
-                        return n;
-                    };
-                    t.readFaceArray = function(t, r) {
-                        var e = this.readChunk(t);
-                        var n, i;
-                        r.faces = this.readWord(t);
-                        r.faceL = [];
-                        this.log(" -> #faces: " + r.faces);
-                        for (n = 0; n < r.faces; ++n) {
-                            var a = new un();
-                            a.points = [];
-                            a.points.push(this.readWord(t));
-                            a.points.push(this.readWord(t));
-                            a.points.push(this.readWord(t));
-                            a.flags = this.readWord(t);
-                            r.faceL.push(a);
-                        }
-                        while (this.position < e.end) {
-                            var e = this.readChunk(t);
-                            switch (e.id) {
-                              case Nr:
-                                this.log(" -> MATERIAL_GROUP");
-                                this.resetPosition(t);
-                                var o = this.readMaterialGroup(t);
-                                var s = o.faceIdxs;
-                                for (n = 0; n < s.length; n++) {
-                                    var a = r.faceL[s[n]];
-                                    a.material = o.name;
-                                }
-                                break;
-
-                              case Fr:
-                              default:
-                                this.log(" -> Unknown face array chunk: " + c.toString(16));
-                                break;
-                            }
-                            this.endChunk(e);
-                        }
-                        this.endChunk(e);
-                    };
-                    t.readMaterialGroup = function(t) {
-                        var r = this.readChunk(t);
-                        var e = this.readString(t, 64);
-                        var n = this.readWord(t);
-                        this.log(" --> material name: " + e);
-                        this.log(" --> num faces: " + n);
-                        var i = [];
-                        for (var a = 0; a < n; ++a) {
-                            i.push(this.readWord(t));
-                        }
-                        return {
-                            name: e,
-                            faceIdxs: i
-                        };
-                    };
-                    t.readNamedObject = function(t) {
-                        var r = this.readChunk(t);
-                        var e = this.readString(t, 64);
-                        this.log(" -> " + e);
-                        r.cur = this.position;
-                        var n = this.nextChunk(t, r);
-                        while (n != 0) {
-                            switch (n) {
-                              case xr:
-                                this.resetPosition(t);
-                                var i = this.readMesh(t);
-                                this.meshes.push(i);
-                                break;
-
-                              default:
-                                this.log("Unknown named object chunk: " + n.toString(16));
-                                break;
-                            }
-                            n = this.nextChunk(t, r);
-                        }
-                        this.endChunk(r);
-                    };
-                    t.readChunk = function(t) {
-                        var r = new fn();
-                        r.cur = this.position;
-                        r.id = this.readWord(t);
-                        r.size = this.readDWord(t);
-                        r.end = r.cur + r.size;
-                        r.cur += 6;
-                        return r;
-                    };
-                    t.endChunk = function(t) {
-                        this.position = t.end;
-                    };
-                    t.nextChunk = function(t, r) {
-                        if (r.cur >= r.end) {
-                            return 0;
-                        }
-                        this.position = r.cur;
-                        try {
-                            var e = this.readChunk(t);
-                            r.cur += e.size;
-                            return e.id;
-                        } catch (t) {
-                            this.log("Unable to read chunk at " + this.position);
-                            return 0;
-                        }
-                    };
-                    t.resetPosition = function(t, r) {
-                        this.position -= 6;
-                    };
-                    t.readByte = function(t) {
-                        var r = t.getUint8(this.position);
-                        this.position += 1;
-                        return r;
-                    };
-                    t.readFloat = function(t) {
-                        try {
-                            var r = t.getFloat32(this.position);
-                            this.position += 4;
-                            return r;
-                        } catch (r) {
-                            this.log("" + r + " " + this.position + " " + t.byteLength);
-                        }
-                    };
-                    t.readInt = function(t) {
-                        var r = t.getInt32(this.position);
-                        this.position += 4;
-                        return r;
-                    };
-                    t.readShort = function(t) {
-                        var r = t.getInt16(this.position);
-                        this.position += 2;
-                        return r;
-                    };
-                    t.readDWord = function(t) {
-                        var r = t.getUint32(this.position);
-                        this.position += 4;
-                        return r;
-                    };
-                    t.readWord = function(t) {
-                        var r = t.getUint16(this.position);
-                        this.position += 2;
-                        return r;
-                    };
-                    t.readString = function(t, r) {
-                        var e = "";
-                        for (var n = 0; n < r; n++) {
-                            var i = this.readByte(t);
-                            if (!i) break;
-                            e += String.fromCharCode(i);
-                        }
-                        return e;
-                    };
-                    t.log = function(t) {
-                        if (this.debug) {
-                            console.log(t);
-                            if (this.element) {
-                                this.element.innerHTML += t + "<br/>";
-                            }
-                        }
-                    };
-                })();
-                var fn = function t() {
-                    this.cur = 0;
-                    this.id = 0;
-                    this.size = 0;
-                    this.end = 0;
-                };
-                var un = function t() {
-                    this.flags = 0;
-                    this.points = [];
-                    this.material = "";
-                };
-                var hn = function t() {
-                    this.next = null;
-                    this.matrix = [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ];
-                    this.name = "";
-                    this.color = 0;
-                    this.points = 0;
-                    this.pointL = [];
-                    this.flags = 0;
-                    this.flagL = [];
-                    this.texels = 0;
-                    this.texelL = [];
-                    this.faces = 0;
-                    this.faceL = [];
-                };
-                var ln = function t() {
-                    this.name = "";
-                    this.ambientColor = 0;
-                    this.diffuseColor = 0;
-                    this.spectralColor = 0;
-                };
-                t.exports = on;
-            }).call(r, e(105).Buffer);
-        },
-        95: function(t, r, e) {
-            "use strict";
-            var n = Object.assign || function(t) {
-                for (var r = 1; r < arguments.length; r++) {
-                    var e = arguments[r];
-                    for (var n in e) {
-                        if (Object.prototype.hasOwnProperty.call(e, n)) {
-                            t[n] = e[n];
-                        }
-                    }
-                }
-                return t;
-            };
-            var i = e(42);
-            var a = o(i);
-            function o(t) {
-                return t && t.__esModule ? t : {
-                    default: t
-                };
-            }
-            function s(t, r) {
-                var e = new XMLHttpRequest();
-                if (e.overrideMimeType) {
-                    e.overrideMimeType("text/plain; charset=x-user-defined");
-                }
-                e.onreadystatechange = function() {
-                    if (e.readyState == 4) {
-                        if (e.status == 0 || e.status == 200) {
-                            var t = new a.default(false, false);
-                            t.readFile(e.responseText);
-                            var n = [];
-                            for (var i = 0; i < t.meshes.length; i++) {
-                                var o = [];
-                                var s = [];
-                                var f = [];
-                                var u = t.meshes[i];
-                                for (var h = 0; h < u.points; h++) {
-                                    var l = u.pointL[h];
-                                    o.push(l[0]);
-                                    o.push(l[1]);
-                                    o.push(l[2]);
-                                }
-                                for (h = 0; h < u.faces; h++) {
-                                    var c = u.faceL[h];
-                                    var v = c.points[0];
-                                    var p = c.points[1];
-                                    var d = c.points[2];
-                                    s.push(v);
-                                    s.push(p);
-                                    s.push(d);
-                                }
-                                for (h = 0; h < u.texels; h++) {
-                                    var g = u.texelL[h];
-                                    var y = g[0];
-                                    var w = g[1];
-                                    f.push(y);
-                                    f.push(1 - w);
-                                }
-                                n.push({
-                                    vertices: o,
-                                    indices: s,
-                                    textures: f,
-                                    img: u.faceL[0] && u.faceL[0].material
-                                });
-                            }
-                            r(n, t);
-                        }
-                    }
-                };
-                e.open("GET", t, true);
-                e.send(null);
-            }
-            var f = function t(r) {
-                if (!r.webgl || !r.webgl._3ds) {
-                    return;
-                }
-                var e = r.webgl._3ds;
-                var i = r.webgl._3dsImg;
-                var a = r.webgl.cache !== false;
-                var o = this;
-                s(e, function(t) {
-                    o.webgl = {};
-                    delete r.webgl._3ds;
-                    delete r.webgl.cache;
-                    t.forEach(function(t) {
-                        var e = i && i[t.img];
-                        o.add({
-                            name: t.img,
-                            webgl: n(window.Easycanvas.webglShapes.custom({
-                                vertices: t.vertices,
-                                indices: t.indices,
-                                img: !(e instanceof Array) && e,
-                                textures: t.textures,
-                                colors: e instanceof Array && e
-                            }), r.webgl)
-                        });
-                    });
-                    o.trigger("webgl-3ds-loaded");
-                }, a);
-            };
-            var u = typeof window !== "undefined";
-            if (u && window.Easycanvas) {
-                window.Easycanvas.loader3DS = s;
-                Easycanvas.extend(f);
-            } else {
-                t.exports = {
-                    loader3DS: s,
-                    classInit: f
-                };
-            }
-        },
-        104: function(t, r) {
+        77: function(t, r) {
             "use strict";
             r.byteLength = u;
-            r.toByteArray = h;
-            r.fromByteArray = v;
+            r.toByteArray = l;
+            r.fromByteArray = p;
             var e = [];
             var n = [];
             var i = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
@@ -1257,78 +45,82 @@
                 if (r % 4 > 0) {
                     throw new Error("Invalid string. Length must be a multiple of 4");
                 }
-                return t[r - 2] === "=" ? 2 : t[r - 1] === "=" ? 1 : 0;
+                var e = t.indexOf("=");
+                if (e === -1) e = r;
+                var n = e === r ? 0 : 4 - e % 4;
+                return [ e, n ];
             }
             function u(t) {
-                return t.length * 3 / 4 - f(t);
+                var r = f(t);
+                var e = r[0];
+                var n = r[1];
+                return (e + n) * 3 / 4 - n;
             }
-            function h(t) {
-                var r, e, a, o, s;
-                var u = t.length;
-                o = f(t);
-                s = new i(u * 3 / 4 - o);
-                e = o > 0 ? u - 4 : u;
-                var h = 0;
-                for (r = 0; r < e; r += 4) {
-                    a = n[t.charCodeAt(r)] << 18 | n[t.charCodeAt(r + 1)] << 12 | n[t.charCodeAt(r + 2)] << 6 | n[t.charCodeAt(r + 3)];
-                    s[h++] = a >> 16 & 255;
-                    s[h++] = a >> 8 & 255;
-                    s[h++] = a & 255;
+            function h(t, r, e) {
+                return (r + e) * 3 / 4 - e;
+            }
+            function l(t) {
+                var r;
+                var e = f(t);
+                var a = e[0];
+                var o = e[1];
+                var s = new i(h(t, a, o));
+                var u = 0;
+                var l = o > 0 ? a - 4 : a;
+                for (var c = 0; c < l; c += 4) {
+                    r = n[t.charCodeAt(c)] << 18 | n[t.charCodeAt(c + 1)] << 12 | n[t.charCodeAt(c + 2)] << 6 | n[t.charCodeAt(c + 3)];
+                    s[u++] = r >> 16 & 255;
+                    s[u++] = r >> 8 & 255;
+                    s[u++] = r & 255;
                 }
                 if (o === 2) {
-                    a = n[t.charCodeAt(r)] << 2 | n[t.charCodeAt(r + 1)] >> 4;
-                    s[h++] = a & 255;
-                } else if (o === 1) {
-                    a = n[t.charCodeAt(r)] << 10 | n[t.charCodeAt(r + 1)] << 4 | n[t.charCodeAt(r + 2)] >> 2;
-                    s[h++] = a >> 8 & 255;
-                    s[h++] = a & 255;
+                    r = n[t.charCodeAt(c)] << 2 | n[t.charCodeAt(c + 1)] >> 4;
+                    s[u++] = r & 255;
+                }
+                if (o === 1) {
+                    r = n[t.charCodeAt(c)] << 10 | n[t.charCodeAt(c + 1)] << 4 | n[t.charCodeAt(c + 2)] >> 2;
+                    s[u++] = r >> 8 & 255;
+                    s[u++] = r & 255;
                 }
                 return s;
             }
-            function l(t) {
+            function c(t) {
                 return e[t >> 18 & 63] + e[t >> 12 & 63] + e[t >> 6 & 63] + e[t & 63];
             }
-            function c(t, r, e) {
+            function v(t, r, e) {
                 var n;
                 var i = [];
                 for (var a = r; a < e; a += 3) {
                     n = (t[a] << 16 & 16711680) + (t[a + 1] << 8 & 65280) + (t[a + 2] & 255);
-                    i.push(l(n));
+                    i.push(c(n));
                 }
                 return i.join("");
             }
-            function v(t) {
+            function p(t) {
                 var r;
                 var n = t.length;
                 var i = n % 3;
-                var a = "";
-                var o = [];
-                var s = 16383;
-                for (var f = 0, u = n - i; f < u; f += s) {
-                    o.push(c(t, f, f + s > u ? u : f + s));
+                var a = [];
+                var o = 16383;
+                for (var s = 0, f = n - i; s < f; s += o) {
+                    a.push(v(t, s, s + o > f ? f : s + o));
                 }
                 if (i === 1) {
                     r = t[n - 1];
-                    a += e[r >> 2];
-                    a += e[r << 4 & 63];
-                    a += "==";
+                    a.push(e[r >> 2] + e[r << 4 & 63] + "==");
                 } else if (i === 2) {
                     r = (t[n - 2] << 8) + t[n - 1];
-                    a += e[r >> 10];
-                    a += e[r >> 4 & 63];
-                    a += e[r << 2 & 63];
-                    a += "=";
+                    a.push(e[r >> 10] + e[r >> 4 & 63] + e[r << 2 & 63] + "=");
                 }
-                o.push(a);
-                return o.join("");
+                return a.join("");
             }
         },
-        105: function(t, r, e) {
+        78: function(t, r, e) {
             (function(t) {
                 "use strict";
-                var n = e(104);
-                var i = e(107);
-                var a = e(106);
+                var n = e(77);
+                var i = e(80);
+                var a = e(79);
                 r.Buffer = u;
                 r.SlowBuffer = b;
                 r.INSPECT_MAX_BYTES = 50;
@@ -1339,7 +131,7 @@
                         var t = new Uint8Array(1);
                         t.__proto__ = {
                             __proto__: Uint8Array.prototype,
-                            foo: function() {
+                            foo: function t() {
                                 return 42;
                             }
                         };
@@ -2685,13 +1477,15 @@
                 return this;
             }());
         },
-        106: function(t, r) {
+        79: function(t, r) {
+            "use strict";
             var e = {}.toString;
             t.exports = Array.isArray || function(t) {
                 return e.call(t) == "[object Array]";
             };
         },
-        107: function(t, r) {
+        80: function(t, r) {
+            "use strict";
             r.read = function(t, r, e, n, i) {
                 var a, o;
                 var s = i * 8 - n - 1;
@@ -2765,6 +1559,1218 @@
                 for (;u > 0; t[e + v] = o & 255, v += p, o /= 256, u -= 8) {}
                 t[e + v - p] |= d * 128;
             };
+        },
+        105: function(t, r, e) {
+            (function(r) {
+                "use strict";
+                var e = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(t) {
+                    return typeof t;
+                } : function(t) {
+                    return t && typeof Symbol === "function" && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
+                };
+                var n = 0;
+                var i = 19789;
+                var a = 11565;
+                var o = 11581;
+                var s = 15786;
+                var f = 15871;
+                var u = 49725;
+                var h = 2;
+                var l = 5;
+                var v = 16;
+                var p = 17;
+                var d = 18;
+                var g = 19;
+                var y = 48;
+                var w = 49;
+                var b = 15677;
+                var _ = 15678;
+                var m = 256;
+                var A = 5120;
+                var E = 5136;
+                var B = 5152;
+                var k = 5168;
+                var R = 5184;
+                var U = 5200;
+                var C = 5216;
+                var S = 5376;
+                var T = 8448;
+                var I = 4352;
+                var P = 4608;
+                var M = 4864;
+                var L = 4353;
+                var x = 4609;
+                var D = 4865;
+                var O = 8704;
+                var Y = 8720;
+                var N = 8962;
+                var F = 8960;
+                var j = 8976;
+                var V = 8705;
+                var z = 8963;
+                var W = 8961;
+                var G = 45055;
+                var H = 40960;
+                var X = 40976;
+                var q = 40992;
+                var J = 41008;
+                var Z = 41024;
+                var K = 41025;
+                var Q = 41040;
+                var $ = 41042;
+                var tt = 41536;
+                var rt = 41043;
+                var et = 41216;
+                var nt = 41552;
+                var it = 41092;
+                var at = 41089;
+                var ot = 41090;
+                var st = 41091;
+                var ft = 41093;
+                var ut = 41096;
+                var ht = 41098;
+                var lt = 41100;
+                var ct = 41102;
+                var vt = 41095;
+                var pt = 41472;
+                var dt = 41760;
+                var gt = 41790;
+                var yt = 41770;
+                var wt = 41786;
+                var bt = 41761;
+                var _t = 41792;
+                var mt = 41772;
+                var At = 41488;
+                var Et = 41762;
+                var Bt = 41794;
+                var kt = 41774;
+                var Rt = 41520;
+                var Ut = 41764;
+                var Ct = 41796;
+                var St = 41776;
+                var Tt = 41476;
+                var It = 41765;
+                var Pt = 41800;
+                var Mt = 41778;
+                var Lt = 41788;
+                var xt = 41766;
+                var Dt = 41798;
+                var Ot = 41780;
+                var Yt = 41789;
+                var Nt = 41768;
+                var Ft = 41802;
+                var jt = 41782;
+                var Vt = 41504;
+                var zt = 41804;
+                var Wt = 41784;
+                var Gt = 41744;
+                var Ht = 41728;
+                var Xt = 41809;
+                var qt = 41811;
+                var Jt = 41812;
+                var Zt = 41814;
+                var Kt = 41816;
+                var Qt = 41818;
+                var $t = 41820;
+                var tr = 41824;
+                var rr = 41826;
+                var er = 41828;
+                var nr = 41830;
+                var ir = 41832;
+                var ar = 16384;
+                var or = 17920;
+                var sr = 17952;
+                var fr = 18010;
+                var ur = 18009;
+                var hr = 18011;
+                var lr = 18004;
+                var cr = 17957;
+                var vr = 17936;
+                var pr = 18006;
+                var dr = 17968;
+                var gr = 17985;
+                var yr = 18e3;
+                var wr = 18001;
+                var br = 18007;
+                var _r = 18003;
+                var mr = 18002;
+                var Ar = 18008;
+                var Er = 17959;
+                var Br = 18176;
+                var kr = 18192;
+                var Rr = 18208;
+                var Ur = 16400;
+                var Cr = 16401;
+                var Sr = 16402;
+                var Tr = 16407;
+                var Ir = 16403;
+                var Pr = 16404;
+                var Mr = 16405;
+                var Lr = 16406;
+                var xr = 16640;
+                var Dr = 16656;
+                var Or = 16657;
+                var Yr = 16672;
+                var Nr = 16688;
+                var Fr = 16720;
+                var jr = 16784;
+                var Vr = 16704;
+                var zr = 16736;
+                var Wr = 16741;
+                var Gr = 16752;
+                var Hr = 45056;
+                var Xr = 45066;
+                var qr = 45064;
+                var Jr = 45065;
+                var Zr = 45057;
+                var Kr = 45058;
+                var Qr = 45059;
+                var $r = 45060;
+                var te = 45061;
+                var re = 45062;
+                var ee = 45063;
+                var ne = 45104;
+                var ie = 45072;
+                var ae = 45075;
+                var oe = 45073;
+                var se = 45077;
+                var fe = 45076;
+                var ue = 45088;
+                var he = 45093;
+                var le = 45089;
+                var ce = 45090;
+                var ve = 45094;
+                var pe = 45091;
+                var de = 45092;
+                var ge = 45095;
+                var ye = 45096;
+                var we = 45097;
+                var be = 20480;
+                var _e = 20496;
+                var me = 20497;
+                var Ae = 20512;
+                var Ee = 24576;
+                var Be = 24581;
+                var ke = 24592;
+                var Re = 24608;
+                var Ue = 24624;
+                var Ce = 24640;
+                var Se = 24656;
+                var Te = 24672;
+                var Ie = 24688;
+                var Pe = 24704;
+                var Me = 24720;
+                var Le = 24736;
+                var xe = 24832;
+                var De = 24848;
+                var Oe = 24864;
+                var Ye = 24880;
+                var Ne = 24896;
+                var Fe = 24912;
+                var je = 24928;
+                var Ve = 12288;
+                var ze = 12304;
+                var We = 12320;
+                var Ge = 12336;
+                var He = 12352;
+                var Xe = 12368;
+                var qe = 12384;
+                var Je = 12400;
+                var Ze = 12416;
+                var Ke = 12432;
+                var Qe = 28672;
+                var $e = 28688;
+                var tn = 28673;
+                var rn = 28689;
+                var en = 28690;
+                var nn = 28704;
+                var an = 28720;
+                var on = function t(r, e) {
+                    this.element = r;
+                    this.debug = e != undefined ? e : false;
+                    this.position = 0;
+                    this.meshes = [];
+                    this.materials = {};
+                };
+                var sn;
+                (function(t) {
+                    var n = this;
+                    var i = {
+                        ArrayBuffer: typeof ArrayBuffer !== "undefined",
+                        DataView: typeof DataView !== "undefined" && ("getFloat64" in DataView.prototype || "getFloat64" in new DataView(new ArrayBuffer(1))),
+                        NodeBuffer: typeof r !== "undefined" && "readInt16LE" in r.prototype
+                    };
+                    var a = {
+                        Int8: 1,
+                        Int16: 2,
+                        Int32: 4,
+                        Uint8: 1,
+                        Uint16: 2,
+                        Uint32: 4,
+                        Float32: 4,
+                        Float64: 8
+                    };
+                    var o = {
+                        Int8: "Int8",
+                        Int16: "Int16",
+                        Int32: "Int32",
+                        Uint8: "UInt8",
+                        Uint16: "UInt16",
+                        Uint32: "UInt32",
+                        Float32: "Float",
+                        Float64: "Double"
+                    };
+                    sn = function t(e, s, f, u) {
+                        if (!(this instanceof sn)) {
+                            throw new Error("jDataView constructor may not be called as a function");
+                        }
+                        this.buffer = e = sn.wrapBuffer(e);
+                        this._isArrayBuffer = i.ArrayBuffer && e instanceof ArrayBuffer;
+                        this._isDataView = i.DataView && this._isArrayBuffer;
+                        this._isNodeBuffer = i.NodeBuffer && e instanceof r;
+                        if (!this._isNodeBuffer && !this._isArrayBuffer && !(e instanceof Array)) {
+                            throw new TypeError("jDataView buffer has an incompatible type");
+                        }
+                        this._littleEndian = Boolean(u);
+                        var h = this._isArrayBuffer ? e.byteLength : e.length;
+                        if (s === undefined) {
+                            s = 0;
+                        }
+                        this.byteOffset = s;
+                        if (f === undefined) {
+                            f = h - s;
+                        }
+                        this.byteLength = f;
+                        if (!this._isDataView) {
+                            if (typeof s !== "number") {
+                                throw new TypeError("jDataView byteOffset is not a number");
+                            }
+                            if (typeof f !== "number") {
+                                throw new TypeError("jDataView byteLength is not a number");
+                            }
+                            if (s < 0) {
+                                throw new Error("jDataView byteOffset is negative");
+                            }
+                            if (f < 0) {
+                                throw new Error("jDataView byteLength is negative");
+                            }
+                        }
+                        if (this._isDataView) {
+                            this._view = new DataView(e, s, f);
+                        }
+                        this._start = s;
+                        if (s + f > h) {
+                            throw new Error("jDataView (byteOffset + byteLength) value is out of bounds");
+                        }
+                        this._offset = 0;
+                        if (this._isDataView) {
+                            for (var l in a) {
+                                if (!a.hasOwnProperty(l)) {
+                                    continue;
+                                }
+                                (function(t, r) {
+                                    var e = a[t];
+                                    r["get" + t] = function(n, i) {
+                                        if (i === undefined) {
+                                            i = r._littleEndian;
+                                        }
+                                        if (n === undefined) {
+                                            n = r._offset;
+                                        }
+                                        r._offset = n + e;
+                                        return r._view["get" + t](n, i);
+                                    };
+                                    r["set" + t] = function(n, i, a) {
+                                        if (a === undefined) {
+                                            a = r._littleEndian;
+                                        }
+                                        if (n === undefined) {
+                                            n = r._offset;
+                                        }
+                                        r._offset = n + e;
+                                        r._view["set" + t](n, i, a);
+                                    };
+                                })(l, this);
+                            }
+                        } else if (this._isNodeBuffer) {
+                            for (var l in a) {
+                                if (!a.hasOwnProperty(l)) {
+                                    continue;
+                                }
+                                (function(t, r) {
+                                    var e = a[t];
+                                    r["get" + t] = function(n, i) {
+                                        if (i === undefined) {
+                                            i = r._littleEndian;
+                                        }
+                                        if (n === undefined) {
+                                            n = r._offset;
+                                        }
+                                        var a;
+                                        if (t === "Int8" || t === "Uint8") {
+                                            a = "read" + o[t];
+                                        } else if (i) {
+                                            a = "read" + o[t] + "LE";
+                                        } else {
+                                            a = "read" + o[t] + "BE";
+                                        }
+                                        r._offset = n + e;
+                                        return r.buffer[a](r._start + n);
+                                    };
+                                    r["set" + t] = function(n, i, a) {
+                                        if (a === undefined) {
+                                            a = r._littleEndian;
+                                        }
+                                        if (n === undefined) {
+                                            n = r._offset;
+                                        }
+                                        var s;
+                                        if (t === "Int8" || t === "Uint8") {
+                                            s = "write" + o[t];
+                                        } else if (a) {
+                                            s = "write" + o[t] + "LE";
+                                        } else {
+                                            s = "write" + o[t] + "BE";
+                                        }
+                                        r._offset = n + e;
+                                        r.buffer[s](i, r._start + n);
+                                    };
+                                })(l, this);
+                            }
+                        } else if (this._isArrayBuffer) {
+                            for (var l in a) {
+                                if (!a.hasOwnProperty(l)) {
+                                    continue;
+                                }
+                                (function(t, r) {
+                                    var e = a[t];
+                                    r["get" + t] = function(i, a) {
+                                        if (a === undefined) {
+                                            a = r._littleEndian;
+                                        }
+                                        if (i === undefined) {
+                                            i = r._offset;
+                                        }
+                                        var o, s;
+                                        if (e === 1 || (r._start + i) % e === 0 && a) {
+                                            o = r.buffer;
+                                            s = r._start + i;
+                                            r._offset = i + e;
+                                        } else {
+                                            o = new Uint8Array(r.getBytes(e, i, a)).buffer;
+                                            s = 0;
+                                        }
+                                        return new n[t + "Array"](o, s, 1)[0];
+                                    };
+                                    r["set" + t] = function(i, a, o) {
+                                        if (o === undefined) {
+                                            o = r._littleEndian;
+                                        }
+                                        if (i === undefined) {
+                                            i = r._offset;
+                                        }
+                                        var s = n[t + "Array"];
+                                        if (e === 1 || (r._start + i) % e === 0 && o) {
+                                            new s(r.buffer, r._start + i, 1)[0] = a;
+                                            r._offset = i + e;
+                                        } else {
+                                            var f = new Uint8Array(e);
+                                            new s(f.buffer, 0, 1)[0] = a;
+                                            r.setBytes(i, f, o);
+                                        }
+                                    };
+                                })(l, this);
+                            }
+                        } else {
+                            for (var l in a) {
+                                if (!a.hasOwnProperty(l)) {
+                                    continue;
+                                }
+                                (function(t, r) {
+                                    var e = a[t];
+                                    r["get" + t] = function(n, i) {
+                                        if (i === undefined) {
+                                            i = r._littleEndian;
+                                        }
+                                        if (n === undefined) {
+                                            n = r._offset;
+                                        }
+                                        if (typeof n !== "number") {
+                                            throw new TypeError("jDataView byteOffset is not a number");
+                                        }
+                                        if (n + e > r.byteLength) {
+                                            throw new Error("jDataView (byteOffset + size) value is out of bounds");
+                                        }
+                                        return r["_get" + t](n, i);
+                                    };
+                                    r["set" + t] = function(n, i, a) {
+                                        if (a === undefined) {
+                                            a = r._littleEndian;
+                                        }
+                                        if (n === undefined) {
+                                            n = r._offset;
+                                        }
+                                        r._offset = n + e;
+                                        if (typeof n !== "number") {
+                                            throw new TypeError("jDataView byteOffset is not a number");
+                                        }
+                                        if (n + e > r.byteLength) {
+                                            throw new Error("jDataView (byteOffset + size) value is out of bounds");
+                                        }
+                                        r["_set" + t.replace("Uint", "Int")](n, i, a);
+                                    };
+                                })(l, this);
+                            }
+                        }
+                        for (var l in a) {
+                            if (!a.hasOwnProperty(l)) {
+                                continue;
+                            }
+                            (function(t, r) {
+                                r["write" + t] = function(r, e) {
+                                    this["set" + t](undefined, r, e);
+                                };
+                            })(l, this);
+                        }
+                    };
+                    sn.wrapBuffer = function(t) {
+                        switch (typeof t === "undefined" ? "undefined" : e(t)) {
+                          case "string":
+                            t = Array.prototype.map.call(t, function(t) {
+                                return t.charCodeAt(0) & 255;
+                            });
+                            break;
+
+                          case "number":
+                            t = {
+                                length: t
+                            };
+                            break;
+                        }
+                        if ("length" in t && !(i.NodeBuffer && t instanceof r || i.ArrayBuffer && t instanceof ArrayBuffer)) {
+                            if (i.NodeBuffer) {
+                                t = new r(t);
+                            } else if (i.ArrayBuffer) {
+                                var n = t instanceof Uint8Array ? t : new Uint8Array(t);
+                                t = n.buffer;
+                            } else {
+                                if (!(t instanceof Array)) {
+                                    t = Array.prototype.slice.call(t);
+                                }
+                                for (var a = 0, o = t.length; a < o; a++) {
+                                    t[a] &= 255;
+                                }
+                            }
+                        }
+                        return t;
+                    };
+                    sn.createBuffer = function() {
+                        return sn.wrapBuffer(arguments);
+                    };
+                    sn.prototype = {
+                        compatibility: i,
+                        _getBytes: function t(r, e, n) {
+                            var i;
+                            if (n === undefined) {
+                                n = this._littleEndian;
+                            }
+                            if (e === undefined) {
+                                e = this._offset;
+                            }
+                            if (r === undefined) {
+                                r = this.byteLength - e;
+                            }
+                            if (typeof e !== "number") {
+                                throw new TypeError("jDataView byteOffset is not a number");
+                            }
+                            if (r < 0 || e + r > this.byteLength) {
+                                throw new Error("jDataView length or (byteOffset+length) value is out of bounds");
+                            }
+                            e += this._start;
+                            if (this._isArrayBuffer) {
+                                i = new Uint8Array(this.buffer, e, r);
+                            } else {
+                                i = this.buffer.slice(e, e + r);
+                            }
+                            if (!n && r > 1) {
+                                if (!(i instanceof Array)) {
+                                    i = Array.prototype.slice.call(i);
+                                }
+                                i.reverse();
+                            }
+                            this._offset = e - this._start + r;
+                            return i;
+                        },
+                        getBytes: function t(r, e, n) {
+                            var i = this._getBytes.apply(this, arguments);
+                            if (!(i instanceof Array)) {
+                                i = Array.prototype.slice.call(i);
+                            }
+                            return i;
+                        },
+                        setBytes: function t(e, n, i) {
+                            var a = n.length;
+                            if (i === undefined) {
+                                i = this._littleEndian;
+                            }
+                            if (e === undefined) {
+                                e = this._offset;
+                            }
+                            if (typeof e !== "number") {
+                                throw new TypeError("jDataView byteOffset is not a number");
+                            }
+                            if (a < 0 || e + a > this.byteLength) {
+                                throw new Error("jDataView length or (byteOffset+length) value is out of bounds");
+                            }
+                            if (!i && a > 1) {
+                                n = Array.prototype.slice.call(n).reverse();
+                            }
+                            e += this._start;
+                            if (this._isArrayBuffer) {
+                                new Uint8Array(this.buffer, e, a).set(n);
+                            } else {
+                                if (this._isNodeBuffer) {
+                                    new r(n).copy(this.buffer, e);
+                                } else {
+                                    for (var o = 0; o < a; o++) {
+                                        this.buffer[e + o] = n[o];
+                                    }
+                                }
+                            }
+                            this._offset = e - this._start + a;
+                        },
+                        writeBytes: function t(r, e) {
+                            this.setBytes(undefined, r, e);
+                        },
+                        getString: function t(r, e) {
+                            return String.fromCharCode.apply(null, this._getBytes(r, e, true));
+                        },
+                        setString: function t(r, e) {
+                            this.setBytes(r, Array.prototype.map.call(e, function(t) {
+                                return t.charCodeAt(0) & 255;
+                            }), true);
+                        },
+                        writeString: function t(r) {
+                            this.setString(undefined, r);
+                        },
+                        getChar: function t(r) {
+                            return this.getString(1, r);
+                        },
+                        setChar: function t(r, e) {
+                            this.setString.apply(this, arguments);
+                        },
+                        writeChar: function t(r) {
+                            this.setChar(undefined, r);
+                        },
+                        tell: function t() {
+                            return this._offset;
+                        },
+                        seek: function t(r) {
+                            if (typeof r !== "number") {
+                                throw new TypeError("jDataView byteOffset is not a number");
+                            }
+                            if (r < 0 || r > this.byteLength) {
+                                throw new Error("jDataView byteOffset value is out of bounds");
+                            }
+                            return this._offset = r;
+                        },
+                        slice: function t(r, e, n) {
+                            return n ? new sn(this.getBytes(e - r, r), undefined, undefined, true) : new sn(this.buffer, this._start + r, e - r, this._littleEndian);
+                        },
+                        _getFloat64: function t(r, e) {
+                            var n = this._getBytes(8, r, e), i = 1 - 2 * (n[7] >> 7), a = ((n[7] << 1 & 255) << 3 | n[6] >> 4) - ((1 << 10) - 1), o = (n[6] & 15) * Math.pow(2, 48) + n[5] * Math.pow(2, 40) + n[4] * Math.pow(2, 32) + n[3] * Math.pow(2, 24) + n[2] * Math.pow(2, 16) + n[1] * Math.pow(2, 8) + n[0];
+                            if (a === 1024) {
+                                if (o !== 0) {
+                                    return NaN;
+                                } else {
+                                    return i * Infinity;
+                                }
+                            }
+                            if (a === -1023) {
+                                return i * o * Math.pow(2, -1022 - 52);
+                            }
+                            return i * (1 + o * Math.pow(2, -52)) * Math.pow(2, a);
+                        },
+                        _getFloat32: function t(r, e) {
+                            var n = this._getBytes(4, r, e), i = 1 - 2 * (n[3] >> 7), a = (n[3] << 1 & 255 | n[2] >> 7) - 127, o = (n[2] & 127) << 16 | n[1] << 8 | n[0];
+                            if (a === 128) {
+                                if (o !== 0) {
+                                    return NaN;
+                                } else {
+                                    return i * Infinity;
+                                }
+                            }
+                            if (a === -127) {
+                                return i * o * Math.pow(2, -126 - 23);
+                            }
+                            return i * (1 + o * Math.pow(2, -23)) * Math.pow(2, a);
+                        },
+                        _getInt32: function t(r, e) {
+                            var n = this._getBytes(4, r, e);
+                            return n[3] << 24 | n[2] << 16 | n[1] << 8 | n[0];
+                        },
+                        _getUint32: function t(r, e) {
+                            return this._getInt32(r, e) >>> 0;
+                        },
+                        _getInt16: function t(r, e) {
+                            return this._getUint16(r, e) << 16 >> 16;
+                        },
+                        _getUint16: function t(r, e) {
+                            var n = this._getBytes(2, r, e);
+                            return n[1] << 8 | n[0];
+                        },
+                        _getInt8: function t(r) {
+                            return this._getUint8(r) << 24 >> 24;
+                        },
+                        _getUint8: function t(r) {
+                            return this._getBytes(1, r)[0];
+                        },
+                        _setBinaryFloat: function t(r, e, n, i, a) {
+                            var o = e < 0 ? 1 : 0, s, f, u = ~(-1 << i - 1), h = 1 - u;
+                            if (e < 0) {
+                                e = -e;
+                            }
+                            if (e === 0) {
+                                s = h - 1;
+                                f = 0;
+                            } else if (isNaN(e)) {
+                                s = u + 1;
+                                f = 1;
+                            } else if (e === Infinity) {
+                                s = u + 1;
+                                f = 0;
+                            } else {
+                                s = Math.floor(Math.log(e) / Math.LN2);
+                                if (s > h && s <= u) {
+                                    f = Math.floor((e * Math.pow(2, -s) - 1) * Math.pow(2, n));
+                                } else {
+                                    f = Math.floor(e * Math.pow(2, n - h));
+                                    s = h - 1;
+                                }
+                            }
+                            s += u;
+                            var l = [];
+                            while (n >= 8) {
+                                l.push(f % 256);
+                                f = Math.floor(f / 256);
+                                n -= 8;
+                            }
+                            s = s << n | f;
+                            i += n;
+                            while (i >= 8) {
+                                l.push(s & 255);
+                                s >>>= 8;
+                                i -= 8;
+                            }
+                            l.push(o << i | s);
+                            this.setBytes(r, l, a);
+                        },
+                        _setFloat32: function t(r, e, n) {
+                            this._setBinaryFloat(r, e, 23, 8, n);
+                        },
+                        _setFloat64: function t(r, e, n) {
+                            this._setBinaryFloat(r, e, 52, 11, n);
+                        },
+                        _setInt32: function t(r, e, n) {
+                            this.setBytes(r, [ e & 255, e >>> 8 & 255, e >>> 16 & 255, e >>> 24 ], n);
+                        },
+                        _setInt16: function t(r, e, n) {
+                            this.setBytes(r, [ e & 255, e >>> 8 ], n);
+                        },
+                        _setInt8: function t(r, e) {
+                            this.setBytes(r, [ e ]);
+                        }
+                    };
+                })();
+                (function() {
+                    var t = on.prototype;
+                    t.readFile = function(t) {
+                        this.position = 0;
+                        this.meshes = [];
+                        this.materials = {};
+                        var r = new sn(t, 0, undefined, true);
+                        var e = this.readChunk(r);
+                        var n = 0;
+                        switch (e.id) {
+                          case s:
+                          case u:
+                          case i:
+                            n = this.nextChunk(r, e);
+                            while (n != 0) {
+                                switch (n) {
+                                  case h:
+                                    this.mesh_version = this.readDWord(r);
+                                    this.log("M3D_VERSION " + this.mesh_version);
+                                    break;
+
+                                  case b:
+                                    this.resetPosition(r);
+                                    this.log("MDATA");
+                                    this.readMDATA(r);
+                                    break;
+
+                                  case Hr:
+                                  default:
+                                    this.log("Unknown chunk: " + n.toString(16));
+                                    break;
+                                }
+                                n = this.nextChunk(r, e);
+                            }
+                            break;
+
+                          default:
+                            this.log("Unknown main chunk: " + n.toString(16));
+                            break;
+                        }
+                        this.log("parsed #" + this.meshes.length + " meshes!");
+                    };
+                    t.readMDATA = function(t) {
+                        var r = this.readChunk(t);
+                        var e = this.nextChunk(t, r);
+                        while (e != 0) {
+                            switch (e) {
+                              case _:
+                                this.mesh_version = this.readInt(t);
+                                this.log("MESH_VERSION: " + this.mesh_version);
+                                break;
+
+                              case m:
+                                this.master_scale = this.readFloat(t);
+                                this.log("MASTER_SCALE: " + this.master_scale);
+                                break;
+
+                              case ar:
+                                this.resetPosition(t);
+                                this.log("NAMED OBJECT");
+                                this.readNamedObject(t);
+                                break;
+
+                              case G:
+                                this.resetPosition(t);
+                                this.log("MATERIAL ENTRY");
+                                this.readMaterialEntry(t);
+                                break;
+
+                              default:
+                                this.log("Unknown MDATA chunk: " + e.toString(16));
+                                break;
+                            }
+                            e = this.nextChunk(t, r);
+                        }
+                    };
+                    t.readMaterialEntry = function(t) {
+                        var r = this.readChunk(t);
+                        var e = this.nextChunk(t, r);
+                        var n = new ln();
+                        while (e != 0) {
+                            switch (e) {
+                              case H:
+                                n.name = this.readString(t, 64);
+                                this.log(" -> name: " + n.name);
+                                break;
+
+                              case X:
+                                n.ambientColor = this.readColor(t);
+                                this.log(" -> ambientColor: " + n.ambientColor.toString(16));
+                                break;
+
+                              case q:
+                                n.diffuseColor = this.readColor(t);
+                                this.log(" -> diffuseColor: " + n.diffuseColor.toString(16));
+                                break;
+
+                              case J:
+                                n.specularColor = this.readColor(t);
+                                this.log(" -> specularColor: " + n.specularColor.toString(16));
+                                break;
+
+                              default:
+                                this.log(" -> Unknown material chunk: " + e.toString(16));
+                                break;
+                            }
+                            e = this.nextChunk(t, r);
+                        }
+                        this.endChunk(r);
+                        this.materials[n.name] = n;
+                    };
+                    t.readColor = function(t) {
+                        var r = this.readChunk(t);
+                        var e = 0;
+                        switch (r.id) {
+                          case p:
+                          case d:
+                            var n = this.readByte(t);
+                            var i = this.readByte(t);
+                            var a = this.readByte(t);
+                            e = n << 16 | i << 8 | a;
+                            break;
+
+                          case v:
+                          case g:
+                            var n = this.readFloat(t);
+                            var i = this.readFloat(t);
+                            var a = this.readFloat(t);
+                            e = Math.floor(n * 255) << 16 | Math.floor(i * 255) << 8 | Math.floor(a * 255);
+                            break;
+
+                          default:
+                            this.log("Unknown color chunk: " + c.toString(16));
+                            break;
+                        }
+                        this.endChunk(r);
+                        return e;
+                    };
+                    t.readMesh = function(t) {
+                        var r = this.readChunk(t);
+                        var e = this.nextChunk(t, r);
+                        var n = new hn();
+                        var i, a;
+                        while (e != 0) {
+                            switch (e) {
+                              case Wr:
+                                n.color = this.readByte(t);
+                                this.log(" -> color: " + n.color);
+                                break;
+
+                              case Dr:
+                                n.points = this.readWord(t);
+                                n.pointL = [];
+                                this.log(" -> #points: " + n.points + " " + this.position);
+                                for (i = 0; i < n.points; i++) {
+                                    var o = [];
+                                    for (a = 0; a < 3; a++) {
+                                        o.push(this.readFloat(t));
+                                    }
+                                    n.pointL.push(o);
+                                }
+                                break;
+
+                              case Yr:
+                                this.resetPosition(t);
+                                this.readFaceArray(t, n);
+                                break;
+
+                              case Vr:
+                                n.texels = this.readWord(t);
+                                n.texelL = [];
+                                this.log(" -> #texels: " + n.texels);
+                                for (i = 0; i < n.texels; i++) {
+                                    n.texelL.push([ this.readFloat(t), this.readFloat(t) ]);
+                                }
+                                break;
+
+                              case zr:
+                              case Or:
+                              case Gr:
+                              default:
+                                this.log(" -> Unknown mesh chunk: " + e.toString(16));
+                                break;
+                            }
+                            e = this.nextChunk(t, r);
+                        }
+                        this.endChunk(r);
+                        return n;
+                    };
+                    t.readFaceArray = function(t, r) {
+                        var e = this.readChunk(t);
+                        var n, i;
+                        r.faces = this.readWord(t);
+                        r.faceL = [];
+                        this.log(" -> #faces: " + r.faces);
+                        for (n = 0; n < r.faces; ++n) {
+                            var a = new un();
+                            a.points = [];
+                            a.points.push(this.readWord(t));
+                            a.points.push(this.readWord(t));
+                            a.points.push(this.readWord(t));
+                            a.flags = this.readWord(t);
+                            r.faceL.push(a);
+                        }
+                        while (this.position < e.end) {
+                            var e = this.readChunk(t);
+                            switch (e.id) {
+                              case Nr:
+                                this.log(" -> MATERIAL_GROUP");
+                                this.resetPosition(t);
+                                var o = this.readMaterialGroup(t);
+                                var s = o.faceIdxs;
+                                for (n = 0; n < s.length; n++) {
+                                    var a = r.faceL[s[n]];
+                                    a.material = o.name;
+                                }
+                                break;
+
+                              case Fr:
+                              default:
+                                this.log(" -> Unknown face array chunk: " + c.toString(16));
+                                break;
+                            }
+                            this.endChunk(e);
+                        }
+                        this.endChunk(e);
+                    };
+                    t.readMaterialGroup = function(t) {
+                        var r = this.readChunk(t);
+                        var e = this.readString(t, 64);
+                        var n = this.readWord(t);
+                        this.log(" --> material name: " + e);
+                        this.log(" --> num faces: " + n);
+                        var i = [];
+                        for (var a = 0; a < n; ++a) {
+                            i.push(this.readWord(t));
+                        }
+                        return {
+                            name: e,
+                            faceIdxs: i
+                        };
+                    };
+                    t.readNamedObject = function(t) {
+                        var r = this.readChunk(t);
+                        var e = this.readString(t, 64);
+                        this.log(" -> " + e);
+                        r.cur = this.position;
+                        var n = this.nextChunk(t, r);
+                        while (n != 0) {
+                            switch (n) {
+                              case xr:
+                                this.resetPosition(t);
+                                var i = this.readMesh(t);
+                                this.meshes.push(i);
+                                break;
+
+                              default:
+                                this.log("Unknown named object chunk: " + n.toString(16));
+                                break;
+                            }
+                            n = this.nextChunk(t, r);
+                        }
+                        this.endChunk(r);
+                    };
+                    t.readChunk = function(t) {
+                        var r = new fn();
+                        r.cur = this.position;
+                        r.id = this.readWord(t);
+                        r.size = this.readDWord(t);
+                        r.end = r.cur + r.size;
+                        r.cur += 6;
+                        return r;
+                    };
+                    t.endChunk = function(t) {
+                        this.position = t.end;
+                    };
+                    t.nextChunk = function(t, r) {
+                        if (r.cur >= r.end) {
+                            return 0;
+                        }
+                        this.position = r.cur;
+                        try {
+                            var e = this.readChunk(t);
+                            r.cur += e.size;
+                            return e.id;
+                        } catch (t) {
+                            this.log("Unable to read chunk at " + this.position);
+                            return 0;
+                        }
+                    };
+                    t.resetPosition = function(t, r) {
+                        this.position -= 6;
+                    };
+                    t.readByte = function(t) {
+                        var r = t.getUint8(this.position);
+                        this.position += 1;
+                        return r;
+                    };
+                    t.readFloat = function(t) {
+                        try {
+                            var r = t.getFloat32(this.position);
+                            this.position += 4;
+                            return r;
+                        } catch (r) {
+                            this.log("" + r + " " + this.position + " " + t.byteLength);
+                        }
+                    };
+                    t.readInt = function(t) {
+                        var r = t.getInt32(this.position);
+                        this.position += 4;
+                        return r;
+                    };
+                    t.readShort = function(t) {
+                        var r = t.getInt16(this.position);
+                        this.position += 2;
+                        return r;
+                    };
+                    t.readDWord = function(t) {
+                        var r = t.getUint32(this.position);
+                        this.position += 4;
+                        return r;
+                    };
+                    t.readWord = function(t) {
+                        var r = t.getUint16(this.position);
+                        this.position += 2;
+                        return r;
+                    };
+                    t.readString = function(t, r) {
+                        var e = "";
+                        for (var n = 0; n < r; n++) {
+                            var i = this.readByte(t);
+                            if (!i) break;
+                            e += String.fromCharCode(i);
+                        }
+                        return e;
+                    };
+                    t.log = function(t) {
+                        if (this.debug) {
+                            console.log(t);
+                            if (this.element) {
+                                this.element.innerHTML += t + "<br/>";
+                            }
+                        }
+                    };
+                })();
+                var fn = function t() {
+                    this.cur = 0;
+                    this.id = 0;
+                    this.size = 0;
+                    this.end = 0;
+                };
+                var un = function t() {
+                    this.flags = 0;
+                    this.points = [];
+                    this.material = "";
+                };
+                var hn = function t() {
+                    this.next = null;
+                    this.matrix = [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ];
+                    this.name = "";
+                    this.color = 0;
+                    this.points = 0;
+                    this.pointL = [];
+                    this.flags = 0;
+                    this.flagL = [];
+                    this.texels = 0;
+                    this.texelL = [];
+                    this.faces = 0;
+                    this.faceL = [];
+                };
+                var ln = function t() {
+                    this.name = "";
+                    this.ambientColor = 0;
+                    this.diffuseColor = 0;
+                    this.spectralColor = 0;
+                };
+                t.exports = on;
+            }).call(r, e(78).Buffer);
+        },
+        155: function(t, r, e) {
+            "use strict";
+            var n = Object.assign || function(t) {
+                for (var r = 1; r < arguments.length; r++) {
+                    var e = arguments[r];
+                    for (var n in e) {
+                        if (Object.prototype.hasOwnProperty.call(e, n)) {
+                            t[n] = e[n];
+                        }
+                    }
+                }
+                return t;
+            };
+            var i = e(105);
+            var a = o(i);
+            function o(t) {
+                return t && t.__esModule ? t : {
+                    default: t
+                };
+            }
+            function s(t, r) {
+                var e = new XMLHttpRequest();
+                if (e.overrideMimeType) {
+                    e.overrideMimeType("text/plain; charset=x-user-defined");
+                }
+                e.onreadystatechange = function() {
+                    if (e.readyState == 4) {
+                        if (e.status == 0 || e.status == 200) {
+                            var t = new a.default(false, false);
+                            t.readFile(e.responseText);
+                            var n = [];
+                            for (var i = 0; i < t.meshes.length; i++) {
+                                var o = [];
+                                var s = [];
+                                var f = [];
+                                var u = t.meshes[i];
+                                for (var h = 0; h < u.points; h++) {
+                                    var l = u.pointL[h];
+                                    o.push(l[0]);
+                                    o.push(l[1]);
+                                    o.push(l[2]);
+                                }
+                                for (h = 0; h < u.faces; h++) {
+                                    var c = u.faceL[h];
+                                    var v = c.points[0];
+                                    var p = c.points[1];
+                                    var d = c.points[2];
+                                    s.push(v);
+                                    s.push(p);
+                                    s.push(d);
+                                }
+                                for (h = 0; h < u.texels; h++) {
+                                    var g = u.texelL[h];
+                                    var y = g[0];
+                                    var w = g[1];
+                                    f.push(y);
+                                    f.push(1 - w);
+                                }
+                                n.push({
+                                    vertices: o,
+                                    indices: s,
+                                    textures: f,
+                                    img: u.faceL[0] && u.faceL[0].material
+                                });
+                            }
+                            r(n, t);
+                        }
+                    }
+                };
+                e.open("GET", t, true);
+                e.send(null);
+            }
+            var f = function t(r) {
+                if (!r.webgl || !r.webgl._3ds) {
+                    return;
+                }
+                var e = r.webgl._3ds;
+                var i = r.webgl._3dsImg;
+                var a = r.webgl.cache !== false;
+                var o = this;
+                s(e, function(t) {
+                    o.webgl = {};
+                    delete r.webgl._3ds;
+                    delete r.webgl.cache;
+                    t.forEach(function(t) {
+                        var e = i && i[t.img];
+                        o.add({
+                            name: t.img,
+                            webgl: n(window.Easycanvas.webglShapes.custom({
+                                vertices: t.vertices,
+                                indices: t.indices,
+                                img: !(e instanceof Array) && e,
+                                textures: t.textures,
+                                colors: e instanceof Array && e
+                            }), r.webgl)
+                        });
+                    });
+                    o.trigger("webgl-3ds-loaded");
+                }, a);
+            };
+            var u = typeof window !== "undefined";
+            if (u && window.Easycanvas) {
+                window.Easycanvas.loader3DS = s;
+                Easycanvas.extend(f);
+            } else {
+                t.exports = {
+                    loader3DS: s,
+                    classInit: f
+                };
+            }
         }
     });
 });

@@ -1,7 +1,7 @@
 // <p>Feature：为Painter实例增加afterEvent钩子。</p>
 
 module.exports = `
-    <article id="更新日志（Latest：2018-11-28）">
+    <article id="更新日志（Latest：2019-1-26）">
         <h1>更新</h1>
 
         <p class="tip">Tips：小版本号为bugfix或增加API，中版本号可能包含个别不向下兼容的API调整。</p>
@@ -14,15 +14,23 @@ module.exports = `
 
         <h2>当前版本</h2>
 
-        <h3>0.7.4 (2018.11.28)</h3>
+        <h3>0.8.0 (2019.1.17)</h3>
 
-        <p>Bugfix：修复调用<strong>Sprite.combine</strong>时，处于运动中的对象可能出现错位的bug。</p>
-        <p>Bugfix：修复调用<strong>Sprite.combine</strong>时，可能丢失个别Sprite的bug。</p>
-        <p>Bugfix：调整<strong>Sprite.combine</strong>的逻辑以提升性能。</p>
-        <p>Bugfix：修复<strong>Scroll组件</strong>滚动至底部时，现在将在内部广播“scrolledToBottom”事件。</p>
-        <p>Bugfix：修复<strong>Easycanvas.transition</strong>中涉及了三角函数的动画播放至最后一帧时，出现1px的偏差的bug。</p>
+        <p>Change：现在使用<strong>left、top、width、height</strong>等属性来设置样式（而不是tx、ty等参数），更接近CSS和其它框架了。详见文档。</p>
+        <p>Change：底层现在使用Object.defineProperty来进行属性的监听和计算，<strong>这个改动对性能的影响不大，因为Canvas的性能主要取决于浏览器与系统</strong>。</p>
+        <p>Bugfix：修复了<strong>调用了Sprite.combineAsync</strong>后，如果Sprite一直位于画布外部（此时之前被判定为不适合合并，会推迟重试），会因为不断判定而损耗性能的问题。</p>
+        <p>Bugfix：修复了<strong>调用了Sprite.getOuterRect</strong>计算上的bug。</p>
+        <p>Feature：<strong>支持使用JSX语法进行开发</strong>，详见文档。</p>
 
         <h2>历史版本</h2>
+
+        <h3>0.7.4 (2018.11.28)</h3>
+
+        <p>Bugfix：修复调用<strong>Sprite.combineAsync</strong>时，处于运动中的对象可能出现错位的bug。</p>
+        <p>Bugfix：修复调用<strong>Sprite.combineAsync</strong>时，可能丢失个别Sprite的bug。</p>
+        <p>Bugfix：调整<strong>Sprite.combineAsync</strong>的逻辑以提升性能。</p>
+        <p>Bugfix：修复<strong>Scroll组件</strong>滚动至底部时，现在将在内部广播“scrolledToBottom”事件。</p>
+        <p>Bugfix：修复<strong>Easycanvas.transition</strong>中涉及了三角函数的动画播放至最后一帧时，出现1px的偏差的bug。</p>
 
         <h3>0.7.3 (2018.11.1)</h3>
 

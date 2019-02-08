@@ -22,8 +22,8 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
                 img: img,
             },
             style: {
-                tx: 200, ty: 200,
-                tw: 400, th: 300,
+                left: 200, top: 200,
+                width: 400, height: 300,
                 opacity: 0.5,
                 zIndex: 1,
             },
@@ -42,8 +42,8 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                 img: img,
             },
             style: {
-                tx: 200, ty: 200,
-                tw: 200, th: 300,
+                left: 200, top: 200,
+                width: 200, height: 300,
                 zIndex: 2,
             },
         });
@@ -61,8 +61,8 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
                 img: img,
             },
             style: {
-                tx: 200, ty: 200,
-                tw: 200, th: 300,
+                left: 200, top: 200,
+                width: 200, height: 300,
                 zIndex: 3,
             },
         });
@@ -80,8 +80,8 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
                 img: i % 2 ? img : constants.jpg100px,
             },
             style: {
-                tx: 200, ty: 200,
-                tw: 200, th: 300,
+                left: 200, top: 200,
+                width: 200, height: 300,
                 opacity: 0.6,
                 zIndex: 4,
             },
@@ -100,8 +100,8 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
                 img: i % 2 ? img : constants.png30px,
             },
             style: {
-                tx: 200, ty: 200,
-                tw: 200, th: 300,
+                left: 200, top: 200,
+                width: 200, height: 300,
                 zIndex: 5,
             },
         });

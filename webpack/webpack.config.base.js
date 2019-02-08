@@ -14,7 +14,9 @@ module.exports = {
     loaders: [{
         test: /\.js$/,
         loader: 'babel',
-        exclude: /node_modules/
+    }, {
+        test: /\.jsx$/,
+        loaders: ['babel', path.resolve('./src/loader.js')]
     }],
 
     babel: {
@@ -27,5 +29,21 @@ module.exports = {
     node: {
         process: false,
         setImmediate: false
+    },
+
+    devServer: {
+        host: '0.0.0.0',
+        contentBase: path.resolve('./dev'),
+        historyApiFallback: true,
+        inline: true,
+        hot: true,
+        disableHostCheck: true,
+        stats: {
+            colors: true,
+            modules: false,
+            children: false,
+            chunks: false,
+            chunkModules: false
+        }
     },
 };

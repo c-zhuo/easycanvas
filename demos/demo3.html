@@ -3,24 +3,24 @@
 </head>
 
 <body>
-    <canvas id="foo" width="800" height="400"></canvas>
+    <canvas id="app" width="800" height="400"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'));
+        $app.start();
 
         var G = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
         var r1 = 0;
         var r2 = 0;
 
-        var sprite1 = $Painter.add({
+        var sprite1 = $app.add({
             content: {
                 img: G,
             },
             style: {
                 rotate: function () {return r1;},
-                rx: 250, ry: 200, tx: 250, ty: 200,
+                rx: 250, ry: 200, left: 250, top: 200,
                 zIndex: 1,
             },
             events: {
@@ -31,13 +31,13 @@
                 },
             },
         });
-        var sprite2 = $Painter.add({
+        var sprite2 = $app.add({
             content: {
                 img: G,
             },
             style: {
                 rotate: function () {return r2;},
-                rx: 350, ry: 200, tx: 350, ty: 200,
+                rx: 350, ry: 200, left: 350, top: 200,
                 zIndex: 2,
             },
             events: {

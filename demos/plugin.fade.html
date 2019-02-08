@@ -5,15 +5,15 @@
 </head>
 
 <body>
-    <canvas id="foo"></canvas>
+    <canvas id="app"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             fullScreen: true
         });
-        $Painter.start();
-        $Painter.setMaxFps(40);
+        $app.start();
+        $app.setMaxFps(40);
 
         var $above, $below;
         var imgIndex = 0;
@@ -31,11 +31,11 @@
             style: {
                 locate: 'lt',
                 zIndex: 1,
-                tw: document.body.clientWidth,
-                th: document.body.clientHeight
+                width: document.body.clientWidth,
+                height: document.body.clientHeight
             },
         });
-        $Painter.add($above);
+        $app.add($above);
 
         var once = function () {
             imgIndex++;
@@ -60,11 +60,11 @@
                 style: {
                     locate: 'lt',
                     zIndex: $above.style.zIndex - 1,
-                    tw: document.body.clientWidth,
-                    th: document.body.clientHeight
+                    width: document.body.clientWidth,
+                    height: document.body.clientHeight
                 },
             });
-            $Painter.add($below);
+            $app.add($below);
             $above = $below;
         };
 

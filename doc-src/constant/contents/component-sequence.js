@@ -68,8 +68,10 @@ module.exports = `
                                 loop: false,
                             },
                             style: {
-                                tx: initX, ty: initY,
-                                tw: 120, th: 120,
+                                left: initX,
+                                top: initY,
+                                width: 120,
+                                height: 120,
                             },
                         });
                     };
@@ -87,7 +89,7 @@ module.exports = `
 
         <h2>自定义尺寸</h2>
 
-        <p>如果我们想自定义播放精灵动画，可以不传入frameWidth和frameHeight，而是自定义sx、sy、sw、sh：</p>
+        <p>如果我们想自定义播放精灵动画，可以不传入frameWidth和frameHeight，而是自定义cutLeft、cutTop、cutWidth和cutHeight：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -118,12 +120,14 @@ module.exports = `
                             loop: true,
                         },
                         style: {
-                            tx: 150, ty: 150,
-                            sw: width, sh: height,
-                            sx: function () {
+                            left: 150,
+                            top: 150,
+                            cutWidth: width,
+                            cutHeight: height,
+                            cutLeft: function () {
                                 return this.props.index % 6 * width;
                             },
-                            sy: function () {
+                            cutTop: function () {
                                 return height * (this.props.index % 20 >= 10 ? 2 : 6);
                             },
                         },
@@ -136,6 +140,6 @@ module.exports = `
 
         <p>这里用到的<strong>sequence的index参数是序列索引，代表当前播放到了精灵动画的第几帧子画面</strong>。例如这个例子中的interval为40，那么index的值会每40毫秒自增1。</p>
 
-        <p class="tip">Tips：当然，也可以通过状态钩子来实现同样的效果，将sx和sy的值通过绘制钩子“ticked”或者”beforeTick“动态计算出来。或者，封装自己的easycanvas插件来实现更多参数可配置的精灵动画。</p>
+        <p class="tip">Tips：当然，也可以通过状态钩子来实现同样的效果，将cutLeft和cutHeight的值通过绘制钩子“ticked”或者”beforeTick“动态计算出来。或者，封装自己的组件来实现更多参数可配置的精灵动画。</p>
     </article>
 `;

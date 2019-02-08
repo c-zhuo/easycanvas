@@ -34,15 +34,15 @@ module.exports = `
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
                         style: {
-                            tw: function () {
+                            left: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
+                            top: 100,
+                            width: function () {
                                 // 这里是类似“数据绑定”的写法，类似Vue应用中的cpmputed
                                 return data.imgSize;
                             },
-                            th: function () {
+                            height: function () {
                                 return data.imgSize;
                             },
-                            tx: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
-                            ty: 100,
                         },
                         events: {
                             click: changeSize

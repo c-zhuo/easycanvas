@@ -33,21 +33,21 @@ if (process.env.NODE_ENV !== 'production') {
                 if ($child.img && $child.img.$origin) {
                     // is canvas
                     sekeletonString += $child.img.$origin.join(';') + ';';
-                    sekeletonString += `_.drawImage(tempCanvas, ${props.sx}, ${props.sy}, ${props.sw}, ${props.sh}, ${props.tx}, ${props.ty}, ${props.tw}, ${props.th});`;
+                    sekeletonString += `_.drawImage(tempCanvas, ${props.cutLeft}, ${props.cutTop}, ${props.cutWidth}, ${props.cutHeight}, ${props.left}, ${props.top}, ${props.width}, ${props.height});`;
                 } else if ($child.img && $child.img.src) {
                     sekeletonString += `var img = new Image();`;
                     sekeletonString += `var imgUrl='${$child.img.src}';if(SKLIMG.indexOf(imgUrl)===-1){SKLIMG.push(imgUrl);img.onload=function(){_.clearRect(0,0,$SKL.width,$SKL.height);SKL();}};`;
                     sekeletonString += `img.src=imgUrl;`;
-                    sekeletonString += `_.drawImage(img, ${props.sx}, ${props.sy}, ${props.sw}, ${props.sh}, ${props.tx}, ${props.ty}, ${props.tw}, ${props.th});`;
+                    sekeletonString += `_.drawImage(img, ${props.cutLeft}, ${props.cutTop}, ${props.cutWidth}, ${props.cutHeight}, ${props.left}, ${props.top}, ${props.width}, ${props.height});`;
                 } else {
                     sekeletonString += `_.fillStyle='#666';`;
-                    sekeletonString += `_.fillRect(${props.tx}, ${props.ty}, ${props.tw}, ${props.th});`;
+                    sekeletonString += `_.fillRect(${props.left}, ${props.top}, ${props.width}, ${props.height});`;
                 }
             } else if ($child.type === 'fillRect') {
                 sekeletonString += `_.globalAlpha=${settings.globalAlpha};`;
 
                 sekeletonString += `_.fillStyle='${settings.fillRect}';`;
-                sekeletonString += `_.fillRect(${props.tx}, ${props.ty}, ${props.tw}, ${props.th});`;
+                sekeletonString += `_.fillRect(${props.left}, ${props.top}, ${props.width}, ${props.height});`;
             }
         });
 

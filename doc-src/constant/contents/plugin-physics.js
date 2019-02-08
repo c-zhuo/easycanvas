@@ -79,8 +79,8 @@ module.exports = `
                             collisionType: 1,
                         },
                         style: {
-                            tw: 20, th: 20,
-                            tx: 200, ty: 50,
+                            width: 20, height: 20,
+                            left: 200, top: 50,
                         },
                     });
                     $space.add($letterG);
@@ -103,7 +103,7 @@ module.exports = `
                             static: true
                         },
                         style: {
-                            tx: 0, ty: 0, tw: 400, th: 400,
+                            left: 0, top: 0, width: 400, height: 400,
                             locate: 'lt',
                         },
                     }));
@@ -164,8 +164,8 @@ module.exports = `
                             collisionType: 1,
                         },
                         style: {
-                            tw: 20, th: 20,
-                            tx: 200, ty: 150,
+                            width: 20, height: 20,
+                            left: 200, top: 150,
                         },
                     });
                     $space.add($letterG);
@@ -201,7 +201,7 @@ module.exports = `
                             static: true
                         },
                         style: {
-                            tx: 0, ty: 0, tw: 400, th: 400,
+                            left: 0, top: 0, width: 400, height: 400,
                             locate: 'lt',
                         },
                     }));

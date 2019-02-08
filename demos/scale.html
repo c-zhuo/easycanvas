@@ -3,24 +3,24 @@
 </head>
 
 <body>
-    <canvas id="foo" width="400" height="800"></canvas>
+    <canvas id="app" width="400" height="800"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
+        var $app = new Easycanvas.painter();
 
-        $Painter.register(document.getElementById('foo'));
-        $Painter.start();
+        $app.register(document.getElementById('app'));
+        $app.start();
 
         Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
             // create a sprite
-            window.sprite1 = $Painter.add({
+            window.sprite1 = $app.add({
                 name: '1',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 50, th: 50,
-                    tx: 50, ty: 50,
+                    width: 50, height: 50,
+                    left: 50, top: 50,
                     opacity: 0.2,
                     rotate: 10,
                     scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
@@ -37,14 +37,14 @@
                 },
             });
 
-            window.sprite2 = $Painter.add({
+            window.sprite2 = $app.add({
                 name: '2',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 50, th: 50,
-                    tx: 150, ty: 50,
+                    width: 50, height: 50,
+                    left: 150, top: 50,
                     opacity: 0.2,
                     rotate: 10,
                     scale: Easycanvas.transition.pendulum(0.5, 3, 2500).loop(),
@@ -61,14 +61,14 @@
                 },
             });
 
-            window.sprite3 = $Painter.add({
+            window.sprite3 = $app.add({
                 name: '3',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 50, th: 50,
-                    tx: 250, ty: 50,
+                    width: 50, height: 50,
+                    left: 250, top: 50,
                     opacity: 0.2,
                     rotate: 10,
                     scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
@@ -85,14 +85,14 @@
                 },
             });
 
-            window.sprite4 = $Painter.add({
+            window.sprite4 = $app.add({
                 name: '4',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 50, th: 50,
-                    tx: 50, ty: 150,
+                    width: 50, height: 50,
+                    left: 50, top: 150,
                     opacity: 0.2,
                     rotate: 10,
                     scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
@@ -113,8 +113,8 @@
                         img: img,
                     },
                     style: {
-                        tw: 50, th: 50,
-                        tx: 10, ty: 10,
+                        width: 50, height: 50,
+                        left: 10, top: 10,
                         opacity: 0.2,
                         rotate: 10,
                         locate: 'lt', // default center
@@ -131,14 +131,14 @@
                 }]
             });
 
-            window.sprite5 = $Painter.add({
+            window.sprite5 = $app.add({
                 name: '5',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 50, th: 50,
-                    tx: 150, ty: 150,
+                    width: 50, height: 50,
+                    left: 150, top: 150,
                     opacity: 0.2,
                     rotate: 10,
                     scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
@@ -159,8 +159,8 @@
                         img: img,
                     },
                     style: {
-                        tw: 50, th: 50,
-                        tx: 10, ty: 10,
+                        width: 50, height: 50,
+                        left: 10, top: 10,
                         opacity: 0.2,
                         rotate: 10,
                         scale: Easycanvas.transition.pendulum(1, 3, 2500).loop(),
@@ -178,14 +178,14 @@
                 }]
             });
 
-            window.sprite6 = $Painter.add({
+            window.sprite6 = $app.add({
                 name: '5',
                 content: {
                     img: img,
                 },
                 style: {
-                    tw: 50, th: 50,
-                    tx: 250, ty: 150,
+                    width: 50, height: 50,
+                    left: 250, top: 150,
                     opacity: 0.2,
                     rotate: 60,
                     locate: 'lt', // default center
@@ -205,7 +205,7 @@
                         img: img,
                     },
                     style: {
-                        tx: 100, ty: 100,
+                        left: 100, top: 100,
                         opacity: 0.2,
                         rotate: 60,
                         scale: Easycanvas.transition.pendulum(1, 2, 2000).loop(),

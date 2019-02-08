@@ -58,7 +58,7 @@ const init = function (opt) {
             // poly shape
             let verts = sprite.physics.shape.join(',').split(',').map((_num, index) => {
                 let num = Number(_num);
-                // num += index % 2 ? sqSprite.getRect().ty : sqSprite.getRect().tx;
+                // num += index % 2 ? sqSprite.getRect().top : sqSprite.getRect().left;
                 let res = index % 2 ? -num : num;
                 return res ? res : 0;
             });
@@ -103,8 +103,8 @@ const init = function (opt) {
 
         if (this.$physics.body) {
             this.$physics.body.setPos(new cp.Vect(
-                this.getRect().tx + this.getRect().tw / 2,
-                -this.getRect().ty - this.getRect().th / 2
+                this.getRect().left + this.getRect().width / 2,
+                -this.getRect().top - this.getRect().height / 2
             ));
         }
 
@@ -238,9 +238,9 @@ const xy2Vect = function (pos) {
     //         img: G,
     //     },
     //     style: {
-    //         tx: pos.x,
-    //         ty: pos.y,
-    //         tw: 10, th: 10,
+    //         left: pos.x,
+    //         top: pos.y,
+    //         width: 10, height: 10,
     //         zIndex: 999,
     //     },
     // });
@@ -256,21 +256,21 @@ const cp2ec = function (body, sprite) {
     let vel = body.getVel();
 
     sprite.style.rotate = body.a * 180 / Math.PI;
-    sprite.style.tx = pos.x;
-    sprite.style.ty = -pos.y;
+    sprite.style.left = pos.x;
+    sprite.style.top = -pos.y;
 
     if (sprite.style.locate === 'lt') {
-        sprite.style.tx -= sprite.getRect().tw / 2;
-        sprite.style.ty -= sprite.getRect().th / 2;
+        sprite.style.left -= sprite.getRect().width / 2;
+        sprite.style.top -= sprite.getRect().height / 2;
     } else if (sprite.style.locate === 'ld') {
-        sprite.style.tx -= sprite.getRect().tw / 2;
-        sprite.style.ty += sprite.getRect().th / 2;
+        sprite.style.left -= sprite.getRect().width / 2;
+        sprite.style.top += sprite.getRect().height / 2;
     } else if (sprite.style.locate === 'rd') {
-        sprite.style.tx += sprite.getRect().tw / 2;
-        sprite.style.ty += sprite.getRect().th / 2;
+        sprite.style.left += sprite.getRect().width / 2;
+        sprite.style.top += sprite.getRect().height / 2;
     } else if (sprite.style.locate === 'rt') {
-        sprite.style.tx += sprite.getRect().tw / 2;
-        sprite.style.ty -= sprite.getRect().th / 2;
+        sprite.style.left += sprite.getRect().width / 2;
+        sprite.style.top -= sprite.getRect().height / 2;
     }
 };
 
@@ -354,10 +354,10 @@ function spritePhysicsOn ($sprite) {
         spriteShape.forEach((s, index) => {
             let shape;
 
-            let spriteX = $sprite.getStyle('tx'),
-                spriteY = $sprite.getStyle('ty'),
-                spaceX = $space.getStyle('tx'),
-                spaceY = $space.getStyle('ty');
+            let spriteX = $sprite.getStyle('left'),
+                spriteY = $sprite.getStyle('top'),
+                spaceX = $space.getStyle('left'),
+                spaceY = $space.getStyle('top');
 
             // [a, b, r]代表一个圆
             // [[a1, b1], [a2, b2], [a3, b4]]代表多边形各个顶点
@@ -373,8 +373,8 @@ function spritePhysicsOn ($sprite) {
                 shape = new cp.CircleShape(body || space.staticBody, s[2], offset);
             } else if (s.length >= 3) {
                 // 多边形
-                let rx = $sprite.style.rx || ($sprite.getRect().tx + $sprite.getRect().tw / 2);
-                let ry = $sprite.style.ry || ($sprite.getRect().ty + $sprite.getRect().th / 2);
+                let rx = $sprite.style.rx || ($sprite.getRect().left + $sprite.getRect().width / 2);
+                let ry = $sprite.style.ry || ($sprite.getRect().top + $sprite.getRect().height / 2);
 
                 let verts = s.map((point) => {
                     var newPoint = mathPointRotate(
@@ -400,8 +400,8 @@ function spritePhysicsOn ($sprite) {
                 shape = new cp.PolyShape(body || space.staticBody, verts, offset);
             } else if (s.length === 2) {
                 // 线段构成
-                let rx = $sprite.style.rx || ($sprite.getRect().tx + $sprite.getRect().tw / 2);
-                let ry = $sprite.style.ry || ($sprite.getRect().ty + $sprite.getRect().th / 2);
+                let rx = $sprite.style.rx || ($sprite.getRect().left + $sprite.getRect().width / 2);
+                let ry = $sprite.style.ry || ($sprite.getRect().top + $sprite.getRect().height / 2);
 
                 let point1 = mathPointRotate(
                     s[0][0] + spriteX - spaceX,

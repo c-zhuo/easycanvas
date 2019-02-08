@@ -1,5 +1,5 @@
 module.exports = `
-    <article id="快速开始（浏览器与Node环境）">
+    <article id="在浏览器和Node中使用">
         <h1>快速开始</h1>
 
         <h2>在浏览器和Node中引入</h2>
@@ -35,6 +35,8 @@ module.exports = `
             import Easycanvas from 'easycanvas/build/easycanvas.js';
         </code>
 
+        <p class="tip">Tips：如果你的项目是使用Webpack进行构建打包的，可以使用JSX的语法进行开发，相见左侧“快速开始-支持JSX写法”。</p>
+
         <h2>创建实例</h2>
 
         <p>如下例，只需要30行代码，可以在canvas上绘制一个运动的图片。点击蓝色的小按钮可以立即查看效果。</p>
@@ -59,14 +61,14 @@ module.exports = `
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
                         style: {
-                            tw: 50,
-                            th: 50,
-                            tx: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
-                            ty: 100,
+                            left: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
+                            top: 100,
+                            width: 50,
+                            height: 50,
                         },
                         events: {
                             click: function (e) {
-                                this.style.tw = 100;
+                                this.style.width = 100;
                                 return true;
                             },
                         },
@@ -88,7 +90,7 @@ module.exports = `
 
         <p>后面将对painter类和sprite类的各个参数进行介绍和演示。</p>
 
-        <p class="tip">Tips：tx、ty、tw、th是绘制的x、y坐标以及宽度和高度，后面的版本中可能会替换为left、top、width、height四个参数。但是会提供一段可以向下兼容的方式来使用。</p>
+        <p class="tip">Tips：在0.8.0之前的版本中，用tx、ty、tw、th四个参数作为left、top、width、height。</p>
     </article>
 
 `;

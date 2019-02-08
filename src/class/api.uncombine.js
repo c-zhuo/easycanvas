@@ -1,9 +1,25 @@
+import constants from 'constants';
+
 module.exports = function () {
     if (!this.$combine) return;
+    if (this.$combine === 9) {
+        this.$combine = false;
+        return;
+    }
 
-    Object.assign(this, this.$combine);
+	this.content = this.$combine.content;
+    this.children = this.$combine.children;
+
+    Object.keys(this.style).forEach((key) => {
+        this.style[key] = undefined;
+    });
+
+
+    Object.keys(this.$combine.style).forEach((key) => {
+        this.style[key] = this.$combine.style[key];
+    });
 
     this.$combine = false;
-    // this.events.interceptor = this.events.$interceptor;
-    // this.events.$interceptor = false;
+
+    this.recalculate(true);
 };

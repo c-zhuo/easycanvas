@@ -11,11 +11,11 @@
 </style>
 
 <body>
-    <canvas id="foo"></canvas>
+    <canvas id="app"></canvas>
 
     <script>
         var $app = new Easycanvas.painter({
-            el: '#foo',
+            el: '#app',
             fullScreen: true,
             webgl: {
                 singleShader: true, // TODO
@@ -34,12 +34,12 @@
         function createEffect () {
             var $effect = $app.add({
                 style: {
-                    tx: Easycanvas.transition.pendulum(
+                    left: Easycanvas.transition.pendulum(
                         mouseX + 5 - Math.random() * 10,
                         mouseX - 100 - Math.random() * 400,
                         3000
                     ).loop(),
-                    ty: Easycanvas.transition.ease(
+                    top: Easycanvas.transition.ease(
                         mouseY,
                         mouseY - 200,
                         1000

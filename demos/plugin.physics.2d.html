@@ -21,6 +21,19 @@
         background-position: 50% 50%;
     }
 </style>
+<div class="fps"></div>
+<style>
+    .fps {
+        position: absolute;
+        font-size: 30px;
+        top: 0;
+        right: 100px;
+        z-index: 2;
+        background-color: white;
+        color: red;
+    }
+</style>
+
 <body>
     <canvas id="app"></canvas>
 </body>
@@ -45,8 +58,8 @@
     // 用于碰撞检测
     var BALL_TYPE = 1, BLOCK_TYPE = 2, BORDER_TYPE = 3, BOTTOM_TYPE = 4, BONUS_TYPE = 5;
     // 初始化easycanvas实例
-    var $Painter = new Easycanvas.painter();
-    $Painter.register(document.getElementById('app'), {
+    var $app = new Easycanvas.painter();
+    $app.register(document.getElementById('app'), {
         width: width,
         height: height,
         events: {
@@ -56,27 +69,37 @@
             touchend: shoot,
         }
     });
-    $Painter.start();
-    $Painter.add({
+    $app.start();
+
+    var $fpsBox = document.getElementsByClassName('fps')[0];
+    $app.fpsHandler = function (fps) {
+        if ($app.$perf && $app.$perf.preprocessTimeSpend) {
+            $fpsBox.innerText = fps + 'fps,' + $app.$perf.preprocessTimeSpend + ',' + $app.$perf.paintTimeSpend;
+        } else {
+            $fpsBox.innerText = fps;
+        }
+    };
+
+    $app.add({
         content: {
             text: function () {
                 return '得分:' + score;
             }
         },
         style: {
-            tx: 5, ty: 5,
+            left: 5, top: 5,
             textAlign: 'left', textVerticalAlign: 'top',
             color: 'black'
         }
     });
-    $Painter.add({
+    $app.add({
         content: {
             text: function () {
                 return '小球个数:' + ballCount;
             }
         },
         style: {
-            tx: 395, ty: 5,
+            left: 395, top: 5,
             textAlign: 'right', textVerticalAlign: 'top',
             color: 'black'
         }
@@ -84,16 +107,16 @@
     // 初始化easycanvas物理引擎
     var $space = new Easycanvas.class.sprite({
         physics: {
-            gravity: 2,
+            gravitop: 2,
             accuracy: 2,
         },
     });
-    $Painter.add($space);
+    $app.add($space);
     $space.launch();
     // 显示瞄准轨迹
     var startAim = function () {
         for (var i = 0; i < 7; i ++) {
-            $Painter.add({
+            $app.add({
                 name: 'aim',
                 content: {
                     img: BALL,
@@ -102,13 +125,13 @@
                     gap: i / 6,
                 },
                 style: {
-                    tx: function () {
+                    left: function () {
                         return 200 + (mouse.x - 200) * this.data.gap;
                     },
-                    ty: function () {
+                    top: function () {
                         return 20 + (mouse.y - 20) * this.data.gap;
                     },
-                    tw: 20, th: 20,
+                    width: 20, height: 20,
                     opacity: 0.4,
                 },
                 hooks: {
@@ -122,7 +145,7 @@
     startAim();
     function shoot () {
         if (!canShoot) return;
-        $Painter.broadcast('shoot');
+        $app.broadcast('shoot');
         canShoot = false;
         // 防止过程中鼠标移动引起多个小球方向不同
         var currentMouse = JSON.parse(JSON.stringify(mouse));
@@ -153,10 +176,10 @@
                 collisionType: BALL_TYPE,
             },
             style: {
-                tw: ballSize, th: ballSize,
-                sx: 0, sy: 0,
-                tx: 200,
-                ty: 20,
+                width: ballSize, height: ballSize,
+                cutLeft: 0, cutTop: 0,
+                left: 200,
+                top: 20,
                 zIndex: 1,
             },
             hooks: {
@@ -180,8 +203,8 @@
                                     canShoot = true;
                                     blockArray.forEach(function (block) {
                                         block.physicsOff();
-                                        block.style.ty -= 50;
-                                        if (block.style.ty < 50) {
+                                        block.style.top -= 50;
+                                        if (block.style.top < 50) {
                                             if (block.name === 'block') {
                                                 canShoot = false;
                                             } else {
@@ -289,9 +312,9 @@
                 static: true,
             },
             style: {
-                tw: 30, th: 30,
-                tx: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
-                ty: boolAddToBottom ? 500 : height - 100 - Math.floor(Math.random() * 100),
+                width: 30, height: 30,
+                left: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
+                top: boolAddToBottom ? 500 : height - 100 - Math.floor(Math.random() * 100),
                 locate: 'lt',
                 zIndex: Math.random(),
                 rotate: deg,
@@ -305,7 +328,7 @@
                     textAlign: 'center',
                     textVerticalAlign: 'middle',
                     textFont: '28px Arial',
-                    tx: 15, ty: 10
+                    left: 15, top: 10
                 }
             }]
         }));
@@ -333,9 +356,9 @@
                 static: true,
             },
             style: {
-                tw: 30, th: 30,
-                tx: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
-                ty: 500,
+                width: 30, height: 30,
+                left: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
+                top: 500,
                 locate: 'center',
                 zIndex: 2,
                 fv: Easycanvas.transition.pendulum(0, 0.2, 200).loop(),
@@ -363,7 +386,7 @@
             static: true
         },
         style: {
-            tx: 0, ty: 0, tw: width, th: height,
+            left: 0, top: 0, width: width, height: height,
             locate: 'lt',
         },
     }));
@@ -383,7 +406,7 @@
             static: true
         },
         style: {
-            tx: 0, ty: 0, tw: width, th: height,
+            left: 0, top: 0, width: width, height: height,
             locate: 'lt',
         },
     }));

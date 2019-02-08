@@ -5,9 +5,8 @@
  *
  * ********** **/
 
-import text2image from './text2image.js';
-
-const inBrowser = typeof window !== 'undefined';
+import Sprite from '../class/sprite.js';
+import text2image from './text-text2image.js';
 
 const defaultStyle = {
     padding: 0,
@@ -15,12 +14,10 @@ const defaultStyle = {
     family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
 };
 
-let ec;
-
 const setStyle = function (buttonStyle, config) {
     buttonStyle.buttonStyleNormal = Object.assign(defaultStyle, {
-        minWidth: config.style.tw,
-        lineHeight: config.style.th,
+        minWidth: config.style.width,
+        lineHeight: config.style.height,
         padding: 0,
     }, config.props.normal);
     buttonStyle.buttonStyleHovered = Object.assign({},
@@ -70,7 +67,7 @@ const component = function (opt) {
         opt.events.click && opt.events.click.call($sprite, e);
     };
 
-    $sprite = new ec.class.sprite({
+    $sprite = new Sprite({
         name: opt.name || ('button_' + opt.props.text),
         content: {
             img: buttonStyle.imageNormal,
@@ -98,17 +95,9 @@ const component = function (opt) {
     return $sprite;
 }
 
-const init = function (Easycanvas, namespace) {
-    ec = Easycanvas;
-    if (namespace) {
-        Easycanvas.class[namespace] = component;
-    }
-    return component;
-};
-
+const inBrowser = typeof window !== 'undefined';
 if (inBrowser && window.Easycanvas) {
-    ec = Easycanvas;
-    Easycanvas.class.button = component;
-} else {
-    module.exports = init;
+    Easycanvas.class.Button = component;
 }
+
+module.exports = component;

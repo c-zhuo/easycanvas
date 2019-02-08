@@ -29,8 +29,8 @@ module.exports = `
                             text: '单行text',
                         },
                         style: {
-                            tx: 150, ty: 150,
-                            tw: 200, th: 200,
+                            left: 150, top: 150,
+                            width: 200, height: 200,
                             color: 'red',
                             backgroundColor: 'orange',
                         },
@@ -81,8 +81,8 @@ module.exports = `
                             text: '单行text',
                         },
                         style: {
-                            tx: 300, ty: 300,
-                            tw: 400, th: 400,
+                            left: 300, top: 300,
+                            width: 400, height: 400,
                             color: 'red',
                         },
                     });
@@ -140,8 +140,8 @@ module.exports = `
                             },
                         },
                         style: {
-                            tx: 300, ty: 300,
-                            tw: 400, th: 400,
+                            left: 300, top: 300,
+                            width: 400, height: 400,
                             textFont: '56px serif',
                             color: function () {
                                 var colorInt10 = Math.floor(Date.now() % duration / duration * MAX_COLOR_IN_36);

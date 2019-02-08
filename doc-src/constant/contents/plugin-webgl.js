@@ -58,14 +58,14 @@ module.exports = `
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
                         style: {
-                            tw: 50,
-                            th: 50,
-                            tx: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
-                            ty: 100,
+                            width: 50,
+                            height: 50,
+                            left: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
+                            top: 100,
                         },
                         events: {
                             click: function (e) {
-                                this.style.tw = 100;
+                                this.style.width = 100;
                                 return true;
                             },
                         },
@@ -103,7 +103,7 @@ module.exports = `
 
                     var $letterG = new Easycanvas.sprite({
                         style: {
-                            tx: 100, ty: 200,
+                            left: 100, top: 200,
                         },
                         webgl: Easycanvas.webglShapes.block({
                             a: 20, b: 40, c: 80,
@@ -124,7 +124,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>这个例子中，向场景中添加了一个block形状，其中a、b、c是物体的长宽高，rx、ry、rz是x、y、z三个方向的旋转角度。这个例子的位置是用style里的tx和ty指定的。<strong>如果webgl里指定了tx、ty，那么将不再遵守style里的tx和ty参数，但是不推荐这样使用</strong>，容易引起代码逻辑混乱。</p>
+        <p>这个例子中，向场景中添加了一个block形状，其中a、b、c是物体的长宽高，rx、ry、rz是x、y、z三个方向的旋转角度。这个例子的位置是用style里的tx和ty指定的。<strong>如果webgl里指定了tx、ty，那么将不再遵守style里的left和top参数，但是不推荐这样使用</strong>，容易引起代码逻辑混乱。</p>
 
         <p>除了指定颜色，也可以为几何体指定一张贴图，例如下面是两个圆形的石头：</p>
 
@@ -150,7 +150,7 @@ module.exports = `
 
                     var $stone1 = new Easycanvas.sprite({
                         style: {
-                            tx: 100, ty: 200,
+                            left: 100, top: 200,
                         },
                         webgl: Easycanvas.webglShapes.ball({
                             r: 80, b: 40,
@@ -162,7 +162,7 @@ module.exports = `
                     });
                     var $stone2 = new Easycanvas.sprite({
                         style: {
-                            tx: 300, ty: 200,
+                            left: 300, top: 200,
                         },
                         webgl: Easycanvas.webglShapes.ball({
                             r: 80, b: 10,
@@ -204,7 +204,7 @@ module.exports = `
 
                     var $stone = new Easycanvas.sprite({
                         style: {
-                            tx: 200, ty: 200,
+                            left: 200, top: 200,
                         },
                         webgl: Easycanvas.webglShapes.block({
                             a: 40, b: 60, c: 80,
@@ -312,7 +312,7 @@ module.exports = `
 
                     var $random = new Easycanvas.class.sprite({
                         style: {
-                            tx: 200, ty: 200,
+                            left: 200, top: 200,
                         },
                         webgl: Easycanvas.webglShapes.custom({
                             vertices: vertices,
@@ -367,10 +367,10 @@ module.exports = `
                         }
                     });
 
-                    [50, 150, 250, 350].forEach(function (tx) {
+                    [50, 150, 250, 350].forEach(function (x) {
                         $app.add(new Easycanvas.sprite({
                             style: {
-                                tx: tx, ty: 200,
+                                left: x, top: 200,
                             },
                             webgl: Easycanvas.webglShapes.block({
                                 a: 20, b: 40, c: 80, rz: 45, rx: 30,
@@ -427,10 +427,10 @@ module.exports = `
                         }
                     });
 
-                    [50, 150, 250, 350].forEach(function (tx) {
+                    [50, 150, 250, 350].forEach(function (x) {
                         $app.add(new Easycanvas.sprite({
                             style: {
-                                tx: tx, ty: 200,
+                                left: x, top: 200,
                             },
                             webgl: Easycanvas.webglShapes.block({
                                 a: 20, b: 40, c: 80, rz: 45, rx: 30,
@@ -502,12 +502,12 @@ module.exports = `
                     function createEffect () {
                         var $effect = $app.add({
                             style: {
-                                tx: Easycanvas.transition.pendulum(
+                                left: Easycanvas.transition.pendulum(
                                     mouseX + 5 - Math.random() * 10,
                                     mouseX - 100 - Math.random() * 400,
                                     3000
                                 ).loop(),
-                                ty: Easycanvas.transition.ease(
+                                top: Easycanvas.transition.ease(
                                     mouseY,
                                     mouseY - 200,
                                     1000

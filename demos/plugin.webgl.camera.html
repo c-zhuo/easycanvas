@@ -9,54 +9,73 @@
         padding: 0;
         /*opacity: 0.3;*/
     }
+    .fps {
+        position: absolute;
+        font-size: 30px;
+        top: 0;
+        right: 100px;
+        z-index: 2;
+        background-color: white;
+        color: red;
+    }
 </style>
 
 <body>
-    <canvas id="foo"></canvas>
+    <canvas id="app"></canvas>
+    <div class="fps"></div>
 
     <script>
         var $app = new Easycanvas.painter({
-            el: '#foo',
+            el: '#app',
             fullScreen: true,
             webgl: {
-                camera: {
-                    enable: true,
-                    current: {
-                        x: 0,
-                        y: 0,
-                        z: -1000,
-                    },
-                    target: {
-                        x: 0,
-                        y: 0,
-                        z: 0,
-                    },
-                    rotate: {
-                        x: 0,
-                        y: -1,
-                        z: 0,
-                    },
-                },
+                // camera: {
+                //     enable: true,
+                //     current: {
+                //         x: 0,
+                //         y: 0,
+                //         z: -1000,
+                //     },
+                //     target: {
+                //         x: 0,
+                //         y: 0,
+                //         z: 0,
+                //     },
+                //     rotate: {
+                //         x: 0,
+                //         y: -1,
+                //         z: 0,
+                //     },
+                // },
             },
         });
 
-        $app.add({
-            style: {
-                tx: 0, ty: 0,
-            },
-            webgl: window.Easycanvas.webglShapes.ball({
-                r: 250, b: 20,
-                // colors: [255, 0, 0, 255, 255, 0, 0, 255, 0]
-                colors: [255, 0, 0]
-            }),
-        });
+        var $fpsBox = document.getElementsByClassName('fps')[0];
+        $app.fpsHandler = function (fps) {
+            if ($app.$perf && $app.$perf.preprocessTimeSpend) {
+                $fpsBox.innerText = fps + 'fps,' + $app.$perf.preprocessTimeSpend + ',' + $app.$perf.paintTimeSpend;
+            } else {
+                $fpsBox.innerText = fps;
+            }
+        };
+
+        // $app.add({
+        //     style: {
+        //         left: 0, top: 0,
+        //     },
+        //     webgl: window.Easycanvas.webglShapes.ball({
+        //         r: 250, b: 20,
+        //         // colors: [255, 0, 0, 255, 255, 0, 0, 255, 0]
+        //         colors: [255, 0, 0]
+        //     }),
+        // });
 
         // 2500 40fps => 47 ==code style==> 50
-        for (var i = 0; i < 25; i++) {
+        for (var i = 0; i < 1; i++) {
             $app.add({
                 style: {
-                    tx: Math.random() * 1000 - 500,
-                    ty: Math.random() * 1000 - 500,
+                    left: Math.random() * 1000 - 500,
+                    top: Math.random() * 1000 - 500,
                 },
                 webgl: window.Easycanvas.webglShapes.block({
                     tz: Math.random() * 1000 - 500,
@@ -73,8 +92,8 @@
 
         // $app.add({
         //     style: {
-        //         tx: 0,
-        //         ty: 0,
+        //         left: 0,
+        //         top: 0,
         //     },
         //     webgl: window.Easycanvas.webglShapes.block({
         //         // tz: 0,
@@ -88,14 +107,14 @@
         var interval = 2000;
         var current = $app.webgl.camera.current;
 
-        function changeCamera () {
-            Easycanvas.transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
-            Easycanvas.transition(current, 'y', 'ease', Math.random() * 1000 - 500, interval);
-            Easycanvas.transition(current, 'z', 'linear', -1000 - Math.random() * 500, interval);
-        }
+        // function changeCamera () {
+        //     Easycanvas.transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
+        //     Easycanvas.transition(current, 'y', 'ease', Math.random() * 1000 - 500, interval);
+        //     Easycanvas.transition(current, 'z', 'linear', -1000 - Math.random() * 500, interval);
+        // }
 
-        changeCamera();
-        setInterval(changeCamera, interval);
+        // changeCamera();
+        // setInterval(changeCamera, interval);
 
         $app.start();
     </script>

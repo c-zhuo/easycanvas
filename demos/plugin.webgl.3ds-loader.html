@@ -13,14 +13,14 @@
 </style>
 
 <body>
-    <canvas id="foo" width="600" height="600"></canvas>
+    <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $Painter = new Easycanvas.painter();
-        $Painter.register(document.getElementById('foo'), {
+        var $app = new Easycanvas.painter();
+        $app.register(document.getElementById('app'), {
             webgl: true,
         });
-        $Painter.start();
+        $app.start();
 
         var texture2img = {
             // 各种图片加载方式
@@ -28,8 +28,8 @@
             'Petals': Easycanvas.imgLoader('../resource/15sunflower/petal.jpg'),
             'Material #45': '../resource/game_char/4.jpg',
             'Material #46': '../resource/game_char/3.jpg',
-            'Material #49': $Painter.imgLoader('../resource/game_char/6.jpg'),
-            'Material #51': $Painter.imgLoader('../resource/game_char/8.jpg'),
+            'Material #49': $app.imgLoader('../resource/game_char/6.jpg'),
+            'Material #51': $app.imgLoader('../resource/game_char/8.jpg'),
         };
 
         // var sunFlower = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/develop/0.5.4-mmd/demos/resource/15sunflower/15sunflower.3DS';
@@ -38,10 +38,10 @@
         window.Easycanvas.loader3DS(sunFlower, function (data) {
             var ry = Easycanvas.transition.pendulum(0, 360, 5000).loop();
 
-            var flower = $Painter.add({
+            var flower = $app.add({
                 name: 'flower',
                 style: {
-                    tx: 300, ty: 300,
+                    left: 300, top: 300,
                 },
             });
 
@@ -68,11 +68,11 @@
 
         window.Easycanvas.loader3DS('../resource/game_char/sunnvfashi.3DS', function (data) {
 
-            var woman = $Painter.add({
+            var woman = $app.add({
                 name: 'woman',
                 style: {
-                    tx: 200,
-                    ty: 350,
+                    left: 200,
+                    top: 350,
                 },
                 webgl: {
                     rx: 90, ry: 0, rz: Easycanvas.transition.linear(0, 360, 5000).loop(),

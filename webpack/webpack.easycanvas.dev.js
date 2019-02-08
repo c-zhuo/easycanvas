@@ -16,6 +16,14 @@ var js = glob.sync('./src/*.js').reduce(function (prev, curr) {
     return prev;
 }, {});
 
+// faster in develop
+// js = { 'build/index': [ './src/index.js' ]};
+
+Object.assign(js, glob.sync('./demos/js/*.js').reduce(function (prev, curr) {
+    prev[curr.slice(2, -3)] = [curr];
+    return prev;
+}, {}));
+
 var html = glob.sync('./demos/*.html').map(function (item) {
     return new HtmlWebpackPlugin({
         data: {
@@ -68,20 +76,6 @@ config.plugins = config.plugins.concat([
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
 ]);
-config.devServer = {
-    host: '0.0.0.0',
-    contentBase: path.resolve('./dev'),
-    historyApiFallback: true,
-    inline: true,
-    hot: true,
-    disableHostCheck: true,
-    stats: {
-        colors: true,
-        modules: false,
-        children: false,
-        chunks: false,
-        chunkModules: false
-    }
-};
+config.devServer = base.devServer;
 
 module.exports = config;

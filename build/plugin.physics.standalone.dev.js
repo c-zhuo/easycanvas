@@ -23,7 +23,7 @@
         return e(0);
     }({
         0: function(t, i, e) {
-            t.exports = e(93);
+            t.exports = e(154);
         },
         1: function(t, i) {
             "use strict";
@@ -61,7 +61,7 @@
             };
             t.exports = e;
         },
-        2: function(t, i) {
+        5: function(t, i) {
             "use strict";
             var e = 3.141593;
             t.exports = function(t, i, r, s, n, a) {
@@ -80,7 +80,7 @@
                 };
             };
         },
-        40: function(t, i, e) {
+        103: function(t, i, e) {
             "use strict";
             var r = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(t) {
                 return typeof t;
@@ -239,7 +239,7 @@
                     }
                     return [ i, e ];
                 };
-                var y = function t(i, e, r) {
+                var f = function t(i, e, r) {
                     var s = i[e * 2];
                     i[e * 2] = i[r * 2];
                     i[r * 2] = s;
@@ -247,7 +247,7 @@
                     i[e * 2 + 1] = i[r * 2 + 1];
                     i[r * 2 + 1] = s;
                 };
-                var f = function t(i, e, r, s, n, a) {
+                var y = function t(i, e, r, s, n, a) {
                     if (r === 0) return 0;
                     var o = 0;
                     var h = e;
@@ -256,19 +256,19 @@
                     var v = e;
                     for (var u = e + r - 1; v <= u; ) {
                         var l = new m(i[v * 2], i[v * 2 + 1]);
-                        var f = L(c, M(l, s));
-                        if (f > p) {
-                            if (f > o) {
-                                o = f;
+                        var y = L(c, M(l, s));
+                        if (y > p) {
+                            if (y > o) {
+                                o = y;
                                 h = v;
                             }
                             v++;
                         } else {
-                            y(i, v, u);
+                            f(i, v, u);
                             u--;
                         }
                     }
-                    if (h != e) y(i, e, h);
+                    if (h != e) f(i, e, h);
                     return v - e;
                 };
                 var b = function t(i, e, r, s, n, a, o, h) {
@@ -279,15 +279,15 @@
                         e[h * 2 + 1] = a.y;
                         return 1;
                     } else {
-                        var c = f(e, r, s, n, a, i);
+                        var c = y(e, r, s, n, a, i);
                         var p = new m(e[r * 2], e[r * 2 + 1]);
                         var v = t(i, e, r + 1, c - 1, n, p, a, h);
                         var u = h + v++;
                         e[u * 2] = a.x;
                         e[u * 2 + 1] = a.y;
-                        var l = f(e, r + c, s - c, a, o, i);
-                        var y = new m(e[(r + c) * 2], e[(r + c) * 2 + 1]);
-                        return v + t(i, e, r + c + 1, l - 1, a, y, o, h + v);
+                        var l = y(e, r + c, s - c, a, o, i);
+                        var f = new m(e[(r + c) * 2], e[(r + c) * 2 + 1]);
+                        return v + t(i, e, r + c + 1, l - 1, a, f, o, h + v);
                     }
                 };
                 t.convexHull = function(t, i, e) {
@@ -304,8 +304,8 @@
                         i.length = 2;
                         return i;
                     }
-                    y(i, 0, a);
-                    y(i, 1, o == 0 ? a : o);
+                    f(i, 0, a);
+                    f(i, 1, o == 0 ? a : o);
                     var h = new m(i[0], i[1]);
                     var c = new m(i[2], i[3]);
                     var p = t.length >> 1;
@@ -320,10 +320,10 @@
                 var _ = function t(i) {
                     return h(0, o(i, 1));
                 };
-                var x = function t(i, e, r) {
+                var g = function t(i, e, r) {
                     return i * (1 - r) + e * r;
                 };
-                var g = function t(i, e, r) {
+                var x = function t(i, e, r) {
                     return i + d(e - i, -r, r);
                 };
                 var m = t.Vect = function(t, i) {
@@ -510,12 +510,12 @@
                 var lt = function t(i, e, r) {
                     return bbSegmentQuery(i, e, r) != Infinity;
                 };
-                var yt = function t(i, e) {
+                var ft = function t(i, e) {
                     var r = o(h(i.l, e.x), i.r);
                     var s = o(h(i.b, e.y), i.t);
                     return new m(r, s);
                 };
-                var ft = function t(i, e) {
+                var yt = function t(i, e) {
                     var r = Math.abs(i.r - i.l);
                     var s = (e.x - i.l) % r;
                     var n = s > 0 ? s : s + r;
@@ -530,7 +530,7 @@
                 t.resetShapeIdCounter = function() {
                     bt = 0;
                 };
-                var xt = t.Shape = function(t) {
+                var gt = t.Shape = function(t) {
                     this.body = t;
                     this.bb_l = this.bb_b = this.bb_r = this.bb_t = 0;
                     this.hashid = bt++;
@@ -544,51 +544,51 @@
                     this.space = null;
                     this.collisionCode = this.collisionCode;
                 };
-                xt.prototype.setElasticity = function(t) {
+                gt.prototype.setElasticity = function(t) {
                     this.e = t;
                 };
-                xt.prototype.setFriction = function(t) {
+                gt.prototype.setFriction = function(t) {
                     this.body.activate();
                     this.u = t;
                 };
-                xt.prototype.setLayers = function(t) {
+                gt.prototype.setLayers = function(t) {
                     this.body.activate();
                     this.layers = t;
                 };
-                xt.prototype.setSensor = function(t) {
+                gt.prototype.setSensor = function(t) {
                     this.body.activate();
                     this.sensor = t;
                 };
-                xt.prototype.setCollisionType = function(t) {
+                gt.prototype.setCollisionType = function(t) {
                     this.body.activate();
                     this.collision_type = t;
                 };
-                xt.prototype.getBody = function() {
+                gt.prototype.getBody = function() {
                     return this.body;
                 };
-                xt.prototype.active = function() {
+                gt.prototype.active = function() {
                     return this.body && this.body.shapeList.indexOf(this) !== -1;
                 };
-                xt.prototype.setBody = function(t) {
+                gt.prototype.setBody = function(t) {
                     e(!this.active(), "You cannot change the body on an active shape. You must remove the shape from the space before changing the body.");
                     this.body = t;
                 };
-                xt.prototype.cacheBB = function() {
+                gt.prototype.cacheBB = function() {
                     return this.update(this.body.p, this.body.rot);
                 };
-                xt.prototype.update = function(t, i) {
+                gt.prototype.update = function(t, i) {
                     e(!isNaN(i.x), "Rotation is NaN");
                     e(!isNaN(t.x), "Position is NaN");
                     this.cacheData(t, i);
                 };
-                xt.prototype.pointQuery = function(t) {
+                gt.prototype.pointQuery = function(t) {
                     var i = this.nearestPointQuery(t);
                     if (i.d < 0) return i;
                 };
-                xt.prototype.getBB = function() {
+                gt.prototype.getBB = function() {
                     return new it(this.bb_l, this.bb_b, this.bb_r, this.bb_t);
                 };
-                var gt = function t(i) {
+                var xt = function t(i) {
                     this.shape = i;
                     this.d = Infinity;
                     this.n = w;
@@ -613,9 +613,9 @@
                     this.c = this.tc = e;
                     this.r = i;
                     this.type = "circle";
-                    xt.call(this, t);
+                    gt.call(this, t);
                 };
-                St.prototype = Object.create(xt.prototype);
+                St.prototype = Object.create(gt.prototype);
                 St.prototype.cacheData = function(t, i) {
                     var e = this.tc = N(this.c, i).add(t);
                     var r = this.r;
@@ -658,9 +658,9 @@
                     this.a_tangent = w;
                     this.b_tangent = w;
                     this.type = "segment";
-                    xt.call(this, t);
+                    gt.call(this, t);
                 };
-                jt.prototype = Object.create(xt.prototype);
+                jt.prototype = Object.create(gt.prototype);
                 jt.prototype.cacheData = function(t, i) {
                     this.ta = C(t, N(this.a, i));
                     this.tb = C(t, N(this.b, i));
@@ -713,11 +713,11 @@
                         }
                     } else if (s !== 0) {
                         var l = At(this, this.ta, this.r, t, i);
-                        var y = At(this, this.tb, this.r, t, i);
+                        var f = At(this, this.tb, this.r, t, i);
                         if (l) {
-                            return y && y.t < l.t ? y : l;
+                            return f && f.t < l.t ? f : l;
                         } else {
-                            return y;
+                            return f;
                         }
                     }
                 };
@@ -748,9 +748,9 @@
                 var It = t.PolyShape = function(t, i, e) {
                     this.setVerts(i, e);
                     this.type = "poly";
-                    xt.call(this, t);
+                    gt.call(this, t);
                 };
-                It.prototype = Object.create(xt.prototype);
+                It.prototype = Object.create(gt.prototype);
                 var Ct = function t(i, e) {
                     this.n = i;
                     this.d = e;
@@ -798,13 +798,13 @@
                         var v = e[p];
                         var u = e[p + 1];
                         var l = t.x + v * i.x - u * i.y;
-                        var y = t.y + v * i.y + u * i.x;
+                        var f = t.y + v * i.y + u * i.x;
                         r[p] = l;
-                        r[p + 1] = y;
+                        r[p + 1] = f;
                         s = o(s, l);
                         n = h(n, l);
-                        a = o(a, y);
-                        c = h(c, y);
+                        a = o(a, f);
+                        c = h(c, f);
                     }
                     this.bb_l = s;
                     this.bb_b = a;
@@ -862,8 +862,8 @@
                         var v = q(t, i, p);
                         var u = -L(o, v);
                         var l = -$(o.x, o.y, r[a * 2], r[a * 2 + 1]);
-                        var y = -$(o.x, o.y, r[(a * 2 + 2) % n], r[(a * 2 + 3) % n]);
-                        if (l <= u && u <= y) {
+                        var f = -$(o.x, o.y, r[(a * 2 + 2) % n], r[(a * 2 + 3) % n]);
+                        if (l <= u && u <= f) {
                             return new wt(this, p, o);
                         }
                     }
@@ -1353,11 +1353,11 @@
                     var v = 1 / (r.y - e.y);
                     var u = i.bb_b == e.y ? -Infinity : (i.bb_b - e.y) * v;
                     var l = i.bb_t == e.y ? Infinity : (i.bb_t - e.y) * v;
-                    var y = o(u, l);
-                    var f = h(u, l);
-                    if (y <= p && c <= f) {
-                        var b = h(c, y);
-                        var d = o(p, f);
+                    var f = o(u, l);
+                    var y = h(u, l);
+                    if (f <= p && c <= y) {
+                        var b = h(c, f);
+                        var d = o(p, y);
                         if (0 <= d && b <= 1) return h(b, 0);
                     }
                     return Infinity;
@@ -1554,30 +1554,30 @@
                         p = h(p, n.bb_r);
                         v = h(v, n.bb_t);
                     }
-                    var y = p - a > v - c;
-                    var f = new Array(s * 2);
-                    if (y) {
+                    var f = p - a > v - c;
+                    var y = new Array(s * 2);
+                    if (f) {
                         for (var l = r; l < u; l++) {
-                            f[2 * l + 0] = e[l].bb_l;
-                            f[2 * l + 1] = e[l].bb_r;
+                            y[2 * l + 0] = e[l].bb_l;
+                            y[2 * l + 1] = e[l].bb_r;
                         }
                     } else {
                         for (var l = r; l < u; l++) {
-                            f[2 * l + 0] = e[l].bb_b;
-                            f[2 * l + 1] = e[l].bb_t;
+                            y[2 * l + 0] = e[l].bb_b;
+                            y[2 * l + 1] = e[l].bb_t;
                         }
                     }
-                    f.sort(function(t, i) {
+                    y.sort(function(t, i) {
                         return t - i;
                     });
-                    var b = (f[s - 1] + f[s]) * .5;
-                    var d = a, _ = c, x = p, g = v;
+                    var b = (y[s - 1] + y[s]) * .5;
+                    var d = a, _ = c, g = p, x = v;
                     var m = a, w = c, S = p, A = v;
-                    if (y) x = m = b; else g = w = b;
+                    if (f) g = m = b; else x = w = b;
                     var j = u;
                     for (var B = r; B < j; ) {
                         var n = e[B];
-                        if (ei(n, m, w, S, A) < ei(n, d, _, x, g)) {
+                        if (ei(n, m, w, S, A) < ei(n, d, _, g, x)) {
                             j--;
                             e[B] = e[j];
                             e[j] = n;
@@ -1811,23 +1811,23 @@
                         var v = i.vx - p.y * i.w - (t.vx - c.y * t.w);
                         var u = i.vy + p.x * i.w - (t.vy + c.x * t.w);
                         var l = o.x * (i.v_biasx - p.y * i.w_bias - t.v_biasx + c.y * t.w_bias) + o.y * (p.x * i.w_bias + i.v_biasy - c.x * t.w_bias - t.v_biasy);
-                        var y = A(v, u, o.x, o.y);
-                        var f = A(v + e.x, u + e.y, -o.y, o.x);
+                        var f = A(v, u, o.x, o.y);
+                        var y = A(v + e.x, u + e.y, -o.y, o.x);
                         var b = (n.bias - l) * a;
                         var _ = n.jBias;
                         n.jBias = h(_ + b, 0);
-                        var x = -(n.bounce + y) * a;
-                        var g = n.jnAcc;
-                        n.jnAcc = h(g + x, 0);
+                        var g = -(n.bounce + f) * a;
+                        var x = n.jnAcc;
+                        n.jnAcc = h(x + g, 0);
                         var m = r * n.jnAcc;
-                        var w = -f * n.tMass;
+                        var w = -y * n.tMass;
                         var S = n.jtAcc;
                         n.jtAcc = d(S + w, -m, m);
                         var j = o.x * (n.jBias - _);
                         var B = o.y * (n.jBias - _);
                         qi(t, -j, -B, c);
                         qi(i, j, B, p);
-                        var I = n.jnAcc - g;
+                        var I = n.jnAcc - x;
                         var C = n.jtAcc - S;
                         Oi(t, i, c, p, o.x * I - o.y * C, o.x * C + o.y * I);
                     }
@@ -1850,8 +1850,8 @@
                     this.hash = s;
                     ui++;
                 };
-                var yi = [];
-                var fi = function t(i, e, r, s) {
+                var fi = [];
+                var yi = function t(i, e, r, s) {
                     var n = r + s;
                     var a = M(e, i);
                     var o = Q(a);
@@ -1860,8 +1860,8 @@
                     return new li(C(i, P(a, .5 + (r - .5 * n) / (h ? h : Infinity))), h ? P(a, 1 / h) : new m(1, 0), h - n, 0);
                 };
                 var bi = function t(i, e) {
-                    var r = fi(i.tc, e.tc, i.r, e.r);
-                    return r ? [ r ] : yi;
+                    var r = yi(i.tc, e.tc, i.r, e.r);
+                    return r ? [ r ] : fi;
                 };
                 var di = function t(i, e) {
                     var r = e.ta;
@@ -1870,16 +1870,16 @@
                     var a = M(s, r);
                     var o = _(S(a, M(n, r)) / Q(a));
                     var h = C(r, P(a, o));
-                    var c = fi(n, h, i.r, e.r);
+                    var c = yi(n, h, i.r, e.r);
                     if (c) {
                         var p = c.n;
-                        return o === 0 && S(p, e.a_tangent) < 0 || o === 1 && S(p, e.b_tangent) < 0 ? yi : [ c ];
+                        return o === 0 && S(p, e.a_tangent) < 0 || o === 1 && S(p, e.b_tangent) < 0 ? fi : [ c ];
                     } else {
-                        return yi;
+                        return fi;
                     }
                 };
                 var _i = 0;
-                var xi = function t(i, e) {
+                var gi = function t(i, e) {
                     var r = 0;
                     var s = i.valueOnAxis(e[0].n, e[0].d);
                     if (s > 0) return -1;
@@ -1895,7 +1895,7 @@
                     _i = s;
                     return r;
                 };
-                var gi = function t(i, e, r, s) {
+                var xi = function t(i, e, r, s) {
                     var n = [];
                     var a = i.tVerts;
                     for (var o = 0; o < a.length; o += 2) {
@@ -1933,14 +1933,14 @@
                             n.push(new li(new m(h, p), r, s, c(e.hashid, o >> 1)));
                         }
                     }
-                    return n.length ? n : gi(i, e, r, s);
+                    return n.length ? n : xi(i, e, r, s);
                 };
                 var wi = function t(i, e) {
-                    var r = xi(e, i.tPlanes);
-                    if (r == -1) return yi;
+                    var r = gi(e, i.tPlanes);
+                    if (r == -1) return fi;
                     var s = _i;
-                    var n = xi(i, e.tPlanes);
-                    if (n == -1) return yi;
+                    var n = gi(i, e.tPlanes);
+                    if (n == -1) return fi;
                     var a = _i;
                     if (s > a) return mi(i, e, i.tPlanes[r].n, s); else return mi(i, e, k(e.tPlanes[n].n), a);
                 };
@@ -1958,8 +1958,8 @@
                         var u = p[v];
                         var l = p[v + 1];
                         if (A(u, l, h.x, h.y) < S(e.tn, e.ta) * n + e.r) {
-                            var y = $(e.tn.x, e.tn.y, u, l);
-                            if (a >= y && y >= o) {
+                            var f = $(e.tn.x, e.tn.y, u, l);
+                            if (a >= f && f >= o) {
                                 i.push(new li(new m(u, l), h, s, c(r.hashid, v)));
                             }
                         }
@@ -1972,38 +1972,38 @@
                     var a = S(i.tn, i.ta);
                     var o = e.valueOnAxis(i.tn, a) - i.r;
                     var h = e.valueOnAxis(k(i.tn), -a) - i.r;
-                    if (h > 0 || o > 0) return yi;
+                    if (h > 0 || o > 0) return fi;
                     var p = 0;
                     var v = Si(i, s[0].n, s[0].d);
-                    if (v > 0) return yi;
+                    if (v > 0) return fi;
                     for (var u = 0; u < n; u++) {
                         var l = Si(i, s[u].n, s[u].d);
                         if (l > 0) {
-                            return yi;
+                            return fi;
                         } else if (l > v) {
                             v = l;
                             p = u;
                         }
                     }
-                    var y = k(s[p].n);
-                    var f = C(i.ta, P(y, i.r));
-                    var b = C(i.tb, P(y, i.r));
-                    if (e.containsVert(f.x, f.y)) r.push(new li(f, y, v, c(i.hashid, 0)));
-                    if (e.containsVert(b.x, b.y)) r.push(new li(b, y, v, c(i.hashid, 1)));
+                    var f = k(s[p].n);
+                    var y = C(i.ta, P(f, i.r));
+                    var b = C(i.tb, P(f, i.r));
+                    if (e.containsVert(y.x, y.y)) r.push(new li(y, f, v, c(i.hashid, 0)));
+                    if (e.containsVert(b.x, b.y)) r.push(new li(b, f, v, c(i.hashid, 1)));
                     if (o >= v || h >= v) {
                         if (o > h) Ai(r, i, e, o, 1); else Ai(r, i, e, h, -1);
                     }
                     if (r.length === 0) {
                         var d = p * 2;
                         var _ = e.tVerts;
-                        var x = new m(_[d], _[d + 1]);
-                        var g;
-                        if (g = fi(i.ta, x, i.r, 0, r)) return [ g ];
-                        if (g = fi(i.tb, x, i.r, 0, r)) return [ g ];
+                        var g = new m(_[d], _[d + 1]);
+                        var x;
+                        if (x = yi(i.ta, g, i.r, 0, r)) return [ x ];
+                        if (x = yi(i.tb, g, i.r, 0, r)) return [ x ];
                         var w = n * 2;
                         var A = new m(_[(d + 2) % w], _[(d + 3) % w]);
-                        if (g = fi(i.ta, A, i.r, 0, r)) return [ g ];
-                        if (g = fi(i.tb, A, i.r, 0, r)) return [ g ];
+                        if (x = yi(i.ta, A, i.r, 0, r)) return [ x ];
+                        if (x = yi(i.tb, A, i.r, 0, r)) return [ x ];
                     }
                     return r;
                 };
@@ -2014,7 +2014,7 @@
                     for (var a = 0; a < r.length; a++) {
                         var o = S(r[a].n, i.tc) - r[a].d - i.r;
                         if (o > 0) {
-                            return yi;
+                            return fi;
                         } else if (o > n) {
                             n = o;
                             s = a;
@@ -2026,19 +2026,19 @@
                     var v = s << 1;
                     var u = c[v];
                     var l = c[v + 1];
-                    var y = c[(v + 2) % p];
-                    var f = c[(v + 3) % p];
+                    var f = c[(v + 2) % p];
+                    var y = c[(v + 3) % p];
                     var b = $(h.x, h.y, u, l);
-                    var d = $(h.x, h.y, y, f);
+                    var d = $(h.x, h.y, f, y);
                     var _ = L(h, i.tc);
                     if (_ < d) {
-                        var x = fi(i.tc, new m(y, f), i.r, 0, x);
-                        return x ? [ x ] : yi;
+                        var g = yi(i.tc, new m(f, y), i.r, 0, g);
+                        return g ? [ g ] : fi;
                     } else if (_ < b) {
                         return [ new li(M(i.tc, P(h, i.r + n / 2)), k(h), n, 0) ];
                     } else {
-                        var x = fi(i.tc, new m(u, l), i.r, 0, x);
-                        return x ? [ x ] : yi;
+                        var g = yi(i.tc, new m(u, l), i.r, 0, g);
+                        return g ? [ g ] : fi;
                     }
                 };
                 St.prototype.collisionCode = 0;
@@ -2046,7 +2046,7 @@
                 It.prototype.collisionCode = 2;
                 St.prototype.collisionTable = [ bi, di, Bi ];
                 jt.prototype.collisionTable = [ null, function(t, i) {
-                    return yi;
+                    return fi;
                 }, ji ];
                 It.prototype.collisionTable = [ null, null, wi ];
                 var Ii = t.collideShapes = function(t, i) {
@@ -2458,10 +2458,10 @@
                         l.pushArbiter(v);
                     }
                     if (i) {
-                        var y = this.constraints;
-                        for (var r = 0; r < y.length; r++) {
-                            var f = y[r];
-                            var u = f.a, l = f.b;
+                        var f = this.constraints;
+                        for (var r = 0; r < f.length; r++) {
+                            var y = f[r];
+                            var u = y.a, l = y.b;
                             if (l.isRogue() && !l.isStatic()) u.activate();
                             if (u.isRogue() && !u.isStatic()) l.activate();
                         }
@@ -2775,16 +2775,16 @@
                             u.preStep(t);
                         }
                         var l = Math.pow(this.damping, t);
-                        var y = this.gravity;
+                        var f = this.gravity;
                         for (r = 0; r < a.length; r++) {
-                            a[r].velocity_func(y, l, t);
+                            a[r].velocity_func(f, l, t);
                         }
-                        var f = i === 0 ? 0 : t / i;
+                        var y = i === 0 ? 0 : t / i;
                         for (r = 0; r < h.length; r++) {
-                            h[r].applyCachedImpulse(f);
+                            h[r].applyCachedImpulse(y);
                         }
                         for (r = 0; r < o.length; r++) {
-                            o[r].applyCachedImpulse(f);
+                            o[r].applyCachedImpulse(y);
                         }
                         for (r = 0; r < this.iterations; r++) {
                             for (s = 0; s < h.length; s++) {
@@ -2848,20 +2848,20 @@
                     p = 0;
                     v = u;
                     var l = i.i_inv;
-                    var y = r.x * r.x * l;
-                    var f = r.y * r.y * l;
+                    var f = r.x * r.x * l;
+                    var y = r.y * r.y * l;
                     var b = -r.x * r.y * l;
-                    h += f;
+                    h += y;
                     c += b;
                     p += b;
-                    v += y;
+                    v += f;
                     var d = e.i_inv;
                     var _ = n.x * n.x * d;
-                    var x = n.y * n.y * d;
-                    var g = -n.x * n.y * d;
-                    h += x;
-                    c += g;
-                    p += g;
+                    var g = n.y * n.y * d;
+                    var x = -n.x * n.y * d;
+                    h += g;
+                    c += x;
+                    p += x;
                     v += _;
                     var m = h * v - c * p;
                     s(m !== 0, "Unsolvable constraint.");
@@ -3386,13 +3386,13 @@
                 };
             })();
         },
-        93: function(t, i, e) {
+        154: function(t, i, e) {
             "use strict";
-            var r = e(40);
+            var r = e(103);
             var s = c(r);
             var n = e(1);
             var a = c(n);
-            var o = e(2);
+            var o = e(5);
             var h = c(o);
             function c(t) {
                 return t && t.__esModule ? t : {
@@ -3407,8 +3407,8 @@
             var l = function t(i) {
                 console.error("[Easycanvas-physics] " + i);
             };
-            var y = s.default;
-            var f = function t(i) {
+            var f = s.default;
+            var y = function t(i) {
                 if (!i.physics) return;
                 var e = this;
                 e.physics = e.physics || {};
@@ -3423,14 +3423,14 @@
                     e.physics.mass = p(e.physics.mass, 0);
                     var r = void 0;
                     if (e.physics.shape[0].length === 3) {
-                        r = y.momentForCircle(e.physics.mass, 0, e.physics.shape[0][2], y.vzero);
+                        r = f.momentForCircle(e.physics.mass, 0, e.physics.shape[0][2], f.vzero);
                     } else {
                         var s = e.physics.shape.join(",").split(",").map(function(t, i) {
                             var e = Number(t);
                             var r = i % 2 ? -e : e;
                             return r ? r : 0;
                         });
-                        r = y.momentForPoly(e.physics.mass, s, y.vzero);
+                        r = f.momentForPoly(e.physics.mass, s, f.vzero);
                     }
                     e.physics.moment = p(e.physics.moment, r);
                 }
@@ -3450,12 +3450,12 @@
                 e.physicsOn = function() {
                     var t = this;
                     if (!this.$physics) {
-                        g(this);
+                        x(this);
                     }
                     if (!this.$physics) return this;
                     this.$physics.inSpace = true;
                     if (this.$physics.body) {
-                        this.$physics.body.setPos(new y.Vect(this.getRect().tx + this.getRect().tw / 2, -this.getRect().ty - this.getRect().th / 2));
+                        this.$physics.body.setPos(new f.Vect(this.getRect().left + this.getRect().width / 2, -this.getRect().top - this.getRect().height / 2));
                     }
                     this.$physics.body && this.$physics.space.addBody(this.$physics.body);
                     this.$physics.shape && this.$physics.shape.forEach(function(i) {
@@ -3562,31 +3562,31 @@
                 });
             };
             var b = function t(i) {
-                return new y.Vect(i.x, i.y ? -i.y : 0);
+                return new f.Vect(i.x, i.y ? -i.y : 0);
             };
             var d = function t(i, e) {
                 var r = i.getPos();
                 var s = i.getVel();
                 e.style.rotate = i.a * 180 / Math.PI;
-                e.style.tx = r.x;
-                e.style.ty = -r.y;
+                e.style.left = r.x;
+                e.style.top = -r.y;
                 if (e.style.locate === "lt") {
-                    e.style.tx -= e.getRect().tw / 2;
-                    e.style.ty -= e.getRect().th / 2;
+                    e.style.left -= e.getRect().width / 2;
+                    e.style.top -= e.getRect().height / 2;
                 } else if (e.style.locate === "ld") {
-                    e.style.tx -= e.getRect().tw / 2;
-                    e.style.ty += e.getRect().th / 2;
+                    e.style.left -= e.getRect().width / 2;
+                    e.style.top += e.getRect().height / 2;
                 } else if (e.style.locate === "rd") {
-                    e.style.tx += e.getRect().tw / 2;
-                    e.style.ty += e.getRect().th / 2;
+                    e.style.left += e.getRect().width / 2;
+                    e.style.top += e.getRect().height / 2;
                 } else if (e.style.locate === "rt") {
-                    e.style.tx += e.getRect().tw / 2;
-                    e.style.ty -= e.getRect().th / 2;
+                    e.style.left += e.getRect().width / 2;
+                    e.style.top -= e.getRect().height / 2;
                 }
             };
             function _() {
-                var t = new y.Space();
-                t.gravity = new y.Vect(0, this.physics.gravity * -500);
+                var t = new f.Space();
+                t.gravity = new f.Vect(0, this.physics.gravity * -500);
                 if (true) {
                     if (!this.$canvas) {
                         l("Sprite must be added to an instance before lanuching physics.");
@@ -3612,19 +3612,19 @@
                 t.$sprite = this;
                 return t;
             }
-            function x(t) {
+            function g(t) {
                 if (t.$parent) {
                     if (t.$parent.$physics && t.$parent.$physics.space) {
                         return t.$parent;
                     }
-                    return x(t.$parent);
+                    return g(t.$parent);
                 }
                 return null;
             }
-            function g(t) {
+            function x(t) {
                 var i = t.physics;
                 if (i) {
-                    var e = x(t);
+                    var e = g(t);
                     if (!e) {
                         l("No physics container found launched.");
                         return;
@@ -3638,43 +3638,43 @@
                     var n = void 0;
                     var a = [];
                     if (!i.static) {
-                        n = new y.Body(i.mass, i.moment);
+                        n = new f.Body(i.mass, i.moment);
                     }
                     s.forEach(function(s, o) {
                         var c = void 0;
-                        var p = t.getStyle("tx"), v = t.getStyle("ty"), l = e.getStyle("tx"), f = e.getStyle("ty");
+                        var p = t.getStyle("left"), v = t.getStyle("top"), l = e.getStyle("left"), y = e.getStyle("top");
                         if (s.length === 3 && !s[0].length) {
-                            var d = n ? y.vzero : {
+                            var d = n ? f.vzero : {
                                 x: p - l,
-                                y: -v + f
+                                y: -v + y
                             };
-                            c = new y.CircleShape(n || r.staticBody, s[2], d);
+                            c = new f.CircleShape(n || r.staticBody, s[2], d);
                         } else if (s.length >= 3) {
-                            var _ = t.style.rx || t.getRect().tx + t.getRect().tw / 2;
-                            var x = t.style.ry || t.getRect().ty + t.getRect().th / 2;
-                            var g = s.map(function(i) {
-                                var e = (0, h.default)(i[0] + p - l, i[1] + v + f, _ - l, x + f, t.style.rotate || 0);
+                            var _ = t.style.rx || t.getRect().left + t.getRect().width / 2;
+                            var g = t.style.ry || t.getRect().top + t.getRect().height / 2;
+                            var x = s.map(function(i) {
+                                var e = (0, h.default)(i[0] + p - l, i[1] + v + y, _ - l, g + y, t.style.rotate || 0);
                                 return [ e.x - p, e.y - v ];
                             }).join(",").split(",").map(function(t, i) {
                                 var e = Number(t);
                                 var r = i % 2 ? -e : e;
                                 return r ? r : 0;
                             });
-                            var m = n ? y.vzero : {
+                            var m = n ? f.vzero : {
                                 x: p - l,
-                                y: -v + f
+                                y: -v + y
                             };
-                            c = new y.PolyShape(n || r.staticBody, g, m);
+                            c = new f.PolyShape(n || r.staticBody, x, m);
                         } else if (s.length === 2) {
-                            var w = t.style.rx || t.getRect().tx + t.getRect().tw / 2;
-                            var S = t.style.ry || t.getRect().ty + t.getRect().th / 2;
-                            var A = (0, h.default)(s[0][0] + p - l, s[0][1] + v + f, w - l, S + f, t.style.rotate || 0);
-                            var j = (0, h.default)(s[1][0] + p - l, s[1][1] + v + f, w - l, S + f, t.style.rotate || 0);
+                            var w = t.style.rx || t.getRect().left + t.getRect().width / 2;
+                            var S = t.style.ry || t.getRect().top + t.getRect().height / 2;
+                            var A = (0, h.default)(s[0][0] + p - l, s[0][1] + v + y, w - l, S + y, t.style.rotate || 0);
+                            var j = (0, h.default)(s[1][0] + p - l, s[1][1] + v + y, w - l, S + y, t.style.rotate || 0);
                             A.x -= p;
                             A.y -= v;
                             j.x -= p;
                             j.y -= v;
-                            c = new y.SegmentShape(r.staticBody, b(A), b(j), 0);
+                            c = new f.SegmentShape(r.staticBody, b(A), b(j), 0);
                         }
                         c.setFriction(u(i, "friction", o));
                         c.setElasticity(u(i, "elasticity", o));
@@ -3691,9 +3691,9 @@
                 }
             }
             if (v && window.Easycanvas) {
-                Easycanvas.extend(f);
+                Easycanvas.extend(y);
             } else {
-                t.exports = f;
+                t.exports = y;
             }
         }
     });
