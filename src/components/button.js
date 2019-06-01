@@ -5,8 +5,8 @@
  *
  * ********** **/
 
-import Sprite from '../class/sprite.js';
 import text2image from './text-text2image.js';
+import browserRegister from './browserRegister.js';
 
 const defaultStyle = {
     padding: 0,
@@ -32,7 +32,7 @@ const setStyle = function (buttonStyle, config) {
     // const imageToggled = text2image(opt.props.text || '', buttonStyleToggled);
 };
 
-const component = function (opt) {
+const component = function (Sprite, opt) {
     let $sprite;
 
     let option = opt || {};
@@ -95,9 +95,6 @@ const component = function (opt) {
     return $sprite;
 }
 
-const inBrowser = typeof window !== 'undefined';
-if (inBrowser && window.Easycanvas) {
-    Easycanvas.class.Button = component;
-}
+browserRegister(component, 'button');
 
-module.exports = component;
+export default component;

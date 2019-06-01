@@ -8,6 +8,7 @@
 const Cache = {};
 const BlockingImgs = [];
 const ProcessingFlag = 'processing';
+const OImage = Image;
 
 let blockingAmount = 0;
 
@@ -50,7 +51,7 @@ const loader = function (url, callback, option) {
     }
     // todo: 多个loader加载同一图片，目前只触发一个callback；待补充
 
-    let i = new Image();
+    let i = new OImage();
     i._complete = false;
 
     if (_option.block) {

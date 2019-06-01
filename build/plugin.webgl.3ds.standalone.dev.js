@@ -25,7 +25,7 @@
         0: function(t, r, e) {
             t.exports = e(155);
         },
-        77: function(t, r) {
+        74: function(t, r) {
             "use strict";
             r.byteLength = u;
             r.toByteArray = l;
@@ -115,12 +115,12 @@
                 return a.join("");
             }
         },
-        78: function(t, r, e) {
+        75: function(t, r, e) {
             (function(t) {
                 "use strict";
-                var n = e(77);
-                var i = e(80);
-                var a = e(79);
+                var n = e(74);
+                var i = e(77);
+                var a = e(76);
                 r.Buffer = u;
                 r.SlowBuffer = b;
                 r.INSPECT_MAX_BYTES = 50;
@@ -1477,14 +1477,14 @@
                 return this;
             }());
         },
-        79: function(t, r) {
+        76: function(t, r) {
             "use strict";
             var e = {}.toString;
             t.exports = Array.isArray || function(t) {
                 return e.call(t) == "[object Array]";
             };
         },
-        80: function(t, r) {
+        77: function(t, r) {
             "use strict";
             r.read = function(t, r, e, n, i) {
                 var a, o;
@@ -2659,7 +2659,7 @@
                     this.spectralColor = 0;
                 };
                 t.exports = on;
-            }).call(r, e(78).Buffer);
+            }).call(r, e(75).Buffer);
         },
         155: function(t, r, e) {
             "use strict";

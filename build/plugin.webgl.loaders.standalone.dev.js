@@ -25,9 +25,9 @@
         0: function(e, t, r) {
             e.exports = r(157);
         },
-        35: function(e, t, r) {
+        30: function(e, t, r) {
             "use strict";
-            var a = r(56);
+            var a = r(53);
             var n = r(135);
             var i = r(134);
             var o = r(131);
@@ -42,7 +42,7 @@
                 RGBA_S3TC_DXT5_Format: 33779
             };
         },
-        56: function(e, t, r) {
+        53: function(e, t, r) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -60,7 +60,7 @@
                 return e;
             };
             var n = r(130);
-            var i = r(57);
+            var i = r(54);
             var o = {};
             function s(e) {
                 this.manager = e !== undefined ? e : i.DefaultLoadingManager;
@@ -220,7 +220,7 @@
             });
             t.FileLoader = s;
         },
-        57: function(e, t) {
+        54: function(e, t) {
             "use strict";
             Object.defineProperty(t, "__esModule", {
                 value: true
@@ -318,8 +318,8 @@
                 }
                 return e;
             };
-            var n = r(56);
-            var i = r(57);
+            var n = r(53);
+            var i = r(54);
             var o = 1006;
             function s(e) {
                 this.manager = e !== undefined ? e : i.DefaultLoadingManager;
@@ -397,7 +397,7 @@
         },
         132: function(e, t, r) {
             "use strict";
-            var a = r(35);
+            var a = r(30);
             var n = i(a);
             function i(e) {
                 return e && e.__esModule ? e : {
@@ -573,7 +573,7 @@
                 }
                 return e;
             };
-            var n = r(35);
+            var n = r(30);
             var i = o(n);
             function o(e) {
                 return e && e.__esModule ? e : {
@@ -1156,7 +1156,7 @@
                 }
                 return e;
             };
-            var n = r(35);
+            var n = r(30);
             var i = o(n);
             function o(e) {
                 return e && e.__esModule ? e : {

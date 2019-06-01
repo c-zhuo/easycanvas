@@ -5,7 +5,7 @@ import Sequence from './components/sequence.js';
 import Text from './components/text.js';
 import View from './components/view.js';
 
-module.exports = {
+export {
 	Button,
 	Image,
 	Scroll,

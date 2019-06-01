@@ -4,10 +4,10 @@
  *
  * ********** **/
 
-import Sprite from '../class/sprite.js';
 import { funcOrValue } from 'utils/utils.js';
+import browserRegister from './browserRegister.js';
 
-const component = function (opt) {
+const component = function (Sprite, opt) {
     let $sprite = new Sprite(opt);
 
     opt.props.index = opt.props.index || 0;
@@ -78,9 +78,6 @@ const component = function (opt) {
 //     return component;
 // };
 
-const inBrowser = typeof window !== 'undefined';
-if (inBrowser && window.Easycanvas) {
-    Easycanvas.class.Sequence = component;
-}
+browserRegister(component, 'sequence');
 
-module.exports = component;
+export default component;

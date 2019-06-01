@@ -285,7 +285,6 @@ module.exports = function ($sprite, index) {
         }
     }
 
-
     if (!_img && !_text) {
         $sprite.$rendered = undefined;
     }

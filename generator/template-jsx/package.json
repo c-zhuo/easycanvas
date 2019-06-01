@@ -1,0 +1,28 @@
+{
+  "name": "easycanvas-project-jsx",
+  "version": "1.0.0",
+  "description": "easycanvas template for jsx",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "easycanvas"
+  ],
+  "author": "c-zhuo",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "7",
+    "easycanvas": "^0.7.4",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.32.2"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "glob": "^7.1.4",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1"
+  }
+}

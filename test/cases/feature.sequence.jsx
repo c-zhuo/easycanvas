@@ -1,5 +1,5 @@
 import Easycanvas from 'src/index.js';
-import Components from 'src/components.js';
+import { Sequence } from 'src/components.js';
 import constants from 'karma/case.constant.js';
 
 var $canvas = document.createElement('canvas');
@@ -20,21 +20,21 @@ $Painter.register($canvas, {
 var Fire = Easycanvas.imgLoader(constants.fire);
 
 var createFire = function (initX, initY) {
-    return Easycanvas.class.Sequence({
-        content: {
-            img: Fire,
-        },
-        props: {
+    return <Sequence
+        content={{
+            img: Fire
+        }}
+        props={{
             frameWidth: -9,
             frameHeight: -1,
             interval: 200,
             loop: false,
-        },
-        style: {
+        }}
+        style={{
             left: initX, top: initY,
             // width: 120, height: 120,
-        },
-    });
+        }}
+    />;
 };
 
 $Painter.start();

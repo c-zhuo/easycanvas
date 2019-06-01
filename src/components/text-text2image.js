@@ -272,4 +272,4 @@ const textRendering = function (_text, config) {
     // return image;
 };
 
-module.exports = textRendering;
+export default textRendering;

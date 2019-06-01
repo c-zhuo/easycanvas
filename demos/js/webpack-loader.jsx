@@ -2,8 +2,10 @@
 import Easycanvas from '../../src/index.js';
 import { View, Image, Text } from '../../src/components.js';
 
+window.View = View;
+window.T = Text;
+
 var $app = new Easycanvas.painter();
-var a = {b: 2,c: $app}
 $app.register(document.getElementById('app'));
 $app.start();
 
@@ -16,7 +18,7 @@ $app.start();
 //         }
 //     };
 
-window.Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
     let content = {
         img: img
     };
@@ -111,7 +113,7 @@ window.Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas
                 }}
             />
             <Text
-                text='这里是一段多行文本abcdefg1234567！？：.,?'
+                text='这里是一段多行文本abcdefg7654321！？：.,?'
                 style={{
                     left: Easycanvas.transition.ease(111, 222, 3500).loop(),
                     top: 40,
@@ -136,4 +138,3 @@ window.Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas
 });
 
 console.log('source');
-

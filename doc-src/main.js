@@ -193,6 +193,7 @@ const Analyze = function (str) {
                     //     return result;
                     // });
                     code = window.EasycanvasJSXTransformer(code);
+                    code = code.replace(/import/g, 'const').replace(/from\ [\'|\"]easycanvas[\'|\"]/g, '= Easycanvas');
                     code = Babel.transform(code, { presets: ['es2015'] }).code;
 
                     iframeHtmlCodes = `

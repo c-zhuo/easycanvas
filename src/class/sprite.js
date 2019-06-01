@@ -379,6 +379,17 @@ sprite.prototype.update = function (opt) {
     }
 
     this.recalculate(true); // force update
+    return this;
+};
+
+sprite.prototype.hide = function () {
+    this.style.display = 'none';
+    return this;
+};
+
+sprite.prototype.show = function () {
+    this.style.display = undefined;
+    return this;
 };
 
 sprite.prototype.getAllChildren = function (includeSelf) {

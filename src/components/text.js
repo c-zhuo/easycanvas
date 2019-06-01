@@ -5,8 +5,8 @@
  *
  * ********** **/
 
-import Sprite from '../class/sprite.js';
 import text2image from './text-text2image.js';
+import browserRegister from './browserRegister.js';
 
 const defaultStyle = {
     padding: 0,
@@ -21,9 +21,9 @@ const setImage = function ($sprite) {
     }, $sprite.style)) : undefined;
 };
 
-const component = function (config) {
+const component = function (Sprite, config) {
     let $sprite;
-    config.name = config.name || 'Image';
+    config.name = config.name || 'Text';
 
     $sprite = new Sprite(config);
     // $sprite.content.text = config.text;
@@ -56,10 +56,6 @@ const component = function (config) {
 //     return component;
 // };
 
-const inBrowser = typeof window !== 'undefined';
-if (inBrowser && window.Easycanvas) {
-    // ec = Easycanvas;
-    Easycanvas.class.Text = component;
-}
+browserRegister(component, 'text');
 
-module.exports = component;
+export default component;

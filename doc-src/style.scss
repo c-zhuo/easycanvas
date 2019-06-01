@@ -320,10 +320,15 @@ p.tip {
 section.demo-box {
     display: block;
     height: 32px;
-    vertical-align: text-bottom;
 
     & > code {
-        display: none;
+        // 不知道为什么，新版本chrome，display为none的话，节点innerText的换行符没了
+        // display: none;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        display: block;
+        opacity: 0;
     }
 
     & > .code-2-demo {

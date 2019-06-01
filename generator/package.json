@@ -1,0 +1,25 @@
+{
+    "name": "create-easycanvas",
+    "version": "1.0.0",
+    "description": "A CLI to bootstrap my new projects",
+    "main": "index.js",
+    "bin": {
+        "@c-zhuo/create-easycanvas": "bin/create-easycanvas",
+        "create-easycanvas": "bin/create-easycanvas"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "cli"
+    ],
+    "author": "c-zhuo",
+    "license": "MIT",
+    "dependencies": {
+        "esm": "^3.2.18",
+        "ncp": "^2.0.0"
+    }
+}

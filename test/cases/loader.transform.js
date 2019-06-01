@@ -54,12 +54,12 @@ Loader.call(loader, `
 
 describe('Featrue.add Test.', function () {
     it('JSX transformed to JS correctly.', function (done) {
-        expect(compareCode(result[0], `
+        expect(compareCode(result[0].replace(/ /g, ''), `
             const content = {
                 img: "./abc.png"
             };
             
-            const a = $app.add(new Sprite({
+            const a = $app.add(new Sprite(Easycanvas.sprite, {
                 name: "p1",
                 content: content,
             
@@ -72,7 +72,7 @@ describe('Featrue.add Test.', function () {
                     top: 80
                 },
             
-                children: [new Sprite({
+                children: [new Sprite(Easycanvas.sprite, {
                     name: "c1",
                     content: content,
             
@@ -86,7 +86,7 @@ describe('Featrue.add Test.', function () {
                     }
                 })]
             }));
-        `)).toBe(true);
+        `.replace(/ /g, ''))).toBe(true);
         done();
     });
 });

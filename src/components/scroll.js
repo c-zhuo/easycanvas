@@ -5,9 +5,9 @@
  *
  * ********** **/
 
-import Sprite from '../class/sprite.js';
 import { funcOrValue } from 'utils/utils.js';
 import transition from 'utils/transition.js';
+import browserRegister from './browserRegister.js';
 
 let mutipleScrollLock;
 
@@ -184,7 +184,7 @@ let scrollFuncs = {
     }
 };
 
-const component = function (opt) {
+const component = function (Sprite, opt) {
     let autoScrollX = false;
     let autoScrollY = false;
 
@@ -389,9 +389,6 @@ const component = function (opt) {
 //     return component;
 // };
 
-const inBrowser = typeof window !== 'undefined';
-if (inBrowser && window.Easycanvas) {
-    Easycanvas.class.Scroll = component;
-}
+browserRegister(component, 'scroll');
 
-module.exports = component;
+export default component;

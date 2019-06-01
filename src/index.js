@@ -10,6 +10,13 @@ import imgPretreat from 'utils/img-pretreat.js';
 import multlineText from 'utils/multline-text';
 import sprite from './class/sprite.js';
 
+import Button from './components/button.js';
+import Image from './components/image.js';
+import Scroll from './components/scroll.js';
+import Sequence from './components/sequence.js';
+import Text from './components/text.js';
+import View from './components/view.js';
+
 import chromeDevtoolBridge from './bridge/chrome-devtool.js';
 
 const Easycanvas = {
@@ -26,8 +33,16 @@ const Easycanvas = {
         sprite: sprite,
     },
     sprite,
+
     $version: constants.version,
     env: process.env.NODE_ENV,
+
+    Button,
+    Image,
+    Scroll,
+    Sequence,
+    Text,
+    View,
 };
 
 Easycanvas.extend = function (pluginHook) {
@@ -92,4 +107,4 @@ if (inBrowser) {
     }
 }
 
-module.exports = Easycanvas;
+export default Easycanvas;

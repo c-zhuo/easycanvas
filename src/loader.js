@@ -1,7 +1,8 @@
 const recast = require("recast");
 const acorn = require("acorn");
-const jsx = require("acorn-jsx");
-const jsxParser = acorn.Parser.extend(jsx());
+// const jsx = require("acorn-jsx");
+// const jsxParser = acorn.Parser.extend(jsx());
+const babelParser = require('@babel/parser');
 const builders = recast.types.builders;
 
 const JSXElement = 'JSXElement';
@@ -68,13 +69,15 @@ const JSXElementNode2Sprite = node => {
         }
 
         // move JSXText to text, avoid '\n'
-        let childrenJSXText = node.children.filter(child => child.type === JSXText && String.prototype.trim.call(child.raw));
+        // update：使用acorn时raw在child一级属性下，babel里在child.extra里
+        // let childrenJSXText = node.children.filter(child => child.type === JSXText && child.raw && String.prototype.trim.call(child.raw));
+        let childrenJSXText = node.children.filter(child => child.type === JSXText && child.extra.raw && String.prototype.trim.call(child.extra.raw));
         if (childrenJSXText.length) {
             attrMap.push(
                 builders.property('init',
                     builders.identifier('text'),
                     builders.literal(
-                        childrenJSXText.map(child => String.prototype.trim.call(child.raw)).join('\n')
+                        childrenJSXText.map(child => String.prototype.trim.call(child.extra.raw)).join('\n')
                     )
                 )
             );
@@ -84,7 +87,7 @@ const JSXElementNode2Sprite = node => {
     const objectExpression = builders.objectExpression(attrMap);
 
     // with new:
-    let result = builders.newExpression(builders.identifier(spriteType), [objectExpression]);
+    let result = builders.newExpression(builders.identifier(spriteType), [builders.identifier('Easycanvas.sprite'), objectExpression]);
     // without new:
     // let result = builders.callExpression(builders.identifier(spriteType), [objectExpression]);
 
@@ -92,9 +95,18 @@ const JSXElementNode2Sprite = node => {
 };
 
 const transformer = (source) => {
-    const parsedSource = jsxParser.parse(source, {
-        sourceType: 'module'
-    });
+    // const parsedSource = jsxParser.parse(source, {
+    //     sourceType: 'module'
+    // });
+    const parsedSource = babelParser.parse(source, {
+        sourceType: 'module',
+        plugins: [
+            // enable jsx and flow syntax
+            "jsx",
+            "typescript",
+            "dynamicImport"
+        ]
+    }).program;
 
     let hasJSX = false; // 没有JSX时，不做任何处理，确保空格等内容完全不受影响
 

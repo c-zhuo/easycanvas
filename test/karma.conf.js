@@ -13,11 +13,12 @@ var webpackConfig = {
         }),
     },
     module: {
-        loaders: [{
-            test: /\.js$/,
-            loader: 'babel',
-            exclude: /node_modules/
-        }],
+        loaders: webpackBase.loaders,
+        // [{
+        //     test: /\.js$/,
+        //     loader: 'babel',
+        //     exclude: /node_modules/
+        // }],
     },
     babel: {
         presets: ['es2015'],

@@ -4,9 +4,9 @@
  *
  * ********** **/
 
-import Sprite from '../class/sprite.js';
+import browserRegister from './browserRegister.js';
 
-const component = function (opt) {
+const component = function (Sprite, opt) {
     let $sprite;
 
     let option = opt || {};
@@ -40,9 +40,6 @@ const component = function (opt) {
 //     return component;
 // };
 
-const inBrowser = typeof window !== 'undefined';
-if (inBrowser && window.Easycanvas) {
-    Easycanvas.class.Image = component;
-}
+browserRegister(component, 'image');
 
-module.exports = component;
+export default component;
