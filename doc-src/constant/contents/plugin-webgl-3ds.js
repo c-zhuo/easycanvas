@@ -33,7 +33,7 @@ module.exports = `
 
         <h2>导入3DS模型</h2>
 
-        <p>可以通过为sprite类的webgl追加_3ds属性来导入3DS模型。_3ds属性的值为3DS文件的地址，将在sprite对象创建时发起加载，异步加载成功后进行渲染，如下例：</p>
+        <p>可以通过为Sprite类的webgl追加_3ds属性来导入3DS模型。_3ds属性的值为3DS文件的地址，将在Sprite对象创建时发起加载，异步加载成功后进行渲染，如下例：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -47,14 +47,14 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                         webgl: true, // 开启WebGL渲染
                     });
 
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.Sprite({
                         style: {
                             left: 200, top: 200,
                         },
@@ -64,8 +64,8 @@ module.exports = `
                                 'Petals': '../resource/15sunflower/petal.jpg',
                             },
                             _3ds: '../resource/15sunflower/15sunflower.3DS',
-                            ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
-                            scale: Easycanvas.transition.pendulum(0.5, 1, 2000).loop(),
+                            ry: Easycanvas.Transition.linear(0, 360, 5000).loop(),
+                            scale: Easycanvas.Transition.pendulum(0.5, 1, 2000).loop(),
                         }
                     }));
 
@@ -88,14 +88,14 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                         webgl: true, // 开启WebGL渲染
                     });
 
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.Sprite({
                         style: {
                             left: 200, top: 200,
                         },
@@ -109,8 +109,8 @@ module.exports = `
                                 ],
                             },
                             _3ds: '../resource/15sunflower/15sunflower.3DS',
-                            ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
-                            scale: Easycanvas.transition.pendulum(0.5, 1, 2000).loop(),
+                            ry: Easycanvas.Transition.linear(0, 360, 5000).loop(),
+                            scale: Easycanvas.Transition.pendulum(0.5, 1, 2000).loop(),
                         }
                     }));
 
@@ -121,9 +121,9 @@ module.exports = `
 
         <p>上面的例子中，我们用3个不同深浅的红色为“Petals”图层进行染色。</p>
 
-        <p><strong>sprite初始化的时候，webgl中的_3ds等属性将被移除，并添加若干个子sprite对象，每个都是3DS的一个图层。</strong></p>
+        <p><strong>Sprite初始化的时候，webgl中的_3ds等属性将被移除，并添加若干个子Sprite对象，每个都是3DS的一个图层。</strong></p>
 
-        <p class="tip">Tips：解析同一个3DS文件，产生的sprite将共享顶点、索引等数据，这样有助于提升性能。如果希望对其中的一个进行单独编辑，可以在webgl中增加useCache属性，传入false即可。</p>
+        <p class="tip">Tips：解析同一个3DS文件，产生的Sprite将共享顶点、索引等数据，这样有助于提升性能。如果希望对其中的一个进行单独编辑，可以在webgl中增加useCache属性，传入false即可。</p>
 
         <h2>解析3DS数据</h2>
 
@@ -141,7 +141,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -153,10 +153,10 @@ module.exports = `
                         'Material #45': '../resource/game_char/4.jpg',
                         'Material #46': '../resource/game_char/3.jpg',
                         'Material #49': $app.imgLoader('../resource/game_char/6.jpg'),
-                        'Material #51': Easycanvas.imgLoader('../resource/game_char/8.jpg'),
+                        'Material #51': Easycanvas.ImgLoader('../resource/game_char/8.jpg'),
                     };
 
-                    var rz = Easycanvas.transition.linear(0, 360, 5000).loop();
+                    var rz = Easycanvas.Transition.linear(0, 360, 5000).loop();
 
                     Easycanvas.loader3DS('../resource/game_char/sunnvfashi.3DS', function (data) {
                         data.forEach(function (model) {

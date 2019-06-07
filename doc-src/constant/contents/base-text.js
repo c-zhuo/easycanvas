@@ -8,7 +8,7 @@ module.exports = `
         
         <h2>单行文本</h2>
 
-        <p>为content中的text字段赋值，可以让这个sprite渲染单行文本。下面这个例子包含了颜色、字体等相关参数：</p>
+        <p>为content中的text字段赋值，可以让这个Sprite渲染单行文本。下面这个例子包含了颜色、字体等相关参数：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -18,13 +18,13 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
                     });
 
-                    var $text = new Easycanvas.sprite({
+                    var $text = new Easycanvas.Sprite({
                         content: {
                             text: '单行text',
                         },
@@ -44,7 +44,7 @@ module.exports = `
                     setInterval(function () {
                         $text.style.textAlign = getFromArray(['left', 'center', 'right']);
                         $text.style.textVerticalAlign = getFromArray(['top', 'middle', 'bottom']);
-                        $text.style.textFont = getFromArray(['14px Arial', '28px serif']);
+                        $text.style.fontSize = getFromArray(['14px', '28px']);
                         $text.style.color = getFromArray(['red', '#00FFFF', 'rgba(255, 255, 0, 0.8)']);
                         i++;
                     }, 1000);
@@ -70,13 +70,13 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 800,
                         height: 800
                     });
 
-                    var $text = new Easycanvas.sprite({
+                    var $text = new Easycanvas.Sprite({
                         content: {
                             text: '单行text',
                         },
@@ -95,7 +95,7 @@ module.exports = `
                     setInterval(function () {
                         $text.style.textAlign = getFromArray(['left', 'center', 'right']);
                         $text.style.textVerticalAlign = getFromArray(['top', 'middle', 'bottom']);
-                        $text.style.textFont = getFromArray(['28px Arial', '56px serif']);
+                        $text.style.fontSize = getFromArray([28, 56]);
                         $text.style.color = getFromArray(['red', '#00FFFF', 'rgba(255, 255, 0, 0.8)']);
                         i++;
                     }, 1000);
@@ -106,7 +106,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>这些属性中，text可以是一个function类型，返回要渲染的字符串，如下例。但是color、textFont、textAlign、textVerticalAlign这四个属性不能是function。</p>
+        <p>这些属性中，text可以是一个function类型，返回要渲染的字符串，如下例。</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -127,13 +127,13 @@ module.exports = `
                     };
                     var duration = 10000;
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 800,
                         height: 800
                     });
 
-                    var $text = new Easycanvas.sprite({
+                    var $text = new Easycanvas.Sprite({
                         content: {
                             text: function () {
                                 return Date.now();
@@ -142,7 +142,7 @@ module.exports = `
                         style: {
                             left: 300, top: 300,
                             width: 400, height: 400,
-                            textFont: '56px serif',
+                            fontSize: 56,
                             color: function () {
                                 var colorInt10 = Math.floor(Date.now() % duration / duration * MAX_COLOR_IN_36);
                                 return '#' + leftPads(colorInt10.toString(16), 6);

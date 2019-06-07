@@ -18,7 +18,7 @@
     <canvas id="app"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         var dom = document.getElementById('app');
 
         $app.register(dom, {
@@ -52,7 +52,7 @@
             },
             style: {
                 left: 400, top: 0,
-                textFont: '36px Helvetica',
+                fontSize: 36,
                 textAlign: 'right',
                 textVerticalAlign: 'top',
                 color: '#999'
@@ -69,7 +69,7 @@
                 style: {
                     width: i * 10 + 50,
                     height: i * 10 + 50,
-                    left: Easycanvas.transition.pendulum(10, i * 20, 2000).loop(),
+                    left: Easycanvas.Transition.pendulum(10, i * 20, 2000).loop(),
                     top: imgTop,
                     locate: 'lt',
                     zIndex: 1,

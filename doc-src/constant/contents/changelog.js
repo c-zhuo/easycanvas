@@ -14,13 +14,14 @@ module.exports = `
 
         <h2>当前版本</h2>
 
-        <h3>0.8.0 (2019.1.17)</h3>
+        <h3>0.8.0 (2019.6.8)</h3>
 
-        <p>Change：现在使用<strong>left、top、width、height</strong>等属性来设置样式（而不是tx、ty等参数），更接近CSS和其它框架了。详见文档。</p>
-        <p>Change：底层现在使用Object.defineProperty来进行属性的监听和计算，<strong>这个改动对性能的影响不大，因为Canvas的性能主要取决于浏览器与系统</strong>。</p>
+        <p>Breaking Change：现在使用<strong>left、top、width、height</strong>等属性来设置样式（而不是tx、ty等参数），更接近CSS和其它框架了。其它样式API的名称略有调整。详见文档。</p>
+        <p>Change：底层现在使用Object.defineProperty来进行属性的监听和计算，在部分场合下可以减少每tick的计算量。</p>
         <p>Bugfix：修复了<strong>调用了Sprite.combineAsync</strong>后，如果Sprite一直位于画布外部（此时之前被判定为不适合合并，会推迟重试），会因为不断判定而损耗性能的问题。</p>
         <p>Bugfix：修复了<strong>调用了Sprite.getOuterRect</strong>计算上的bug。</p>
         <p>Feature：<strong>支持使用JSX语法进行开发</strong>，详见文档。</p>
+        <p>Feature：<strong>提供easycanvas-gen</strong>脚手架，通过<strong>create-easycanvas</strong>调用，详见文档。</p>
 
         <h2>历史版本</h2>
 
@@ -30,7 +31,7 @@ module.exports = `
         <p>Bugfix：修复调用<strong>Sprite.combineAsync</strong>时，可能丢失个别Sprite的bug。</p>
         <p>Bugfix：调整<strong>Sprite.combineAsync</strong>的逻辑以提升性能。</p>
         <p>Bugfix：修复<strong>Scroll组件</strong>滚动至底部时，现在将在内部广播“scrolledToBottom”事件。</p>
-        <p>Bugfix：修复<strong>Easycanvas.transition</strong>中涉及了三角函数的动画播放至最后一帧时，出现1px的偏差的bug。</p>
+        <p>Bugfix：修复<strong>Easycanvas.Transition</strong>中涉及了三角函数的动画播放至最后一帧时，出现1px的偏差的bug。</p>
 
         <h3>0.7.3 (2018.11.1)</h3>
 
@@ -87,7 +88,7 @@ module.exports = `
         <h3>0.5.10 (2018.9.9)</h3>
 
         <p>Bugfix：修复pendulum和ease在结束后可能额外执行一帧，导致<strong>结束点有偏差</strong>的bug。</p>
-        <p>Feature：为transition增加<strong>then</strong>方法，结束时触发，例如Easycanvas.transition.linear(2, 8, 1000).then(Function)。</p>
+        <p>Feature：为transition增加<strong>then</strong>方法，结束时触发，例如Easycanvas.Transition.linear(2, 8, 1000).then(Function)。</p>
         <p>Feature：为WebGL引入<strong>Three.js的loaders</strong>，用于加载fbx、dds等更多模型和资源文件，详见文档。</p>
 
         <h3>0.5.9 (2018.9.1)</h3>
@@ -106,7 +107,7 @@ module.exports = `
 
         <h3>0.5.7 (2018.7.29)</h3>
 
-        <p>Bugfix：修复线性渐变时，终点小于起点会导致js卡死的bug，如Easycanvas.transition.linear(2, 1, 1000)。</p>
+        <p>Bugfix：修复线性渐变时，终点小于起点会导致js卡死的bug，如Easycanvas.Transition.linear(2, 1, 1000)。</p>
         <p>Bugfix：修复2D渲染中，<strong>处于屏幕边缘并且设置了角度的Sprite的坐标计算可能异常</strong>的bug。</p>
 
         <h3>0.5.6 (2018.7.25)</h3>

@@ -19,7 +19,7 @@ module.exports = `
                 <script>
                     var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
@@ -33,7 +33,7 @@ module.exports = `
                         }) + '<br>' + document.getElementById('eventName').innerHTML;
                     };
 
-                    var $foo = new Easycanvas.sprite({
+                    var $foo = new Easycanvas.Sprite({
                         content: {
                             img: G,
                         },
@@ -72,43 +72,43 @@ module.exports = `
             <code>
                 <body>
                     <canvas id="app"></canvas>
-                    <p>小的字母G是sprite3，sprite3位于sprite1的sprite2中；大的是sprite4</p>
+                    <p>小的字母G是Sprite3，Sprite3位于Sprite1的Sprite2中；大的是Sprite4</p>
                 </body>
 
                 <script>
                     var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 200,
                         height: 200
                     });
 
-                    var sprite1 = $app.add({
+                    var Sprite1 = $app.add({
                         style: {
                             zIndex: 2,
                         },
                         events: {
                             click: function () {
-                                alert('pass to sprite1.');
+                                alert('pass to Sprite1.');
                             }
                         },
                     });
 
-                    var sprite2 = sprite1.add({
+                    var Sprite2 = Sprite1.add({
                         style: {
                             width: 10, height: 20
                         },
                         events: {
                             click: function ($e) {
-                                alert('pass to sprite2.');
+                                alert('pass to Sprite2.');
                                 $e.stopPropagation();
                             }
                         },
                     });
 
-                    var sprite3 = sprite2.add({
-                        name: 'sprite3',
+                    var Sprite3 = Sprite2.add({
+                        name: 'Sprite3',
                         content: {
                             img: G,
                         },
@@ -118,13 +118,13 @@ module.exports = `
                         },
                         events: {
                             click: function () {
-                                alert('sprite3 trigger.');
+                                alert('Sprite3 trigger.');
                             }
                         },
                     });
 
-                    var sprite4 = $app.add({
-                        name: 'sprite4',
+                    var Sprite4 = $app.add({
+                        name: 'Sprite4',
                         content: {
                             img: G,
                         },
@@ -135,7 +135,7 @@ module.exports = `
                         },
                         events: {
                             click: function () {
-                                alert('sprite4 trigger.');
+                                alert('Sprite4 trigger.');
                             }
                         },
                     });
@@ -152,19 +152,19 @@ module.exports = `
             <code>
                 <body>
                     <canvas id="app"></canvas>
-                    <p>点击中间重叠的部分，会发现下层的sprite先捕捉到了事件</p>
+                    <p>点击中间重叠的部分，会发现下层的Sprite先捕捉到了事件</p>
                 </body>
 
                 <script>
                     var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 200,
                         height: 200
                     });
 
-                    $app.add(new Easycanvas.sprite({
+                    $app.add(new Easycanvas.Sprite({
                         content: {
                             img: G,
                         },
@@ -179,7 +179,7 @@ module.exports = `
                             },
                         },
                     }));
-                    $app.add(new Easycanvas.sprite({
+                    $app.add(new Easycanvas.Sprite({
                         content: {
                             img: G,
                         },

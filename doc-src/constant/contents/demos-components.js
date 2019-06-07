@@ -10,7 +10,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter();
+                    var $app = new Easycanvas.Painter();
                     var dom = document.getElementById('app');
 
                     $app.register(dom, {
@@ -21,7 +21,7 @@ module.exports = `
 
                     // 滚动
 
-                    var $scroll = $app.add(Easycanvas.class.scroll({
+                    var $scroll = $app.add(Easycanvas.Scroll({
                         name: 'scroll-box',
                         style: {
                             left: 50, top: 50,
@@ -40,7 +40,8 @@ module.exports = `
                         },
                         style: {
                             left: 400, top: 0,
-                            textFont: '36px Helvetica',
+                            fontSize: 36,
+                            fontFamily: 'Helvetica',
                             textAlign: 'right',
                             textVerticalAlign: 'top',
                             color: '#999'
@@ -57,7 +58,7 @@ module.exports = `
                             style: {
                                 width: i * 10 + 50,
                                 height: i * 10 + 50,
-                                left: Easycanvas.transition.pendulum(10, i * 20, 2000).loop(),
+                                left: Easycanvas.Transition.pendulum(10, i * 20, 2000).loop(),
                                 top: imgTop,
                                 locate: 'lt',
                                 zIndex: 1,
@@ -69,7 +70,7 @@ module.exports = `
 
                     // 按钮
 
-                    $app.add(new Easycanvas.class.button({
+                    $app.add(new Easycanvas.Button({
                         name: 'button-1',
                         props: {
                             text: 'click',
@@ -96,7 +97,7 @@ module.exports = `
                         }
                     }));
 
-                    $app.add(Easycanvas.class.button({
+                    $app.add(Easycanvas.Button({
                         name: 'button-2',
                         props: {
                             text: 'hover',
@@ -123,7 +124,7 @@ module.exports = `
                         }
                     }));
 
-                    $app.add(Easycanvas.class.button({
+                    $app.add(Easycanvas.Button({
                         name: 'button-3',
                         props: {
                             text: 'hover & click',
@@ -160,7 +161,7 @@ module.exports = `
 
                     // 文本
 
-                    $app.add(Easycanvas.class.text({
+                    $app.add(Easycanvas.Text({
                         name: 'text-1',
                         props: {
                             text: '这里是一段单行的文本',
@@ -178,7 +179,7 @@ module.exports = `
                         }
                     }));
 
-                    $app.add(Easycanvas.class.text({
+                    $app.add(Easycanvas.Text({
                         name: 'text-2',
                         props: {
                             text: '这里是一段很长的单行文本',
@@ -197,7 +198,7 @@ module.exports = `
                         }
                     }));
 
-                    $app.add(Easycanvas.class.text({
+                    $app.add(Easycanvas.Text({
                         name: 'text-3',
                         props: {
                             text: '这里是一段多行文本abcdefg1234567！？：.,?',
@@ -215,7 +216,7 @@ module.exports = `
                         }
                     }));
 
-                    $app.add(Easycanvas.class.text({
+                    $app.add(Easycanvas.Text({
                         name: 'text-4',
                         props: {
                             text: 'emoji🐶',
@@ -232,7 +233,7 @@ module.exports = `
                         }
                     }));
 
-                    $app.add(Easycanvas.class.text({
+                    $app.add(Easycanvas.Text({
                         name: 'text-5',
                         props: {
                             text: 'padding 10px 30px',
@@ -251,7 +252,7 @@ module.exports = `
                         }
                     }));
 
-                    $app.add(Easycanvas.class.text({
+                    $app.add(Easycanvas.Text({
                         name: 'text-6',
                         props: {
                             text: 'text 24, lineHeight 72, text 24, lineHeight 72',
@@ -271,7 +272,7 @@ module.exports = `
                         }
                     }));
 
-                    $app.add(Easycanvas.class.text({
+                    $app.add(Easycanvas.Text({
                         name: 'text-7',
                         props: {
                             text: 'color & font 颜色字体',

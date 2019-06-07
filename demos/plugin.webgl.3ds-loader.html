@@ -16,7 +16,7 @@
     <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             webgl: true,
         });
@@ -24,19 +24,19 @@
 
         var texture2img = {
             // 各种图片加载方式
-            'Flower Center': Easycanvas.imgLoader('../resource/15sunflower/center.jpg'),
-            'Petals': Easycanvas.imgLoader('../resource/15sunflower/petal.jpg'),
+            'Flower Center': Easycanvas.ImgLoader('../resource/15sunflower/center.jpg'),
+            'Petals': Easycanvas.ImgLoader('../resource/15sunflower/petal.jpg'),
             'Material #45': '../resource/game_char/4.jpg',
             'Material #46': '../resource/game_char/3.jpg',
-            'Material #49': $app.imgLoader('../resource/game_char/6.jpg'),
-            'Material #51': $app.imgLoader('../resource/game_char/8.jpg'),
+            'Material #49': $app.ImgLoader('../resource/game_char/6.jpg'),
+            'Material #51': $app.ImgLoader('../resource/game_char/8.jpg'),
         };
 
         // var sunFlower = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/develop/0.5.4-mmd/demos/resource/15sunflower/15sunflower.3DS';
         var sunFlower = '../resource/15sunflower/15sunflower.3DS';
 
         window.Easycanvas.loader3DS(sunFlower, function (data) {
-            var ry = Easycanvas.transition.pendulum(0, 360, 5000).loop();
+            var ry = Easycanvas.Transition.pendulum(0, 360, 5000).loop();
 
             var flower = $app.add({
                 name: 'flower',
@@ -75,7 +75,7 @@
                     top: 350,
                 },
                 webgl: {
-                    rx: 90, ry: 0, rz: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                    rx: 90, ry: 0, rz: Easycanvas.Transition.linear(0, 360, 5000).loop(),
                     scaleX: 50, scaleY: 50, scaleZ: 50,
                 },
             });

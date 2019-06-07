@@ -278,7 +278,7 @@ const transitions = {
 const fade = function (Easycanvas) {
     utils = Easycanvas.utils;
 
-    Easycanvas.class.sprite.prototype.fade = function ({type, ticks, subtype}) {
+    Easycanvas.Sprite.prototype.fade = function ({type, ticks, subtype}) {
         let sprite = this;
 
         if (!sprite.$fade) {
@@ -289,7 +289,7 @@ const fade = function (Easycanvas) {
             };
 
             // if (typeof sprite.$fade.originImg === 'string') {
-            //     sprite.$fade.originImg = Easycanvas.imgLoader(sprite.$fade.originImg);
+            //     sprite.$fade.originImg = Easycanvas.ImgLoader(sprite.$fade.originImg);
             // }
 
             sprite.$fade.filterCanvas.width = sprite.$fade.middlewareCanvas.width = sprite.style.width;
@@ -371,9 +371,9 @@ const fade = function (Easycanvas) {
         }
     };
 
-    Easycanvas.class.sprite.prototype.fade.types = [];
+    Easycanvas.Sprite.prototype.fade.types = [];
     for (var i in transitions) {
-        Easycanvas.class.sprite.prototype.fade.types.push(i);
+        Easycanvas.Sprite.prototype.fade.types.push(i);
     }
 };
 

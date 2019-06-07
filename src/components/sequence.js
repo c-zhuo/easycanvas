@@ -4,11 +4,12 @@
  *
  * ********** **/
 
-import { funcOrValue } from 'utils/utils.js';
-import browserRegister from './browserRegister.js';
+import browserRegister from './_browserRegister.js';
 
-const component = function (Sprite, opt) {
-    let $sprite = new Sprite(opt);
+const component = function (opt, Easycanvas) {
+    const funcOrValue = Easycanvas.utils.funcOrValue;
+
+    let $sprite = new Easycanvas.Sprite(opt);
 
     opt.props.index = opt.props.index || 0;
 
@@ -70,14 +71,6 @@ const component = function (Sprite, opt) {
     return $sprite;
 }
 
-// const init = function (Easycanvas, namespace) {
-//     ec = Easycanvas;
-//     if (namespace) {
-//         Easycanvas.class[namespace] = component;
-//     }
-//     return component;
-// };
-
-browserRegister(component, 'sequence');
+browserRegister(component, 'Sequence');
 
 export default component;

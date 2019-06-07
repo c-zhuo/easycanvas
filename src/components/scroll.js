@@ -5,9 +5,10 @@
  *
  * ********** **/
 
-import { funcOrValue } from 'utils/utils.js';
-import transition from 'utils/transition.js';
-import browserRegister from './browserRegister.js';
+import browserRegister from './_browserRegister.js';
+
+let funcOrValue;
+let transition;
 
 let mutipleScrollLock;
 
@@ -184,7 +185,10 @@ let scrollFuncs = {
     }
 };
 
-const component = function (Sprite, opt) {
+const component = function (opt, Easycanvas) {
+    funcOrValue = Easycanvas.utils.funcOrValue;
+    transition = Easycanvas.Transition;
+
     let autoScrollX = false;
     let autoScrollY = false;
 
@@ -302,7 +306,7 @@ const component = function (Sprite, opt) {
         };
     }
 
-    let $sprite = new Sprite(option);
+    let $sprite = new Easycanvas.Sprite(option);
 
     $sprite.on('ticked', () => {
         scrollFuncs.looper($sprite);
@@ -380,15 +384,6 @@ const component = function (Sprite, opt) {
     return $sprite;
 }
 
-// const init = function (Easycanvas, namespace) {
-//     ec = Easycanvas;
-//     if (namespace) {
-//         Easycanvas.class[namespace] = component;
-//     }
-
-//     return component;
-// };
-
-browserRegister(component, 'scroll');
+browserRegister(component, 'Scroll');
 
 export default component;

@@ -5,57 +5,36 @@
  *
  * ********** **/
 
-import text2image from './text-text2image.js';
-import browserRegister from './browserRegister.js';
+import browserRegister from './_browserRegister.js';
 
-const defaultStyle = {
-    padding: 0,
-    width: 300,
-    lineHeight: 100,
-    family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-};
-
-const setImage = function ($sprite) {
-    $sprite.content.img = $sprite.text ? text2image($sprite.text, Object.assign({}, defaultStyle, {
-        lineHeight: $sprite.style.fontSize,
-    }, $sprite.style)) : undefined;
-};
-
-const component = function (Sprite, config) {
+const component = function (opt, Easycanvas) {
     let $sprite;
-    config.name = config.name || 'Text';
 
-    $sprite = new Sprite(config);
-    // $sprite.content.text = config.text;
+    let option = opt || {};
+    option.name = option.name || 'Text';
 
-    setImage($sprite);
+    option.content = option.content || {};
+    option.content.text = option.text;
+
+    $sprite = new Easycanvas.Sprite(option);
 
     Object.defineProperty($sprite, 'text', {
         get () {
-            return $sprite.content.text;
+            return $sprite.content.text || '';
         },
 
         set (value) {
-            $sprite.content.img = text;
+            $sprite.content.text = value;
         },
     });
 
-    $sprite.update = function (obj) {
-        this.__proto__.update.call(this, obj);
-        setImage(this);
-    };
+    // $sprite.update = function (obj) {
+    //     this.__proto__.update.call(this, obj);
+    // };
 
     return $sprite;
 }
 
-// const init = function (Easycanvas, namespace) {
-//     ec = Easycanvas;
-//     if (namespace) {
-//         Easycanvas.class[namespace] = component;
-//     }
-//     return component;
-// };
-
-browserRegister(component, 'text');
+browserRegister(component, 'Text');
 
 export default component;

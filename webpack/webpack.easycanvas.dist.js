@@ -5,10 +5,12 @@ var glob = require('glob');
 var webpack = require('webpack');
 var base = require('./webpack.config.base.js');
 
-var js = glob.sync('./src/*.js').reduce(function (prev, curr) {
-    prev[curr.slice(6, -3).replace('index', 'easycanvas')] = [curr];
-    return prev;
-}, {});
+var js = function (name) {
+    return base.js(name).reduce(function (prev, curr) {
+        prev[curr.slice(6, -3).replace('index', 'easycanvas')] = [curr];
+        return prev;
+    }, {});
+};
 
 var config = {
     entry: js,
@@ -16,22 +18,12 @@ var config = {
     output: {
         path: path.resolve('./build'),
         filename: '[name].js',
-        libraryTarget: 'umd'
+        globalObject: 'this',
     },
     module: {
-        loaders: base.loaders
+        rules: base.module.rules,
     },
-    babel: base.babel,
     plugins: [],
-    node: base.node,
-    debug: false,
-    bail: true
 };
-
-config.plugins = config.plugins.concat([
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
-]);
 
 module.exports = config;

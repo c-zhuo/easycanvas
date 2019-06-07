@@ -6,14 +6,14 @@ $canvas.width = 888;
 $canvas.height = 888;
 document.body.appendChild($canvas);
 
-var $Painter = new Easycanvas.painter();
+var $Painter = new Easycanvas.Painter();
 $Painter.register($canvas);
 $Painter.start();
 
 var shouldBeJumped = [];
 var shouldBePrinted = [];
 
-Easycanvas.imgLoader(constants.jpg100px, function (img) {
+Easycanvas.ImgLoader(constants.jpg100px, function (img) {
     shouldBeJumped.push($Painter.add({
         name: '画在外部',
         content: {

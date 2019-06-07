@@ -1,14 +1,16 @@
 /** ********** *
  *
  * Load images
- * - Easycanvas.imgLoader.cacheCanvas
+ * - Easycanvas.ImgLoader.cacheCanvas
  *
  * ********** **/
 
 const Cache = {};
 const BlockingImgs = [];
 const ProcessingFlag = 'processing';
-const OImage = Image;
+
+// 防止非浏览器环境报错；非浏览器下，不会使用下面的loader方法，因此OImage为空不影响
+const OImage = typeof window !== 'undefined' && Image;
 
 let blockingAmount = 0;
 

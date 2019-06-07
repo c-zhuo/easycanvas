@@ -1,60 +1,57 @@
 import constants from 'constants';
 
-import painter from './painter/index.js';
+import Painter from './painter/index.js';
 import tick from 'utils/tick.js';
-import mirror from 'utils/mirror.js';
+// import mirror from 'utils/mirror.js';
 import utils from 'utils/utils.js';
-import transition from 'utils/transition.js';
-import imgLoader from 'utils/img-loader.js';
+import Transition from 'utils/transition.js';
+import ImgLoader from 'utils/img-loader.js';
 import imgPretreat from 'utils/img-pretreat.js';
 import multlineText from 'utils/multline-text';
 import sprite from './class/sprite.js';
+import extend from './class/extend.js';
 
-import Button from './components/button.js';
-import Image from './components/image.js';
-import Scroll from './components/scroll.js';
-import Sequence from './components/sequence.js';
-import Text from './components/text.js';
-import View from './components/view.js';
+// import Button from './components/Button.js';
+// import Image from './components/Image.js';
+// import Scroll from './components/Scroll.js';
+// import Sequence from './components/Sequence.js';
+// import Text from './components/Text.js';
+// import View from './components/View.js';
+// import RichText from './components/RichText';
 
-import chromeDevtoolBridge from './bridge/chrome-devtool.js';
+import './bridge/chrome-devtool.js';
+
+// const $version = constants.version;
+
+const Sprite = sprite;
 
 const Easycanvas = {
-    painter,
-    imgLoader,
+    Painter,
+    ImgLoader,
     imgPretreat,
     multlineText,
-    transition,
+    Transition,
     tick,
     utils,
-    mirror,
-    // 这个class只是为了兼容老版本写法“new Easycanvas.class.sprite(opt);”
+    extend,
+    // mirror,
+    // 兼容老版本写法“new Easycanvas.class.sprite(opt);”
     class: {
         sprite: sprite,
     },
     sprite,
-
-    $version: constants.version,
-    env: process.env.NODE_ENV,
-
-    Button,
-    Image,
-    Scroll,
-    Sequence,
-    Text,
-    View,
+    Sprite,
+    // Button,
+    // Image,
+    // Scroll,
+    // Sequence,
+    // Text,
+    // View,
+    // RichText,
 };
 
-Easycanvas.extend = function (pluginHook) {
-    let $extendList = Easycanvas.sprite.prototype.$extendList;
-
-    if ($extendList.indexOf(pluginHook) >= 0) return;
-
-    $extendList.push(pluginHook);
-};
-
-Easycanvas.use = function (pluginHook) {
-    let $extendList = Easycanvas.painter.prototype.$extendList;
+const use = Easycanvas.use = function (pluginHook) {
+    let $extendList = Easycanvas.Painter.prototype.$extendList;
 
     if ($extendList.indexOf(pluginHook) >= 0) return;
 
@@ -65,31 +62,10 @@ Easycanvas.use = function (pluginHook) {
     $extendList.push(pluginHook);
 };
 
-// Easycanvas.component = function (componentInit, namespace) {
-//     componentInit(Easycanvas, namespace);
-// };
-
-// if (process.env.NODE_ENV !== 'production') {
-//     Easycanvas.$warn = (() => {
-//         let lastConsoleTime = 0;
-//         return function () {
-//             let now = Date.now();
-//             if (now - lastConsoleTime < 1000) {
-//                 // 防止连续警告
-//                 return;
-//             }
-
-//             let args = Array.prototype.slice.call(arguments);
-
-//             lastConsoleTime = now;
-//             console.warn.apply(this, args);
-//         };
-//     })();
-// }
-
 const inBrowser = typeof window !== 'undefined';
 
 if (inBrowser) {
+// if (process.env.UMD === 'true') {
     if (window.Easycanvas) {
         console.warn('[Easycanvas] already loaded, it should be loaded only once.');
     } else {
@@ -101,10 +77,20 @@ if (inBrowser) {
                     "background:transparent");
             }, 500);
         }
-        if (process.env.UMD === 'true') {
-            window.Easycanvas = Easycanvas;
-        }
+        window.Easycanvas = Easycanvas;
     }
 }
 
 export default Easycanvas;
+
+export {
+    Painter,
+    ImgLoader,
+    imgPretreat,
+    multlineText,
+    Transition,
+    tick,
+    utils,
+    extend,
+    Sprite,
+};

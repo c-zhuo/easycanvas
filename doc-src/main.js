@@ -34,7 +34,7 @@ const Analyze = function (str) {
     $app.width = w;
     $app.height = h;
 
-    window.$Doc = new Easycanvas.painter();
+    window.$Doc = new Easycanvas.Painter();
 
     $Doc.register($app, {
         events: {
@@ -217,6 +217,7 @@ const Analyze = function (str) {
                         <head>
                             <style>body {margin: 0;} canvas {border:1px solid #ddd;}</style>
                             <script src="./lib/easycanvas/easycanvas.standalone.prod.js"></script>
+                            <script src="./lib/easycanvas/components.standalone.prod.js"></script>
                         </head>
                         <body>
                             ${code}

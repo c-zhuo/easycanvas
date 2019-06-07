@@ -11,7 +11,7 @@ var env = 'development';
 
 var mkdirp = require('mkdirp');
 
-var js = glob.sync('./src/*.js').reduce(function (prev, curr) {
+var js = base.js('*.js').reduce(function (prev, curr) {
     prev[curr.slice(2, -3).replace('src', 'build')] = [curr];
     return prev;
 }, {});
@@ -24,32 +24,35 @@ Object.assign(js, glob.sync('./demos/js/*.js').reduce(function (prev, curr) {
     return prev;
 }, {}));
 
+// faster in develop
+// var html = glob.sync('./demos/webpack-loader.html').map(function (item) {
 var html = glob.sync('./demos/*.html').map(function (item) {
     return new HtmlWebpackPlugin({
         data: {
             env: env
         },
         filename: item.substr(0),
-        template: 'ejs-compiled!' + item,
+        template: item,
         inject: false
     });
 });
 
 var config = {
+    mode: env,
     entry: js,
     resolve: base.resolve,
     output: {
         path: path.resolve('./dev/'),
-        filename: '[name].js'
+        filename: '[name].js',
+        globalObject: 'this',
     },
     module: {
-        loaders: base.loaders,
+        rules: base.module.rules,
         noParse: [
             /src\/lib\//
         ],
         // path.join(__dirname, '../src/lib')
     },
-    babel: base.babel,
     plugins: ([
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(env)
@@ -64,18 +67,10 @@ var config = {
             }
         ]),
     ]).concat(html),
-    node: base.node,
-    debug: false,
-    bail: true
+
+    devServer: base.devServer,
 };
 
-config.debug = true;
-config.bail = false;
 config.devtool = '#cheap-module-eval-source-map';
-config.plugins = config.plugins.concat([
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-]);
-config.devServer = base.devServer;
 
 module.exports = config;

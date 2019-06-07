@@ -12,15 +12,15 @@
         // Easycanvas.component(Component.text, "text");
 
         function createCanvas (options) {
-           return new Easycanvas.painter(options);
+           return new Easycanvas.Painter(options);
         }
 
         function createSprite (options) {
-           return new Easycanvas.sprite(options);
+           return new Easycanvas.Sprite(options);
         }
 
 
-        const $app = new Easycanvas.painter({
+        const $app = new Easycanvas.Painter({
            el: '#app',
            width: 750,
            height: 1334

@@ -14,7 +14,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter();
+                    var $app = new Easycanvas.Painter();
                     $app.register(document.getElementById('app'), {
                         width: 800,
                         height: 800,
@@ -57,7 +57,7 @@ module.exports = `
                                     textures: item.LayerElementUV[0].UV.a,
                                     hasAlpha: true,
                                     rx: 111,
-                                    rz: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                                    rz: Easycanvas.Transition.linear(0, 360, 5000).loop(),
                                 }),
                             });
                         }

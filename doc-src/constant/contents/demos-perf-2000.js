@@ -7,9 +7,9 @@ module.exports = `
                 </body>
 
                 <script>
-                    Easycanvas.imgLoader.cacheCanvas = true;
+                    Easycanvas.ImgLoader.cacheCanvas = true;
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -24,8 +24,8 @@ module.exports = `
                                     img: ball,
                                 },
                                 style: {
-                                    left: Easycanvas.transition.pendulum(0, 400, Math.random() * 5000 + 5000).loop(),
-                                    top: Easycanvas.transition.pendulum(400, 0, Math.random() * 5000 + 5000).loop(),
+                                    left: Easycanvas.Transition.pendulum(0, 400, Math.random() * 5000 + 5000).loop(),
+                                    top: Easycanvas.Transition.pendulum(400, 0, Math.random() * 5000 + 5000).loop(),
                                     width: 20, height: 20,
                                     zIndex: j,
                                 },

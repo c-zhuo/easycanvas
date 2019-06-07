@@ -1,15 +1,17 @@
-import Button from './components/button.js';
-import Image from './components/image.js';
-import Scroll from './components/scroll.js';
-import Sequence from './components/sequence.js';
-import Text from './components/text.js';
-import View from './components/view.js';
+import Button from './components/Button.js';
+import Image from './components/Image.js';
+import Scroll from './components/Scroll.js';
+import Sequence from './components/Sequence.js';
+import Text from './components/Text.js';
+import RichText from './components/RichText';
+import View from './components/View.js';
 
-export {
-	Button,
-	Image,
-	Scroll,
-	Sequence,
-	Text,
-	View,
-};
+// export {
+// 	Button,
+// 	Image,
+// 	Scroll,
+// 	Sequence,
+// 	Text,
+// 	View,
+// 	RichText
+// };

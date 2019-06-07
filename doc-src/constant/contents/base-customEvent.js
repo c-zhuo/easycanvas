@@ -2,9 +2,9 @@ module.exports = `
     <article id="自定义事件">
         <h1>自定义事件</h1>
 
-        <p>自定义事件一般用于处理多个sprite之间的互相影响。</p>
+        <p>自定义事件一般用于处理多个Sprite之间的互相影响。</p>
         
-        <p>可以通过on和off来为每个sprite对象绑定和解除自定义事件，然后通过trigger和broadcast触发。其中<strong>broadcast触发的事件广播不仅会在自身触发，还会传递给它的所有children；trigger只会在自身触发，不会向下传递</strong>。例如下例：</p>
+        <p>可以通过on和off来为每个Sprite对象绑定和解除自定义事件，然后通过trigger和broadcast触发。其中<strong>broadcast触发的事件广播不仅会在自身触发，还会传递给它的所有children；trigger只会在自身触发，不会向下传递</strong>。例如下例：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -19,13 +19,13 @@ module.exports = `
                 <script>
                     var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
                     });
 
-                    var $parent = new Easycanvas.sprite({
+                    var $parent = new Easycanvas.Sprite({
                         content: {
                             img: G,
                         },
@@ -53,7 +53,7 @@ module.exports = `
 
                     var add90Deg = function () {
                         var currentRotate = this.getStyle('rotate');
-                        this.style.rotate = Easycanvas.transition.linear(currentRotate, currentRotate + 90, 500);
+                        this.style.rotate = Easycanvas.Transition.linear(currentRotate, currentRotate + 90, 500);
                     };
 
                     $parent.on('add90Deg', add90Deg);
@@ -73,7 +73,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>这上面例子中，如果频繁点击第二个按钮（在parent广播事件），可以看到child1会连续旋转，而child2不会。即使我们给parent也加上3秒的throttle，频繁触发broadcast的时候，child1仍然可以连续旋转。这是因为<strong>各个sprite对同一个事件的throttle是独立的</strong>。</p>
+        <p>这上面例子中，如果频繁点击第二个按钮（在parent广播事件），可以看到child1会连续旋转，而child2不会。即使我们给parent也加上3秒的throttle，频繁触发broadcast的时候，child1仍然可以连续旋转。这是因为<strong>各个Sprite对同一个事件的throttle是独立的</strong>。</p>
 
         <p>自定义事件可以传递一些参数，例如下例：</p>
 
@@ -90,13 +90,13 @@ module.exports = `
                 <script>
                     var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
                     });
 
-                    var $parent = new Easycanvas.sprite({
+                    var $parent = new Easycanvas.Sprite({
                         content: {
                             img: G,
                         },
@@ -124,7 +124,7 @@ module.exports = `
 
                     var addDeg = function (deg) {
                         var currentRotate = this.self().rotate;
-                        this.style.rotate = Easycanvas.transition.linear(currentRotate, currentRotate + deg, 500);
+                        this.style.rotate = Easycanvas.Transition.linear(currentRotate, currentRotate + deg, 500);
                     };
 
                     $parent.on('addDeg', addDeg);

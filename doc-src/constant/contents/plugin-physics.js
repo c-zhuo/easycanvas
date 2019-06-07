@@ -4,7 +4,7 @@ module.exports = `
 
         <p>Easycanvas使用的物理引擎是chipmunk，这个引擎拥有c与js版本，被Cocos2d、Hilo使用。</p>
 
-        <p>这里将介绍如何给sprite一些物理规则，产生重力、碰撞的效果，以及如何对他们施加力、自定义碰撞的处理等。</p>
+        <p>这里将介绍如何给Sprite一些物理规则，产生重力、碰撞的效果，以及如何对他们施加力、自定义碰撞的处理等。</p>
         
         <h2>引入方式</h2>
 
@@ -26,11 +26,11 @@ module.exports = `
 
         <h2>重力、弹力、摩擦</h2>
 
-        <p>物理引擎插件是对Easycanvas的sprite类进行扩展。<strong>在创建一个sprite实例时，指定了physics属性，这个实例才可以使用下列由physics插件提供的物理API</strong>。</p>
+        <p>物理引擎插件是对Easycanvas的Sprite类进行扩展。<strong>在创建一个Sprite实例时，指定了physics属性，这个实例才可以使用下列由physics插件提供的物理API</strong>。</p>
 
-        <p>sprite类的physics对象包含shape（形状）、mass（质量）、friction（摩擦系数，通常0～1之间）、elasticity（弹性系数，通常0～1之间）、collisionType（碰撞类型，后面会详细介绍）、static（是否静态）等。这些属性有的会相互覆盖，例如一个sprite是静态的物理对象（static为true），那么他的mass（质量）其实没有任何作用。</p>
+        <p>Sprite类的physics对象包含shape（形状）、mass（质量）、friction（摩擦系数，通常0～1之间）、elasticity（弹性系数，通常0～1之间）、collisionType（碰撞类型，后面会详细介绍）、static（是否静态）等。这些属性有的会相互覆盖，例如一个Sprite是静态的物理对象（static为true），那么他的mass（质量）其实没有任何作用。</p>
 
-        <p><strong>拥有物理属性的sprite并不会一开始就遵循物理规则，需要通过launch或者physicsOn方法来开始运算</strong>。当我们在一个sprite上调用launch方法，那么这个sprite将成为一个物理容器（更准确的说，是一个物理空间space），其内部的物理规则才会启用，例如物理计算的时间粒度、内部重力系数。如下例：</p>
+        <p><strong>拥有物理属性的Sprite并不会一开始就遵循物理规则，需要通过launch或者physicsOn方法来开始运算</strong>。当我们在一个Sprite上调用launch方法，那么这个Sprite将成为一个物理容器（更准确的说，是一个物理空间space），其内部的物理规则才会启用，例如物理计算的时间粒度、内部重力系数。如下例：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -43,16 +43,16 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter();
+                    var $app = new Easycanvas.Painter();
                     $app.register(document.getElementById('app'), {
                         width: 400,
                         height: 400,
                     });
                     $app.start();
 
-                    var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
+                    var BALL = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
 
-                    var $space = new Easycanvas.sprite({
+                    var $space = new Easycanvas.Sprite({
                         physics: {
                             gravity: 1,
                             accuracy: 1,
@@ -63,7 +63,7 @@ module.exports = `
                     // 从这个时刻启，$space的物理规则生效
                     $space.launch();
 
-                    var $letterG = new Easycanvas.sprite({
+                    var $letterG = new Easycanvas.Sprite({
                         name: 'ball',
                         content: {
                             img: BALL,
@@ -88,7 +88,7 @@ module.exports = `
                     // 从这个时刻启，$letterG的物理运算将开启（会开始下落）
                     $letterG.physicsOn();
 
-                    var $border = $space.add(new Easycanvas.sprite({
+                    var $border = $space.add(new Easycanvas.Sprite({
                         physics: {
                             shape: [
                                 // 这里是由四条线段围成的方框，作为边界
@@ -116,7 +116,7 @@ module.exports = `
 
         <h2>施加力和速度</h2>
 
-        <p>除了上面的API，每一个物理sprite对象还拥有physicsApplyForce（施加力）、physicsResetForces（清除力）、physicsSetVelocity（设置速度）、physicsGetVelocity（获取速度）等API，例如：</p>
+        <p>除了上面的API，每一个物理Sprite对象还拥有physicsApplyForce（施加力）、physicsResetForces（清除力）、physicsSetVelocity（设置速度）、physicsGetVelocity（获取速度）等API，例如：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -129,16 +129,16 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter();
+                    var $app = new Easycanvas.Painter();
                     $app.register(document.getElementById('app'), {
                         width: 400,
                         height: 400,
                     });
                     $app.start();
 
-                    var BALL = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
+                    var BALL = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
 
-                    var $space = new Easycanvas.sprite({
+                    var $space = new Easycanvas.Sprite({
                         physics: {
                             gravity: 1,
                             accuracy: 2,
@@ -148,7 +148,7 @@ module.exports = `
 
                     $space.launch();
 
-                    var $letterG = new Easycanvas.sprite({
+                    var $letterG = new Easycanvas.Sprite({
                         name: 'ball',
                         content: {
                             img: BALL,
@@ -187,7 +187,7 @@ module.exports = `
                         $letterG.physicsResetForces();
                     }, 1000)
 
-                    var $border = $space.add(new Easycanvas.sprite({
+                    var $border = $space.add(new Easycanvas.Sprite({
                         physics: {
                             shape: [
                                 [[0, 0], [0, 400]],
@@ -216,7 +216,7 @@ module.exports = `
 
         <h2>API</h2>
 
-        <p>物理容器和物理对象都通过new Easycanvas.sprite方法创建，创建时必须含有physics参数。</p>
+        <p>物理容器和物理对象都通过new Easycanvas.Sprite方法创建，创建时必须含有physics参数。</p>
 
         <p>创建物理容器时，physics需要以下两个参数，之后可以通过launch方法启动内部物理规则。</p>
 
@@ -292,7 +292,7 @@ module.exports = `
             <tbody>
                 <tr>
                     <td align="left">physicsOff()</td>
-                    <td align="left">停止当前的物理规则运算（可以修改sprite.physics对象的参数后重新调用physicsOn，）</td>
+                    <td align="left">停止当前的物理规则运算（可以修改Sprite.physics对象的参数后重新调用physicsOn，）</td>
                 </tr>
                 <tr>
                     <td align="left">physicsSetVelocity({x: Number, y: Number})</td>
@@ -361,15 +361,15 @@ module.exports = `
             <tbody>
                 <tr>
                     <td align="left">this</td>
-                    <td align="left">钩子中的this指向当前sprite对象</td>
+                    <td align="left">钩子中的this指向当前Sprite对象</td>
                 </tr>
                 <tr>
                     <td align="left">b</td>
-                    <td align="left">指向发生碰撞的另一个sprite对象</td>
+                    <td align="left">指向发生碰撞的另一个Sprite对象</td>
                 </tr>
                 <tr>
                     <td align="left">type</td>
-                    <td align="left">发生碰撞的另一个sprite对象的碰撞类型，等于b.physics.collisionType</td>
+                    <td align="left">发生碰撞的另一个Sprite对象的碰撞类型，等于b.physics.collisionType</td>
                 </tr>
                 <tr>
                     <td align="left">cp</td>
@@ -377,7 +377,7 @@ module.exports = `
                 </tr>
                 <tr>
                     <td align="left">space</td>
-                    <td align="left">物理空间，是一个chipmunk的Space对象。space.$sprite将指向物理容器的sprite实例。更多的API见<a target="_blank" href="http://wingedrobin.github.io/Chipmunk-js/cp.Space.html">这里</a></td>
+                    <td align="left">物理空间，是一个chipmunk的Space对象。space.$Sprite将指向物理容器的Sprite实例。更多的API见<a target="_blank" href="http://wingedrobin.github.io/Chipmunk-js/cp.Space.html">这里</a></td>
                 </tr>
             </tbody>
         </table>

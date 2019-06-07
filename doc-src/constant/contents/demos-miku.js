@@ -13,7 +13,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -22,7 +22,7 @@ module.exports = `
                         }
                     });
 
-                    var miku = $app.add(new Easycanvas.class.sprite({
+                    var miku = $app.add(new Easycanvas.Sprite({
                         style: {
                             left: 180, top: 350,
                         },

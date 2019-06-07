@@ -8,7 +8,7 @@
     <canvas id="app"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             fullScreen: true
         });
@@ -21,9 +21,9 @@
             'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
             'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/btn.png',
         ];
-        var fadeTypes = window.Easycanvas.sprite.prototype.fade.types;
+        var fadeTypes = window.Easycanvas.Sprite.prototype.fade.types;
 
-        $above = new Easycanvas.sprite({
+        $above = new Easycanvas.Sprite({
             name: 'init',
             content: {
                 img: imgList[imgIndex % imgList.length],
@@ -52,7 +52,7 @@
                     once();
                 });
 
-            $below = new Easycanvas.sprite({
+            $below = new Easycanvas.Sprite({
                 name: 'added',
                 content: {
                     img: imgList[imgIndex % imgList.length],

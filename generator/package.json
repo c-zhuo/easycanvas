@@ -1,8 +1,14 @@
 {
-    "name": "create-easycanvas",
+    "name": "easycanvas-gen",
     "version": "1.0.0",
     "description": "A CLI to bootstrap my new projects",
     "main": "index.js",
+    "files": [
+        "./bin",
+        "./template-jsx",
+        "index.js",
+        "gen.js"
+    ],
     "bin": {
         "@c-zhuo/create-easycanvas": "bin/create-easycanvas",
         "create-easycanvas": "bin/create-easycanvas"
@@ -16,8 +22,9 @@
     "keywords": [
         "cli"
     ],
-    "author": "c-zhuo",
+    "author": "chenzhuo04",
     "license": "MIT",
+    "homepage": "https://c-zhuo.github.io/easycanvas/",
     "dependencies": {
         "esm": "^3.2.18",
         "ncp": "^2.0.0"

@@ -18,7 +18,7 @@
     <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             webgl2: {
                 // fudgeFactor: 1,
@@ -27,10 +27,10 @@
                 //     // rx: 300,
                 //     // ry: 300,
                 //     // rz: 1,
-                //     // rx: Easycanvas.transition.pendulum(-180, 180, 1000).loop(),
-                //     ry: Easycanvas.transition.pendulum(-1800, 1800, 1000).loop(),
-                //     // ry: Easycanvas.transition.pendulum(100, 150, 1000).loop(),
-                //     // rz: Easycanvas.transition.pendulum(400, 500, 1000).loop(),
+                //     // rx: Easycanvas.Transition.pendulum(-180, 180, 1000).loop(),
+                //     ry: Easycanvas.Transition.pendulum(-1800, 1800, 1000).loop(),
+                //     // ry: Easycanvas.Transition.pendulum(100, 150, 1000).loop(),
+                //     // rz: Easycanvas.Transition.pendulum(400, 500, 1000).loop(),
                 // }
             },
         });
@@ -38,13 +38,14 @@
 
         var G = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
 
-        var sprite = $app.add({
+        var Sprite = $app.add({
             style: {
                 left: 250, top: 290,
                 width: 160, height: 20,
                 locate: 'center',
                 textAlign: 'right',
-                textFont: '44px monospace',
+                fontSize: '44px',
+                fontFamily: 'monospace',
                 color: 'rgba(255, 165, 0, 1)',
                 zIndex: 10,
             },
@@ -54,9 +55,9 @@
             webgl: window.Easycanvas.webglShapes.block({
                 a: 30, b: 50, c: 40,
                 img: G,
-                rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-                ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
-                rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 2000).loop(),
+                rx: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                ry: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
+                rz: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 2000).loop(),
                 // colors: [
                 //     Math.random() * 255,
                 //     Math.random() * 255,
@@ -75,13 +76,13 @@
             }]
         });
 
-        sprite = $app.add({
+        Sprite = $app.add({
             style: {
                 left: 250, top: 200,
                 width: 160, height: 20,
                 locate: 'center',
                 textAlign: 'right',
-                textFont: '44px monospace',
+                fontSize: 44,
                 color: 'rgba(255, 165, 0, 1)',
             },
             content: {
@@ -90,14 +91,14 @@
             },
         });
 
-        sprite = $app.add({
+        Sprite = $app.add({
             style: {
-                left: Easycanvas.transition.pendulum(-200, 200, 13000).loop(),
-                top: Easycanvas.transition.pendulum(-200, 200, 16000).loop(),
+                left: Easycanvas.Transition.pendulum(-200, 200, 13000).loop(),
+                top: Easycanvas.Transition.pendulum(-200, 200, 16000).loop(),
                 width: 160, height: 20,
                 locate: 'center',
                 textAlign: 'right',
-                textFont: '44px Courier New',
+                fontSize: 44,
                 color: 'rgba(255, 165, 0, 1)',
             },
             content: {
@@ -128,10 +129,10 @@
             // var ball = window.Easycanvas.webglShapes.ball({
             //     r: 50,
             //     // img: G,
-            //     tz: Easycanvas.transition.pendulum(-3000, 3000, 4000).loop(),
-            //     rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-            //     ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
-            //     rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 2000 + 2000).loop(),
+            //     tz: Easycanvas.Transition.pendulum(-3000, 3000, 4000).loop(),
+            //     rx: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+            //     ry: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
+            //     rz: Easycanvas.Transition.pendulum(0, 360, Math.random() * 2000 + 2000).loop(),
             //     colors: [
             //         Math.random() * 255,
             //         Math.random() * 255,
@@ -146,7 +147,7 @@
             // // ball.textures = new Float32Array(arrayRepeat(ball.textures, r));
             // // ball.colors = new Uint8Array(arrayRepeat(ball.colors, r));
 
-            // sprite.add({
+            // Sprite.add({
             //     style: {
             //         // left: Math.random() * 500, top: 500,
             //         left: Math.random() * 6000 - 3000,
@@ -163,8 +164,8 @@
 
             $app.add({
                 style: {
-                    left: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-                    top: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                    left: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+                    top: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
                     left: Math.random() * 600,
                     top: Math.random() * 600,
                     zIndex: 10,
@@ -175,9 +176,9 @@
                 webgl: window.Easycanvas.webglShapes.icosahedron({
                     r: 100,
                     img: stone,
-                    rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 52000).loop(),
-                    ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 32000).loop(),
-                    rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 22000).loop(),
+                    rx: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 52000).loop(),
+                    ry: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 32000).loop(),
+                    rz: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 22000).loop(),
                     colors2: [
                         Math.random() * 255,
                         Math.random() * 255,
@@ -196,8 +197,8 @@
         //     if (i % 500 === 400) container = lastChild;
         //     lastChild = container.add({
         //         style: {
-        //             left: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-        //             top: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+        //             left: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+        //             top: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
         //             left: Math.random() * 600 - 4000,
         //             top: Math.random() * 600,
         //             zIndex: 10,
@@ -213,9 +214,9 @@
         //         // webgl: window.Easycanvas.webglShapes.block({
         //         //     a: 30, b: 50, c: 40,
         //         //     // img: G,
-        //         //     rx: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
-        //         //     ry: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
-        //         //     rz: Easycanvas.transition.pendulum(0, 360, Math.random() * 5000 + 2000).loop(),
+        //         //     rx: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 5000).loop(),
+        //         //     ry: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 3000).loop(),
+        //         //     rz: Easycanvas.Transition.pendulum(0, 360, Math.random() * 5000 + 2000).loop(),
         //         //     colors: [
         //         //         Math.random() * 255,
         //         //         Math.random() * 255,

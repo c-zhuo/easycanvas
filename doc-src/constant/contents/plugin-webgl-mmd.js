@@ -36,7 +36,7 @@ module.exports = `
 
         <h2>导入MMD模型</h2>
 
-        <p>可以通过为sprite类的webgl追加mmd属性来导入MMD模型。mmd属性的值为MMD文件的地址，将在sprite对象创建时发起加载，异步加载成功后进行渲染，如下例：</p>
+        <p>可以通过为Sprite类的webgl追加mmd属性来导入MMD模型。mmd属性的值为MMD文件的地址，将在Sprite对象创建时发起加载，异步加载成功后进行渲染，如下例：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -50,14 +50,14 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                         webgl: true, // 开启WebGL渲染
                     });
 
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.Sprite({
                         style: {
                             left: 180, top: 350,
                             zIndex: Math.random(),
@@ -66,8 +66,8 @@ module.exports = `
                             imgPath: '../resource/mmd/model/mokou/',
                             pmd: '../resource/mmd/model/default/miku_v2.pmd',
                             rz: 180,
-                            ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
-                            scale: Easycanvas.transition.pendulum(10, 15, 3000).loop(),
+                            ry: Easycanvas.Transition.linear(0, 360, 5000).loop(),
+                            scale: Easycanvas.Transition.pendulum(10, 15, 3000).loop(),
                         }
                     }));
 
@@ -92,7 +92,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -101,7 +101,7 @@ module.exports = `
                         }
                     });
 
-                    $app.add(new Easycanvas.class.sprite({
+                    $app.add(new Easycanvas.Sprite({
                         style: {
                             left: 180, top: 350,
                             zIndex: Math.random(),
@@ -110,8 +110,8 @@ module.exports = `
                             imgPath: '../resource/mmd/model/mokou/',
                             pmd: '../resource/mmd/model/default/miku_v2.pmd',
                             rz: 180,
-                            ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
-                            scale: Easycanvas.transition.pendulum(10, 15, 3000).loop(),
+                            ry: Easycanvas.Transition.linear(0, 360, 5000).loop(),
+                            scale: Easycanvas.Transition.pendulum(10, 15, 3000).loop(),
                         }
                     }));
 
@@ -135,7 +135,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -144,7 +144,7 @@ module.exports = `
                         }
                     });
 
-                    var miku = $app.add(new Easycanvas.class.sprite({
+                    var miku = $app.add(new Easycanvas.Sprite({
                         style: {
                             left: 180, top: 350,
                         },
@@ -180,7 +180,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,

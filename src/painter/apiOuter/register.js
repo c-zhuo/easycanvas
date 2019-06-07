@@ -46,6 +46,10 @@ module.exports = function (dom, option) {
     if (_option.fullScreen && typeof document !== 'undefined') {
         dom.width = dom.style.width = document.body.clientWidth || document.documentElement.clientWidth;
         dom.height = dom.style.height = document.body.clientHeight || document.documentElement.clientHeight;
+        if (_option.dpr) {
+            dom.width *= _option.dpr;
+            dom.height *= _option.dpr;
+        }
     }
 
     if (process.env.NODE_ENV !== 'production') {

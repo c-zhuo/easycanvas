@@ -138,8 +138,8 @@ module.exports = function () {
                 }
 
                 // let originScale = $sprite.style.scale;
-                // $sprite.style.scale = Easycanvas.transition.linear(1, 1.2, 100).then(() => {
-                //     $sprite.style.scale = Easycanvas.transition.linear(1.2, 1, 100).then(() => {
+                // $sprite.style.scale = Easycanvas.Transition.linear(1, 1.2, 100).then(() => {
+                //     $sprite.style.scale = Easycanvas.Transition.linear(1.2, 1, 100).then(() => {
                 //         $sprite.style.scale = originScale;
                 //     });
                 // });
@@ -195,9 +195,10 @@ module.exports = function () {
                                 height: 32,
                                 color: 'orange',
                                 backgroundColor: 'black',
-                                textVerticalAlign: 'top',
+                                textVerticalAlign: 'middle',
                                 textAlign: 'center',
-                                textFont: textFont,
+                                fontSize: parseInt(textFont),
+                                fontFamily: 'san-serif',
                             },
                             hooks: {
                                 beforeTick () {
@@ -248,7 +249,8 @@ module.exports = function () {
                                 color: 'black',
                                 textVerticalAlign: 'middle',
                                 textAlign: 'center',
-                                textFont: textFontSmall,
+                                fontSize: parseInt(textFontSmall),
+                                fontFamily: 'san-serif',
                             },
                             data: {},
                             hooks: {
@@ -282,7 +284,8 @@ module.exports = function () {
                                 color: 'black',
                                 textVerticalAlign: 'middle',
                                 textAlign: 'center',
-                                textFont: textFontSmall,
+                                fontSize: parseInt(textFontSmall),
+                                fontFamily: 'san-serif',
                             },
                             data: {},
                             hooks: {

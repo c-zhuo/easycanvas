@@ -1,27 +1,43 @@
-'use strict';
-var base = require('./webpack.config.base.js');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var webpack = require('webpack');
-var path = require('path');
+const base = require('./webpack.config.base.js');
+const TerserPlugin = require('terser-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
 
-var env = 'development';
+const env = 'development';
 
-var config = {
+const config = {
     resolve: base.resolve,
     output: {
         path: path.resolve('./dev/'),
         filename: '[name].js',
     },
+    optimization: {
+        minimizer: [
+            new TerserPlugin({
+                cache: env === 'development',
+                parallel: true,
+                terserOptions: {
+                    ecma: 6,
+                    compress: {},
+                    toplevel: true,
+                    ie8: true,
+                }
+            }),
+        ]
+    },
     module: {
-        loaders: base.loaders.concat([{
+        rules: base.module.rules.concat([{
             test: /\.scss$/,
-            loaders: ['css', 'sass']
+            use: [
+                {
+                    loader: 'css-loader',
+                }, {
+                    loader: 'sass-loader',
+                },
+            ]
         }])
     },
-    babel: base.babel,
-    node: base.node,
-    debug: false,
-    bail: true,
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(env)

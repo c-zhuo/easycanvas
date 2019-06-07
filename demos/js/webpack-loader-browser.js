@@ -2,11 +2,11 @@ let code1 = window.EasycanvasJSXTransformer('var a = <b />');
 console.log(code1);
 
 let demoCode = `
-	const Sprite = Easycanvas.class.sprite;
+	const Sprite = Easycanvas.Sprite;
 	const Image = Easycanvas.class.image;
 	const Text = Easycanvas.class.text;
 
-	var $app = new Easycanvas.painter();
+	var $app = new Easycanvas.Painter();
 	var a = {b: 2,c: $app}
 	$app.register(document.getElementById('app'));
 	$app.start();
@@ -20,19 +20,19 @@ let demoCode = `
 	//         }
 	//     };
 
-	window.Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+	window.Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
 	    let content = {
 	        img: img
 	    };
 
-	    window.SPRITE_JSX_1 = $app.add(
+	    window.Sprite_JSX_1 = $app.add(
 	        <Sprite
 	            name='root'
 	            content={content}
 	            style={{
 	                width: 40, height: 20,
 	                cutLeft: 0, cutTop: 0,
-	                left: Easycanvas.transition.ease(111, 422, 5500).loop(),
+	                left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
 	                top: 80,
 	            }}
 	            events={{
@@ -48,14 +48,14 @@ let demoCode = `
 	                style={{
 	                    width: 20, height: 20,
 	                    cutLeft: 0, cutTop: 0,
-	                    left: Easycanvas.transition.ease(111, 422, 5500).loop(),
+	                    left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
 	                    top: 80,
 	                }}
 	            />
 	        </Sprite>
 	    );
 
-	    window.SPRITE_JSX_2 = $app.add({
+	    window.Sprite_JSX_2 = $app.add({
 	        name: 'root',
 	        content: {
 	            img: img,
@@ -63,7 +63,7 @@ let demoCode = `
 	        style: {
 	            width: 40, height: 20,
 	            cutLeft: 0, cutTop: 0,
-	            left: Easycanvas.transition.ease(111, 422, 6500).loop(),
+	            left: Easycanvas.Transition.ease(111, 422, 6500).loop(),
 	            top: 160,
 	            opacity: 0.2,
 	            rotate: 20,
@@ -83,11 +83,11 @@ let demoCode = `
 	        top++;
 	    }, 100);
 
-	    window.SPRITE_JSX_3 = $app.add(
+	    window.Sprite_JSX_3 = $app.add(
 	        <Image
 	            src='https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png'
 	            style={{
-	                left: Easycanvas.transition.ease(111, 222, 3500).loop(),
+	                left: Easycanvas.Transition.ease(111, 222, 3500).loop(),
 	                top: 240,
 	                width: 40, height: 20,
 	                cutLeft: 0, cutTop: 0,
@@ -102,7 +102,7 @@ let demoCode = `
 	            <Image
 	                src='https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png'
 	                style={{
-	                    left: Easycanvas.transition.ease(111, 222, 3500).loop(),
+	                    left: Easycanvas.Transition.ease(111, 222, 3500).loop(),
 	                    top: 40,
 	                    width: 40, height: 20,
 	                    cutLeft: 0, cutTop: 0,
@@ -117,7 +117,7 @@ let demoCode = `
 	            <Text
 	                text='这里是一段多行文本abcdefg1234567！？：.,?'
 	                style={{
-	                    left: Easycanvas.transition.ease(111, 222, 3500).loop(),
+	                    left: Easycanvas.Transition.ease(111, 222, 3500).loop(),
 	                    top: 40,
 	                    width: 240,
 	                    color: '#F00',
@@ -126,7 +126,7 @@ let demoCode = `
 	            />
 	            <Text
 	                style={{
-	                    left: Easycanvas.transition.ease(111, 222, 3500).loop(),
+	                    left: Easycanvas.Transition.ease(111, 222, 3500).loop(),
 	                    top: function () {return this.style.width},
 	                    width: 240,
 	                    color: '#F00',

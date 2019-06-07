@@ -45,15 +45,7 @@ module.exports = `
                     var score = 0, ballLeft = 0, ballCount = 5;
                     var blockArray = [];
 
-                    var $app = new Easycanvas.painter();
-                    var $fpsBox = document.getElementsByClassName('fps')[0];
-                    $app.fpsHandler = function (fps) {
-                        if ($app.$perf && $app.$perf.preprocessTimeSpend) {
-                            $fpsBox.innerText = fps + 'fps,' + $app.$perf.preprocessTimeSpend + ',' + $app.$perf.paintTimeSpend;
-                        } else {
-                            $fpsBox.innerText = fps;
-                        }
-                    };
+                    var $app = new Easycanvas.Painter();
                     // 初始化easycanvas实例
                     $app.register(el, {
                         webgl: {
@@ -111,7 +103,7 @@ module.exports = `
                         });
 
                         // 初始化easycanvas物理引擎
-                        var $space = new Easycanvas.sprite({
+                        var $space = new Easycanvas.Sprite({
                             name: '物理空间',
                             physics: {
                                 gravitop: 2,
@@ -186,7 +178,7 @@ module.exports = `
 
                         function addBall (mouse) {
                             ballLeft++;
-                            var $ball = new Easycanvas.sprite({
+                            var $ball = new Easycanvas.Sprite({
                                 name: '物理小球',
                                 content: {
                                     // img: BALL,
@@ -234,7 +226,7 @@ module.exports = `
                                                 }
 
                                                 ball.toRemove = true;
-                                                ball.style.opacity = Easycanvas.transition.linear(1, 0, 500);
+                                                ball.style.opacity = Easycanvas.Transition.linear(1, 0, 500);
                                                 setTimeout(function () {
                                                     ball.physicsOff();
                                                     ball.remove();
@@ -262,8 +254,8 @@ module.exports = `
                                                                 }, 300)
                                                             }
 
-                                                            block.webgl.rz = Easycanvas.transition.linear(-block.style.rotate, -block.style.rotate + 360, 100 + Math.random() * 200);
-                                                            block.style.top = Easycanvas.transition.linear(block.style.top, block.style.top - 50, 100 + Math.random() * 200);
+                                                            block.webgl.rz = Easycanvas.Transition.linear(-block.style.rotate, -block.style.rotate + 360, 100 + Math.random() * 200);
+                                                            block.style.top = Easycanvas.Transition.linear(block.style.top, block.style.top - 50, 100 + Math.random() * 200);
                                                         });
 
                                                         if (!canShoot) {
@@ -305,10 +297,10 @@ module.exports = `
 
                                                 // 碰撞效果
                                                 var deltaXScale = Math.random() * 0.6 - 0.3;
-                                                block.webgl.scaleX = Easycanvas.transition.pendulum(1 + deltaXScale, 1, 300);
-                                                block.webgl.scaleY = Easycanvas.transition.pendulum(1 - deltaXScale, 1, 300);
-                                                block.webgl.scaleZ = Easycanvas.transition.pendulum(1.3, 1, 300);
-                                                block.webgl.rx = Easycanvas.transition.pendulum(30 + deltaXScale * 50, 20, 300);
+                                                block.webgl.scaleX = Easycanvas.Transition.pendulum(1 + deltaXScale, 1, 300);
+                                                block.webgl.scaleY = Easycanvas.Transition.pendulum(1 - deltaXScale, 1, 300);
+                                                block.webgl.scaleZ = Easycanvas.Transition.pendulum(1.3, 1, 300);
+                                                block.webgl.rx = Easycanvas.Transition.pendulum(30 + deltaXScale * 50, 20, 300);
 
                                                 // 这里直接通过父对象从子对象拿数据，这种数据的依赖方式不好，但是这么简单个应用，无所谓了
                                                 // 更好的是例如通过easycanvas的自定义事件广播下去
@@ -323,10 +315,10 @@ module.exports = `
                                                     block.children[0].style.visible = false;
                                                     blockArray.splice(blockArray.indexOf(block), 1);
 
-                                                    block.webgl.tx = Easycanvas.transition.linear(this.style.left, width / 2 + 40 - Math.random() * 80, Math.random() * 200 + 1000);
-                                                    block.webgl.ty = Easycanvas.transition.linear(this.style.top + 20, height / 2 + 40 - Math.random() * 80, Math.random() * 200 + 600);
-                                                    block.webgl.tz = Easycanvas.transition.linear(0, 9950, Math.random() * 400 + 200);
-                                                    block.webgl.rx = Easycanvas.transition.linear(0, 360, 600);
+                                                    block.webgl.tx = Easycanvas.Transition.linear(this.style.left, width / 2 + 40 - Math.random() * 80, Math.random() * 200 + 1000);
+                                                    block.webgl.ty = Easycanvas.Transition.linear(this.style.top + 20, height / 2 + 40 - Math.random() * 80, Math.random() * 200 + 600);
+                                                    block.webgl.tz = Easycanvas.Transition.linear(0, 9950, Math.random() * 400 + 200);
+                                                    block.webgl.rx = Easycanvas.Transition.linear(0, 360, 600);
 
                                                     setTimeout(function () {
                                                         block.remove();
@@ -379,7 +371,7 @@ module.exports = `
                             var blockSize = isBig ? 50 : 30;
                             var tx = lastBlockPositionX + Math.floor(Math.random() * 20 - 10);
                             var ty = boolAddToBottom ? 500 : height - 100 - Math.floor(Math.random() * 100);
-                            var sprite = $space.add(new Easycanvas.sprite({
+                            var Sprite = $space.add(new Easycanvas.Sprite({
                                 name: '物理方块',
                                 content: {
                                     // img: BLOCK,
@@ -411,7 +403,7 @@ module.exports = `
                                         color: 'yellow',
                                         textAlign: 'center',
                                         textVerticalAlign: 'middle',
-                                        textFont: '16px Arial',
+                                        fontSize: 16,
                                         left: 15, top: 15,
                                         zIndex: 2,
                                     }
@@ -419,25 +411,25 @@ module.exports = `
                                 webgl: window.Easycanvas.webglShapes.block({
                                     a: blockSize, b: blockSize, c: blockSize,
                                     rz: -deg,
-                                    rx: Easycanvas.transition.linear(Math.random() * 1000, 20, Math.random() * 200 + transitionTime),
-                                    ry: Easycanvas.transition.linear(Math.random() * 1000, 20, Math.random() * 200 + transitionTime),
+                                    rx: Easycanvas.Transition.linear(Math.random() * 1000, 20, Math.random() * 200 + transitionTime),
+                                    ry: Easycanvas.Transition.linear(Math.random() * 1000, 20, Math.random() * 200 + transitionTime),
                                     left: tx + 20,
-                                    top: Easycanvas.transition.linear(Math.random() * 300, ty + 10, Math.random() * 200 + transitionTime),
-                                    tz: Easycanvas.transition.linear(-10000, 0, Math.random() * 200 + transitionTime),
+                                    top: Easycanvas.Transition.linear(Math.random() * 300, ty + 10, Math.random() * 200 + transitionTime),
+                                    tz: Easycanvas.Transition.linear(-10000, 0, Math.random() * 200 + transitionTime),
                                     img: isBig ? SUN : BLOCK3D,
                                     // colors: [255,255,100,10],
                                 }),
                             }));
 
                             setTimeout(function () {
-                                sprite.children[0].style.visible = true;
-                                sprite.webgl.top = function () {
-                                    return sprite.getStyle('top') + 10;
+                                Sprite.children[0].style.visible = true;
+                                Sprite.webgl.top = function () {
+                                    return Sprite.getStyle('top') + 10;
                                 };
                             }, transitionTime + 200);
 
-                            sprite.physicsOn();
-                            blockArray.push(sprite);
+                            Sprite.physicsOn();
+                            blockArray.push(Sprite);
 
                             lastBlockPositionX += 50;
                             if (lastBlockPositionX > 350) {
@@ -446,7 +438,7 @@ module.exports = `
                         }
 
                         function addBonus () {
-                            var sprite = $space.add(new Easycanvas.sprite({
+                            var Sprite = $space.add(new Easycanvas.Sprite({
                                 name: '奖励小球',
                                 content: {
                                     // img: BALL,
@@ -463,9 +455,9 @@ module.exports = `
                                 },
                                 webgl: window.Easycanvas.webglShapes.ball({
                                     r: ballSize / 1.5,
-                                    rz: Easycanvas.transition.linear(0, 360, 1800).loop(),
-                                    ry: Easycanvas.transition.linear(0, 360, 2800).loop(),
-                                    rz: Easycanvas.transition.linear(0, 360, 3800).loop(),
+                                    rz: Easycanvas.Transition.linear(0, 360, 1800).loop(),
+                                    ry: Easycanvas.Transition.linear(0, 360, 2800).loop(),
+                                    rz: Easycanvas.Transition.linear(0, 360, 3800).loop(),
                                     img: BALL3D,
                                 }),
                                 style: {
@@ -474,12 +466,12 @@ module.exports = `
                                     top: 500,
                                     locate: 'center',
                                     zIndex: 2,
-                                    fv: Easycanvas.transition.pendulum(0, 0.2, 200).loop(),
-                                    fh: Easycanvas.transition.pendulum(0.2, 0, 200).loop(),
+                                    fv: Easycanvas.Transition.pendulum(0, 0.2, 200).loop(),
+                                    fh: Easycanvas.Transition.pendulum(0.2, 0, 200).loop(),
                                 },
                             }));
-                            sprite.physicsOn();
-                            blockArray.push(sprite);
+                            Sprite.physicsOn();
+                            blockArray.push(Sprite);
 
                             lastBlockPositionX += 50;
                             if (lastBlockPositionX > 350) {
@@ -488,7 +480,7 @@ module.exports = `
                         }
 
                         // 上半部分的边，摩擦小、弹性大
-                        var borderSprite = $space.add(new Easycanvas.sprite({
+                        var borderSprite = $space.add(new Easycanvas.Sprite({
                             name: '边界1',
                             physics: {
                                 shape: [
@@ -509,7 +501,7 @@ module.exports = `
                         borderSprite.physicsOn();
 
                         // 下半部分的边，摩擦大、弹性小
-                        var bottomSprite = $space.add(new Easycanvas.sprite({
+                        var bottomSprite = $space.add(new Easycanvas.Sprite({
                             name: '边界2',
                             physics: {
                                 shape: [
@@ -550,7 +542,7 @@ module.exports = `
                         setInterval(function () {
                             if (Math.random() < 0.5) return;
 
-                            var $sun = new Easycanvas.sprite({
+                            var $sun = new Easycanvas.Sprite({
                                 name: '太阳',
                                 style: {
                                     left: 240 - Math.random() * 80,
@@ -559,10 +551,10 @@ module.exports = `
                                 },
                                 webgl: window.Easycanvas.webglShapes.ball({
                                     r: 1,
-                                    tz: Easycanvas.transition.linear(-9000, 9999, duration),
-                                    rx: Easycanvas.transition.linear(Math.random() * duration * 0.2, Math.random() * duration * 0.2, duration),
-                                    ry: Easycanvas.transition.linear(Math.random() * duration * 0.2, Math.random() * duration * 0.2, duration),
-                                    rz: Easycanvas.transition.linear(Math.random() * duration * 0.2, Math.random() * duration * 0.2, duration),
+                                    tz: Easycanvas.Transition.linear(-9000, 9999, duration),
+                                    rx: Easycanvas.Transition.linear(Math.random() * duration * 0.2, Math.random() * duration * 0.2, duration),
+                                    ry: Easycanvas.Transition.linear(Math.random() * duration * 0.2, Math.random() * duration * 0.2, duration),
+                                    rz: Easycanvas.Transition.linear(Math.random() * duration * 0.2, Math.random() * duration * 0.2, duration),
                                     img: Math.random() < 0.3 ? SUN : METEORITE,
                                 }),
                             });
@@ -585,8 +577,8 @@ module.exports = `
                             name: '碰光圈',
                             style: {
                                 left: x, top: y,
-                                width: Easycanvas.transition.linear(20, 360, 300),
-                                height: Easycanvas.transition.linear(20, 360, 300),
+                                width: Easycanvas.Transition.linear(20, 360, 300),
+                                height: Easycanvas.Transition.linear(20, 360, 300),
                                 zIndex: 9999,
                             },
                             content: {

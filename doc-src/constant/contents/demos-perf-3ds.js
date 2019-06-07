@@ -11,7 +11,7 @@ module.exports = `
                     </body>
 
                     <script>
-                        var $app = new Easycanvas.painter({
+                        var $app = new Easycanvas.Painter({
                             el: '#app',
                             width: 400,
                             height: 400,
@@ -25,7 +25,7 @@ module.exports = `
                             'Material #51': '../resource/game_char/8.jpg',
                         };
 
-                        var rz = Easycanvas.transition.linear(0, 360, 5000).loop();
+                        var rz = Easycanvas.Transition.linear(0, 360, 5000).loop();
 
                         Easycanvas.loader3DS('../resource/game_char/sunnvfashi.3DS', function (data) {
                             data.forEach(function (model) {

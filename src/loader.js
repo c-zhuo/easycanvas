@@ -1,5 +1,12 @@
+/** ********** *
+ *
+ * Accept JSX
+ * - TODO: Separate, https://webpack.js.org/contribute/writing-a-loader/#peer-dependencies.
+ *
+ * ********** **/
+
 const recast = require("recast");
-const acorn = require("acorn");
+// const acorn = require("acorn");
 // const jsx = require("acorn-jsx");
 // const jsxParser = acorn.Parser.extend(jsx());
 const babelParser = require('@babel/parser');
@@ -9,7 +16,7 @@ const JSXElement = 'JSXElement';
 const JSXText = 'JSXText';
 const JSXExpressionContainer = 'JSXExpressionContainer';
 
-const FindingType = ['body', 'expression', 'right', 'declarations', 'init'];
+const FindingType = ['body', 'expression', 'right', 'declarations', 'init', 'arguments', 'argument'];
 
 const astWalker = function (structure, checker, handle) {
     if (!structure) return;
@@ -56,14 +63,29 @@ const JSXElementNode2Sprite = node => {
 
     if (node.children) {
         // avoid JSXText, such as '\n'
-        let children = node.children.filter(child => child.type === JSXElement);
-        if (children.length) {
+        let childrenJSXElement = node.children.filter(child => child.type === JSXElement);
+        if (childrenJSXElement.length) {
             attrMap.push(
                 builders.property('init',
                     builders.identifier('children'),
                     builders.arrayExpression(
-                        children.map(JSXElementNode2Sprite)
+                        childrenJSXElement.map(JSXElementNode2Sprite)
                     )
+                )
+            );
+        }
+
+        let childrenJSXExpressionContainer = node.children.filter(child => child.type === JSXExpressionContainer);
+        if (childrenJSXExpressionContainer.length) {
+            let innerExpression = childrenJSXExpressionContainer[0].expression;
+            // 对于jsx中的{}，可能内部仍然存在JSXElement
+            astWalker(innerExpression, node => {
+                return node.type === JSXElement;
+            }, JSXElementNode2Sprite);
+            attrMap.push(
+                builders.property('init',
+                    builders.identifier('children'),
+                    innerExpression
                 )
             );
         }
@@ -87,7 +109,7 @@ const JSXElementNode2Sprite = node => {
     const objectExpression = builders.objectExpression(attrMap);
 
     // with new:
-    let result = builders.newExpression(builders.identifier(spriteType), [builders.identifier('Easycanvas.sprite'), objectExpression]);
+    let result = builders.newExpression(builders.identifier(spriteType), [objectExpression, builders.identifier('Easycanvas')]);
     // without new:
     // let result = builders.callExpression(builders.identifier(spriteType), [objectExpression]);
 
@@ -104,11 +126,12 @@ const transformer = (source) => {
             // enable jsx and flow syntax
             "jsx",
             "typescript",
-            "dynamicImport"
+            "dynamicImport",
+            "classProperties"
         ]
     }).program;
 
-    let hasJSX = false; // 没有JSX时，不做任何处理，确保空格等内容完全不受影响
+    let hasJSX = false; // 没有JSX时，不做任何处理，确保内容完全不受影响
 
     astWalker(parsedSource, node => {
         return node.type === JSXElement && (hasJSX = true);
@@ -119,9 +142,6 @@ const transformer = (source) => {
 
 const loader = function (source, inputSourceMap) {
     const parsedSource = transformer(source);
-
-    // console.log('source');
-    // console.log(source);
 
     this.callback(null, parsedSource, inputSourceMap);
 };

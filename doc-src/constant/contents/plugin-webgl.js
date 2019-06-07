@@ -46,21 +46,21 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                         webgl: true, // 开启WebGL渲染
                     });
 
-                    var $letterG = new Easycanvas.sprite({
+                    var $letterG = new Easycanvas.Sprite({
                         content: {
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
                         style: {
                             width: 50,
                             height: 50,
-                            left: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
+                            left: Easycanvas.Transition.pendulum(50, 150, 3000).loop(),
                             top: 100,
                         },
                         events: {
@@ -81,7 +81,7 @@ module.exports = `
 
         <h2>常见3D形状</h2>
 
-        <p>在支持WebGL的浏览器中，如果要展示3D形状，可以向sprite类增加webgl参数。引入了WebGL插件之后，会向Easycanvas.webglShapes挂载一些基本的几何体。例如下例是一个旋转的立方体：</p>
+        <p>在支持WebGL的浏览器中，如果要展示3D形状，可以向Sprite类增加webgl参数。引入了WebGL插件之后，会向Easycanvas.webglShapes挂载一些基本的几何体。例如下例是一个旋转的立方体：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -94,21 +94,21 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                         webgl: true, // 开启WebGL渲染
                     });
 
-                    var $letterG = new Easycanvas.sprite({
+                    var $letterG = new Easycanvas.Sprite({
                         style: {
                             left: 100, top: 200,
                         },
                         webgl: Easycanvas.webglShapes.block({
                             a: 20, b: 40, c: 80,
-                            rx: Easycanvas.transition.linear(0, 360, 1000).loop(),
-                            ry: Easycanvas.transition.linear(0, 360, 2000).loop(),
+                            rx: Easycanvas.Transition.linear(0, 360, 1000).loop(),
+                            ry: Easycanvas.Transition.linear(0, 360, 2000).loop(),
                             rz: 45,
                             colors: [
                                 255,255,0,
@@ -139,7 +139,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -148,26 +148,26 @@ module.exports = `
 
                     var stone = $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/stone.jpg');
 
-                    var $stone1 = new Easycanvas.sprite({
+                    var $stone1 = new Easycanvas.Sprite({
                         style: {
                             left: 100, top: 200,
                         },
                         webgl: Easycanvas.webglShapes.ball({
                             r: 80, b: 40,
-                            rx: Easycanvas.transition.linear(0, 360, 1000).loop(),
-                            ry: Easycanvas.transition.linear(0, 360, 2000).loop(),
+                            rx: Easycanvas.Transition.linear(0, 360, 1000).loop(),
+                            ry: Easycanvas.Transition.linear(0, 360, 2000).loop(),
                             rz: 45,
                             img: stone
                         }),
                     });
-                    var $stone2 = new Easycanvas.sprite({
+                    var $stone2 = new Easycanvas.Sprite({
                         style: {
                             left: 300, top: 200,
                         },
                         webgl: Easycanvas.webglShapes.ball({
                             r: 80, b: 10,
-                            rx: Easycanvas.transition.linear(0, 360, 1000).loop(),
-                            ry: Easycanvas.transition.linear(0, 360, 2000).loop(),
+                            rx: Easycanvas.Transition.linear(0, 360, 1000).loop(),
+                            ry: Easycanvas.Transition.linear(0, 360, 2000).loop(),
                             rz: 45,
                             img: stone
                         }),
@@ -195,22 +195,22 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                         webgl: true, // 开启WebGL渲染
                     });
 
-                    var $stone = new Easycanvas.sprite({
+                    var $stone = new Easycanvas.Sprite({
                         style: {
                             left: 200, top: 200,
                         },
                         webgl: Easycanvas.webglShapes.block({
                             a: 40, b: 60, c: 80,
-                            scale: Easycanvas.transition.pendulum(2, 1, 3000).loop(),
-                            scaleX: Easycanvas.transition.pendulum(1, 2, 3000).loop(),
-                            ry: Easycanvas.transition.linear(0, 360, 20000).loop(),
+                            scale: Easycanvas.Transition.pendulum(2, 1, 3000).loop(),
+                            scaleX: Easycanvas.Transition.pendulum(1, 2, 3000).loop(),
+                            ry: Easycanvas.Transition.linear(0, 360, 20000).loop(),
                             rz: 45,
                             img: 'https://raw.githubusercontent.com/c-zhuo/tanyitan/3d/debug/docs/stone.jpg'
                         }),
@@ -280,7 +280,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -310,7 +310,7 @@ module.exports = `
                         }
                     }
 
-                    var $random = new Easycanvas.class.sprite({
+                    var $random = new Easycanvas.Sprite({
                         style: {
                             left: 200, top: 200,
                         },
@@ -318,12 +318,12 @@ module.exports = `
                             vertices: vertices,
                             indices: indices,
                             colors: colors,
-                            ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                            ry: Easycanvas.Transition.linear(0, 360, 5000).loop(),
                         }),
                     });
 
                     // 设置一个在0和255之间钟摆运动的函数，用于控制颜色
-                    var getColor = Easycanvas.transition.pendulum(0, 255, 1000).loop();
+                    var getColor = Easycanvas.Transition.pendulum(0, 255, 1000).loop();
                     $random.on('ticked', function (tick) {
                         for (var i = 0, l = count; i < l; i++) {
                             // 给每个rgb值的第一个参数赋值，设置red的比重
@@ -358,17 +358,17 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                         webgl: {
-                            fudgeFactor: Easycanvas.transition.pendulum(0, 50, 1000).loop(),
+                            fudgeFactor: Easycanvas.Transition.pendulum(0, 50, 1000).loop(),
                         }
                     });
 
                     [50, 150, 250, 350].forEach(function (x) {
-                        $app.add(new Easycanvas.sprite({
+                        $app.add(new Easycanvas.Sprite({
                             style: {
                                 left: x, top: 200,
                             },
@@ -401,7 +401,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -428,7 +428,7 @@ module.exports = `
                     });
 
                     [50, 150, 250, 350].forEach(function (x) {
-                        $app.add(new Easycanvas.sprite({
+                        $app.add(new Easycanvas.Sprite({
                             style: {
                                 left: x, top: 200,
                             },
@@ -449,13 +449,13 @@ module.exports = `
                     var rotate = $app.webgl.camera.rotate;
 
                     function changeCamera () {
-                        Easycanvas.transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
-                        Easycanvas.transition(current, 'y', 'ease', Math.random() * 600 - 400, interval);
-                        Easycanvas.transition(target, 'x', 'ease', Math.random() * 100 + 150, interval);
-                        Easycanvas.transition(target, 'y', 'ease', Math.random() * 100 + 150, interval);
-                        Easycanvas.transition(rotate, 'x', 'linear', Math.random() * 2 - 1, interval);
-                        Easycanvas.transition(rotate, 'y', 'linear', Math.random() * 2 - 1, interval);
-                        Easycanvas.transition(rotate, 'z', 'linear', Math.random() * 2 - 1, interval);
+                        Easycanvas.Transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
+                        Easycanvas.Transition(current, 'y', 'ease', Math.random() * 600 - 400, interval);
+                        Easycanvas.Transition(target, 'x', 'ease', Math.random() * 100 + 150, interval);
+                        Easycanvas.Transition(target, 'y', 'ease', Math.random() * 100 + 150, interval);
+                        Easycanvas.Transition(rotate, 'x', 'linear', Math.random() * 2 - 1, interval);
+                        Easycanvas.Transition(rotate, 'y', 'linear', Math.random() * 2 - 1, interval);
+                        Easycanvas.Transition(rotate, 'z', 'linear', Math.random() * 2 - 1, interval);
                     }
 
                     changeCamera();
@@ -481,7 +481,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -502,12 +502,12 @@ module.exports = `
                     function createEffect () {
                         var $effect = $app.add({
                             style: {
-                                left: Easycanvas.transition.pendulum(
+                                left: Easycanvas.Transition.pendulum(
                                     mouseX + 5 - Math.random() * 10,
                                     mouseX - 100 - Math.random() * 400,
                                     3000
                                 ).loop(),
-                                top: Easycanvas.transition.ease(
+                                top: Easycanvas.Transition.ease(
                                     mouseY,
                                     mouseY - 200,
                                     1000

@@ -40,11 +40,11 @@ module.exports = `
                 </body>
 
                 <script>
-                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png', function () {
+                    var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png', function () {
                         document.getElementById('content').innerText = '点击画布可以看到爆炸效果';
                     });
 
-                    var $app = new Easycanvas.painter();
+                    var $app = new Easycanvas.Painter();
                     $app.register(document.getElementById('app'), {
                         events: {
                             click: function (e) {
@@ -54,10 +54,10 @@ module.exports = `
                         }
                     });
 
-                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png');
+                    var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png');
 
                     var createFire = function (initX, initY) {
-                        return Easycanvas.class.sequence({
+                        return Easycanvas.Sequence({
                             content: {
                                 img: Fire,
                             },
@@ -83,7 +83,7 @@ module.exports = `
 
         <p><strong>frameWidth和frameHeight代表图片中每帧读取宽和高，正数代表每帧的像素尺寸，负数代表将序列图进行等分处理并将结果作为每帧尺寸</strong>。例如上例的图片宽度为2907，包含9张子画片，传入-9代表代表每帧的宽度为2907的1/9。这里h为-1代表序列是单行的（多行序列图在播放时会自动换行处理）。这样设计是考虑到了大部分精灵动画所需的设计图的尺寸都是每帧尺寸和帧数的乘积，可以省去一些计算。如果将frameWidth改成2907/9，得到的是相同的效果。</p>
 
-        <p>props中的loop代表这个动画是否是循环播放的，默认为true。如果false，那么将在轮播到最后一张图之后，自动移除当前的sprite（会触发beforeRemove和removed钩子）。</p>
+        <p>props中的loop代表这个动画是否是循环播放的，默认为true。如果false，那么将在轮播到最后一张图之后，自动移除当前的Sprite（会触发beforeRemove和removed钩子）。</p>
 
         <p class="tip">Tips：这个例子中，一开始就加载了fire.png图片，而不是等到点击的时候再去加载，这样可以保证体验更加流畅。如果以字符串的形式定义var fire = 'fire.png'，那么加载是在首次渲染到这张图片时进行的。</p>
 
@@ -102,7 +102,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
@@ -111,7 +111,7 @@ module.exports = `
                     var img = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/human.png';
                     var width = 166, height = 103;
 
-                    var $human = Easycanvas.class.sequence({
+                    var $human = Easycanvas.Sequence({
                         content: {
                             img: img,
                         },

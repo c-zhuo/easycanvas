@@ -6,48 +6,48 @@
     <canvas id="app" width="1200" height="2400"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'));
         $app.start();
 
-        var img = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G30x30.png');
+        var img = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G30x30.png');
 
-        window.sprite1 = $app.add({
+        window.Sprite1 = $app.add({
             style: {
                 zIndex: 2,
             },
             events: {
                 click: function () {
-                    console.log('sprite1 trigger.');
+                    console.log('Sprite1 trigger.');
                 }
             },
         });
 
-        window.sprite2 = sprite1.add({
+        window.Sprite2 = Sprite1.add({
             style: {
                 width: 10, height: 20
             },
             events: {
                 click: function () {
-                    console.log('sprite2 trigger.');
+                    console.log('Sprite2 trigger.');
                 }
             },
         });
 
-        window.sprite3 = sprite2.add({
-            name: 'sprite3',
+        window.Sprite3 = Sprite2.add({
+            name: 'Sprite3',
             style: {
                 left: 500, top: 500,
             },
             events: {
                 click: function () {
-                    console.log('sprite3 trigger.');
+                    console.log('Sprite3 trigger.');
                 }
             },
         });
 
-        window.sprite4 = sprite3.add({
-            name: 'sprite4',
+        window.Sprite4 = Sprite3.add({
+            name: 'Sprite4',
             content: {
                 img: img,
             },
@@ -56,13 +56,13 @@
             },
             events: {
                 click: function () {
-                    console.log('sprite4 trigger.');
+                    console.log('Sprite4 trigger.');
                 }
             },
         });
 
-        window.sprite5 = $app.add({
-            name: 'sprite5',
+        window.Sprite5 = $app.add({
+            name: 'Sprite5',
             content: {
                 img: img,
             },
@@ -73,7 +73,7 @@
             },
             events: {
                 click: function () {
-                    console.log('sprite5 trigger.');
+                    console.log('Sprite5 trigger.');
                 }
             },
         });

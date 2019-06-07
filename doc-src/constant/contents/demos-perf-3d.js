@@ -10,12 +10,12 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                         webgl: {
-                            fudgeFactor: Easycanvas.transition.pendulum(0, 20, 10000).loop(),
+                            fudgeFactor: Easycanvas.Transition.pendulum(0, 20, 10000).loop(),
                         }
                     });
 
@@ -43,17 +43,17 @@ module.exports = `
                     }
 
                     for (var i = 0; i < 500; i++) {
-                        var $random = new Easycanvas.class.sprite({
+                        var $random = new Easycanvas.Sprite({
                             style: {
-                                left: Easycanvas.transition.pendulum(Math.random() * 400, Math.random() * 400, Math.random() * 5000 + 15000).loop(),
-                                top: Easycanvas.transition.pendulum(Math.random() * 400, Math.random() * 400, Math.random() * 5000 + 15000).loop(),
+                                left: Easycanvas.Transition.pendulum(Math.random() * 400, Math.random() * 400, Math.random() * 5000 + 15000).loop(),
+                                top: Easycanvas.Transition.pendulum(Math.random() * 400, Math.random() * 400, Math.random() * 5000 + 15000).loop(),
                             },
                             webgl: Easycanvas.webglShapes.custom({
                                 vertices: vertices,
                                 indices: indices,
                                 colors: colors,
-                                ry: Easycanvas.transition.linear(0, 360, Math.random() * 2000 + 2000).loop(),
-                                tz: Easycanvas.transition.pendulum(-100 - Math.random() * 300, 100, Math.random() * 2000 + 2000).loop(),
+                                ry: Easycanvas.Transition.linear(0, 360, Math.random() * 2000 + 2000).loop(),
+                                tz: Easycanvas.Transition.pendulum(-100 - Math.random() * 300, 100, Math.random() * 2000 + 2000).loop(),
                             }),
                         });                    
                         $app.add($random);
@@ -61,7 +61,7 @@ module.exports = `
 
 
                     // 设置一个在0和255之间钟摆运动的函数，用于控制颜色
-                    var getColor = Easycanvas.transition.pendulum(0, 255, 1000).loop();
+                    var getColor = Easycanvas.Transition.pendulum(0, 255, 1000).loop();
                     $random.on('ticked', function (tick) {
                         for (var i = 0, l = count; i < l; i++) {
                             // 给每个rgb值的第一个参数赋值，设置red的比重

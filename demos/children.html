@@ -6,14 +6,14 @@
     <canvas id="app" width="1200" height="2400"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'));
         $app.start();
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G30x30.png', function (img) {
-            // create a sprite
-            window.sprite1 = $app.add({
-                name: 'sprite1',
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G30x30.png', function (img) {
+            // create a Sprite
+            window.Sprite1 = $app.add({
+                name: 'Sprite1',
                 content: {
                     // img: img,
                 },
@@ -89,8 +89,8 @@
                     },
                 ],
             });
-            window.sprite2 = $app.add({
-                name: 'sprite2',
+            window.Sprite2 = $app.add({
+                name: 'Sprite2',
             });
         });
     </script>

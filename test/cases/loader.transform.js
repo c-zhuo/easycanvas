@@ -1,5 +1,4 @@
-import Easycanvas from 'src/index.js';
-import Loader from 'src/loader.js';
+import Loader from '../../src/loader.js';
 
 const result = [];
 
@@ -34,7 +33,7 @@ Loader.call(loader, `
             style={{
                 width: 40, height: 20,
                 cutLeft: 0, cutTop: 0,
-                left: Easycanvas.transition.ease(111, 422, 5500).loop(),
+                left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
                 top: 80,
             }}
         >
@@ -44,7 +43,7 @@ Loader.call(loader, `
                 style={{
                     width: 20, height: 20,
                     cutLeft: 0, cutTop: 0,
-                    left: Easycanvas.transition.ease(111, 422, 5500).loop(),
+                    left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
                     top: 80,
                 }}
             />
@@ -54,12 +53,12 @@ Loader.call(loader, `
 
 describe('Featrue.add Test.', function () {
     it('JSX transformed to JS correctly.', function (done) {
-        expect(compareCode(result[0].replace(/ /g, ''), `
+        expect(compareCode(result[0], `
             const content = {
                 img: "./abc.png"
             };
             
-            const a = $app.add(new Sprite(Easycanvas.sprite, {
+            const a = $app.add(new Sprite({
                 name: "p1",
                 content: content,
             
@@ -68,11 +67,11 @@ describe('Featrue.add Test.', function () {
                     height: 20,
                     cutLeft: 0,
                     cutTop: 0,
-                    left: Easycanvas.transition.ease(111, 422, 5500).loop(),
+                    left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
                     top: 80
                 },
             
-                children: [new Sprite(Easycanvas.sprite, {
+                children: [new Sprite({
                     name: "c1",
                     content: content,
             
@@ -81,12 +80,12 @@ describe('Featrue.add Test.', function () {
                         height: 20,
                         cutLeft: 0,
                         cutTop: 0,
-                        left: Easycanvas.transition.ease(111, 422, 5500).loop(),
+                        left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
                         top: 80
                     }
-                })]
-            }));
-        `.replace(/ /g, ''))).toBe(true);
+                }, Easycanvas)]
+            }, Easycanvas));
+        `)).toBe(true);
         done();
     });
 });

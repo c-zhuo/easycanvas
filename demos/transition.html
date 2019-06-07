@@ -6,24 +6,24 @@
     <canvas id="app" width="500" height="400"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'));
         $app.start();
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
-            // create a sprite
-            var sprite1 = $app.add({
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+            // create a Sprite
+            var Sprite1 = $app.add({
                 content: {
                     img: img,
                 },
 
                 style: {
                     cutLeft: 0, cutTop: 0,
-                    left: Easycanvas.transition.oneByOne(
+                    left: Easycanvas.Transition.oneByOne(
                         [
-                            Easycanvas.transition.linear(10, 200, 1000),
-                            Easycanvas.transition.pendulum(50, 400, 1000),
-                            // Easycanvas.transition.pendulum(50, 400, 500),
+                            Easycanvas.Transition.linear(10, 200, 1000),
+                            Easycanvas.Transition.pendulum(50, 400, 1000),
+                            // Easycanvas.Transition.pendulum(50, 400, 500),
                         ]
                     ).loop(),
                     top: 0,

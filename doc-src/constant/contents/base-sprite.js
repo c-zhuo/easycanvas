@@ -2,11 +2,11 @@ module.exports = `
     <article id="样式获取与更新">
         <h1>样式获取与更新</h1>
 
-        <p>之前已经提到，可以通过sprite.style来获取某一个sprite的样式。但是如果某个样式是一个function，那么就需要用到sprite的一些API来获取当前值。</p>
+        <p>之前已经提到，可以通过Sprite.style来获取某一个Sprite的样式。但是如果某个样式是一个function，那么就需要用到Sprite的一些API来获取当前值。</p>
         
         <h2>样式获取</h2>
 
-        <p>sprite的getRect、getSelfStyle、getStyle这三个API可以获取当前的样式。例如：</p>
+        <p>Sprite的getRect、getSelfStyle、getStyle这三个API可以获取当前的样式。例如：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -18,7 +18,7 @@ module.exports = `
 
                 <script>
                     var mouseX = mouseY = 0;
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -30,7 +30,7 @@ module.exports = `
                         }
                     });
 
-                    var $letterG = new Easycanvas.sprite({
+                    var $letterG = new Easycanvas.Sprite({
                         content: {
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
@@ -41,15 +41,15 @@ module.exports = `
                             height: function () {
                                 return mouseY / 2 + 30;
                             },
-                            left: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
-                            top: Easycanvas.transition.pendulum(50, 150, 4000).loop(),
+                            left: Easycanvas.Transition.pendulum(50, 150, 3000).loop(),
+                            top: Easycanvas.Transition.pendulum(50, 150, 4000).loop(),
                         },
                         events: {
                             click: function (e) {
-                                this.style.left = Easycanvas.transition.pendulum(
+                                this.style.left = Easycanvas.Transition.pendulum(
                                     this.getStyle('left'), Math.random() * 350, 3000
                                 ).loop();
-                                this.style.top = Easycanvas.transition.pendulum(
+                                this.style.top = Easycanvas.Transition.pendulum(
                                     this.getStyle('top'), Math.random() * 350, 4000
                                 ).loop();
                             },
@@ -62,7 +62,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>在这个例子中，我们从当前的坐标位置开始进行新的钟摆。如果像之前的demo一样，用this.style.left来获取，那么取到的只是一个function（Easycanvas.transition会返回一个function），而不是当前值。</p>
+        <p>在这个例子中，我们从当前的坐标位置开始进行新的钟摆。如果像之前的demo一样，用this.style.left来获取，那么取到的只是一个function（Easycanvas.Transition会返回一个function），而不是当前值。</p>
 
         <p class="tip">Tips：在这个例子中，由于为left赋值了一个transition函数，所以this.style.left()这种写法也可以近似取到当前值，但是不建议这样做。这里之所以说“近似”，是因为this.style.left()将以当前时间进行计算，而getStyle会用渲染的时间点计算，可能会存在几毫秒的误差。</p>
 
@@ -83,13 +83,13 @@ module.exports = `
 
                 <script>
                     var mouseX = mouseY = 0;
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                     });
 
-                    var $parent = new Easycanvas.sprite({
+                    var $parent = new Easycanvas.Sprite({
                         content: {
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
@@ -101,7 +101,7 @@ module.exports = `
                         },
                     });
 
-                    var $child = new Easycanvas.sprite({
+                    var $child = new Easycanvas.Sprite({
                         content: {
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
@@ -147,13 +147,13 @@ module.exports = `
 
                 <script>
                     var mouseX = mouseY = 0;
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
                     });
 
-                    var $letterG = new Easycanvas.sprite({
+                    var $letterG = new Easycanvas.Sprite({
                         content: {
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
@@ -169,8 +169,8 @@ module.exports = `
 
                     $letterG.update({
                         style: {
-                            left: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
-                            top: Easycanvas.transition.pendulum(50, 150, 4000).loop(),
+                            left: Easycanvas.Transition.pendulum(50, 150, 3000).loop(),
+                            top: Easycanvas.Transition.pendulum(50, 150, 4000).loop(),
                         }
                     });
 

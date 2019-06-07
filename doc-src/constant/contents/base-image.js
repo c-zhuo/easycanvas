@@ -6,7 +6,7 @@ module.exports = `
 
         <h2>图片加载</h2>
 
-        <p>前面的例子中，sprite创建之后才开始加载图像。这样可能导致图像渲染出来的时候，动画已经进行了一半。一些场合下，我们希望图像加载成功后才开始渲染，那么可以使用Easycanvas提供的imgLoader，例如：</p>
+        <p>前面的例子中，Sprite创建之后才开始加载图像。这样可能导致图像渲染出来的时候，动画已经进行了一半。一些场合下，我们希望图像加载成功后才开始渲染，那么可以使用Easycanvas提供的imgLoader，例如：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -16,16 +16,16 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
                     });
 
-                    Easycanvas.imgLoader(
+                    Easycanvas.ImgLoader(
                         'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         function (img) {
-                            var $letterG = new Easycanvas.sprite({
+                            var $letterG = new Easycanvas.Sprite({
                                 content: {
                                     img: img,
                                 },
@@ -46,7 +46,7 @@ module.exports = `
 
         <h2>图片裁剪</h2>
 
-        <p>如果需要将图片源进行裁剪，仅渲染出一部分内容，可以通过修改sprite的style样式中的cutLeft、cutTop、cutWidth、cutHeight来控制。其中cutLeft和cutTop是裁剪的起点，cutWidth和cutHeight是裁剪的尺寸。例如下图，将字母G的一部分进行了渲染。</p>
+        <p>如果需要将图片源进行裁剪，仅渲染出一部分内容，可以通过修改Sprite的style样式中的cutLeft、cutTop、cutWidth、cutHeight来控制。其中cutLeft和cutTop是裁剪的起点，cutWidth和cutHeight是裁剪的尺寸。例如下图，将字母G的一部分进行了渲染。</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -56,13 +56,13 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
                     });
 
-                    var $letterG = new Easycanvas.sprite({
+                    var $letterG = new Easycanvas.Sprite({
                         content: {
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
@@ -70,8 +70,8 @@ module.exports = `
                             left: 50, top: 50, height: 150,
                             cutLeft: 0, cutTop: 0,
                             // 我们让裁剪的宽度和绘制的宽度在80和150之间循环变化，并保持相等
-                            cutWidth: Easycanvas.transition.pendulum(80, 150, 2000).loop(),
-                            width: Easycanvas.transition.pendulum(80, 150, 2000).loop(),
+                            cutWidth: Easycanvas.Transition.pendulum(80, 150, 2000).loop(),
+                            width: Easycanvas.Transition.pendulum(80, 150, 2000).loop(),
                             locate: 'lt',
                         },
                     });
@@ -86,7 +86,7 @@ module.exports = `
 
         <p>这里的locate是元素的定位方式。如果值为lt，代表以left和top作为左上角顶点，向右下方绘制width和height的长度。<strong>默认值为center，图片将以left和top对应的坐标为中心进行绘制</strong>，类似css的“transform: translateX(-50%) translateY(-50%)”。其它可选属性有rt（作为右上顶点）、ld（作为左下顶点）、rd（作为右下顶点）.</p>
 
-        <p class="tip">在这个例子中，我们在content中增加了一个img属性，表示要渲染一张图片。当然，也可以没有content属性，代表这个sprite是一个容器，这在复杂的场景中非常实用。</p>
+        <p class="tip">在这个例子中，我们在content中增加了一个img属性，表示要渲染一张图片。当然，也可以没有content属性，代表这个Sprite是一个容器，这在复杂的场景中非常实用。</p>
 
         <h2>像素预处理</h2>
 
@@ -100,13 +100,13 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
                     });
 
-                    var $letterG = new Easycanvas.sprite({
+                    var $letterG = new Easycanvas.Sprite({
                         content: {
                             img: Easycanvas.imgPretreat(
                                 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',

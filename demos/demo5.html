@@ -6,13 +6,13 @@
     <canvas id="app" width="800" height="400"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'));
         $app.start();
 
-        var G = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
+        var G = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
 
-        var sprite1 = $app.add({
+        var Sprite1 = $app.add({
             content: {
                 img: G,
             },
@@ -22,7 +22,7 @@
             },
             events: {
                 click: function (e) {
-                    sprite1.style.rotate = Math.random() * 360;
+                    Sprite1.style.rotate = Math.random() * 360;
                     this.style.opacity = Math.random() + 0.5;
                     $app.paintList[0].style.left = Math.random() * 50;
                     return true;
@@ -31,7 +31,7 @@
         });
 
         setTimeout(function () {
-            $app.remove(sprite1);
+            $app.remove(Sprite1);
             console.log($app.paintList);
             setTimeout(function () {
                 console.log($app.paintList);

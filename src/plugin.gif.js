@@ -34,7 +34,7 @@ const gif2canvas = function (url, callback) {
 
     Cache[flag] = ProcessingFlag;
 
-    _ec.imgLoader(url, function (img) {
+    _ec.ImgLoader(url, function (img) {
         let temp = document.createElement('canvas');
         temp.width = img.width;
         temp.height = img.height;

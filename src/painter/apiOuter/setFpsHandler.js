@@ -1,7 +1,7 @@
 /** ********** *
  *
  * Set fps handler
- * - Same to new Easycanvas.painter().fpsHandler = callback
+ * - Same to new Easycanvas.Painter().fpsHandler = callback
  *
  * ********** **/
 

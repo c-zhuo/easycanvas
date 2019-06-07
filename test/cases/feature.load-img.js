@@ -1,4 +1,4 @@
-import Easycanvas from 'src/index.js';
+import Easycanvas, { ImgLoader } from 'src/index.js';
 import constants from 'karma/case.constant.js';
 
 var $canvas = document.createElement('canvas');
@@ -6,11 +6,11 @@ $canvas.width = 888;
 $canvas.height = 888;
 document.body.appendChild($canvas);
 
-var $Painter = new Easycanvas.painter();
+var $Painter = new Easycanvas.Painter();
 $Painter.register($canvas);
 $Painter.start();
 
-Easycanvas.imgLoader.cacheCanvas = false;
+Easycanvas.ImgLoader.cacheCanvas = false;
 
 var $sp1 = $Painter.add({
     content: {
@@ -35,7 +35,7 @@ var $sp2 = $Painter.add({
 });
 
 var $sp3;
-Easycanvas.imgLoader(constants.png30px, function (img) {
+ImgLoader(constants.png30px, function (img) {
     $sp3 = $Painter.add({
         content: {
             img: img,
@@ -49,7 +49,7 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
 
 // 最后改成canvas，并不影响之前$sp1的类型为<img>，$sp3用的还是<img>标签
 // 需要注意的是，$sp1是在add阶段进行string2img的替换，此时已经替换完毕
-Easycanvas.imgLoader.cacheCanvas = true;
+Easycanvas.ImgLoader.cacheCanvas = true;
 
 describe('Feature.load-img Test.', function () {
     it('All images loaded correctly.', function (done) {

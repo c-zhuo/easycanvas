@@ -6,13 +6,13 @@
     <canvas id="app" width="600" height="800"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'));
         $app.start();
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
-            // create a sprite
-            window.sprite1 = $app.add({
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+            // create a Sprite
+            window.Sprite1 = $app.add({
                 name: 'root',
                 content: {
                     img: img,
@@ -20,11 +20,11 @@
                 style: {
                     width: 50, height: 50,
                     cutLeft: 0, cutTop: 0, // source position, default 0
-                    // left: Easycanvas.transition.pendulum(111, 222, 1000).loop(),
+                    // left: Easycanvas.Transition.pendulum(111, 222, 1000).loop(),
                     left: 10,
                     top: 100,
-                    fh: Easycanvas.transition.pendulum(0.1, 0.2, 300).loop(),
-                    fv: Easycanvas.transition.pendulum(0.1, 0.2, 1000).loop(),
+                    fh: Easycanvas.Transition.pendulum(0.1, 0.2, 300).loop(),
+                    fv: Easycanvas.Transition.pendulum(0.1, 0.2, 1000).loop(),
                     fx: 0,
                     fy: 125,
                     opacity: 1,

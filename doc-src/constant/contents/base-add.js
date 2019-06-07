@@ -23,21 +23,21 @@ module.exports = `
                         data.imgSize += 20;
                     };
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
                     });
 
-                    var $letterG = new Easycanvas.sprite({
+                    var $letterG = new Easycanvas.Sprite({
                         content: {
                             img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                         },
                         style: {
-                            left: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
+                            left: Easycanvas.Transition.pendulum(50, 150, 3000).loop(),
                             top: 100,
                             width: function () {
-                                // 这里是类似“数据绑定”的写法，类似Vue应用中的cpmputed
+                                // 这里是类似“数据绑定”的写法，类似Vue应用中的computed
                                 return data.imgSize;
                             },
                             height: function () {
@@ -55,7 +55,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>Easycanvas应用的每一个实例是一个Painter类对象，包含了许多个Sprite类对象，每一个Sprite可能是一幅图片、一段文本，也可以是一个容器。后面将对painter类和sprite类的各个参数进行介绍和演示。</p>
+        <p>Easycanvas应用的每一个实例是一个Painter类对象，包含了许多个Sprite类对象，每一个Sprite可能是一幅图片、一段文本，也可以是一个容器。后面将对Painter类和Sprite类的各个参数进行介绍和演示。</p>
     </article>
 
 `;

@@ -4,7 +4,7 @@ module.exports = `
 
         <p>scroll提供了类似css中<strong>overflow: scroll;</strong>的功能。</p>
 
-        <p class="tip">其原理是创建一个容器sprite，监听touch和wheel（鼠标滚轮）事件，调整内部的元素位置。</p>
+        <p class="tip">其原理是创建一个容器Sprite，监听touch和wheel（鼠标滚轮）事件，调整内部的元素位置。</p>
 
         <h2>引入方式</h2>
 
@@ -26,7 +26,7 @@ module.exports = `
 
         <h2>使用</h2>
 
-        <p>创建组件时，需要用Easycanvas.class.scroll来创建一个sprite。<strong>将style中的overflow设置为scroll可以指定允许滚动，也可以用overflowX和overflowY设置单个方向是否允许滚动</strong>，Demo如下：</p>
+        <p>创建组件时，需要用Easycanvas.Scroll来创建一个Sprite。<strong>将style中的overflow设置为scroll可以指定允许滚动，也可以用overflowX和overflowY设置单个方向是否允许滚动</strong>，Demo如下：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -40,14 +40,14 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter();
+                    var $app = new Easycanvas.Painter();
                     $app.register(document.getElementById('app'), {
                         width: 400,
                         height: 400,
                     });
                     $app.start();
 
-                    var $ScrollBox = $app.add(Easycanvas.class.scroll({
+                    var $ScrollBox = $app.add(Easycanvas.Scroll({
                         name: 'ScrollBox',
                         style: {
                             left: 50,
@@ -113,7 +113,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>scroll组件拥有如下属性，例如<strong>创建对象时sprite.scroll.scrollY为0可以立即调整滚动位置到顶部</strong>。所有的API如下：</p>
+        <p>scroll组件拥有如下属性，例如<strong>创建对象时Sprite.scroll.scrollY为0可以立即调整滚动位置到顶部</strong>。所有的API如下：</p>
 
         <table>
             <thead>
@@ -150,7 +150,7 @@ module.exports = `
             </tbody>
         </table>
 
-        <p>scroll组件有一些事件，例如 sprite.trigger('scrollTo', 0, 100, 500) 可以让容器在0.5秒的时间内滚动至100：</p>
+        <p>scroll组件有一些事件，例如 Sprite.trigger('scrollTo', 0, 100, 500) 可以让容器在0.5秒的时间内滚动至100：</p>
 
         <table>
             <thead>

@@ -9,7 +9,7 @@
     <canvas id="app" width="400" height="800"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         var dom = document.getElementById('app');
 
         var h = document.body.clientHeight;
@@ -46,9 +46,9 @@
         $app.register(dom, option);
         $app.start();
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
-            // create a sprite
-            window.sprite1 = $app.add({
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+            // create a Sprite
+            window.Sprite1 = $app.add({
                 name: 'root',
                 content: {
                     img: img,
@@ -74,9 +74,9 @@
                 },
             });
 
-            sprite1.add({
+            Sprite1.add({
                 content: {
-                    img: Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png'),
+                    img: Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png'),
                 },
                 style: {
                     left: 0.28 * longer, top: 0.2 * shorter,

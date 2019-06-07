@@ -4,15 +4,12 @@ module.exports = `
 
         <h2>在微信小程序中引入</h2>
 
-        <p>在微信小程序入口文件引入以下两个文件，即可使用Easycanvas。</p>
+        <p>在微信小程序入口文件引入以下文件，即可使用Easycanvas。</p>
 
         <p><strong>注意：目前只能引入prod版本，不支持开发者工具</strong>，未来版本将支持引入开发版进行调试。</p>
 
         <code>
-            import Easycanvas from './your-path/easycanvas.standalone.prod.js';
-            import EasycanvasWxapp from './your-path/plugin.wxapp.standalone.prod.js';
-
-            Easycanvas.use(EasycanvasWxapp);
+            import { Painter, ImgLoader, Transition } from './your-path/easycanvas.wxapp.common.prod.js';
         </code>
 
         <p>这里的js文件可以在<a href="https://github.com/c-zhuo/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>
@@ -40,7 +37,7 @@ module.exports = `
                 foo: function () {
                     var context = wx.createCanvasContext('app');
 
-                    $app = new Easycanvas.painter();
+                    $app = new Painter();
                     $app.$dom = context;
                     $app.$paintContext = context;
                     $app.register();

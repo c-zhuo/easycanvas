@@ -4,15 +4,15 @@
  *
  * ********** **/
 
-import browserRegister from './browserRegister.js';
+import browserRegister from './_browserRegister.js';
 
-const component = function (Sprite, opt) {
+const component = function (opt, Easycanvas) {
     let $sprite;
 
     let option = opt || {};
     option.name = option.name || 'Image';
 
-    $sprite = new Sprite(option);
+    $sprite = new Easycanvas.Sprite(option);
     $sprite.content.img = option.src;
 
     Object.defineProperty($sprite, 'src', {
@@ -32,14 +32,6 @@ const component = function (Sprite, opt) {
     return $sprite;
 }
 
-// const init = function (Easycanvas, namespace) {
-//     ec = Easycanvas;
-//     if (namespace) {
-//         Easycanvas.class[namespace] = component;
-//     }
-//     return component;
-// };
-
-browserRegister(component, 'image');
+browserRegister(component, 'Image');
 
 export default component;

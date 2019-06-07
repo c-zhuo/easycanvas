@@ -6,13 +6,13 @@
     <canvas id="app"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             fullScreen: true
         });
         $app.start();
 
-        window.sprite1 = $app.add({
+        window.Sprite1 = $app.add({
             name: 'house1',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
@@ -21,7 +21,7 @@
                 width: 100, height: 150,
                 left: 200,
                 top: 100,
-                // opacity: Easycanvas.transition.pendulum(0.1, 1, 1000).loop(),
+                // opacity: Easycanvas.Transition.pendulum(0.1, 1, 1000).loop(),
                 locate: 'center',
                 zIndex: 1,
                 border: '1 rgba(0, 220, 0, 1)'

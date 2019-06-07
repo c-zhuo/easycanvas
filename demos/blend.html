@@ -6,15 +6,15 @@
     <canvas id="app"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             fullScreen: true
         });
         $app.start();
 
-        Easycanvas.imgLoader.cacheCanvas = true;
+        Easycanvas.ImgLoader.cacheCanvas = true;
 
-        window.sprite1 = $app.add({
+        window.Sprite1 = $app.add({
             name: 'house1',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
@@ -29,7 +29,7 @@
                 zIndex: 1, // z-index of this image
             },
         });
-        window.sprite2 = $app.add({
+        window.Sprite2 = $app.add({
             name: 'cloud1',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
@@ -37,7 +37,7 @@
             style: {
                 width: 400 * 1.5, height: 250 * 1.5,
                 cutLeft: 0, cutTop: 0, // source position, default 0
-                left: Easycanvas.transition.pendulum(0, 500, 5000).loop(),
+                left: Easycanvas.Transition.pendulum(0, 500, 5000).loop(),
                 top: 100,
                 opacity: 0.9,
                 blend: 12,
@@ -46,7 +46,7 @@
             },
         });
 
-        window.sprite3 = $app.add({
+        window.Sprite3 = $app.add({
             name: 'house2',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
@@ -61,7 +61,7 @@
                 zIndex: 1, // z-index of this image
             },
         });
-        window.sprite4 = $app.add({
+        window.Sprite4 = $app.add({
             name: 'cloud2',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
@@ -69,7 +69,7 @@
             style: {
                 width: 400 * 1.5, height: 250 * 1.5,
                 cutLeft: 0, cutTop: 0, // source position, default 0
-                left: Easycanvas.transition.pendulum(0, 500, 5000).loop(),
+                left: Easycanvas.Transition.pendulum(0, 500, 5000).loop(),
                 top: 400 * 1.5,
                 opacity: 0.9,
                 locate: 'center', // default center

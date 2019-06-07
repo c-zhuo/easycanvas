@@ -5,9 +5,9 @@
  *     style: {
  *         left, top, width, height,
  *         zIndex, opacity, scale, rotate, rx, ry,
- *         sx, sy, sw, sh, locate, // useless for content.text
+ *         cutLeft, cutTop, cutWidth, cutHeight, locate, // useless for content.text
  *         fh, fv, fx, fy, // transform
- *         textAlign, textFont, color, // useless for content.img
+ *         textAlign, fontSize/fontFamily, color, // useless for content.img
  *         visible, // visible false equals inexistence
  *         mirrX, mirrY,
  *     },
@@ -197,6 +197,12 @@ const preAdd = function (_item, $instance) {
     }
 
     item.children = item.children || [];
+
+    // JSX中text可能作为children写在JSXElement内
+    if (typeof item.children === 'string') {
+        item.content.text = item.children;
+        item.children = [];
+    }
 
     ChangeChildrenToSprite(item);
 

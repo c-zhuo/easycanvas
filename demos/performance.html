@@ -6,7 +6,7 @@
     <script>
         var COUNT = 2000;
 
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             name: 'main',
             webgl: !true
@@ -18,14 +18,14 @@
         var demoPicUrl = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/block.jpg';
 
         $app.imgLoader(demoPicUrl, function (img) {
-            // create a sprite
+            // create a Sprite
             for (var i = 0; i <= COUNT; i++)
                 $app.add({
                     content: {
                         img: img,
                     },
                     style: {
-                        left: Easycanvas.transition.pendulum(500 - Math.random() * 1000, 500 - Math.random() * 1000, Math.random() * 3000 + 2000).loop(),
+                        left: Easycanvas.Transition.pendulum(500 - Math.random() * 1000, 500 - Math.random() * 1000, Math.random() * 3000 + 2000).loop(),
                         top: (Math.random() * 500),
                         width: (50 + Math.random() * 200),
                         height: (50 + Math.random() * 200),
@@ -36,23 +36,23 @@
                 });
         });
 
-        // var $Temp = new Easycanvas.painter();
+        // var $Temp = new Easycanvas.Painter();
         // $Temp.register(document.createElement('canvas'), {
         //     name: 'temp',
         //     fullScreen: true
         // });
         // $Temp.start();
 
-        // Easycanvas.imgLoader(demoPicUrl, function (img) {
-        //     // create a sprite
+        // Easycanvas.ImgLoader(demoPicUrl, function (img) {
+        //     // create a Sprite
         //     for (var i = 0; i <= COUNT / 2; i++)
         //         $Temp.add({
-        //             name: 'spriteOfTemp',
+        //             name: 'SpriteOfTemp',
         //             content: {
         //                 img: img,
         //             },
         //             style: {
-        //                 left: Easycanvas.transition.pendulum(Math.random() * 500, Math.random() * 500, 1000).loop(),
+        //                 left: Easycanvas.Transition.pendulum(Math.random() * 500, Math.random() * 500, 1000).loop(),
         //                 top: (Math.random() * 500),
         //                 width: (Math.random() * 200),
         //                 height: (Math.random() * 200),

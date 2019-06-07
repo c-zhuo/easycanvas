@@ -7,25 +7,14 @@ var path = require('path');
 var base = require('../webpack/webpack.config.base.js');
 
 var webpackConfig = {
+    mode: 'development',
     resolve: {
         alias: Object.assign(base.resolve.alias, {
             karma: path.join(__dirname, '../test/'),
         }),
     },
     module: {
-        loaders: webpackBase.loaders,
-        // [{
-        //     test: /\.js$/,
-        //     loader: 'babel',
-        //     exclude: /node_modules/
-        // }],
-    },
-    babel: {
-        presets: ['es2015'],
-        plugins: [
-            'transform-object-assign',
-            'syntax-dynamic-import'
-        ]
+        rules: base.module.rules,
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -105,10 +94,13 @@ module.exports = function(config) {
     files: [
         {
             pattern: './test/cases/**.js', included: true
+        }, {
+            pattern: './test/cases/**.jsx', included: true
         }
     ],
     preprocessors: {
-        './test/cases/**.js': ['webpack', 'sourcemap']
+        './test/cases/**.js': ['webpack', 'sourcemap'],
+        './test/cases/**.jsx': ['webpack', 'sourcemap'],
     },
 
     processKillTimeout: 5000,

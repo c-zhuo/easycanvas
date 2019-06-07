@@ -17,7 +17,7 @@ module.exports = {
     	const STATIC_LETTER_WIDTH_SMALL = STATIC_LETTER_WIDTH / 3;
 
 	    {
-	    	let $Statics = new Easycanvas.sprite({
+	    	let $Statics = new Easycanvas.Sprite({
 	    		name: 'static-letters'
 	    	});
 	    	$Space.add($Statics);
@@ -28,7 +28,7 @@ module.exports = {
 			    let e = new Easycanvas.class.physics({
 			        name: 'static-' + letter + Math.random(),
 			        content: {
-			            img: Easycanvas.imgLoader(letters[letter]),
+			            img: Easycanvas.ImgLoader(letters[letter]),
 			        },
 			        physics: {
 			            shape: [
@@ -56,7 +56,7 @@ module.exports = {
 	    	});
 	    }
 
-    	let $Fallings = new Easycanvas.sprite({
+    	let $Fallings = new Easycanvas.Sprite({
     		name: 'falling-letters'
     	});
     	$Space.add($Fallings);
@@ -66,7 +66,7 @@ module.exports = {
 		    let letter = new Easycanvas.class.physics({
 		        name: 'fall-' + randomLetter,
 		        content: {
-		            img: Easycanvas.imgLoader(letters[randomLetter]),
+		            img: Easycanvas.ImgLoader(letters[randomLetter]),
 		        },
 		        physics: {
 		            shape: [

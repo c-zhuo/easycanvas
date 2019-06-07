@@ -13,7 +13,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,
@@ -40,7 +40,7 @@ module.exports = `
                         }
                     });
 
-                    var miku = $app.add(new Easycanvas.class.sprite({
+                    var miku = $app.add(new Easycanvas.Sprite({
                         style: {
                             left: 180, top: 350,
                         },
@@ -74,13 +74,13 @@ module.exports = `
                     var rotate = $app.webgl.camera.rotate;
 
                     function changeCamera () {
-                        Easycanvas.transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
-                        Easycanvas.transition(current, 'y', 'ease', Math.random() * 600 - 400, interval);
-                        Easycanvas.transition(target, 'x', 'ease', Math.random() * 100 + 150, interval);
-                        Easycanvas.transition(target, 'y', 'ease', Math.random() * 100 + 150, interval);
-                        Easycanvas.transition(rotate, 'x', 'linear', Math.random() * 2 - 1, interval);
-                        Easycanvas.transition(rotate, 'y', 'linear', Math.random() * 2 - 1, interval);
-                        Easycanvas.transition(rotate, 'z', 'linear', Math.random() * 2 - 1, interval);
+                        Easycanvas.Transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
+                        Easycanvas.Transition(current, 'y', 'ease', Math.random() * 600 - 400, interval);
+                        Easycanvas.Transition(target, 'x', 'ease', Math.random() * 100 + 150, interval);
+                        Easycanvas.Transition(target, 'y', 'ease', Math.random() * 100 + 150, interval);
+                        Easycanvas.Transition(rotate, 'x', 'linear', Math.random() * 2 - 1, interval);
+                        Easycanvas.Transition(rotate, 'y', 'linear', Math.random() * 2 - 1, interval);
+                        Easycanvas.Transition(rotate, 'z', 'linear', Math.random() * 2 - 1, interval);
                     }
 
                     $app.start();

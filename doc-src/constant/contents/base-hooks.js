@@ -2,7 +2,7 @@ module.exports = `
     <article id="状态钩子">
         <h1>状态钩子</h1>
 
-        <p>状态可以用于在每一动画帧的各个阶段进行数据的编辑，Easycanvas目前有ticked、beforeTick、removed、beforeRemove四个钩子。前两者在每次渲染（即每帧）时调用，后两者在sprite的remove方法触发时调用。beforeTick也可以用于一些比较复杂的动画的每帧坐标计算：</p>
+        <p>状态可以用于在每一动画帧的各个阶段进行数据的编辑，Easycanvas目前有ticked、beforeTick、removed、beforeRemove四个钩子。前两者在每次渲染（即每帧）时调用，后两者在Sprite的remove方法触发时调用。beforeTick也可以用于一些比较复杂的动画的每帧坐标计算：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -14,13 +14,13 @@ module.exports = `
                 <script>
                     var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
                     });
 
-                    var $foo = new Easycanvas.sprite({
+                    var $foo = new Easycanvas.Sprite({
                         content: {
                             img: G,
                         },
@@ -48,7 +48,7 @@ module.exports = `
 
         <p>tick状态钩子拥有一个参数，代表当前canvas累计的帧数：beforeTick的tick从0开始自增，ticked从1开始自增。</p>
 
-        <p>可以使用sprite的on与off来进行动态的钩子注册和解绑，并且可以设置throttle，例如下面这个beforeTick的钩子每200毫秒只会触发一次：</p>
+        <p>可以使用Sprite的on与off来进行动态的钩子注册和解绑，并且可以设置throttle，例如下面这个beforeTick的钩子每200毫秒只会触发一次：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -60,13 +60,13 @@ module.exports = `
                 <script>
                     var G = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png';
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400
                     });
 
-                    var $foo = new Easycanvas.sprite({
+                    var $foo = new Easycanvas.Sprite({
                         content: {
                             img: G,
                         },

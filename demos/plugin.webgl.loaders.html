@@ -18,7 +18,7 @@
     <canvas id="app" width="800" height="1200"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             webgl: {
               light: !true,
@@ -65,7 +65,7 @@
                         textures: item.LayerElementUV[0].UV.a,
                         hasAlpha: true,
                         rx: 111,
-                        rz: Easycanvas.transition.pendulum(0, 360, 5000).loop(),
+                        rz: Easycanvas.Transition.pendulum(0, 360, 5000).loop(),
                     }),
                 });
             }

@@ -16,14 +16,14 @@
     <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             webgl: true,
         });
         $app.start();
 
         for (var x = 1; x <= 2; x ++) {
-            $app.add(new Easycanvas.class.sprite({
+            $app.add(new Easycanvas.Sprite({
                 style: {
                     left: 250 + x * 50, top: 300,
                     zIndex: Math.random(),
@@ -39,13 +39,13 @@
                     },
                     _3ds: '../resource/15sunflower/15sunflower.3DS',
                     // pmd: '/demos/mmd/model/mokou/mokou_A.pmd',
-                    ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                    ry: Easycanvas.Transition.linear(0, 360, 5000).loop(),
                     scale: 0.5,
                 }
             }));
         }
 
-        $app.add(new Easycanvas.class.sprite({
+        $app.add(new Easycanvas.Sprite({
             style: {
                 left: 200, top: 350,
                 zIndex: Math.random(),
@@ -61,7 +61,7 @@
                 // pmd: '/demos/mmd/model/mokou/mokou_A.pmd',
                 scale: 50,
                 rx: 90, ry: 0,
-                rz: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                rz: Easycanvas.Transition.linear(0, 360, 5000).loop(),
             }
         }));
     </script>

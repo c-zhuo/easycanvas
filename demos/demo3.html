@@ -6,15 +6,15 @@
     <canvas id="app" width="800" height="400"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'));
         $app.start();
 
-        var G = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
+        var G = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png');
         var r1 = 0;
         var r2 = 0;
 
-        var sprite1 = $app.add({
+        var Sprite1 = $app.add({
             content: {
                 img: G,
             },
@@ -31,7 +31,7 @@
                 },
             },
         });
-        var sprite2 = $app.add({
+        var Sprite2 = $app.add({
             content: {
                 img: G,
             },

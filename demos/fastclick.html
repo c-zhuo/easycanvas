@@ -10,16 +10,16 @@
     <canvas id="app" width="400" height="800"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
 
         $app.register(document.getElementById('app'), {
             fastclick: true,
         });
         $app.start();
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
-            // create a sprite
-            window.sprite1 = $app.add({
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+            // create a Sprite
+            window.Sprite1 = $app.add({
                 name: 'root',
                 content: {
                     img: img,
@@ -27,7 +27,7 @@
                 style: {
                     width: 250, height: 130,
                     cutLeft: 0, cutTop: 0, // source position, default 0
-                    left: Easycanvas.transition.ease(111, 422, 2500).loop(),
+                    left: Easycanvas.Transition.ease(111, 422, 2500).loop(),
                     top: 80,
                     opacity: 1,
                     rotate: 20,

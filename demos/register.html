@@ -6,17 +6,17 @@
     <canvas id="app" width="400" height="800"></canvas>
 
     <script>
-        // var $app = new Easycanvas.painter(document.getElementById('app'));
-        var $app = new Easycanvas.painter({
+        // var $app = new Easycanvas.Painter(document.getElementById('app'));
+        var $app = new Easycanvas.Painter({
             el: document.getElementById('app'),
             width: 300,
             height: 700
         });
         $app.start();
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
-            // create a sprite
-            window.sprite1 = $app.add({
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+            // create a Sprite
+            window.Sprite1 = $app.add({
                 name: 'root',
                 content: {
                     img: img,
@@ -24,7 +24,7 @@
                 style: {
                     width: 250, height: 130,
                     cutLeft: 0, cutTop: 0, // source position, default 0
-                    left: Easycanvas.transition.pendulum(111, 222, 1000).loop(),
+                    left: Easycanvas.Transition.pendulum(111, 222, 1000).loop(),
                     top: $app.height / 10,
                     opacity: 1,
                     rotate: 20,
@@ -35,7 +35,7 @@
                     eIndex: 2, // event-index of this image
                     click: function (e) {
                         console.log(e);
-                        // "this" means this sprite, as sprite1
+                        // "this" means this Sprite, as Sprite1
                         this.style.visible = false;
                         // "true" means stopping bubbling "click" event
                         return true;

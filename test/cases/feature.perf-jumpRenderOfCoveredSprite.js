@@ -6,14 +6,14 @@ $canvas.width = 888;
 $canvas.height = 888;
 document.body.appendChild($canvas);
 
-var $Painter = new Easycanvas.painter();
+var $Painter = new Easycanvas.Painter();
 $Painter.register($canvas);
 $Painter.start();
 
 var sprites = {};
 
-Easycanvas.imgLoader.cacheCanvas = Math.random() < 0.5;
-Easycanvas.imgLoader(constants.jpg100px, function (img) {
+Easycanvas.ImgLoader.cacheCanvas = Math.random() < 0.5;
+Easycanvas.ImgLoader(constants.jpg100px, function (img) {
     // 跳过绘制0个
     sprites.type1 = [];
     for (var i = 0; i < 2; i++) {
@@ -32,8 +32,8 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
     }
 });
 
-Easycanvas.imgLoader.cacheCanvas = false;
-Easycanvas.imgLoader(constants.png30px, function (img) {
+Easycanvas.ImgLoader.cacheCanvas = false;
+Easycanvas.ImgLoader(constants.png30px, function (img) {
     // 跳过绘制4个
     sprites.type2 = [];
     for (var i = 0; i < 4; i++) {
@@ -51,8 +51,8 @@ Easycanvas.imgLoader(constants.png30px, function (img) {
     }
 });
 
-Easycanvas.imgLoader.cacheCanvas = false;
-Easycanvas.imgLoader(constants.jpg100px, function (img) {
+Easycanvas.ImgLoader.cacheCanvas = false;
+Easycanvas.ImgLoader(constants.jpg100px, function (img) {
     // 跳过绘制8-1=7个
     sprites.type3 = [];
     for (var i = 0; i < 8; i++) {
@@ -70,8 +70,8 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
     }
 });
 
-Easycanvas.imgLoader.cacheCanvas = false;
-Easycanvas.imgLoader(constants.jpg100px, function (img) {
+Easycanvas.ImgLoader.cacheCanvas = false;
+Easycanvas.ImgLoader(constants.jpg100px, function (img) {
     // 跳过绘制0个
     sprites.type4 = [];
     for (var i = 0; i < 16; i++) {
@@ -90,8 +90,8 @@ Easycanvas.imgLoader(constants.jpg100px, function (img) {
     }
 });
 
-Easycanvas.imgLoader.cacheCanvas = false;
-Easycanvas.imgLoader(constants.png30px, function (img) {
+Easycanvas.ImgLoader.cacheCanvas = false;
+Easycanvas.ImgLoader(constants.png30px, function (img) {
     // 跳过绘制0个
     sprites.type5 = [];
     for (var i = 0; i < 32; i++) {

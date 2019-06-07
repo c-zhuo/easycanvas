@@ -6,14 +6,14 @@
     <canvas id="app" width="1200" height="2400"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'));
         $app.start();
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
-            // create a sprite
-            window.sprite1 = {
-                name: 'sprite1',
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+            // create a Sprite
+            window.Sprite1 = {
+                name: 'Sprite1',
                 content: {
                     img: img,
                 },
@@ -93,24 +93,24 @@
                 }
             };
 
-            window.sprite1.children.push(child3);
+            window.Sprite1.children.push(child3);
 
-            window.sprite1 = $app.add(window.sprite1);
+            window.Sprite1 = $app.add(window.Sprite1);
 
-            window.sprite2 = $app.add({
-                name: 'sprite2',
+            window.Sprite2 = $app.add({
+                name: 'Sprite2',
             });
 
             $app.nextTick(function () {
-                sprite1.children[0].on('del', function (a, b) {
+                Sprite1.children[0].on('del', function (a, b) {
                     console.log(a, b)
                     this.remove();
                 });
-                sprite1.children[1].on('del', function (a, b) {
+                Sprite1.children[1].on('del', function (a, b) {
                     console.log(a, b)
                     this.remove();
                 });
-                sprite1.on('del', function (a, b) {
+                Sprite1.on('del', function (a, b) {
                     console.log(a, b)
                     console.log('no');
                 });

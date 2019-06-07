@@ -7,16 +7,16 @@
     <canvas id="bar" width="400" height="300"></canvas>
 
     <script>
-        var $app1 = new Easycanvas.painter();
+        var $app1 = new Easycanvas.Painter();
         $app1.register(document.getElementById('app'));
         $app1.start();
-        var $app2 = new Easycanvas.painter();
+        var $app2 = new Easycanvas.Painter();
         $app2.register(document.getElementById('bar'));
         $app2.start();
 
-        Easycanvas.imgLoader('https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=3494948977,3852880561&fm=85&s=65541BC6473FBFD608E4858B030060C3&w=121&h=75&img.JPEG', function (img) {
-            // create a sprite
-            window.sprite1 = $app1.add({
+        Easycanvas.ImgLoader('https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=3494948977,3852880561&fm=85&s=65541BC6473FBFD608E4858B030060C3&w=121&h=75&img.JPEG', function (img) {
+            // create a Sprite
+            window.Sprite1 = $app1.add({
                 name: 'root1',
                 content: {
                     img: img,
@@ -24,7 +24,7 @@
                 style: {
                     width: 250, height: 130,
                     cutLeft: 0, cutTop: 0, // source position, default 0
-                    left: Easycanvas.transition.pendulum(111, 222, 1000).loop(),
+                    left: Easycanvas.Transition.pendulum(111, 222, 1000).loop(),
                     top: $app1.height / 10,
                     opacity: 1,
                     rotate: 20,
@@ -35,7 +35,7 @@
                     eIndex: 2, // event-index of this image
                     click: function (e) {
                         console.log(e);
-                        // "this" means this sprite, as sprite1
+                        // "this" means this Sprite, as Sprite1
                         this.visible = false;
                         // "true" means stopping bubbling "click" event
                         return true;
@@ -43,7 +43,7 @@
                     // others: mousehold, mousedown, mouseout and touch events
                 },
             });
-            window.sprite2 = $app2.add({
+            window.Sprite2 = $app2.add({
                 name: 'root2',
                 content: {
                     img: img,
@@ -51,7 +51,7 @@
                 style: {
                     width: 250, height: 130,
                     cutLeft: 0, cutTop: 0, // source position, default 0
-                    left: Easycanvas.transition.pendulum(333, 444, 1000).loop(),
+                    left: Easycanvas.Transition.pendulum(333, 444, 1000).loop(),
                     top: $app2.height / 10,
                     opacity: 1,
                     rotate: 20,
@@ -62,7 +62,7 @@
                     eIndex: 2, // event-index of this image
                     click: function (e) {
                         console.log(e);
-                        // "this" means this sprite, as sprite1
+                        // "this" means this Sprite, as Sprite1
                         this.visible = false;
                         // "true" means stopping bubbling "click" event
                         return true;

@@ -1,8 +1,7 @@
 // import './source/libs/weapp-adapter'
 
-import Wxgame from './source/libs/plugin.wxgame.standalone.prod.js'
-import Easycanvas from './source/libs/easycanvas.standalone.prod.js'
-import Physics from './source/libs/plugin.physics.standalone.prod.js'
+import { Painter, Sprite, Transition } from './source/libs/easycanvas.wxgame.common.prod.js'
+import './source/libs/plugin.physics.common.prod.js'
 
 var width = 400, height = 600, ballSize = 20;
 // 记录鼠标轨迹
@@ -18,11 +17,10 @@ var blockArray = [];
 // 图片
 var BALL = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/ball.png';
 var BLOCK = 'https://c-zhuo.github.io/tanyitan/stone.jpg';
-var TRIANGLE = 'https://raw.githubusercontent.com/c-zhuo/tanyitan/master/docs/triangle.png';
 // 用于碰撞检测
 var BALL_TYPE = 1, BLOCK_TYPE = 2, BORDER_TYPE = 3, BOTTOM_TYPE = 4, BONUS_TYPE = 5;
 // 初始化easycanvas实例
-var $game = new Easycanvas.painter();
+var $game = new Painter();
 $game.register(canvas, {
     width: width,
     height: height,
@@ -41,7 +39,7 @@ $game.add({
         }
     },
     style: {
-        tx: 5, ty: 5,
+        left: 5, top: 5,
         textAlign: 'left', textVerticalAlign: 'top',
         color: 'yellow'
     }
@@ -53,13 +51,13 @@ var $ballCount = $game.add({
         }
     },
     style: {
-        tx: 100, ty: 5,
+        left: 100, top: 5,
         textAlign: 'left', textVerticalAlign: 'top',
         color: 'yellow'
     }
 });
 // 初始化easycanvas物理引擎
-var $space = new Easycanvas.class.sprite({
+var $space = new Sprite({
     physics: {
         gravity: 2,
         accuracy: 2,
@@ -78,13 +76,13 @@ var startAim = function () {
                 gap: i / 6,
             },
             style: {
-                tx: function () {
+                left: function () {
                     return 200 + (mouse.x - 200) * this.data.gap;
                 },
-                ty: function () {
+                top: function () {
                     return 20 + (mouse.y - 20) * this.data.gap;
                 },
-                tw: 20, th: 20,
+                width: 20, height: 20,
                 opacity: 0.4,
             },
             hooks: {
@@ -112,7 +110,7 @@ function shoot () {
 };
 function addBall (mouse) {
     ballLeft++;
-    var $ball = new Easycanvas.class.sprite({
+    var $ball = new Sprite({
         name: 'ball',
         content: {
             img: BALL,
@@ -129,10 +127,10 @@ function addBall (mouse) {
             collisionType: BALL_TYPE,
         },
         style: {
-            tw: ballSize, th: ballSize,
+            width: ballSize, height: ballSize,
             sx: 0, sy: 0,
-            tx: 200,
-            ty: 20,
+            left: 200,
+            top: 20,
             zIndex: 1,
         },
         hooks: {
@@ -147,7 +145,7 @@ function addBall (mouse) {
                             return;
                         }
                         ball.toRemove = true;
-                        ball.style.opacity = Easycanvas.transition.linear(1, 0, 500);
+                        ball.style.opacity = Transition.linear(1, 0, 500);
                         setTimeout(function () {
                             ball.physicsOff();
                             ball.remove();
@@ -156,8 +154,8 @@ function addBall (mouse) {
                                 canShoot = true;
                                 blockArray.forEach(function (block) {
                                     block.physicsOff();
-                                    block.style.ty -= 50;
-                                    if (block.style.ty < 50) {
+                                    block.style.top -= 50;
+                                    if (block.style.top < 50) {
                                         if (block.name === 'block') {
                                             canShoot = false;
                                         } else {
@@ -249,7 +247,7 @@ function addBall (mouse) {
 var lastBlockPositionX = 50;
 function addBlock (max, boolAddToBottom) {
     var deg = Math.floor(Math.random() * 360);
-    var sprite = $space.add(new Easycanvas.class.sprite({
+    var sprite = $space.add(new Sprite({
         name: 'block',
         content: {
             img: BLOCK,
@@ -265,9 +263,9 @@ function addBlock (max, boolAddToBottom) {
             static: true,
         },
         style: {
-            tw: 30, th: 30,
-            tx: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
-            ty: boolAddToBottom ? 500 : height - 100 - Math.floor(Math.random() * 100),
+            width: 30, height: 30,
+            left: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
+            top: boolAddToBottom ? 500 : height - 100 - Math.floor(Math.random() * 100),
             locate: 'lt',
             zIndex: Math.random(),
             rotate: deg,
@@ -280,8 +278,8 @@ function addBlock (max, boolAddToBottom) {
                 color: 'yellow',
                 textAlign: 'center',
                 textVerticalAlign: 'middle',
-                textFont: '28px Arial',
-                tx: 15, ty: 10
+                fontSize: 28,
+                left: 15, top: 10
             }
         }]
     }));
@@ -293,7 +291,7 @@ function addBlock (max, boolAddToBottom) {
     }
 }
 function addBonus () {
-    var sprite = $space.add(new Easycanvas.class.sprite({
+    var sprite = $space.add(new Sprite({
         name: 'bonus',
         content: {
             img: BALL,
@@ -309,13 +307,13 @@ function addBonus () {
             static: true,
         },
         style: {
-            tw: 30, th: 30,
-            tx: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
-            ty: 500,
+            width: 30, height: 30,
+            left: lastBlockPositionX + Math.floor(Math.random() * 20 - 10),
+            top: 500,
             locate: 'center',
             zIndex: 2,
-            fv: Easycanvas.transition.pendulum(0, 0.2, 200).loop(),
-            fh: Easycanvas.transition.pendulum(0.2, 0, 200).loop(),
+            fv: Transition.pendulum(0, 0.2, 200).loop(),
+            fh: Transition.pendulum(0.2, 0, 200).loop(),
         },
     }));
     sprite.physicsOn();
@@ -326,7 +324,7 @@ function addBonus () {
     }
 }
 // 上半部分的边，摩擦小、弹性大
-var borderSprite = $space.add(new Easycanvas.class.sprite({
+var borderSprite = $space.add(new Sprite({
     physics: {
         shape: [
             [[0, 0], [width, 0]],
@@ -339,13 +337,13 @@ var borderSprite = $space.add(new Easycanvas.class.sprite({
         static: true
     },
     style: {
-        tx: 0, ty: 0, tw: width, th: height,
+        left: 0, top: 0, width: width, height: height,
         locate: 'lt',
     },
 }));
 borderSprite.physicsOn();
 // 下半部分的边，摩擦大、弹性小
-var bottomSprite = $space.add(new Easycanvas.class.sprite({
+var bottomSprite = $space.add(new Sprite({
     physics: {
         shape: [
             [[0, height], [width, height]],
@@ -358,7 +356,7 @@ var bottomSprite = $space.add(new Easycanvas.class.sprite({
         static: true
     },
     style: {
-        tx: 0, ty: 0, tw: width, th: height,
+        left: 0, top: 0, width: width, height: height,
         locate: 'lt',
     },
 }));

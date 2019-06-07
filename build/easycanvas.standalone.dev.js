@@ -1,3702 +1,616 @@
-(function e(t, r) {
-    if (typeof exports === "object" && typeof module === "object") module.exports = r(); else if (typeof define === "function" && define.amd) define([], r); else {
-        var i = r();
-        for (var n in i) (typeof exports === "object" ? exports : t)[n] = i[n];
-    }
-})(this, function() {
-    return function(e) {
-        var t = {};
-        function r(i) {
-            if (t[i]) return t[i].exports;
-            var n = t[i] = {
-                exports: {},
-                id: i,
-                loaded: false
-            };
-            e[i].call(n.exports, n, n.exports, r);
-            n.loaded = true;
-            return n.exports;
-        }
-        r.m = e;
-        r.c = t;
-        r.p = "";
-        return r(0);
-    }([ function(e, t, r) {
-        e.exports = r(102);
-    }, function(e, t) {
-        "use strict";
-        var r = {
-            isArray: Array.isArray || function(e) {
-                return Object.prototype.toString.call(e) === "[object Array]";
-            },
-            funcOrValue: function e(t, r) {
-                if (typeof t === "function") {
-                    return t.call(r);
-                }
-                return t;
-            },
-            execFuncs: function e(t, i, n) {
-                if (t) {
-                    if (!r.isArray(n)) {
-                        n = [ n ];
-                    }
-                }
-                if (typeof t === "function") {
-                    t.apply(i, n);
-                } else if (r.isArray(t)) {
-                    t.length && t.forEach(function(e) {
-                        e && e.apply(i, n);
-                    });
-                }
-            },
-            blend: [ "source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in", "destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity" ],
-            pointInRect: function e(t, r, i, n, a, o) {
-                return !(t < i || t > n || r < a || r > o);
-            },
-            firstValuable: function e(t, r, i) {
-                return typeof t === "undefined" ? typeof r === "undefined" ? i : r : t;
-            }
-        };
-        e.exports = r;
-    }, , function(e, t) {
-        "use strict";
-        Object.defineProperty(t, "__esModule", {
-            value: true
-        });
-        var r = typeof window !== "undefined";
-        t.default = function(e, t) {
-            if (r && window.Easycanvas) {
-                Easycanvas.class[t] = function(t) {
-                    return e(Easycanvas.sprite, t);
-                };
-            }
-        };
-    }, function(e, t) {
-        "use strict";
-        var r = [ "cutLeft", "cutTop", "cutWidth", "cutHeight" ];
-        var i = [ "left", "top", "width", "height" ];
-        var n = r.concat(i);
-        var a = n.concat([ "locate", "rx", "ry", "zIndex", "textFont", "textAlign", "textVerticalAlign", "color", "rotate", "scale", "opacity", "backgroundColor", "border", "overflow", "overflowX", "overflowY" ]);
-        e.exports = {
-            txywh: i,
-            sxywh: r,
-            xywh: n,
-            styles: a,
-            devFlag: "__EASYCANVAS_DEVTOOL__",
-            version: "0.7.4"
-        };
-    }, , , , , , function(e, t) {
-        "use strict";
-        var r = 3.141593;
-        e.exports = function(e, t, i, n, a, o) {
-            var l = a ? -a / 180 * r : 0;
-            var s = e, c = t;
-            if (a) {
-                s = (e - i) * Math.cos(l) - (t - n) * Math.sin(l) + i;
-                c = (e - i) * Math.sin(l) + (t - n) * Math.cos(l) + n;
-            }
-            if (o) {
-                return [ s, c ];
-            }
-            return {
-                x: s,
-                y: c
-            };
-        };
-    }, , , , , function(e, t, r) {
-        "use strict";
-        Object.defineProperty(t, "__esModule", {
-            value: true
-        });
-        var i = {};
-        var n = "\n".slice(0, 1);
-        var a = function e(t, r) {
-            var a = String(t);
-            var o = a + JSON.stringify(r);
-            r.fontSize = r.fontSize || 16;
-            if (i[o]) {
-                return i[o];
-            }
-            var l;
-            if (r.padding) {
-                l = r.padding.split(" ");
-                l = l.map(function(e) {
-                    return parseInt(e);
-                });
-                l[1] = Number(l[1] || l[0]);
-                l[2] = Number(l[2] || l[0]);
-                l[3] = Number(l[3] || l[1]);
-            } else {
-                l = [ 0, 0, 0, 0 ];
-            }
-            var s = r.minWidth || r.width || (r.fontSize || 16) * a.length + l[1] + l[3] + 100;
-            var c = a.split("\n").length;
-            var f = r.fontSize * (Math.round(a.length) / s + c - 1) * (r.lineHeight || r.fontSize) + l[0] + l[2] + 100;
-            var u = document.createElement("canvas");
-            u.width = s;
-            u.height = f;
-            var d = u.getContext("2d");
-            window.tempCanvas = u;
-            window.tempCtx = d;
-            d.textBaseline = "middle";
-            d.font = (r.fontStyle ? r.fontStyle + " " : "") + r.fontSize + "px " + (r.family || "serif");
-            d.fillStyle = r.color || "#000";
-            d.textAlign = r.textAlign || "left";
-            if (true) {
-                var h = [];
-                h.push("var tempCanvas = document.createElement('canvas')");
-                h.push("tempCanvas.width=" + u.width);
-                h.push("tempCanvas.height=" + u.height);
-                h.push("var tempCtx = tempCanvas.getContext('2d')");
-                h.push("tempCtx.textBaseline='" + d.textBaseline + "'");
-                h.push("tempCtx.font='" + d.font + "'");
-                h.push("tempCtx.fillStyle='" + d.fillStyle + "'");
-                h.push("tempCtx.textAlign='" + d.textAlign + "'");
-            }
-            var v = 0;
-            var p = r.lineHeight ? (r.lineHeight - r.fontSize) / 2 : 0;
-            var g = 0;
-            var $ = 1;
-            var m = 0;
-            var y = 0;
-            var b = 1;
-            while (true) {
-                y = d.measureText(a.slice(g, $)).width;
-                if (y > r.width) {
-                    if (r.textOverflow === "ellipsis") {
-                        $ -= 2;
-                        d.fillText(a.slice(g, $) + "...", v, p + r.fontSize / 2);
-                        if (true) {
-                            h.push("tempCtx.fillText('" + a.slice(g, $) + "...', " + v + ", " + (p + r.fontSize / 2) + ")");
-                        }
-                        p += r.fontSize + (r.lineHeight ? (r.lineHeight - r.fontSize) / 2 : 0);
-                        b++;
-                        m = r.width - l[1] - l[3];
-                        break;
-                    } else {
-                        $ -= 1;
-                        d.fillText(a.slice(g, $), v, p + r.fontSize / 2);
-                        if (true) {
-                            h.push("tempCtx.fillText('" + a.slice(g, $) + "', " + v + ", " + (p + r.fontSize / 2) + ")");
-                        }
-                        g = $;
-                        $ = g + 1;
-                        p += r.fontSize + (r.lineHeight ? (r.lineHeight - r.fontSize) / 2 : 10);
-                        b++;
-                    }
-                } else {
-                    if ($ > a.length - 1) {
-                        if (y > m) m = y;
-                        d.fillText(a.slice(g, $), v, p + r.fontSize / 2);
-                        if (true) {
-                            h.push("tempCtx.fillText('" + a.slice(g, $) + "', " + v + ", " + (p + r.fontSize / 2) + ")");
-                        }
-                        p += r.fontSize + (r.lineHeight ? (r.lineHeight - r.fontSize) / 2 : 0);
-                        break;
-                    } else if (a.slice($, $ + 1) === n) {
-                        d.fillText(a.slice(g, $), v, p + r.fontSize / 2);
-                        $ += 1;
-                        g = $;
-                        $ = g + 1;
-                        p += r.fontSize + (r.lineHeight ? (r.lineHeight - r.fontSize) / 2 : 10);
-                        b++;
-                    }
-                    if (y > m) m = y;
-                    $++;
-                }
-            }
-            var w = document.createElement("canvas");
-            w.lastLineLeft = y;
-            w.lineCount = b;
-            w.width = Math.max(m + l[1] + l[3], r.minWidth || 0);
-            w.height = p + l[0] + l[2];
-            var x = w.getContext("2d");
-            if (true) {
-                h.push("var finalCanvas=document.createElement('canvas')");
-                h.push("finalCanvas.width=" + w.width);
-                h.push("finalCanvas.height=" + w.height);
-                h.push("var finalCtx = finalCanvas.getContext('2d')");
-            }
-            if (r.backgroundColor) {
-                x.fillStyle = r.backgroundColor;
-                x.fillRect(0, 0, w.width, w.height);
-                if (true) {
-                    h.push("finalCtx.fillStyle=" + x.fillStyle);
-                    h.push("finalCtx.fillRect(0, 0, " + w.width + ", " + w.height + ")");
-                }
-            }
-            x.drawImage(u, (w.width - m) / 2, l[0]);
-            if (r.border) {
-                var S = r.border.split(" ");
-                var T = S.pop();
-                if (S[S.length - 1] === "solid") S.pop();
-                var k = S[0];
-                var _ = S[1] || k;
-                var M = S[2] || k;
-                var A = S[3] || _ || k;
-                k = parseInt(k);
-                _ = parseInt(_);
-                M = parseInt(M);
-                A = parseInt(A);
-                var O = r.borderRadius || 0;
-                x.beginPath();
-                x.strokeStyle = T;
-                if (k) {
-                    x.lineWidth = k;
-                    x.moveTo(A ? O : 0, 0);
-                    x.lineTo(w.width - (_ ? O : 0), 0);
-                }
-                if (_) {
-                    x.lineWidth = _;
-                    x.moveTo(w.width, k ? O : 0);
-                    x.lineTo(w.width, w.height - (M ? O : 0));
-                }
-                if (M) {
-                    x.lineWidth = M;
-                    x.moveTo(A ? O : 0, w.height);
-                    x.lineTo(w.width - (_ ? O : 0), w.height);
-                }
-                if (A) {
-                    x.lineWidth = A;
-                    x.moveTo(0, k ? O : 0);
-                    x.lineTo(0, w.height - (M ? O : 0));
-                }
-                x.stroke();
-                if (O) {
-                    var C = document.createElement("canvas");
-                    var E = Math.min(w.width, w.height);
-                    C.width = C.height = E;
-                    var I = C.getContext("2d");
-                    I.beginPath();
-                    I.strokeStyle = T;
-                    I.arc(E >> 1, E >> 1, (E >> 1) - 1, 0, 2 * Math.PI);
-                    I.stroke();
-                    if (k && _) {
-                        x.drawImage(C, E >> 1, 0, E >> 1, E >> 1, w.width - O, 0, O, O);
-                    }
-                    if (M && _) {
-                        x.drawImage(C, E >> 1, E >> 1, E >> 1, E >> 1, w.width - O, w.height - O, O, O);
-                    }
-                    if (k && A) {
-                        x.drawImage(C, 0, 0, E >> 1, E >> 1, 0, 0, O, O);
-                    }
-                    if (M && A) {
-                        x.drawImage(C, 0, E >> 1, E >> 1, E >> 1, 0, w.height - O, O, O);
-                    }
-                }
-            }
-            if (true) {
-                w.$origin = h;
-            }
-            i[o] = w;
-            return w;
-        };
-        t.default = a;
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = Math.PI;
-        var a = function e(t) {
-            return t.$lastPaintTime || Date.now();
-        };
-        var o = {
-            linear: function e(t, r, i) {
-                var n = a(this);
-                var o = false;
-                var l = void 0;
-                var s = function() {
-                    var e = this.$lastPaintTime;
-                    var a = (e - n) / i;
-                    var c = (r - t) * a + t;
-                    if (o) {
-                        if (r > t) {
-                            while (c > r) {
-                                c -= r - t;
-                            }
-                        } else {
-                            while (c < r) {
-                                c += t - r;
-                            }
-                        }
-                    } else {
-                        if (r > t && c > r) {
-                            s.$done = true;
-                            c = r;
-                        } else if (r < t && c < r) {
-                            s.$done = true;
-                            c = r;
-                        }
-                    }
-                    if (a >= 1 && l) {
-                        l.call(this, c);
-                        l = null;
-                    }
-                    return c;
-                }.bind(this);
-                s.loop = function() {
-                    o = true;
-                    return s;
-                };
-                s.restart = function() {
-                    n = a(this);
-                    return s;
-                };
-                s.then = function(e) {
-                    l = e;
-                    return s;
-                };
-                return s;
-            },
-            pendulum: function e(t, r, i, o) {
-                var l = a(this);
-                var s = o || {};
-                s.start = s.start || 0;
-                var c = false;
-                var f = void 0;
-                var u = s.cycle || 1;
-                var d = function() {
-                    var e = a(this);
-                    var o = (e - l) / i;
-                    if (!c) {
-                        if (u) {
-                            if (o > u) {
-                                o = u;
-                                d.$done = true;
-                                o = u;
-                            }
-                        } else if (o > 1) {
-                            d.$done = true;
-                            o = 1;
-                        }
-                    } else {
-                        if (u) {
-                            o %= u;
-                        }
-                    }
-                    var h = o * n * 2 - n / 2 + s.start / 360 * n;
-                    var v = (r - t) * (Math.sin(h) + 1) / 2 + t;
-                    if (o >= u && f) {
-                        f.call(this, v);
-                        f = null;
-                    }
-                    return v;
-                }.bind(this);
-                d.loop = function() {
-                    c = true;
-                    return d;
-                };
-                d.restart = function() {
-                    l = a(this);
-                    return d;
-                };
-                d.then = function(e) {
-                    f = e;
-                    return d;
-                };
-                return d;
-            },
-            ease: function e(t, r, i) {
-                return this.pendulum(t, r, i * 2, {
-                    cycle: .5
-                });
-            },
-            oneByOne: function e(t) {
-                var r = t;
-                var i = false;
-                var n = function e() {
-                    for (var t = 0; t < r.length; t++) {
-                        if (!r[t].$done) {
-                            return r[t]();
-                        } else if (!r[t].$nextRestart) {
-                            r[t].$nextRestart = true;
-                            if (r[t + 1]) {
-                                r[t + 1].restart();
-                                return r[t + 1]();
-                            }
-                        }
-                    }
-                    if (i) {
-                        for (var n = 0; n < r.length; n++) {
-                            r[n].$done = false;
-                            r[n].$nextRestart = false;
-                            r[n].restart();
-                        }
-                        return r[0]();
-                    }
-                    return r[r.length - 1]();
-                };
-                n.loop = function() {
-                    i = true;
-                    return n;
-                };
-                return n;
-            }
-        };
-        var l = function e(t, r, n, a, l) {
-            var s = (0, i.funcOrValue)(t[r]);
-            if (true) {
-                if (typeof s === "undefined") {
-                    console.warn("[Easycanvas] start value in transition is undefined, using 0 instead.");
-                }
-            }
-            s = s || 0;
-            t[r] = o[n].bind(e)(s, a, l);
-        };
-        for (var s in o) {
-            l[s] = o[s];
-        }
-        e.exports = l;
-    }, , function(e, t, r) {
-        "use strict";
-        var i = r(10);
-        var n = l(i);
-        var a = r(33);
-        var o = l(a);
-        function l(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function(e, t, r, i, n, a, l, s, c, f, u) {
-            if (!u) {
-                if (t > a + s) return false;
-                if (a > t + i) return false;
-                if (e > n + l) return false;
-                if (n > e + r) return false;
-            }
-            var d = (0, o.default)(e, t, n, a, l, s, c, f, u) || (0, o.default)(e + r, t, n, a, l, s, c, f, u) || (0, 
-            o.default)(e, t + i, n, a, l, s, c, f, u) || (0, o.default)(e + r, t + i, n, a, l, s, c, f, u);
-            if (d) return true;
-            var h = (0, o.default)(n, a, e, t, r, i, c, f, -u) || (0, o.default)(n + l, a, e, t, r, i, c, f, -u) || (0, 
-            o.default)(n, a + s, e, t, r, i, c, f, -u) || (0, o.default)(n + l, a + s, e, t, r, i, c, f, -u);
-            if (h) return true;
-            if (t > a && t + i < a + s && e < n && e + r > n + l) return true;
-            if (e > n && e + r < n + l && t < a && t + i > a + s) return true;
-            return false;
-        };
-    }, , , , function(e, t, r) {
-        "use strict";
-        Object.defineProperty(t, "__esModule", {
-            value: true
-        });
-        var i = Object.assign || function(e) {
-            for (var t = 1; t < arguments.length; t++) {
-                var r = arguments[t];
-                for (var i in r) {
-                    if (Object.prototype.hasOwnProperty.call(r, i)) {
-                        e[i] = r[i];
-                    }
-                }
-            }
-            return e;
-        };
-        var n = r(15);
-        var a = s(n);
-        var o = r(3);
-        var l = s(o);
-        function s(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var c = {
-            padding: 0,
-            width: 300,
-            family: '"Helvetica Neue",Helvetica,Arial,sans-serif'
-        };
-        var f = function e(t, r) {
-            t.buttonStyleNormal = i(c, {
-                minWidth: r.style.width,
-                lineHeight: r.style.height,
-                padding: 0
-            }, r.props.normal);
-            t.buttonStyleHovered = i({}, t.buttonStyleNormal, r.props.hovered);
-            t.buttonStylePressed = i({}, t.buttonStyleNormal, r.props.pressed);
-            t.imageNormal = (0, a.default)(r.props.text || "", t.buttonStyleNormal);
-            t.imageHovered = r.props.hovered && (0, a.default)(r.props.text || "", t.buttonStyleHovered);
-            t.imagePressed = r.props.pressed && (0, a.default)(r.props.text || "", t.buttonStylePressed);
-        };
-        var u = function e(t, r) {
-            var i = void 0;
-            var n = r || {};
-            r.props = r.props || {};
-            var a = {
-                buttonStyleNormal: undefined,
-                buttonStyleHovered: undefined,
-                buttonStylePressed: undefined,
-                imageNormal: undefined,
-                imageHovered: undefined,
-                imagePressed: undefined
-            };
-            f(a, r);
-            var o = {};
-            r.events = r.events || {};
-            o.touchmove = o.mousemove = function() {
-                i.content.img = a.imageHovered || a.imageNormal;
-            };
-            o.touchstart = o.mousedown = function() {
-                i.content.img = a.imagePressed || a.imageHovered || a.imageNormal;
-            };
-            o.touchend = o.touchout = o.mouseout = function() {
-                i.content.img = a.imageNormal;
-            };
-            o.mouseup = function() {
-                i.content.img = a.imageHovered || a.imageNormal;
-            };
-            o.click = function(e) {
-                r.events.click && r.events.click.call(i, e);
-            };
-            i = new t({
-                name: r.name || "button_" + r.props.text,
-                content: {
-                    img: a.imageNormal
-                },
-                style: r.style,
-                props: r.props,
-                events: o,
-                hooks: r.hooks
-            });
-            i.update = function(e) {
-                this.__proto__.update.call(this, e);
-                f(a, r);
-                i.content.img = a.imageNormal;
-            };
-            return i;
-        };
-        (0, l.default)(u, "button");
-        t.default = u;
-    }, function(e, t, r) {
-        "use strict";
-        Object.defineProperty(t, "__esModule", {
-            value: true
-        });
-        var i = r(3);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var o = function e(t, r) {
-            var i = void 0;
-            var n = r || {};
-            n.name = n.name || "Image";
-            i = new t(n);
-            i.content.img = n.src;
-            Object.defineProperty(i, "src", {
-                get: function e() {
-                    return i.content.img ? i.content.img.src : "";
-                },
-                set: function e(t) {
-                    i.content.img = t;
-                }
-            });
-            return i;
-        };
-        (0, n.default)(o, "image");
-        t.default = o;
-    }, function(e, t, r) {
-        "use strict";
-        Object.defineProperty(t, "__esModule", {
-            value: true
-        });
-        var i = Object.assign || function(e) {
-            for (var t = 1; t < arguments.length; t++) {
-                var r = arguments[t];
-                for (var i in r) {
-                    if (Object.prototype.hasOwnProperty.call(r, i)) {
-                        e[i] = r[i];
-                    }
-                }
-            }
-            return e;
-        };
-        var n = r(1);
-        var a = r(16);
-        var o = c(a);
-        var l = r(3);
-        var s = c(l);
-        function c(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var f = void 0;
-        var u = function e(t, r) {
-            return Math.abs(t) < Math.abs(r) ? t : r;
-        };
-        var d = {
-            loose: function e(t) {
-                t.$scroll.touching = false;
-            },
-            looper: function e(t) {
-                if (!t.$scroll || !t.$scroll.$scrolling) return;
-                if (Math.abs(t.$scroll.speedX) > 1) {
-                    t.$scroll.speedX *= t.scroll.smooth || .8;
-                } else {
-                    t.$scroll.speedX = 0;
-                }
-                if (Math.abs(t.$scroll.speedY) > 1) {
-                    t.$scroll.speedY *= t.scroll.smooth || .8;
-                } else {
-                    t.$scroll.speedY = 0;
-                }
-                if (Math.abs(t.$scroll.speedX) <= 1 && Math.abs(t.$scroll.speedY) <= 1) {
-                    t.$scroll.$scrolling = false;
-                    t.$scroll.$wheeling = false;
-                    return;
-                }
-                if (t.$scroll.touching) {
-                    return;
-                }
-                t.scroll.scrollY -= t.$scroll.speedY;
-                t.scroll.scrollX -= t.$scroll.speedX;
-                if (!t.$scroll.touching && !t.$scroll.$wheeling && Math.abs(t.$scroll.speedY) < 50 && t.scroll.anchors && t.scroll.anchors.length) {
-                    var r = t.scroll.anchorsRange || 400;
-                    for (var i = 0; i < t.scroll.anchors.length; i++) {
-                        var a = t.scroll.anchors[i];
-                        var o = t.scroll.scrollY - a;
-                        if (o > 0 && o < r && t.$scroll.speedY > 0 || o < 0 && o > -r && t.$scroll.speedY < 0) {
-                            t.trigger("scrollTo", a, 200);
-                            t.$scroll.speedY = 0;
-                            break;
-                        }
-                    }
-                }
-                var l = (0, n.funcOrValue)(t.scroll.minScrollX, t);
-                var s = (0, n.funcOrValue)(t.scroll.maxScrollX, t);
-                var c = (0, n.funcOrValue)(t.scroll.minScrollY, t);
-                var f = (0, n.funcOrValue)(t.scroll.maxScrollY, t);
-                if (!isNaN(c) && t.scroll.scrollY < c) {
-                    t.scroll.scrollY = c;
-                } else if (!isNaN(f) && t.scroll.scrollY > f) {
-                    t.scroll.scrollY = f;
-                    t.broadcast("scrolledToBottom");
-                    t.$scroll.speedY = 0;
-                }
-                if (!isNaN(l) && t.scroll.scrollX < l) {
-                    t.scroll.scrollX = l;
-                } else if (!isNaN(s) && t.scroll.scrollX > s) {
-                    t.scroll.scrollX = s;
-                }
-            },
-            touch: function e(t, r) {
-                var i = Date.now();
-                t.$scroll.$wheeling = false;
-                if (!t.$scroll.touching) {
-                    t.$scroll.touching = i;
-                    t.$scroll.quickTouch = i;
-                    t.$scroll.lastTouchSpeed = 0;
-                    t.$scroll.startPos.x = r.canvasX;
-                    t.$scroll.startPos.y = r.canvasY;
-                    t.$scroll.lastScrollSpeed = t.$scroll.speedX || t.$scroll.speedY;
-                    t.$scroll.speedX = 0;
-                    t.$scroll.speedY = 0;
-                } else {
-                    t.$scroll.$scrolling = true;
-                    var a = t.$scroll.startPos.x - r.canvasX;
-                    var o = t.$scroll.startPos.y - r.canvasY;
-                    var l = i - t.$scroll.touching;
-                    t.$scroll.touching = i;
-                    var s = (0, n.funcOrValue)(t.scroll.minScrollX, t);
-                    var c = (0, n.funcOrValue)(t.scroll.maxScrollX, t);
-                    var f = (0, n.funcOrValue)(t.scroll.minScrollY, t);
-                    var d = (0, n.funcOrValue)(t.scroll.maxScrollY, t);
-                    if (t.scroll.scrollX + a < s || t.scroll.scrollX + a > c) {
-                        if (t.scroll.flexible || t.scroll.flexibleX) a >>= 3; else a = 0;
-                    }
-                    if (t.scroll.scrollY + o < f || t.scroll.scrollY + o > d) {
-                        if (t.scroll.flexible || t.scroll.flexibleY) o >>= 3; else o = 0;
-                    }
-                    if ((0, n.funcOrValue)(t.scroll.scrollableX, t) && Math.abs(a) >= 1 && l > 1) {
-                        var h = (r.canvasX - t.$scroll.startPos.x) / l * 25;
-                        if (t.$scroll.lastScrollSpeed * h > 0 && Math.abs(h) > 15) {
-                            h += u(h, t.$scroll.lastScrollSpeed);
-                        }
-                        t.$scroll.speedX = (t.$scroll.lastTouchSpeed + h) / (t.$scroll.lastTouchSpeed ? 2 : 1);
-                        t.$scroll.lastTouchSpeed = h;
-                        t.scroll.scrollX += a;
-                    }
-                    if ((0, n.funcOrValue)(t.scroll.scrollableY, t) && Math.abs(o) >= 1 && l > 1) {
-                        var v = (r.canvasY - t.$scroll.startPos.y) / l * 25;
-                        if (t.$scroll.lastScrollSpeed * v > 0 && Math.abs(v) > 15) {
-                            v += u(v, t.$scroll.lastScrollSpeed);
-                        }
-                        t.$scroll.speedY = (t.$scroll.lastTouchSpeed + v) / (t.$scroll.lastTouchSpeed ? 2 : 1);
-                        t.$scroll.lastTouchSpeed = v;
-                        t.scroll.scrollY += o;
-                    }
-                    t.$scroll.startPos.x = r.canvasX;
-                    t.$scroll.startPos.y = r.canvasY;
-                    if (Math.abs(a) > Math.abs(o) + 1) return 1; else if (Math.abs(a) < Math.abs(o) - 1) return 2;
-                }
-            },
-            wheel: function e(t, r) {
-                t.$scroll.speedX = (0, n.funcOrValue)(t.scroll.scrollableX, t) ? r.event.wheelDeltaX : 0;
-                t.$scroll.speedY = (0, n.funcOrValue)(t.scroll.scrollableY, t) ? r.event.wheelDeltaY : 0;
-                t.$scroll.$scrolling = true;
-                t.$scroll.$wheeling = true;
-                r.stopPropagation();
-            }
-        };
-        var h = function e(t, r) {
-            var n = false;
-            var a = false;
-            var l = r || {};
-            l.scroll = i({
-                scrollX: 0,
-                scrollY: 0,
-                scrollableX: function e() {
-                    return (this.style.overflowX || this.style.overflow) !== "visible";
-                },
-                scrollableY: function e() {
-                    return (this.style.overflowY || this.style.overflow) !== "visible";
-                },
-                minScrollX: 0,
-                maxScrollX: function e() {
-                    var t = this;
-                    var r = 0;
-                    this.getChildren().forEach(function(e) {
-                        var i = e.getSelfStyle("left") + e.getSelfStyle("width") - t.getStyle("width");
-                        if (i > r) r = i;
-                    });
-                    return r;
-                },
-                minScrollY: 0,
-                maxScrollY: function e() {
-                    var t = this;
-                    var r = 0;
-                    this.getChildren().forEach(function(e) {
-                        var i = e.getSelfStyle("top") + e.getSelfStyle("height") - t.getStyle("height");
-                        if (i > r) r = i;
-                    });
-                    return r;
-                },
-                propagationX: false,
-                propagationY: false
-            }, r.scroll);
-            var s = function e() {
-                if (n) {
-                    u.scroll.scrollX = n();
-                }
-                if (a) {
-                    u.scroll.scrollY = a();
-                }
-                if (!n && !a) {
-                    u.off("ticked", e);
-                }
-            };
-            var c = false;
-            l.events = i({
-                touchstart: function e(t) {
-                    d.loose(this);
-                    c = true;
-                    f = false;
-                    d.touch(this, t);
-                    if (!u.scroll.propagationX && !u.scroll.propagationY) {
-                        t.stopPropagation();
-                    }
-                },
-                touchmove: function e(t) {
-                    if (!c) return;
-                    if (f && this !== f) {
-                        return;
-                    }
-                    var r = d.touch(this, t);
-                    if (r === 1 && u.scroll.propagationY) {
-                        t.stopPropagation();
-                        f = this;
-                    } else if (r === 2 && u.scroll.propagationX) {
-                        t.stopPropagation();
-                        f = this;
-                    }
-                },
-                mousewheel: function e(t) {
-                    c = true;
-                    d.wheel(this, t);
-                    t.stopPropagation();
-                },
-                touchend: function e() {
-                    c = false;
-                    d.loose(this);
-                },
-                mouseup: function e() {
-                    c = false;
-                    d.loose(this);
-                }
-            }, l.events || {});
-            if (l.scroll.capture) {
-                l.events.interceptor = function(e) {
-                    if (u.events[e.type]) {
-                        u.events[e.type].call(u, e);
-                        return false;
-                    }
-                    return e;
-                };
-            }
-            var u = new t(l);
-            u.on("ticked", function() {
-                d.looper(u);
-            });
-            u.on("scrollTo", function(e, t, r) {
-                var i = void 0;
-                n = o.default.ease(u.scroll.scrollY, e, r || 200, {
-                    cycle: .5
-                }).then(function() {
-                    n = false;
-                    i && i();
-                    i = false;
-                });
-                a = o.default.ease(u.scroll.scrollY, t, r || 200, {
-                    cycle: .5
-                }).then(function() {
-                    a = false;
-                    i && i();
-                    i = false;
-                });
-                u.on("ticked", s);
-                return {
-                    then: function e(t) {
-                        i = t;
-                    }
-                };
-            });
-            u.$scroll = {
-                speedX: 0,
-                speedY: 0,
-                touching: false,
-                startPos: {},
-                lastTouchSpeed: 0,
-                lastScrollSpeed: 0
-            };
-            var h = u.add({
-                name: "scrolling-element",
-                style: {
-                    left: function e() {
-                        return -this.$parent.scroll.scrollX;
-                    },
-                    top: function e() {
-                        return -this.$parent.scroll.scrollY;
-                    }
-                }
-            });
-            u.add = h.add.bind(h);
-            u.clear = h.clear.bind(h);
-            u.getChildren = function() {
-                return h.children;
-            };
-            return u;
-        };
-        (0, s.default)(h, "scroll");
-        t.default = h;
-    }, function(e, t, r) {
-        "use strict";
-        Object.defineProperty(t, "__esModule", {
-            value: true
-        });
-        var i = r(1);
-        var n = r(3);
-        var a = o(n);
-        function o(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var l = function e(t, r) {
-            var n = new t(r);
-            r.props.index = r.props.index || 0;
-            n.on("beforeTick", function() {
-                var e = this.props;
-                var t = (0, i.funcOrValue)(this.content.img, this);
-                if (!t || !t.width) return;
-                var r = e.index || 0;
-                if (r < 0) r = 0;
-                var n = void 0, a = void 0;
-                if (e.frameWidth || e.frameHeight) {
-                    if (e.frameWidth < 0) {
-                        n = t.width / -e.frameWidth;
-                    } else {
-                        n = e.frameWidth;
-                    }
-                    if (e.frameHeight < 0) {
-                        a = t.height / -e.frameHeight;
-                    } else {
-                        a = e.frameHeight;
-                    }
-                    var o = Math.floor(t.width / n);
-                    var l = Math.floor(t.height / a);
-                    this.style.cutLeft = r % o * n;
-                    this.style.cutTop = Math.floor(r / o) % l * a;
-                }
-                if (!e.loop && r > 0 && this.style.cutLeft === 0 && this.style.cutTop === 0) {
-                    this.style.img = undefined;
-                    if (e.onOver) {
-                        e.onOver.call(this);
-                    } else {
-                        this.remove();
-                    }
-                }
-                e.lastFrameTime = e.lastFrameTime || 0;
-                if (this.$canvas.$nextTickTime - e.lastFrameTime >= (0, i.funcOrValue)(e.interval, this)) {
-                    e.lastFrameTime = this.$canvas.$nextTickTime;
-                    e.index++;
-                }
-                this.style.cutWidth = this.style.cutWidth || n;
-                this.style.cutHeight = this.style.cutHeight || a;
-                this.style.width = this.style.width || n;
-                this.style.height = this.style.height || a;
-            });
-            return n;
-        };
-        (0, a.default)(l, "sequence");
-        t.default = l;
-    }, function(e, t, r) {
-        "use strict";
-        Object.defineProperty(t, "__esModule", {
-            value: true
-        });
-        var i = Object.assign || function(e) {
-            for (var t = 1; t < arguments.length; t++) {
-                var r = arguments[t];
-                for (var i in r) {
-                    if (Object.prototype.hasOwnProperty.call(r, i)) {
-                        e[i] = r[i];
-                    }
-                }
-            }
-            return e;
-        };
-        var n = r(15);
-        var a = s(n);
-        var o = r(3);
-        var l = s(o);
-        function s(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var c = {
-            padding: 0,
-            width: 300,
-            lineHeight: 100,
-            family: '"Helvetica Neue",Helvetica,Arial,sans-serif'
-        };
-        var f = function e(t) {
-            t.content.img = t.text ? (0, a.default)(t.text, i({}, c, {
-                lineHeight: t.style.fontSize
-            }, t.style)) : undefined;
-        };
-        var u = function e(t, r) {
-            var i = void 0;
-            r.name = r.name || "Text";
-            i = new t(r);
-            f(i);
-            Object.defineProperty(i, "text", {
-                get: function e() {
-                    return i.content.text;
-                },
-                set: function e(t) {
-                    i.content.img = text;
-                }
-            });
-            i.update = function(e) {
-                this.__proto__.update.call(this, e);
-                f(this);
-            };
-            return i;
-        };
-        (0, l.default)(u, "text");
-        t.default = u;
-    }, function(e, t, r) {
-        "use strict";
-        Object.defineProperty(t, "__esModule", {
-            value: true
-        });
-        var i = r(3);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var o = function e(t, r) {
-            var i = void 0;
-            var n = r || {};
-            n.name = n.name || "View";
-            i = new t(n);
-            return i;
-        };
-        (0, n.default)(o, "view");
-        t.default = o;
-    }, , , , function(e, t) {
-        "use strict";
-        var r = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(e) {
-            return typeof e;
-        } : function(e) {
-            return e && typeof Symbol === "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-        };
-        var i = {};
-        var n = [];
-        var a = "processing";
-        var o = Image;
-        var l = 0;
-        var s = function e(t, a, s) {
-            var c = s || {};
-            var f = e.cacheCanvas;
-            if ((typeof t === "undefined" ? "undefined" : r(t)) === "object") {
-                var u = t;
-                c.callbackArgs = c.callbackArgs || [];
-                e(u.shift(), function(t) {
-                    c.callbackArgs.push(t);
-                    if (u.length > 1) {
-                        e(u, a, c);
-                    } else {
-                        e(u[0], function(e) {
-                            c.callbackArgs.push(e);
-                            a(c.callbackArgs);
-                        }, c);
-                    }
-                }, s);
-                return;
-            }
-            var d = t + "_" + JSON.stringify(s) + "_" + f;
-            if (i[d]) {
-                if (a) {
-                    if (i[d].width && a) {
-                        a(i[d]);
-                    } else {
-                        setTimeout(function() {
-                            e(t, a, s);
-                        }, 100);
-                    }
-                    return;
-                } else {
-                    return i[d];
-                }
-            }
-            var h = new o();
-            h._complete = false;
-            if (c.block) {
-                h.src = t;
-                l++;
-            } else if (l === 0) {
-                h.src = t;
-            } else {
-                n.push({
-                    imgObj: h,
-                    src: t
-                });
-            }
-            i[d] = h;
-            var v = void 0;
-            if (c.canvas || c.alphaColor || f) {
-                v = document.createElement("canvas");
-                v.width = v.height || 0;
-                i[d] = v;
-            }
-            h.onload = function(e) {
-                h._complete = true;
-                if (h.src.substr(-3) === "jpg" || h.src.substr(-3) === "jpeg" || h.src.substr(-3) === "bmp") {
-                    h.$noAlpha = true;
-                } else if (h.src.indexOf("data:image/jpg;") === 0) {
-                    h.$noAlpha = true;
-                }
-                if (c.block) {
-                    l--;
-                    if (l === 0) {
-                        n.forEach(function(e) {
-                            e.imgObj.src = e.src;
-                        });
-                        n.splice(0);
-                    }
-                }
-                if (v && (c.canvas || c.alphaColor || f)) {
-                    var t = v.getContext("2d");
-                    v.width = h.width;
-                    v.height = h.height;
-                    v.$noAlpha = h.$noAlpha;
-                    t.drawImage(h, 0, 0);
-                    if (c.alphaColor) {
-                        var r = t.getImageData(0, 0, h.width, h.height);
-                        var i = [];
-                        for (var o = 0; o < r.data.length; o += 4) {
-                            var s = r.data[o] + r.data[o + 1] + r.data[o + 2];
-                            var u = 1;
-                            if (r.data[o] < u && r.data[o + 1] < u && r.data[o + 2] < u) {
-                                r.data[o + 3] = Math.floor(s / 255);
-                            }
-                        }
-                        t.putImageData(r, 0, 0);
-                        v.$noAlpha = false;
-                    }
-                    h = v;
-                }
-                if (a) {
-                    a(h);
-                }
-            };
-            h.onerror = function() {
-                i[d] = h;
-            };
-            return v || h;
-        };
-        s.cacheCanvas = false;
-        e.exports = s;
-    }, function(e, t) {
-        "use strict";
-        var r = "processing";
-        var i = {};
-        function n(e, t) {
-            if (e && e.match(/^data:/)) {
-                t && t(e);
-                return;
-            }
-            if (i[e]) {
-                if (i[e] !== r) {
-                    t(i[e]);
-                } else {
-                    setTimeout(function() {
-                        n(e, t);
-                    }, 100);
-                }
-                return;
-            }
-            i[e] = r;
-            var a = new XMLHttpRequest();
-            a.onload = function() {
-                var r = new FileReader();
-                r.onloadend = function() {
-                    i[e] = r.result;
-                    t && t(r.result);
-                };
-                r.readAsDataURL(a.response);
-            };
-            a.open("GET", e);
-            a.responseType = "blob";
-            a.send();
-        }
-        e.exports = n;
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(10);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var o = 3.141593;
-        e.exports = function(e, t, r, i, n, a, l, s, c) {
-            var f = c ? -c / 180 * o : 0;
-            if (f) {
-                e = (e - l) * Math.cos(f) - (t - s) * Math.sin(f) + l;
-                t = (e - l) * Math.sin(f) + (t - s) * Math.cos(f) + s;
-            }
-            return e >= r && e <= r + n && t >= i && t <= i + a;
-        };
-    }, , , , , , , , , , , , , function(e, t, r) {
-        "use strict";
-        var i = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(e) {
-            return typeof e;
-        } : function(e) {
-            return e && typeof Symbol === "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-        };
-        var n = r(1);
-        var a = C(n);
-        var o = r(4);
-        var l = C(o);
-        var s = r(97);
-        var c = C(s);
-        var f = r(96);
-        var u = C(f);
-        var d = r(47);
-        var h = C(d);
-        var v = r(48);
-        var p = C(v);
-        var g = r(99);
-        var $ = C(g);
-        var m = r(92);
-        var y = C(m);
-        var b = r(94);
-        var w = C(b);
-        var x = r(95);
-        var S = C(x);
-        var T = r(93);
-        var k = C(T);
-        var _ = r(100);
-        var M = C(_);
-        var A = r(98);
-        var O = C(A);
-        function C(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var E = 0;
-        var I = function e(t) {
-            if (t.children) {
-                t.children.forEach(function(r, i) {
-                    if (!r.$id) {
-                        t.children[i] = new V(r);
-                    }
-                    if (t.$id && !t.$dom) {
-                        t.children[i].$canvas = t.$canvas;
-                        t.children[i].$parent = t;
-                    } else {
-                        t.children[i].$canvas = t;
-                    }
-                    e(t.children[i]);
-                });
-            }
-        };
-        var P = function e(t, r) {
-            var i = t || {};
-            if (!i.$id) {
-                i.$id = Math.random().toString(36).substr(2);
-            }
-            i.$tickedTimes = i.$tickedTimes || 0;
-            i.content = i.content || {};
-            i.style = i.style || {};
-            i.style.scale = a.default.firstValuable(i.style.scale, 1);
-            i.style.opacity = a.default.firstValuable(i.style.opacity, 1);
-            i.style.zIndex = i.style.zIndex || 0;
-            i.style.locate = i.style.locate || "center";
-            var n = a.default.funcOrValue(i.content.img);
-            r.$cache = {};
-            r.$render = {};
-            r.$style = {};
-            r.$needUpdate = {};
-            i.hooks = i.hooks || {};
-            l.default.styles.concat([ "visible" ]).forEach(function(e) {
-                r.$cache[e] = undefined;
-                r.$style[e] = i.style[e];
-                if (typeof i.style[e] === "function") {
-                    r.$style[e] = i.style[e].bind(r);
-                }
-                if (l.default.xywh.indexOf(e) > -1) {
-                    r.$style[e] = r.$style[e] || 0;
-                } else if ([ "opacity", "scale" ].indexOf(e) > -1) {
-                    r.$style[e] = a.default.firstValuable(r.$style[e], 1);
-                }
-                r.$needUpdate[e] = 1;
-                Object.defineProperty(i.style, e, {
-                    get: function t() {
-                        return r.$style[e];
-                    },
-                    set: function t(i) {
-                        if (r.$style[e] === i) return;
-                        r.$style[e] = i;
-                        r.$needUpdate[e] = 1;
-                    }
-                });
-            });
-            i.events = i.events || {};
-            if (true) {
-                for (var o in i.events) {
-                    if (typeof i.events[o] !== "function" && o !== "eIndex") {
-                        console.warn("[Easycanvas] Handler " + o + " is not a function.", i.events[o]);
-                    }
-                }
-            }
-            if (true) {
-                i.$addIndex = E++;
-            }
-            i.events.eIndex = i.events.eIndex;
-            if (true) {
-                i.$perf = {};
-            }
-            if (true) {
-                if (!i.name && i.content.img && i.content.img.src) {
-                    var s = i.content.img.src.match(/.*\/([^\/]*)$/);
-                    if (s && s[1]) {
-                        i.name = s[1];
-                    }
-                }
-                i.name = i.name || "Unnamed Sprite";
-            }
-            i.children = i.children || [];
-            I(i);
-            i.$styleCacheTime = {};
-            return i;
-        };
-        var F = function e(t) {
-            var r = this;
-            this.$extendList.forEach(function(e) {
-                e.call(r, t);
-            });
-        };
-        var V = function e(t) {
-            var r = P(t, this);
-            for (var i in r) {
-                if (Object.prototype.hasOwnProperty.call(r, i)) {
-                    this[i] = r[i];
-                }
-            }
-            F.call(this, r);
-            return this;
-        };
-        V.prototype.$extendList = [];
-        V.prototype.add = function(e) {
-            if (!e) {
-                return;
-            }
-            this.children.push(e);
-            I(this);
-            return this.children[this.children.length - 1];
-        };
-        V.prototype.getRect = function(e, t) {
-            var r = this;
-            var i = {};
-            l.default.txywh.forEach(function(e) {
-                i[e] = r.getStyle(e, t);
-            });
-            if (i.width === 0 && this.content.img && !e) {
-                var n = a.default.funcOrValue(this.content.img, this);
-                i.width = n.width;
-                i.height = n.height;
-            }
-            var o = this.getStyle("locate");
-            if (o === "lt") {} else if (o === "ld") {
-                i.top -= i.height;
-            } else if (o === "rt") {
-                i.left -= i.width;
-            } else if (o === "rd") {
-                i.left -= i.width;
-                i.top -= i.height;
-            } else {
-                i.left -= i.width >> 1;
-                i.top -= i.height >> 1;
-            }
-            i.right = this.$canvas.width - i.left - i.width;
-            i.bottom = this.$canvas.height - i.top - i.height;
-            return i;
-        };
-        V.prototype.getSelfStyle = function(e) {
-            var t = {};
-            if (e) {
-                return a.default.funcOrValue(this.style[e], this);
-            }
-            for (var r in this.style) {
-                t[r] = a.default.funcOrValue(this.style[r], this);
-            }
-            return t;
-        };
-        V.prototype.getStyle = function(e, t) {
-            var r = this;
-            if (t && r.$cache[e] !== undefined) {
-                return r.$cache[e];
-            }
-            var i = a.default.funcOrValue(r.$style[e], r);
-            if (r.$parent) {
-                var n = r.$parent.getStyle(e);
-                if (e === "left" || e === "top") {
-                    n = a.default.firstValuable(n, 0);
-                    return n + a.default.firstValuable(i, 0);
-                } else if (e === "scale" || e === "opacity") {
-                    n = a.default.firstValuable(n, 1);
-                    return n * a.default.firstValuable(i, 1);
-                } else if (e === "visible") {
-                    if (n === false) return false;
-                    return i;
-                }
-            }
-            return i;
-        };
-        V.prototype.remove = function(e) {
-            if (e) {
-                this.$canvas.remove(e);
-                a.default.execFuncs(e.hooks.removed, e);
-                return;
-            }
-            if (this.$parent) {
-                this.$parent.remove(this);
-            } else {
-                this.$canvas.remove(this);
-            }
-            a.default.execFuncs(this.hooks.removed, this);
-        };
-        V.prototype.update = function(e) {
-            if (!e) return;
-            for (var t in e) {
-                if (i(e[t]) === "object") {
-                    for (var r in e[t]) {
-                        if (!this[t]) {
-                            this[t] = {};
-                        }
-                        this[t][r] = e[t][r];
-                    }
-                } else {
-                    this[t] = e[t];
-                }
-            }
-            this.recalculate(true);
-            return this;
-        };
-        V.prototype.hide = function() {
-            this.style.display = "none";
-            return this;
-        };
-        V.prototype.show = function() {
-            this.style.display = undefined;
-            return this;
-        };
-        V.prototype.getAllChildren = function(e) {
-            var t = this;
-            var r = e ? [ t ] : [];
-            t.children.forEach(function(e) {
-                r = r.concat(e.getAllChildren(true));
-            });
-            return r;
-        };
-        V.prototype.getAllVisibleChildren = function(e) {
-            var t = this;
-            if (a.default.funcOrValue(t.style.visible, t) === false) {
-                return [];
-            }
-            var r = e ? [ t ] : [];
-            t.children.forEach(function(e) {
-                r = r.concat(e.getAllVisibleChildren(true));
-            });
-            return r;
-        };
-        V.prototype.getOuterRect = S.default;
-        V.prototype.combine = k.default;
-        V.prototype.uncombine = M.default;
-        V.prototype.combineAsync = function() {
-            if (this.$combine) return this;
-            this.$combine = 9;
-            this.off("ticked", this.combine);
-            this.on("ticked", this.combine, 100);
-            return this;
-        };
-        V.prototype.recalculate = O.default;
-        V.prototype.refresh = function() {
-            for (var e in $sprite.$style) {
-                $sprite.$cache[e] = V.get($sprite.$style[e], $sprite);
-            }
-            return this;
-        };
-        V.prototype.nextTick = p.default;
-        V.prototype.on = c.default;
-        V.prototype.off = u.default;
-        V.prototype.clear = h.default;
-        V.prototype.trigger = $.default;
-        V.prototype.broadcast = y.default;
-        V.prototype.distribute = w.default;
-        e.exports = V;
-    }, function(e, t) {
-        "use strict";
-        e.exports = function() {
-            this.children.forEach(function(e) {
-                e.remove();
-            });
-            this.children = [];
-        };
-    }, function(e, t) {
-        "use strict";
-        e.exports = function(e) {
-            var t = function t() {
-                e.apply(this, arguments);
-                this.off("ticked", t);
-            };
-            this.on("ticked", t);
-        };
-    }, , , , , , , , function(e, t) {
-        "use strict";
-        var r = function e(t) {
-            setTimeout(t, 1e3 / 60);
-        };
-        var i = typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || r : r;
-        e.exports = i;
-    }, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , function(e, t, r) {
-        "use strict";
-        var i = Object.assign || function(e) {
-            for (var t = 1; t < arguments.length; t++) {
-                var r = arguments[t];
-                for (var i in r) {
-                    if (Object.prototype.hasOwnProperty.call(r, i)) {
-                        e[i] = r[i];
-                    }
-                }
-            }
-            return e;
-        };
-        var n = r(4);
-        var a = s(n);
-        var o = r(1);
-        var l = s(o);
-        function s(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        if (true) {
-            if (!window[a.default.devFlag]) {
-                var c = window[a.default.devFlag] = {
-                    isPaintRecording: false,
-                    selectMode: false,
-                    current: {},
-                    version: a.default.version,
-                    $canvas: {},
-                    $plugin: null
-                };
-                var f = {
-                    getSprite: function e(t) {
-                        if (!c.isPaintRecording) return [];
-                        var r = {};
-                        if (t) {
-                            var n = c.$canvas[t].children;
-                            var o = c.$canvas[t].$children;
-                            var s = function e(t) {
-                                if (t.name === a.default.devFlag) return;
-                                r[t.$id] = {
-                                    name: t.name,
-                                    $addIndex: t.$addIndex,
-                                    parent: t.$parent && t.$parent.$id,
-                                    style: {},
-                                    children: t.children.filter(function(e) {
-                                        return e.name !== a.default.devFlag;
-                                    }).map(function(e) {
-                                        return e.$id;
-                                    }),
-                                    rendered: t.$rendered
-                                };
-                                for (var i in t.style) {
-                                    r[t.$id].style[i] = l.default.funcOrValue(t.style[i], t);
-                                }
-                                a.default.xywh.forEach(function(e) {
-                                    r[t.$id].style[e] = Math.round(r[t.$id].style[e]);
-                                });
-                                [ "physics", "$perf" ].forEach(function(e) {
-                                    r[t.$id][e] = t[e];
-                                });
-                                if (t.webgl) {
-                                    r[t.$id].webgl = {};
-                                    [ "rx", "ry", "rz", "x", "y", "z" ].forEach(function(e) {
-                                        r[t.$id].webgl[e] = l.default.funcOrValue(t.webgl[e], t);
-                                    });
-                                }
-                                if (t.children) {
-                                    t.children.sort(function(e, t) {
-                                        return e.$addIndex < t.$addIndex ? -1 : 1;
-                                    }).forEach(e);
-                                }
-                            };
-                            n.sort(function(e, t) {
-                                return e.$addIndex < t.$addIndex ? -1 : 1;
-                            }).forEach(s);
-                        } else {
-                            for (var f in c.$canvas) {
-                                r = i(r, c.$plugin.getSprite(f));
-                            }
-                        }
-                        return r;
-                    },
-                    selectSpriteById: function e(t, r) {
-                        if (!r) {
-                            for (var i in c.$canvas) {
-                                var n = f.selectSpriteById(t, i);
-                                if (n) {
-                                    return {
-                                        $sprite: n.$sprite || n,
-                                        $canvas: c.$canvas[i]
-                                    };
-                                }
-                            }
-                            return false;
-                        }
-                        var a = function e(i) {
-                            for (var n = 0; n < i.length; n++) {
-                                if (i[n].$id === t) return i[n];
-                                var a = e(i[n].children);
-                                if (a) {
-                                    return {
-                                        $sprite: a.$sprite || a,
-                                        $canvas: c.$canvas[r]
-                                    };
-                                }
-                            }
-                            return false;
-                        };
-                        var o = c.$canvas[r].children;
-                        var l = a(o);
-                        if (l) {
-                            return {
-                                $sprite: l.$sprite || l,
-                                $canvas: c.$canvas[r]
-                            };
-                        }
-                    },
-                    updateSprite: function e(t) {
-                        var r = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "style";
-                        var n = arguments[2];
-                        var a = arguments[3];
-                        var o = f.selectSpriteById(t, a).$sprite;
-                        if (!o) console.warn("Sprite " + spriteId + " Not Found.");
-                        i(o[r], n);
-                    },
-                    highlightSprite: function e(t, r, i) {
-                        c.selectMode = Boolean(r);
-                        var n = f.selectSpriteById(t, i);
-                        var a = n.$sprite;
-                        var o = n.$canvas;
-                        if (r && o && a) {
-                            o.$plugin.selectSprite(false, o, a);
-                        } else if (o) {
-                            o.$plugin.cancelSelectSprite(o);
-                        }
-                    },
-                    sendGlobalHook: function e(t, r) {
-                        var i = f.selectSpriteById(t, r);
-                        var n = i.$sprite;
-                        var a = i.$canvas;
-                        console.log("%c window.$0 = %c Current Sprite(" + n.name + ") %c ", "background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff", "background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff", "background:transparent");
-                        window.$0 = n;
-                        window.$1 = a;
-                    },
-                    pause: function e(t, r) {
-                        var i = c.$canvas[t];
-                        i.$pausing = typeof r !== "undefined" ? r : !i.$pausing;
-                    },
-                    getPerf: function e() {
-                        var t = {
-                            canvas: [],
-                            navigator: {
-                                clientWidth: document.body.clientWidth,
-                                clientHeight: document.body.clientHeight,
-                                devicePixelRatio: window.devicePixelRatio
-                            }
-                        };
-                        if (!c.isPaintRecording) return t;
-                        for (var r in c.$canvas) {
-                            t.canvas.push({
-                                $id: r,
-                                name: c.$canvas[r].name,
-                                perf: c.$canvas[r].$perf,
-                                fps: c.$canvas[r].lastFps,
-                                size: {
-                                    styleWidth: c.$canvas[r].$dom.getBoundingClientRect().width || parseInt(c.$canvas[r].$dom.style.width) || c.$canvas[r].$dom.width,
-                                    styleHeight: c.$canvas[r].$dom.getBoundingClientRect().height || parseInt(c.$canvas[r].$dom.style.height) || c.$canvas[r].$dom.height,
-                                    canvasWidth: c.$canvas[r].$dom.width,
-                                    canvasHeight: c.$canvas[r].$dom.height
-                                }
-                            });
-                        }
-                        return t;
-                    }
-                };
-                c.$plugin = f;
-            }
-        }
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function() {
-            var e = Array.prototype.slice.call(arguments);
-            var t = e.shift();
-            if (this.hooks[t]) {
-                n.default.execFuncs(this.hooks[t], this, e);
-            }
-            e.unshift(t);
-            var r = this.children;
-            r && r.forEach(function(t) {
-                t.broadcast.apply(t, e);
-            });
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = Object.assign || function(e) {
-            for (var t = 1; t < arguments.length; t++) {
-                var r = arguments[t];
-                for (var i in r) {
-                    if (Object.prototype.hasOwnProperty.call(r, i)) {
-                        e[i] = r[i];
-                    }
-                }
-            }
-            return e;
-        };
-        var n = r(1);
-        var a = s(n);
-        var o = r(4);
-        var l = s(o);
-        function s(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var c = 9;
-        var f = 1;
-        var u = 2;
-        var d = 3;
-        e.exports = function() {
-            var e = this;
-            var t = this;
-            if (t.$combine !== c) {
-                return f;
-            }
-            setTimeout(function() {
-                if (t.$combine !== c) {
-                    return f;
-                }
-                if (t.getStyle("visible") === false) return d;
-                var r = e.$canvas;
-                var n = t.getRect(false, true);
-                if (n.tw > r.width) return u;
-                if (n.th > r.height) return u;
-                var o = t.getAllChildren(true);
-                for (var l = 0; l < o.length; l++) {
-                    var s = o[l];
-                    if (s.content.img && !s.$render._imgWidth) {
-                        return d;
-                    }
-                    if (s.getStyle("scale") !== 1) {
-                        return d;
-                    }
-                }
-                var h = void 0;
-                if (a.default.funcOrValue(t.style.overflow, t) !== "hidden") {
-                    h = t.getOuterRect(false, true);
-                    h.left = Math.floor(h.left);
-                    h.top = Math.floor(h.top);
-                    h.width = Math.round(h.width);
-                    h.height = Math.round(h.height);
-                    h.right = Math.round(h.right);
-                    h.bottom = Math.round(h.bottom);
-                    if (h.width > r.width) return u;
-                    if (h.height > r.height) return u;
-                } else {
-                    h = n;
-                }
-                t.off("ticked", e.combine);
-                var v = r.$children.filter(function(e) {
-                    for (var t = 0; t < o.length; t++) {
-                        if (o[t].$id === e.$id) return true;
-                    }
-                });
-                var p = t.getStyle("opacity");
-                v.forEach(function(e) {
-                    if (!e.settings) return;
-                    e.settings.$combineGlobalAlpha = e.settings.globalAlpha;
-                    e.settings.globalAlpha = p > 0 ? e.settings.globalAlpha / p : 1;
-                    if (!e.props.$moved) {
-                        e.props.$moved = true;
-                        e.props.left -= h.left;
-                        e.props.top -= h.top;
-                    }
-                });
-                var g = r.$combinerCanvas;
-                if (!g) {
-                    g = r.$combinerCanvas = document.createElement("canvas");
-                    g.width = r.width;
-                    g.height = r.height;
-                }
-                var $ = g.getContext("2d");
-                $.clearRect(0, 0, r.width, r.height);
-                r.$render($, v, true);
-                v.forEach(function(e) {
-                    if (!e.settings) return;
-                    e.settings.globalAlpha = e.settings.$combineGlobalAlpha;
-                });
-                var m = document.createElement("canvas");
-                m.width = h.width;
-                m.height = h.height;
-                var y = m.getContext("2d");
-                y.drawImage(g, 0, 0, h.width, h.height, 0, 0, h.width, h.height);
-                t.$combine = {
-                    content: t.content,
-                    children: t.children,
-                    style: i({}, t.style)
-                };
-                t.children = [];
-                t.content = {
-                    img: m
-                };
-                var b = t.getSelfStyle("left") - (Math.floor(n.left) - h.left);
-                var w = t.getSelfStyle("top") - (Math.floor(n.top) - h.top);
-                i(t.style, {
-                    scale: 1,
-                    left: b,
-                    top: w,
-                    width: m.width,
-                    height: m.height,
-                    backgroundColor: undefined
-                });
-                return f;
-            });
-            return this;
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function() {
-            var e = Array.prototype.slice.call(arguments);
-            var t = e.shift();
-            e.unshift(t);
-            var r = this.children;
-            r && r.forEach(function(t) {
-                t.broadcast.apply(t, e);
-            });
-        };
-    }, function(e, t) {
-        "use strict";
-        e.exports = function(e, t) {
-            var r = this;
-            var i = r.getRect(e, t);
-            i.right = i.left + i.width;
-            i.bottom = i.top + i.height;
-            this.children.forEach(function(r) {
-                if (r.$cache.visible === false) return;
-                var n = r.getOuterRect(e, t);
-                if (n.left < i.left) i.left = n.left;
-                if (n.top < i.top) i.top = n.top;
-                if (n.right > i.right) i.right = n.right;
-                if (n.bottom > i.bottom) i.bottom = n.bottom;
-                i.width = i.right - i.left;
-                i.height = i.bottom - i.top;
-            });
-            return i;
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function(e, t) {
-            if (!this.hooks[e]) return;
-            if (this.hooks[e] === t || this.hooks[e].$handle === t || !t) {
-                delete this.hooks[e];
-            } else if (n.default.isArray(this.hooks[e])) {
-                if (this.hooks[e].indexOf(t) >= 0) {
-                    this.hooks[e][this.hooks[e].indexOf(t)] = undefined;
-                } else if (this.hooks[e].indexOf(t.$handle) >= 0) {
-                    this.hooks[e][this.hooks[e].indexOf(t.$handle)] = undefined;
-                }
-            }
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function(e, t, r) {
-            var i = t;
-            if (r) {
-                var a = this;
-                i = function e() {
-                    var n = Date.now();
-                    if (n > i.$lastTriggerTime + r) {
-                        i.$lastTriggerTime = n;
-                        var o = Array.prototype.slice.call(arguments);
-                        t.apply(a, o);
-                    }
-                };
-                i.$lastTriggerTime = -1;
-                i.$handle = t;
-            }
-            if (!this.hooks[e]) {
-                this.hooks[e] = i;
-            } else if (n.default.isArray(this.hooks[e])) {
-                this.hooks[e].push(i);
-            } else {
-                this.hooks[e] = [ this.hooks[e], i ];
-            }
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = c(i);
-        var a = r(18);
-        var o = c(a);
-        var l = r(4);
-        var s = c(l);
-        function c(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var f = function e(t) {
-            if (!t) return;
-            var r = n.default.funcOrValue(t.$style.scale, t);
-            if (r !== 1) return t;
-            return e(t.$parent);
-        };
-        e.exports = function(e) {
-            var t = this;
-            !e && n.default.execFuncs(t.hooks.beforeTick, t, [ t.$canvas.$rafTime ]);
-            if (n.default.funcOrValue(t.style.visible, t) === false) {
-                t.$cache.visible = false;
-                !e && n.default.execFuncs(t.hooks.ticked, t, [ t.$canvas.$rafTime ]);
-                return;
-            }
-            t.$cache.visible = true;
-            if (e) {
-                t.$cache = {};
-                s.default.styles.forEach(function(e) {
-                    t.$needUpdate[e] = 1;
-                    t.$cache[e] = undefined;
-                });
-            }
-            var r = Object.keys(t.$needUpdate).length;
-            t.$lastUpdate = t.$needUpdate;
-            if (r) {
-                var i = {};
-                var a = function e(r) {
-                    var a = t.$cache[r];
-                    if (typeof t.$style[r] === "function") {
-                        i[r] = 1;
-                        t.$cache[r] = t.$style[r].call(t);
-                    } else {
-                        t.$cache[r] = t.$style[r];
-                    }
-                    if (r === "left" || r === "top") {
-                        var o = t.$parent;
-                        if (o) {
-                            t.$cache[r] += o.$cache[r] || 0;
-                        }
-                    } else if (r === "opacity" || r === "scale") {
-                        var l = t.$parent;
-                        if (l) {
-                            t.$cache[r] *= n.default.firstValuable(l.$cache[r], 1);
-                        }
-                    }
-                    if (a === t.$cache[r]) {
-                        delete t.$needUpdate[r];
-                    } else {
-                        if (r === "left" || r === "top" || r === "opacity" || r === "scale") {
-                            if (a !== t.$cache[r]) {
-                                t.children.forEach(function(e) {
-                                    e.$needUpdate[r] = 1;
-                                });
-                            }
-                        }
-                    }
-                };
-                for (var l in t.$needUpdate) {
-                    a(l);
-                }
-                r = Object.keys(t.$needUpdate).length;
-                t.$needUpdate = i;
-            }
-            !e && n.default.execFuncs(t.hooks.ticked, t, [ t.$canvas.$rafTime ]);
-            var c = n.default.funcOrValue(t.content.text, t);
-            var u = n.default.funcOrValue(t.content.img, t);
-            if (r || t.$cache.text !== c || t.$cache.img !== u || t.content.img && !t.$render._imgWidth) {
-                var d = t.$render;
-                t.$cache.img = d.img = u = n.default.funcOrValue(t.content.img, t);
-                t.$cache.text = d.text = c;
-                if (typeof d.img === "string") {
-                    d.img = t.content.img = t.$canvas.imgLoader(d.img);
-                }
-                if (u && u._complete === false) u = false;
-                d.backgroundColor = t.$cache.backgroundColor;
-                d.border = t.$cache.border;
-                d.overflow = t.$cache.overflow;
-                d.overflowX = t.$cache.overflowX;
-                d.overflowY = t.$cache.overflowY;
-                d.locate = t.$cache.locate;
-                d.rotate = t.$cache.rotate;
-                d.scale = t.$cache.scale;
-                d.opacity = t.$cache.opacity;
-                d.$moved = false;
-                d.childrenInside = (d.overflow || d.overflowX || d.overflowY) && d.overflow !== "visible";
-                d.left = t.$cache.left;
-                d.top = t.$cache.top;
-                d.width = t.$cache.width;
-                d.height = t.$cache.height;
-                d._imgWidth = 0;
-                d._imgHeight = 0;
-                if (u && u.width) {
-                    d._imgWidth = u.width || 0;
-                    d._imgHeight = u.height || 0;
-                    d.cutLeft = t.$cache.cutLeft || 0;
-                    d.cutTop = t.$cache.cutTop || 0;
-                    d.cutWidth = t.$cache.cutWidth || d._imgWidth;
-                    d.cutHeight = t.$cache.cutHeight || d._imgHeight;
-                    d.cutLeft = Math.round(d.cutLeft);
-                    d.cutTop = Math.round(d.cutTop);
-                    d.cutWidth = Math.round(d.cutWidth);
-                    d.cutHeight = Math.round(d.cutHeight);
-                    d.width = d.width || d.cutWidth || 0;
-                    d.height = d.height || d.cutHeight || 0;
-                }
-                if (d.locate === "lt") {} else if (d.locate === "ld") {
-                    d.top -= d.height;
-                } else if (d.locate === "rt") {
-                    d.left -= d.width;
-                } else if (d.locate === "rd") {
-                    d.left -= d.width;
-                    d.top -= d.height;
-                } else {
-                    d.left -= d.width >> 1;
-                    d.top -= d.height >> 1;
-                }
-                d.left = Math.round(d.left);
-                d.top = Math.round(d.top);
-                d.width = Math.round(d.width);
-                d.height = Math.round(d.height);
-                var h = d.settings = {};
-                h.globalAlpha = n.default.firstValuable(d.opacity, 1);
-                if (d.childrenInside) {
-                    h.clip = true;
-                }
-                if (t.$cache.scale !== 1) {
-                    var v = d.scale;
-                    var p = f(t);
-                    if (p) {
-                        var g = p.$render.left + p.$render.width / 2;
-                        var $ = p.$render.top + p.$render.height / 2;
-                        d.left -= (g - d.left) * (v - 1);
-                        d.top -= ($ - d.top) * (v - 1);
-                        d.width *= v;
-                        d.height *= v;
-                    }
-                }
-                if (d.fh || d.fv) {
-                    d.fh = d.fh || 0;
-                    d.fv = d.fv || 0;
-                    d.fx = d.fx || 0;
-                    d.fy = d.fy || 0;
-                    h.transform = {
-                        fh: d.fh,
-                        fv: d.fv,
-                        fx: -(d.top + (d.height >> 1)) * d.fv + d.fx,
-                        fy: -(d.left + (d.width >> 1)) * d.fh + d.fy
-                    };
-                }
-                if (d.blend) {
-                    if (typeof d.blend === "string") {
-                        h.globalCompositeOperation = d.blend;
-                    } else {
-                        h.globalCompositeOperation = blend[d.blend];
-                    }
-                }
-                if (d.backgroundColor) {
-                    h.fillRect = d.backgroundColor;
-                }
-                if (d.border) {
-                    h.line = d.border;
-                }
-                if (d.mirrX) {
-                    h.translate = [ $canvas.width, 0 ];
-                    h.scale = [ -1, 1 ];
-                    d.left = $canvas.width - d.left - d.width;
-                    if (d.mirrY) {
-                        h.translate = [ $canvas.width, $canvas.height ];
-                        h.scale = [ -1, -1 ];
-                        d.top = $canvas.height - d.top - d.height;
-                    }
-                } else if (d.mirrY) {
-                    h.translate = [ 0, $canvas.height ];
-                    h.scale = [ 1, -1 ];
-                    d.top = $canvas.height - d.top - d.height;
-                }
-                if (d.rotate) {
-                    d.rx = n.default.firstValuable(n.default.funcOrValue(t.$cache.rx, t), d.left + .5 * d.width);
-                    d.ry = n.default.firstValuable(n.default.funcOrValue(t.$cache.ry, t), d.top + .5 * d.height);
-                    var m = n.default.firstValuable(d.rx, d.left + .5 * d.width);
-                    var y = n.default.firstValuable(d.ry, d.top + .5 * d.height);
-                    h.beforeRotate = [ m, y ];
-                    h.rotate = -d.rotate * Math.PI / 180;
-                    h.rotate = Number(h.rotate.toFixed(4));
-                    h.afterRotate = [ -m, -y ];
-                }
-                d.$insight = (0, o.default)(d.left, d.top, d.width, d.height, 0, 0, t.$canvas.width, t.$canvas.height, h.beforeRotate && h.beforeRotate[0], h.beforeRotate && h.beforeRotate[1], d.rotate);
-            }
-            t.children.forEach(function(t) {
-                t.recalculate(e);
-            });
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function() {
-            var e = Array.prototype.slice.call(arguments);
-            var t = e.shift();
-            if (this.hooks[t]) {
-                return n.default.execFuncs(this.hooks[t], this, e);
-            }
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(4);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function() {
-            var e = this;
-            if (!this.$combine) return;
-            if (this.$combine === 9) {
-                this.$combine = false;
-                return;
-            }
-            this.content = this.$combine.content;
-            this.children = this.$combine.children;
-            Object.keys(this.style).forEach(function(t) {
-                e.style[t] = undefined;
-            });
-            Object.keys(this.$combine.style).forEach(function(t) {
-                e.style[t] = e.$combine.style[t];
-            });
-            this.$combine = false;
-            this.recalculate(true);
-        };
-    }, , function(e, t, r) {
-        "use strict";
-        Object.defineProperty(t, "__esModule", {
-            value: true
-        });
-        var i = r(4);
-        var n = H(i);
-        var a = r(122);
-        var o = H(a);
-        var l = r(56);
-        var s = H(l);
-        var c = r(162);
-        var f = H(c);
-        var u = r(1);
-        var d = H(u);
-        var h = r(16);
-        var v = H(h);
-        var p = r(31);
-        var g = H(p);
-        var $ = r(161);
-        var m = H($);
-        var y = r(163);
-        var b = H(y);
-        var w = r(46);
-        var x = H(w);
-        var S = r(22);
-        var T = H(S);
-        var k = r(23);
-        var _ = H(k);
-        var M = r(24);
-        var A = H(M);
-        var O = r(25);
-        var C = H(O);
-        var E = r(26);
-        var I = H(E);
-        var P = r(27);
-        var F = H(P);
-        var V = r(91);
-        var R = H(V);
-        function H(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var Y = {
-            painter: o.default,
-            imgLoader: g.default,
-            imgPretreat: m.default,
-            multlineText: b.default,
-            transition: v.default,
-            tick: s.default,
-            utils: d.default,
-            mirror: f.default,
-            class: {
-                sprite: x.default
-            },
-            sprite: x.default,
-            $version: n.default.version,
-            env: "develop",
-            Button: T.default,
-            Image: _.default,
-            Scroll: A.default,
-            Sequence: C.default,
-            Text: I.default,
-            View: F.default
-        };
-        Y.extend = function(e) {
-            var t = Y.sprite.prototype.$extendList;
-            if (t.indexOf(e) >= 0) return;
-            t.push(e);
-        };
-        Y.use = function(e) {
-            var t = Y.painter.prototype.$extendList;
-            if (t.indexOf(e) >= 0) return;
-            if (e.onUse) {
-                e.onUse(Y);
-            }
-            t.push(e);
-        };
-        var L = typeof window !== "undefined";
-        if (L) {
-            if (window.Easycanvas) {
-                console.warn("[Easycanvas] already loaded, it should be loaded only once.");
-            } else {
-                if (true) {
-                    setTimeout(function() {
-                        console.log("%c Easycanvas %c You are using the develop version " + n.default.version + " %c", "background:#4086f4; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff", "background:#41b883; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff", "background:transparent");
-                    }, 500);
-                }
-                if (true) {
-                    window.Easycanvas = Y;
-                }
-            }
-        }
-        t.default = Y;
-    }, , , , , function(e, t, r) {
-        "use strict";
-        var i = r(110);
-        var n = u(i);
-        var a = r(111);
-        var o = u(a);
-        var l = r(108);
-        var s = u(l);
-        var c = r(121);
-        var f = u(c);
-        function u(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var d = {
-            $render: o.default,
-            $eventHandler: s.default,
-            $perPaint: n.default
-        };
-        if (true) {
-            d.$plugin = (0, f.default)();
-        }
-        e.exports = d;
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = l(i);
-        var a = r(4);
-        var o = l(a);
-        function l(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var s = typeof wx !== "undefined" || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        var c = function e(t) {
-            return t.sort(function(e, t) {
-                if (true) {
-                    if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
-                        return n.default.funcOrValue(e.style.zIndex, e) < n.default.funcOrValue(t.style.zIndex, t) ? 1 : -1;
-                    }
-                }
-                return n.default.funcOrValue(n.default.firstValuable(e.events.eIndex, e.style.zIndex), e) < n.default.funcOrValue(n.default.firstValuable(t.events.eIndex, t.style.zIndex), t) ? 1 : -1;
-            });
-        };
-        var f = function e(t, r) {
-            var i = t.getRect();
-            return n.default.pointInRect(r.canvasX, r.canvasY, i.left, i.left + i.width, i.top, i.top + i.height);
-        };
-        var u = function e(t, r, i) {
-            if (!t || !t.length) return;
-            if (r.$stopPropagation) return;
-            var a = t.length;
-            for (var l = 0; l < a; l++) {
-                var s = t[l];
-                if (n.default.funcOrValue(s.style.visible, s) === false) continue;
-                if (s.events && s.events.pointerEvents === "none") continue;
-                if (f(s, r)) {
-                    var u = s.events.interceptor;
-                    if (true) {
-                        if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
-                            u = false;
-                        }
-                    }
-                    if (u) {
-                        var d = n.default.firstValuable(u.call(s, r), r);
-                        if (!d || d.$stopPropagation) return;
-                    }
-                }
-                var v = s.$combine && s.$combine.children ? s.$combine.children : s.children;
-                if (true) {
-                    if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
-                        v = s.children;
-                    }
-                }
-                if (v.length) {
-                    e(c(v.filter(function(e) {
-                        if (true) {
-                            if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
-                                return n.default.funcOrValue(e.style.zIndex, e) >= 0;
-                            }
-                        }
-                        return n.default.funcOrValue(n.default.firstValuable(e.events.eIndex, e.style.zIndex), e) >= 0;
-                    })), r, i);
-                }
-                if (r.$stopPropagation) break;
-                if (f(s, r)) {
-                    if (true) {
-                        if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
-                            if (s.name !== o.default.devFlag) {
-                                r.stopPropagation();
-                                if (s.$canvas.$plugin.selectSprite(r.type === "click" || r.type === "touchend", s.$canvas, s)) {
-                                    return;
-                                }
-                            }
-                            continue;
-                        }
-                    }
-                    h(s, r, i);
-                    r.stopPropagation();
-                    return;
-                }
-                if (v.length) {
-                    e(c(v.filter(function(e) {
-                        if (true) {
-                            if (window[o.default.devFlag] && window[o.default.devFlag].selectMode) {
-                                return n.default.funcOrValue(e.style.zIndex, e) < 0;
-                            }
-                        }
-                        return !(n.default.funcOrValue(n.default.firstValuable(e.events.eIndex, e.style.zIndex), e) >= 0);
-                    })), r, i);
-                }
-            }
-        };
-        var d = function e(t, r) {
-            var i = this;
-            this.$extendList.forEach(function(e) {
-                if (e.onEvent) {
-                    e.onEvent.call(i, t, r);
-                }
-            });
-        };
-        var h = function e(t, r, i) {
-            i && i.push(t);
-            if (t.events[r.type]) {
-                t.events[r.type].call(t, r);
-                if (r.$stopPropagation) return;
-            }
-            if (t.$parent) {
-                e(t.$parent, r, i);
-            } else {
-                if (t.$canvas && !r.$stopPropagation) {
-                    e(t.$canvas, r);
-                    r.stopPropagation();
-                }
-            }
-        };
-        var v = {
-            x: 0,
-            y: 0,
-            timeStamp: 0
-        };
-        var p;
-        p = function e(t, r) {
-            var i = this;
-            var a = void 0;
-            var o = void 0;
-            var l = 1;
-            var f = 1;
-            if (!r) {
-                if (!t.layerX && t.targetTouches && t.targetTouches[0]) {
-                    a = t.targetTouches[0].pageX - t.currentTarget.offsetLeft;
-                    o = t.targetTouches[0].pageY - t.currentTarget.offsetTop;
-                } else if (!t.layerX && t.changedTouches && t.changedTouches[0]) {
-                    a = t.changedTouches[0].pageX - t.currentTarget.offsetLeft;
-                    o = t.changedTouches[0].pageY - t.currentTarget.offsetTop;
-                } else {
-                    a = t.layerX;
-                    o = t.layerY;
-                }
-                var h = false;
-                if (this.$dom.getBoundingClientRect) {
-                    var g = this.$dom.getBoundingClientRect();
-                    g.width > g.height !== this.width > this.height;
-                    l = Math.floor(g[h ? "height" : "width"]) / this.width;
-                    f = Math.floor(g[h ? "width" : "height"]) / this.height;
-                }
-            }
-            var $ = r || {
-                type: t.type,
-                canvasX: a / l,
-                canvasY: o / f,
-                event: t
-            };
-            if (s && i.fastclick) {
-                if ($.type === "click" && !$.$fakeClick) {
-                    return;
-                } else if ($.type === "touchstart") {
-                    v.x = $.canvasX;
-                    v.y = $.canvasY;
-                    v.timeStamp = Date.now();
-                } else if ($.type === "touchend") {
-                    if (Math.abs(v.x - $.canvasX) < 30 && Math.abs(v.y - $.canvasY) < 30 && Date.now() - v.timeStamp < 200) {
-                        p.call(this, null, {
-                            $fakeClick: true,
-                            type: "click",
-                            canvasX: v.x,
-                            canvasY: v.y,
-                            event: t
-                        });
-                    }
-                }
-            }
-            $.stopPropagation = function() {
-                $.$stopPropagation = true;
-            };
-            if (i.events.interceptor) {
-                $ = n.default.firstValuable(i.events.interceptor.call(i, $), $);
-                if (!$ || $.$stopPropagation) return;
-            }
-            var m = [];
-            u(c(i.children), $, m);
-            d.call(i, $, m);
-            if (($.type === "mousemove" || $.type === "touchmove") && i.eLastMouseHover && m.indexOf(i.eLastMouseHover) === -1) {
-                var y = i.eLastMouseHover["events"]["mouseout"] || i.eLastMouseHover["events"]["touchout"];
-                if (y) {
-                    y.call(i.eLastMouseHover, $);
-                }
-            }
-            i.eLastMouseHover = m[0];
-            if (!m.length && i.eLastMouseHover) {
-                var b = i.eLastMouseHover["events"]["mouseout"];
-                if (b) {
-                    b.call(i.eLastMouseHover, $);
-                }
-                i.eLastMouseHover = null;
-            }
-            var w = i.events[$.type];
-            if (w && !$.$stopPropagation) {
-                if (w.call(i, $)) {
-                    i.eHoldingFlag = false;
-                    return true;
-                }
-            }
-        };
-        e.exports = p;
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function(e, t, r) {
-            t.filter(function(e) {
-                var t = n.default.funcOrValue(e.style.zIndex, e);
-                if (r < 0) {
-                    return t < 0;
-                }
-                return t >= 0;
-            }).sort(function(e, t) {
-                var r = n.default.funcOrValue(e.style.zIndex, e);
-                var i = n.default.funcOrValue(t.style.zIndex, t);
-                if (r === i) return 0;
-                return r > i ? 1 : -1;
-            }).forEach(function(t, r) {
-                e.$perPaint.call(e, t, r);
-            });
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = u(i);
-        var a = r(4);
-        var o = u(a);
-        var l = r(109);
-        var s = u(l);
-        var c = r(18);
-        var f = u(c);
-        function u(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var d = n.default.blend;
-        var h = function e(t) {
-            var r = /[^\u4e00-\u9fa5]/;
-            return !r.test(t);
-        };
-        var v = function e() {
-            var t = this;
-            this.$canvas.$extendList.forEach(function(e) {
-                if (e.onPaint) {
-                    e.onPaint.call(t);
-                }
-            });
-        };
-        e.exports = function(e, t) {
-            e.$rendered = false;
-            if (e.$cache.visible === false) {
-                return;
-            }
-            var r = this;
-            v.call(e);
-            var i = e.$render;
-            var a = i.text;
-            var o = i.img;
-            var l = i.childrenInside;
-            if (!o && !a && !i.backgroundColor && !i.border && !l) {
-                e.$rendered = undefined;
-                var c = e.children;
-                if (c.length) {
-                    (0, s.default)(r, c, -1);
-                    (0, s.default)(r, c, 1);
-                }
-                return;
-            }
-            var f = e.children;
-            var u = i.settings;
-            if (u.clip) {
-                var d = {
-                    $id: e.$id,
-                    type: "clip",
-                    props: i
-                };
-                d.$origin = e;
-                r.$children.push(d);
-            }
-            f.length && (0, s.default)(r, f, -1);
-            if (u.fillRect) {
-                e.$rendered = true;
-                var p = {
-                    $id: e.$id,
-                    type: "fillRect",
-                    settings: u,
-                    props: i
-                };
-                p.$origin = e;
-                r.$children.push(p);
-            }
-            if (i._imgWidth && i.opacity !== 0 && i.cutWidth && i.cutHeight) {
-                e.$rendered = true;
-                var g = {
-                    $id: e.$id,
-                    type: "img",
-                    settings: u,
-                    img: o,
-                    props: i
-                };
-                g.$origin = e;
-                r.$children.push(g);
-            }
-            if (a) {
-                i.textFont = e.$cache.textFont;
-                i.color = e.$cache.color;
-                i.textAlign = e.$cache.textAlign;
-                i.textVerticalAlign = e.$cache.textVerticalAlign;
-                e.$rendered = true;
-                var $ = i.left;
-                var m = i.top;
-                var y = i.align || i.textAlign || "left";
-                var b = i.textFont || "14px Arial";
-                var w = parseInt(b);
-                var x = "top";
-                var S = i.lineHeight || w;
-                if (y === "center") {
-                    $ += i.width / 2;
-                } else if (y === "right") {
-                    $ += i.width;
-                }
-                if (i.textVerticalAlign === "top") {
-                    x = "top";
-                } else if (i.textVerticalAlign === "bottom") {
-                    x = "bottom";
-                    m += i.height;
-                } else if (i.textVerticalAlign === "middle") {
-                    m += i.height >> 1;
-                    x = "middle";
-                }
-                if (typeof a === "string" || typeof a === "number") {
-                    r.$children.push({
-                        $id: e.$id,
-                        type: "text",
-                        settings: u,
-                        props: {
-                            left: $,
-                            top: m,
-                            content: String(a),
-                            fontsize: w,
-                            align: y,
-                            baseline: x,
-                            font: b,
-                            color: i.color,
-                            type: i.textToppe
-                        },
-                        $origin: e
-                    });
-                } else if (a.length) {
-                    a.forEach(function(t) {
-                        r.$children.push({
-                            $id: e.$id,
-                            type: "text",
-                            settings: u,
-                            props: {
-                                left: $ + n.default.funcOrValue(t.left, e),
-                                top: m + n.default.funcOrValue(t.top, e),
-                                content: n.default.funcOrValue(t.content, e),
-                                fontsize: w,
-                                baseline: x,
-                                align: y,
-                                font: b,
-                                color: i.color,
-                                type: i.textToppe
-                            },
-                            $origin: e
-                        });
-                    });
-                } else if (a.toppe === "multline-text") {
-                    var T = a.text.split(/\t|\n/);
-                    var k = [];
-                    T.forEach(function(e, t) {
-                        e = String.prototype.trim.apply(e);
-                        if (a.config.start) {
-                            e = e.replace(a.config.start, "");
-                        }
-                        var r = 0;
-                        var n = i.width;
-                        while (e.length && r < e.length) {
-                            if (n <= 0) {
-                                n = i.width;
-                                k.push(e.substr(0, r));
-                                e = e.substr(r);
-                                r = 0;
-                            }
-                            r++;
-                            n -= w * (h(e[r]) ? 1.05 : .6);
-                        }
-                        if (e || t) {
-                            k.push(e);
-                        }
-                    });
-                    k.forEach(function(t) {
-                        r.$children.push({
-                            $id: e.$id,
-                            type: "text",
-                            settings: u,
-                            props: {
-                                left: $,
-                                top: m,
-                                fontsize: w,
-                                content: t,
-                                baseline: x,
-                                align: y,
-                                font: b,
-                                color: i.color,
-                                type: i.textToppe
-                            },
-                            $origin: e
-                        });
-                        m += S || w;
-                    });
-                }
-            }
-            if (!o && !a) {
-                e.$rendered = undefined;
-            }
-            f.length && (0, s.default)(r, f, 1);
-            if (u.clip) {
-                var _ = {
-                    $id: e.$id,
-                    type: "clipOver",
-                    props: i
-                };
-                _.$origin = e;
-                r.$children.push(_);
-            }
-            if (u.line) {
-                e.$rendered = true;
-                var M = {
-                    $id: e.$id,
-                    type: "line",
-                    settings: u,
-                    props: i
-                };
-                M.$origin = e;
-                r.$children.push(M);
-            }
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var o = function e(t, r) {
-            var i = this;
-            var n = false;
-            this.$extendList.forEach(function(e) {
-                if (e.onRender) {
-                    var a = e.onRender.call(i, t, r);
-                    if (a) {
-                        n = a;
-                    }
-                }
-            });
-            return n;
-        };
-        e.exports = function(e, t, r) {
-            var i = this;
-            var a = t || i.$children;
-            if (!r && !i.webgl) {
-                a = a.filter(function(e) {
-                    return e.props.$insight !== false;
-                });
-            }
-            a.forEach(function(t, r) {
-                var l = t.props;
-                var s = void 0;
-                if (l && t.type !== "clip" && t.type !== "text" && t.type !== "clipOver" && t.type !== "line") {
-                    s = l.width * l.height;
-                    if (s > 200 * 200 && !t.settings.transform && !t.settings.rotate) {
-                        var c = a.length;
-                        for (var f = r + 1; f < c; f++) {
-                            var u = a[f];
-                            if (u.$cannotCover) {
-                                continue;
-                            }
-                            if (u.type === "clip") {
-                                while (f < c && a[++f].type !== "clipOver") {}
-                                continue;
-                            }
-                            var d = u.settings;
-                            if (!u.type || u.type !== "img") {
-                                if (!(u.type === "fillRect" && d.fillRect.indexOf("rgba") === -1)) {
-                                    u.$cannotCover = true;
-                                    continue;
-                                }
-                            }
-                            var h = u.props;
-                            if (h.width * h.height < 200 * 200) {
-                                u.$cannotCover = true;
-                                continue;
-                            }
-                            if (h.width * h.height < s) {
-                                continue;
-                            }
-                            if (u.img && !u.img.$noAlpha) {
-                                u.$cannotCover = true;
-                                continue;
-                            }
-                            if (d.globalAlpha !== 1 || d.globalCompositeOperation || d.transform || d.rotate) {
-                                u.$cannotCover = true;
-                                continue;
-                            }
-                            if (n.default.pointInRect(l.left, l.top, h.left, h.left + h.width, h.top, h.top + h.height) && n.default.pointInRect(l.left + l.width, l.top + l.height, h.left, h.left + h.width, h.top, h.top + h.height)) {
-                                if (true) {
-                                    t.$origin.$useless = true;
-                                }
-                                return;
-                            }
-                        }
-                    }
-                }
-                var v = t.settings || {};
-                if (o.call(i, t, v)) {
-                    return;
-                }
-                if (true) {
-                    if (t.$origin) {
-                        t.$origin.$useless = false;
-                    }
-                }
-                var p = e || i.$paintContext;
-                if (t.type === "clip") {
-                    p.save();
-                    p.beginPath();
-                    p.moveTo(l.left, l.top);
-                    p.lineTo(l.left + l.width, l.top);
-                    p.lineTo(l.left + l.width, l.top + l.height);
-                    p.lineTo(l.left, l.top + l.height);
-                    p.lineTo(l.left, l.top);
-                    p.closePath();
-                    p.clip();
-                }
-                var g = false;
-                if (v.globalCompositeOperation) {
-                    if (!g) {
-                        p.save();
-                        g = true;
-                    }
-                    p.globalCompositeOperation = v.globalCompositeOperation;
-                }
-                if (p.$globalAlpha !== v.globalAlpha) {
-                    p.$globalAlpha = p.globalAlpha = v.globalAlpha;
-                }
-                if (v.translate) {
-                    if (!g) {
-                        p.save();
-                        g = true;
-                    }
-                    p.translate(v.translate[0] || 0, v.translate[1] || 0);
-                }
-                if (v.rotate) {
-                    if (!g) {
-                        p.save();
-                        g = true;
-                    }
-                    p.translate(v.beforeRotate[0] || 0, v.beforeRotate[1] || 0);
-                    p.rotate(v.rotate || 0);
-                    p.translate(v.afterRotate[0] || 0, v.afterRotate[1] || 0);
-                }
-                if (v.scale) {
-                    if (!g) {
-                        p.save();
-                        g = true;
-                    }
-                    p.scale(v.scale[0] || 1, v.scale[1] || 1);
-                }
-                if (v.transform) {
-                    if (!g) {
-                        p.save();
-                        g = true;
-                    }
-                    p.transform(1, v.transform.fh, v.transform.fv, 1, v.transform.fx, v.transform.fy);
-                }
-                if (t.type === "img") {
-                    p.drawImage(t.img, l.cutLeft, l.cutTop, l.cutWidth, l.cutHeight, l.left, l.top, l.width, l.height);
-                    if (true) {
-                        if (i.$plugin) {
-                            i.$plugin.drawImage(i, l);
-                        }
-                    }
-                } else if (t.type === "text" && l.content) {
-                    p.font = l.font;
-                    p.fillStyle = l.color || "white";
-                    p.textAlign = l.align;
-                    p.textBaseline = l.baseline;
-                    p[l.type || "fillText"](l.content, l.left, l.top);
-                } else if (t.type === "fillRect") {
-                    p.fillStyle = v.fillRect;
-                    p.fillRect(l.left, l.top, l.width, l.height);
-                } else if (t.type === "line") {
-                    p.beginPath();
-                    var $ = l.border.substr(l.border.indexOf(" ")) || "black";
-                    p.strokeStyle = $;
-                    p.lineWidth = l.border.split(" ")[0] || 1;
-                    p.moveTo(l.left, l.top);
-                    p.lineTo(l.left + l.width, l.top);
-                    p.lineTo(l.left + l.width, l.top + l.height);
-                    p.lineTo(l.left, l.top + l.height);
-                    p.closePath();
-                    p.stroke();
-                } else if (t.type === "clipOver") {
-                    p.restore();
-                }
-                if (g) {
-                    p.$globalAlpha = false;
-                    p.restore();
-                }
-            });
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(116);
-        var n = k(i);
-        var a = r(120);
-        var o = k(a);
-        var l = r(113);
-        var s = k(l);
-        var c = r(47);
-        var f = k(c);
-        var u = r(114);
-        var d = k(u);
-        var h = r(48);
-        var v = k(h);
-        var p = r(115);
-        var g = k(p);
-        var $ = r(117);
-        var m = k($);
-        var y = r(118);
-        var b = k(y);
-        var w = r(119);
-        var x = k(w);
-        var S = r(46);
-        var T = k(S);
-        function k(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var _ = {
-            start: o.default,
-            paint: s.default,
-            add: T.default.prototype.add,
-            remove: n.default,
-            register: g.default,
-            clear: f.default,
-            setFpsHandler: m.default,
-            setMaxFps: b.default,
-            pause: d.default,
-            on: T.default.prototype.on,
-            off: T.default.prototype.off,
-            trigger: T.default.prototype.trigger,
-            broadcast: T.default.prototype.broadcast,
-            nextTick: v.default,
-            getAllChildren: T.default.prototype.getAllChildren
-        };
-        if (true) {
-            _.skeleton = x.default;
-        }
-        e.exports = _;
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = l(i);
-        var a = r(4);
-        var o = l(a);
-        function l(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function() {
-            if (this.$pausing || this.$inBrowser && document.hidden) return;
-            var e = this;
-            if (true) {
-                e.$plugin.timeCollect(e, "custom", "START");
-            }
-            n.default.execFuncs(e.hooks.beforeTick, e, [ e.$rafTime ]);
-            if (true) {
-                e.$plugin.timeCollect(e, "preprocessTimeSpend", "START");
-            }
-            e.children.forEach(function(e) {
-                e.recalculate();
-            });
-            if (!e.$freezing) {
-                e.$lastTickChildren = e.$children;
-                e.$children = [];
-                this.children.sort(function(e, t) {
-                    var r = n.default.funcOrValue(e.style.zIndex, e);
-                    var i = n.default.funcOrValue(t.style.zIndex, t);
-                    if (r === i) return 0;
-                    return r > i ? 1 : -1;
-                }).forEach(function(t, r) {
-                    e.$perPaint(t, r);
-                });
-            }
-            if (true) {
-                e.$plugin.timeCollect(e, "preprocessTimeSpend", "END");
-            }
-            if (true) {
-                e.$plugin.timeCollect(e, "paintTimeSpend", "START");
-            }
-            if (e.$paintContext.clearRect) {
-                e.$paintContext.clearRect(0, 0, this.width, this.height);
-                e.$render();
-            } else {
-                e.$render();
-            }
-            if (true) {
-                e.$plugin.timeCollect(e, "paintTimeSpend", "END");
-            }
-            n.default.execFuncs(e.hooks.ticked, e, [ e.$rafTime ]);
-            if (e.hooks.nextTick) {
-                n.default.execFuncs(e.hooks.nextTick, e, [ e.$rafTime ]);
-                delete e.hooks.nextTick;
-            }
-            if (true) {
-                e.$plugin.timeCollect(e, "custom", "END");
-            }
-        };
-    }, function(e, t) {
-        "use strict";
-        e.exports = function(e) {
-            this.$pausing = e === undefined ? true : e;
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = function e(t) {
-            var r = this;
-            this.$extendList.forEach(function(e) {
-                if (e.onCreate) {
-                    e.onCreate.call(r, t);
-                }
-            });
-        };
-        e.exports = function(e, t) {
-            var r = this;
-            if (true) {
-                this.fpsHandler = this.fpsHandler || function(e) {
-                    if (this.maxFps > 0 && e < this.maxFps - 5 && e < 40) {
-                        console.warn("[Easycanvas] Low FPS detected (" + e + "/" + this.maxFps + ").");
-                    }
-                };
-            }
-            var n = t || {};
-            e = this.$dom = e || this.$dom;
-            if (true) {
-                if (!e) {
-                    console.error('[Easycanvas] Not found <canvas> element in "register" function.');
-                }
-            }
-            for (var a in n) {
-                this[a] = n[a];
-            }
-            this.name = n.name || e.id || e.classList && e.classList[0] || "Unnamed";
-            this.$inBrowser = typeof window !== "undefined";
-            if (n.fullScreen && typeof document !== "undefined") {
-                e.width = e.style.width = document.body.clientWidth || document.documentElement.clientWidth;
-                e.height = e.style.height = document.body.clientHeight || document.documentElement.clientHeight;
-            }
-            if (true) {
-                if (n.width && e.attributes.width && n.width !== e.width || n.height && e.attributes.height && n.height !== e.height) {
-                    console.warn('[Easycanvas] Canvas size mismatched in "register" function.');
-                }
-            }
-            e.width = this.width = this.width || n.width || e.width;
-            e.height = this.height = this.height || n.height || e.height;
-            if (true) {
-                this.$plugin.register(this);
-            }
-            this.events = n.events || {};
-            this.hooks = n.hooks || {};
-            if (this.$inBrowser) {
-                var o = [ "contextmenu", "mousewheel", "click", "dblclick", "mousedown", "mouseup", "mousemove", "touchstart", "touchend", "touchmove" ];
-                o.forEach(function(t) {
-                    e.addEventListener(t, r.$eventHandler.bind(r));
-                });
-            }
-            if (true) {
-                if (this.$paintContext) {
-                    console.error("[Easycanvas] Current instance is already registered.");
-                }
-            }
-            i.call(this, n);
-            this.$paintContext = this.$paintContext || e.getContext("2d");
-            return this;
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = a(i);
-        function a(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function(e, t) {
-            n.default.execFuncs(e.hooks.beforeRemove, e, e.$tickedTimes++);
-            e.style.visible = false;
-            e.$removing = true;
-            if (e.$parent) {
-                e.$parent.children = e.$parent.children.filter(function(e) {
-                    return e.$removing !== true;
-                });
-            } else {
-                this.children = this.children.filter(function(e) {
-                    return e.$removing !== true;
-                });
-            }
-            if (e.$canvas) {
-                e.$canvas = undefined;
-                e.$parent = undefined;
-                e.$tickedTimes = undefined;
-                e.$cache = {};
-                e.$rendered = false;
-                if (true) {
-                    e.$perf = undefined;
-                }
-                n.default.execFuncs(e.hooks.removed, e, e.$tickedTimes);
-            }
-            if (t) {
-                this.children.splice(this.children.indexOf(e), 1);
-            }
-        };
-    }, function(e, t) {
-        "use strict";
-        e.exports = function(e) {
-            this.fpsHandler = e;
-        };
-    }, function(e, t) {
-        "use strict";
-        e.exports = function(e) {
-            this.maxFps = e || -1;
-        };
-    }, function(e, t, r) {
-        "use strict";
-        if (true) {
-            e.exports = function() {
-                var e = this;
-                e.children[0].__proto__.getAllChildren.call(e).forEach(function(e) {
-                    e.uncombine();
-                    e.$combine = true;
-                });
-                e.paint();
-                e.children[0].__proto__.getAllChildren.call(e).forEach(function(e) {
-                    e.$combine = false;
-                });
-                var t = "";
-                t += "var $SKL=document.getElementsByTagName('canvas')[0];";
-                t += "$SKL.width=" + e.width + ";$SKL.height=" + e.height + ";";
-                t += "$SKL.style.width='100%';$SKL.style.width='100%';";
-                t += "var SKLIMG=[];";
-                t += "var SKL = function(){";
-                t += "var _=$SKL.getContext('2d');";
-                var r = e.$children;
-                r.forEach(function(e) {
-                    var r = e.props;
-                    var i = e.settings;
-                    if (e.type === "img") {
-                        t += "_.globalAlpha=" + i.globalAlpha + ";";
-                        if (e.img && e.img.$origin) {
-                            t += e.img.$origin.join(";") + ";";
-                            t += "_.drawImage(tempCanvas, " + r.cutLeft + ", " + r.cutTop + ", " + r.cutWidth + ", " + r.cutHeight + ", " + r.left + ", " + r.top + ", " + r.width + ", " + r.height + ");";
-                        } else if (e.img && e.img.src) {
-                            t += "var img = new Image();";
-                            t += "var imgUrl='" + e.img.src + "';if(SKLIMG.indexOf(imgUrl)===-1){SKLIMG.push(imgUrl);img.onload=function(){_.clearRect(0,0,$SKL.width,$SKL.height);SKL();}};";
-                            t += "img.src=imgUrl;";
-                            t += "_.drawImage(img, " + r.cutLeft + ", " + r.cutTop + ", " + r.cutWidth + ", " + r.cutHeight + ", " + r.left + ", " + r.top + ", " + r.width + ", " + r.height + ");";
-                        } else {
-                            t += "_.fillStyle='#666';";
-                            t += "_.fillRect(" + r.left + ", " + r.top + ", " + r.width + ", " + r.height + ");";
-                        }
-                    } else if (e.type === "fillRect") {
-                        t += "_.globalAlpha=" + i.globalAlpha + ";";
-                        t += "_.fillStyle='" + i.fillRect + "';";
-                        t += "_.fillRect(" + r.left + ", " + r.top + ", " + r.width + ", " + r.height + ");";
-                    }
-                });
-                t += "_.globalAlpha=1;";
-                t += "};SKL($SKL);";
-                console.log(t);
-            };
-        }
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(56);
-        var n = l(i);
-        var a = r(16);
-        var o = l(a);
-        function l(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var s = function e() {
-            var t = Date.now();
-            o.default.$lastPaintTime = this.$nextTickTime = t;
-            if (t - this.fpsCalculateTime >= 1e3) {
-                this.fpsCalculateTime = t;
-                if (this.fpsHandler) {
-                    this.fpsHandler.call(this, this.fps);
-                }
-                this.lastFps = this.fps;
-                this.fps = 0;
-            }
-            (0, n.default)(c.bind(this));
-        };
-        var c = function e(t) {
-            this.$rafTime = t;
-            s.call(this);
-            if (this.maxFps > 0 && this.maxFps < 60) {
-                if (time - this.$lastPaintTime <= 1e3 / this.maxFps) {
-                    return;
-                }
-                this.$lastPaintTime = time - (time - this.$lastPaintTime) % (1e3 / this.maxFps);
-            } else {
-                this.$lastPaintTime = Date.now();
-            }
-            this.fps++;
-            this.paint();
-        };
-        e.exports = function() {
-            this.fpsCalculateTime = Date.now();
-            s.call(this);
-            return this;
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(1);
-        var n = l(i);
-        var a = r(4);
-        var o = l(a);
-        function l(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function() {
-            if (true) {
-                var e = "__EASYCANVAS_BRIDGE_TOPANEL__";
-                var t = function t(r) {
-                    r.tabId = window[o.default.devFlag].tabId;
-                    window.document.dispatchEvent(new CustomEvent(e, {
-                        detail: JSON.parse(JSON.stringify(r))
-                    }));
-                };
-                var r = "24px san-serif";
-                var i = "18px san-serif";
-                var n = function e(t, i) {
-                    var n = document.createElement("canvas");
-                    var a = n.getContext("2d");
-                    a.font = i || r;
-                    return a.measureText(t).width;
-                };
-                setTimeout(function() {
-                    t({
-                        name: "init"
-                    });
-                });
-                var a = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==";
-                var l = function() {
-                    var e = document.createElement("canvas");
-                    e.width = 40;
-                    e.height = 20;
-                    var t = e.getContext("2d");
-                    t.beginPath();
-                    t.moveTo(0, 20);
-                    t.lineTo(40, 20);
-                    t.lineTo(20, 0);
-                    t.closePath();
-                    t.fill();
-                    return e;
-                }();
-                var s = null;
-                var c = null;
-                var f = [ "paintArea", "paintTimes", "paintTimeSpend", "preprocessTimeSpend", "custom", "loadArea", "jumpArea" ];
-                var u = {
-                    drawImage: function e(t, r) {
-                        if (!window[o.default.devFlag].isPaintRecording) return;
-                        if (r) {
-                            t.$perf.$paintArea += r[7] * r[8];
-                            t.$perf.$loadArea += r[3] * r[4];
-                        }
-                        t.$perf.$paintTimes++;
-                    },
-                    jumpRender: function e(t, r) {
-                        t.$perf.$jumpArea += r[7] * r[8];
-                    },
-                    register: function e(t) {
-                        t.$id = Math.random().toString(36).substr(2);
-                        t.$perf = {};
-                        f.forEach(function(e) {
-                            t.$perf[e] = 0;
-                            t.$perf["$" + e] = 0;
-                        });
-                        setInterval(function() {
-                            f.forEach(function(e) {
-                                t.$perf[e] = t.$perf["$" + e];
-                                t.$perf["$" + e] = 0;
-                            });
-                        }, 1e3);
-                        if (!t.$flags.devtoolHanged) {
-                            window[o.default.devFlag].$canvas[t.$id] = t;
-                            t.$flags.devtoolHanged = true;
-                        }
-                    },
-                    timeCollect: function e(t, r, i) {
-                        t.$perf["$" + r] += (i === "START" || i === "PAUSE" ? -1 : 1) * (performance ? performance.now() : Date.now());
-                    },
-                    selectSprite: function e(f, d, h) {
-                        window[o.default.devFlag].MaskCanvasBase64 = a;
-                        if (!h || !window[o.default.devFlag].selectMode) {
-                            u.cancelSelectSprite(d);
-                            return false;
-                        }
-                        if (!s) {
-                            var v = 0;
-                            var p = {};
-                            var g = {};
-                            s = d.add({
-                                name: o.default.devFlag,
-                                content: {
-                                    img: d.imgLoader(a)
-                                },
-                                style: {
-                                    border: function e() {
-                                        if (this.getStyle("width") < 2 && this.getStyle("height") < 2) {
-                                            return "10 rgba(0, 0, 255, 0.5)";
-                                        }
-                                        return "1 blue";
-                                    }
-                                },
-                                webgl: undefined,
-                                children: !d.$paintContext.clearRect ? [] : [ {
-                                    name: o.default.devFlag,
-                                    data: {},
-                                    style: {
-                                        locate: "center",
-                                        left: function e() {
-                                            var t = p.left + p.width / 2;
-                                            if (t - v / 2 < 10) {
-                                                t = v / 2 + 10;
-                                            } else if (t + v / 2 > this.$canvas.width - 10) {
-                                                t = this.$canvas.width - v / 2 - 10;
-                                            }
-                                            return t - this.$parent.$cache.left;
-                                        },
-                                        top: function e() {
-                                            var t = p.top + p.height + 30;
-                                            if (this.data.above = t + 30 > this.$canvas.height) {
-                                                t = p.top - 32;
-                                            }
-                                            return t - this.$parent.$cache.top;
-                                        },
-                                        width: function e() {
-                                            return v;
-                                        },
-                                        height: 32,
-                                        color: "orange",
-                                        backgroundColor: "black",
-                                        textVerticalAlign: "top",
-                                        textAlign: "center",
-                                        textFont: r
-                                    },
-                                    hooks: {
-                                        beforeTick: function e() {
-                                            p = this.$parent.getRect();
-                                            this.content.text = "<" + h.name + "> | " + Math.round(this.$parent.getStyle("width")) + "×" + Math.round(this.$parent.getStyle("height"));
-                                            v = n(this.content.text) + 20;
-                                        }
-                                    },
-                                    children: [ {
-                                        name: o.default.devFlag,
-                                        content: {
-                                            img: l
-                                        },
-                                        style: {
-                                            left: function e() {
-                                                return p.left + p.width / 2 - this.$parent.$cache.left;
-                                            },
-                                            top: function e() {
-                                                return this.$parent.data.above ? 5 + 16 : -5 - 16;
-                                            },
-                                            width: 20,
-                                            height: 10,
-                                            rotate: function e() {
-                                                return this.$parent.data.above ? 180 : 0;
-                                            }
-                                        }
-                                    } ]
-                                }, {
-                                    name: o.default.devFlag,
-                                    style: {
-                                        visible: function e() {
-                                            return this.getStyle("width") < this.data.value;
-                                        },
-                                        locate: "center",
-                                        left: function e() {
-                                            var t = g.left + (s.getSelfStyle("left") - c.getSelfStyle("left")) / 2;
-                                            return t - this.$parent.$cache.left;
-                                        },
-                                        top: function e() {
-                                            var t = s.getSelfStyle("top");
-                                            return t - this.$parent.$cache.top;
-                                        },
-                                        width: function e() {
-                                            return n(this.content.text, i) + 10;
-                                        },
-                                        height: 20,
-                                        backgroundColor: "#ddd",
-                                        color: "black",
-                                        textVerticalAlign: "middle",
-                                        textAlign: "center",
-                                        textFont: i
-                                    },
-                                    data: {},
-                                    hooks: {
-                                        beforeTick: function e() {
-                                            g = c.getRect();
-                                            this.data.value = Math.round(s.getSelfStyle("left") - c.getSelfStyle("left"));
-                                            this.content.text = "left: " + String(this.data.value);
-                                        }
-                                    }
-                                }, {
-                                    name: o.default.devFlag,
-                                    style: {
-                                        visible: function e() {
-                                            return this.getStyle("height") < this.data.value;
-                                        },
-                                        locate: "center",
-                                        left: function e() {
-                                            var t = s.getSelfStyle("left");
-                                            return t - this.$parent.$cache.left;
-                                        },
-                                        top: function e() {
-                                            var t = g.top + (s.getSelfStyle("top") - c.getSelfStyle("top")) / 2;
-                                            return t - this.$parent.$cache.top;
-                                        },
-                                        width: function e() {
-                                            return n(this.content.text, i) + 10;
-                                        },
-                                        height: 20,
-                                        backgroundColor: "#ddd",
-                                        color: "black",
-                                        textVerticalAlign: "middle",
-                                        textAlign: "center",
-                                        textFont: i
-                                    },
-                                    data: {},
-                                    hooks: {
-                                        beforeTick: function e() {
-                                            g = c.getRect();
-                                            this.data.value = Math.round(s.getSelfStyle("top") - c.getSelfStyle("top"));
-                                            this.content.text = "top: " + String(this.data.value);
-                                        }
-                                    }
-                                } ]
-                            });
-                            c = d.add({
-                                name: o.default.devFlag,
-                                style: {
-                                    locate: "lt"
-                                },
-                                children: [ {
-                                    name: o.default.devFlag,
-                                    style: {
-                                        locate: "lt",
-                                        left: 0,
-                                        top: 0,
-                                        width: function e() {
-                                            return s.getSelfStyle("left") - this.$parent.getStyle("left");
-                                        },
-                                        height: function e() {
-                                            return s.getSelfStyle("top") - this.$parent.getStyle("top");
-                                        },
-                                        backgroundColor: "rgba(140, 205, 255, 0.1)",
-                                        border: "1 rgba(80, 120, 200, 0.9)"
-                                    }
-                                } ]
-                            });
-                        }
-                        [ "left", "top", "rotate", "rx", "ry", "scale", "width", "height", "locate" ].forEach(function(e) {
-                            (function(e) {
-                                s.style[e] = function() {
-                                    if (e === "width" || e === "height") {
-                                        return h.getStyle(e) || h.getRect()[e] || .1;
-                                    }
-                                    return h.getStyle(e);
-                                };
-                            })(e);
-                        });
-                        [ "left", "top" ].forEach(function(e) {
-                            (function(e) {
-                                c.style[e] = function() {
-                                    if (!h.$parent) return 0;
-                                    return h.$parent.getStyle(e);
-                                };
-                            })(e);
-                        });
-                        s.style.zIndex = Number.MAX_SAFE_INTEGER;
-                        c.style.zIndex = Number.MAX_SAFE_INTEGER - 1;
-                        s.style.visible = function() {
-                            return window[o.default.devFlag].selectMode && h.$canvas;
-                        };
-                        c.style.visible = function() {
-                            return window[o.default.devFlag].selectMode && h.$parent && h.$parent.$canvas;
-                        };
-                        s.style.opacity = .8;
-                        s.webgl = h.webgl ? {} : undefined;
-                        if (s.webgl) {
-                            for (var $ in h.webgl) {
-                                (function(e) {
-                                    s.webgl[e] = function() {
-                                        if (typeof h.webgl[e] === "function") {
-                                            return h.webgl[e].call(h);
-                                        }
-                                        return h.webgl[e];
-                                    };
-                                })($);
-                            }
-                            s.webgl.img = d.imgLoader(a);
-                            s.webgl.colors = false;
-                            s.style.zIndex = Number.MIN_SAFE_INTEGER;
-                        }
-                        if (f) {
-                            d.remove(s);
-                            d.remove(c);
-                            s = null;
-                            t({
-                                name: "selectSprite",
-                                id: d.$id,
-                                value: {
-                                    sprite: h.$id,
-                                    canvas: d.$id
-                                }
-                            });
-                            window[o.default.devFlag].current = {
-                                $sprite: h,
-                                $canvas: d
-                            };
-                            window[o.default.devFlag].selectMode = false;
-                        }
-                        return true;
-                    },
-                    cancelSelectSprite: function e(t) {
-                        if (!s) return;
-                        t.remove(s);
-                        t.remove(c);
-                        s = null;
-                    }
-                };
-                return u;
-            }
-        };
-    }, function(e, t, r) {
-        "use strict";
-        var i = r(112);
-        var n = u(i);
-        var a = r(107);
-        var o = u(a);
-        var l = r(123);
-        var s = u(l);
-        var c = r(31);
-        var f = u(c);
-        function u(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        var d = function e(t) {
-            this.imgLoader = f.default;
-            for (var r in s.default) {
-                this[r] = this[r] || JSON.parse(JSON.stringify(s.default[r]));
-            }
-            if (!t) {
-                return;
-            }
-            if (!t.el) {
-                t = {
-                    el: t
-                };
-            }
-            if (t.el) {
-                this.register(typeof t.el === "string" ? document.querySelector(t.el) : t.el, t);
-            }
-        };
-        d.prototype.$extendList = [];
-        for (var h in o.default) {
-            if (Object.prototype.hasOwnProperty.call(o.default, h)) {
-                d.prototype[h] = o.default[h];
-            }
-        }
-        for (var v in n.default) {
-            if (Object.prototype.hasOwnProperty.call(n.default, v)) {
-                d.prototype[v] = n.default[v];
-            }
-        }
-        e.exports = d;
-    }, function(e, t) {
-        "use strict";
-        var r = {
-            $dom: null,
-            $paintContext: null,
-            $nextTickTime: 0,
-            $lastPaintTime: 0,
-            $pausing: false,
-            $freezing: false,
-            name: "",
-            fps: 0,
-            lastFps: 0,
-            fpsCalculateTime: 0,
-            fpsHandler: null,
-            width: 0,
-            height: 0,
-            events: {
-                click: null
-            },
-            children: [],
-            eHoldingFlag: false,
-            eLastMouseHover: null,
-            maxFps: -1,
-            $flags: {}
-        };
-        e.exports = r;
-    }, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , function(e, t, r) {
-        "use strict";
-        var i = r(31);
-        var n = l(i);
-        var a = r(32);
-        var o = l(a);
-        function l(e) {
-            return e && e.__esModule ? e : {
-                default: e
-            };
-        }
-        e.exports = function(e, t) {
-            var r;
-            (0, o.default)(e, function(e) {
-                return (0, n.default)(e, function(e) {
-                    var i = e.width, n = e.height;
-                    var a = e.getContext("2d").getImageData(0, 0, i, n);
-                    var o = a.data;
-                    for (var l = o.length - 1; l >= 0; l -= 4) {
-                        if (t && t.conversion) {
-                            var s = t.conversion({
-                                r: o[l - 3],
-                                g: o[l - 2],
-                                b: o[l - 1],
-                                a: o[l]
-                            }, (l + 1 >> 2) % i, Math.floor((l + 1 >> 2) / i));
-                            o[l - 3] = s.r;
-                            o[l - 2] = s.g;
-                            o[l - 1] = s.b;
-                            o[l - 0] = s.a;
-                        }
-                    }
-                    e.getContext("2d").clearRect(0, 0, i, n);
-                    e.getContext("2d").putImageData(a, 0, 0);
-                    r = e;
-                }, {
-                    canvas: true,
-                    cacheFlag: Math.random()
-                });
-            });
-            return function() {
-                return r;
-            };
-        };
-    }, function(e, t) {
-        "use strict";
-        e.exports = function e(t) {
-            var r = t.width;
-            var i = t.height;
-            var n = document.createElement("canvas");
-            n.width = r;
-            n.height = i;
-            var a = n.getContext("2d");
-            a.scale(1, -1);
-            a.translate(0, -i);
-            a.drawImage(t, 0, 0);
-            var o = a.getImageData(0, 0, r, i);
-            return {
-                canvas: a,
-                img: o
-            };
-        };
-    }, function(e, t) {
-        "use strict";
-        e.exports = function(e, t) {
-            return {
-                type: "multline-text",
-                text: e,
-                config: t
-            };
-        };
-    } ]);
-});
+(function(e, a) { for(var i in a) e[i] = a[i]; }(window, /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ({
 
+/***/ "./constants.js":
+/*!**********************!*\
+  !*** ./constants.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar sxywh = ['cutLeft', 'cutTop', 'cutWidth', 'cutHeight'];\nvar txywh = ['left', 'top', 'width', 'height'];\nvar xywh = sxywh.concat(txywh);\nvar styles = xywh.concat(['locate', 'rx', 'ry', 'zIndex', 'fontSize', 'fontFamily', 'textAlign', 'textVerticalAlign', 'color', 'rotate', 'scale', 'opacity', 'backgroundColor', 'border', 'overflow', 'overflowX', 'overflowY']);\nmodule.exports = {\n  txywh: txywh,\n  sxywh: sxywh,\n  xywh: xywh,\n  styles: styles,\n  devFlag: '__EASYCANVAS_DEVTOOL__',\n  version: '0.8.0'\n};\n\n//# sourceURL=webpack:///./constants.js?");
+
+/***/ }),
+
+/***/ "./src/bridge/chrome-devtool.js":
+/*!**************************************!*\
+  !*** ./src/bridge/chrome-devtool.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Preparing data for devtool.\n *\n * ********** **/\nif (true) {\n  if (!window[_constants[\"default\"].devFlag]) {\n    // init\n    var devData = window[_constants[\"default\"].devFlag] = {\n      isPaintRecording: false,\n      selectMode: false,\n      current: {},\n      version: _constants[\"default\"].version,\n      $canvas: {},\n      $plugin: null\n    };\n    var BRIDGE = {\n      getSprite: function getSprite($canvasId) {\n        if (!devData.isPaintRecording) return [];\n        var res = {};\n\n        if ($canvasId) {\n          var children = devData.$canvas[$canvasId].children;\n          var $children = devData.$canvas[$canvasId].$children;\n\n          var pusher = function pusher(item) {\n            // Skip $mask in select mode\n            if (item.name === _constants[\"default\"].devFlag) return;\n            res[item.$id] = {\n              name: item.name,\n              $addIndex: item.$addIndex,\n              parent: item.$parent && item.$parent.$id,\n              style: {},\n              children: item.children.filter(function (child) {\n                return child.name !== _constants[\"default\"].devFlag;\n              }).map(function (child) {\n                return child.$id;\n              }),\n              rendered: item.$rendered\n            }; // if (item.content.img || item.content.text) {\n            //     res[item.$id].rendered = false;\n            //     for (let i = 0, l = $children.length; i < l; i++) {\n            //         if ($children[i].$id === item.$id) {\n            //             res[item.$id].rendered = true;\n            //             break;\n            //         }\n            //     }\n            // }\n\n            for (var i in item.style) {\n              res[item.$id].style[i] = _utils[\"default\"].funcOrValue(item.style[i], item);\n            }\n\n            _constants[\"default\"].xywh.forEach(function (key) {\n              res[item.$id].style[key] = Math.round(res[item.$id].style[key]);\n            });\n\n            ['physics', '$perf'].forEach(function (key) {\n              res[item.$id][key] = item[key];\n            });\n\n            if (item.webgl) {\n              res[item.$id].webgl = {};\n              ['rx', 'ry', 'rz', 'x', 'y', 'z'].forEach(function (key) {\n                res[item.$id].webgl[key] = _utils[\"default\"].funcOrValue(item.webgl[key], item);\n              });\n            }\n\n            if (item.children) {\n              item.children.sort(function (a, b) {\n                return a.$addIndex < b.$addIndex ? -1 : 1;\n              }).forEach(pusher);\n            }\n          };\n\n          children.sort(function (a, b) {\n            return a.$addIndex < b.$addIndex ? -1 : 1;\n          }).forEach(pusher);\n        } else {\n          for (var c in devData.$canvas) {\n            res = Object.assign(res, devData.$plugin.getSprite(c));\n          }\n        }\n\n        return res;\n      },\n      selectSpriteById: function selectSpriteById($spriteId, $canvasId) {\n        if (!$canvasId) {\n          for (var i in devData.$canvas) {\n            var _res = BRIDGE.selectSpriteById($spriteId, i);\n\n            if (_res) {\n              return {\n                $sprite: _res.$sprite || _res,\n                $canvas: devData.$canvas[i]\n              };\n            }\n          }\n\n          return false;\n        }\n\n        var looper = function looper(array) {\n          for (var _i = 0; _i < array.length; _i++) {\n            if (array[_i].$id === $spriteId) return array[_i];\n\n            var _res2 = looper(array[_i].children);\n\n            if (_res2) {\n              return {\n                $sprite: _res2.$sprite || _res2,\n                $canvas: devData.$canvas[$canvasId]\n              };\n            }\n          }\n\n          return false;\n        };\n\n        var children = devData.$canvas[$canvasId].children;\n        var res = looper(children);\n\n        if (res) {\n          return {\n            $sprite: res.$sprite || res,\n            $canvas: devData.$canvas[$canvasId]\n          };\n        }\n      },\n      updateSprite: function updateSprite($spriteId) {\n        var groupName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'style';\n        var keys = arguments.length > 2 ? arguments[2] : undefined;\n        var $canvasId = arguments.length > 3 ? arguments[3] : undefined;\n        var $sprite = BRIDGE.selectSpriteById($spriteId, $canvasId).$sprite;\n        if (!$sprite) console.warn(\"Sprite \".concat(spriteId, \" Not Found.\"));\n        Object.assign($sprite[groupName], keys);\n      },\n      highlightSprite: function highlightSprite($spriteId, opt, $canvasId) {\n        devData.selectMode = Boolean(opt);\n        var tmp = BRIDGE.selectSpriteById($spriteId, $canvasId);\n        var $sprite = tmp.$sprite;\n        var $canvas = tmp.$canvas;\n\n        if (opt && $canvas && $sprite) {\n          $canvas.$plugin.selectSprite(false, $canvas, $sprite);\n        } else if ($canvas) {\n          $canvas.$plugin.cancelSelectSprite($canvas);\n        }\n      },\n      sendGlobalHook: function sendGlobalHook($spriteId, $canvasId) {\n        var tmp = BRIDGE.selectSpriteById($spriteId, $canvasId);\n        var $sprite = tmp.$sprite;\n        var $canvas = tmp.$canvas;\n        console.log(\"%c window.$0 = %c Current Sprite(\".concat($sprite.name, \") %c \"), \"background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff\", \"background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff\", \"background:transparent\"); // console.log(`%c window.$1 = %c Current Painter %c`,\n        //     \"background:#4086f4 ; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff\",\n        //     \"background:#41b883 ; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff\",\n        //     \"background:transparent\");\n\n        window.$0 = $sprite;\n        window.$1 = $canvas;\n      },\n      pause: function pause($canvasId, opt) {\n        var $canvas = devData.$canvas[$canvasId];\n        $canvas.$pausing = typeof opt !== 'undefined' ? opt : !$canvas.$pausing;\n      },\n      getPerf: function getPerf() {\n        var perfData = {\n          canvas: [],\n          navigator: {\n            clientWidth: document.body.clientWidth,\n            clientHeight: document.body.clientHeight,\n            devicePixelRatio: window.devicePixelRatio\n          }\n        };\n        if (!devData.isPaintRecording) return perfData;\n\n        for (var c in devData.$canvas) {\n          perfData.canvas.push({\n            $id: c,\n            name: devData.$canvas[c].name,\n            perf: devData.$canvas[c].$perf,\n            fps: devData.$canvas[c].lastFps,\n            size: {\n              styleWidth: devData.$canvas[c].$dom.getBoundingClientRect().width || parseInt(devData.$canvas[c].$dom.style.width) || devData.$canvas[c].$dom.width,\n              styleHeight: devData.$canvas[c].$dom.getBoundingClientRect().height || parseInt(devData.$canvas[c].$dom.style.height) || devData.$canvas[c].$dom.height,\n              canvasWidth: devData.$canvas[c].$dom.width,\n              canvasHeight: devData.$canvas[c].$dom.height\n            }\n          });\n        }\n\n        return perfData;\n      }\n    };\n    devData.$plugin = BRIDGE;\n  }\n}\n\n//# sourceURL=webpack:///./src/bridge/chrome-devtool.js?");
+
+/***/ }),
+
+/***/ "./src/class/api.broadcast.js":
+/*!************************************!*\
+  !*** ./src/class/api.broadcast.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Trigger event on current sprite and its children\n * - Current sprite first, children following.\n * - Can pass arguments.\n *\n * ********** **/\nmodule.exports = function () {\n  var arg = Array.prototype.slice.call(arguments);\n  var name = arg.shift();\n\n  if (this.hooks[name]) {\n    _utils[\"default\"].execFuncs(this.hooks[name], this, arg); // this.hooks[name].apply(this, arg);\n\n  }\n\n  arg.unshift(name); // let children = this.$combine ? this.$combine.children : this.children;\n\n  var children = this.children;\n  children && children.forEach(function (child) {\n    child.broadcast.apply(child, arg);\n  });\n};\n\n//# sourceURL=webpack:///./src/class/api.broadcast.js?");
+
+/***/ }),
+
+/***/ "./src/class/api.combine.js":
+/*!**********************************!*\
+  !*** ./src/class/api.combine.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\nvar COMBINE_ING = 9;\nvar COMBINE_DONE = 1;\nvar COMBINE_FAIL = 2;\nvar COMBINE_DELAY = 3;\n\nmodule.exports = function () {\n  var _this = this;\n\n  //return;\n  var $sprite = this;\n\n  if ($sprite.$combine !== COMBINE_ING) {\n    return COMBINE_DONE;\n  }\n\n  setTimeout(function () {\n    if ($sprite.$combine !== COMBINE_ING) {\n      // 日历组件会走到这里，原因未知，做一下兜底\n      // TODO\n      return COMBINE_DONE;\n    }\n\n    if ($sprite.getStyle('visible') === false) return COMBINE_DELAY; // if ($sprite.name === '热门'){debugger;}\n\n    var $canvas = _this.$canvas;\n    var rect = $sprite.getRect(false, true);\n    if (rect.tw > $canvas.width) return COMBINE_FAIL;\n    if (rect.th > $canvas.height) return COMBINE_FAIL;\n    var allChildrenInCombine = $sprite.getAllChildren(true);\n\n    for (var i = 0; i < allChildrenInCombine.length; i++) {\n      var $child = allChildrenInCombine[i];\n\n      if ($child.content.img && !$child.$render._imgWidth) {\n        // 存在未加载完的子对象，不进行合并\n        return COMBINE_DELAY;\n      }\n\n      if ($child.getStyle('scale') !== 1) {\n        return COMBINE_DELAY;\n      }\n    }\n\n    var outerRect;\n\n    if (_utils[\"default\"].funcOrValue($sprite.style.overflow, $sprite) !== 'hidden') {\n      outerRect = $sprite.getOuterRect(false, true);\n      outerRect.left = Math.floor(outerRect.left);\n      outerRect.top = Math.floor(outerRect.top);\n      outerRect.width = Math.round(outerRect.width);\n      outerRect.height = Math.round(outerRect.height);\n      outerRect.right = Math.round(outerRect.right);\n      outerRect.bottom = Math.round(outerRect.bottom); // if (!force) {\n\n      if (outerRect.width > $canvas.width) return COMBINE_FAIL;\n      if (outerRect.height > $canvas.height) return COMBINE_FAIL; // }\n    } else {\n      outerRect = rect;\n    }\n\n    $sprite.off('ticked', _this.combine);\n    var $renders = $canvas.$children.filter(function ($child) {\n      for (var _i = 0; _i < allChildrenInCombine.length; _i++) {\n        if (allChildrenInCombine[_i].$id === $child.$id) return true;\n      }\n    }); // if ($sprite.name === 'intro') {\n    //     console.warn('length', $renders.length);\n    // }\n\n    var spriteOpacity = $sprite.getStyle('opacity');\n    $renders.forEach(function ($render) {\n      if (!$render.settings) return;\n      $render.settings.$combineGlobalAlpha = $render.settings.globalAlpha;\n      $render.settings.globalAlpha = spriteOpacity > 0 ? $render.settings.globalAlpha / spriteOpacity : 1;\n\n      if (!$render.props.$moved) {\n        // 多个渲染对象来自同一个$sprite，那么在perPaint里计算出来的props是同一份引用\n        $render.props.$moved = true;\n        $render.props.left -= outerRect.left;\n        $render.props.top -= outerRect.top;\n      }\n    });\n    var combinerCanvas = $canvas.$combinerCanvas;\n\n    if (!combinerCanvas) {\n      combinerCanvas = $canvas.$combinerCanvas = document.createElement('canvas');\n      combinerCanvas.width = $canvas.width;\n      combinerCanvas.height = $canvas.height; // document.body.prepend(canvas);\n    }\n\n    var combineCtx = combinerCanvas.getContext('2d');\n    combineCtx.clearRect(0, 0, $canvas.width, $canvas.height); // combineCtx.translate(outerRect.tx, outerRect.ty);\n\n    $canvas.$render(combineCtx, $renders, true\n    /* renderAll */\n    );\n    $renders.forEach(function ($render) {\n      if (!$render.settings) return;\n      $render.settings.globalAlpha = $render.settings.$combineGlobalAlpha;\n    }); // combineCtx.translate(-outerRect.tx, -outerRect.ty);\n\n    var canvas = document.createElement('canvas'); // document.body.prepend(canvas);\n\n    canvas.width = outerRect.width;\n    canvas.height = outerRect.height;\n    var ctx = canvas.getContext('2d');\n    ctx.drawImage(combinerCanvas, 0, 0, outerRect.width, outerRect.height, 0, 0, outerRect.width, outerRect.height); // $sprite.children.forEach((child) => {\n    //     // 清空$cache，以免后续使用时（如事件处理）拿到了老的坐标\n    //     // [RISK]但是可能导致一些transition的变量有偏差\n    //     child.$cache = {};\n    // });\n\n    $sprite.$combine = {\n      content: $sprite.content,\n      children: $sprite.children,\n      style: Object.assign({}, $sprite.style)\n    };\n    $sprite.children = [];\n    $sprite.content = {\n      img: canvas\n    };\n    var newLeft = $sprite.getSelfStyle('left') - (Math.floor(rect.left) - outerRect.left);\n    var newTop = $sprite.getSelfStyle('top') - (Math.floor(rect.top) - outerRect.top);\n    Object.assign($sprite.style, {\n      // opacity: 1,\n      scale: 1,\n      left: newLeft,\n      top: newTop,\n      width: canvas.width,\n      height: canvas.height,\n      backgroundColor: undefined\n    });\n    return COMBINE_DONE;\n  });\n  return this;\n};\n\n//# sourceURL=webpack:///./src/class/api.combine.js?");
+
+/***/ }),
+
+/***/ "./src/class/api.distribute.js":
+/*!*************************************!*\
+  !*** ./src/class/api.distribute.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Trigger event on current sprite and its children\n * - Current sprite first, children following.\n * - Can pass arguments.\n *\n * ********** **/\nmodule.exports = function () {\n  var arg = Array.prototype.slice.call(arguments);\n  var name = arg.shift();\n  arg.unshift(name); // let children = this.$combine ? this.$combine.children : this.children;\n\n  var children = this.children;\n  children && children.forEach(function (child) {\n    child.broadcast.apply(child, arg);\n  });\n};\n\n//# sourceURL=webpack:///./src/class/api.distribute.js?");
+
+/***/ }),
+
+/***/ "./src/class/api.getOuterRect.js":
+/*!***************************************!*\
+  !*** ./src/class/api.getOuterRect.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function (notImg, fromCache) {\n  var $sprite = this;\n  var rect = $sprite.getRect(notImg, fromCache);\n  rect.right = rect.left + rect.width;\n  rect.bottom = rect.top + rect.height;\n  this.children.forEach(function (child) {\n    if (child.$cache.visible === false) return;\n    var childRect = child.getOuterRect(notImg, fromCache);\n    if (childRect.left < rect.left) rect.left = childRect.left;\n    if (childRect.top < rect.top) rect.top = childRect.top;\n    if (childRect.right > rect.right) rect.right = childRect.right;\n    if (childRect.bottom > rect.bottom) rect.bottom = childRect.bottom;\n    rect.width = rect.right - rect.left;\n    rect.height = rect.bottom - rect.top;\n  });\n  return rect;\n};\n\n//# sourceURL=webpack:///./src/class/api.getOuterRect.js?");
+
+/***/ }),
+
+/***/ "./src/class/api.off.js":
+/*!******************************!*\
+  !*** ./src/class/api.off.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Remove current hook\n *\n * ********** **/\nmodule.exports = function (event, func) {\n  if (!this.hooks[event]) return;\n\n  if (this.hooks[event] === func || this.hooks[event].$handle === func || !func) {\n    delete this.hooks[event];\n  } else if (_utils[\"default\"].isArray(this.hooks[event])) {\n    if (this.hooks[event].indexOf(func) >= 0) {\n      this.hooks[event][this.hooks[event].indexOf(func)] = undefined;\n    } else if (this.hooks[event].indexOf(func.$handle) >= 0) {\n      this.hooks[event][this.hooks[event].indexOf(func.$handle)] = undefined;\n    }\n  }\n};\n\n//# sourceURL=webpack:///./src/class/api.off.js?");
+
+/***/ }),
+
+/***/ "./src/class/api.on.js":
+/*!*****************************!*\
+  !*** ./src/class/api.on.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Add current hook\n *\n * ********** **/\nmodule.exports = function (name, func, throttle) {\n  var _handle = func;\n\n  if (throttle) {\n    var that = this;\n\n    _handle = function handle() {\n      var now = Date.now();\n\n      if (now > _handle.$lastTriggerTime + throttle) {\n        _handle.$lastTriggerTime = now;\n        var args = Array.prototype.slice.call(arguments);\n        func.apply(that, args);\n      }\n    };\n\n    _handle.$lastTriggerTime = -1;\n    _handle.$handle = func;\n  }\n\n  if (!this.hooks[name]) {\n    this.hooks[name] = _handle;\n  } else if (_utils[\"default\"].isArray(this.hooks[name])) {\n    this.hooks[name].push(_handle);\n  } else {\n    this.hooks[name] = [this.hooks[name], _handle];\n  }\n};\n\n//# sourceURL=webpack:///./src/class/api.on.js?");
+
+/***/ }),
+
+/***/ "./src/class/api.recalculate.js":
+/*!**************************************!*\
+  !*** ./src/class/api.recalculate.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nvar _math = _interopRequireDefault(__webpack_require__(/*! utils/math.rect-meet */ \"./src/utils/math.rect-meet.js\"));\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\nvar getScaledParent = function getScaledParent($sprite) {\n  if (!$sprite) return;\n\n  var scale = _utils[\"default\"].funcOrValue($sprite.$style.scale, $sprite);\n\n  if (scale !== 1) return $sprite;\n  return getScaledParent($sprite.$parent);\n}; // 后面可能要拆成计算$cache、触发钩子、生成渲染对象$render，便于将部分逻辑复用于combine等场景\n\n\nmodule.exports = function (force) {\n  var $sprite = this;\n  !force && _utils[\"default\"].execFuncs($sprite.hooks.beforeTick, $sprite, [$sprite.$canvas.$rafTime]);\n\n  if (_utils[\"default\"].funcOrValue($sprite.style.visible, $sprite) === false) {\n    $sprite.$cache.visible = false;\n    !force && _utils[\"default\"].execFuncs($sprite.hooks.ticked, $sprite, [$sprite.$canvas.$rafTime]);\n    return;\n  }\n\n  $sprite.$cache.visible = true;\n\n  if (force) {\n    $sprite.$cache = {};\n\n    _constants[\"default\"].styles.forEach(function (key) {\n      $sprite.$needUpdate[key] = 1;\n      $sprite.$cache[key] = undefined;\n    });\n  }\n\n  var isNeedUpdate = Object.keys($sprite.$needUpdate).length;\n  $sprite.$lastUpdate = $sprite.$needUpdate;\n\n  if (isNeedUpdate) {\n    var $needUpdate = {};\n\n    var _loop = function _loop(key) {\n      var cur = $sprite.$cache[key];\n\n      if (typeof $sprite.$style[key] === 'function') {\n        $needUpdate[key] = 1;\n        $sprite.$cache[key] = $sprite.$style[key].call($sprite);\n      } else if (typeof $sprite.$style[key] === 'string' && $sprite.$style[key].indexOf('%') > -1) {\n        // 百分比的样式相对于parent计算\n        var parentWidth = $sprite.$parent && $sprite.$parent.$cache.width || $sprite.$canvas.width || 0;\n        var parentHeight = $sprite.$parent && $sprite.$parent.$cache.width || $sprite.$canvas.width || 0;\n\n        if (key === 'left' || key === 'width') {\n          $sprite.$cache[key] = Math.floor(parseFloat($sprite.$style[key]) / 100 * parentWidth);\n        } else if (key === 'top' || key === 'height') {\n          $sprite.$cache[key] = Math.floor(parseFloat($sprite.$style[key]) / 100 * parentHeight);\n        } else if (key === 'fontSize') {\n          $sprite.$cache[key] = Math.floor(parseFloat($sprite.$style[key]) / 100 * $sprite.$canvas.width);\n        }\n      } else {\n        $sprite.$cache[key] = $sprite.$style[key];\n      } // $sprite.$cache[key] = utils.funcOrValue($sprite.$style[key], $sprite);\n\n\n      if (key === 'left' || key === 'top') {\n        var parent = $sprite.$parent;\n\n        if (parent) {\n          $sprite.$cache[key] += parent.$cache[key] || 0;\n        }\n      } else if (key === 'opacity' || key === 'scale') {\n        var _parent = $sprite.$parent;\n\n        if (_parent) {\n          $sprite.$cache[key] *= _utils[\"default\"].firstValuable(_parent.$cache[key], 1);\n        }\n      }\n\n      if (cur === $sprite.$cache[key]) {\n        delete $sprite.$needUpdate[key];\n      } else {\n        if (key === 'left' || key === 'top' || key === 'opacity' || key === 'scale') {\n          if (cur !== $sprite.$cache[key]) {\n            $sprite.children.forEach(function ($child) {\n              $child.$needUpdate[key] = 1;\n            });\n          }\n        }\n      }\n    };\n\n    for (var key in $sprite.$needUpdate) {\n      _loop(key);\n    }\n\n    ;\n    isNeedUpdate = Object.keys($sprite.$needUpdate).length;\n    $sprite.$needUpdate = $needUpdate;\n  }\n\n  !force && _utils[\"default\"].execFuncs($sprite.hooks.ticked, $sprite, [$sprite.$canvas.$rafTime]); // 这两个属性目前没有通过依赖关系来主动更新，暂时用每帧计算，有优化空间\n  // 但是未加载成功的图片要一直触发更新操作，因为不知道什么时候加载成功\n\n  var _text = _utils[\"default\"].funcOrValue($sprite.content.text, $sprite);\n\n  var _img = _utils[\"default\"].funcOrValue($sprite.content.img, $sprite); // $render\n\n\n  if (isNeedUpdate || $sprite.$cache.text !== _text || $sprite.$cache.img !== _img || $sprite.content.img && !$sprite.$render._imgWidth) {\n    var _props = $sprite.$render;\n    $sprite.$cache.img = _props.img = _img = _utils[\"default\"].funcOrValue($sprite.content.img, $sprite);\n    $sprite.$cache.text = _props.text = _text;\n\n    if (typeof _props.img === 'string') {\n      _props.img = $sprite.content.img = $sprite.$canvas.imgLoader(_props.img);\n    } // img有宽高，但是没有onload时，仍不能绘制\n\n\n    if (_img && _img._complete === false) _img = false;\n    _props.backgroundColor = $sprite.$cache.backgroundColor;\n    _props.border = $sprite.$cache.border;\n    _props.overflow = $sprite.$cache.overflow;\n    _props.overflowX = $sprite.$cache.overflowX;\n    _props.overflowY = $sprite.$cache.overflowY;\n    _props.locate = $sprite.$cache.locate;\n    _props.rotate = $sprite.$cache.rotate;\n    _props.scale = $sprite.$cache.scale;\n    _props.opacity = $sprite.$cache.opacity;\n    _props.$moved = false; // ugly\n\n    _props.childrenInside = (_props.overflow || _props.overflowX || _props.overflowY) && _props.overflow !== 'visible';\n    _props.left = $sprite.$cache.left;\n    _props.top = $sprite.$cache.top;\n    _props.width = $sprite.$cache.width;\n    _props.height = $sprite.$cache.height;\n    _props._imgWidth = 0;\n    _props._imgHeight = 0;\n\n    if (_img && _img.width) {\n      _props._imgWidth = _img.width || 0;\n      _props._imgHeight = _img.height || 0;\n      _props.cutLeft = $sprite.$cache.cutLeft || 0;\n      _props.cutTop = $sprite.$cache.cutTop || 0;\n      _props.cutWidth = $sprite.$cache.cutWidth || _props._imgWidth;\n      _props.cutHeight = $sprite.$cache.cutHeight || _props._imgHeight; // 太小的图其实应该不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”\n\n      _props.cutLeft = Math.round(_props.cutLeft);\n      _props.cutTop = Math.round(_props.cutTop);\n      _props.cutWidth = Math.round(_props.cutWidth);\n      _props.cutHeight = Math.round(_props.cutHeight);\n      _props.width = _props.width || _props.cutWidth || 0;\n      _props.height = _props.height || _props.cutHeight || 0;\n    }\n\n    if (_props.locate === 'lt') {} else if (_props.locate === 'ld') {\n      _props.top -= _props.height;\n    } else if (_props.locate === 'rt') {\n      _props.left -= _props.width;\n    } else if (_props.locate === 'rd') {\n      _props.left -= _props.width;\n      _props.top -= _props.height;\n    } else {\n      // center\n      _props.left -= _props.width >> 1;\n      _props.top -= _props.height >> 1;\n    } // 不能干掉，否则combine的时候可能模糊\n\n\n    _props.left = Math.round(_props.left);\n    _props.top = Math.round(_props.top);\n    _props.width = Math.round(_props.width);\n    _props.height = Math.round(_props.height);\n    var settings = _props.settings = {};\n    settings.globalAlpha = _utils[\"default\"].firstValuable(_props.opacity, 1);\n\n    if (_props.childrenInside) {\n      settings.clip = true;\n    }\n\n    if ($sprite.$cache.scale !== 1) {\n      var scale = _props.scale;\n      var scaledParent = getScaledParent($sprite);\n\n      if (scaledParent) {\n        var scaleCenterX = scaledParent.$render.left + scaledParent.$render.width / 2;\n        var scaleCenterY = scaledParent.$render.top + scaledParent.$render.height / 2;\n        _props.left -= (scaleCenterX - _props.left) * (scale - 1);\n        _props.top -= (scaleCenterY - _props.top) * (scale - 1);\n        _props.width *= scale;\n        _props.height *= scale;\n      }\n    }\n\n    if (_props.fh || _props.fv) {\n      _props.fh = _props.fh || 0;\n      _props.fv = _props.fv || 0;\n      _props.fx = _props.fx || 0;\n      _props.fy = _props.fy || 0;\n      settings.transform = {\n        fh: _props.fh,\n        fv: _props.fv,\n        fx: -(_props.top + (_props.height >> 1)) * _props.fv + _props.fx,\n        fy: -(_props.left + (_props.width >> 1)) * _props.fh + _props.fy\n      };\n    }\n\n    if (_props.blend) {\n      if (typeof _props.blend === 'string') {\n        settings.globalCompositeOperation = _props.blend;\n      } else {\n        settings.globalCompositeOperation = blend[_props.blend];\n      }\n    }\n\n    if (_props.backgroundColor) {\n      settings.fillRect = _props.backgroundColor;\n    }\n\n    if (_props.border) {\n      // TODO：导致width扩大，判断是否超出范围时需要调整算法\n      settings.line = _props.border;\n    }\n\n    if (_props.mirrX) {\n      settings.translate = [$canvas.width, 0];\n      settings.scale = [-1, 1];\n      _props.left = $canvas.width - _props.left - _props.width;\n\n      if (_props.mirrY) {\n        settings.translate = [$canvas.width, $canvas.height];\n        settings.scale = [-1, -1];\n        _props.top = $canvas.height - _props.top - _props.height;\n      }\n    } else if (_props.mirrY) {\n      settings.translate = [0, $canvas.height];\n      settings.scale = [1, -1];\n      _props.top = $canvas.height - _props.top - _props.height;\n    }\n\n    if (_props.rotate) {\n      // 定点旋转\n      _props.rx = _utils[\"default\"].firstValuable(_utils[\"default\"].funcOrValue($sprite.$cache.rx, $sprite), _props.left + 0.5 * _props.width);\n      _props.ry = _utils[\"default\"].firstValuable(_utils[\"default\"].funcOrValue($sprite.$cache.ry, $sprite), _props.top + 0.5 * _props.height);\n\n      var transX = _utils[\"default\"].firstValuable(_props.rx, _props.left + 0.5 * _props.width);\n\n      var transY = _utils[\"default\"].firstValuable(_props.ry, _props.top + 0.5 * _props.height);\n\n      settings.beforeRotate = [transX, transY];\n      settings.rotate = -_props.rotate * Math.PI / 180;\n      settings.rotate = Number(settings.rotate.toFixed(4));\n      settings.afterRotate = [-transX, -transY];\n    }\n\n    _props.$insight = (0, _math[\"default\"])(_props.left, _props.top, _props.width, _props.height, 0, 0, $sprite.$canvas.width, $sprite.$canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);\n  }\n\n  $sprite.children.forEach(function ($child) {\n    $child.recalculate(force);\n  });\n};\n\n//# sourceURL=webpack:///./src/class/api.recalculate.js?");
+
+/***/ }),
+
+/***/ "./src/class/api.trigger.js":
+/*!**********************************!*\
+  !*** ./src/class/api.trigger.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Trigger event on current sprite without its children\n * - Current sprite first, children following.\n * - Can pass arguments.\n *\n * ********** **/\nmodule.exports = function () {\n  var arg = Array.prototype.slice.call(arguments);\n  var name = arg.shift();\n\n  if (this.hooks[name]) {\n    return _utils[\"default\"].execFuncs(this.hooks[name], this, arg); // this.hooks[name].apply(this, arg);\n  }\n};\n\n//# sourceURL=webpack:///./src/class/api.trigger.js?");
+
+/***/ }),
+
+/***/ "./src/class/api.uncombine.js":
+/*!************************************!*\
+  !*** ./src/class/api.uncombine.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\nmodule.exports = function () {\n  var _this = this;\n\n  if (!this.$combine) return;\n\n  if (this.$combine === 9) {\n    this.$combine = false;\n    return;\n  }\n\n  this.content = this.$combine.content;\n  this.children = this.$combine.children;\n  Object.keys(this.style).forEach(function (key) {\n    _this.style[key] = undefined;\n  });\n  Object.keys(this.$combine.style).forEach(function (key) {\n    _this.style[key] = _this.$combine.style[key];\n  });\n  this.$combine = false;\n  this.recalculate(true);\n};\n\n//# sourceURL=webpack:///./src/class/api.uncombine.js?");
+
+/***/ }),
+
+/***/ "./src/class/extend.js":
+/*!*****************************!*\
+  !*** ./src/class/extend.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports[\"default\"] = _default;\n\nvar _sprite = _interopRequireDefault(__webpack_require__(/*! ./sprite.js */ \"./src/class/sprite.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\nfunction _default(pluginHook) {\n  var $extendList = _sprite[\"default\"].prototype.$extendList;\n  if ($extendList.indexOf(pluginHook) >= 0) return;\n  $extendList.push(pluginHook);\n}\n\n;\n\n//# sourceURL=webpack:///./src/class/extend.js?");
+
+/***/ }),
+
+/***/ "./src/class/sprite.js":
+/*!*****************************!*\
+  !*** ./src/class/sprite.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nvar _apiOn = _interopRequireDefault(__webpack_require__(/*! ./api.on.js */ \"./src/class/api.on.js\"));\n\nvar _apiOff = _interopRequireDefault(__webpack_require__(/*! ./api.off.js */ \"./src/class/api.off.js\"));\n\nvar _clear = _interopRequireDefault(__webpack_require__(/*! ../painter/apiOuter/clear.js */ \"./src/painter/apiOuter/clear.js\"));\n\nvar _nextTick = _interopRequireDefault(__webpack_require__(/*! ../painter/apiOuter/nextTick.js */ \"./src/painter/apiOuter/nextTick.js\"));\n\nvar _apiTrigger = _interopRequireDefault(__webpack_require__(/*! ./api.trigger.js */ \"./src/class/api.trigger.js\"));\n\nvar _apiBroadcast = _interopRequireDefault(__webpack_require__(/*! ./api.broadcast.js */ \"./src/class/api.broadcast.js\"));\n\nvar _apiDistribute = _interopRequireDefault(__webpack_require__(/*! ./api.distribute.js */ \"./src/class/api.distribute.js\"));\n\nvar _apiGetOuterRect = _interopRequireDefault(__webpack_require__(/*! ./api.getOuterRect.js */ \"./src/class/api.getOuterRect.js\"));\n\nvar _apiCombine = _interopRequireDefault(__webpack_require__(/*! ./api.combine.js */ \"./src/class/api.combine.js\"));\n\nvar _apiUncombine = _interopRequireDefault(__webpack_require__(/*! ./api.uncombine.js */ \"./src/class/api.uncombine.js\"));\n\nvar _apiRecalculate = _interopRequireDefault(__webpack_require__(/*! ./api.recalculate.js */ \"./src/class/api.recalculate.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\n// 记录sprite创建的顺序，用于调试工具的排序\nvar $addIndex = 0;\n\nvar ChangeChildrenToSprite = function ChangeChildrenToSprite($parent) {\n  if ($parent.children) {\n    $parent.children.forEach(function (child, i) {\n      if (!child.$id) {\n        $parent.children[i] = new sprite(child);\n      }\n\n      if ($parent.$id && !$parent.$dom) {\n        $parent.children[i].$canvas = $parent.$canvas;\n        $parent.children[i].$parent = $parent;\n      } else {\n        $parent.children[i].$canvas = $parent;\n      } // if (typeof $parent.children[i].content.img === 'string') {\n      //     $parent.children[i].content.img = $parent.children[i].$canvas.imgLoader($parent.children[i].content.img);\n      // }\n\n\n      ChangeChildrenToSprite($parent.children[i]);\n    });\n  }\n}; // Set default values to sprite\n\n\nvar preAdd = function preAdd(_item, $instance) {\n  var item = _item || {};\n\n  if (!item.$id) {\n    item.$id = Math.random().toString(36).substr(2);\n  }\n\n  item.$tickedTimes = item.$tickedTimes || 0;\n  item.content = item.content || {};\n  item.style = item.style || {};\n  item.style.scale = _utils[\"default\"].firstValuable(item.style.scale, 1);\n  item.style.opacity = _utils[\"default\"].firstValuable(item.style.opacity, 1);\n  item.style.zIndex = item.style.zIndex || 0; // item.style.mirrX = item.style.mirrX || 0;\n\n  item.style.locate = item.style.locate || 'center'; // item.style.rotate = item.style.rotate || 0;\n\n  var _img = _utils[\"default\"].funcOrValue(item.content.img);\n\n  $instance.$cache = {}; // 当前最终style\n\n  $instance.$render = {}; // 当前渲染style\n\n  $instance.$style = {}; // 当前自身style\n\n  $instance.$needUpdate = {};\n  item.hooks = item.hooks || {};\n\n  _constants[\"default\"].styles.concat(['visible']).forEach(function (key) {\n    $instance.$cache[key] = undefined;\n    $instance.$style[key] = item.style[key];\n\n    if (typeof item.style[key] === 'function') {\n      $instance.$style[key] = item.style[key].bind($instance);\n    }\n\n    if (_constants[\"default\"].xywh.indexOf(key) > -1) {\n      $instance.$style[key] = $instance.$style[key] || 0;\n    } else if (['opacity', 'scale'].indexOf(key) > -1) {\n      $instance.$style[key] = _utils[\"default\"].firstValuable($instance.$style[key], 1);\n    }\n\n    $instance.$needUpdate[key] = 1;\n    Object.defineProperty(item.style, key, {\n      get: function get() {\n        return $instance.$style[key];\n      },\n      set: function set(v) {\n        if ($instance.$style[key] === v) return;\n        $instance.$style[key] = v;\n        $instance.$needUpdate[key] = 1;\n      }\n    });\n  }); // ['img', 'text'].forEach((key) => {\n  //     $instance.$cache[key] = undefined;\n  //     $instance.$style[key] = item.content[key];\n  //     $instance.$needUpdate = true;\n  //     let lastSelfValue;\n  //     let needRecalculate = true;\n  //     if (typeof item.content[key] === 'function') {\n  //         $instance.$style[key] = item.content[key].bind($instance);\n  //     }\n  //     Object.defineProperty(item.content, key, {\n  //         get () {\n  //             return $instance.$style[key];\n  //         },\n  //         set (v) {\n  //             if ($instance.$style[key] === v) return;\n  //             $instance.$style[key] = v;\n  //             $instance.$needUpdate = true;\n  //         },\n  //     });\n  // });\n  // item.inherit = item.inherit || ['tx', 'ty', 'scale', 'opacity'];\n\n\n  item.events = item.events || {};\n\n  if (true) {\n    for (var i in item.events) {\n      if (typeof item.events[i] !== 'function' && i !== 'eIndex') {\n        console.warn(\"[Easycanvas] Handler \".concat(i, \" is not a function.\"), item.events[i]);\n      }\n    }\n  }\n\n  if (true) {\n    item.$addIndex = $addIndex++;\n  }\n\n  item.events.eIndex = item.events.eIndex;\n\n  if (true) {\n    item.$perf = {};\n  }\n\n  if (true) {\n    if (!item.name && item.content.img && item.content.img.src) {\n      var fileName = item.content.img.src.match(/.*\\/([^\\/]*)$/);\n\n      if (fileName && fileName[1]) {\n        item.name = fileName[1];\n      }\n    }\n\n    item.name = item.name || 'Unnamed Sprite';\n  }\n\n  item.children = item.children || []; // JSX中text可能作为children写在JSXElement内\n\n  if (typeof item.children === 'string') {\n    item.content.text = item.children;\n    item.children = [];\n  }\n\n  ChangeChildrenToSprite(item);\n  item.$styleCacheTime = {};\n  return item;\n};\n\nvar extend = function extend(opt) {\n  var _this = this;\n\n  this.$extendList.forEach(function (plugin) {\n    plugin.call(_this, opt);\n  });\n};\n\nvar sprite = function sprite(opt) {\n  var _opt = preAdd(opt, this);\n\n  for (var i in _opt) {\n    if (Object.prototype.hasOwnProperty.call(_opt, i)) {\n      this[i] = _opt[i];\n    }\n  }\n\n  extend.call(this, _opt);\n  return this;\n};\n\nsprite.prototype.$extendList = [];\n\nsprite.prototype.add = function (child) {\n  if (!child) {\n    return;\n  }\n\n  this.children.push(child);\n  ChangeChildrenToSprite(this); // bindDrag.bind(this.children[this.children.length - 1]);\n\n  return this.children[this.children.length - 1];\n};\n\nsprite.prototype.getRect = function (notImg, fromCache) {\n  var _this2 = this;\n\n  var res = {};\n\n  _constants[\"default\"].txywh.forEach(function (key) {\n    res[key] = _this2.getStyle(key, fromCache);\n  });\n\n  if (res.width === 0 && this.content.img && !notImg) {\n    var img = _utils[\"default\"].funcOrValue(this.content.img, this);\n\n    res.width = img.width;\n    res.height = img.height;\n  }\n\n  var locate = this.getStyle('locate');\n\n  if (locate === 'lt') {} else if (locate === 'ld') {\n    res.top -= res.height;\n  } else if (locate === 'rt') {\n    res.left -= res.width;\n  } else if (locate === 'rd') {\n    res.left -= res.width;\n    res.top -= res.height;\n  } else {\n    // center\n    res.left -= res.width >> 1;\n    res.top -= res.height >> 1;\n  }\n\n  res.right = this.$canvas.width - res.left - res.width;\n  res.bottom = this.$canvas.height - res.top - res.height;\n  return res;\n}; // sprite.prototype.getRender = function () {\n//     if (!this.$canvas) return {};\n//     let res = this.$canvas.$children.filter(($children) => {\n//         return $children.$id === this.$id;\n//     });\n//     return res && res[0];\n// };\n\n\nsprite.prototype.getSelfStyle = function (key) {\n  var res = {};\n\n  if (key) {\n    return _utils[\"default\"].funcOrValue(this.style[key], this);\n  }\n\n  for (var _key in this.style) {\n    res[_key] = _utils[\"default\"].funcOrValue(this.style[_key], this);\n  }\n\n  return res;\n};\n\nsprite.prototype.getStyle = function (key, fromCache) {\n  var $sprite = this; // let lastPaintTime = $sprite.$canvas.$lastPaintTime;\n  // if ($sprite.$styleCacheTime[key] === lastPaintTime) {\n  //     return $sprite.$cache[key];\n  // }\n\n  if (fromCache && $sprite.$cache[key] !== undefined) {\n    return $sprite.$cache[key];\n  }\n\n  var currentValue = _utils[\"default\"].funcOrValue($sprite.$style[key], $sprite);\n\n  if ($sprite.$parent) {\n    var parentValue = $sprite.$parent.getStyle(key);\n\n    if (key === 'left' || key === 'top') {\n      parentValue = _utils[\"default\"].firstValuable(parentValue, 0); // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;\n      // $sprite.$parent.$cache[key] = parentValue;\n\n      return parentValue + _utils[\"default\"].firstValuable(currentValue, 0);\n    } else if (key === 'scale' || key === 'opacity') {\n      parentValue = _utils[\"default\"].firstValuable(parentValue, 1); // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;\n      // $sprite.$parent.$cache[key] = parentValue;\n\n      return parentValue * _utils[\"default\"].firstValuable(currentValue, 1);\n    } else if (key === 'visible') {\n      if (parentValue === false) return false; // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;\n      // $sprite.$parent.$cache[key] = parentValue;\n\n      return currentValue;\n    }\n  }\n\n  return currentValue;\n};\n\nsprite.prototype.remove = function (child) {\n  if (child) {\n    this.$canvas.remove(child);\n\n    _utils[\"default\"].execFuncs(child.hooks.removed, child);\n\n    return;\n  }\n\n  if (this.$parent) {\n    this.$parent.remove(this);\n  } else {\n    this.$canvas.remove(this);\n  }\n\n  _utils[\"default\"].execFuncs(this.hooks.removed, this);\n};\n\nsprite.prototype.update = function (opt) {\n  if (!opt) return;\n\n  for (var i in opt) {\n    if (_typeof(opt[i]) === 'object') {\n      for (var j in opt[i]) {\n        if (!this[i]) {\n          this[i] = {};\n        }\n\n        this[i][j] = opt[i][j];\n      }\n    } else {\n      this[i] = opt[i];\n    }\n  }\n\n  this.recalculate(true); // force update\n\n  return this;\n};\n\nsprite.prototype.hide = function () {\n  this.style.display = 'none';\n  return this;\n};\n\nsprite.prototype.show = function () {\n  this.style.display = undefined;\n  return this;\n};\n\nsprite.prototype.getAllChildren = function (includeSelf) {\n  var $sprite = this;\n  var childrenSet = includeSelf ? [$sprite] : [];\n  $sprite.children.forEach(function (child) {\n    childrenSet = childrenSet.concat(child.getAllChildren(true));\n  });\n  return childrenSet;\n};\n\nsprite.prototype.getAllVisibleChildren = function (includeSelf) {\n  var $sprite = this;\n\n  if (_utils[\"default\"].funcOrValue($sprite.style.visible, $sprite) === false) {\n    return [];\n  }\n\n  var childrenSet = includeSelf ? [$sprite] : [];\n  $sprite.children.forEach(function (child) {\n    childrenSet = childrenSet.concat(child.getAllVisibleChildren(true));\n  });\n  return childrenSet;\n};\n\nsprite.prototype.getOuterRect = _apiGetOuterRect[\"default\"];\nsprite.prototype.combine = _apiCombine[\"default\"];\nsprite.prototype.uncombine = _apiUncombine[\"default\"];\n\nsprite.prototype.combineAsync = function () {\n  if (this.$combine) return this;\n  this.$combine = 9;\n  this.off('ticked', this.combine);\n  this.on('ticked', this.combine, 100);\n  return this;\n};\n\nsprite.prototype.recalculate = _apiRecalculate[\"default\"];\n\nsprite.prototype.refresh = function () {\n  for (var key in $sprite.$style) {\n    $sprite.$cache[key] = sprite.get($sprite.$style[key], $sprite);\n  }\n\n  return this;\n};\n\nsprite.prototype.nextTick = _nextTick[\"default\"];\nsprite.prototype.on = _apiOn[\"default\"];\nsprite.prototype.off = _apiOff[\"default\"];\nsprite.prototype.clear = _clear[\"default\"];\nsprite.prototype.trigger = _apiTrigger[\"default\"];\nsprite.prototype.broadcast = _apiBroadcast[\"default\"];\nsprite.prototype.distribute = _apiDistribute[\"default\"];\nmodule.exports = sprite;\n\n//# sourceURL=webpack:///./src/class/sprite.js?");
+
+/***/ }),
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nObject.defineProperty(exports, \"Painter\", {\n  enumerable: true,\n  get: function get() {\n    return _index[\"default\"];\n  }\n});\nObject.defineProperty(exports, \"tick\", {\n  enumerable: true,\n  get: function get() {\n    return _tick[\"default\"];\n  }\n});\nObject.defineProperty(exports, \"utils\", {\n  enumerable: true,\n  get: function get() {\n    return _utils[\"default\"];\n  }\n});\nObject.defineProperty(exports, \"Transition\", {\n  enumerable: true,\n  get: function get() {\n    return _transition[\"default\"];\n  }\n});\nObject.defineProperty(exports, \"ImgLoader\", {\n  enumerable: true,\n  get: function get() {\n    return _imgLoader[\"default\"];\n  }\n});\nObject.defineProperty(exports, \"imgPretreat\", {\n  enumerable: true,\n  get: function get() {\n    return _imgPretreat[\"default\"];\n  }\n});\nObject.defineProperty(exports, \"multlineText\", {\n  enumerable: true,\n  get: function get() {\n    return _multlineText[\"default\"];\n  }\n});\nObject.defineProperty(exports, \"extend\", {\n  enumerable: true,\n  get: function get() {\n    return _extend[\"default\"];\n  }\n});\nexports.Sprite = exports[\"default\"] = void 0;\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nvar _index = _interopRequireDefault(__webpack_require__(/*! ./painter/index.js */ \"./src/painter/index.js\"));\n\nvar _tick = _interopRequireDefault(__webpack_require__(/*! utils/tick.js */ \"./src/utils/tick.js\"));\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nvar _transition = _interopRequireDefault(__webpack_require__(/*! utils/transition.js */ \"./src/utils/transition.js\"));\n\nvar _imgLoader = _interopRequireDefault(__webpack_require__(/*! utils/img-loader.js */ \"./src/utils/img-loader.js\"));\n\nvar _imgPretreat = _interopRequireDefault(__webpack_require__(/*! utils/img-pretreat.js */ \"./src/utils/img-pretreat.js\"));\n\nvar _multlineText = _interopRequireDefault(__webpack_require__(/*! utils/multline-text */ \"./src/utils/multline-text.js\"));\n\nvar _sprite = _interopRequireDefault(__webpack_require__(/*! ./class/sprite.js */ \"./src/class/sprite.js\"));\n\nvar _extend = _interopRequireDefault(__webpack_require__(/*! ./class/extend.js */ \"./src/class/extend.js\"));\n\n__webpack_require__(/*! ./bridge/chrome-devtool.js */ \"./src/bridge/chrome-devtool.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n// import mirror from 'utils/mirror.js';\n// import Button from './components/Button.js';\n// import Image from './components/Image.js';\n// import Scroll from './components/Scroll.js';\n// import Sequence from './components/Sequence.js';\n// import Text from './components/Text.js';\n// import View from './components/View.js';\n// import RichText from './components/RichText';\n// const $version = constants.version;\nvar Sprite = _sprite[\"default\"];\nexports.Sprite = Sprite;\nvar Easycanvas = {\n  Painter: _index[\"default\"],\n  ImgLoader: _imgLoader[\"default\"],\n  imgPretreat: _imgPretreat[\"default\"],\n  multlineText: _multlineText[\"default\"],\n  Transition: _transition[\"default\"],\n  tick: _tick[\"default\"],\n  utils: _utils[\"default\"],\n  extend: _extend[\"default\"],\n  // mirror,\n  // 兼容老版本写法“new Easycanvas.class.sprite(opt);”\n  \"class\": {\n    sprite: _sprite[\"default\"]\n  },\n  sprite: _sprite[\"default\"],\n  Sprite: Sprite // Button,\n  // Image,\n  // Scroll,\n  // Sequence,\n  // Text,\n  // View,\n  // RichText,\n\n};\n\nvar use = Easycanvas.use = function (pluginHook) {\n  var $extendList = Easycanvas.Painter.prototype.$extendList;\n  if ($extendList.indexOf(pluginHook) >= 0) return;\n\n  if (pluginHook.onUse) {\n    pluginHook.onUse(Easycanvas);\n  }\n\n  $extendList.push(pluginHook);\n};\n\nvar inBrowser = typeof window !== 'undefined';\n\nif (inBrowser) {\n  // if (process.env.UMD === 'true') {\n  if (window.Easycanvas) {\n    console.warn('[Easycanvas] already loaded, it should be loaded only once.');\n  } else {\n    if (true) {\n      setTimeout(function () {\n        console.log(\"%c Easycanvas %c You are using the develop version \".concat(_constants[\"default\"].version, \" %c\"), \"background:#4086f4; padding: 2px 0; border-radius: 2px 0 0 2px;  color: #fff\", \"background:#41b883; padding: 2px; border-radius: 0 2px 2px 0;  color: #fff\", \"background:transparent\");\n      }, 500);\n    }\n\n    window.Easycanvas = Easycanvas;\n  }\n}\n\nvar _default = Easycanvas;\nexports[\"default\"] = _default;\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiInner.js":
+/*!*********************************!*\
+  !*** ./src/painter/apiInner.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _perPaint = _interopRequireDefault(__webpack_require__(/*! ./apiInner/perPaint.js */ \"./src/painter/apiInner/perPaint.js\"));\n\nvar _render = _interopRequireDefault(__webpack_require__(/*! ./apiInner/render.js */ \"./src/painter/apiInner/render.js\"));\n\nvar _eventHandler = _interopRequireDefault(__webpack_require__(/*! ./apiInner/eventHandler.js */ \"./src/painter/apiInner/eventHandler.js\"));\n\nvar _apiPlugin = _interopRequireDefault(__webpack_require__(/*! ./apiPlugin/apiPlugin.js */ \"./src/painter/apiPlugin/apiPlugin.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Inner apis of an easycanvas instance\n * - Used for Easycanvas.js only normally.\n * - Will be added to Easycanvas instance's prototype.\n *\n * ********** **/\n// import $bindDrag from './apiInner/bindDrag.js';\nvar apiInner = {\n  $render: _render[\"default\"],\n  $eventHandler: _eventHandler[\"default\"],\n  $perPaint: _perPaint[\"default\"] // $bindDrag,\n\n};\n\nif (true) {\n  apiInner.$plugin = (0, _apiPlugin[\"default\"])();\n}\n\nmodule.exports = apiInner;\n\n//# sourceURL=webpack:///./src/painter/apiInner.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiInner/eventHandler.js":
+/*!**********************************************!*\
+  !*** ./src/painter/apiInner/eventHandler.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Handle events on canvas (Includes both user's events and debugging events)\n * - Compare event's coordinate and the coordinate of every sprite in\n *   Easycanvas.children, and check sprite's handlers one by one.\n * - Events: mousedown, mousemove, mouseup, touchstart, touchmove, touchend,\n *   click, contextmenu\n * - Expanded events: hold, touchout\n *\n * ********** **/\nvar isMobile = typeof wx !== 'undefined' || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);\n/**\n * Sort sprite\n * - Order by eIndex dev-tool's in events' triggering\n * - Order by zIndex in dev-tool's select mode\n */\n\nvar sortByIndex = function sortByIndex(arr) {\n  return arr.sort(function (a, b) {\n    if (true) {\n      if (window[_constants[\"default\"].devFlag] && window[_constants[\"default\"].devFlag].selectMode) {\n        return _utils[\"default\"].funcOrValue(a.style.zIndex, a) < _utils[\"default\"].funcOrValue(b.style.zIndex, b) ? 1 : -1;\n      }\n    }\n\n    return _utils[\"default\"].funcOrValue(_utils[\"default\"].firstValuable(a.events.eIndex, a.style.zIndex), a) < _utils[\"default\"].funcOrValue(_utils[\"default\"].firstValuable(b.events.eIndex, b.style.zIndex), b) ? 1 : -1;\n  });\n};\n/**\n * Check whether the event hits certain sprite\n */\n\n\nvar hitSprite = function hitSprite($sprite, e) {\n  var rect = $sprite.getRect();\n  return _utils[\"default\"].pointInRect(e.canvasX, e.canvasY, rect.left, rect.left + rect.width, rect.top, rect.top + rect.height);\n};\n/**\n * Sort all the sprites(including children), then put to @caughts\n * - Child is above the parent only if Index >= 0\n */\n\n\nvar looper = function looper(arr, e, caughts) {\n  if (!arr || !arr.length) return;\n  if (e.$stopPropagation) return;\n  var l = arr.length;\n\n  for (var i = 0; i < l; i++) {\n    var item = arr[i];\n    if (_utils[\"default\"].funcOrValue(item.style.visible, item) === false) continue;\n    if (item.events && item.events.pointerEvents === 'none') continue;\n\n    if (hitSprite(item, e)) {\n      var interceptor = item.events.interceptor;\n\n      if (true) {\n        if (window[_constants[\"default\"].devFlag] && window[_constants[\"default\"].devFlag].selectMode) {\n          // 选取Sprite时禁掉捕获，以免事件被阻止，导致无法选中\n          interceptor = false;\n        }\n      }\n\n      if (interceptor) {\n        var result = _utils[\"default\"].firstValuable(interceptor.call(item, e), e);\n\n        if (!result || result.$stopPropagation) return;\n      }\n    }\n\n    var children = item.$combine && item.$combine.children ? item.$combine.children : item.children;\n\n    if (true) {\n      if (window[_constants[\"default\"].devFlag] && window[_constants[\"default\"].devFlag].selectMode) {\n        // 选取Sprite时不选取内部Sprite\n        children = item.children;\n      }\n    }\n\n    if (children.length) {\n      // Children above\n      looper(sortByIndex(children.filter(function (a) {\n        if (true) {\n          if (window[_constants[\"default\"].devFlag] && window[_constants[\"default\"].devFlag].selectMode) {\n            return _utils[\"default\"].funcOrValue(a.style.zIndex, a) >= 0;\n          }\n        }\n\n        return _utils[\"default\"].funcOrValue(_utils[\"default\"].firstValuable(a.events.eIndex, a.style.zIndex), a) >= 0;\n      })), e, caughts);\n    }\n\n    if (e.$stopPropagation) break;\n\n    if (hitSprite(item, e)) {\n      if (true) {\n        // 开发者工具select模式下为选取元素\n        if (window[_constants[\"default\"].devFlag] && window[_constants[\"default\"].devFlag].selectMode) {\n          if (item.name !== _constants[\"default\"].devFlag) {\n            e.stopPropagation();\n\n            if (item.$canvas.$plugin.selectSprite(e.type === 'click' || e.type === 'touchend', item.$canvas, item)) {\n              return;\n            }\n          }\n\n          continue;\n        }\n      }\n\n      triggerEventOnSprite(item, e, caughts);\n      e.stopPropagation();\n      return;\n    }\n\n    if (children.length) {\n      // Children below\n      looper(sortByIndex(children.filter(function (a) {\n        if (true) {\n          if (window[_constants[\"default\"].devFlag] && window[_constants[\"default\"].devFlag].selectMode) {\n            return _utils[\"default\"].funcOrValue(a.style.zIndex, a) < 0;\n          }\n        }\n\n        return !(_utils[\"default\"].funcOrValue(_utils[\"default\"].firstValuable(a.events.eIndex, a.style.zIndex), a) >= 0);\n      })), e, caughts);\n    }\n  }\n};\n\nvar extend = function extend($e, caughts) {\n  var _this = this;\n\n  this.$extendList.forEach(function (plugin) {\n    if (plugin.onEvent) {\n      plugin.onEvent.call(_this, $e, caughts);\n    }\n  });\n};\n\nvar triggerEventOnSprite = function triggerEventOnSprite($sprite, $e, caughts) {\n  caughts && caughts.push($sprite);\n\n  if ($sprite.events[$e.type]) {\n    $sprite.events[$e.type].call($sprite, $e);\n    if ($e.$stopPropagation) return;\n  }\n\n  if ($sprite.$parent) {\n    triggerEventOnSprite($sprite.$parent, $e, caughts);\n  } else {\n    if ($sprite.$canvas && !$e.$stopPropagation) {\n      triggerEventOnSprite($sprite.$canvas, $e);\n      $e.stopPropagation();\n    }\n  }\n};\n\nvar fastclick = {\n  x: 0,\n  y: 0,\n  timeStamp: 0\n};\n\nvar _eventHandler;\n\n_eventHandler = function eventHandler(e, _$e) {\n  var $canvas = this;\n  var layerX;\n  var layerY;\n  var scaleX = 1;\n  var scaleY = 1;\n\n  if (!_$e) {\n    if (!e.layerX && e.targetTouches && e.targetTouches[0]) {\n      layerX = e.targetTouches[0].pageX - e.currentTarget.offsetLeft;\n      layerY = e.targetTouches[0].pageY - e.currentTarget.offsetTop;\n    } else if (!e.layerX && e.changedTouches && e.changedTouches[0]) {\n      layerX = e.changedTouches[0].pageX - e.currentTarget.offsetLeft;\n      layerY = e.changedTouches[0].pageY - e.currentTarget.offsetTop;\n    } else {\n      layerX = e.layerX;\n      layerY = e.layerY;\n    }\n\n    var isRotated = false; // TODO\n\n    if (this.$dom.getBoundingClientRect) {\n      var bcr = this.$dom.getBoundingClientRect();\n      bcr.width > bcr.height !== this.width > this.height;\n      scaleX = Math.floor(bcr[isRotated ? 'height' : 'width']) / this.width;\n      scaleY = Math.floor(bcr[isRotated ? 'width' : 'height']) / this.height;\n    }\n  }\n\n  var $e = _$e || {\n    type: e.type,\n    canvasX: layerX / scaleX,\n    canvasY: layerY / scaleY,\n    event: e\n  };\n\n  if (isMobile && $canvas.fastclick) {\n    if ($e.type === 'click' && !$e.$fakeClick) {\n      return;\n    } else if ($e.type === 'touchstart') {\n      fastclick.x = $e.canvasX;\n      fastclick.y = $e.canvasY;\n      fastclick.timeStamp = Date.now();\n    } else if ($e.type === 'touchend') {\n      if (Math.abs(fastclick.x - $e.canvasX) < 30 && Math.abs(fastclick.y - $e.canvasY) < 30 && Date.now() - fastclick.timeStamp < 200) {\n        _eventHandler.call(this, null, {\n          $fakeClick: true,\n          type: 'click',\n          canvasX: fastclick.x,\n          canvasY: fastclick.y,\n          event: e\n        });\n      }\n    }\n  }\n\n  $e.stopPropagation = function () {\n    $e.$stopPropagation = true;\n  };\n\n  if ($canvas.events.interceptor) {\n    $e = _utils[\"default\"].firstValuable($canvas.events.interceptor.call($canvas, $e), $e);\n    if (!$e || $e.$stopPropagation) return;\n  }\n\n  var caughts = []; // if ($canvas.$flags.dragging && $canvas.$flags.dragging.$id) {\n  //     // 拖拽状态下，拖拽中的sprite优先触发事件\n  //     caughts.push($canvas.$flags.dragging);\n  // }\n\n  looper(sortByIndex($canvas.children), $e, caughts); // utils.execFuncs($canvas.hooks.afterEvent, $canvas, $e);\n  // $canvas.hooks.afterEvent = null;\n\n  extend.call($canvas, $e, caughts); // Create a new event: 'hold' (suits both mobile and pc)\n  // if (!$canvas.eHoldingFlag && ($e.type === 'mousedown' || $e.type === 'touchstart')) {\n  //     $canvas.eHoldingFlag = $e;\n  // } else if ($canvas.eHoldingFlag && ($e.type === 'mouseup' || $e.type === 'touchend')) {\n  //     $canvas.eHoldingFlag = false;\n  // } else if ($canvas.eHoldingFlag && ($e.type === 'mousemove' || $e.type === 'touchmove')) {\n  //     $canvas.eHoldingFlag = $e;\n  // }// else if (!$canvas.eHoldingFlag && e.type === 'contextmenu') {\n  // trigger 'mouseout' or 'touchout' event \n\n  if (($e.type === 'mousemove' || $e.type === 'touchmove') && $canvas.eLastMouseHover && caughts.indexOf($canvas.eLastMouseHover) === -1) {\n    // touchout待移除（目前可能不触发）\n    var eMouseout = $canvas.eLastMouseHover['events']['mouseout'] || $canvas.eLastMouseHover['events']['touchout'];\n\n    if (eMouseout) {\n      eMouseout.call($canvas.eLastMouseHover, $e);\n    }\n  }\n\n  $canvas.eLastMouseHover = caughts[0];\n\n  if (!caughts.length && $canvas.eLastMouseHover) {\n    // hover更替，触发mouseout\n    var _eMouseout = $canvas.eLastMouseHover['events']['mouseout'];\n\n    if (_eMouseout) {\n      _eMouseout.call($canvas.eLastMouseHover, $e);\n    }\n\n    $canvas.eLastMouseHover = null;\n  }\n\n  var handler = $canvas.events[$e.type];\n\n  if (handler && !$e.$stopPropagation) {\n    if (handler.call($canvas, $e)) {\n      $canvas.eHoldingFlag = false;\n      return true;\n    }\n  }\n};\n\nmodule.exports = _eventHandler;\n\n//# sourceURL=webpack:///./src/painter/apiInner/eventHandler.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiInner/perPaint.deliverChildren.js":
+/*!**********************************************************!*\
+  !*** ./src/painter/apiInner/perPaint.deliverChildren.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Send children to be painted\n * - Children will be rendered above the parent, if zIndex >= 0\n * - Even the same zIndex, chilren will be render in differrent orders\n *   in different environments, like Chrome and PhantomJs.\n *\n * ********** **/\nmodule.exports = function ($canvas, children, part) {\n  children.filter(function (item) {\n    var zIndex = _utils[\"default\"].funcOrValue(item.style.zIndex, item);\n\n    if (part < 0) {\n      return zIndex < 0;\n    }\n\n    return zIndex >= 0;\n  }).sort(function (a, b) {\n    var za = _utils[\"default\"].funcOrValue(a.style.zIndex, a);\n\n    var zb = _utils[\"default\"].funcOrValue(b.style.zIndex, b); // let za = a.style.zIndex;\n    // let zb = b.style.zIndex;\n\n\n    if (za === zb) return 0;\n    return za > zb ? 1 : -1;\n  }).forEach(function (c, _index) {\n    $canvas.$perPaint.call($canvas, c, _index);\n  });\n};\n\n//# sourceURL=webpack:///./src/painter/apiInner/perPaint.deliverChildren.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiInner/perPaint.js":
+/*!******************************************!*\
+  !*** ./src/painter/apiInner/perPaint.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nvar _perPaintDeliverChildren = _interopRequireDefault(__webpack_require__(/*! ./perPaint.deliverChildren.js */ \"./src/painter/apiInner/perPaint.deliverChildren.js\"));\n\nvar _math = _interopRequireDefault(__webpack_require__(/*! utils/math.rect-meet */ \"./src/utils/math.rect-meet.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * CORE painting function\n * - Calculates props of every sprite in children, then puts to $children.\n * - Includes optimization.\n * - NOT connecting to canvas's prototype functions.\n *\n * ********** **/\n// import getComputedStyle from './perPaint.getComputedStyle.js';\n// import cutOutside from './perPaint.cutOutside.js';\n// import img2base64 from 'utils/img2base64.js';\nvar blend = _utils[\"default\"].blend;\n\nvar isChineseChar = function isChineseChar(temp) {\n  var re = /[^\\u4e00-\\u9fa5]/;\n  return !re.test(temp);\n};\n\nvar extend = function extend() {\n  var _this = this;\n\n  this.$canvas.$extendList.forEach(function (plugin) {\n    if (plugin.onPaint) {\n      plugin.onPaint.call(_this);\n    }\n  });\n};\n\nmodule.exports = function ($sprite, index) {\n  $sprite.$rendered = false;\n\n  if ($sprite.$cache.visible === false) {\n    // utils.execFuncs($sprite.hooks.ticked, $sprite, ++$sprite.$tickedTimes);\n    return;\n  }\n\n  var $canvas = this;\n  extend.call($sprite);\n  var _props = $sprite.$render;\n  var _text = _props.text;\n  var _img = _props.img;\n  var childrenInside = _props.childrenInside; // 容器提前结束\n\n  if (!_img && !_text && !_props.backgroundColor && !_props.border && !childrenInside) {\n    $sprite.$rendered = undefined;\n    var _children2 = $sprite.children;\n\n    if (_children2.length) {\n      (0, _perPaintDeliverChildren[\"default\"])($canvas, _children2, -1);\n      (0, _perPaintDeliverChildren[\"default\"])($canvas, _children2, 1);\n    } // utils.execFuncs($sprite.hooks.ticked, $sprite, ++$sprite.$tickedTimes);\n\n\n    return;\n  }\n\n  var _children = $sprite.children;\n  var settings = _props.settings; // let meetResult = rectMeet(_props.left, _props.top, _props.width, _props.height, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);\n  // let meetResult = true;\n\n  /*\n   * 性能浪费检测\n   * 拿到最大的“绘制/源尺寸”比值，如果这个值过低，那么显然存在资源浪费\n   * 由于对象可能处于动画中，因此选用最大的绘制比\n   */\n  // if (process.env.NODE_ENV !== 'production') {\n  //     if (_props._imgWidth && _props._imgHeight) {\n  //         let paintRate = _props.width * _props.height / (_props.height * _props.cutHeight);\n  //         if (!$sprite.$perf.paintRate || paintRate > $sprite.$perf.paintRate) {\n  //             $sprite.$perf.paintRate = paintRate;\n  //             // $sprite.$perf.paintProps = JSON.stringify(_props);\n  //         }\n  //     }\n  // }\n  // if (process.env.NODE_ENV !== 'production') {\n  //     if (!$sprite.$cache.base64 && _img && _img.src) {\n  //         $sprite.$cache.base64 = 'processing';\n  //         img2base64(_img.src, function (data) {\n  //             $sprite.$cache.base64 = data;\n  //         });\n  //     }\n  // }\n\n  if (settings.clip) {\n    var $paintSprite = {\n      $id: $sprite.$id,\n      type: 'clip',\n      // settings: settings,\n      props: _props\n    }; // if (process.env.NODE_ENV !== 'production') {\n    //     // 开发环境下，将元素挂载到$children里以供标记\n\n    $paintSprite.$origin = $sprite; // };\n\n    $canvas.$children.push($paintSprite);\n  }\n\n  _children.length && (0, _perPaintDeliverChildren[\"default\"])($canvas, _children, -1);\n\n  if (settings.fillRect) {\n    $sprite.$rendered = true;\n    var _$paintSprite = {\n      $id: $sprite.$id,\n      type: 'fillRect',\n      settings: settings,\n      props: _props\n    }; // if (process.env.NODE_ENV !== 'production') {\n    //     // 开发环境下，将元素挂载到$children里以供标记\n\n    _$paintSprite.$origin = $sprite; // };\n\n    $canvas.$children.push(_$paintSprite);\n  }\n\n  if (_props._imgWidth && _props.opacity !== 0 && _props.cutWidth && _props.cutHeight) {\n    // if (!_props.rotate && !_text) {\n    // cutOutside($canvas, _props, _imgWidth, _imgHeight);\n    // cut的结果没有取整，要看是否需要\n    // }\n    // let meetResultAfterCut = rectMeet(_props.left, _props.top, _props.width, _props.height, 0, 0, $canvas.width - 1, $canvas.height - 1, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);\n    // let meetResultAfterCut = true;\n    $sprite.$rendered = true;\n    /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */\n\n    var _$paintSprite2 = {\n      $id: $sprite.$id,\n      type: 'img',\n      settings: settings,\n      img: _img,\n      props: _props\n    }; // _img.$painted = true;\n    // if (process.env.NODE_ENV !== 'production') {\n    //     // 开发环境下，将元素挂载到$children里以供标记\n\n    _$paintSprite2.$origin = $sprite; // };\n\n    $canvas.$children.push(_$paintSprite2);\n  } // TODO: rewrite\n\n\n  if (_text) {\n    _props.fontSize = $sprite.$cache.fontSize;\n    _props.fontFamily = $sprite.$cache.fontFamily;\n    _props.color = $sprite.$cache.color;\n    _props.textAlign = $sprite.$cache.textAlign;\n    _props.textVerticalAlign = $sprite.$cache.textVerticalAlign;\n    $sprite.$rendered = true;\n    var textLeft = _props.left;\n    var textTop = _props.top;\n    var textAlign = _props.align || _props.textAlign || 'left';\n    var textFont = (_props.fontSize || 14) + 'px ' + (_props.fontFamily || 'serif');\n    var textFontsize = parseInt(textFont);\n    var textBaseline = 'top'; // let textFontsize = parseInt(textFont) * _props.scale;\n    // textFont = textFontsize + 'px Arial';\n\n    var textLineHeight = _props.lineHeight || textFontsize; // Change css-align to canvas-align style\n\n    if (textAlign === 'center') {\n      textLeft += _props.width / 2;\n    } else if (textAlign === 'right') {\n      textLeft += _props.width;\n    } // Change css-align to canvas-align style\n\n\n    if (_props.textVerticalAlign === 'top') {\n      textBaseline = 'top';\n    } else if (_props.textVerticalAlign === 'bottom') {\n      textBaseline = 'bottom';\n      textTop += _props.height;\n    } else if (_props.textVerticalAlign === 'middle') {\n      textTop += _props.height >> 1;\n      textBaseline = 'middle';\n    }\n\n    if (typeof _text === 'string' || typeof _text === 'number') {\n      // if (textTop + textFontsize * 2 > 0 && textTop - textFontsize * 2 < $canvas.height) {\n      $canvas.$children.push({\n        $id: $sprite.$id,\n        type: 'text',\n        settings: settings,\n        props: {\n          left: textLeft,\n          top: textTop,\n          content: String(_text),\n          fontsize: textFontsize,\n          align: textAlign,\n          baseline: textBaseline,\n          font: textFont,\n          color: _props.color,\n          type: _props.textToppe\n        },\n        $origin: $sprite\n      }); // }\n    } else if (_text.length) {\n      _text.forEach(function (t) {\n        $canvas.$children.push({\n          $id: $sprite.$id,\n          type: 'text',\n          settings: settings,\n          props: {\n            left: textLeft + _utils[\"default\"].funcOrValue(t.left, $sprite),\n            top: textTop + _utils[\"default\"].funcOrValue(t.top, $sprite),\n            content: _utils[\"default\"].funcOrValue(t.content, $sprite),\n            fontsize: textFontsize,\n            baseline: textBaseline,\n            align: textAlign,\n            font: textFont,\n            color: _props.color,\n            type: _props.textToppe\n          },\n          $origin: $sprite\n        });\n      });\n    } else if (_text.toppe === 'multline-text') {\n      var textArr = _text.text.split(/\\t|\\n/);\n\n      var renderArr = [];\n      textArr.forEach(function (eachText, textIndex) {\n        eachText = String.prototype.trim.apply(eachText);\n\n        if (_text.config.start) {\n          eachText = eachText.replace(_text.config.start, '');\n        }\n\n        var _i = 0;\n        var length = _props.width;\n\n        while (eachText.length && _i < eachText.length) {\n          if (length <= 0) {\n            length = _props.width;\n            renderArr.push(eachText.substr(0, _i));\n            eachText = eachText.substr(_i);\n            _i = 0;\n          }\n\n          _i++;\n          length -= textFontsize * (isChineseChar(eachText[_i]) ? 1.05 : 0.6);\n        }\n\n        if (eachText || textIndex) {\n          renderArr.push(eachText);\n        }\n      });\n      renderArr.forEach(function (r) {\n        $canvas.$children.push({\n          $id: $sprite.$id,\n          type: 'text',\n          settings: settings,\n          props: {\n            left: textLeft,\n            top: textTop,\n            // width: _props.width,\n            // height: _props.height,\n            fontsize: textFontsize,\n            content: r,\n            baseline: textBaseline,\n            align: textAlign,\n            font: textFont,\n            color: _props.color,\n            type: _props.textToppe\n          },\n          $origin: $sprite\n        });\n        textTop += textLineHeight || textFontsize;\n      });\n    }\n  }\n\n  if (!_img && !_text) {\n    $sprite.$rendered = undefined;\n  }\n\n  _children.length && (0, _perPaintDeliverChildren[\"default\"])($canvas, _children, 1);\n\n  if (settings.clip) {\n    var _$paintSprite3 = {\n      $id: $sprite.$id,\n      type: 'clipOver',\n      // settings: settings,\n      props: _props\n    }; // if (process.env.NODE_ENV !== 'production') {\n    //     // 开发环境下，将元素挂载到$children里以供标记\n\n    _$paintSprite3.$origin = $sprite; // };\n\n    $canvas.$children.push(_$paintSprite3);\n  }\n\n  if (settings.line) {\n    $sprite.$rendered = true;\n    var _$paintSprite4 = {\n      $id: $sprite.$id,\n      type: 'line',\n      settings: settings,\n      props: _props\n    }; // if (process.env.NODE_ENV !== 'production') {\n    //     // 开发环境下，将元素挂载到$children里以供标记\n\n    _$paintSprite4.$origin = $sprite; // };\n\n    $canvas.$children.push(_$paintSprite4);\n  }\n};\n\n//# sourceURL=webpack:///./src/painter/apiInner/perPaint.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiInner/render.js":
+/*!****************************************!*\
+  !*** ./src/painter/apiInner/render.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * CORE painting function\n * - Controlling canvas context, Transfer $children to rendered sprite.\n * - Includes some optimization.\n *\n * ********** **/\nvar extend = function extend($sprite, settings) {\n  var _this = this;\n\n  var stopDefault = false;\n  this.$extendList.forEach(function (plugin) {\n    if (plugin.onRender) {\n      var res = plugin.onRender.call(_this, $sprite, settings);\n\n      if (res) {\n        stopDefault = res;\n      }\n    }\n  });\n  return stopDefault;\n};\n\nmodule.exports = function (_ctx, _children, renderAll) {\n  var $canvas = this;\n  var $children = _children || $canvas.$children;\n\n  if (!renderAll && !$canvas.webgl) {\n    $children = $children.filter(function ($child) {\n      return $child.props.$insight !== false;\n    });\n  }\n\n  $children.forEach(function ($sprite, i) {\n    /*\n        props(Array)\n        @0    image/canvas Object\n        @1~4  source x, y, w, h\n        @5~8  target x, y, w, h\n    */\n    var props = $sprite.props;\n    /*\n        Jump useless paintings, by calculating border size\n    */\n\n    var currentSize; // let isText = $sprite.type === 'text';\n    // 一些扩展插件的绘制可能没有props\n\n    if (props && $sprite.type !== 'clip' && $sprite.type !== 'text' && $sprite.type !== 'clipOver' && $sprite.type !== 'line') {\n      // if (isText) {\n      //     let length = props.content.length;\n      //     currentSize = props.fontsize * props.fontsize * 9 * length;\n      //     props.left = props.left - props.fontsize * 1.5 * length;\n      //     if (props.left < 0) props.left = 0;\n      //     props.top = props.top - props.fontsize * 1.5;\n      //     if (props.top < 0) props.top = 0;\n      //     props.width = props.fontsize * 3 * length;\n      //     if (props.left + props.width > $canvas.width) props.width = $canvas.width - props.left;\n      //     props.height = props.fontsize * 3;\n      //     if (props.top + props.height > $canvas.height) props.height = $canvas.height - props.top;\n      // } else {\n      currentSize = props.width * props.height; // }\n      // 当前图层不太小的时候，判断是否可以跳过绘制\n\n      if (currentSize > 200 * 200 && !$sprite.settings.transform && !$sprite.settings.rotate) {\n        var l = $children.length;\n\n        for (var j = i + 1; j < l; j++) {\n          var $tmpSprite = $children[j];\n\n          if ($tmpSprite.$cannotCover) {\n            // 被判断为不能遮挡当前绘制的直接跳过\n            continue;\n          }\n\n          if ($tmpSprite.type === 'clip') {\n            // clip到clipOver之间的不进行判断\n            // 这些sprite可能无法遮挡当前要绘制的sprite\n            while (j < l && $children[++j].type !== 'clipOver') {// do nothing\n              // 仅仅是j自增1\n            }\n\n            continue;\n          }\n\n          var tmpSpriteSettings = $tmpSprite.settings;\n\n          if (!$tmpSprite.type || $tmpSprite.type !== 'img') {\n            // 不是图片\n            // 但fillRect可能还有透明度\n            if (!($tmpSprite.type === 'fillRect' && tmpSpriteSettings.fillRect.indexOf('rgba') === -1)) {\n              $tmpSprite.$cannotCover = true;\n              continue;\n            }\n          }\n\n          var tmpProps = $tmpSprite.props;\n\n          if (tmpProps.width * tmpProps.height < 200 * 200) {\n            // 太小的图片不认为可以遮挡\n            $tmpSprite.$cannotCover = true;\n            continue;\n          }\n\n          if (tmpProps.width * tmpProps.height < currentSize) {\n            continue;\n          }\n\n          if ($tmpSprite.img && !$tmpSprite.img.$noAlpha) {\n            // 带alpha通道的图片不会遮挡当前图片，不能跳过当前图片的绘制\n            $tmpSprite.$cannotCover = true;\n            continue;\n          } // 带rotate的元素暂时不考虑，需要复杂的计算\n\n\n          if (tmpSpriteSettings.globalAlpha !== 1 || tmpSpriteSettings.globalCompositeOperation || tmpSpriteSettings.transform || tmpSpriteSettings.rotate) {\n            $tmpSprite.$cannotCover = true;\n            continue;\n          }\n\n          if (_utils[\"default\"].pointInRect(props.left, props.top, tmpProps.left, tmpProps.left + tmpProps.width, tmpProps.top, tmpProps.top + tmpProps.height) && _utils[\"default\"].pointInRect(props.left + props.width, props.top + props.height, tmpProps.left, tmpProps.left + tmpProps.width, tmpProps.top, tmpProps.top + tmpProps.height)) {\n            if (true) {\n              $sprite.$origin.$useless = true; // props格式换了\n              // $canvas.$plugin.jumpRender($canvas, props);\n            } // console.log('useless');\n\n\n            return;\n          }\n        }\n      }\n    }\n\n    var settings = $sprite.settings || {};\n\n    if (extend.call($canvas, $sprite, settings)) {\n      return;\n    }\n\n    if (true) {\n      if ($sprite.$origin) {\n        $sprite.$origin.$useless = false;\n      }\n    }\n\n    var ctx = _ctx || $canvas.$paintContext;\n\n    if ($sprite.type === 'clip') {\n      ctx.save(); // rect会导致FPS逐渐降低，怀疑未清理导致\n      // ctx.rect(props.left, props.ty, props.width, props.height);\n\n      ctx.beginPath();\n      ctx.moveTo(props.left, props.top);\n      ctx.lineTo(props.left + props.width, props.top);\n      ctx.lineTo(props.left + props.width, props.top + props.height);\n      ctx.lineTo(props.left, props.top + props.height);\n      ctx.lineTo(props.left, props.top);\n      ctx.closePath();\n      ctx.clip();\n    }\n    /*\n        Rendering operation\n    */\n\n\n    var saved = false;\n\n    if (settings.globalCompositeOperation) {\n      if (!saved) {\n        ctx.save();\n        saved = true;\n      }\n\n      ctx.globalCompositeOperation = settings.globalCompositeOperation;\n    }\n\n    if (ctx.$globalAlpha !== settings.globalAlpha) {\n      ctx.$globalAlpha = ctx.globalAlpha = settings.globalAlpha;\n    } // if (settings.globalAlpha !== 1 && !isNaN(settings.globalAlpha)) {\n    //     if (!saved) {\n    //         ctx.save();\n    //         saved = true;\n    //     }\n    //     ctx.globalAlpha = settings.globalAlpha;\n    // }\n\n\n    if (settings.translate) {\n      if (!saved) {\n        ctx.save();\n        saved = true;\n      }\n\n      ctx.translate(settings.translate[0] || 0, settings.translate[1] || 0);\n    }\n\n    if (settings.rotate) {\n      if (!saved) {\n        ctx.save();\n        saved = true;\n      }\n\n      ctx.translate(settings.beforeRotate[0] || 0, settings.beforeRotate[1] || 0);\n      ctx.rotate(settings.rotate || 0);\n      ctx.translate(settings.afterRotate[0] || 0, settings.afterRotate[1] || 0);\n    }\n\n    if (settings.scale) {\n      if (!saved) {\n        ctx.save();\n        saved = true;\n      }\n\n      ctx.scale(settings.scale[0] || 1, settings.scale[1] || 1);\n    }\n\n    if (settings.transform) {\n      if (!saved) {\n        ctx.save();\n        saved = true;\n      }\n\n      ctx.transform(1, settings.transform.fh, settings.transform.fv, 1, settings.transform.fx, settings.transform.fy);\n    }\n\n    if ($sprite.type === 'img') {\n      ctx.drawImage($sprite.img, props.cutLeft, props.cutTop, props.cutWidth, props.cutHeight, props.left, props.top, props.width, props.height);\n\n      if (true) {\n        if ($canvas.$plugin) {\n          $canvas.$plugin.drawImage($canvas, props);\n        }\n      }\n    } else if ($sprite.type === 'text' && props.content) {\n      ctx.font = props.font;\n      ctx.fillStyle = props.color || 'white';\n      ctx.textAlign = props.align;\n      ctx.textBaseline = props.baseline;\n      ctx[props.type || 'fillText'](props.content, props.left, props.top);\n    } else if ($sprite.type === 'fillRect') {\n      ctx.fillStyle = settings.fillRect;\n      ctx.fillRect(props.left, props.top, props.width, props.height);\n    } else if ($sprite.type === 'line') {\n      ctx.beginPath();\n      var strokeStyle = props.border.substr(props.border.indexOf(' ')) || 'black';\n      ctx.strokeStyle = strokeStyle; // if (ctx._strokeStyle !== strokeStyle)\n      //     ctx._strokeStyle = ctx.strokeStyle = strokeStyle;\n\n      ctx.lineWidth = props.border.split(' ')[0] || 1;\n      ctx.moveTo(props.left, props.top);\n      ctx.lineTo(props.left + props.width, props.top);\n      ctx.lineTo(props.left + props.width, props.top + props.height);\n      ctx.lineTo(props.left, props.top + props.height); // ctx.lineTo(props.left, props.top);\n      // let lineWidth = props.border.split(' ')[0] || 1;\n      // ctx.lineWidth = lineWidth;\n      // ctx.moveTo(props.left - lineWidth, props.top - lineWidth);\n      // ctx.lineTo(props.left + props.width + lineWidth, props.top - lineWidth);\n      // ctx.lineTo(props.left + props.width + lineWidth, props.top + props.height + lineWidth);\n      // ctx.lineTo(props.left - lineWidth, props.top + props.height + lineWidth);\n      // // ctx.lineTo(props.left - lineWidth, props.top - lineWidth);\n\n      ctx.closePath();\n      ctx.stroke();\n    } else if ($sprite.type === 'clipOver') {\n      ctx.restore();\n    }\n\n    if (saved) {\n      ctx.$globalAlpha = false;\n      ctx.restore();\n    }\n  });\n};\n\n//# sourceURL=webpack:///./src/painter/apiInner/render.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter.js":
+/*!*********************************!*\
+  !*** ./src/painter/apiOuter.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _remove = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/remove.js */ \"./src/painter/apiOuter/remove.js\"));\n\nvar _start = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/start.js */ \"./src/painter/apiOuter/start.js\"));\n\nvar _paint = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/paint.js */ \"./src/painter/apiOuter/paint.js\"));\n\nvar _clear = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/clear.js */ \"./src/painter/apiOuter/clear.js\"));\n\nvar _pause = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/pause.js */ \"./src/painter/apiOuter/pause.js\"));\n\nvar _nextTick = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/nextTick.js */ \"./src/painter/apiOuter/nextTick.js\"));\n\nvar _register = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/register.js */ \"./src/painter/apiOuter/register.js\"));\n\nvar _setFpsHandler = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/setFpsHandler.js */ \"./src/painter/apiOuter/setFpsHandler.js\"));\n\nvar _setMaxFps = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/setMaxFps.js */ \"./src/painter/apiOuter/setMaxFps.js\"));\n\nvar _skeleton = _interopRequireDefault(__webpack_require__(/*! ./apiOuter/skeleton.js */ \"./src/painter/apiOuter/skeleton.js\"));\n\nvar _sprite = _interopRequireDefault(__webpack_require__(/*! class/sprite.js */ \"./src/class/sprite.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Inner apis of an easycanvas instance\n * - Used for Easycanvas.js and the outsides.\n * - Will be added to Easycanvas instance's prototype.\n *\n * ********** **/\n// import add from './apiOuter/add.js';\n// import on from './apiOuter/on.js';\n// import off from './apiOuter/off.js';\n// import trigger from './apiOuter/trigger.js';\n// import broadcast from './apiOuter/broadcast.js';\nvar apiOuter = {\n  start: _start[\"default\"],\n  paint: _paint[\"default\"],\n  add: _sprite[\"default\"].prototype.add,\n  remove: _remove[\"default\"],\n  register: _register[\"default\"],\n  clear: _clear[\"default\"],\n  setFpsHandler: _setFpsHandler[\"default\"],\n  setMaxFps: _setMaxFps[\"default\"],\n  pause: _pause[\"default\"],\n  on: _sprite[\"default\"].prototype.on,\n  off: _sprite[\"default\"].prototype.off,\n  trigger: _sprite[\"default\"].prototype.trigger,\n  broadcast: _sprite[\"default\"].prototype.broadcast,\n  nextTick: _nextTick[\"default\"],\n  getAllChildren: _sprite[\"default\"].prototype.getAllChildren\n};\n\nif (true) {\n  apiOuter.skeleton = _skeleton[\"default\"];\n}\n\nmodule.exports = apiOuter;\n\n//# sourceURL=webpack:///./src/painter/apiOuter.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/clear.js":
+/*!***************************************!*\
+  !*** ./src/painter/apiOuter/clear.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/** ********** *\n *\n * Clear children\n *\n * ********** **/\nmodule.exports = function () {\n  this.children.forEach(function (child) {\n    child.remove();\n  });\n  this.children = [];\n};\n\n//# sourceURL=webpack:///./src/painter/apiOuter/clear.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/nextTick.js":
+/*!******************************************!*\
+  !*** ./src/painter/apiOuter/nextTick.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/** ********** *\n *\n * Trigger event only once on next painting-tick\n * - Removed after triggering.\n *\n * ********** **/\nmodule.exports = function (func) {\n  var _func = function _func() {\n    func.apply(this, arguments);\n    this.off('ticked', _func);\n  };\n\n  this.on('ticked', _func);\n};\n\n//# sourceURL=webpack:///./src/painter/apiOuter/nextTick.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/paint.js":
+/*!***************************************!*\
+  !*** ./src/painter/apiOuter/paint.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Sort the sprite and call inner functions\n * - Will be called in each frame after the 'start' function called.\n *\n * ********** **/\n// var c = document.createElement('canvas');\n// c.height = 1334;\n// c.width = 750;\n// var d = c.getContext('2d');\n// 新老props相同指针，此处判断不再有意义\n// const diffRender = function (olds, news) {//debugger;return news; //TODO!!!\n//     if (!olds || olds.length !== news.length) {\n//         return news;\n//     }\n//     for (let i = 0; i < olds.length; i++) {\n//         let o = olds[i];\n//         let n = news[i];\n//         if (o.$id !== n.$id || o.img !== n.img) return news;\n//         if (o.props && n.props) {\n//             // if (o.props.opacity !== n.props.opacity) return news;\n//             // if (o.props.rotate !== n.props.rotate) return news;\n//             // if (o.props.sh !== n.props.sh) return news;\n//             // if (o.props.sw !== n.props.sw) return news;\n//             // if (o.props.sx !== n.props.sx) return news;\n//             // if (o.props.sy !== n.props.sy) return news;\n//             // if (o.props.th !== n.props.th) return news;\n//             // if (o.props.tw !== n.props.tw) return news;\n//             // if (o.props.tx !== n.props.tx) return news;\n//             // if (o.props.ty !== n.props.ty) return news;\n//             // if (o.props.text !== n.props.text) return news;\n//             // if (o.props.align !== n.props.align) return news;\n//             // if (o.props.baseline !== n.props.baseline) return news;\n//             // if (o.props.color !== n.props.color) return news;\n//             // if (o.props.type !== n.props.type) return news;\n//             // if (o.props.font !== n.props.font) return news;\n//             for (let prop in n.props) {\n//                 if (n.props[prop] !== o.props[prop]) return news;\n//             }\n//         }\n//     }\n//     return false;\n// };\nmodule.exports = function () {\n  if (this.$pausing || this.$inBrowser && document.hidden) return;\n  var $canvas = this;\n\n  if (true) {\n    $canvas.$plugin.timeCollect($canvas, 'custom', 'START');\n  }\n\n  _utils[\"default\"].execFuncs($canvas.hooks.beforeTick, $canvas, [$canvas.$rafTime]); // $canvas.broadcast('beforeTick', $canvas.$rafTime);\n\n\n  if (true) {\n    $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'START');\n  }\n\n  $canvas.children.forEach(function ($sprite) {\n    $sprite.recalculate();\n  });\n\n  if (!$canvas.$freezing) {\n    $canvas.$lastTickChildren = $canvas.$children;\n    $canvas.$children = [];\n    this.children.sort(function (a, b) {\n      var za = _utils[\"default\"].funcOrValue(a.style.zIndex, a);\n\n      var zb = _utils[\"default\"].funcOrValue(b.style.zIndex, b);\n\n      if (za === zb) return 0;\n      return za > zb ? 1 : -1;\n    }).forEach(function (perItem, index) {\n      $canvas.$perPaint(perItem, index);\n    });\n  }\n\n  if (true) {\n    $canvas.$plugin.timeCollect($canvas, 'preprocessTimeSpend', 'END');\n  }\n\n  if (true) {\n    $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'START');\n  }\n\n  if ($canvas.$paintContext.clearRect) {\n    // let diffs = $canvas.$nodiff ? $canvas.$children : diffRender($canvas.$lastTickChildren, $canvas.$children);\n    // if (diffs) {\n    // d.globalAlpha = 0.3;\n    // d.clearRect(0, 0, this.width, this.height);\n    // d.globalAlpha = 0.7;\n    // d.drawImage($canvas.$dom, 0,0);\n    $canvas.$paintContext.clearRect(0, 0, this.width, this.height);\n    $canvas.$render(); // }\n  } else {\n    $canvas.$render();\n  } // $canvas.$paintContext.globalAlpha = 0.3;\n  // $canvas.$paintContext.drawImage(c,0,0);\n  // $canvas.$paintContext.globalAlpha = 1;\n\n\n  if (true) {\n    $canvas.$plugin.timeCollect($canvas, 'paintTimeSpend', 'END');\n  }\n\n  _utils[\"default\"].execFuncs($canvas.hooks.ticked, $canvas, [$canvas.$rafTime]); // $canvas.broadcast('ticked', $canvas.$rafTime);\n\n\n  if ($canvas.hooks.nextTick) {\n    _utils[\"default\"].execFuncs($canvas.hooks.nextTick, $canvas, [$canvas.$rafTime]);\n\n    delete $canvas.hooks.nextTick;\n  }\n\n  if (true) {\n    $canvas.$plugin.timeCollect($canvas, 'custom', 'END');\n  }\n};\n\n//# sourceURL=webpack:///./src/painter/apiOuter/paint.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/pause.js":
+/*!***************************************!*\
+  !*** ./src/painter/apiOuter/pause.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/** ********** *\n *\n * Stop painting in paint function.\n *\n * ********** **/\nmodule.exports = function (val) {\n  this.$pausing = val === undefined ? true : val;\n};\n\n//# sourceURL=webpack:///./src/painter/apiOuter/pause.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/register.js":
+/*!******************************************!*\
+  !*** ./src/painter/apiOuter/register.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/** ********** *\n *\n * Create an Easycanvas instance on current dom\n * - Start the 'hold' event judging interval(may includes a memory waste after destroyed).\n *\n * ********** **/\nvar extend = function extend(opt) {\n  var _this = this;\n\n  this.$extendList.forEach(function (plugin) {\n    if (plugin.onCreate) {\n      plugin.onCreate.call(_this, opt);\n    }\n  });\n};\n\nmodule.exports = function (dom, option) {\n  var _this2 = this;\n\n  if (true) {\n    this.fpsHandler = this.fpsHandler || function (fps) {\n      if (this.maxFps > 0 && fps < this.maxFps - 5 && fps < 40) {\n        console.warn(\"[Easycanvas] Low FPS detected (\".concat(fps, \"/\").concat(this.maxFps, \").\"));\n      }\n    };\n  }\n\n  var _option = option || {};\n\n  dom = this.$dom = dom || this.$dom;\n\n  if (true) {\n    if (!dom) {\n      console.error('[Easycanvas] Not found <canvas> element in \"register\" function.');\n    }\n  } // 修复iOS下click时闪烁\n  // https://stackoverflow.com/questions/9526719/ipad-canvas-flickers-when-tapped\n  // dom.style['webkitTapHighlightColor'] = 'rgba(0,0,0,0);';\n\n\n  for (var i in _option) {\n    this[i] = _option[i];\n  }\n\n  this.name = _option.name || dom.id || dom.classList && dom.classList[0] || 'Unnamed';\n  this.$inBrowser = typeof window !== 'undefined';\n\n  if (_option.fullScreen && typeof document !== 'undefined') {\n    dom.width = dom.style.width = document.body.clientWidth || document.documentElement.clientWidth;\n    dom.height = dom.style.height = document.body.clientHeight || document.documentElement.clientHeight;\n\n    if (_option.dpr) {\n      dom.width *= _option.dpr;\n      dom.height *= _option.dpr;\n    }\n  }\n\n  if (true) {\n    if (_option.width && dom.attributes.width && _option.width !== dom.width || _option.height && dom.attributes.height && _option.height !== dom.height) {\n      console.warn('[Easycanvas] Canvas size mismatched in \"register\" function.');\n    }\n  }\n\n  dom.width = this.width = this.width || _option.width || dom.width;\n  dom.height = this.height = this.height || _option.height || dom.height;\n\n  if (true) {\n    this.$plugin.register(this);\n  }\n\n  this.events = _option.events || {};\n  this.hooks = _option.hooks || {};\n\n  if (this.$inBrowser) {\n    var eventList = ['contextmenu', 'mousewheel', 'click', 'dblclick', 'mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'];\n    eventList.forEach(function (e) {\n      dom.addEventListener(e, _this2.$eventHandler.bind(_this2));\n    });\n  }\n\n  if (true) {\n    if (this.$paintContext) {\n      console.error(\"[Easycanvas] Current instance is already registered.\");\n    }\n  }\n\n  extend.call(this, _option);\n  this.$paintContext = this.$paintContext || dom.getContext('2d');\n  return this;\n};\n\n//# sourceURL=webpack:///./src/painter/apiOuter/register.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/remove.js":
+/*!****************************************!*\
+  !*** ./src/painter/apiOuter/remove.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Remove a sprite (async)\n * - In develop mode, fps will throw warnings in low performance.\n *\n * ********** **/\nmodule.exports = function ($sprite, sync) {\n  _utils[\"default\"].execFuncs($sprite.hooks.beforeRemove, $sprite, $sprite.$tickedTimes++);\n\n  $sprite.style.visible = false;\n  $sprite.$removing = true; // setTimeout(() => {\n\n  if ($sprite.$parent) {\n    $sprite.$parent.children = $sprite.$parent.children.filter(function (child) {\n      return child.$removing !== true;\n    });\n  } else {\n    this.children = this.children.filter(function (child) {\n      return child.$removing !== true;\n    });\n  }\n\n  if ($sprite.$canvas) {\n    $sprite.$canvas = undefined;\n    $sprite.$parent = undefined;\n    $sprite.$tickedTimes = undefined;\n    $sprite.$cache = {}; // ??\n\n    $sprite.$rendered = false;\n\n    if (true) {\n      $sprite.$perf = undefined;\n    }\n\n    _utils[\"default\"].execFuncs($sprite.hooks.removed, $sprite, $sprite.$tickedTimes);\n  } // });\n\n\n  if (sync) {\n    this.children.splice(this.children.indexOf($sprite), 1);\n  }\n};\n\n//# sourceURL=webpack:///./src/painter/apiOuter/remove.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/setFpsHandler.js":
+/*!***********************************************!*\
+  !*** ./src/painter/apiOuter/setFpsHandler.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/** ********** *\n *\n * Set fps handler\n * - Same to new Easycanvas.Painter().fpsHandler = callback\n *\n * ********** **/\nmodule.exports = function (callback) {\n  this.fpsHandler = callback;\n};\n\n//# sourceURL=webpack:///./src/painter/apiOuter/setFpsHandler.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/setMaxFps.js":
+/*!*******************************************!*\
+  !*** ./src/painter/apiOuter/setMaxFps.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/** ********** *\n *\n * Set max fps\n * - @fps -1 means Infinity\n *\n * ********** **/\nmodule.exports = function (fps) {\n  this.maxFps = fps || -1;\n};\n\n//# sourceURL=webpack:///./src/painter/apiOuter/setMaxFps.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/skeleton.js":
+/*!******************************************!*\
+  !*** ./src/painter/apiOuter/skeleton.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nif (true) {\n  module.exports = function () {\n    var $canvas = this;\n\n    $canvas.children[0].__proto__.getAllChildren.call($canvas).forEach(function (child) {\n      child.uncombine();\n      child.$combine = true;\n    });\n\n    $canvas.paint();\n\n    $canvas.children[0].__proto__.getAllChildren.call($canvas).forEach(function (child) {\n      child.$combine = false;\n    });\n\n    var sekeletonString = '';\n    sekeletonString += \"var $SKL=document.getElementsByTagName('canvas')[0];\";\n    sekeletonString += \"$SKL.width=\".concat($canvas.width, \";$SKL.height=\").concat($canvas.height, \";\");\n    sekeletonString += \"$SKL.style.width='100%';$SKL.style.width='100%';\";\n    sekeletonString += \"var SKLIMG=[];\";\n    sekeletonString += \"var SKL = function(){\";\n    sekeletonString += \"var _=$SKL.getContext('2d');\";\n    var $children = $canvas.$children;\n    $children.forEach(function ($child) {\n      var props = $child.props;\n      var settings = $child.settings;\n\n      if ($child.type === 'img') {\n        sekeletonString += \"_.globalAlpha=\".concat(settings.globalAlpha, \";\");\n\n        if ($child.img && $child.img.$origin) {\n          // is canvas\n          sekeletonString += $child.img.$origin.join(';') + ';';\n          sekeletonString += \"_.drawImage(tempCanvas, \".concat(props.cutLeft, \", \").concat(props.cutTop, \", \").concat(props.cutWidth, \", \").concat(props.cutHeight, \", \").concat(props.left, \", \").concat(props.top, \", \").concat(props.width, \", \").concat(props.height, \");\");\n        } else if ($child.img && $child.img.src) {\n          sekeletonString += \"var img = new Image();\";\n          sekeletonString += \"var imgUrl='\".concat($child.img.src, \"';if(SKLIMG.indexOf(imgUrl)===-1){SKLIMG.push(imgUrl);img.onload=function(){_.clearRect(0,0,$SKL.width,$SKL.height);SKL();}};\");\n          sekeletonString += \"img.src=imgUrl;\";\n          sekeletonString += \"_.drawImage(img, \".concat(props.cutLeft, \", \").concat(props.cutTop, \", \").concat(props.cutWidth, \", \").concat(props.cutHeight, \", \").concat(props.left, \", \").concat(props.top, \", \").concat(props.width, \", \").concat(props.height, \");\");\n        } else {\n          sekeletonString += \"_.fillStyle='#666';\";\n          sekeletonString += \"_.fillRect(\".concat(props.left, \", \").concat(props.top, \", \").concat(props.width, \", \").concat(props.height, \");\");\n        }\n      } else if ($child.type === 'fillRect') {\n        sekeletonString += \"_.globalAlpha=\".concat(settings.globalAlpha, \";\");\n        sekeletonString += \"_.fillStyle='\".concat(settings.fillRect, \"';\");\n        sekeletonString += \"_.fillRect(\".concat(props.left, \", \").concat(props.top, \", \").concat(props.width, \", \").concat(props.height, \");\");\n      }\n    });\n    sekeletonString += \"_.globalAlpha=1;\";\n    sekeletonString += '};SKL($SKL);';\n    console.log(sekeletonString);\n  };\n}\n\n//# sourceURL=webpack:///./src/painter/apiOuter/skeleton.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiOuter/start.js":
+/*!***************************************!*\
+  !*** ./src/painter/apiOuter/start.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _tick = _interopRequireDefault(__webpack_require__(/*! utils/tick.js */ \"./src/utils/tick.js\"));\n\nvar _transition = _interopRequireDefault(__webpack_require__(/*! utils/transition.js */ \"./src/utils/transition.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Start rAF loop\n * - Cannot called twice on same instance\n *\n * ********** **/\nvar rAFer = function rAFer() {\n  var time = Date.now();\n  _transition[\"default\"].$lastPaintTime = this.$nextTickTime = time; // calculating fps\n\n  if (time - this.fpsCalculateTime >= 1000) {\n    this.fpsCalculateTime = time;\n\n    if (this.fpsHandler) {\n      this.fpsHandler.call(this, this.fps);\n    }\n\n    this.lastFps = this.fps;\n    this.fps = 0;\n  }\n\n  (0, _tick[\"default\"])(loop.bind(this));\n};\n\nvar loop = function loop(rafTime) {\n  this.$rafTime = rafTime;\n  rAFer.call(this);\n\n  if (this.maxFps > 0 && this.maxFps < 60) {\n    if (time - this.$lastPaintTime <= 1000 / this.maxFps) {\n      return;\n    } // 让$lastPaintTime不带有小尾巴（101，199，202，298这种变成100，200，300，400）\n    // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe\n\n\n    this.$lastPaintTime = time - (time - this.$lastPaintTime) % (1000 / this.maxFps);\n  } else {\n    this.$lastPaintTime = Date.now();\n  }\n\n  this.fps++;\n  this.paint();\n};\n\nmodule.exports = function () {\n  this.fpsCalculateTime = Date.now();\n  rAFer.call(this); // setInterval(() => {\n  //     if (this.eHoldingFlag) {\n  //         let $e = this.eHoldingFlag;\n  //         $e.type = 'hold';\n  //         this.$eventHandler.call(this, null, $e);\n  //     }\n  // }, 100); // TODO\n\n  return this;\n};\n\n//# sourceURL=webpack:///./src/painter/apiOuter/start.js?");
+
+/***/ }),
+
+/***/ "./src/painter/apiPlugin/apiPlugin.js":
+/*!********************************************!*\
+  !*** ./src/painter/apiPlugin/apiPlugin.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = _interopRequireDefault(__webpack_require__(/*! utils/utils.js */ \"./src/utils/utils.js\"));\n\nvar _constants = _interopRequireDefault(__webpack_require__(/*! constants */ \"./constants.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Plugined to each canvas instance\n * - Will add a 'mask' sprite to show the active sprite.\n * - Only works in develop mode.\n * - The handlers are in /plugin/panel/index.js file.\n *\n * ********** **/\nmodule.exports = function () {\n  if (true) {\n    var TO_PANEL_EVENT_NAME = '__EASYCANVAS_BRIDGE_TOPANEL__'; // 不再通过事件来监听了devTool了，直接从devTool来inspectedWindow.eval\n    // window.document.addEventListener('__EASYCANVAS_BRIDGE_TODOC__', function (recieveData) {\n    //     let data = recieveData.detail;\n    //     if (data.action = 'code') {\n    //         // console.log(data.content);\n    //         eval(data.content);\n    //     }\n    // });\n\n    var $emit = function $emit(passData) {\n      passData.tabId = window[_constants[\"default\"].devFlag].tabId;\n      window.document.dispatchEvent(new CustomEvent(TO_PANEL_EVENT_NAME, {\n        //  filtering special types\n        detail: JSON.parse(JSON.stringify(passData)) // bubbles: true,\n        // cancelable: true\n\n      }));\n    };\n\n    var textFont = '24px san-serif';\n    var textFontSmall = '18px san-serif';\n\n    var measureText = function measureText(text, size) {\n      var tempCanvas = document.createElement('canvas');\n      var tempCtx = tempCanvas.getContext('2d');\n      tempCtx.font = size || textFont;\n      return tempCtx.measureText(text).width;\n    };\n\n    setTimeout(function () {\n      $emit({\n        name: 'init'\n      });\n    });\n    var MaskCanvasBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2OYePb/fwAHrQNdl+exzgAAAABJRU5ErkJggg==';\n\n    var MaskTriangleCanvas = function () {\n      var canvas = document.createElement('canvas');\n      canvas.width = 40;\n      canvas.height = 20;\n      var ctx = canvas.getContext('2d');\n      ctx.beginPath();\n      ctx.moveTo(0, 20);\n      ctx.lineTo(40, 20);\n      ctx.lineTo(20, 0);\n      ctx.closePath(); // draws last line of the triangle\n\n      ctx.fill();\n      return canvas;\n    }();\n\n    var $selectMask = null;\n    var $selectMaskParent = null;\n    var PerSecondCollects = ['paintArea', 'paintTimes', 'paintTimeSpend', 'preprocessTimeSpend', 'custom', 'loadArea', 'jumpArea'];\n    var ApiPlugin = {\n      drawImage: function drawImage($canvas, _props) {\n        if (!window[_constants[\"default\"].devFlag].isPaintRecording) return;\n\n        if (_props) {\n          $canvas.$perf.$paintArea += _props[7] * _props[8];\n          $canvas.$perf.$loadArea += _props[3] * _props[4];\n        }\n\n        $canvas.$perf.$paintTimes++;\n      },\n      jumpRender: function jumpRender($canvas, _props) {\n        $canvas.$perf.$jumpArea += _props[7] * _props[8];\n      },\n      register: function register($canvas) {\n        $canvas.$id = Math.random().toString(36).substr(2); // 性能打点\n        // 带$是临时值，否则为每秒的快照值；临时值每秒快照一次\n        // 因此开发工具只需要使用快照进行分析即可\n\n        $canvas.$perf = {};\n        PerSecondCollects.forEach(function (key) {\n          $canvas.$perf[key] = 0;\n          $canvas.$perf['$' + key] = 0;\n        });\n        setInterval(function () {\n          PerSecondCollects.forEach(function (key) {\n            $canvas.$perf[key] = $canvas.$perf['$' + key];\n            $canvas.$perf['$' + key] = 0;\n          });\n        }, 1000);\n\n        if (!$canvas.$flags.devtoolHanged) {\n          window[_constants[\"default\"].devFlag].$canvas[$canvas.$id] = $canvas;\n          $canvas.$flags.devtoolHanged = true;\n        }\n      },\n      timeCollect: function timeCollect($canvas, type, startOrEnd) {\n        // START与END必须在同一个event loop中，且位于相同的微任务队列中\n        // 否则会影响指标收集\n        $canvas.$perf['$' + type] += (startOrEnd === 'START' || startOrEnd === 'PAUSE' ? -1 : 1) * (performance ? performance.now() : Date.now());\n      },\n      selectSprite: function selectSprite(isChoosing, $canvas, $sprite) {\n        window[_constants[\"default\"].devFlag].MaskCanvasBase64 = MaskCanvasBase64;\n\n        if (!$sprite || !window[_constants[\"default\"].devFlag].selectMode) {\n          ApiPlugin.cancelSelectSprite($canvas);\n          return false;\n        } // let originScale = $sprite.style.scale;\n        // $sprite.style.scale = Easycanvas.Transition.linear(1, 1.2, 100).then(() => {\n        //     $sprite.style.scale = Easycanvas.Transition.linear(1.2, 1, 100).then(() => {\n        //         $sprite.style.scale = originScale;\n        //     });\n        // });\n\n\n        if (!$selectMask) {\n          var tipsWidth = 0;\n          var maskRect = {};\n          var maskParentRect = {};\n          $selectMask = $canvas.add({\n            // 高亮\n            name: _constants[\"default\"].devFlag,\n            content: {\n              img: $canvas.imgLoader(MaskCanvasBase64)\n            },\n            style: {\n              border: function border() {\n                if (this.getStyle('width') < 2 && this.getStyle('height') < 2) {\n                  return '10 rgba(0, 0, 255, 0.5)';\n                }\n\n                return '1 blue';\n              }\n            },\n            webgl: undefined,\n            children: !$canvas.$paintContext.clearRect ? [] : [{\n              // sprite名字\n              name: _constants[\"default\"].devFlag,\n              data: {},\n              style: {\n                locate: 'center',\n                left: function left() {\n                  var res = maskRect.left + maskRect.width / 2;\n\n                  if (res - tipsWidth / 2 < 10) {\n                    res = tipsWidth / 2 + 10;\n                  } else if (res + tipsWidth / 2 > this.$canvas.width - 10) {\n                    res = this.$canvas.width - tipsWidth / 2 - 10;\n                  }\n\n                  return res - this.$parent.$cache.left;\n                },\n                top: function top() {\n                  var res = maskRect.top + maskRect.height + 30;\n\n                  if (this.data.above = res + 30 > this.$canvas.height) {\n                    res = maskRect.top - 32;\n                  }\n\n                  return res - this.$parent.$cache.top;\n                },\n                width: function width() {\n                  return tipsWidth;\n                },\n                height: 32,\n                color: 'orange',\n                backgroundColor: 'black',\n                textVerticalAlign: 'middle',\n                textAlign: 'center',\n                fontSize: parseInt(textFont),\n                fontFamily: 'san-serif'\n              },\n              hooks: {\n                beforeTick: function beforeTick() {\n                  maskRect = this.$parent.getRect();\n                  this.content.text = '<' + $sprite.name + '> | ' + Math.round(this.$parent.getStyle('width')) + '×' + Math.round(this.$parent.getStyle('height'));\n                  tipsWidth = measureText(this.content.text) + 20;\n                }\n              },\n              children: [{\n                name: _constants[\"default\"].devFlag,\n                content: {\n                  img: MaskTriangleCanvas\n                },\n                style: {\n                  left: function left() {\n                    return maskRect.left + maskRect.width / 2 - this.$parent.$cache.left;\n                  },\n                  top: function top() {\n                    return this.$parent.data.above ? 5 + 16 : -5 - 16;\n                  },\n                  width: 20,\n                  height: 10,\n                  rotate: function rotate() {\n                    return this.$parent.data.above ? 180 : 0;\n                  }\n                }\n              }]\n            }, {\n              // 距离parent的距离标注\n              name: _constants[\"default\"].devFlag,\n              style: {\n                visible: function visible() {\n                  return this.getStyle('width') < this.data.value;\n                },\n                locate: 'center',\n                left: function left() {\n                  var res = maskParentRect.left + ($selectMask.getSelfStyle('left') - $selectMaskParent.getSelfStyle('left')) / 2;\n                  return res - this.$parent.$cache.left;\n                },\n                top: function top() {\n                  var res = $selectMask.getSelfStyle('top');\n                  return res - this.$parent.$cache.top;\n                },\n                width: function width() {\n                  return measureText(this.content.text, textFontSmall) + 10;\n                },\n                height: 20,\n                backgroundColor: '#ddd',\n                color: 'black',\n                textVerticalAlign: 'middle',\n                textAlign: 'center',\n                fontSize: parseInt(textFontSmall),\n                fontFamily: 'san-serif'\n              },\n              data: {},\n              hooks: {\n                beforeTick: function beforeTick() {\n                  maskParentRect = $selectMaskParent.getRect();\n                  this.data.value = Math.round($selectMask.getSelfStyle('left') - $selectMaskParent.getSelfStyle('left'));\n                  this.content.text = 'left: ' + String(this.data.value);\n                }\n              }\n            }, {\n              // 距离parent的距离标注\n              name: _constants[\"default\"].devFlag,\n              style: {\n                visible: function visible() {\n                  return this.getStyle('height') < this.data.value;\n                },\n                locate: 'center',\n                left: function left() {\n                  var res = $selectMask.getSelfStyle('left');\n                  return res - this.$parent.$cache.left;\n                },\n                top: function top() {\n                  var res = maskParentRect.top + ($selectMask.getSelfStyle('top') - $selectMaskParent.getSelfStyle('top')) / 2;\n                  return res - this.$parent.$cache.top;\n                },\n                width: function width() {\n                  return measureText(this.content.text, textFontSmall) + 10;\n                },\n                height: 20,\n                backgroundColor: '#ddd',\n                color: 'black',\n                textVerticalAlign: 'middle',\n                textAlign: 'center',\n                fontSize: parseInt(textFontSmall),\n                fontFamily: 'san-serif'\n              },\n              data: {},\n              hooks: {\n                beforeTick: function beforeTick() {\n                  maskParentRect = $selectMaskParent.getRect();\n                  this.data.value = Math.round($selectMask.getSelfStyle('top') - $selectMaskParent.getSelfStyle('top'));\n                  this.content.text = 'top: ' + String(this.data.value);\n                }\n              }\n            }]\n          });\n          $selectMaskParent = $canvas.add({\n            name: _constants[\"default\"].devFlag,\n            style: {\n              // backgroundColor: 'yellow',\n              locate: 'lt'\n            },\n            children: [{\n              name: _constants[\"default\"].devFlag,\n              style: {\n                locate: 'lt',\n                left: 0,\n                top: 0,\n                width: function width() {\n                  return $selectMask.getSelfStyle('left') - this.$parent.getStyle('left');\n                },\n                height: function height() {\n                  return $selectMask.getSelfStyle('top') - this.$parent.getStyle('top');\n                },\n                backgroundColor: 'rgba(140, 205, 255, 0.1)',\n                border: '1 rgba(80, 120, 200, 0.9)'\n              }\n            }]\n          });\n        }\n\n        ['left', 'top', 'rotate', 'rx', 'ry', 'scale', 'width', 'height', 'locate'].forEach(function (key) {\n          (function (_key) {\n            $selectMask.style[_key] = function () {\n              if (_key === 'width' || _key === 'height') {\n                return $sprite.getStyle(_key) || $sprite.getRect()[_key] || 0.1; // 如果尺寸为0，会使用mask的图片尺寸，变成1\n              }\n\n              return $sprite.getStyle(_key);\n            };\n          })(key);\n        });\n        ['left', 'top'].forEach(function (key) {\n          (function (_key) {\n            $selectMaskParent.style[_key] = function () {\n              if (!$sprite.$parent) return 0;\n              return $sprite.$parent.getStyle(_key);\n            };\n          })(key);\n        });\n        $selectMask.style.zIndex = Number.MAX_SAFE_INTEGER;\n        $selectMaskParent.style.zIndex = Number.MAX_SAFE_INTEGER - 1;\n\n        $selectMask.style.visible = function () {\n          return window[_constants[\"default\"].devFlag].selectMode && $sprite.$canvas;\n        };\n\n        $selectMaskParent.style.visible = function () {\n          return window[_constants[\"default\"].devFlag].selectMode && $sprite.$parent && $sprite.$parent.$canvas;\n        };\n\n        $selectMask.style.opacity = 0.8; // mask of webgl\n\n        $selectMask.webgl = $sprite.webgl ? {} : undefined;\n\n        if ($selectMask.webgl) {\n          for (var key in $sprite.webgl) {\n            (function (_key) {\n              $selectMask.webgl[_key] = function () {\n                if (typeof $sprite.webgl[_key] === 'function') {\n                  return $sprite.webgl[_key].call($sprite);\n                }\n\n                return $sprite.webgl[_key];\n              };\n            })(key);\n          }\n\n          $selectMask.webgl.img = $canvas.imgLoader(MaskCanvasBase64);\n          $selectMask.webgl.colors = false;\n          $selectMask.style.zIndex = Number.MIN_SAFE_INTEGER;\n        }\n\n        if (isChoosing) {\n          $canvas.remove($selectMask);\n          $canvas.remove($selectMaskParent);\n          $selectMask = null;\n          $emit({\n            name: 'selectSprite',\n            id: $canvas.$id,\n            value: {\n              sprite: $sprite.$id,\n              canvas: $canvas.$id\n            }\n          });\n          window[_constants[\"default\"].devFlag].current = {\n            $sprite: $sprite,\n            $canvas: $canvas\n          };\n          window[_constants[\"default\"].devFlag].selectMode = false;\n        }\n\n        return true;\n      },\n      cancelSelectSprite: function cancelSelectSprite($canvas) {\n        if (!$selectMask) return;\n        $canvas.remove($selectMask);\n        $canvas.remove($selectMaskParent);\n        $selectMask = null;\n      }\n    };\n    return ApiPlugin;\n  }\n};\n\n//# sourceURL=webpack:///./src/painter/apiPlugin/apiPlugin.js?");
+
+/***/ }),
+
+/***/ "./src/painter/index.js":
+/*!******************************!*\
+  !*** ./src/painter/index.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _apiOuter = _interopRequireDefault(__webpack_require__(/*! ./apiOuter.js */ \"./src/painter/apiOuter.js\"));\n\nvar _apiInner = _interopRequireDefault(__webpack_require__(/*! ./apiInner.js */ \"./src/painter/apiInner.js\"));\n\nvar _prototype = _interopRequireDefault(__webpack_require__(/*! ./prototype.js */ \"./src/painter/prototype.js\"));\n\nvar _imgLoader = _interopRequireDefault(__webpack_require__(/*! utils/img-loader.js */ \"./src/utils/img-loader.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Exports an Easycanvas Prototype\n * - Merge apis to its prototypes.\n *\n * ********** **/\nvar painter = function painter(config) {\n  this.imgLoader = _imgLoader[\"default\"];\n\n  for (var i in _prototype[\"default\"]) {\n    // Avoid muti instances from sharing data\n    this[i] = this[i] || JSON.parse(JSON.stringify(_prototype[\"default\"][i]));\n  }\n\n  if (!config) {\n    return;\n  }\n\n  if (!config.el) {\n    config = {\n      el: config\n    };\n  }\n\n  if (config.el) {\n    this.register(typeof config.el === 'string' ? document.querySelector(config.el) : config.el, config);\n  }\n};\n\npainter.prototype.$extendList = [];\n\nfor (var i in _apiInner[\"default\"]) {\n  if (Object.prototype.hasOwnProperty.call(_apiInner[\"default\"], i)) {\n    painter.prototype[i] = _apiInner[\"default\"][i];\n  }\n}\n\nfor (var _i in _apiOuter[\"default\"]) {\n  if (Object.prototype.hasOwnProperty.call(_apiOuter[\"default\"], _i)) {\n    painter.prototype[_i] = _apiOuter[\"default\"][_i];\n  }\n}\n\nmodule.exports = painter;\n\n//# sourceURL=webpack:///./src/painter/index.js?");
+
+/***/ }),
+
+/***/ "./src/painter/prototype.js":
+/*!**********************************!*\
+  !*** ./src/painter/prototype.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/** ********** *\n *\n * Prototype of canvas instance\n * - In develop mode, fps will throw warnings in low performance.\n *\n * ********** **/\nvar PROTOS = {\n  $dom: null,\n  $paintContext: null,\n  $nextTickTime: 0,\n  $lastPaintTime: 0,\n  // 只有当maxFps位于1～59时才不为0\n  $pausing: false,\n  $freezing: false,\n  name: '',\n  fps: 0,\n  lastFps: 0,\n  fpsCalculateTime: 0,\n  fpsHandler: null,\n  width: 0,\n  height: 0,\n  events: {\n    click: null\n  },\n  children: [],\n  eHoldingFlag: false,\n  eLastMouseHover: null,\n  maxFps: -1,\n\n  /* optimise */\n  // optimiser: {\n  //     blockSize: 100,\n  //     cacheMap: {},\n  // },\n\n  /* flags */\n  $flags: {// dragging: false\n  }\n};\nmodule.exports = PROTOS;\n\n//# sourceURL=webpack:///./src/painter/prototype.js?");
+
+/***/ }),
+
+/***/ "./src/utils/img-loader.js":
+/*!*********************************!*\
+  !*** ./src/utils/img-loader.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\n/** ********** *\n *\n * Load images\n * - Easycanvas.ImgLoader.cacheCanvas\n *\n * ********** **/\nvar Cache = {};\nvar BlockingImgs = [];\nvar ProcessingFlag = 'processing'; // 防止非浏览器环境报错；非浏览器下，不会使用下面的loader方法，因此OImage为空不影响\n\nvar OImage = typeof window !== 'undefined' && Image;\nvar blockingAmount = 0;\n\nvar loader = function loader(url, callback, option) {\n  var _option = option || {};\n\n  var cacheCanvas = loader.cacheCanvas;\n\n  if (_typeof(url) === 'object') {\n    var imgs = url;\n    _option.callbackArgs = _option.callbackArgs || [];\n    loader(imgs.shift(), function (perImg) {\n      _option.callbackArgs.push(perImg);\n\n      if (imgs.length > 1) {\n        loader(imgs, callback, _option);\n      } else {\n        loader(imgs[0], function (lastImg) {\n          _option.callbackArgs.push(lastImg);\n\n          callback(_option.callbackArgs);\n        }, _option);\n      }\n    }, option);\n    return;\n  }\n\n  var cacheNamespace = url + '_' + JSON.stringify(option) + '_' + cacheCanvas;\n\n  if (Cache[cacheNamespace]) {\n    if (callback) {\n      if (Cache[cacheNamespace].width && callback) {\n        callback(Cache[cacheNamespace]);\n      } else {\n        setTimeout(function () {\n          loader(url, callback, option);\n        }, 100);\n      }\n\n      return;\n    } else {\n      return Cache[cacheNamespace];\n    }\n  } // todo: 多个loader加载同一图片，目前只触发一个callback；待补充\n\n\n  var i = new OImage();\n  i._complete = false;\n\n  if (_option.block) {\n    i.src = url;\n    blockingAmount++;\n  } else if (blockingAmount === 0) {\n    i.src = url;\n  } else {\n    BlockingImgs.push({\n      imgObj: i,\n      src: url\n    });\n  }\n\n  Cache[cacheNamespace] = i;\n  var tempCanvas;\n\n  if (_option.canvas || _option.alphaColor || cacheCanvas) {\n    tempCanvas = document.createElement('canvas');\n    tempCanvas.width = tempCanvas.height || 0;\n    Cache[cacheNamespace] = tempCanvas;\n  }\n\n  i.onload = function (e) {\n    i._complete = true;\n\n    if (i.src.substr(-3) === 'jpg' || i.src.substr(-3) === 'jpeg' || i.src.substr(-3) === 'bmp') {\n      i.$noAlpha = true;\n    } else if (i.src.indexOf('data:image/jpg;') === 0) {\n      i.$noAlpha = true;\n    }\n\n    if (_option.block) {\n      blockingAmount--;\n\n      if (blockingAmount === 0) {\n        BlockingImgs.forEach(function (blockingImg) {\n          blockingImg.imgObj.src = blockingImg.src;\n        });\n        BlockingImgs.splice(0);\n      }\n    }\n\n    if (tempCanvas && (_option.canvas || _option.alphaColor || cacheCanvas)) {\n      var cts = tempCanvas.getContext('2d');\n      tempCanvas.width = i.width;\n      tempCanvas.height = i.height;\n      tempCanvas.$noAlpha = i.$noAlpha;\n      cts.drawImage(i, 0, 0);\n\n      if (_option.alphaColor) {\n        var data = cts.getImageData(0, 0, i.width, i.height);\n        var pixel = [];\n\n        for (var d = 0; d < data.data.length; d += 4) {\n          var colorWeight = data.data[d] + data.data[d + 1] + data.data[d + 2];\n          var blackLike = 1;\n\n          if (data.data[d] < blackLike && data.data[d + 1] < blackLike && data.data[d + 2] < blackLike) {\n            data.data[d + 3] = Math.floor(colorWeight / 255);\n          }\n        }\n\n        cts.putImageData(data, 0, 0);\n        tempCanvas.$noAlpha = false;\n      }\n\n      i = tempCanvas;\n    }\n\n    if (callback) {\n      callback(i);\n    }\n  };\n\n  i.onerror = function () {\n    Cache[cacheNamespace] = i;\n  };\n\n  return tempCanvas || i;\n};\n\nloader.cacheCanvas = false;\nmodule.exports = loader;\n\n//# sourceURL=webpack:///./src/utils/img-loader.js?");
+
+/***/ }),
+
+/***/ "./src/utils/img-pretreat.js":
+/*!***********************************!*\
+  !*** ./src/utils/img-pretreat.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _imgLoader = _interopRequireDefault(__webpack_require__(/*! ./img-loader.js */ \"./src/utils/img-loader.js\"));\n\nvar _img2base = _interopRequireDefault(__webpack_require__(/*! ./img2base64.js */ \"./src/utils/img2base64.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\nmodule.exports = function (url, option) {\n  var result;\n  (0, _img2base[\"default\"])(url, function (base64) {\n    return (0, _imgLoader[\"default\"])(base64, function (canvas) {\n      // let t0 = new Date() * 1;\n      var cw = canvas.width,\n          ch = canvas.height;\n      var imageData = canvas.getContext('2d').getImageData(0, 0, cw, ch);\n      var data = imageData.data;\n\n      for (var i = data.length - 1; i >= 0; i -= 4) {\n        if (option && option.conversion) {\n          var pixel = option.conversion({\n            r: data[i - 3],\n            g: data[i - 2],\n            b: data[i - 1],\n            a: data[i]\n          }, (i + 1 >> 2) % cw, Math.floor((i + 1 >> 2) / cw));\n          data[i - 3] = pixel.r;\n          data[i - 2] = pixel.g;\n          data[i - 1] = pixel.b;\n          data[i - 0] = pixel.a;\n        }\n      }\n\n      canvas.getContext('2d').clearRect(0, 0, cw, ch);\n      canvas.getContext('2d').putImageData(imageData, 0, 0);\n      result = canvas; // console.log(new Date() * 1 - t0);\n    }, {\n      canvas: true,\n      cacheFlag: Math.random()\n    });\n  });\n  return function () {\n    return result;\n  };\n};\n\n//# sourceURL=webpack:///./src/utils/img-pretreat.js?");
+
+/***/ }),
+
+/***/ "./src/utils/img2base64.js":
+/*!*********************************!*\
+  !*** ./src/utils/img2base64.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar ProcessingFlag = 'processing';\nvar ProcessingPool = {};\n\nfunction toDataURL(url, callback) {\n  if (url && url.match(/^data:/)) {\n    callback && callback(url);\n    return;\n  }\n\n  if (ProcessingPool[url]) {\n    if (ProcessingPool[url] !== ProcessingFlag) {\n      callback(ProcessingPool[url]);\n    } else {\n      setTimeout(function () {\n        toDataURL(url, callback);\n      }, 100);\n    }\n\n    return;\n  }\n\n  ProcessingPool[url] = ProcessingFlag;\n  var xhr = new XMLHttpRequest();\n\n  xhr.onload = function () {\n    var reader = new FileReader();\n\n    reader.onloadend = function () {\n      ProcessingPool[url] = reader.result;\n      callback && callback(reader.result);\n    };\n\n    reader.readAsDataURL(xhr.response);\n  };\n\n  xhr.open('GET', url);\n  xhr.responseType = 'blob';\n  xhr.send();\n}\n\nmodule.exports = toDataURL;\n\n//# sourceURL=webpack:///./src/utils/img2base64.js?");
+
+/***/ }),
+
+/***/ "./src/utils/math.point-in-rect.js":
+/*!*****************************************!*\
+  !*** ./src/utils/math.point-in-rect.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _mathPointRotate = _interopRequireDefault(__webpack_require__(/*! ./math.point-rotate.js */ \"./src/utils/math.point-rotate.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n// 判断矩形(x1,y1,w1,h1)围绕定点(rx,ry)旋转deg角度后，能否与矩形(x2,y2,w2,h2)相交\n// 用于跳过绘制的判断\n// 用中心点距离+上下左右分离的方式模糊判断\nvar PI = 3.141593;\n\nmodule.exports = function (x, y, x2, y2, w2, h2, rx, ry, deg) {\n  var _deg = deg ? -deg / 180 * PI : 0;\n\n  if (_deg) {\n    x = (x - rx) * Math.cos(_deg) - (y - ry) * Math.sin(_deg) + rx;\n    y = (x - rx) * Math.sin(_deg) + (y - ry) * Math.cos(_deg) + ry;\n  }\n\n  return x >= x2 && x <= x2 + w2 && y >= y2 && y <= y2 + h2;\n};\n\n//# sourceURL=webpack:///./src/utils/math.point-in-rect.js?");
+
+/***/ }),
+
+/***/ "./src/utils/math.point-rotate.js":
+/*!****************************************!*\
+  !*** ./src/utils/math.point-rotate.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar PI = 3.141593;\n\nmodule.exports = function (x, y, rx0, ry0, d, returnArr) {\n  var deg = d ? -d / 180 * PI : 0;\n  var _x = x,\n      _y = y;\n\n  if (d) {\n    _x = (x - rx0) * Math.cos(deg) - (y - ry0) * Math.sin(deg) + rx0;\n    _y = (x - rx0) * Math.sin(deg) + (y - ry0) * Math.cos(deg) + ry0;\n  }\n\n  if (returnArr) {\n    return [_x, _y];\n  }\n\n  return {\n    x: _x,\n    y: _y\n  };\n};\n\n//# sourceURL=webpack:///./src/utils/math.point-rotate.js?");
+
+/***/ }),
+
+/***/ "./src/utils/math.rect-meet.js":
+/*!*************************************!*\
+  !*** ./src/utils/math.rect-meet.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _mathPointRotate = _interopRequireDefault(__webpack_require__(/*! ./math.point-rotate.js */ \"./src/utils/math.point-rotate.js\"));\n\nvar _mathPointInRect = _interopRequireDefault(__webpack_require__(/*! ./math.point-in-rect.js */ \"./src/utils/math.point-in-rect.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n// 判断矩形(x1,y1,w1,h1)围绕定点(rx,ry)旋转deg角度后，能否与矩形(x2,y2,w2,h2)相交\n// 用于跳过绘制的判断\n// 用中心点距离+上下左右分离的方式模糊判断\n// module.exports = function (x1, y1, w1, h1, x2, y2, w2, h2, rx, ry, deg) {\n//     var cx = x1 + w1 / 2;\n//     var cy = y1 + h1 / 2;\n//     var distance = Math.max(w1, h1) + Math.max(w2, h2);\n//     if (deg) {\n//         var newxy = pointRotate(cx, cy, rx, ry, deg);\n//         cx = newxy.x, cy = newxy.y;\n//     }\n//     // 中心点距离太远一定不meet\n//     var meet = Math.pow((cx - (x2 + w2 / 2)), 2) + Math.pow((cy - (y2 + y2 / 2)), 2) < Math.pow(distance, 2);\n//     if (!meet) return false;\n//     if (deg) {\n//         // 没必要计算4个点\n//         var point1 = pointRotate(x1, y1, rx, ry, deg);\n//         // var point2 = pointRotate(x1 + w1, y1, rx, ry, deg);\n//         var point3 = pointRotate(x1, y1 + h1, rx, ry, deg);\n//         // var point4 = pointRotate(x1 + w1, y1 + h1, rx, ry, deg);\n//         meet = Math.max(point1.x, point3) > x2 &&\n//             Math.min(point1.x, point3.x) < x2 + w2 &&\n//             Math.max(point1.y, point3.y) > y2 &&\n//             Math.min(point1.y, point3.y) < y2 + h2;\n//         // meet = Math.max(point1.x, point2.x, point3.x, point4.x) > x2 &&\n//         //  Math.min(point1.x, point2.x, point3.x, point4.x) < x2 + w2 &&\n//         //  Math.max(point1.y, point2.y, point3.y, point4.y) > y2 &&\n//         //  Math.min(point1.y, point2.y, point3.y, point4.y) < y2 + h2;\n//     } else {\n//         meet = Math.max(x1 + w1, x2 + w2) - Math.min(x1, x2) < w1 + w2 &&\n//             Math.max(y1 + h1, y2 + h2) - Math.min(y1, y2) < h1 + h2;\n//     }\n//     return meet;\n// };\nmodule.exports = function (x1, y1, w1, h1, x2, y2, w2, h2, rx, ry, deg) {\n  if (!deg) {\n    // 先快速判断几个明显不相交的场景，提升性能\n    if (y1 > y2 + h2) return false;\n    if (y2 > y1 + h1) return false;\n    if (x1 > x2 + w2) return false;\n    if (x2 > x1 + w1) return false;\n  }\n\n  var aMeetB = (0, _mathPointInRect[\"default\"])(x1, y1, x2, y2, w2, h2, rx, ry, deg) || (0, _mathPointInRect[\"default\"])(x1 + w1, y1, x2, y2, w2, h2, rx, ry, deg) || (0, _mathPointInRect[\"default\"])(x1, y1 + h1, x2, y2, w2, h2, rx, ry, deg) || (0, _mathPointInRect[\"default\"])(x1 + w1, y1 + h1, x2, y2, w2, h2, rx, ry, deg);\n  if (aMeetB) return true; // 将矩形1设置为原点，矩形2的xywh为：\n\n  var bMeetA = (0, _mathPointInRect[\"default\"])(x2, y2, x1, y1, w1, h1, rx, ry, -deg) || (0, _mathPointInRect[\"default\"])(x2 + w2, y2, x1, y1, w1, h1, rx, ry, -deg) || (0, _mathPointInRect[\"default\"])(x2, y2 + h2, x1, y1, w1, h1, rx, ry, -deg) || (0, _mathPointInRect[\"default\"])(x2 + w2, y2 + h2, x1, y1, w1, h1, rx, ry, -deg);\n  if (bMeetA) return true; // 十字形\n\n  if (y1 > y2 && y1 + h1 < y2 + h2 && x1 < x2 && x1 + w1 > x2 + w2) return true;\n  if (x1 > x2 && x1 + w1 < x2 + w2 && y1 < y2 && y1 + h1 > y2 + h2) return true;\n  return false;\n};\n\n//# sourceURL=webpack:///./src/utils/math.rect-meet.js?");
+
+/***/ }),
+
+/***/ "./src/utils/multline-text.js":
+/*!************************************!*\
+  !*** ./src/utils/multline-text.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function (text, config) {\n  return {\n    type: 'multline-text',\n    text: text,\n    config: config\n  };\n};\n\n//# sourceURL=webpack:///./src/utils/multline-text.js?");
+
+/***/ }),
+
+/***/ "./src/utils/tick.js":
+/*!***************************!*\
+  !*** ./src/utils/tick.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar fallback = function fallback(callback) {\n  setTimeout(callback, 1000 / 60);\n};\n\nvar rAF = typeof requestAnimationFrame !== 'undefined' ? requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || fallback : fallback;\nmodule.exports = rAF;\n\n//# sourceURL=webpack:///./src/utils/tick.js?");
+
+/***/ }),
+
+/***/ "./src/utils/transition.js":
+/*!*********************************!*\
+  !*** ./src/utils/transition.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _utils = __webpack_require__(/*! ./utils.js */ \"./src/utils/utils.js\");\n\n// Math.PI wastes some performace\nvar PI = Math.PI;\n\nvar getLastPaintTime = function getLastPaintTime(transitions) {\n  return transitions.$lastPaintTime || Date.now();\n};\n\nvar types = {\n  linear: function linear(a, b, duration) {\n    var startTime = getLastPaintTime(this);\n    var loop = false;\n    var callback;\n\n    var resFunc = function () {\n      var currentTime = this.$lastPaintTime;\n      var progress = (currentTime - startTime) / duration;\n      var result = (b - a) * progress + a;\n\n      if (loop) {\n        if (b > a) {\n          while (result > b) {\n            result -= b - a;\n          }\n        } else {\n          while (result < b) {\n            result += a - b;\n          }\n        }\n      } else {\n        if (b > a && result > b) {\n          resFunc.$done = true;\n          result = b;\n        } else if (b < a && result < b) {\n          resFunc.$done = true;\n          result = b;\n        }\n      }\n\n      if (progress >= 1 && callback) {\n        callback.call(this, result);\n        callback = null;\n      }\n\n      return result;\n    }.bind(this);\n\n    resFunc.loop = function () {\n      loop = true;\n      return resFunc;\n    };\n\n    resFunc.restart = function () {\n      startTime = getLastPaintTime(this);\n      return resFunc;\n    };\n\n    resFunc.then = function (cb) {\n      callback = cb;\n      return resFunc;\n    };\n\n    return resFunc;\n  },\n  pendulum: function pendulum(a, b, duration, _config) {\n    var startTime = getLastPaintTime(this);\n    var config = _config || {};\n    config.start = config.start || 0;\n    var loop = false;\n    var callback;\n    var cycle = config.cycle || 1;\n\n    var resFunc = function () {\n      var currentTime = getLastPaintTime(this);\n      var progress = (currentTime - startTime) / duration;\n\n      if (!loop) {\n        if (cycle) {\n          if (progress > cycle) {\n            progress = cycle;\n            resFunc.$done = true;\n            progress = cycle;\n          }\n        } else if (progress > 1) {\n          resFunc.$done = true;\n          progress = 1;\n        }\n      } else {\n        if (cycle) {\n          progress %= cycle;\n        }\n      }\n\n      var deg = progress * PI * 2 - PI / 2 + config.start / 360 * PI;\n      var result = (b - a) * (Math.sin(deg) + 1) / 2 + a;\n\n      if (progress >= cycle && callback) {\n        callback.call(this, result);\n        callback = null;\n      }\n\n      return result;\n    }.bind(this);\n\n    resFunc.loop = function () {\n      loop = true;\n      return resFunc;\n    };\n\n    resFunc.restart = function () {\n      startTime = getLastPaintTime(this);\n      return resFunc;\n    };\n\n    resFunc.then = function (cb) {\n      callback = cb;\n      return resFunc;\n    };\n\n    return resFunc;\n  },\n  ease: function ease(a, b, duration) {\n    return this.pendulum(a, b, duration * 2, {\n      cycle: 0.5\n    });\n  },\n  oneByOne: function oneByOne(_arr) {\n    var arr = _arr;\n    var loop = false;\n\n    var resFunc = function resFunc() {\n      for (var _i = 0; _i < arr.length; _i++) {\n        if (!arr[_i].$done) {\n          return arr[_i]();\n        } else if (!arr[_i].$nextRestart) {\n          arr[_i].$nextRestart = true;\n\n          if (arr[_i + 1]) {\n            arr[_i + 1].restart();\n\n            return arr[_i + 1]();\n          }\n        }\n      }\n\n      if (loop) {\n        for (var _i2 = 0; _i2 < arr.length; _i2++) {\n          arr[_i2].$done = false;\n          arr[_i2].$nextRestart = false;\n\n          arr[_i2].restart();\n        }\n\n        return arr[0]();\n      }\n\n      return arr[arr.length - 1]();\n    };\n\n    resFunc.loop = function () {\n      loop = true;\n      return resFunc;\n    };\n\n    return resFunc;\n  }\n};\n\nvar transition = function transition(sprite, key, type, end, duration) {\n  var current = (0, _utils.funcOrValue)(sprite[key]);\n\n  if (true) {\n    if (typeof current === 'undefined') {\n      console.warn('[Easycanvas] start value in transition is undefined, using 0 instead.');\n    }\n  }\n\n  current = current || 0;\n  sprite[key] = types[type].bind(transition)(current, end, duration);\n};\n\nfor (var i in types) {\n  transition[i] = types[i];\n}\n\nmodule.exports = transition;\n\n//# sourceURL=webpack:///./src/utils/transition.js?");
+
+/***/ }),
+
+/***/ "./src/utils/utils.js":
+/*!****************************!*\
+  !*** ./src/utils/utils.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar utils = {\n  isArray: Array.isArray || function (arg) {\n    return Object.prototype.toString.call(arg) === '[object Array]';\n  },\n  funcOrValue: function funcOrValue(_funcOrValue, _this) {\n    if (typeof _funcOrValue === 'function') {\n      return _funcOrValue.call(_this);\n    }\n\n    return _funcOrValue;\n  },\n  // 执行钩子函数或者钩子函数队列\n  execFuncs: function execFuncs(funcOrArray, _this, _arg) {\n    if (funcOrArray) {\n      if (!utils.isArray(_arg)) {\n        _arg = [_arg];\n      }\n    }\n\n    if (typeof funcOrArray === 'function') {\n      // return funcOrArray.apply(_this, _arg);\n      funcOrArray.apply(_this, _arg);\n    } else if (utils.isArray(funcOrArray)) {\n      // 返回值没用到\n      // let res = [];\n      // funcOrArray.length && funcOrArray.forEach((f) => {\n      //     res.push(f && f.apply(_this, _arg));\n      // });\n      // return res;\n      funcOrArray.length && funcOrArray.forEach(function (f) {\n        f && f.apply(_this, _arg);\n      });\n    }\n  },\n  blend: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'copy', 'xor', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'],\n  pointInRect: function pointInRect(x, y, x1, x2, y1, y2) {\n    return !(x < x1 || x > x2 || y < y1 || y > y2);\n  },\n  firstValuable: function firstValuable(a, b, c) {\n    // 效率低\n    // for (let i = 0; i < arguments.length; i++) {\n    //     if (typeof arguments[i] !== 'undefined') {\n    //         return arguments[i];\n    //     }\n    // }\n    // return a === undefined ? (b === undefined ? c : b) : a;\n    return typeof a === 'undefined' ? typeof b === 'undefined' ? c : b : a;\n  }\n};\nmodule.exports = utils;\n\n//# sourceURL=webpack:///./src/utils/utils.js?");
+
+/***/ }),
+
+/***/ 1:
+/*!****************************!*\
+  !*** multi ./src/index.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("module.exports = __webpack_require__(/*! ./src/index.js */\"./src/index.js\");\n\n\n//# sourceURL=webpack:///multi_./src/index.js?");
+
+/***/ })
+
+/******/ })));

@@ -1,7 +1,8 @@
 import demos from './contents/demos.js';
 import intro from './contents/intro.js';
-import quickstart from './contents/quickstart.js';
-import quickstartJSX from './contents/quickstart-jsx.js';
+import quickstartStand from './contents/quickstart-standalone.js';
+import quickstartNPM from './contents/quickstart-npm.js';
+import quickstartGen from './contents/quickstart-gen.js';
 import quickstartWxgame from './contents/quickstart-wxgame.js';
 import quickstartWxapp from './contents/quickstart-wxapp.js';
 import changelog from './contents/changelog.js';
@@ -13,7 +14,7 @@ import events from './contents/base-events.js';
 import text from './contents/base-text.js';
 import hooks from './contents/base-hooks.js';
 import customEvent from './contents/base-customEvent.js';
-import sprite from './contents/base-sprite.js';
+import Sprite from './contents/base-Sprite.js';
 
 import pluginPhysics from './contents/plugin-physics.js';
 import pluginWebgl from './contents/plugin-webgl.js';
@@ -27,8 +28,9 @@ import componentSequence from './contents/component-sequence.js';
 let content = `
     ${demos}
     ${intro}
-    ${quickstart}
-    ${quickstartJSX}
+    ${quickstartNPM}
+    ${quickstartGen}
+    ${quickstartStand}
     ${quickstartWxgame}
     ${quickstartWxapp}
     ${changelog}
@@ -40,7 +42,7 @@ let content = `
     ${text}
     ${hooks}
     ${customEvent}
-    ${sprite}
+    ${Sprite}
 
     ${pluginPhysics}
     ${pluginWebgl}

@@ -2,7 +2,7 @@
 
 ![https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/index_v2.gif](https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/index_v2.gif)
 
-Easycanvas是一个轻量、高效的渐进式canvas渲染库。组件化开发、支持JSX写法，可在浏览器、微信小游戏和小程序中使用。并提供了一个Chrome插件来便于开发，包括数据结构的显示、对canvas中某个元素的样式进行调整等。支持物理引擎、3D模型渲染等插件的渐进式引入。
+Easycanvas是一个轻量、高效的渐进式canvas渲染库。基于组件的开发方式、支持JSX写法，可在浏览器、微信小游戏和小程序中使用，并提供了一个Chrome插件来便于开发——包括数据结构的显示、对canvas中某个元素的样式进行调整等。同时，也支持物理引擎、3D模型渲染等插件的渐进式引入。
 
 浏览器兼容性：IE>=9（原因为defineProperty）
 
@@ -19,6 +19,8 @@ Easycanvas是一个轻量、高效的渐进式canvas渲染库。组件化开发�
 #### Feature
 
 - ☑ 渐进式基础库
+- ☑ JSX写法
+- ☑ 脚手架
 - ☑ 2D渲染
 - ☑ 精灵动画
 - ☑ 物理引擎（插件）
@@ -69,7 +71,7 @@ A lite(30kb+) canvas library, includes a Chrome plugin for debugging. Support ph
 
 #### Import Easycanvas:
 
-- `build/easycanvas.js`: Node module.
+- `build/index.common.js`: For Node.
 
 - `build/easycanvas.standalone.dev.js`: Standalone version, support chrome develop tools.
 

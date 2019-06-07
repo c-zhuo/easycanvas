@@ -6,7 +6,7 @@ $canvas.width = 888;
 $canvas.height = 888;
 document.body.appendChild($canvas);
 
-var $Painter = new Easycanvas.painter();
+var $Painter = new Easycanvas.Painter();
 $Painter.register($canvas);
 $Painter.start();
 

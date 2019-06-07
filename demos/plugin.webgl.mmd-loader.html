@@ -17,7 +17,7 @@
     <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             webgl: {
               light: true,
@@ -63,7 +63,7 @@
                             indices: indices.slice(lastCount, lastCount + mt.vertexCount),
                             textures: textures,
                             img: mt.fileName ? ('../resource/mmd/model/mokou/' + mt.fileName) : undefined,
-                            // ry: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                            // ry: Easycanvas.Transition.linear(0, 360, 5000).loop(),
                             rz: 180, ry: 0,
                             scaleX: 20, scaleY: 20, scaleZ: 20,
                             // colors: !textures.length ? colors : undefined,

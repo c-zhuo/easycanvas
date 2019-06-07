@@ -7,9 +7,9 @@ module.exports = `
                 </body>
 
                 <script>
-                    Easycanvas.imgLoader.cacheCanvas = true;
+                    Easycanvas.ImgLoader.cacheCanvas = true;
 
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 400,
                         height: 400,

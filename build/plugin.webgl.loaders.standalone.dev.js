@@ -1,2117 +1,232 @@
-(function e(t, r) {
-    if (typeof exports === "object" && typeof module === "object") module.exports = r(); else if (typeof define === "function" && define.amd) define([], r); else {
-        var a = r();
-        for (var n in a) (typeof exports === "object" ? exports : t)[n] = a[n];
-    }
-})(this, function() {
-    return function(e) {
-        var t = {};
-        function r(a) {
-            if (t[a]) return t[a].exports;
-            var n = t[a] = {
-                exports: {},
-                id: a,
-                loaded: false
-            };
-            e[a].call(n.exports, n, n.exports, r);
-            n.loaded = true;
-            return n.exports;
-        }
-        r.m = e;
-        r.c = t;
-        r.p = "";
-        return r(0);
-    }({
-        0: function(e, t, r) {
-            e.exports = r(157);
-        },
-        30: function(e, t, r) {
-            "use strict";
-            var a = r(53);
-            var n = r(135);
-            var i = r(134);
-            var o = r(131);
-            e.exports = {
-                FileLoader: a.FileLoader,
-                LoaderUtils: n.LoaderUtils,
-                Interpolant: i.Interpolant,
-                CompressedTextureLoader: o.CompressedTextureLoader,
-                RGB_S3TC_DXT1_Format: 33776,
-                RGBA_S3TC_DXT1_Format: 33777,
-                RGBA_S3TC_DXT3_Format: 33778,
-                RGBA_S3TC_DXT5_Format: 33779
-            };
-        },
-        53: function(e, t, r) {
-            "use strict";
-            Object.defineProperty(t, "__esModule", {
-                value: true
-            });
-            t.FileLoader = undefined;
-            var a = Object.assign || function(e) {
-                for (var t = 1; t < arguments.length; t++) {
-                    var r = arguments[t];
-                    for (var a in r) {
-                        if (Object.prototype.hasOwnProperty.call(r, a)) {
-                            e[a] = r[a];
-                        }
-                    }
-                }
-                return e;
-            };
-            var n = r(130);
-            var i = r(54);
-            var o = {};
-            function s(e) {
-                this.manager = e !== undefined ? e : i.DefaultLoadingManager;
-            }
-            a(s.prototype, {
-                load: function e(t, r, a, i) {
-                    if (t === undefined) t = "";
-                    if (this.path !== undefined) t = this.path + t;
-                    t = this.manager.resolveURL(t);
-                    var s = this;
-                    var f = n.Cache.get(t);
-                    if (f !== undefined) {
-                        s.manager.itemStart(t);
-                        setTimeout(function() {
-                            if (r) r(f);
-                            s.manager.itemEnd(t);
-                        }, 0);
-                        return f;
-                    }
-                    if (o[t] !== undefined) {
-                        o[t].push({
-                            onLoad: r,
-                            onProgress: a,
-                            onError: i
-                        });
-                        return;
-                    }
-                    var u = /^data:(.*?)(;base64)?,(.*)$/;
-                    var d = t.match(u);
-                    if (d) {
-                        var l = d[1];
-                        var h = !!d[2];
-                        var v = d[3];
-                        v = window.decodeURIComponent(v);
-                        if (h) v = window.atob(v);
-                        try {
-                            var c;
-                            var p = (this.responseType || "").toLowerCase();
-                            switch (p) {
-                              case "arraybuffer":
-                              case "blob":
-                                var A = new Uint8Array(v.length);
-                                for (var g = 0; g < v.length; g++) {
-                                    A[g] = v.charCodeAt(g);
-                                }
-                                if (p === "blob") {
-                                    c = new Blob([ A.buffer ], {
-                                        type: l
-                                    });
-                                } else {
-                                    c = A.buffer;
-                                }
-                                break;
+(function(e, a) { for(var i in a) e[i] = a[i]; }(window, /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ })
+/************************************************************************/
+/******/ ({
 
-                              case "document":
-                                var m = new DOMParser();
-                                c = m.parseFromString(v, l);
-                                break;
+/***/ "./src/plugin-webgl/threeLoaders/Cache.js":
+/*!************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/Cache.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-                              case "json":
-                                c = JSON.parse(v);
-                                break;
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.Cache = void 0;\n\n/**\n * @author mrdoob / http://mrdoob.com/\n */\nvar Cache = {\n  enabled: false,\n  files: {},\n  add: function add(key, file) {\n    if (this.enabled === false) return; // console.log( 'THREE.Cache', 'Adding key:', key );\n\n    this.files[key] = file;\n  },\n  get: function get(key) {\n    if (this.enabled === false) return; // console.log( 'THREE.Cache', 'Checking key:', key );\n\n    return this.files[key];\n  },\n  remove: function remove(key) {\n    delete this.files[key];\n  },\n  clear: function clear() {\n    this.files = {};\n  }\n};\nexports.Cache = Cache;\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/Cache.js?");
 
-                              default:
-                                c = v;
-                                break;
-                            }
-                            window.setTimeout(function() {
-                                if (r) r(c);
-                                s.manager.itemEnd(t);
-                            }, 0);
-                        } catch (e) {
-                            window.setTimeout(function() {
-                                if (i) i(e);
-                                s.manager.itemEnd(t);
-                                s.manager.itemError(t);
-                            }, 0);
-                        }
-                    } else {
-                        o[t] = [];
-                        o[t].push({
-                            onLoad: r,
-                            onProgress: a,
-                            onError: i
-                        });
-                        var y = new XMLHttpRequest();
-                        y.open("GET", t, true);
-                        y.addEventListener("load", function(e) {
-                            var r = this.response;
-                            n.Cache.add(t, r);
-                            var a = o[t];
-                            delete o[t];
-                            if (this.status === 200 || this.status === 0) {
-                                if (this.status === 0) console.warn("THREE.FileLoader: HTTP Status 0 received.");
-                                for (var i = 0, f = a.length; i < f; i++) {
-                                    var u = a[i];
-                                    if (u.onLoad) u.onLoad(r);
-                                }
-                                s.manager.itemEnd(t);
-                            } else {
-                                for (var i = 0, f = a.length; i < f; i++) {
-                                    var u = a[i];
-                                    if (u.onError) u.onError(e);
-                                }
-                                s.manager.itemEnd(t);
-                                s.manager.itemError(t);
-                            }
-                        }, false);
-                        y.addEventListener("progress", function(e) {
-                            var r = o[t];
-                            for (var a = 0, n = r.length; a < n; a++) {
-                                var i = r[a];
-                                if (i.onProgress) i.onProgress(e);
-                            }
-                        }, false);
-                        y.addEventListener("error", function(e) {
-                            var r = o[t];
-                            delete o[t];
-                            for (var a = 0, n = r.length; a < n; a++) {
-                                var i = r[a];
-                                if (i.onError) i.onError(e);
-                            }
-                            s.manager.itemEnd(t);
-                            s.manager.itemError(t);
-                        }, false);
-                        if (this.responseType !== undefined) y.responseType = this.responseType;
-                        if (this.withCredentials !== undefined) y.withCredentials = this.withCredentials;
-                        if (y.overrideMimeType) y.overrideMimeType(this.mimeType !== undefined ? this.mimeType : "text/plain");
-                        for (var b in this.requestHeader) {
-                            y.setRequestHeader(b, this.requestHeader[b]);
-                        }
-                        y.send(null);
-                    }
-                    s.manager.itemStart(t);
-                    return y;
-                },
-                setPath: function e(t) {
-                    this.path = t;
-                    return this;
-                },
-                setResponseType: function e(t) {
-                    this.responseType = t;
-                    return this;
-                },
-                setWithCredentials: function e(t) {
-                    this.withCredentials = t;
-                    return this;
-                },
-                setMimeType: function e(t) {
-                    this.mimeType = t;
-                    return this;
-                },
-                setRequestHeader: function e(t) {
-                    this.requestHeader = t;
-                    return this;
-                }
-            });
-            t.FileLoader = s;
-        },
-        54: function(e, t) {
-            "use strict";
-            Object.defineProperty(t, "__esModule", {
-                value: true
-            });
-            function r(e, t, r) {
-                var a = this;
-                var n = false;
-                var i = 0;
-                var o = 0;
-                var s = undefined;
-                this.onStart = undefined;
-                this.onLoad = e;
-                this.onProgress = t;
-                this.onError = r;
-                this.itemStart = function(e) {
-                    o++;
-                    if (n === false) {
-                        if (a.onStart !== undefined) {
-                            a.onStart(e, i, o);
-                        }
-                    }
-                    n = true;
-                };
-                this.itemEnd = function(e) {
-                    i++;
-                    if (a.onProgress !== undefined) {
-                        a.onProgress(e, i, o);
-                    }
-                    if (i === o) {
-                        n = false;
-                        if (a.onLoad !== undefined) {
-                            a.onLoad();
-                        }
-                    }
-                };
-                this.itemError = function(e) {
-                    if (a.onError !== undefined) {
-                        a.onError(e);
-                    }
-                };
-                this.resolveURL = function(e) {
-                    if (s) {
-                        return s(e);
-                    }
-                    return e;
-                };
-                this.setURLModifier = function(e) {
-                    s = e;
-                    return this;
-                };
-            }
-            var a = new r();
-            t.DefaultLoadingManager = a;
-            t.LoadingManager = r;
-        },
-        130: function(e, t) {
-            "use strict";
-            Object.defineProperty(t, "__esModule", {
-                value: true
-            });
-            var r = {
-                enabled: false,
-                files: {},
-                add: function e(t, r) {
-                    if (this.enabled === false) return;
-                    this.files[t] = r;
-                },
-                get: function e(t) {
-                    if (this.enabled === false) return;
-                    return this.files[t];
-                },
-                remove: function e(t) {
-                    delete this.files[t];
-                },
-                clear: function e() {
-                    this.files = {};
-                }
-            };
-            t.Cache = r;
-        },
-        131: function(e, t, r) {
-            "use strict";
-            Object.defineProperty(t, "__esModule", {
-                value: true
-            });
-            t.CompressedTextureLoader = undefined;
-            var a = Object.assign || function(e) {
-                for (var t = 1; t < arguments.length; t++) {
-                    var r = arguments[t];
-                    for (var a in r) {
-                        if (Object.prototype.hasOwnProperty.call(r, a)) {
-                            e[a] = r[a];
-                        }
-                    }
-                }
-                return e;
-            };
-            var n = r(53);
-            var i = r(54);
-            var o = 1006;
-            function s(e) {
-                this.manager = e !== undefined ? e : i.DefaultLoadingManager;
-                this._parser = null;
-            }
-            a(s.prototype, {
-                load: function e(t, r, a, i) {
-                    var s = this;
-                    var f = [];
-                    var u = {};
-                    u.image = f;
-                    var d = new n.FileLoader(this.manager);
-                    d.setPath(this.path);
-                    d.setResponseType("arraybuffer");
-                    function l(e) {
-                        d.load(t[e], function(t) {
-                            var a = s._parser(t, true);
-                            f[e] = {
-                                width: a.width,
-                                height: a.height,
-                                format: a.format,
-                                mipmaps: a.mipmaps
-                            };
-                            h += 1;
-                            if (h === 6) {
-                                if (a.mipmapCount === 1) u.minFilter = o;
-                                u.format = a.format;
-                                u.needsUpdate = true;
-                                if (r) r(u);
-                            }
-                        }, a, i);
-                    }
-                    if (Array.isArray(t)) {
-                        var h = 0;
-                        for (var v = 0, c = t.length; v < c; ++v) {
-                            l(v);
-                        }
-                    } else {
-                        d.load(t, function(e) {
-                            var t = s._parser(e, true);
-                            if (t.isCubemap) {
-                                var a = t.mipmaps.length / t.mipmapCount;
-                                for (var n = 0; n < a; n++) {
-                                    f[n] = {
-                                        mipmaps: []
-                                    };
-                                    for (var i = 0; i < t.mipmapCount; i++) {
-                                        f[n].mipmaps.push(t.mipmaps[n * t.mipmapCount + i]);
-                                        f[n].format = t.format;
-                                        f[n].width = t.width;
-                                        f[n].height = t.height;
-                                    }
-                                }
-                            } else {
-                                u.image.width = t.width;
-                                u.image.height = t.height;
-                                u.mipmaps = t.mipmaps;
-                            }
-                            if (t.mipmapCount === 1) {
-                                u.minFilter = o;
-                            }
-                            u.format = t.format;
-                            u.needsUpdate = true;
-                            if (r) r(u);
-                        }, a, i);
-                    }
-                    return u;
-                },
-                setPath: function e(t) {
-                    this.path = t;
-                    return this;
-                }
-            });
-            t.CompressedTextureLoader = s;
-        },
-        132: function(e, t, r) {
-            "use strict";
-            var a = r(30);
-            var n = i(a);
-            function i(e) {
-                return e && e.__esModule ? e : {
-                    default: e
-                };
-            }
-            e.exports = n.default.DDSLoader = function() {
-                this._parser = n.default.DDSLoader.parse;
-            };
-            n.default.DDSLoader.prototype = Object.create(n.default.CompressedTextureLoader.prototype);
-            n.default.DDSLoader.prototype.constructor = n.default.DDSLoader;
-            n.default.DDSLoader.parse = function(e, t) {
-                var r = {
-                    mipmaps: [],
-                    width: 0,
-                    height: 0,
-                    format: null,
-                    mipmapCount: 1
-                };
-                var a = 542327876;
-                var i = 1, o = 2, s = 4, f = 8, u = 4096, d = 131072, l = 524288, h = 8388608;
-                var v = 8, c = 4194304, p = 4096;
-                var A = 512, g = 1024, m = 2048, y = 4096, b = 8192, C = 16384, x = 32768, E = 2097152;
-                var w = 1, T = 2, B = 4, L = 64, I = 512, R = 131072;
-                function U(e) {
-                    return e.charCodeAt(0) + (e.charCodeAt(1) << 8) + (e.charCodeAt(2) << 16) + (e.charCodeAt(3) << 24);
-                }
-                function _(e) {
-                    return String.fromCharCode(e & 255, e >> 8 & 255, e >> 16 & 255, e >> 24 & 255);
-                }
-                function M(e, t, r, a) {
-                    var n = r * a * 4;
-                    var i = new Uint8Array(e, t, n);
-                    var o = new Uint8Array(n);
-                    var s = 0;
-                    var f = 0;
-                    for (var u = 0; u < a; u++) {
-                        for (var d = 0; d < r; d++) {
-                            var l = i[f];
-                            f++;
-                            var h = i[f];
-                            f++;
-                            var v = i[f];
-                            f++;
-                            var c = i[f];
-                            f++;
-                            o[s] = v;
-                            s++;
-                            o[s] = h;
-                            s++;
-                            o[s] = l;
-                            s++;
-                            o[s] = c;
-                            s++;
-                        }
-                    }
-                    return o;
-                }
-                var D = U("DXT1");
-                var k = U("DXT3");
-                var S = U("DXT5");
-                var F = U("ETC1");
-                var O = 31;
-                var P = 0;
-                var Q = 1;
-                var V = 2;
-                var N = 3;
-                var X = 4;
-                var j = 7;
-                var z = 20;
-                var G = 21;
-                var H = 22;
-                var Y = 23;
-                var K = 24;
-                var W = 25;
-                var J = 26;
-                var q = 27;
-                var Z = 28;
-                var $ = 29;
-                var ee = 30;
-                var te = new Int32Array(e, 0, O);
-                if (te[P] !== a) {
-                    console.error("THREE.DDSLoader.parse: Invalid magic number in DDS header.");
-                    return r;
-                }
-                if (!te[z] & B) {
-                    console.error("THREE.DDSLoader.parse: Unsupported format, must contain a FourCC code.");
-                    return r;
-                }
-                var re;
-                var ae = te[G];
-                var ne = false;
-                switch (ae) {
-                  case D:
-                    re = 8;
-                    r.format = n.default.RGB_S3TC_DXT1_Format;
-                    break;
+/***/ }),
 
-                  case k:
-                    re = 16;
-                    r.format = n.default.RGBA_S3TC_DXT3_Format;
-                    break;
+/***/ "./src/plugin-webgl/threeLoaders/CompressedTextureLoader.js":
+/*!******************************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/CompressedTextureLoader.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-                  case S:
-                    re = 16;
-                    r.format = n.default.RGBA_S3TC_DXT5_Format;
-                    break;
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.CompressedTextureLoader = CompressedTextureLoader;\n\nvar _FileLoader = __webpack_require__(/*! ./FileLoader.js */ \"./src/plugin-webgl/threeLoaders/FileLoader.js\");\n\nvar _LoadingManager = __webpack_require__(/*! ./LoadingManager.js */ \"./src/plugin-webgl/threeLoaders/LoadingManager.js\");\n\n// import { CompressedTexture } from '../textures/CompressedTexture.js';\n// import { LinearFilter } from '../constants.js';\nvar LinearFilter = 1006;\n/**\n * @author mrdoob / http://mrdoob.com/\n *\n * Abstract Base class to block based textures loader (dds, pvr, ...)\n */\n\nfunction CompressedTextureLoader(manager) {\n  this.manager = manager !== undefined ? manager : _LoadingManager.DefaultLoadingManager; // override in sub classes\n\n  this._parser = null;\n}\n\nObject.assign(CompressedTextureLoader.prototype, {\n  load: function load(url, onLoad, onProgress, onError) {\n    var scope = this;\n    var images = []; // var texture = new CompressedTexture();\n\n    var texture = {};\n    texture.image = images;\n    var loader = new _FileLoader.FileLoader(this.manager);\n    loader.setPath(this.path);\n    loader.setResponseType('arraybuffer');\n\n    function loadTexture(i) {\n      loader.load(url[i], function (buffer) {\n        // debugger;\n        var texDatas = scope._parser(buffer, true);\n\n        images[i] = {\n          width: texDatas.width,\n          height: texDatas.height,\n          format: texDatas.format,\n          mipmaps: texDatas.mipmaps\n        };\n        loaded += 1;\n\n        if (loaded === 6) {\n          if (texDatas.mipmapCount === 1) texture.minFilter = LinearFilter;\n          texture.format = texDatas.format;\n          texture.needsUpdate = true;\n          if (onLoad) onLoad(texture);\n        }\n      }, onProgress, onError);\n    }\n\n    if (Array.isArray(url)) {\n      var loaded = 0;\n\n      for (var i = 0, il = url.length; i < il; ++i) {\n        loadTexture(i);\n      }\n    } else {\n      // compressed cubemap texture stored in a single DDS file\n      loader.load(url, function (buffer) {\n        var texDatas = scope._parser(buffer, true);\n\n        if (texDatas.isCubemap) {\n          var faces = texDatas.mipmaps.length / texDatas.mipmapCount;\n\n          for (var f = 0; f < faces; f++) {\n            images[f] = {\n              mipmaps: []\n            };\n\n            for (var i = 0; i < texDatas.mipmapCount; i++) {\n              images[f].mipmaps.push(texDatas.mipmaps[f * texDatas.mipmapCount + i]);\n              images[f].format = texDatas.format;\n              images[f].width = texDatas.width;\n              images[f].height = texDatas.height;\n            }\n          }\n        } else {\n          texture.image.width = texDatas.width;\n          texture.image.height = texDatas.height;\n          texture.mipmaps = texDatas.mipmaps;\n        }\n\n        if (texDatas.mipmapCount === 1) {\n          texture.minFilter = LinearFilter;\n        }\n\n        texture.format = texDatas.format;\n        texture.needsUpdate = true; // debugger;\n\n        if (onLoad) onLoad(texture);\n      }, onProgress, onError);\n    }\n\n    return texture;\n  },\n  setPath: function setPath(value) {\n    this.path = value;\n    return this;\n  }\n});\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/CompressedTextureLoader.js?");
 
-                  case F:
-                    re = 8;
-                    r.format = n.default.RGB_ETC1_Format;
-                    break;
+/***/ }),
 
-                  default:
-                    if (te[H] === 32 && te[Y] & 16711680 && te[K] & 65280 && te[W] & 255 && te[J] & 4278190080) {
-                        ne = true;
-                        re = 64;
-                        r.format = n.default.RGBAFormat;
-                    } else {
-                        console.error("THREE.DDSLoader.parse: Unsupported FourCC code ", _(ae));
-                        return r;
-                    }
-                }
-                r.mipmapCount = 1;
-                if (te[V] & d && t !== false) {
-                    r.mipmapCount = Math.max(1, te[j]);
-                }
-                var ie = te[Z];
-                r.isCubemap = ie & A ? true : false;
-                if (r.isCubemap && (!(ie & g) || !(ie & m) || !(ie & y) || !(ie & b) || !(ie & C) || !(ie & x))) {
-                    console.error("THREE.DDSLoader.parse: Incomplete cubemap faces");
-                    return r;
-                }
-                r.width = te[X];
-                r.height = te[N];
-                var oe = te[Q] + 4;
-                var se = r.isCubemap ? 6 : 1;
-                for (var fe = 0; fe < se; fe++) {
-                    var ue = r.width;
-                    var de = r.height;
-                    for (var le = 0; le < r.mipmapCount; le++) {
-                        if (ne) {
-                            var he = M(e, oe, ue, de);
-                            var ve = he.length;
-                        } else {
-                            var ve = Math.max(4, ue) / 4 * Math.max(4, de) / 4 * re;
-                            var he = new Uint8Array(e, oe, ve);
-                        }
-                        var ce = {
-                            data: he,
-                            width: ue,
-                            height: de
-                        };
-                        r.mipmaps.push(ce);
-                        oe += ve;
-                        ue = Math.max(ue >> 1, 1);
-                        de = Math.max(de >> 1, 1);
-                    }
-                }
-                return r;
-            };
-        },
-        133: function(e, t, r) {
-            "use strict";
-            var a = Object.assign || function(e) {
-                for (var t = 1; t < arguments.length; t++) {
-                    var r = arguments[t];
-                    for (var a in r) {
-                        if (Object.prototype.hasOwnProperty.call(r, a)) {
-                            e[a] = r[a];
-                        }
-                    }
-                }
-                return e;
-            };
-            var n = r(30);
-            var i = o(n);
-            function o(e) {
-                return e && e.__esModule ? e : {
-                    default: e
-                };
-            }
-            e.exports = function() {
-                i.default.FBXLoader = function(e) {
-                    this.manager = e !== undefined ? e : i.default.DefaultLoadingManager;
-                };
-                a(i.default.FBXLoader.prototype, {
-                    load: function e(t, r, a, n) {
-                        var o = this;
-                        var s = i.default.LoaderUtils.extractUrlBase(t);
-                        var f = new i.default.FileLoader(this.manager);
-                        f.setResponseType("arraybuffer");
-                        f.load(t, function(e) {
-                            var t = o.parse(e, s);
-                            r(t);
-                        }, a, n);
-                    },
-                    parse: function t(r, a) {
-                        var i;
-                        if (n(r)) {
-                            i = new e().parse(r);
-                        } else {
-                            var f = d(r);
-                            if (!o(f)) {
-                                throw new Error("THREE.FBXLoader: Unknown format.");
-                            }
-                            if (s(f) < 7e3) {
-                                throw new Error("THREE.FBXLoader: FBX version not supported, FileVersion: " + s(f));
-                            }
-                            i = new TextParser().parse(f);
-                        }
-                        return i;
-                    }
-                });
-                function e() {}
-                a(e.prototype, {
-                    parse: function e(a) {
-                        var n = new t(a);
-                        n.skip(23);
-                        var i = n.getUint32();
-                        console.log("THREE.FBXLoader: FBX binary version: " + i);
-                        var o = new r();
-                        while (!this.endOfContent(n)) {
-                            var s = this.parseNode(n, i);
-                            if (s !== null) o.add(s.name, s);
-                        }
-                        return o;
-                    },
-                    endOfContent: function e(t) {
-                        if (t.size() % 16 === 0) {
-                            return (t.getOffset() + 160 + 16 & ~15) >= t.size();
-                        } else {
-                            return t.getOffset() + 160 + 16 >= t.size();
-                        }
-                    },
-                    parseNode: function e(t, r) {
-                        var a = {};
-                        var n = r >= 7500 ? t.getUint64() : t.getUint32();
-                        var i = r >= 7500 ? t.getUint64() : t.getUint32();
-                        var o = r >= 7500 ? t.getUint64() : t.getUint32();
-                        var s = t.getUint8();
-                        var f = t.getString(s);
-                        if (n === 0) return null;
-                        var u = [];
-                        for (var d = 0; d < i; d++) {
-                            u.push(this.parseProperty(t));
-                        }
-                        var l = u.length > 0 ? u[0] : "";
-                        var h = u.length > 1 ? u[1] : "";
-                        var v = u.length > 2 ? u[2] : "";
-                        a.singleProperty = i === 1 && t.getOffset() === n ? true : false;
-                        while (n > t.getOffset()) {
-                            var c = this.parseNode(t, r);
-                            if (c !== null) this.parseSubNode(f, a, c);
-                        }
-                        a.propertyList = u;
-                        if (typeof l === "number") a.id = l;
-                        if (h !== "") a.attrName = h;
-                        if (v !== "") a.attrType = v;
-                        if (f !== "") a.name = f;
-                        return a;
-                    },
-                    parseSubNode: function e(t, r, a) {
-                        if (a.singleProperty === true) {
-                            var n = a.propertyList[0];
-                            if (Array.isArray(n)) {
-                                r[a.name] = a;
-                                a.a = n;
-                            } else {
-                                r[a.name] = n;
-                            }
-                        } else if (t === "Connections" && a.name === "C") {
-                            var i = [];
-                            a.propertyList.forEach(function(e, t) {
-                                if (t !== 0) i.push(e);
-                            });
-                            if (r.connections === undefined) {
-                                r.connections = [];
-                            }
-                            r.connections.push(i);
-                        } else if (a.name === "Properties70") {
-                            var o = Object.keys(a);
-                            o.forEach(function(e) {
-                                r[e] = a[e];
-                            });
-                        } else if (t === "Properties70" && a.name === "P") {
-                            var s = a.propertyList[0];
-                            var f = a.propertyList[1];
-                            var u = a.propertyList[2];
-                            var d = a.propertyList[3];
-                            var l;
-                            if (s.indexOf("Lcl ") === 0) s = s.replace("Lcl ", "Lcl_");
-                            if (f.indexOf("Lcl ") === 0) f = f.replace("Lcl ", "Lcl_");
-                            if (f === "Color" || f === "ColorRGB" || f === "Vector" || f === "Vector3D" || f.indexOf("Lcl_") === 0) {
-                                l = [ a.propertyList[4], a.propertyList[5], a.propertyList[6] ];
-                            } else {
-                                l = a.propertyList[4];
-                            }
-                            r[s] = {
-                                type: f,
-                                type2: u,
-                                flag: d,
-                                value: l
-                            };
-                        } else if (r[a.name] === undefined) {
-                            if (typeof a.id === "number") {
-                                r[a.name] = {};
-                                r[a.name][a.id] = a;
-                            } else {
-                                r[a.name] = a;
-                            }
-                        } else {
-                            if (a.name === "PoseNode") {
-                                if (!Array.isArray(r[a.name])) {
-                                    r[a.name] = [ r[a.name] ];
-                                }
-                                r[a.name].push(a);
-                            } else if (r[a.name][a.id] === undefined) {
-                                r[a.name][a.id] = a;
-                            }
-                        }
-                    },
-                    parseProperty: function e(r) {
-                        var a = r.getString(1);
-                        switch (a) {
-                          case "C":
-                            return r.getBoolean();
+/***/ "./src/plugin-webgl/threeLoaders/DDSLoader.js":
+/*!****************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/DDSLoader.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-                          case "D":
-                            return r.getFloat64();
+"use strict";
+eval("\n\nvar _mockThree = _interopRequireDefault(__webpack_require__(/*! ./mock-three.js */ \"./src/plugin-webgl/threeLoaders/mock-three.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * DDS Loaders\n * - Based on and modified from threejs loaders.\n *\n * ********** **/\n\n/*\n * @author mrdoob / http://mrdoob.com/\n */\nmodule.exports = _mockThree[\"default\"].DDSLoader = function () {\n  this._parser = _mockThree[\"default\"].DDSLoader.parse;\n};\n\n_mockThree[\"default\"].DDSLoader.prototype = Object.create(_mockThree[\"default\"].CompressedTextureLoader.prototype);\n_mockThree[\"default\"].DDSLoader.prototype.constructor = _mockThree[\"default\"].DDSLoader;\n\n_mockThree[\"default\"].DDSLoader.parse = function (buffer, loadMipmaps) {\n  var dds = {\n    mipmaps: [],\n    width: 0,\n    height: 0,\n    format: null,\n    mipmapCount: 1\n  }; // Adapted from @toji's DDS utils\n  // https://github.com/toji/webgl-texture-utils/blob/master/texture-util/dds.js\n  // All values and structures referenced from:\n  // http://msdn.microsoft.com/en-us/library/bb943991.aspx/\n\n  var DDS_MAGIC = 0x20534444;\n  var DDSD_CAPS = 0x1,\n      DDSD_HEIGHT = 0x2,\n      DDSD_WIDTH = 0x4,\n      DDSD_PITCH = 0x8,\n      DDSD_PIXELFORMAT = 0x1000,\n      DDSD_MIPMAPCOUNT = 0x20000,\n      DDSD_LINEARSIZE = 0x80000,\n      DDSD_DEPTH = 0x800000;\n  var DDSCAPS_COMPLEX = 0x8,\n      DDSCAPS_MIPMAP = 0x400000,\n      DDSCAPS_TEXTURE = 0x1000;\n  var DDSCAPS2_CUBEMAP = 0x200,\n      DDSCAPS2_CUBEMAP_POSITIVEX = 0x400,\n      DDSCAPS2_CUBEMAP_NEGATIVEX = 0x800,\n      DDSCAPS2_CUBEMAP_POSITIVEY = 0x1000,\n      DDSCAPS2_CUBEMAP_NEGATIVEY = 0x2000,\n      DDSCAPS2_CUBEMAP_POSITIVEZ = 0x4000,\n      DDSCAPS2_CUBEMAP_NEGATIVEZ = 0x8000,\n      DDSCAPS2_VOLUME = 0x200000;\n  var DDPF_ALPHAPIXELS = 0x1,\n      DDPF_ALPHA = 0x2,\n      DDPF_FOURCC = 0x4,\n      DDPF_RGB = 0x40,\n      DDPF_YUV = 0x200,\n      DDPF_LUMINANCE = 0x20000;\n\n  function fourCCToInt32(value) {\n    return value.charCodeAt(0) + (value.charCodeAt(1) << 8) + (value.charCodeAt(2) << 16) + (value.charCodeAt(3) << 24);\n  }\n\n  function int32ToFourCC(value) {\n    return String.fromCharCode(value & 0xff, value >> 8 & 0xff, value >> 16 & 0xff, value >> 24 & 0xff);\n  }\n\n  function loadARGBMip(buffer, dataOffset, width, height) {\n    var dataLength = width * height * 4;\n    var srcBuffer = new Uint8Array(buffer, dataOffset, dataLength);\n    var byteArray = new Uint8Array(dataLength);\n    var dst = 0;\n    var src = 0;\n\n    for (var y = 0; y < height; y++) {\n      for (var x = 0; x < width; x++) {\n        var b = srcBuffer[src];\n        src++;\n        var g = srcBuffer[src];\n        src++;\n        var r = srcBuffer[src];\n        src++;\n        var a = srcBuffer[src];\n        src++;\n        byteArray[dst] = r;\n        dst++; //r\n\n        byteArray[dst] = g;\n        dst++; //g\n\n        byteArray[dst] = b;\n        dst++; //b\n\n        byteArray[dst] = a;\n        dst++; //a\n      }\n    }\n\n    return byteArray;\n  }\n\n  var FOURCC_DXT1 = fourCCToInt32(\"DXT1\");\n  var FOURCC_DXT3 = fourCCToInt32(\"DXT3\");\n  var FOURCC_DXT5 = fourCCToInt32(\"DXT5\");\n  var FOURCC_ETC1 = fourCCToInt32(\"ETC1\");\n  var headerLengthInt = 31; // The header length in 32 bit ints\n  // Offsets into the header array\n\n  var off_magic = 0;\n  var off_size = 1;\n  var off_flags = 2;\n  var off_height = 3;\n  var off_width = 4;\n  var off_mipmapCount = 7;\n  var off_pfFlags = 20;\n  var off_pfFourCC = 21;\n  var off_RGBBitCount = 22;\n  var off_RBitMask = 23;\n  var off_GBitMask = 24;\n  var off_BBitMask = 25;\n  var off_ABitMask = 26;\n  var off_caps = 27;\n  var off_caps2 = 28;\n  var off_caps3 = 29;\n  var off_caps4 = 30; // Parse header\n\n  var header = new Int32Array(buffer, 0, headerLengthInt);\n\n  if (header[off_magic] !== DDS_MAGIC) {\n    console.error('THREE.DDSLoader.parse: Invalid magic number in DDS header.');\n    return dds;\n  }\n\n  if (!header[off_pfFlags] & DDPF_FOURCC) {\n    console.error('THREE.DDSLoader.parse: Unsupported format, must contain a FourCC code.');\n    return dds;\n  }\n\n  var blockBytes;\n  var fourCC = header[off_pfFourCC];\n  var isRGBAUncompressed = false;\n\n  switch (fourCC) {\n    case FOURCC_DXT1:\n      blockBytes = 8;\n      dds.format = _mockThree[\"default\"].RGB_S3TC_DXT1_Format;\n      break;\n\n    case FOURCC_DXT3:\n      blockBytes = 16;\n      dds.format = _mockThree[\"default\"].RGBA_S3TC_DXT3_Format;\n      break;\n\n    case FOURCC_DXT5:\n      blockBytes = 16;\n      dds.format = _mockThree[\"default\"].RGBA_S3TC_DXT5_Format;\n      break;\n\n    case FOURCC_ETC1:\n      blockBytes = 8;\n      dds.format = _mockThree[\"default\"].RGB_ETC1_Format;\n      break;\n\n    default:\n      if (header[off_RGBBitCount] === 32 && header[off_RBitMask] & 0xff0000 && header[off_GBitMask] & 0xff00 && header[off_BBitMask] & 0xff && header[off_ABitMask] & 0xff000000) {\n        isRGBAUncompressed = true;\n        blockBytes = 64;\n        dds.format = _mockThree[\"default\"].RGBAFormat;\n      } else {\n        console.error('THREE.DDSLoader.parse: Unsupported FourCC code ', int32ToFourCC(fourCC));\n        return dds;\n      }\n\n  }\n\n  dds.mipmapCount = 1;\n\n  if (header[off_flags] & DDSD_MIPMAPCOUNT && loadMipmaps !== false) {\n    dds.mipmapCount = Math.max(1, header[off_mipmapCount]);\n  }\n\n  var caps2 = header[off_caps2];\n  dds.isCubemap = caps2 & DDSCAPS2_CUBEMAP ? true : false;\n\n  if (dds.isCubemap && (!(caps2 & DDSCAPS2_CUBEMAP_POSITIVEX) || !(caps2 & DDSCAPS2_CUBEMAP_NEGATIVEX) || !(caps2 & DDSCAPS2_CUBEMAP_POSITIVEY) || !(caps2 & DDSCAPS2_CUBEMAP_NEGATIVEY) || !(caps2 & DDSCAPS2_CUBEMAP_POSITIVEZ) || !(caps2 & DDSCAPS2_CUBEMAP_NEGATIVEZ))) {\n    console.error('THREE.DDSLoader.parse: Incomplete cubemap faces');\n    return dds;\n  }\n\n  dds.width = header[off_width];\n  dds.height = header[off_height];\n  var dataOffset = header[off_size] + 4; // Extract mipmaps buffers\n\n  var faces = dds.isCubemap ? 6 : 1;\n\n  for (var face = 0; face < faces; face++) {\n    var width = dds.width;\n    var height = dds.height;\n\n    for (var i = 0; i < dds.mipmapCount; i++) {\n      if (isRGBAUncompressed) {\n        var byteArray = loadARGBMip(buffer, dataOffset, width, height);\n        var dataLength = byteArray.length;\n      } else {\n        var dataLength = Math.max(4, width) / 4 * Math.max(4, height) / 4 * blockBytes;\n        var byteArray = new Uint8Array(buffer, dataOffset, dataLength);\n      }\n\n      var mipmap = {\n        \"data\": byteArray,\n        \"width\": width,\n        \"height\": height\n      };\n      dds.mipmaps.push(mipmap);\n      dataOffset += dataLength;\n      width = Math.max(width >> 1, 1);\n      height = Math.max(height >> 1, 1);\n    }\n  }\n\n  return dds;\n};\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/DDSLoader.js?");
 
-                          case "F":
-                            return r.getFloat32();
+/***/ }),
 
-                          case "I":
-                            return r.getInt32();
+/***/ "./src/plugin-webgl/threeLoaders/FBXLoader.js":
+/*!****************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/FBXLoader.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-                          case "L":
-                            return r.getInt64();
+"use strict";
+eval("\n\nvar _mockThree = _interopRequireDefault(__webpack_require__(/*! ./mock-three.js */ \"./src/plugin-webgl/threeLoaders/mock-three.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * FBX Loaders\n * - Based on and modified from threejs loaders.\n *\n * ********** **/\nmodule.exports = function () {\n  _mockThree[\"default\"].FBXLoader = function (manager) {\n    this.manager = manager !== undefined ? manager : _mockThree[\"default\"].DefaultLoadingManager;\n  };\n\n  Object.assign(_mockThree[\"default\"].FBXLoader.prototype, {\n    load: function load(url, onLoad, onProgress, onError) {\n      var self = this;\n\n      var resourceDirectory = _mockThree[\"default\"].LoaderUtils.extractUrlBase(url);\n\n      var loader = new _mockThree[\"default\"].FileLoader(this.manager);\n      loader.setResponseType('arraybuffer');\n      loader.load(url, function (buffer) {\n        // try {\n        var scene = self.parse(buffer, resourceDirectory);\n        onLoad(scene); // } catch ( error ) {\n        // \twindow.setTimeout( function () {\n        // \t\tif ( onError ) onError( error );\n        // \t\tself.manager && self.manager.itemError( url );\n        // \t}, 0 );\n        // }\n      }, onProgress, onError);\n    },\n    parse: function parse(FBXBuffer, resourceDirectory) {\n      var FBXTree;\n\n      if (isFbxFormatBinary(FBXBuffer)) {\n        FBXTree = new BinaryParser().parse(FBXBuffer);\n      } else {\n        var FBXText = convertArrayBufferToString(FBXBuffer);\n\n        if (!isFbxFormatASCII(FBXText)) {\n          throw new Error('THREE.FBXLoader: Unknown format.');\n        }\n\n        if (getFbxVersion(FBXText) < 7000) {\n          throw new Error('THREE.FBXLoader: FBX version not supported, FileVersion: ' + getFbxVersion(FBXText));\n        }\n\n        FBXTree = new TextParser().parse(FBXText);\n      } // console.log( FBXTree );\n\n\n      return FBXTree;\n    }\n  }); // Parse an FBX file in Binary format\n\n  function BinaryParser() {}\n\n  Object.assign(BinaryParser.prototype, {\n    parse: function parse(buffer) {\n      var reader = new BinaryReader(buffer);\n      reader.skip(23); // skip magic 23 bytes\n\n      var version = reader.getUint32();\n      console.log('THREE.FBXLoader: FBX binary version: ' + version);\n      var allNodes = new FBXTree();\n\n      while (!this.endOfContent(reader)) {\n        var node = this.parseNode(reader, version);\n        if (node !== null) allNodes.add(node.name, node);\n      }\n\n      return allNodes;\n    },\n    // Check if reader has reached the end of content.\n    endOfContent: function endOfContent(reader) {\n      // footer size: 160bytes + 16-byte alignment padding\n      // - 16bytes: magic\n      // - padding til 16-byte alignment (at least 1byte?)\n      //\t(seems like some exporters embed fixed 15 or 16bytes?)\n      // - 4bytes: magic\n      // - 4bytes: version\n      // - 120bytes: zero\n      // - 16bytes: magic\n      if (reader.size() % 16 === 0) {\n        return (reader.getOffset() + 160 + 16 & ~0xf) >= reader.size();\n      } else {\n        return reader.getOffset() + 160 + 16 >= reader.size();\n      }\n    },\n    // recursively parse nodes until the end of the file is reached\n    parseNode: function parseNode(reader, version) {\n      var node = {}; // The first three data sizes depends on version.\n\n      var endOffset = version >= 7500 ? reader.getUint64() : reader.getUint32();\n      var numProperties = version >= 7500 ? reader.getUint64() : reader.getUint32(); // note: do not remove this even if you get a linter warning as it moves the buffer forward\n\n      var propertyListLen = version >= 7500 ? reader.getUint64() : reader.getUint32();\n      var nameLen = reader.getUint8();\n      var name = reader.getString(nameLen); // Regards this node as NULL-record if endOffset is zero\n\n      if (endOffset === 0) return null;\n      var propertyList = [];\n\n      for (var i = 0; i < numProperties; i++) {\n        propertyList.push(this.parseProperty(reader));\n      } // Regards the first three elements in propertyList as id, attrName, and attrType\n\n\n      var id = propertyList.length > 0 ? propertyList[0] : '';\n      var attrName = propertyList.length > 1 ? propertyList[1] : '';\n      var attrType = propertyList.length > 2 ? propertyList[2] : ''; // check if this node represents just a single property\n      // like (name, 0) set or (name2, [0, 1, 2]) set of {name: 0, name2: [0, 1, 2]}\n\n      node.singleProperty = numProperties === 1 && reader.getOffset() === endOffset ? true : false;\n\n      while (endOffset > reader.getOffset()) {\n        var subNode = this.parseNode(reader, version);\n        if (subNode !== null) this.parseSubNode(name, node, subNode);\n      }\n\n      node.propertyList = propertyList; // raw property list used by parent\n\n      if (typeof id === 'number') node.id = id;\n      if (attrName !== '') node.attrName = attrName;\n      if (attrType !== '') node.attrType = attrType;\n      if (name !== '') node.name = name;\n      return node;\n    },\n    parseSubNode: function parseSubNode(name, node, subNode) {\n      // special case: child node is single property\n      if (subNode.singleProperty === true) {\n        var value = subNode.propertyList[0];\n\n        if (Array.isArray(value)) {\n          node[subNode.name] = subNode;\n          subNode.a = value;\n        } else {\n          node[subNode.name] = value;\n        }\n      } else if (name === 'Connections' && subNode.name === 'C') {\n        var array = [];\n        subNode.propertyList.forEach(function (property, i) {\n          // first Connection is FBX type (OO, OP, etc.). We'll discard these\n          if (i !== 0) array.push(property);\n        });\n\n        if (node.connections === undefined) {\n          node.connections = [];\n        }\n\n        node.connections.push(array);\n      } else if (subNode.name === 'Properties70') {\n        var keys = Object.keys(subNode);\n        keys.forEach(function (key) {\n          node[key] = subNode[key];\n        });\n      } else if (name === 'Properties70' && subNode.name === 'P') {\n        var innerPropName = subNode.propertyList[0];\n        var innerPropType1 = subNode.propertyList[1];\n        var innerPropType2 = subNode.propertyList[2];\n        var innerPropFlag = subNode.propertyList[3];\n        var innerPropValue;\n        if (innerPropName.indexOf('Lcl ') === 0) innerPropName = innerPropName.replace('Lcl ', 'Lcl_');\n        if (innerPropType1.indexOf('Lcl ') === 0) innerPropType1 = innerPropType1.replace('Lcl ', 'Lcl_');\n\n        if (innerPropType1 === 'Color' || innerPropType1 === 'ColorRGB' || innerPropType1 === 'Vector' || innerPropType1 === 'Vector3D' || innerPropType1.indexOf('Lcl_') === 0) {\n          innerPropValue = [subNode.propertyList[4], subNode.propertyList[5], subNode.propertyList[6]];\n        } else {\n          innerPropValue = subNode.propertyList[4];\n        } // this will be copied to parent, see above\n\n\n        node[innerPropName] = {\n          'type': innerPropType1,\n          'type2': innerPropType2,\n          'flag': innerPropFlag,\n          'value': innerPropValue\n        };\n      } else if (node[subNode.name] === undefined) {\n        if (typeof subNode.id === 'number') {\n          node[subNode.name] = {};\n          node[subNode.name][subNode.id] = subNode;\n        } else {\n          node[subNode.name] = subNode;\n        }\n      } else {\n        if (subNode.name === 'PoseNode') {\n          if (!Array.isArray(node[subNode.name])) {\n            node[subNode.name] = [node[subNode.name]];\n          }\n\n          node[subNode.name].push(subNode);\n        } else if (node[subNode.name][subNode.id] === undefined) {\n          node[subNode.name][subNode.id] = subNode;\n        }\n      }\n    },\n    parseProperty: function parseProperty(reader) {\n      var type = reader.getString(1);\n\n      switch (type) {\n        case 'C':\n          return reader.getBoolean();\n\n        case 'D':\n          return reader.getFloat64();\n\n        case 'F':\n          return reader.getFloat32();\n\n        case 'I':\n          return reader.getInt32();\n\n        case 'L':\n          return reader.getInt64();\n\n        case 'R':\n          var length = reader.getUint32();\n          return reader.getArrayBuffer(length);\n\n        case 'S':\n          var length = reader.getUint32();\n          return reader.getString(length);\n\n        case 'Y':\n          return reader.getInt16();\n\n        case 'b':\n        case 'c':\n        case 'd':\n        case 'f':\n        case 'i':\n        case 'l':\n          var arrayLength = reader.getUint32();\n          var encoding = reader.getUint32(); // 0: non-compressed, 1: compressed\n\n          var compressedLength = reader.getUint32();\n\n          if (encoding === 0) {\n            switch (type) {\n              case 'b':\n              case 'c':\n                return reader.getBooleanArray(arrayLength);\n\n              case 'd':\n                return reader.getFloat64Array(arrayLength);\n\n              case 'f':\n                return reader.getFloat32Array(arrayLength);\n\n              case 'i':\n                return reader.getInt32Array(arrayLength);\n\n              case 'l':\n                return reader.getInt64Array(arrayLength);\n            }\n          }\n\n          if (window.Zlib === undefined) {\n            console.error('THREE.FBXLoader: External library Inflate.min.js required, obtain or import from https://github.com/imaya/zlib.js');\n          }\n\n          var inflate = new Zlib.Inflate(new Uint8Array(reader.getArrayBuffer(compressedLength))); // eslint-disable-line no-undef\n\n          var reader2 = new BinaryReader(inflate.decompress().buffer);\n\n          switch (type) {\n            case 'b':\n            case 'c':\n              return reader2.getBooleanArray(arrayLength);\n\n            case 'd':\n              return reader2.getFloat64Array(arrayLength);\n\n            case 'f':\n              return reader2.getFloat32Array(arrayLength);\n\n            case 'i':\n              return reader2.getInt32Array(arrayLength);\n\n            case 'l':\n              return reader2.getInt64Array(arrayLength);\n          }\n\n        default:\n          throw new Error('THREE.FBXLoader: Unknown property type ' + type);\n      }\n    }\n  });\n\n  function BinaryReader(buffer, littleEndian) {\n    this.dv = new DataView(buffer);\n    this.offset = 0;\n    this.littleEndian = littleEndian !== undefined ? littleEndian : true;\n  }\n\n  Object.assign(BinaryReader.prototype, {\n    getOffset: function getOffset() {\n      return this.offset;\n    },\n    size: function size() {\n      return this.dv.buffer.byteLength;\n    },\n    skip: function skip(length) {\n      this.offset += length;\n    },\n    // seems like true/false representation depends on exporter.\n    // true: 1 or 'Y'(=0x59), false: 0 or 'T'(=0x54)\n    // then sees LSB.\n    getBoolean: function getBoolean() {\n      return (this.getUint8() & 1) === 1;\n    },\n    getBooleanArray: function getBooleanArray(size) {\n      var a = [];\n\n      for (var i = 0; i < size; i++) {\n        a.push(this.getBoolean());\n      }\n\n      return a;\n    },\n    getUint8: function getUint8() {\n      var value = this.dv.getUint8(this.offset);\n      this.offset += 1;\n      return value;\n    },\n    getInt16: function getInt16() {\n      var value = this.dv.getInt16(this.offset, this.littleEndian);\n      this.offset += 2;\n      return value;\n    },\n    getInt32: function getInt32() {\n      var value = this.dv.getInt32(this.offset, this.littleEndian);\n      this.offset += 4;\n      return value;\n    },\n    getInt32Array: function getInt32Array(size) {\n      var a = [];\n\n      for (var i = 0; i < size; i++) {\n        a.push(this.getInt32());\n      }\n\n      return a;\n    },\n    getUint32: function getUint32() {\n      var value = this.dv.getUint32(this.offset, this.littleEndian);\n      this.offset += 4;\n      return value;\n    },\n    // JavaScript doesn't support 64-bit integer so calculate this here\n    // 1 << 32 will return 1 so using multiply operation instead here.\n    // There's a possibility that this method returns wrong value if the value\n    // is out of the range between Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER.\n    // TODO: safely handle 64-bit integer\n    getInt64: function getInt64() {\n      var low, high;\n\n      if (this.littleEndian) {\n        low = this.getUint32();\n        high = this.getUint32();\n      } else {\n        high = this.getUint32();\n        low = this.getUint32();\n      } // calculate negative value\n\n\n      if (high & 0x80000000) {\n        high = ~high & 0xFFFFFFFF;\n        low = ~low & 0xFFFFFFFF;\n        if (low === 0xFFFFFFFF) high = high + 1 & 0xFFFFFFFF;\n        low = low + 1 & 0xFFFFFFFF;\n        return -(high * 0x100000000 + low);\n      }\n\n      return high * 0x100000000 + low;\n    },\n    getInt64Array: function getInt64Array(size) {\n      var a = [];\n\n      for (var i = 0; i < size; i++) {\n        a.push(this.getInt64());\n      }\n\n      return a;\n    },\n    // Note: see getInt64() comment\n    getUint64: function getUint64() {\n      var low, high;\n\n      if (this.littleEndian) {\n        low = this.getUint32();\n        high = this.getUint32();\n      } else {\n        high = this.getUint32();\n        low = this.getUint32();\n      }\n\n      return high * 0x100000000 + low;\n    },\n    getFloat32: function getFloat32() {\n      var value = this.dv.getFloat32(this.offset, this.littleEndian);\n      this.offset += 4;\n      return value;\n    },\n    getFloat32Array: function getFloat32Array(size) {\n      var a = [];\n\n      for (var i = 0; i < size; i++) {\n        a.push(this.getFloat32());\n      }\n\n      return a;\n    },\n    getFloat64: function getFloat64() {\n      var value = this.dv.getFloat64(this.offset, this.littleEndian);\n      this.offset += 8;\n      return value;\n    },\n    getFloat64Array: function getFloat64Array(size) {\n      var a = [];\n\n      for (var i = 0; i < size; i++) {\n        a.push(this.getFloat64());\n      }\n\n      return a;\n    },\n    getArrayBuffer: function getArrayBuffer(size) {\n      var value = this.dv.buffer.slice(this.offset, this.offset + size);\n      this.offset += size;\n      return value;\n    },\n    getString: function getString(size) {\n      var a = new Uint8Array(size);\n\n      for (var i = 0; i < size; i++) {\n        a[i] = this.getUint8();\n      }\n\n      var nullByte = a.indexOf(0);\n      if (nullByte >= 0) a = a.slice(0, nullByte);\n      return _mockThree[\"default\"].LoaderUtils.decodeText(a);\n    }\n  }); // FBXTree holds a representation of the FBX data, returned by the TextParser ( FBX ASCII format)\n  // and BinaryParser( FBX Binary format)\n\n  function FBXTree() {}\n\n  Object.assign(FBXTree.prototype, {\n    add: function add(key, val) {\n      this[key] = val;\n    }\n  });\n\n  function isFbxFormatBinary(buffer) {\n    var CORRECT = 'Kaydara FBX Binary  \\0';\n    return buffer.byteLength >= CORRECT.length && CORRECT === convertArrayBufferToString(buffer, 0, CORRECT.length);\n  }\n\n  function isFbxFormatASCII(text) {\n    var CORRECT = ['K', 'a', 'y', 'd', 'a', 'r', 'a', '\\\\', 'F', 'B', 'X', '\\\\', 'B', 'i', 'n', 'a', 'r', 'y', '\\\\', '\\\\'];\n    var cursor = 0;\n\n    function read(offset) {\n      var result = text[offset - 1];\n      text = text.slice(cursor + offset);\n      cursor++;\n      return result;\n    }\n\n    for (var i = 0; i < CORRECT.length; ++i) {\n      var num = read(1);\n\n      if (num === CORRECT[i]) {\n        return false;\n      }\n    }\n\n    return true;\n  }\n\n  function getFbxVersion(text) {\n    var versionRegExp = /FBXVersion: (\\d+)/;\n    var match = text.match(versionRegExp);\n\n    if (match) {\n      var version = parseInt(match[1]);\n      return version;\n    }\n\n    throw new Error('THREE.FBXLoader: Cannot find the version number for the file given.');\n  } // Converts FBX ticks into real time seconds.\n\n\n  function convertFBXTimeToSeconds(time) {\n    return time / 46186158000;\n  } // Parses comma separated list of numbers and returns them an array.\n  // Used internally by the TextParser\n\n\n  function parseNumberArray(value) {\n    var array = value.split(',').map(function (val) {\n      return parseFloat(val);\n    });\n    return array;\n  }\n\n  function convertArrayBufferToString(buffer, from, to) {\n    if (from === undefined) from = 0;\n    if (to === undefined) to = buffer.byteLength;\n    return _mockThree[\"default\"].LoaderUtils.decodeText(new Uint8Array(buffer, from, to));\n  }\n\n  function append(a, b) {\n    for (var i = 0, j = a.length, l = b.length; i < l; i++, j++) {\n      a[j] = b[i];\n    }\n  }\n\n  function slice(a, b, from, to) {\n    for (var i = from, j = 0; i < to; i++, j++) {\n      a[j] = b[i];\n    }\n\n    return a;\n  } // inject array a2 into array a1 at index\n\n\n  function inject(a1, index, a2) {\n    return a1.slice(0, index).concat(a2).concat(a1.slice(index));\n  }\n\n  return _mockThree[\"default\"].FBXLoader;\n}();\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/FBXLoader.js?");
 
-                          case "R":
-                            var n = r.getUint32();
-                            return r.getArrayBuffer(n);
+/***/ }),
 
-                          case "S":
-                            var n = r.getUint32();
-                            return r.getString(n);
+/***/ "./src/plugin-webgl/threeLoaders/FileLoader.js":
+/*!*****************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/FileLoader.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-                          case "Y":
-                            return r.getInt16();
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.FileLoader = FileLoader;\n\nvar _Cache = __webpack_require__(/*! ./Cache.js */ \"./src/plugin-webgl/threeLoaders/Cache.js\");\n\nvar _LoadingManager = __webpack_require__(/*! ./LoadingManager.js */ \"./src/plugin-webgl/threeLoaders/LoadingManager.js\");\n\n/**\n * @author mrdoob / http://mrdoob.com/\n */\nvar loading = {};\n\nfunction FileLoader(manager) {\n  this.manager = manager !== undefined ? manager : _LoadingManager.DefaultLoadingManager;\n}\n\nObject.assign(FileLoader.prototype, {\n  load: function load(url, onLoad, onProgress, onError) {\n    if (url === undefined) url = '';\n    if (this.path !== undefined) url = this.path + url;\n    url = this.manager.resolveURL(url);\n    var scope = this;\n\n    var cached = _Cache.Cache.get(url);\n\n    if (cached !== undefined) {\n      scope.manager.itemStart(url);\n      setTimeout(function () {\n        if (onLoad) onLoad(cached);\n        scope.manager.itemEnd(url);\n      }, 0);\n      return cached;\n    } // Check if request is duplicate\n\n\n    if (loading[url] !== undefined) {\n      loading[url].push({\n        onLoad: onLoad,\n        onProgress: onProgress,\n        onError: onError\n      });\n      return;\n    } // Check for data: URI\n\n\n    var dataUriRegex = /^data:(.*?)(;base64)?,(.*)$/;\n    var dataUriRegexResult = url.match(dataUriRegex); // Safari can not handle Data URIs through XMLHttpRequest so process manually\n\n    if (dataUriRegexResult) {\n      var mimeType = dataUriRegexResult[1];\n      var isBase64 = !!dataUriRegexResult[2];\n      var data = dataUriRegexResult[3];\n      data = window.decodeURIComponent(data);\n      if (isBase64) data = window.atob(data);\n\n      try {\n        var response;\n        var responseType = (this.responseType || '').toLowerCase();\n\n        switch (responseType) {\n          case 'arraybuffer':\n          case 'blob':\n            var view = new Uint8Array(data.length);\n\n            for (var i = 0; i < data.length; i++) {\n              view[i] = data.charCodeAt(i);\n            }\n\n            if (responseType === 'blob') {\n              response = new Blob([view.buffer], {\n                type: mimeType\n              });\n            } else {\n              response = view.buffer;\n            }\n\n            break;\n\n          case 'document':\n            var parser = new DOMParser();\n            response = parser.parseFromString(data, mimeType);\n            break;\n\n          case 'json':\n            response = JSON.parse(data);\n            break;\n\n          default:\n            // 'text' or other\n            response = data;\n            break;\n        } // Wait for next browser tick like standard XMLHttpRequest event dispatching does\n\n\n        window.setTimeout(function () {\n          if (onLoad) onLoad(response);\n          scope.manager.itemEnd(url);\n        }, 0);\n      } catch (error) {\n        // Wait for next browser tick like standard XMLHttpRequest event dispatching does\n        window.setTimeout(function () {\n          if (onError) onError(error);\n          scope.manager.itemEnd(url);\n          scope.manager.itemError(url);\n        }, 0);\n      }\n    } else {\n      // Initialise array for duplicate requests\n      loading[url] = [];\n      loading[url].push({\n        onLoad: onLoad,\n        onProgress: onProgress,\n        onError: onError\n      });\n      var request = new XMLHttpRequest();\n      request.open('GET', url, true);\n      request.addEventListener('load', function (event) {\n        var response = this.response;\n\n        _Cache.Cache.add(url, response);\n\n        var callbacks = loading[url];\n        delete loading[url];\n\n        if (this.status === 200 || this.status === 0) {\n          // Some browsers return HTTP Status 0 when using non-http protocol\n          // e.g. 'file://' or 'data://'. Handle as success.\n          if (this.status === 0) console.warn('THREE.FileLoader: HTTP Status 0 received.');\n\n          for (var i = 0, il = callbacks.length; i < il; i++) {\n            var callback = callbacks[i];\n            if (callback.onLoad) callback.onLoad(response);\n          }\n\n          scope.manager.itemEnd(url);\n        } else {\n          for (var i = 0, il = callbacks.length; i < il; i++) {\n            var callback = callbacks[i];\n            if (callback.onError) callback.onError(event);\n          }\n\n          scope.manager.itemEnd(url);\n          scope.manager.itemError(url);\n        }\n      }, false);\n      request.addEventListener('progress', function (event) {\n        var callbacks = loading[url];\n\n        for (var i = 0, il = callbacks.length; i < il; i++) {\n          var callback = callbacks[i];\n          if (callback.onProgress) callback.onProgress(event);\n        }\n      }, false);\n      request.addEventListener('error', function (event) {\n        var callbacks = loading[url];\n        delete loading[url];\n\n        for (var i = 0, il = callbacks.length; i < il; i++) {\n          var callback = callbacks[i];\n          if (callback.onError) callback.onError(event);\n        }\n\n        scope.manager.itemEnd(url);\n        scope.manager.itemError(url);\n      }, false);\n      if (this.responseType !== undefined) request.responseType = this.responseType;\n      if (this.withCredentials !== undefined) request.withCredentials = this.withCredentials;\n      if (request.overrideMimeType) request.overrideMimeType(this.mimeType !== undefined ? this.mimeType : 'text/plain');\n\n      for (var header in this.requestHeader) {\n        request.setRequestHeader(header, this.requestHeader[header]);\n      }\n\n      request.send(null);\n    }\n\n    scope.manager.itemStart(url);\n    return request;\n  },\n  setPath: function setPath(value) {\n    this.path = value;\n    return this;\n  },\n  setResponseType: function setResponseType(value) {\n    this.responseType = value;\n    return this;\n  },\n  setWithCredentials: function setWithCredentials(value) {\n    this.withCredentials = value;\n    return this;\n  },\n  setMimeType: function setMimeType(value) {\n    this.mimeType = value;\n    return this;\n  },\n  setRequestHeader: function setRequestHeader(value) {\n    this.requestHeader = value;\n    return this;\n  }\n});\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/FileLoader.js?");
 
-                          case "b":
-                          case "c":
-                          case "d":
-                          case "f":
-                          case "i":
-                          case "l":
-                            var i = r.getUint32();
-                            var o = r.getUint32();
-                            var s = r.getUint32();
-                            if (o === 0) {
-                                switch (a) {
-                                  case "b":
-                                  case "c":
-                                    return r.getBooleanArray(i);
+/***/ }),
 
-                                  case "d":
-                                    return r.getFloat64Array(i);
+/***/ "./src/plugin-webgl/threeLoaders/Interpolant.js":
+/*!******************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/Interpolant.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-                                  case "f":
-                                    return r.getFloat32Array(i);
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.Interpolant = Interpolant;\n\n/**\n * Abstract base class of interpolants over parametric samples.\n *\n * The parameter domain is one dimensional, typically the time or a path\n * along a curve defined by the data.\n *\n * The sample values can have any dimensionality and derived classes may\n * apply special interpretations to the data.\n *\n * This class provides the interval seek in a Template Method, deferring\n * the actual interpolation to derived classes.\n *\n * Time complexity is O(1) for linear access crossing at most two points\n * and O(log N) for random access, where N is the number of positions.\n *\n * References:\n *\n * \t\thttp://www.oodesign.com/template-method-pattern.html\n *\n * @author tschw\n */\nfunction Interpolant(parameterPositions, sampleValues, sampleSize, resultBuffer) {\n  this.parameterPositions = parameterPositions;\n  this._cachedIndex = 0;\n  this.resultBuffer = resultBuffer !== undefined ? resultBuffer : new sampleValues.constructor(sampleSize);\n  this.sampleValues = sampleValues;\n  this.valueSize = sampleSize;\n}\n\nObject.assign(Interpolant.prototype, {\n  evaluate: function evaluate(t) {\n    var pp = this.parameterPositions,\n        i1 = this._cachedIndex,\n        t1 = pp[i1],\n        t0 = pp[i1 - 1];\n\n    validate_interval: {\n      seek: {\n        var right;\n\n        linear_scan: {\n          //- See http://jsperf.com/comparison-to-undefined/3\n          //- slower code:\n          //-\n          //- \t\t\t\tif ( t >= t1 || t1 === undefined ) {\n          forward_scan: if (!(t < t1)) {\n            for (var giveUpAt = i1 + 2;;) {\n              if (t1 === undefined) {\n                if (t < t0) break forward_scan; // after end\n\n                i1 = pp.length;\n                this._cachedIndex = i1;\n                return this.afterEnd_(i1 - 1, t, t0);\n              }\n\n              if (i1 === giveUpAt) break; // this loop\n\n              t0 = t1;\n              t1 = pp[++i1];\n\n              if (t < t1) {\n                // we have arrived at the sought interval\n                break seek;\n              }\n            } // prepare binary search on the right side of the index\n\n\n            right = pp.length;\n            break linear_scan;\n          } //- slower code:\n          //-\t\t\t\t\tif ( t < t0 || t0 === undefined ) {\n\n\n          if (!(t >= t0)) {\n            // looping?\n            var t1global = pp[1];\n\n            if (t < t1global) {\n              i1 = 2; // + 1, using the scan for the details\n\n              t0 = t1global;\n            } // linear reverse scan\n\n\n            for (var giveUpAt = i1 - 2;;) {\n              if (t0 === undefined) {\n                // before start\n                this._cachedIndex = 0;\n                return this.beforeStart_(0, t, t1);\n              }\n\n              if (i1 === giveUpAt) break; // this loop\n\n              t1 = t0;\n              t0 = pp[--i1 - 1];\n\n              if (t >= t0) {\n                // we have arrived at the sought interval\n                break seek;\n              }\n            } // prepare binary search on the left side of the index\n\n\n            right = i1;\n            i1 = 0;\n            break linear_scan;\n          } // the interval is valid\n\n\n          break validate_interval;\n        } // linear scan\n        // binary search\n\n\n        while (i1 < right) {\n          var mid = i1 + right >>> 1;\n\n          if (t < pp[mid]) {\n            right = mid;\n          } else {\n            i1 = mid + 1;\n          }\n        }\n\n        t1 = pp[i1];\n        t0 = pp[i1 - 1]; // check boundary cases, again\n\n        if (t0 === undefined) {\n          this._cachedIndex = 0;\n          return this.beforeStart_(0, t, t1);\n        }\n\n        if (t1 === undefined) {\n          i1 = pp.length;\n          this._cachedIndex = i1;\n          return this.afterEnd_(i1 - 1, t0, t);\n        }\n      } // seek\n\n\n      this._cachedIndex = i1;\n      this.intervalChanged_(i1, t0, t1);\n    } // validate_interval\n\n\n    return this.interpolate_(i1, t0, t, t1);\n  },\n  settings: null,\n  // optional, subclass-specific settings structure\n  // Note: The indirection allows central control of many interpolants.\n  // --- Protected interface\n  DefaultSettings_: {},\n  getSettings_: function getSettings_() {\n    return this.settings || this.DefaultSettings_;\n  },\n  copySampleValue_: function copySampleValue_(index) {\n    // copies a sample value to the result buffer\n    var result = this.resultBuffer,\n        values = this.sampleValues,\n        stride = this.valueSize,\n        offset = index * stride;\n\n    for (var i = 0; i !== stride; ++i) {\n      result[i] = values[offset + i];\n    }\n\n    return result;\n  },\n  // Template methods for derived classes:\n  interpolate_: function interpolate_()\n  /* i1, t0, t, t1 */\n  {\n    throw new Error('call to abstract method'); // implementations shall return this.resultBuffer\n  },\n  intervalChanged_: function intervalChanged_()\n  /* i1, t0, t1 */\n  {// empty\n  }\n}); //!\\ DECLARE ALIAS AFTER assign prototype !\n\nObject.assign(Interpolant.prototype, {\n  //( 0, t, t0 ), returns this.resultBuffer\n  beforeStart_: Interpolant.prototype.copySampleValue_,\n  //( N-1, tN-1, t ), returns this.resultBuffer\n  afterEnd_: Interpolant.prototype.copySampleValue_\n});\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/Interpolant.js?");
 
-                                  case "i":
-                                    return r.getInt32Array(i);
+/***/ }),
 
-                                  case "l":
-                                    return r.getInt64Array(i);
-                                }
-                            }
-                            if (window.Zlib === undefined) {
-                                console.error("THREE.FBXLoader: External library Inflate.min.js required, obtain or import from https://github.com/imaya/zlib.js");
-                            }
-                            var f = new Zlib.Inflate(new Uint8Array(r.getArrayBuffer(s)));
-                            var u = new t(f.decompress().buffer);
-                            switch (a) {
-                              case "b":
-                              case "c":
-                                return u.getBooleanArray(i);
+/***/ "./src/plugin-webgl/threeLoaders/LoaderUtils.js":
+/*!******************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/LoaderUtils.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-                              case "d":
-                                return u.getFloat64Array(i);
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.LoaderUtils = void 0;\n\n/**\n * @author Don McCurdy / https://www.donmccurdy.com\n */\nvar LoaderUtils = {\n  decodeText: function decodeText(array) {\n    if (typeof TextDecoder !== 'undefined') {\n      return new TextDecoder().decode(array);\n    } // Avoid the String.fromCharCode.apply(null, array) shortcut, which\n    // throws a \"maximum call stack size exceeded\" error for large arrays.\n\n\n    var s = '';\n\n    for (var i = 0, il = array.length; i < il; i++) {\n      // Implicitly assumes little-endian.\n      s += String.fromCharCode(array[i]);\n    } // Merges multi-byte utf-8 characters.\n\n\n    return decodeURIComponent(escape(s));\n  },\n  extractUrlBase: function extractUrlBase(url) {\n    var index = url.lastIndexOf('/');\n    if (index === -1) return './';\n    return url.substr(0, index + 1);\n  }\n};\nexports.LoaderUtils = LoaderUtils;\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/LoaderUtils.js?");
 
-                              case "f":
-                                return u.getFloat32Array(i);
+/***/ }),
 
-                              case "i":
-                                return u.getInt32Array(i);
+/***/ "./src/plugin-webgl/threeLoaders/LoadingManager.js":
+/*!*********************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/LoadingManager.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-                              case "l":
-                                return u.getInt64Array(i);
-                            }
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.LoadingManager = LoadingManager;\nexports.DefaultLoadingManager = void 0;\n\n/**\n * @author mrdoob / http://mrdoob.com/\n */\nfunction LoadingManager(onLoad, onProgress, onError) {\n  var scope = this;\n  var isLoading = false;\n  var itemsLoaded = 0;\n  var itemsTotal = 0;\n  var urlModifier = undefined;\n  this.onStart = undefined;\n  this.onLoad = onLoad;\n  this.onProgress = onProgress;\n  this.onError = onError;\n\n  this.itemStart = function (url) {\n    itemsTotal++;\n\n    if (isLoading === false) {\n      if (scope.onStart !== undefined) {\n        scope.onStart(url, itemsLoaded, itemsTotal);\n      }\n    }\n\n    isLoading = true;\n  };\n\n  this.itemEnd = function (url) {\n    itemsLoaded++;\n\n    if (scope.onProgress !== undefined) {\n      scope.onProgress(url, itemsLoaded, itemsTotal);\n    }\n\n    if (itemsLoaded === itemsTotal) {\n      isLoading = false;\n\n      if (scope.onLoad !== undefined) {\n        scope.onLoad();\n      }\n    }\n  };\n\n  this.itemError = function (url) {\n    if (scope.onError !== undefined) {\n      scope.onError(url);\n    }\n  };\n\n  this.resolveURL = function (url) {\n    if (urlModifier) {\n      return urlModifier(url);\n    }\n\n    return url;\n  };\n\n  this.setURLModifier = function (transform) {\n    urlModifier = transform;\n    return this;\n  };\n}\n\nvar DefaultLoadingManager = new LoadingManager();\nexports.DefaultLoadingManager = DefaultLoadingManager;\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/LoadingManager.js?");
 
-                          default:
-                            throw new Error("THREE.FBXLoader: Unknown property type " + a);
-                        }
-                    }
-                });
-                function t(e, t) {
-                    this.dv = new DataView(e);
-                    this.offset = 0;
-                    this.littleEndian = t !== undefined ? t : true;
-                }
-                a(t.prototype, {
-                    getOffset: function e() {
-                        return this.offset;
-                    },
-                    size: function e() {
-                        return this.dv.buffer.byteLength;
-                    },
-                    skip: function e(t) {
-                        this.offset += t;
-                    },
-                    getBoolean: function e() {
-                        return (this.getUint8() & 1) === 1;
-                    },
-                    getBooleanArray: function e(t) {
-                        var r = [];
-                        for (var a = 0; a < t; a++) {
-                            r.push(this.getBoolean());
-                        }
-                        return r;
-                    },
-                    getUint8: function e() {
-                        var t = this.dv.getUint8(this.offset);
-                        this.offset += 1;
-                        return t;
-                    },
-                    getInt16: function e() {
-                        var t = this.dv.getInt16(this.offset, this.littleEndian);
-                        this.offset += 2;
-                        return t;
-                    },
-                    getInt32: function e() {
-                        var t = this.dv.getInt32(this.offset, this.littleEndian);
-                        this.offset += 4;
-                        return t;
-                    },
-                    getInt32Array: function e(t) {
-                        var r = [];
-                        for (var a = 0; a < t; a++) {
-                            r.push(this.getInt32());
-                        }
-                        return r;
-                    },
-                    getUint32: function e() {
-                        var t = this.dv.getUint32(this.offset, this.littleEndian);
-                        this.offset += 4;
-                        return t;
-                    },
-                    getInt64: function e() {
-                        var t, r;
-                        if (this.littleEndian) {
-                            t = this.getUint32();
-                            r = this.getUint32();
-                        } else {
-                            r = this.getUint32();
-                            t = this.getUint32();
-                        }
-                        if (r & 2147483648) {
-                            r = ~r & 4294967295;
-                            t = ~t & 4294967295;
-                            if (t === 4294967295) r = r + 1 & 4294967295;
-                            t = t + 1 & 4294967295;
-                            return -(r * 4294967296 + t);
-                        }
-                        return r * 4294967296 + t;
-                    },
-                    getInt64Array: function e(t) {
-                        var r = [];
-                        for (var a = 0; a < t; a++) {
-                            r.push(this.getInt64());
-                        }
-                        return r;
-                    },
-                    getUint64: function e() {
-                        var t, r;
-                        if (this.littleEndian) {
-                            t = this.getUint32();
-                            r = this.getUint32();
-                        } else {
-                            r = this.getUint32();
-                            t = this.getUint32();
-                        }
-                        return r * 4294967296 + t;
-                    },
-                    getFloat32: function e() {
-                        var t = this.dv.getFloat32(this.offset, this.littleEndian);
-                        this.offset += 4;
-                        return t;
-                    },
-                    getFloat32Array: function e(t) {
-                        var r = [];
-                        for (var a = 0; a < t; a++) {
-                            r.push(this.getFloat32());
-                        }
-                        return r;
-                    },
-                    getFloat64: function e() {
-                        var t = this.dv.getFloat64(this.offset, this.littleEndian);
-                        this.offset += 8;
-                        return t;
-                    },
-                    getFloat64Array: function e(t) {
-                        var r = [];
-                        for (var a = 0; a < t; a++) {
-                            r.push(this.getFloat64());
-                        }
-                        return r;
-                    },
-                    getArrayBuffer: function e(t) {
-                        var r = this.dv.buffer.slice(this.offset, this.offset + t);
-                        this.offset += t;
-                        return r;
-                    },
-                    getString: function e(t) {
-                        var r = new Uint8Array(t);
-                        for (var a = 0; a < t; a++) {
-                            r[a] = this.getUint8();
-                        }
-                        var n = r.indexOf(0);
-                        if (n >= 0) r = r.slice(0, n);
-                        return i.default.LoaderUtils.decodeText(r);
-                    }
-                });
-                function r() {}
-                a(r.prototype, {
-                    add: function e(t, r) {
-                        this[t] = r;
-                    }
-                });
-                function n(e) {
-                    var t = "Kaydara FBX Binary  \0";
-                    return e.byteLength >= t.length && t === d(e, 0, t.length);
-                }
-                function o(e) {
-                    var t = [ "K", "a", "y", "d", "a", "r", "a", "\\", "F", "B", "X", "\\", "B", "i", "n", "a", "r", "y", "\\", "\\" ];
-                    var r = 0;
-                    function a(t) {
-                        var a = e[t - 1];
-                        e = e.slice(r + t);
-                        r++;
-                        return a;
-                    }
-                    for (var n = 0; n < t.length; ++n) {
-                        var i = a(1);
-                        if (i === t[n]) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                function s(e) {
-                    var t = /FBXVersion: (\d+)/;
-                    var r = e.match(t);
-                    if (r) {
-                        var a = parseInt(r[1]);
-                        return a;
-                    }
-                    throw new Error("THREE.FBXLoader: Cannot find the version number for the file given.");
-                }
-                function f(e) {
-                    return e / 46186158e3;
-                }
-                function u(e) {
-                    var t = e.split(",").map(function(e) {
-                        return parseFloat(e);
-                    });
-                    return t;
-                }
-                function d(e, t, r) {
-                    if (t === undefined) t = 0;
-                    if (r === undefined) r = e.byteLength;
-                    return i.default.LoaderUtils.decodeText(new Uint8Array(e, t, r));
-                }
-                function l(e, t) {
-                    for (var r = 0, a = e.length, n = t.length; r < n; r++, a++) {
-                        e[a] = t[r];
-                    }
-                }
-                function h(e, t, r, a) {
-                    for (var n = r, i = 0; n < a; n++, i++) {
-                        e[i] = t[n];
-                    }
-                    return e;
-                }
-                function v(e, t, r) {
-                    return e.slice(0, t).concat(r).concat(e.slice(t));
-                }
-                return i.default.FBXLoader;
-            }();
-        },
-        134: function(e, t) {
-            "use strict";
-            Object.defineProperty(t, "__esModule", {
-                value: true
-            });
-            var r = Object.assign || function(e) {
-                for (var t = 1; t < arguments.length; t++) {
-                    var r = arguments[t];
-                    for (var a in r) {
-                        if (Object.prototype.hasOwnProperty.call(r, a)) {
-                            e[a] = r[a];
-                        }
-                    }
-                }
-                return e;
-            };
-            function a(e, t, r, a) {
-                this.parameterPositions = e;
-                this._cachedIndex = 0;
-                this.resultBuffer = a !== undefined ? a : new t.constructor(r);
-                this.sampleValues = t;
-                this.valueSize = r;
-            }
-            r(a.prototype, {
-                evaluate: function e(t) {
-                    var r = this.parameterPositions, a = this._cachedIndex, n = r[a], i = r[a - 1];
-                    e: {
-                        t: {
-                            var o;
-                            r: {
-                                a: if (!(t < n)) {
-                                    for (var s = a + 2; ;) {
-                                        if (n === undefined) {
-                                            if (t < i) break a;
-                                            a = r.length;
-                                            this._cachedIndex = a;
-                                            return this.afterEnd_(a - 1, t, i);
-                                        }
-                                        if (a === s) break;
-                                        i = n;
-                                        n = r[++a];
-                                        if (t < n) {
-                                            break t;
-                                        }
-                                    }
-                                    o = r.length;
-                                    break r;
-                                }
-                                if (!(t >= i)) {
-                                    var f = r[1];
-                                    if (t < f) {
-                                        a = 2;
-                                        i = f;
-                                    }
-                                    for (var s = a - 2; ;) {
-                                        if (i === undefined) {
-                                            this._cachedIndex = 0;
-                                            return this.beforeStart_(0, t, n);
-                                        }
-                                        if (a === s) break;
-                                        n = i;
-                                        i = r[--a - 1];
-                                        if (t >= i) {
-                                            break t;
-                                        }
-                                    }
-                                    o = a;
-                                    a = 0;
-                                    break r;
-                                }
-                                break e;
-                            }
-                            while (a < o) {
-                                var u = a + o >>> 1;
-                                if (t < r[u]) {
-                                    o = u;
-                                } else {
-                                    a = u + 1;
-                                }
-                            }
-                            n = r[a];
-                            i = r[a - 1];
-                            if (i === undefined) {
-                                this._cachedIndex = 0;
-                                return this.beforeStart_(0, t, n);
-                            }
-                            if (n === undefined) {
-                                a = r.length;
-                                this._cachedIndex = a;
-                                return this.afterEnd_(a - 1, i, t);
-                            }
-                        }
-                        this._cachedIndex = a;
-                        this.intervalChanged_(a, i, n);
-                    }
-                    return this.interpolate_(a, i, t, n);
-                },
-                settings: null,
-                DefaultSettings_: {},
-                getSettings_: function e() {
-                    return this.settings || this.DefaultSettings_;
-                },
-                copySampleValue_: function e(t) {
-                    var r = this.resultBuffer, a = this.sampleValues, n = this.valueSize, i = t * n;
-                    for (var o = 0; o !== n; ++o) {
-                        r[o] = a[i + o];
-                    }
-                    return r;
-                },
-                interpolate_: function e() {
-                    throw new Error("call to abstract method");
-                },
-                intervalChanged_: function e() {}
-            });
-            r(a.prototype, {
-                beforeStart_: a.prototype.copySampleValue_,
-                afterEnd_: a.prototype.copySampleValue_
-            });
-            t.Interpolant = a;
-        },
-        135: function(e, t) {
-            "use strict";
-            Object.defineProperty(t, "__esModule", {
-                value: true
-            });
-            var r = {
-                decodeText: function e(t) {
-                    if (typeof TextDecoder !== "undefined") {
-                        return new TextDecoder().decode(t);
-                    }
-                    var r = "";
-                    for (var a = 0, n = t.length; a < n; a++) {
-                        r += String.fromCharCode(t[a]);
-                    }
-                    return decodeURIComponent(escape(r));
-                },
-                extractUrlBase: function e(t) {
-                    var r = t.lastIndexOf("/");
-                    if (r === -1) return "./";
-                    return t.substr(0, r + 1);
-                }
-            };
-            t.LoaderUtils = r;
-        },
-        136: function(e, t, r) {
-            "use strict";
-            var a = Object.assign || function(e) {
-                for (var t = 1; t < arguments.length; t++) {
-                    var r = arguments[t];
-                    for (var a in r) {
-                        if (Object.prototype.hasOwnProperty.call(r, a)) {
-                            e[a] = r[a];
-                        }
-                    }
-                }
-                return e;
-            };
-            var n = r(30);
-            var i = o(n);
-            function o(e) {
-                return e && e.__esModule ? e : {
-                    default: e
-                };
-            }
-            e.exports = function() {
-                function e(e) {
-                    this.manager = e !== undefined ? e : i.default.DefaultLoadingManager;
-                    this.loader = new i.default.FileLoader(this.manager);
-                    this.parser = null;
-                    this.meshBuilder = new r(this.manager);
-                    this.animationBuilder = new s();
-                }
-                e.prototype = {
-                    constructor: e,
-                    crossOrigin: undefined,
-                    setCrossOrigin: function e(t) {
-                        this.crossOrigin = t;
-                        return this;
-                    },
-                    load: function e(t, r, a, n) {
-                        var o = this._getParser();
-                        var s = this.meshBuilder.setCrossOrigin(this.crossOrigin);
-                        var f = i.default.LoaderUtils.extractUrlBase(t);
-                        var u = this._extractExtension(t).toLowerCase();
-                        if (u !== "pmd" && u !== "pmx") {
-                            if (n) n(new Error("THREE.MMDLoader: Unknown model file extension ." + u + "."));
-                            return;
-                        }
-                        this[u === "pmd" ? "loadPMD" : "loadPMX"](t, function(e) {
-                            r(s.build(e, f, a, n));
-                        }, a, n);
-                    },
-                    loadAnimation: function e(t, r, a, n, i) {
-                        var o = this.animationBuilder;
-                        this.loadVMD(t, function(e) {
-                            a(r.isCamera ? o.buildCameraAnimation(e) : o.build(e, r));
-                        }, n, i);
-                    },
-                    loadWithAnimation: function e(t, r, a, n, i) {
-                        var o = this;
-                        this.load(t, function(e) {
-                            o.loadAnimation(r, e, function(t) {
-                                a({
-                                    mesh: e,
-                                    animation: t
-                                });
-                            }, n, i);
-                        }, n, i);
-                    },
-                    loadPMD: function e(t, r, a, n) {
-                        var i = this._getParser();
-                        this.loader.setMimeType(undefined).setResponseType("arraybuffer").load(t, function(e) {
-                            r(i.parsePmd(e, true));
-                        }, a, n);
-                    },
-                    loadPMX: function e(t, r, a, n) {
-                        var i = this._getParser();
-                        this.loader.setMimeType(undefined).setResponseType("arraybuffer").load(t, function(e) {
-                            r(i.parsePmx(e, true));
-                        }, a, n);
-                    },
-                    loadVMD: function e(t, r, a, n) {
-                        var i = Array.isArray(t) ? t : [ t ];
-                        var o = [];
-                        var s = i.length;
-                        var f = this;
-                        var u = this._getParser();
-                        this.loader.setMimeType(undefined).setResponseType("arraybuffer");
-                        for (var d = 0, l = i.length; d < l; d++) {
-                            this.loader.load(i[d], function(e) {
-                                o.push(u.parseVmd(e, true));
-                                if (o.length === s) r(u.mergeVmds(o));
-                            }, a, n);
-                        }
-                    },
-                    loadVPD: function e(t, r, a, n, i, o) {
-                        o = o || {};
-                        var s = this._getParser();
-                        this.loader.setMimeType(r ? undefined : "text/plain; charset=shift_jis").setResponseType("text").load(t, function(e) {
-                            a(s.parseVpd(e, true));
-                        }, n, i);
-                    },
-                    _extractExtension: function e(t) {
-                        var r = t.lastIndexOf(".");
-                        return r < 0 ? "" : t.slice(r + 1);
-                    },
-                    _getParser: function e() {
-                        if (this.parser === null) {
-                            if (typeof MMDParser === "undefined") {
-                                throw new Error("THREE.MMDLoader: Import MMDParser https://github.com/takahirox/mmd-parser");
-                            }
-                            this.parser = new MMDParser.Parser();
-                        }
-                        return this.parser;
-                    }
-                };
-                var t = [ "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAN0lEQVRYR+3WQREAMBACsZ5/bWiiMvgEBTt5cW37hjsBBAgQIECAwFwgyfYPCCBAgAABAgTWAh8aBHZBl14e8wAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAOUlEQVRYR+3WMREAMAwDsYY/yoDI7MLwIiP40+RJklfcCCBAgAABAgTqArfb/QMCCBAgQIAAgbbAB3z/e0F3js2cAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAN0lEQVRYR+3WQREAMBACsZ5/B5ilMvgEBTt5cW37hjsBBAgQIECAwFwgyfYPCCBAgAABAgTWAh81dWyx0gFwKAAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAOklEQVRYR+3WoREAMAwDsWb/UQtCy9wxTOQJ/oQ8SXKKGwEECBAgQIBAXeDt7f4BAQQIECBAgEBb4AOz8Hzx7WLY4wAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABPUlEQVRYR+1XwW7CMAy1+f9fZOMysSEOEweEOPRNdm3HbdOyIhAcklPrOs/PLy9RygBALxzcCDQFmgJNgaZAU6Ap0BR4PwX8gsRMVLssMRH5HcpzJEaWL7EVg9F1IHRlyqQohgVr4FGUlUcMJSjcUlDw0zvjeun70cLWmneoyf7NgBTQSniBTQQSuJAZsOnnaczjIMb5hCiuHKxokCrJfVnrctyZL0PkJAJe1HMil4nxeyi3Ypfn1kX51jpPvo/JeCNC4PhVdHdJw2XjBR8brF8PEIhNVn12AgP7uHsTBguBn53MUZCqv7Lp07Pn5k1Ro+uWmUNn7D+M57rtk7aG0Vo73xyF/fbFf0bPJjDXngnGocDTdFhygZjwUQrMNrDcmZlQT50VJ/g/UwNyHpu778+yW+/ksOz/BFo54P4AsUXMfRq7XWsAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACMElEQVRYR+2Xv4pTQRTGf2dubhLdICiii2KnYKHVolhauKWPoGAnNr6BD6CvIVaihYuI2i1ia0BY0MZGRHQXjZj/mSPnnskfNWiWZUlzJ5k7M2cm833nO5Mziej2DWWJRUoCpQKlAntSQCqgw39/iUWAGmh37jrRnVsKlgpiqmkoGVABA7E57fvY+pJDdgKqF6HzFCSADkDq+F6AHABtQ+UMVE5D7zXod7fFNhTEckTbj5XQgHzNN+5tQvc5NG7C6BNkp6D3EmpXHDR+dQAjFLchW3VS9rlw3JBh+B7ys5Cf9z0GW1C/7P32AyBAOAz1q4jGliIH3YPuBnSfQX4OGreTIgEYQb/pBDtPnEQ4CivXYPAWBk13oHrB54yA9QuSn2H4AcKRpEILDt0BUzj+RLR1V5EqjD66NPRBVpLcQwjHoHYJOhsQv6U4mnzmrIXJCFr4LDwm/xBUoboG9XX4cc9VKdYoSA2yk5NQLJaKDUjTBoveG3Z2TElTxwjNK4M3LEZgUdDdruvcXzKBpStgp2NPiWi3ks9ZXxIoFVi+AvHLdc9TqtjL3/aYjpPlrzOcEnK62Szhimdd7xX232zFDTgtxezOu3WNMRLjiKgjtOhHVMd1loynVHvOgjuIIJMaELEqhJAV/RCSLbWTcfPFakFgFlALTRRvx+ok6Hlp/Q+v3fmx90bMyUzaEAhmM3KvHlXTL5DxnbGf/1M8RNNACLL5MNtPxP/mypJAqcDSFfgFhpYqWUzhTEAAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=" ];
-                function r(e) {
-                    this.geometryBuilder = new n();
-                    this.materialBuilder = new o(e);
-                }
-                r.prototype = {
-                    constructor: r,
-                    crossOrigin: undefined,
-                    setCrossOrigin: function e(t) {
-                        this.crossOrigin = t;
-                        return this;
-                    },
-                    build: function e(t, r, a, n) {
-                        var o = this.geometryBuilder.build(t);
-                        var s = this.materialBuilder.setCrossOrigin(this.crossOrigin).setTexturePath(r).build(t, o, a, n);
-                        var f = new i.default.SkinnedMesh(o, s);
-                        return f;
-                    }
-                };
-                function n() {}
-                n.prototype = {
-                    constructor: n,
-                    build: function e(t) {
-                        var r = [];
-                        var a = [];
-                        var n = [];
-                        var o = [];
-                        var s = [];
-                        var f = [];
-                        var u = [];
-                        var d = [];
-                        var l = [];
-                        var h = [];
-                        var v = [];
-                        var c = [];
-                        var p = [];
-                        var A = [];
-                        var g = 0;
-                        var m = {};
-                        for (var y = 0; y < t.metadata.vertexCount; y++) {
-                            var b = t.vertices[y];
-                            for (var C = 0, x = b.position.length; C < x; C++) {
-                                r.push(b.position[C]);
-                            }
-                            for (var C = 0, x = b.normal.length; C < x; C++) {
-                                n.push(b.normal[C]);
-                            }
-                            for (var C = 0, x = b.uv.length; C < x; C++) {
-                                a.push(b.uv[C]);
-                            }
-                            for (var C = 0; C < 4; C++) {
-                                u.push(b.skinIndices.length - 1 >= C ? b.skinIndices[C] : 0);
-                            }
-                            for (var C = 0; C < 4; C++) {
-                                d.push(b.skinWeights.length - 1 >= C ? b.skinWeights[C] : 0);
-                            }
-                        }
-                        for (var y = 0; y < t.metadata.faceCount; y++) {
-                            var E = t.faces[y];
-                            for (var C = 0, x = E.indices.length; C < x; C++) {
-                                o.push(E.indices[C]);
-                            }
-                        }
-                        for (var y = 0; y < t.metadata.materialCount; y++) {
-                            var w = t.materials[y];
-                            s.push({
-                                offset: g * 3,
-                                count: w.faceCount * 3
-                            });
-                            g += w.faceCount;
-                        }
-                        for (var y = 0; y < t.metadata.rigidBodyCount; y++) {
-                            var T = t.rigidBodies[y];
-                            var B = m[T.boneIndex];
-                            B = B === undefined ? T.type : Math.max(T.type, B);
-                            m[T.boneIndex] = B;
-                        }
-                        for (var y = 0; y < t.metadata.boneCount; y++) {
-                            var L = t.bones[y];
-                            var I = {
-                                parent: L.parentIndex,
-                                name: L.name,
-                                pos: L.position.slice(0, 3),
-                                rotq: [ 0, 0, 0, 1 ],
-                                scl: [ 1, 1, 1 ],
-                                rigidBodyType: m[y] !== undefined ? m[y] : -1
-                            };
-                            if (I.parent !== -1) {
-                                I.pos[0] -= t.bones[I.parent].position[0];
-                                I.pos[1] -= t.bones[I.parent].position[1];
-                                I.pos[2] -= t.bones[I.parent].position[2];
-                            }
-                            f.push(I);
-                        }
-                        if (t.metadata.format === "pmd") {
-                            for (var y = 0; y < t.metadata.ikCount; y++) {
-                                var R = t.iks[y];
-                                var U = {
-                                    target: R.target,
-                                    effector: R.effector,
-                                    iteration: R.iteration,
-                                    maxAngle: R.maxAngle * 4,
-                                    links: []
-                                };
-                                for (var C = 0, x = R.links.length; C < x; C++) {
-                                    var _ = {};
-                                    _.index = R.links[C].index;
-                                    _.enabled = true;
-                                    if (t.bones[_.index].name.indexOf("ひざ") >= 0) {
-                                        _.limitation = new i.default.Vector3(1, 0, 0);
-                                    }
-                                    U.links.push(_);
-                                }
-                                v.push(U);
-                            }
-                        } else {
-                            for (var y = 0; y < t.metadata.boneCount; y++) {
-                                var R = t.bones[y].ik;
-                                if (R === undefined) continue;
-                                var U = {
-                                    target: y,
-                                    effector: R.effector,
-                                    iteration: R.iteration,
-                                    maxAngle: R.maxAngle,
-                                    links: []
-                                };
-                                for (var C = 0, x = R.links.length; C < x; C++) {
-                                    var _ = {};
-                                    _.index = R.links[C].index;
-                                    _.enabled = true;
-                                    if (R.links[C].angleLimitation === 1) {
-                                        var M = R.links[C].lowerLimitationAngle;
-                                        var D = R.links[C].upperLimitationAngle;
-                                        var k = -D[0];
-                                        var S = -D[1];
-                                        D[0] = -M[0];
-                                        D[1] = -M[1];
-                                        M[0] = k;
-                                        M[1] = S;
-                                        _.rotationMin = new i.default.Vector3().fromArray(M);
-                                        _.rotationMax = new i.default.Vector3().fromArray(D);
-                                    }
-                                    U.links.push(_);
-                                }
-                                v.push(U);
-                            }
-                        }
-                        if (t.metadata.format === "pmx") {
-                            for (var y = 0; y < t.metadata.boneCount; y++) {
-                                var L = t.bones[y];
-                                var F = L.grant;
-                                if (F === undefined) continue;
-                                var U = {
-                                    index: y,
-                                    parentIndex: F.parentIndex,
-                                    ratio: F.ratio,
-                                    isLocal: F.isLocal,
-                                    affectRotation: F.affectRotation,
-                                    affectPosition: F.affectPosition,
-                                    transformationClass: L.transformationClass
-                                };
-                                c.push(U);
-                            }
-                            c.sort(function(e, t) {
-                                return e.transformationClass - t.transformationClass;
-                            });
-                        }
-                        function O(e, r, a) {
-                            for (var n = 0; n < r.elementCount; n++) {
-                                var i = r.elements[n];
-                                var o;
-                                if (t.metadata.format === "pmd") {
-                                    o = t.morphs[0].elements[i.index].index;
-                                } else {
-                                    o = i.index;
-                                }
-                                e.array[o * 3 + 0] += i.position[0] * a;
-                                e.array[o * 3 + 1] += i.position[1] * a;
-                                e.array[o * 3 + 2] += i.position[2] * a;
-                            }
-                        }
-                        for (var y = 0; y < t.metadata.morphCount; y++) {
-                            var P = t.morphs[y];
-                            var Q = {
-                                name: P.name
-                            };
-                            var V = new i.default.Float32BufferAttribute(t.metadata.vertexCount * 3, 3);
-                            V.name = P.name;
-                            for (var C = 0; C < t.metadata.vertexCount * 3; C++) {
-                                V.array[C] = r[C];
-                            }
-                            if (t.metadata.format === "pmd") {
-                                if (y !== 0) {
-                                    O(V, P, 1);
-                                }
-                            } else {
-                                if (P.type === 0) {
-                                    for (var C = 0; C < P.elementCount; C++) {
-                                        var N = t.morphs[P.elements[C].index];
-                                        var X = P.elements[C].ratio;
-                                        if (N.type === 1) {
-                                            O(V, N, X);
-                                        } else {}
-                                    }
-                                } else if (P.type === 1) {
-                                    O(V, P, 1);
-                                } else if (P.type === 2) {} else if (P.type === 3) {} else if (P.type === 4) {} else if (P.type === 5) {} else if (P.type === 6) {} else if (P.type === 7) {} else if (P.type === 8) {}
-                            }
-                            l.push(Q);
-                            h.push(V);
-                        }
-                        for (var y = 0; y < t.metadata.rigidBodyCount; y++) {
-                            var j = t.rigidBodies[y];
-                            var Q = {};
-                            for (var z in j) {
-                                Q[z] = j[z];
-                            }
-                            if (t.metadata.format === "pmx") {
-                                if (Q.boneIndex !== -1) {
-                                    var I = t.bones[Q.boneIndex];
-                                    Q.position[0] -= I.position[0];
-                                    Q.position[1] -= I.position[1];
-                                    Q.position[2] -= I.position[2];
-                                }
-                            }
-                            p.push(Q);
-                        }
-                        for (var y = 0; y < t.metadata.constraintCount; y++) {
-                            var G = t.constraints[y];
-                            var Q = {};
-                            for (var z in G) {
-                                Q[z] = G[z];
-                            }
-                            var H = p[Q.rigidBodyIndex1];
-                            var Y = p[Q.rigidBodyIndex2];
-                            if (H.type !== 0 && Y.type === 2) {
-                                if (H.boneIndex !== -1 && Y.boneIndex !== -1 && t.bones[Y.boneIndex].parentIndex === H.boneIndex) {
-                                    Y.type = 1;
-                                }
-                            }
-                            A.push(Q);
-                        }
-                        var K = new i.default.BufferGeometry();
-                        K.addAttribute("position", new i.default.Float32BufferAttribute(r, 3));
-                        K.addAttribute("normal", new i.default.Float32BufferAttribute(n, 3));
-                        K.addAttribute("uv", new i.default.Float32BufferAttribute(a, 2));
-                        K.addAttribute("skinIndex", new i.default.Uint16BufferAttribute(u, 4));
-                        K.addAttribute("skinWeight", new i.default.Float32BufferAttribute(d, 4));
-                        K.setIndex(o);
-                        for (var y = 0, W = s.length; y < W; y++) {
-                            K.addGroup(s[y].offset, s[y].count, y);
-                        }
-                        K.bones = f;
-                        K.morphTargets = l;
-                        K.morphAttributes.position = h;
-                        K.userData.MMD = {
-                            bones: f,
-                            iks: v,
-                            grants: c,
-                            rigidBodies: p,
-                            constraints: A,
-                            format: t.metadata.format
-                        };
-                        K.computeBoundingSphere();
-                        return K;
-                    }
-                };
-                function o(e) {
-                    this.manager = e;
-                    this.tgaLoader = null;
-                }
-                o.prototype = {
-                    constructor: o,
-                    crossOrigin: undefined,
-                    texturePath: undefined,
-                    setCrossOrigin: function e(t) {
-                        this.crossOrigin = t;
-                        return this;
-                    },
-                    setTexturePath: function e(t) {
-                        this.texturePath = t;
-                        return this;
-                    },
-                    build: function e(t, r, a, n) {
-                        var o = [];
-                        var s = {};
-                        this.textureLoader.setCrossOrigin(this.crossOrigin);
-                        for (var f = 0; f < t.metadata.materialCount; f++) {
-                            var u = t.materials[f];
-                            var d = {
-                                userData: {}
-                            };
-                            if (u.name !== undefined) d.name = u.name;
-                            d.color = new i.default.Color().fromArray(u.diffuse);
-                            d.opacity = u.diffuse[3];
-                            d.specular = new i.default.Color().fromArray(u.specular);
-                            d.emissive = new i.default.Color().fromArray(u.ambient);
-                            d.shininess = Math.max(u.shininess, 1e-4);
-                            d.transparent = d.opacity !== 1;
-                            d.skinning = r.bones.length > 0 ? true : false;
-                            d.morphTargets = r.morphTargets.length > 0 ? true : false;
-                            d.lights = true;
-                            d.fog = true;
-                            d.blending = i.default.CustomBlending;
-                            d.blendSrc = i.default.SrcAlphaFactor;
-                            d.blendDst = i.default.OneMinusSrcAlphaFactor;
-                            d.blendSrcAlpha = i.default.SrcAlphaFactor;
-                            d.blendDstAlpha = i.default.DstAlphaFactor;
-                            if (t.metadata.format === "pmx" && (u.flag & 1) === 1) {
-                                d.side = i.default.DoubleSide;
-                            } else {
-                                d.side = d.opacity === 1 ? i.default.FrontSide : i.default.DoubleSide;
-                            }
-                            if (t.metadata.format === "pmd") {
-                                if (u.fileName) {
-                                    var l = u.fileName;
-                                    var h = l.split("*");
-                                    d.map = this._loadTexture(h[0], s);
-                                    if (h.length > 1) {
-                                        var v = h[1].slice(-4).toLowerCase();
-                                        d.envMap = this._loadTexture(h[1], s, {
-                                            sphericalReflectionMapping: true
-                                        });
-                                        d.combine = v === ".sph" ? i.default.MultiplyOperation : i.default.AddOperation;
-                                    }
-                                }
-                                var c = u.toonIndex === -1 ? "toon00.bmp" : t.toonTextures[u.toonIndex].fileName;
-                                d.gradientMap = this._loadTexture(c, s, {
-                                    isToonTexture: true,
-                                    isDefaultToonTexture: this._isDefaultToonTexture(c)
-                                });
-                                d.userData.outlineParameters = {
-                                    thickness: u.edgeFlag === 1 ? .003 : 0,
-                                    color: [ 0, 0, 0 ],
-                                    alpha: 1,
-                                    visible: u.edgeFlag === 1
-                                };
-                            } else {
-                                if (u.textureIndex !== -1) {
-                                    d.map = this._loadTexture(t.textures[u.textureIndex], s);
-                                }
-                                if (u.envTextureIndex !== -1 && (u.envFlag === 1 || u.envFlag == 2)) {
-                                    d.envMap = this._loadTexture(t.textures[u.envTextureIndex], s, {
-                                        sphericalReflectionMapping: true
-                                    });
-                                    d.combine = u.envFlag === 1 ? i.default.MultiplyOperation : i.default.AddOperation;
-                                }
-                                var c, p;
-                                if (u.toonIndex === -1 || u.toonFlag !== 0) {
-                                    c = "toon" + ("0" + (u.toonIndex + 1)).slice(-2) + ".bmp";
-                                    p = true;
-                                } else {
-                                    c = t.textures[u.toonIndex];
-                                    p = false;
-                                }
-                                d.gradientMap = this._loadTexture(c, s, {
-                                    isToonTexture: true,
-                                    isDefaultToonTexture: p
-                                });
-                                d.userData.outlineParameters = {
-                                    thickness: u.edgeSize / 300,
-                                    color: u.edgeColor.slice(0, 3),
-                                    alpha: u.edgeColor[3],
-                                    visible: (u.flag & 16) !== 0 && u.edgeSize > 0
-                                };
-                            }
-                            if (d.map !== undefined) {
-                                if (!d.transparent) {
-                                    this._checkImageTransparency(d.map, r, f);
-                                }
-                                d.emissive.multiplyScalar(.2);
-                            }
-                            o.push(new i.default.MeshToonMaterial(d));
-                        }
-                        if (t.metadata.format === "pmx") {
-                            var A = function e(t, r) {
-                                for (var a = 0, n = t.length; a < n; a++) {
-                                    var i = t[a];
-                                    if (i.index === -1) continue;
-                                    var o = r[i.index];
-                                    if (o.opacity !== i.diffuse[3]) {
-                                        o.transparent = true;
-                                    }
-                                }
-                            };
-                            for (var f = 0, g = t.morphs.length; f < g; f++) {
-                                var m = t.morphs[f];
-                                var y = m.elements;
-                                if (m.type === 0) {
-                                    for (var b = 0, C = y.length; b < C; b++) {
-                                        var x = t.morphs[y[b].index];
-                                        if (x.type !== 8) continue;
-                                        A(x.elements, o);
-                                    }
-                                } else if (m.type === 8) {
-                                    A(y, o);
-                                }
-                            }
-                        }
-                        return o;
-                    },
-                    _getTGALoader: function e() {
-                        if (this.tgaLoader === null) {
-                            if (i.default.TGALoader === undefined) {
-                                throw new Error("THREE.MMDLoader: Import THREE.TGALoader");
-                            }
-                            this.tgaLoader = new i.default.TGALoader(this.manager);
-                        }
-                        return this.tgaLoader;
-                    },
-                    _isDefaultToonTexture: function e(t) {
-                        if (t.length !== 10) return false;
-                        return /toon(10|0[0-9])\.bmp/.test(t);
-                    },
-                    _loadTexture: function e(r, a, n, o, s) {
-                        n = n || {};
-                        var f = this;
-                        var u;
-                        if (n.isDefaultToonTexture === true) {
-                            var d;
-                            try {
-                                d = parseInt(r.match("toon([0-9]{2}).bmp$")[1]);
-                            } catch (e) {
-                                console.warn("THREE.MMDLoader: " + r + " seems like a " + "not right default texture path. Using toon00.bmp instead.");
-                                d = 0;
-                            }
-                            u = t[d];
-                        } else {
-                            u = this.texturePath + r;
-                        }
-                        if (a[u] !== undefined) return a[u];
-                        var l = i.default.Loader.Handlers.get(u);
-                        if (l === null) {
-                            l = r.slice(-4).toLowerCase() === ".tga" ? this._getTGALoader() : this.textureLoader;
-                        }
-                        var h = l.load(u, function(e) {
-                            if (n.isToonTexture === true) {
-                                e.image = f._getRotatedImage(e.image);
-                            }
-                            e.flipY = false;
-                            e.wrapS = i.default.RepeatWrapping;
-                            e.wrapT = i.default.RepeatWrapping;
-                            for (var t = 0; t < h.readyCallbacks.length; t++) {
-                                h.readyCallbacks[t](h);
-                            }
-                            delete h.readyCallbacks;
-                        }, o, s);
-                        if (n.sphericalReflectionMapping === true) {
-                            h.mapping = i.default.SphericalReflectionMapping;
-                        }
-                        h.readyCallbacks = [];
-                        a[u] = h;
-                        return h;
-                    },
-                    _getRotatedImage: function e(t) {
-                        var r = document.createElement("canvas");
-                        var a = r.getContext("2d");
-                        var n = t.width;
-                        var i = t.height;
-                        r.width = n;
-                        r.height = i;
-                        a.clearRect(0, 0, n, i);
-                        a.translate(n / 2, i / 2);
-                        a.rotate(.5 * Math.PI);
-                        a.translate(-n / 2, -i / 2);
-                        a.drawImage(t, 0, 0);
-                        return a.getImageData(0, 0, n, i);
-                    },
-                    _checkImageTransparency: function e(t, r, a) {
-                        t.readyCallbacks.push(function(e) {
-                            function n(e) {
-                                var t = document.createElement("canvas");
-                                t.width = e.width;
-                                t.height = e.height;
-                                var r = t.getContext("2d");
-                                r.drawImage(e, 0, 0);
-                                return r.getImageData(0, 0, t.width, t.height);
-                            }
-                            function i(e, t, r) {
-                                var a = e.width;
-                                var n = e.height;
-                                var i = e.data;
-                                var s = 253;
-                                if (i.length / (a * n) !== 4) return false;
-                                for (var f = 0; f < r.length; f += 3) {
-                                    var u = {
-                                        x: 0,
-                                        y: 0
-                                    };
-                                    for (var d = 0; d < 3; d++) {
-                                        var l = r[f * 3 + d];
-                                        var h = {
-                                            x: t[l * 2 + 0],
-                                            y: t[l * 2 + 1]
-                                        };
-                                        if (o(e, h) < s) return true;
-                                        u.x += h.x;
-                                        u.y += h.y;
-                                    }
-                                    u.x /= 3;
-                                    u.y /= 3;
-                                    if (o(e, u) < s) return true;
-                                }
-                                return false;
-                            }
-                            function o(e, t) {
-                                var r = e.width;
-                                var a = e.height;
-                                var n = Math.round(t.x * r) % r;
-                                var i = Math.round(t.y * a) % a;
-                                if (n < 0) n += r;
-                                if (i < 0) i += a;
-                                var o = i * r + n;
-                                return e.data[o * 4 + 3];
-                            }
-                            var s = e.image.data !== undefined ? e.image : n(e.image);
-                            var f = r.groups[a];
-                            if (i(s, r.attributes.uv.array, r.index.array.slice(f.start, f.start + f.count))) {
-                                t.transparent = true;
-                            }
-                        });
-                    }
-                };
-                function s() {}
-                s.prototype = {
-                    constructor: s,
-                    build: function e(t, r) {
-                        var a = this.buildSkeletalAnimation(t, r).tracks;
-                        var n = this.buildMorphAnimation(t, r).tracks;
-                        for (var o = 0, s = n.length; o < s; o++) {
-                            a.push(n[o]);
-                        }
-                        return new i.default.AnimationClip("", -1, a);
-                    },
-                    buildSkeletalAnimation: function e(t, r) {
-                        function a(e, t, r) {
-                            e.push(t[r + 0] / 127);
-                            e.push(t[r + 8] / 127);
-                            e.push(t[r + 4] / 127);
-                            e.push(t[r + 12] / 127);
-                        }
-                        var n = [];
-                        var o = {};
-                        var s = r.skeleton.bones;
-                        var f = {};
-                        for (var u = 0, d = s.length; u < d; u++) {
-                            f[s[u].name] = true;
-                        }
-                        for (var u = 0; u < t.metadata.motionCount; u++) {
-                            var l = t.motions[u];
-                            var h = l.boneName;
-                            if (f[h] === undefined) continue;
-                            o[h] = o[h] || [];
-                            o[h].push(l);
-                        }
-                        for (var v in o) {
-                            var c = o[v];
-                            c.sort(function(e, t) {
-                                return e.frameNum - t.frameNum;
-                            });
-                            var p = [];
-                            var A = [];
-                            var g = [];
-                            var m = [];
-                            var y = [];
-                            var b = r.skeleton.getBoneByName(v).position.toArray();
-                            for (var u = 0, d = c.length; u < d; u++) {
-                                var C = c[u].frameNum / 30;
-                                var x = c[u].position;
-                                var E = c[u].rotation;
-                                var w = c[u].interpolation;
-                                p.push(C);
-                                for (var T = 0; T < 3; T++) {
-                                    A.push(b[T] + x[T]);
-                                }
-                                for (var T = 0; T < 4; T++) {
-                                    g.push(E[T]);
-                                }
-                                for (var T = 0; T < 3; T++) {
-                                    a(m, w, T);
-                                }
-                                a(y, w, 3);
-                            }
-                            var B = ".bones[" + v + "]";
-                            n.push(this._createTrack(B + ".position", i.default.VectorKeyframeTrack, p, A, m));
-                            n.push(this._createTrack(B + ".quaternion", i.default.QuaternionKeyframeTrack, p, g, y));
-                        }
-                        return new i.default.AnimationClip("", -1, n);
-                    },
-                    buildMorphAnimation: function e(t, r) {
-                        var a = [];
-                        var n = {};
-                        var o = r.morphTargetDictionary;
-                        for (var s = 0; s < t.metadata.morphCount; s++) {
-                            var f = t.morphs[s];
-                            var u = f.morphName;
-                            if (o[u] === undefined) continue;
-                            n[u] = n[u] || [];
-                            n[u].push(f);
-                        }
-                        for (var d in n) {
-                            var l = n[d];
-                            l.sort(function(e, t) {
-                                return e.frameNum - t.frameNum;
-                            });
-                            var h = [];
-                            var v = [];
-                            for (var s = 0, c = l.length; s < c; s++) {
-                                h.push(l[s].frameNum / 30);
-                                v.push(l[s].weight);
-                            }
-                            a.push(new i.default.NumberKeyframeTrack(".morphTargetInfluences[" + o[d] + "]", h, v));
-                        }
-                        return new i.default.AnimationClip("", -1, a);
-                    },
-                    buildCameraAnimation: function e(t) {
-                        function r(e, t) {
-                            e.push(t.x);
-                            e.push(t.y);
-                            e.push(t.z);
-                        }
-                        function a(e, t) {
-                            e.push(t.x);
-                            e.push(t.y);
-                            e.push(t.z);
-                            e.push(t.w);
-                        }
-                        function n(e, t, r) {
-                            e.push(t[r * 4 + 0] / 127);
-                            e.push(t[r * 4 + 1] / 127);
-                            e.push(t[r * 4 + 2] / 127);
-                            e.push(t[r * 4 + 3] / 127);
-                        }
-                        var o = [];
-                        var s = t.cameras === undefined ? [] : t.cameras.slice();
-                        s.sort(function(e, t) {
-                            return e.frameNum - t.frameNum;
-                        });
-                        var f = [];
-                        var u = [];
-                        var d = [];
-                        var l = [];
-                        var h = [];
-                        var v = [];
-                        var c = [];
-                        var p = [];
-                        var A = [];
-                        var g = new i.default.Quaternion();
-                        var m = new i.default.Euler();
-                        var y = new i.default.Vector3();
-                        var b = new i.default.Vector3();
-                        for (var C = 0, x = s.length; C < x; C++) {
-                            var E = s[C];
-                            var w = E.frameNum / 30;
-                            var T = E.position;
-                            var B = E.rotation;
-                            var L = E.distance;
-                            var I = E.fov;
-                            var R = E.interpolation;
-                            f.push(w);
-                            y.set(0, 0, -L);
-                            b.set(T[0], T[1], T[2]);
-                            m.set(-B[0], -B[1], -B[2]);
-                            g.setFromEuler(m);
-                            y.add(b);
-                            y.applyQuaternion(g);
-                            r(u, b);
-                            a(d, g);
-                            r(l, y);
-                            h.push(I);
-                            for (var U = 0; U < 3; U++) {
-                                n(v, R, U);
-                            }
-                            n(c, R, 3);
-                            for (var U = 0; U < 3; U++) {
-                                n(p, R, 4);
-                            }
-                            n(A, R, 5);
-                        }
-                        var o = [];
-                        o.push(this._createTrack("target.position", i.default.VectorKeyframeTrack, f, u, v));
-                        o.push(this._createTrack(".quaternion", i.default.QuaternionKeyframeTrack, f, d, c));
-                        o.push(this._createTrack(".position", i.default.VectorKeyframeTrack, f, l, p));
-                        o.push(this._createTrack(".fov", i.default.NumberKeyframeTrack, f, h, A));
-                        return new i.default.AnimationClip("", -1, o);
-                    },
-                    _createTrack: function e(t, r, a, n, i) {
-                        if (a.length > 2) {
-                            a = a.slice();
-                            n = n.slice();
-                            i = i.slice();
-                            var o = n.length / a.length;
-                            var s = i.length / a.length;
-                            var u = 1;
-                            for (var d = 2, l = a.length; d < l; d++) {
-                                for (var h = 0; h < o; h++) {
-                                    if (n[u * o + h] !== n[(u - 1) * o + h] || n[u * o + h] !== n[d * o + h]) {
-                                        u++;
-                                        break;
-                                    }
-                                }
-                                if (d > u) {
-                                    a[u] = a[d];
-                                    for (var h = 0; h < o; h++) {
-                                        n[u * o + h] = n[d * o + h];
-                                    }
-                                    for (var h = 0; h < s; h++) {
-                                        i[u * s + h] = i[d * s + h];
-                                    }
-                                }
-                            }
-                            a.length = u + 1;
-                            n.length = (u + 1) * o;
-                            i.length = (u + 1) * s;
-                        }
-                        var v = new r(t, a, n);
-                        v.createInterpolant = function e(t) {
-                            return new f(this.times, this.values, this.getValueSize(), t, new Float32Array(i));
-                        };
-                        return v;
-                    }
-                };
-                function f(e, t, r, a, n) {
-                    i.default.Interpolant.call(this, e, t, r, a);
-                    this.interpolationParams = n;
-                }
-                f.prototype = a(Object.create(i.default.Interpolant.prototype), {
-                    constructor: f,
-                    interpolate_: function e(t, r, a, n) {
-                        var o = this.resultBuffer;
-                        var s = this.sampleValues;
-                        var f = this.valueSize;
-                        var u = this.interpolationParams;
-                        var d = t * f;
-                        var l = d - f;
-                        var h = n - r < 1 / 30 * 1.5 ? 0 : (a - r) / (n - r);
-                        if (f === 4) {
-                            var v = u[t * 4 + 0];
-                            var c = u[t * 4 + 1];
-                            var p = u[t * 4 + 2];
-                            var A = u[t * 4 + 3];
-                            var g = this._calculate(v, c, p, A, h);
-                            i.default.Quaternion.slerpFlat(o, 0, s, l, s, d, g);
-                        } else if (f === 3) {
-                            for (var m = 0; m !== f; ++m) {
-                                var v = u[t * 12 + m * 4 + 0];
-                                var c = u[t * 12 + m * 4 + 1];
-                                var p = u[t * 12 + m * 4 + 2];
-                                var A = u[t * 12 + m * 4 + 3];
-                                var g = this._calculate(v, c, p, A, h);
-                                o[m] = s[l + m] * (1 - g) + s[d + m] * g;
-                            }
-                        } else {
-                            var v = u[t * 4 + 0];
-                            var c = u[t * 4 + 1];
-                            var p = u[t * 4 + 2];
-                            var A = u[t * 4 + 3];
-                            var g = this._calculate(v, c, p, A, h);
-                            o[0] = s[l] * (1 - g) + s[d] * g;
-                        }
-                        return o;
-                    },
-                    _calculate: function e(t, r, a, n, i) {
-                        var o = .5;
-                        var s = o;
-                        var f = 1 - s;
-                        var u = 15;
-                        var d = 1e-5;
-                        var l = Math;
-                        var h, v, c;
-                        for (var p = 0; p < u; p++) {
-                            h = 3 * f * f * s;
-                            v = 3 * f * s * s;
-                            c = s * s * s;
-                            var A = h * t + v * r + c - i;
-                            if (l.abs(A) < d) break;
-                            o /= 2;
-                            s += A < 0 ? o : -o;
-                            f = 1 - s;
-                        }
-                        return h * a + v * n + c;
-                    }
-                });
-                return e;
-            }();
-        },
-        157: function(e, t, r) {
-            "use strict";
-            var a = r(136);
-            var n = u(a);
-            var i = r(133);
-            var o = u(i);
-            var s = r(132);
-            var f = u(s);
-            function u(e) {
-                return e && e.__esModule ? e : {
-                    default: e
-                };
-            }
-            var d = typeof window !== "undefined";
-            var l = {
-                MMDLoader: function e(t, r, a, i) {
-                    var o = new n.default();
-                    o.load(t, function(e) {
-                        r(e);
-                    }, a, i);
-                },
-                FBXLoader: function e(t, r, a, n) {
-                    var i = new o.default();
-                    i.load(t, function(e) {
-                        for (var t in e.Objects.Geometry) {
-                            var a = e.Objects.Geometry[t];
-                            a.PolygonVertexIndex.a = a.PolygonVertexIndex.a.map(function(e, t) {
-                                if (e < 0) return -e - 1;
-                                return e;
-                            });
-                        }
-                        r(e);
-                    }, a, n);
-                },
-                DDSLoader: f.default
-            };
-            var h = {
-                onCreate: function e(t) {
-                    if (this.$isWebgl) {
-                        var r = this.$gl;
-                        this.ddsLoader = function(e, t) {
-                            if (!e) return;
-                            var a = r.createTexture();
-                            var n = r.getExtension("WEBGL_compressed_texture_s3tc") || r.getExtension("MOZ_WEBGL_compressed_texture_s3tc") || r.getExtension("WEBKIT_WEBGL_compressed_texture_s3tc");
-                            var i = {
-                                width: 0,
-                                height: 0
-                            };
-                            var o = new f.default();
-                            o.load(e, function(e) {
-                                r.bindTexture(r.TEXTURE_2D, a);
-                                r.compressedTexImage2D(r.TEXTURE_2D, 0, e.format, e.image.width, e.image.height, 0, e.mipmaps[0].data);
-                                r.texParameteri(r.TEXTURE_2D, r.TEXTURE_MAG_FILTER, r.LINEAR);
-                                r.texParameteri(r.TEXTURE_2D, r.TEXTURE_MIN_FILTER, r.LINEAR);
-                                i.width = e.image.width;
-                                i.height = e.image.height;
-                                i.texture = a;
-                                t && t(e);
-                            }, null, null);
-                            return i;
-                        };
-                    }
-                }
-            };
-            if (d && window.Easycanvas) {
-                Easycanvas.loaders = l;
-                Easycanvas.use(h);
-            } else {
-                e.exports = l;
-            }
-        }
-    });
-});
+/***/ }),
 
+/***/ "./src/plugin-webgl/threeLoaders/MMDLoader.js":
+/*!****************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/MMDLoader.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _mockThree = _interopRequireDefault(__webpack_require__(/*! ./mock-three.js */ \"./src/plugin-webgl/threeLoaders/mock-three.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * MMD Loaders\n * - Based on and modified from threejs loaders.\n *\n * ********** **/\n\n/**\n * @author takahiro / https://github.com/takahirox\n *\n * Dependencies\n *  - mmd-parser https://github.com/takahirox/mmd-parser\n *  - THREE.TGALoader\n *  - THREE.OutlineEffect\n *\n * MMDLoader creates Three.js Objects from MMD resources as\n * PMD, PMX, VMD, and VPD files.\n *\n * PMD/PMX is a model data format, VMD is a motion data format\n * VPD is a posing data format used in MMD(Miku Miku Dance).\n *\n * MMD official site\n *  - http://www.geocities.jp/higuchuu4/index_e.htm\n *\n * PMD, VMD format (in Japanese)\n *  - http://blog.goo.ne.jp/torisu_tetosuki/e/209ad341d3ece2b1b4df24abf619d6e4\n *\n * PMX format\n *  - https://gist.github.com/felixjones/f8a06bd48f9da9a4539f\n *\n * TODO\n *  - light motion in vmd support.\n *  - SDEF support.\n *  - uv/material/bone morphing support.\n *  - more precise grant skinning support.\n *  - shadow support.\n */\nmodule.exports = function () {\n  // THREE.MMDLoader = ( function () {\n\n  /**\n   * @param {THREE.LoadingManager} manager\n   */\n  function MMDLoader(manager) {\n    this.manager = manager !== undefined ? manager : _mockThree[\"default\"].DefaultLoadingManager;\n    this.loader = new _mockThree[\"default\"].FileLoader(this.manager);\n    this.parser = null; // lazy generation\n\n    this.meshBuilder = new MeshBuilder(this.manager);\n    this.animationBuilder = new AnimationBuilder();\n  }\n\n  MMDLoader.prototype = {\n    constructor: MMDLoader,\n    crossOrigin: undefined,\n\n    /**\n     * @param {string} value\n     * @return {THREE.MMDLoader}\n     */\n    setCrossOrigin: function setCrossOrigin(crossOrigin) {\n      this.crossOrigin = crossOrigin;\n      return this;\n    },\n    // Load MMD assets as Three.js Object\n\n    /**\n     * Loads Model file (.pmd or .pmx) as a THREE.SkinnedMesh.\n     *\n     * @param {string} url - url to Model(.pmd or .pmx) file\n     * @param {function} onLoad\n     * @param {function} onProgress\n     * @param {function} onError\n     */\n    load: function load(url, onLoad, onProgress, onError) {\n      var parser = this._getParser();\n\n      var builder = this.meshBuilder.setCrossOrigin(this.crossOrigin);\n\n      var texturePath = _mockThree[\"default\"].LoaderUtils.extractUrlBase(url);\n\n      var modelExtension = this._extractExtension(url).toLowerCase(); // Should I detect by seeing header?\n\n\n      if (modelExtension !== 'pmd' && modelExtension !== 'pmx') {\n        if (onError) onError(new Error('THREE.MMDLoader: Unknown model file extension .' + modelExtension + '.'));\n        return;\n      }\n\n      this[modelExtension === 'pmd' ? 'loadPMD' : 'loadPMX'](url, function (data) {\n        onLoad(builder.build(data, texturePath, onProgress, onError));\n      }, onProgress, onError);\n    },\n\n    /**\n     * Loads Motion file(s) (.vmd) as a THREE.AnimationClip.\n     * If two or more files are specified, they'll be merged.\n     *\n     * @param {string|Array<string>} url - url(s) to animation(.vmd) file(s)\n     * @param {THREE.SkinnedMesh|THREE.Camera} object - tracks will be fitting to this object\n     * @param {function} onLoad\n     * @param {function} onProgress\n     * @param {function} onError\n     */\n    loadAnimation: function loadAnimation(url, object, onLoad, onProgress, onError) {\n      var builder = this.animationBuilder;\n      this.loadVMD(url, function (vmd) {\n        onLoad(object.isCamera ? builder.buildCameraAnimation(vmd) : builder.build(vmd, object));\n      }, onProgress, onError);\n    },\n\n    /**\n     * Loads mode file and motion file(s) as an object containing\n     * a THREE.SkinnedMesh and a THREE.AnimationClip.\n     * Tracks of THREE.AnimationClip are fitting to the model.\n     *\n     * @param {string} modelUrl - url to Model(.pmd or .pmx) file\n     * @param {string|Array{string}} vmdUrl - url(s) to animation(.vmd) file\n     * @param {function} onLoad\n     * @param {function} onProgress\n     * @param {function} onError\n     */\n    loadWithAnimation: function loadWithAnimation(modelUrl, vmdUrl, onLoad, onProgress, onError) {\n      var scope = this;\n      this.load(modelUrl, function (mesh) {\n        scope.loadAnimation(vmdUrl, mesh, function (animation) {\n          onLoad({\n            mesh: mesh,\n            animation: animation\n          });\n        }, onProgress, onError);\n      }, onProgress, onError);\n    },\n    // Load MMD assets as Object data parsed by MMDParser\n\n    /**\n     * Loads .pmd file as an Object.\n     *\n     * @param {string} url - url to .pmd file\n     * @param {function} onLoad\n     * @param {function} onProgress\n     * @param {function} onError\n     */\n    loadPMD: function loadPMD(url, onLoad, onProgress, onError) {\n      var parser = this._getParser();\n\n      this.loader.setMimeType(undefined).setResponseType('arraybuffer').load(url, function (buffer) {\n        onLoad(parser.parsePmd(buffer, true));\n      }, onProgress, onError);\n    },\n\n    /**\n     * Loads .pmx file as an Object.\n     *\n     * @param {string} url - url to .pmx file\n     * @param {function} onLoad\n     * @param {function} onProgress\n     * @param {function} onError\n     */\n    loadPMX: function loadPMX(url, onLoad, onProgress, onError) {\n      var parser = this._getParser();\n\n      this.loader.setMimeType(undefined).setResponseType('arraybuffer').load(url, function (buffer) {\n        onLoad(parser.parsePmx(buffer, true));\n      }, onProgress, onError);\n    },\n\n    /**\n     * Loads .vmd file as an Object. If two or more files are specified\n     * they'll be merged.\n     *\n     * @param {string|Array<string>} url - url(s) to .vmd file(s)\n     * @param {function} onLoad\n     * @param {function} onProgress\n     * @param {function} onError\n     */\n    loadVMD: function loadVMD(url, onLoad, onProgress, onError) {\n      var urls = Array.isArray(url) ? url : [url];\n      var vmds = [];\n      var vmdNum = urls.length;\n      var scope = this;\n\n      var parser = this._getParser();\n\n      this.loader.setMimeType(undefined).setResponseType('arraybuffer');\n\n      for (var i = 0, il = urls.length; i < il; i++) {\n        this.loader.load(urls[i], function (buffer) {\n          vmds.push(parser.parseVmd(buffer, true));\n          if (vmds.length === vmdNum) onLoad(parser.mergeVmds(vmds));\n        }, onProgress, onError);\n      }\n    },\n\n    /**\n     * Loads .vpd file as an Object.\n     *\n     * @param {string} url - url to .vpd file\n     * @param {boolean} isUnicode\n     * @param {function} onLoad\n     * @param {function} onProgress\n     * @param {function} onError\n     */\n    loadVPD: function loadVPD(url, isUnicode, onLoad, onProgress, onError, params) {\n      params = params || {};\n\n      var parser = this._getParser();\n\n      this.loader.setMimeType(isUnicode ? undefined : 'text/plain; charset=shift_jis').setResponseType('text').load(url, function (text) {\n        onLoad(parser.parseVpd(text, true));\n      }, onProgress, onError);\n    },\n    // private methods\n    _extractExtension: function _extractExtension(url) {\n      var index = url.lastIndexOf('.');\n      return index < 0 ? '' : url.slice(index + 1);\n    },\n    _getParser: function _getParser() {\n      if (this.parser === null) {\n        if (typeof MMDParser === 'undefined') {\n          throw new Error('THREE.MMDLoader: Import MMDParser https://github.com/takahirox/mmd-parser');\n        }\n\n        this.parser = new MMDParser.Parser();\n      }\n\n      return this.parser;\n    }\n  }; // Utilities\n\n  /*\n   * base64 encoded defalut toon textures toon00.bmp - toon10.bmp.\n   * We don't need to request external toon image files.\n   * This idea is from http://www20.atpages.jp/katwat/three.js_r58/examples/mytest37/mmd.three.js\n   */\n\n  var DEFAULT_TOON_TEXTURES = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAN0lEQVRYR+3WQREAMBACsZ5/bWiiMvgEBTt5cW37hjsBBAgQIECAwFwgyfYPCCBAgAABAgTWAh8aBHZBl14e8wAAAABJRU5ErkJggg==', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAOUlEQVRYR+3WMREAMAwDsYY/yoDI7MLwIiP40+RJklfcCCBAgAABAgTqArfb/QMCCBAgQIAAgbbAB3z/e0F3js2cAAAAAElFTkSuQmCC', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAN0lEQVRYR+3WQREAMBACsZ5/B5ilMvgEBTt5cW37hjsBBAgQIECAwFwgyfYPCCBAgAABAgTWAh81dWyx0gFwKAAAAABJRU5ErkJggg==', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAOklEQVRYR+3WoREAMAwDsWb/UQtCy9wxTOQJ/oQ8SXKKGwEECBAgQIBAXeDt7f4BAQQIECBAgEBb4AOz8Hzx7WLY4wAAAABJRU5ErkJggg==', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABPUlEQVRYR+1XwW7CMAy1+f9fZOMysSEOEweEOPRNdm3HbdOyIhAcklPrOs/PLy9RygBALxzcCDQFmgJNgaZAU6Ap0BR4PwX8gsRMVLssMRH5HcpzJEaWL7EVg9F1IHRlyqQohgVr4FGUlUcMJSjcUlDw0zvjeun70cLWmneoyf7NgBTQSniBTQQSuJAZsOnnaczjIMb5hCiuHKxokCrJfVnrctyZL0PkJAJe1HMil4nxeyi3Ypfn1kX51jpPvo/JeCNC4PhVdHdJw2XjBR8brF8PEIhNVn12AgP7uHsTBguBn53MUZCqv7Lp07Pn5k1Ro+uWmUNn7D+M57rtk7aG0Vo73xyF/fbFf0bPJjDXngnGocDTdFhygZjwUQrMNrDcmZlQT50VJ/g/UwNyHpu778+yW+/ksOz/BFo54P4AsUXMfRq7XWsAAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACMElEQVRYR+2Xv4pTQRTGf2dubhLdICiii2KnYKHVolhauKWPoGAnNr6BD6CvIVaihYuI2i1ia0BY0MZGRHQXjZj/mSPnnskfNWiWZUlzJ5k7M2cm833nO5Mziej2DWWJRUoCpQKlAntSQCqgw39/iUWAGmh37jrRnVsKlgpiqmkoGVABA7E57fvY+pJDdgKqF6HzFCSADkDq+F6AHABtQ+UMVE5D7zXod7fFNhTEckTbj5XQgHzNN+5tQvc5NG7C6BNkp6D3EmpXHDR+dQAjFLchW3VS9rlw3JBh+B7ys5Cf9z0GW1C/7P32AyBAOAz1q4jGliIH3YPuBnSfQX4OGreTIgEYQb/pBDtPnEQ4CivXYPAWBk13oHrB54yA9QuSn2H4AcKRpEILDt0BUzj+RLR1V5EqjD66NPRBVpLcQwjHoHYJOhsQv6U4mnzmrIXJCFr4LDwm/xBUoboG9XX4cc9VKdYoSA2yk5NQLJaKDUjTBoveG3Z2TElTxwjNK4M3LEZgUdDdruvcXzKBpStgp2NPiWi3ks9ZXxIoFVi+AvHLdc9TqtjL3/aYjpPlrzOcEnK62Szhimdd7xX232zFDTgtxezOu3WNMRLjiKgjtOhHVMd1loynVHvOgjuIIJMaELEqhJAV/RCSLbWTcfPFakFgFlALTRRvx+ok6Hlp/Q+v3fmx90bMyUzaEAhmM3KvHlXTL5DxnbGf/1M8RNNACLL5MNtPxP/mypJAqcDSFfgFhpYqWUzhTEAAAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=']; // Builders. They build Three.js object from Object data parsed by MMDParser.\n\n  /**\n   * @param {THREE.LoadingManager} manager\n   */\n\n  function MeshBuilder(manager) {\n    this.geometryBuilder = new GeometryBuilder();\n    this.materialBuilder = new MaterialBuilder(manager);\n  }\n\n  MeshBuilder.prototype = {\n    constructor: MeshBuilder,\n    crossOrigin: undefined,\n\n    /**\n     * @param {string} crossOrigin\n     * @return {MeshBuilder}\n     */\n    setCrossOrigin: function setCrossOrigin(crossOrigin) {\n      this.crossOrigin = crossOrigin;\n      return this;\n    },\n\n    /**\n     * @param {Object} data - parsed PMD/PMX data\n     * @param {string} texturePath\n     * @param {function} onProgress\n     * @param {function} onError\n     * @return {THREE.SkinnedMesh}\n     */\n    build: function build(data, texturePath, onProgress, onError) {\n      var geometry = this.geometryBuilder.build(data);\n      var material = this.materialBuilder.setCrossOrigin(this.crossOrigin).setTexturePath(texturePath).build(data, geometry, onProgress, onError);\n      var mesh = new _mockThree[\"default\"].SkinnedMesh(geometry, material); // console.log( mesh ); // for console debug\n\n      return mesh;\n    }\n  }; //\n\n  function GeometryBuilder() {}\n\n  GeometryBuilder.prototype = {\n    constructor: GeometryBuilder,\n\n    /**\n     * @param {Object} data - parsed PMD/PMX data\n     * @return {THREE.BufferGeometry}\n     */\n    build: function build(data) {\n      // for geometry\n      var positions = [];\n      var uvs = [];\n      var normals = [];\n      var indices = [];\n      var groups = [];\n      var bones = [];\n      var skinIndices = [];\n      var skinWeights = [];\n      var morphTargets = [];\n      var morphPositions = [];\n      var iks = [];\n      var grants = [];\n      var rigidBodies = [];\n      var constraints = []; // for work\n\n      var offset = 0;\n      var boneTypeTable = {}; // positions, normals, uvs, skinIndices, skinWeights\n\n      for (var i = 0; i < data.metadata.vertexCount; i++) {\n        var v = data.vertices[i];\n\n        for (var j = 0, jl = v.position.length; j < jl; j++) {\n          positions.push(v.position[j]);\n        }\n\n        for (var j = 0, jl = v.normal.length; j < jl; j++) {\n          normals.push(v.normal[j]);\n        }\n\n        for (var j = 0, jl = v.uv.length; j < jl; j++) {\n          uvs.push(v.uv[j]);\n        }\n\n        for (var j = 0; j < 4; j++) {\n          skinIndices.push(v.skinIndices.length - 1 >= j ? v.skinIndices[j] : 0.0);\n        }\n\n        for (var j = 0; j < 4; j++) {\n          skinWeights.push(v.skinWeights.length - 1 >= j ? v.skinWeights[j] : 0.0);\n        }\n      } // indices\n\n\n      for (var i = 0; i < data.metadata.faceCount; i++) {\n        var face = data.faces[i];\n\n        for (var j = 0, jl = face.indices.length; j < jl; j++) {\n          indices.push(face.indices[j]);\n        }\n      } // groups\n\n\n      for (var i = 0; i < data.metadata.materialCount; i++) {\n        var material = data.materials[i];\n        groups.push({\n          offset: offset * 3,\n          count: material.faceCount * 3\n        });\n        offset += material.faceCount;\n      } // bones\n\n\n      for (var i = 0; i < data.metadata.rigidBodyCount; i++) {\n        var body = data.rigidBodies[i];\n        var value = boneTypeTable[body.boneIndex]; // keeps greater number if already value is set without any special reasons\n\n        value = value === undefined ? body.type : Math.max(body.type, value);\n        boneTypeTable[body.boneIndex] = value;\n      }\n\n      for (var i = 0; i < data.metadata.boneCount; i++) {\n        var boneData = data.bones[i];\n        var bone = {\n          parent: boneData.parentIndex,\n          name: boneData.name,\n          pos: boneData.position.slice(0, 3),\n          rotq: [0, 0, 0, 1],\n          scl: [1, 1, 1],\n          rigidBodyType: boneTypeTable[i] !== undefined ? boneTypeTable[i] : -1\n        };\n\n        if (bone.parent !== -1) {\n          bone.pos[0] -= data.bones[bone.parent].position[0];\n          bone.pos[1] -= data.bones[bone.parent].position[1];\n          bone.pos[2] -= data.bones[bone.parent].position[2];\n        }\n\n        bones.push(bone);\n      } // iks\n      // TODO: remove duplicated codes between PMD and PMX\n\n\n      if (data.metadata.format === 'pmd') {\n        for (var i = 0; i < data.metadata.ikCount; i++) {\n          var ik = data.iks[i];\n          var param = {\n            target: ik.target,\n            effector: ik.effector,\n            iteration: ik.iteration,\n            maxAngle: ik.maxAngle * 4,\n            links: []\n          };\n\n          for (var j = 0, jl = ik.links.length; j < jl; j++) {\n            var link = {};\n            link.index = ik.links[j].index;\n            link.enabled = true;\n\n            if (data.bones[link.index].name.indexOf('ひざ') >= 0) {\n              link.limitation = new _mockThree[\"default\"].Vector3(1.0, 0.0, 0.0);\n            }\n\n            param.links.push(link);\n          }\n\n          iks.push(param);\n        }\n      } else {\n        for (var i = 0; i < data.metadata.boneCount; i++) {\n          var ik = data.bones[i].ik;\n          if (ik === undefined) continue;\n          var param = {\n            target: i,\n            effector: ik.effector,\n            iteration: ik.iteration,\n            maxAngle: ik.maxAngle,\n            links: []\n          };\n\n          for (var j = 0, jl = ik.links.length; j < jl; j++) {\n            var link = {};\n            link.index = ik.links[j].index;\n            link.enabled = true;\n\n            if (ik.links[j].angleLimitation === 1) {\n              // Revert if rotationMin/Max doesn't work well\n              // link.limitation = new THREE.Vector3( 1.0, 0.0, 0.0 );\n              var rotationMin = ik.links[j].lowerLimitationAngle;\n              var rotationMax = ik.links[j].upperLimitationAngle; // Convert Left to Right coordinate by myself because\n              // MMDParser doesn't convert. It's a MMDParser's bug\n\n              var tmp1 = -rotationMax[0];\n              var tmp2 = -rotationMax[1];\n              rotationMax[0] = -rotationMin[0];\n              rotationMax[1] = -rotationMin[1];\n              rotationMin[0] = tmp1;\n              rotationMin[1] = tmp2;\n              link.rotationMin = new _mockThree[\"default\"].Vector3().fromArray(rotationMin);\n              link.rotationMax = new _mockThree[\"default\"].Vector3().fromArray(rotationMax);\n            }\n\n            param.links.push(link);\n          }\n\n          iks.push(param);\n        }\n      } // grants\n\n\n      if (data.metadata.format === 'pmx') {\n        for (var i = 0; i < data.metadata.boneCount; i++) {\n          var boneData = data.bones[i];\n          var grant = boneData.grant;\n          if (grant === undefined) continue;\n          var param = {\n            index: i,\n            parentIndex: grant.parentIndex,\n            ratio: grant.ratio,\n            isLocal: grant.isLocal,\n            affectRotation: grant.affectRotation,\n            affectPosition: grant.affectPosition,\n            transformationClass: boneData.transformationClass\n          };\n          grants.push(param);\n        }\n\n        grants.sort(function (a, b) {\n          return a.transformationClass - b.transformationClass;\n        });\n      } // morph\n\n\n      function updateAttributes(attribute, morph, ratio) {\n        for (var i = 0; i < morph.elementCount; i++) {\n          var element = morph.elements[i];\n          var index;\n\n          if (data.metadata.format === 'pmd') {\n            index = data.morphs[0].elements[element.index].index;\n          } else {\n            index = element.index;\n          }\n\n          attribute.array[index * 3 + 0] += element.position[0] * ratio;\n          attribute.array[index * 3 + 1] += element.position[1] * ratio;\n          attribute.array[index * 3 + 2] += element.position[2] * ratio;\n        }\n      }\n\n      for (var i = 0; i < data.metadata.morphCount; i++) {\n        var morph = data.morphs[i];\n        var params = {\n          name: morph.name\n        };\n        var attribute = new _mockThree[\"default\"].Float32BufferAttribute(data.metadata.vertexCount * 3, 3);\n        attribute.name = morph.name;\n\n        for (var j = 0; j < data.metadata.vertexCount * 3; j++) {\n          attribute.array[j] = positions[j];\n        }\n\n        if (data.metadata.format === 'pmd') {\n          if (i !== 0) {\n            updateAttributes(attribute, morph, 1.0);\n          }\n        } else {\n          if (morph.type === 0) {\n            // group\n            for (var j = 0; j < morph.elementCount; j++) {\n              var morph2 = data.morphs[morph.elements[j].index];\n              var ratio = morph.elements[j].ratio;\n\n              if (morph2.type === 1) {\n                updateAttributes(attribute, morph2, ratio);\n              } else {// TODO: implement\n              }\n            }\n          } else if (morph.type === 1) {\n            // vertex\n            updateAttributes(attribute, morph, 1.0);\n          } else if (morph.type === 2) {// bone\n            // TODO: implement\n          } else if (morph.type === 3) {// uv\n            // TODO: implement\n          } else if (morph.type === 4) {// additional uv1\n            // TODO: implement\n          } else if (morph.type === 5) {// additional uv2\n            // TODO: implement\n          } else if (morph.type === 6) {// additional uv3\n            // TODO: implement\n          } else if (morph.type === 7) {// additional uv4\n            // TODO: implement\n          } else if (morph.type === 8) {// material\n            // TODO: implement\n          }\n        }\n\n        morphTargets.push(params);\n        morphPositions.push(attribute);\n      } // rigid bodies from rigidBodies field.\n\n\n      for (var i = 0; i < data.metadata.rigidBodyCount; i++) {\n        var rigidBody = data.rigidBodies[i];\n        var params = {};\n\n        for (var key in rigidBody) {\n          params[key] = rigidBody[key];\n        }\n        /*\n         * RigidBody position parameter in PMX seems global position\n         * while the one in PMD seems offset from corresponding bone.\n         * So unify being offset.\n         */\n\n\n        if (data.metadata.format === 'pmx') {\n          if (params.boneIndex !== -1) {\n            var bone = data.bones[params.boneIndex];\n            params.position[0] -= bone.position[0];\n            params.position[1] -= bone.position[1];\n            params.position[2] -= bone.position[2];\n          }\n        }\n\n        rigidBodies.push(params);\n      } // constraints from constraints field.\n\n\n      for (var i = 0; i < data.metadata.constraintCount; i++) {\n        var constraint = data.constraints[i];\n        var params = {};\n\n        for (var key in constraint) {\n          params[key] = constraint[key];\n        }\n\n        var bodyA = rigidBodies[params.rigidBodyIndex1];\n        var bodyB = rigidBodies[params.rigidBodyIndex2]; // Refer to http://www20.atpages.jp/katwat/wp/?p=4135\n\n        if (bodyA.type !== 0 && bodyB.type === 2) {\n          if (bodyA.boneIndex !== -1 && bodyB.boneIndex !== -1 && data.bones[bodyB.boneIndex].parentIndex === bodyA.boneIndex) {\n            bodyB.type = 1;\n          }\n        }\n\n        constraints.push(params);\n      } // build BufferGeometry.\n\n\n      var geometry = new _mockThree[\"default\"].BufferGeometry();\n      geometry.addAttribute('position', new _mockThree[\"default\"].Float32BufferAttribute(positions, 3));\n      geometry.addAttribute('normal', new _mockThree[\"default\"].Float32BufferAttribute(normals, 3));\n      geometry.addAttribute('uv', new _mockThree[\"default\"].Float32BufferAttribute(uvs, 2));\n      geometry.addAttribute('skinIndex', new _mockThree[\"default\"].Uint16BufferAttribute(skinIndices, 4));\n      geometry.addAttribute('skinWeight', new _mockThree[\"default\"].Float32BufferAttribute(skinWeights, 4));\n      geometry.setIndex(indices);\n\n      for (var i = 0, il = groups.length; i < il; i++) {\n        geometry.addGroup(groups[i].offset, groups[i].count, i);\n      }\n\n      geometry.bones = bones;\n      geometry.morphTargets = morphTargets;\n      geometry.morphAttributes.position = morphPositions;\n      geometry.userData.MMD = {\n        bones: bones,\n        iks: iks,\n        grants: grants,\n        rigidBodies: rigidBodies,\n        constraints: constraints,\n        format: data.metadata.format\n      };\n      geometry.computeBoundingSphere();\n      return geometry;\n    }\n  }; //\n\n  /**\n   * @param {THREE.LoadingManager} manager\n   */\n\n  function MaterialBuilder(manager) {\n    this.manager = manager; // hacked\n    // this.textureLoader = new THREE.TextureLoader( this.manager );\n\n    this.tgaLoader = null; // lazy generation\n  }\n\n  MaterialBuilder.prototype = {\n    constructor: MaterialBuilder,\n    crossOrigin: undefined,\n    texturePath: undefined,\n\n    /**\n     * @param {string} crossOrigin\n     * @return {MaterialBuilder}\n     */\n    setCrossOrigin: function setCrossOrigin(crossOrigin) {\n      this.crossOrigin = crossOrigin;\n      return this;\n    },\n\n    /**\n     * @param {string} texturePath\n     * @return {MaterialBuilder}\n     */\n    setTexturePath: function setTexturePath(texturePath) {\n      this.texturePath = texturePath;\n      return this;\n    },\n\n    /**\n     * @param {Object} data - parsed PMD/PMX data\n     * @param {THREE.BufferGeometry} geometry - some properties are dependend on geometry\n     * @param {function} onProgress\n     * @param {function} onError\n     * @return {Array<THREE.MeshToonMaterial>}\n     */\n    build: function build(data, geometry, onProgress, onError) {\n      var materials = [];\n      var textures = {};\n      this.textureLoader.setCrossOrigin(this.crossOrigin); // materials\n\n      for (var i = 0; i < data.metadata.materialCount; i++) {\n        var material = data.materials[i];\n        var params = {\n          userData: {}\n        };\n        if (material.name !== undefined) params.name = material.name;\n        /*\n         * Color\n         *\n         * MMD         MeshToonMaterial\n         * diffuse  -  color\n         * specular -  specular\n         * ambient  -  emissive * a\n         *               (a = 1.0 without map texture or 0.2 with map texture)\n         *\n         * MeshToonMaterial doesn't have ambient. Set it to emissive instead.\n         * It'll be too bright if material has map texture so using coef 0.2.\n         */\n\n        params.color = new _mockThree[\"default\"].Color().fromArray(material.diffuse);\n        params.opacity = material.diffuse[3];\n        params.specular = new _mockThree[\"default\"].Color().fromArray(material.specular);\n        params.emissive = new _mockThree[\"default\"].Color().fromArray(material.ambient);\n        params.shininess = Math.max(material.shininess, 1e-4); // to prevent pow( 0.0, 0.0 )\n\n        params.transparent = params.opacity !== 1.0; // \n\n        params.skinning = geometry.bones.length > 0 ? true : false;\n        params.morphTargets = geometry.morphTargets.length > 0 ? true : false;\n        params.lights = true;\n        params.fog = true; // blend\n\n        params.blending = _mockThree[\"default\"].CustomBlending;\n        params.blendSrc = _mockThree[\"default\"].SrcAlphaFactor;\n        params.blendDst = _mockThree[\"default\"].OneMinusSrcAlphaFactor;\n        params.blendSrcAlpha = _mockThree[\"default\"].SrcAlphaFactor;\n        params.blendDstAlpha = _mockThree[\"default\"].DstAlphaFactor; // side\n\n        if (data.metadata.format === 'pmx' && (material.flag & 0x1) === 1) {\n          params.side = _mockThree[\"default\"].DoubleSide;\n        } else {\n          params.side = params.opacity === 1.0 ? _mockThree[\"default\"].FrontSide : _mockThree[\"default\"].DoubleSide;\n        }\n\n        if (data.metadata.format === 'pmd') {\n          // map, envMap\n          if (material.fileName) {\n            var fileName = material.fileName;\n            var fileNames = fileName.split('*'); // fileNames[ 0 ]: mapFileName\n            // fileNames[ 1 ]: envMapFileName( optional )\n\n            params.map = this._loadTexture(fileNames[0], textures);\n\n            if (fileNames.length > 1) {\n              var extension = fileNames[1].slice(-4).toLowerCase();\n              params.envMap = this._loadTexture(fileNames[1], textures, {\n                sphericalReflectionMapping: true\n              });\n              params.combine = extension === '.sph' ? _mockThree[\"default\"].MultiplyOperation : _mockThree[\"default\"].AddOperation;\n            }\n          } // gradientMap\n\n\n          var toonFileName = material.toonIndex === -1 ? 'toon00.bmp' : data.toonTextures[material.toonIndex].fileName;\n          params.gradientMap = this._loadTexture(toonFileName, textures, {\n            isToonTexture: true,\n            isDefaultToonTexture: this._isDefaultToonTexture(toonFileName)\n          }); // parameters for OutlineEffect\n\n          params.userData.outlineParameters = {\n            thickness: material.edgeFlag === 1 ? 0.003 : 0.0,\n            color: [0, 0, 0],\n            alpha: 1.0,\n            visible: material.edgeFlag === 1\n          };\n        } else {\n          // map\n          if (material.textureIndex !== -1) {\n            params.map = this._loadTexture(data.textures[material.textureIndex], textures);\n          } // envMap TODO: support m.envFlag === 3\n\n\n          if (material.envTextureIndex !== -1 && (material.envFlag === 1 || material.envFlag == 2)) {\n            params.envMap = this._loadTexture(data.textures[material.envTextureIndex], textures, {\n              sphericalReflectionMapping: true\n            });\n            params.combine = material.envFlag === 1 ? _mockThree[\"default\"].MultiplyOperation : _mockThree[\"default\"].AddOperation;\n          } // gradientMap\n\n\n          var toonFileName, isDefaultToon;\n\n          if (material.toonIndex === -1 || material.toonFlag !== 0) {\n            toonFileName = 'toon' + ('0' + (material.toonIndex + 1)).slice(-2) + '.bmp';\n            isDefaultToon = true;\n          } else {\n            toonFileName = data.textures[material.toonIndex];\n            isDefaultToon = false;\n          }\n\n          params.gradientMap = this._loadTexture(toonFileName, textures, {\n            isToonTexture: true,\n            isDefaultToonTexture: isDefaultToon\n          }); // parameters for OutlineEffect\n\n          params.userData.outlineParameters = {\n            thickness: material.edgeSize / 300,\n            // TODO: better calculation?\n            color: material.edgeColor.slice(0, 3),\n            alpha: material.edgeColor[3],\n            visible: (material.flag & 0x10) !== 0 && material.edgeSize > 0.0\n          };\n        }\n\n        if (params.map !== undefined) {\n          if (!params.transparent) {\n            this._checkImageTransparency(params.map, geometry, i);\n          }\n\n          params.emissive.multiplyScalar(0.2);\n        }\n\n        materials.push(new _mockThree[\"default\"].MeshToonMaterial(params));\n      }\n\n      if (data.metadata.format === 'pmx') {\n        // set transparent true if alpha morph is defined.\n        var checkAlphaMorph = function checkAlphaMorph(elements, materials) {\n          for (var i = 0, il = elements.length; i < il; i++) {\n            var element = elements[i];\n            if (element.index === -1) continue;\n            var material = materials[element.index];\n\n            if (material.opacity !== element.diffuse[3]) {\n              material.transparent = true;\n            }\n          }\n        };\n\n        for (var i = 0, il = data.morphs.length; i < il; i++) {\n          var morph = data.morphs[i];\n          var elements = morph.elements;\n\n          if (morph.type === 0) {\n            for (var j = 0, jl = elements.length; j < jl; j++) {\n              var morph2 = data.morphs[elements[j].index];\n              if (morph2.type !== 8) continue;\n              checkAlphaMorph(morph2.elements, materials);\n            }\n          } else if (morph.type === 8) {\n            checkAlphaMorph(elements, materials);\n          }\n        }\n      }\n\n      return materials;\n    },\n    // private methods\n    _getTGALoader: function _getTGALoader() {\n      if (this.tgaLoader === null) {\n        if (_mockThree[\"default\"].TGALoader === undefined) {\n          throw new Error('THREE.MMDLoader: Import THREE.TGALoader');\n        }\n\n        this.tgaLoader = new _mockThree[\"default\"].TGALoader(this.manager);\n      }\n\n      return this.tgaLoader;\n    },\n    _isDefaultToonTexture: function _isDefaultToonTexture(name) {\n      if (name.length !== 10) return false;\n      return /toon(10|0[0-9])\\.bmp/.test(name);\n    },\n    _loadTexture: function _loadTexture(filePath, textures, params, onProgress, onError) {\n      params = params || {};\n      var scope = this;\n      var fullPath;\n\n      if (params.isDefaultToonTexture === true) {\n        var index;\n\n        try {\n          index = parseInt(filePath.match('toon([0-9]{2})\\.bmp$')[1]);\n        } catch (e) {\n          console.warn('THREE.MMDLoader: ' + filePath + ' seems like a ' + 'not right default texture path. Using toon00.bmp instead.');\n          index = 0;\n        }\n\n        fullPath = DEFAULT_TOON_TEXTURES[index];\n      } else {\n        fullPath = this.texturePath + filePath;\n      }\n\n      if (textures[fullPath] !== undefined) return textures[fullPath];\n\n      var loader = _mockThree[\"default\"].Loader.Handlers.get(fullPath);\n\n      if (loader === null) {\n        loader = filePath.slice(-4).toLowerCase() === '.tga' ? this._getTGALoader() : this.textureLoader;\n      }\n\n      var texture = loader.load(fullPath, function (t) {\n        // MMD toon texture is Axis-Y oriented\n        // but Three.js gradient map is Axis-X oriented.\n        // So here replaces the toon texture image with the rotated one.\n        if (params.isToonTexture === true) {\n          t.image = scope._getRotatedImage(t.image);\n        }\n\n        t.flipY = false;\n        t.wrapS = _mockThree[\"default\"].RepeatWrapping;\n        t.wrapT = _mockThree[\"default\"].RepeatWrapping;\n\n        for (var i = 0; i < texture.readyCallbacks.length; i++) {\n          texture.readyCallbacks[i](texture);\n        }\n\n        delete texture.readyCallbacks;\n      }, onProgress, onError);\n\n      if (params.sphericalReflectionMapping === true) {\n        texture.mapping = _mockThree[\"default\"].SphericalReflectionMapping;\n      }\n\n      texture.readyCallbacks = [];\n      textures[fullPath] = texture;\n      return texture;\n    },\n    _getRotatedImage: function _getRotatedImage(image) {\n      var canvas = document.createElement('canvas');\n      var context = canvas.getContext('2d');\n      var width = image.width;\n      var height = image.height;\n      canvas.width = width;\n      canvas.height = height;\n      context.clearRect(0, 0, width, height);\n      context.translate(width / 2.0, height / 2.0);\n      context.rotate(0.5 * Math.PI); // 90.0 * Math.PI / 180.0\n\n      context.translate(-width / 2.0, -height / 2.0);\n      context.drawImage(image, 0, 0);\n      return context.getImageData(0, 0, width, height);\n    },\n    // Check if the partial image area used by the texture is transparent.\n    _checkImageTransparency: function _checkImageTransparency(map, geometry, groupIndex) {\n      map.readyCallbacks.push(function (texture) {\n        // Is there any efficient ways?\n        function createImageData(image) {\n          var canvas = document.createElement('canvas');\n          canvas.width = image.width;\n          canvas.height = image.height;\n          var context = canvas.getContext('2d');\n          context.drawImage(image, 0, 0);\n          return context.getImageData(0, 0, canvas.width, canvas.height);\n        }\n\n        function detectImageTransparency(image, uvs, indices) {\n          var width = image.width;\n          var height = image.height;\n          var data = image.data;\n          var threshold = 253;\n          if (data.length / (width * height) !== 4) return false;\n\n          for (var i = 0; i < indices.length; i += 3) {\n            var centerUV = {\n              x: 0.0,\n              y: 0.0\n            };\n\n            for (var j = 0; j < 3; j++) {\n              var index = indices[i * 3 + j];\n              var uv = {\n                x: uvs[index * 2 + 0],\n                y: uvs[index * 2 + 1]\n              };\n              if (getAlphaByUv(image, uv) < threshold) return true;\n              centerUV.x += uv.x;\n              centerUV.y += uv.y;\n            }\n\n            centerUV.x /= 3;\n            centerUV.y /= 3;\n            if (getAlphaByUv(image, centerUV) < threshold) return true;\n          }\n\n          return false;\n        }\n        /*\n         * This method expects\n         *   texture.flipY = false\n         *   texture.wrapS = THREE.RepeatWrapping\n         *   texture.wrapT = THREE.RepeatWrapping\n         * TODO: more precise\n         */\n\n\n        function getAlphaByUv(image, uv) {\n          var width = image.width;\n          var height = image.height;\n          var x = Math.round(uv.x * width) % width;\n          var y = Math.round(uv.y * height) % height;\n          if (x < 0) x += width;\n          if (y < 0) y += height;\n          var index = y * width + x;\n          return image.data[index * 4 + 3];\n        }\n\n        var imageData = texture.image.data !== undefined ? texture.image : createImageData(texture.image);\n        var group = geometry.groups[groupIndex];\n\n        if (detectImageTransparency(imageData, geometry.attributes.uv.array, geometry.index.array.slice(group.start, group.start + group.count))) {\n          map.transparent = true;\n        }\n      });\n    }\n  }; //\n\n  function AnimationBuilder() {}\n\n  AnimationBuilder.prototype = {\n    constructor: AnimationBuilder,\n\n    /**\n     * @param {Object} vmd - parsed VMD data\n     * @param {THREE.SkinnedMesh} mesh - tracks will be fitting to mesh\n     * @return {THREE.AnimationClip}\n     */\n    build: function build(vmd, mesh) {\n      // combine skeletal and morph animations\n      var tracks = this.buildSkeletalAnimation(vmd, mesh).tracks;\n      var tracks2 = this.buildMorphAnimation(vmd, mesh).tracks;\n\n      for (var i = 0, il = tracks2.length; i < il; i++) {\n        tracks.push(tracks2[i]);\n      }\n\n      return new _mockThree[\"default\"].AnimationClip('', -1, tracks);\n    },\n\n    /**\n     * @param {Object} vmd - parsed VMD data\n     * @param {THREE.SkinnedMesh} mesh - tracks will be fitting to mesh\n     * @return {THREE.AnimationClip}\n     */\n    buildSkeletalAnimation: function buildSkeletalAnimation(vmd, mesh) {\n      function pushInterpolation(array, interpolation, index) {\n        array.push(interpolation[index + 0] / 127); // x1\n\n        array.push(interpolation[index + 8] / 127); // x2\n\n        array.push(interpolation[index + 4] / 127); // y1\n\n        array.push(interpolation[index + 12] / 127); // y2\n      }\n\n      ;\n      var tracks = [];\n      var motions = {};\n      var bones = mesh.skeleton.bones;\n      var boneNameDictionary = {};\n\n      for (var i = 0, il = bones.length; i < il; i++) {\n        boneNameDictionary[bones[i].name] = true;\n      }\n\n      for (var i = 0; i < vmd.metadata.motionCount; i++) {\n        var motion = vmd.motions[i];\n        var boneName = motion.boneName;\n        if (boneNameDictionary[boneName] === undefined) continue;\n        motions[boneName] = motions[boneName] || [];\n        motions[boneName].push(motion);\n      }\n\n      for (var key in motions) {\n        var array = motions[key];\n        array.sort(function (a, b) {\n          return a.frameNum - b.frameNum;\n        });\n        var times = [];\n        var positions = [];\n        var rotations = [];\n        var pInterpolations = [];\n        var rInterpolations = [];\n        var basePosition = mesh.skeleton.getBoneByName(key).position.toArray();\n\n        for (var i = 0, il = array.length; i < il; i++) {\n          var time = array[i].frameNum / 30;\n          var position = array[i].position;\n          var rotation = array[i].rotation;\n          var interpolation = array[i].interpolation;\n          times.push(time);\n\n          for (var j = 0; j < 3; j++) {\n            positions.push(basePosition[j] + position[j]);\n          }\n\n          for (var j = 0; j < 4; j++) {\n            rotations.push(rotation[j]);\n          }\n\n          for (var j = 0; j < 3; j++) {\n            pushInterpolation(pInterpolations, interpolation, j);\n          }\n\n          pushInterpolation(rInterpolations, interpolation, 3);\n        }\n\n        var targetName = '.bones[' + key + ']';\n        tracks.push(this._createTrack(targetName + '.position', _mockThree[\"default\"].VectorKeyframeTrack, times, positions, pInterpolations));\n        tracks.push(this._createTrack(targetName + '.quaternion', _mockThree[\"default\"].QuaternionKeyframeTrack, times, rotations, rInterpolations));\n      }\n\n      return new _mockThree[\"default\"].AnimationClip('', -1, tracks);\n    },\n\n    /**\n     * @param {Object} vmd - parsed VMD data\n     * @param {THREE.SkinnedMesh} mesh - tracks will be fitting to mesh\n     * @return {THREE.AnimationClip}\n     */\n    buildMorphAnimation: function buildMorphAnimation(vmd, mesh) {\n      var tracks = [];\n      var morphs = {};\n      var morphTargetDictionary = mesh.morphTargetDictionary;\n\n      for (var i = 0; i < vmd.metadata.morphCount; i++) {\n        var morph = vmd.morphs[i];\n        var morphName = morph.morphName;\n        if (morphTargetDictionary[morphName] === undefined) continue;\n        morphs[morphName] = morphs[morphName] || [];\n        morphs[morphName].push(morph);\n      }\n\n      for (var key in morphs) {\n        var array = morphs[key];\n        array.sort(function (a, b) {\n          return a.frameNum - b.frameNum;\n        });\n        var times = [];\n        var values = [];\n\n        for (var i = 0, il = array.length; i < il; i++) {\n          times.push(array[i].frameNum / 30);\n          values.push(array[i].weight);\n        }\n\n        tracks.push(new _mockThree[\"default\"].NumberKeyframeTrack('.morphTargetInfluences[' + morphTargetDictionary[key] + ']', times, values));\n      }\n\n      return new _mockThree[\"default\"].AnimationClip('', -1, tracks);\n    },\n\n    /**\n     * @param {Object} vmd - parsed VMD data\n     * @return {THREE.AnimationClip}\n     */\n    buildCameraAnimation: function buildCameraAnimation(vmd) {\n      function pushVector3(array, vec) {\n        array.push(vec.x);\n        array.push(vec.y);\n        array.push(vec.z);\n      }\n\n      function pushQuaternion(array, q) {\n        array.push(q.x);\n        array.push(q.y);\n        array.push(q.z);\n        array.push(q.w);\n      }\n\n      function pushInterpolation(array, interpolation, index) {\n        array.push(interpolation[index * 4 + 0] / 127); // x1\n\n        array.push(interpolation[index * 4 + 1] / 127); // x2\n\n        array.push(interpolation[index * 4 + 2] / 127); // y1\n\n        array.push(interpolation[index * 4 + 3] / 127); // y2\n      }\n\n      ;\n      var tracks = [];\n      var cameras = vmd.cameras === undefined ? [] : vmd.cameras.slice();\n      cameras.sort(function (a, b) {\n        return a.frameNum - b.frameNum;\n      });\n      var times = [];\n      var centers = [];\n      var quaternions = [];\n      var positions = [];\n      var fovs = [];\n      var cInterpolations = [];\n      var qInterpolations = [];\n      var pInterpolations = [];\n      var fInterpolations = [];\n      var quaternion = new _mockThree[\"default\"].Quaternion();\n      var euler = new _mockThree[\"default\"].Euler();\n      var position = new _mockThree[\"default\"].Vector3();\n      var center = new _mockThree[\"default\"].Vector3();\n\n      for (var i = 0, il = cameras.length; i < il; i++) {\n        var motion = cameras[i];\n        var time = motion.frameNum / 30;\n        var pos = motion.position;\n        var rot = motion.rotation;\n        var distance = motion.distance;\n        var fov = motion.fov;\n        var interpolation = motion.interpolation;\n        times.push(time);\n        position.set(0, 0, -distance);\n        center.set(pos[0], pos[1], pos[2]);\n        euler.set(-rot[0], -rot[1], -rot[2]);\n        quaternion.setFromEuler(euler);\n        position.add(center);\n        position.applyQuaternion(quaternion);\n        pushVector3(centers, center);\n        pushQuaternion(quaternions, quaternion);\n        pushVector3(positions, position);\n        fovs.push(fov);\n\n        for (var j = 0; j < 3; j++) {\n          pushInterpolation(cInterpolations, interpolation, j);\n        }\n\n        pushInterpolation(qInterpolations, interpolation, 3); // use the same parameter for x, y, z axis.\n\n        for (var j = 0; j < 3; j++) {\n          pushInterpolation(pInterpolations, interpolation, 4);\n        }\n\n        pushInterpolation(fInterpolations, interpolation, 5);\n      }\n\n      var tracks = []; // I expect an object whose name 'target' exists under THREE.Camera\n\n      tracks.push(this._createTrack('target.position', _mockThree[\"default\"].VectorKeyframeTrack, times, centers, cInterpolations));\n      tracks.push(this._createTrack('.quaternion', _mockThree[\"default\"].QuaternionKeyframeTrack, times, quaternions, qInterpolations));\n      tracks.push(this._createTrack('.position', _mockThree[\"default\"].VectorKeyframeTrack, times, positions, pInterpolations));\n      tracks.push(this._createTrack('.fov', _mockThree[\"default\"].NumberKeyframeTrack, times, fovs, fInterpolations));\n      return new _mockThree[\"default\"].AnimationClip('', -1, tracks);\n    },\n    // private method\n    _createTrack: function _createTrack(node, typedKeyframeTrack, times, values, interpolations) {\n      /*\n       * optimizes here not to let KeyframeTrackPrototype optimize\n       * because KeyframeTrackPrototype optimizes times and values but\n       * doesn't optimize interpolations.\n       */\n      if (times.length > 2) {\n        times = times.slice();\n        values = values.slice();\n        interpolations = interpolations.slice();\n        var stride = values.length / times.length;\n        var interpolateStride = interpolations.length / times.length;\n        var index = 1;\n\n        for (var aheadIndex = 2, endIndex = times.length; aheadIndex < endIndex; aheadIndex++) {\n          for (var i = 0; i < stride; i++) {\n            if (values[index * stride + i] !== values[(index - 1) * stride + i] || values[index * stride + i] !== values[aheadIndex * stride + i]) {\n              index++;\n              break;\n            }\n          }\n\n          if (aheadIndex > index) {\n            times[index] = times[aheadIndex];\n\n            for (var i = 0; i < stride; i++) {\n              values[index * stride + i] = values[aheadIndex * stride + i];\n            }\n\n            for (var i = 0; i < interpolateStride; i++) {\n              interpolations[index * interpolateStride + i] = interpolations[aheadIndex * interpolateStride + i];\n            }\n          }\n        }\n\n        times.length = index + 1;\n        values.length = (index + 1) * stride;\n        interpolations.length = (index + 1) * interpolateStride;\n      }\n\n      var track = new typedKeyframeTrack(node, times, values);\n\n      track.createInterpolant = function InterpolantFactoryMethodCubicBezier(result) {\n        return new CubicBezierInterpolation(this.times, this.values, this.getValueSize(), result, new Float32Array(interpolations));\n      };\n\n      return track;\n    }\n  }; // interpolation\n\n  function CubicBezierInterpolation(parameterPositions, sampleValues, sampleSize, resultBuffer, params) {\n    _mockThree[\"default\"].Interpolant.call(this, parameterPositions, sampleValues, sampleSize, resultBuffer);\n\n    this.interpolationParams = params;\n  }\n\n  CubicBezierInterpolation.prototype = Object.assign(Object.create(_mockThree[\"default\"].Interpolant.prototype), {\n    constructor: CubicBezierInterpolation,\n    interpolate_: function interpolate_(i1, t0, t, t1) {\n      var result = this.resultBuffer;\n      var values = this.sampleValues;\n      var stride = this.valueSize;\n      var params = this.interpolationParams;\n      var offset1 = i1 * stride;\n      var offset0 = offset1 - stride; // No interpolation if next key frame is in one frame in 30fps.\n      // This is from MMD animation spec.\n      // '1.5' is for precision loss. times are Float32 in Three.js Animation system.\n\n      var weight1 = t1 - t0 < 1 / 30 * 1.5 ? 0.0 : (t - t0) / (t1 - t0);\n\n      if (stride === 4) {\n        // Quaternion\n        var x1 = params[i1 * 4 + 0];\n        var x2 = params[i1 * 4 + 1];\n        var y1 = params[i1 * 4 + 2];\n        var y2 = params[i1 * 4 + 3];\n\n        var ratio = this._calculate(x1, x2, y1, y2, weight1);\n\n        _mockThree[\"default\"].Quaternion.slerpFlat(result, 0, values, offset0, values, offset1, ratio);\n      } else if (stride === 3) {\n        // Vector3\n        for (var i = 0; i !== stride; ++i) {\n          var x1 = params[i1 * 12 + i * 4 + 0];\n          var x2 = params[i1 * 12 + i * 4 + 1];\n          var y1 = params[i1 * 12 + i * 4 + 2];\n          var y2 = params[i1 * 12 + i * 4 + 3];\n\n          var ratio = this._calculate(x1, x2, y1, y2, weight1);\n\n          result[i] = values[offset0 + i] * (1 - ratio) + values[offset1 + i] * ratio;\n        }\n      } else {\n        // Number\n        var x1 = params[i1 * 4 + 0];\n        var x2 = params[i1 * 4 + 1];\n        var y1 = params[i1 * 4 + 2];\n        var y2 = params[i1 * 4 + 3];\n\n        var ratio = this._calculate(x1, x2, y1, y2, weight1);\n\n        result[0] = values[offset0] * (1 - ratio) + values[offset1] * ratio;\n      }\n\n      return result;\n    },\n    _calculate: function _calculate(x1, x2, y1, y2, x) {\n      /*\n       * Cubic Bezier curves\n       *   https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Cubic_B.C3.A9zier_curves\n       *\n       * B(t) = ( 1 - t ) ^ 3 * P0\n       *      + 3 * ( 1 - t ) ^ 2 * t * P1\n       *      + 3 * ( 1 - t ) * t^2 * P2\n       *      + t ^ 3 * P3\n       *      ( 0 <= t <= 1 )\n       *\n       * MMD uses Cubic Bezier curves for bone and camera animation interpolation.\n       *   http://d.hatena.ne.jp/edvakf/20111016/1318716097\n       *\n       *    x = ( 1 - t ) ^ 3 * x0\n       *      + 3 * ( 1 - t ) ^ 2 * t * x1\n       *      + 3 * ( 1 - t ) * t^2 * x2\n       *      + t ^ 3 * x3\n       *    y = ( 1 - t ) ^ 3 * y0\n       *      + 3 * ( 1 - t ) ^ 2 * t * y1\n       *      + 3 * ( 1 - t ) * t^2 * y2\n       *      + t ^ 3 * y3\n       *      ( x0 = 0, y0 = 0 )\n       *      ( x3 = 1, y3 = 1 )\n       *      ( 0 <= t, x1, x2, y1, y2 <= 1 )\n       *\n       * Here solves this equation with Bisection method,\n       *   https://en.wikipedia.org/wiki/Bisection_method\n       * gets t, and then calculate y.\n       *\n       * f(t) = 3 * ( 1 - t ) ^ 2 * t * x1\n       *      + 3 * ( 1 - t ) * t^2 * x2\n       *      + t ^ 3 - x = 0\n       *\n       * (Another option: Newton's method\n       *    https://en.wikipedia.org/wiki/Newton%27s_method)\n       */\n      var c = 0.5;\n      var t = c;\n      var s = 1.0 - t;\n      var loop = 15;\n      var eps = 1e-5;\n      var math = Math;\n      var sst3, stt3, ttt;\n\n      for (var i = 0; i < loop; i++) {\n        sst3 = 3.0 * s * s * t;\n        stt3 = 3.0 * s * t * t;\n        ttt = t * t * t;\n        var ft = sst3 * x1 + stt3 * x2 + ttt - x;\n        if (math.abs(ft) < eps) break;\n        c /= 2.0;\n        t += ft < 0 ? c : -c;\n        s = 1.0 - t;\n      }\n\n      return sst3 * y1 + stt3 * y2 + ttt;\n    }\n  });\n  return MMDLoader;\n}();\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/MMDLoader.js?");
+
+/***/ }),
+
+/***/ "./src/plugin-webgl/threeLoaders/mock-three.js":
+/*!*****************************************************!*\
+  !*** ./src/plugin-webgl/threeLoaders/mock-three.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _FileLoader = __webpack_require__(/*! ./FileLoader.js */ \"./src/plugin-webgl/threeLoaders/FileLoader.js\");\n\nvar _LoaderUtils = __webpack_require__(/*! ./LoaderUtils.js */ \"./src/plugin-webgl/threeLoaders/LoaderUtils.js\");\n\nvar _Interpolant = __webpack_require__(/*! ./Interpolant.js */ \"./src/plugin-webgl/threeLoaders/Interpolant.js\");\n\nvar _CompressedTextureLoader = __webpack_require__(/*! ./CompressedTextureLoader.js */ \"./src/plugin-webgl/threeLoaders/CompressedTextureLoader.js\");\n\n/** ********** *\n *\n * Mock THREE Object\n * - Based on and modified from threejs.\n *\n * ********** **/\nmodule.exports = {\n  FileLoader: _FileLoader.FileLoader,\n  LoaderUtils: _LoaderUtils.LoaderUtils,\n  Interpolant: _Interpolant.Interpolant,\n  CompressedTextureLoader: _CompressedTextureLoader.CompressedTextureLoader,\n  RGB_S3TC_DXT1_Format: 33776,\n  RGBA_S3TC_DXT1_Format: 33777,\n  RGBA_S3TC_DXT3_Format: 33778,\n  RGBA_S3TC_DXT5_Format: 33779\n};\n\n//# sourceURL=webpack:///./src/plugin-webgl/threeLoaders/mock-three.js?");
+
+/***/ }),
+
+/***/ "./src/plugin.webgl.loaders.js":
+/*!*************************************!*\
+  !*** ./src/plugin.webgl.loaders.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _MMDLoader2 = _interopRequireDefault(__webpack_require__(/*! ./plugin-webgl/threeLoaders/MMDLoader.js */ \"./src/plugin-webgl/threeLoaders/MMDLoader.js\"));\n\nvar _FBXLoader2 = _interopRequireDefault(__webpack_require__(/*! ./plugin-webgl/threeLoaders/FBXLoader.js */ \"./src/plugin-webgl/threeLoaders/FBXLoader.js\"));\n\nvar _DDSLoader = _interopRequireDefault(__webpack_require__(/*! ./plugin-webgl/threeLoaders/DDSLoader.js */ \"./src/plugin-webgl/threeLoaders/DDSLoader.js\"));\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \"default\": obj }; }\n\n/** ********** *\n *\n * Support threejs loaders\n * - Based on some modules in threejs.\n *\n * ********** **/\n// import { FileLoader } from './plugin-webgl/threeLoaders/FileLoader.js';\nvar inBrowser = typeof window !== 'undefined';\nvar loaders = {\n  // FileLoader,\n  MMDLoader: function MMDLoader(url, onLoad, onProgress, onError) {\n    var loader = new _MMDLoader2[\"default\"]();\n    loader.load(url, function (data) {\n      onLoad(data);\n    }, onProgress, onError);\n  },\n  FBXLoader: function FBXLoader(url, onLoad, onProgress, onError) {\n    var loader = new _FBXLoader2[\"default\"]();\n    loader.load(url, function (data) {\n      for (var i in data.Objects.Geometry) {\n        var item = data.Objects.Geometry[i];\n        item.PolygonVertexIndex.a = item.PolygonVertexIndex.a.map(function (number, index) {\n          if (number < 0) return -number - 1;\n          return number;\n        });\n      }\n\n      onLoad(data);\n    }, onProgress, onError);\n  },\n  DDSLoader: _DDSLoader[\"default\"]\n};\nvar plugin = {\n  onCreate: function onCreate(option) {\n    if (this.$isWebgl) {\n      var gl = this.$gl;\n\n      this.ddsLoader = function (url, callback) {\n        if (!url) return;\n        var tex = gl.createTexture();\n        var ext = gl.getExtension('WEBGL_compressed_texture_s3tc') || gl.getExtension('MOZ_WEBGL_compressed_texture_s3tc') || gl.getExtension('WEBKIT_WEBGL_compressed_texture_s3tc');\n        var textureInfo = {\n          width: 0,\n          height: 0\n        };\n        var DDSloader = new _DDSLoader[\"default\"]();\n        DDSloader.load(url, function (map) {\n          gl.bindTexture(gl.TEXTURE_2D, tex);\n          gl.compressedTexImage2D(gl.TEXTURE_2D, 0, map.format, map.image.width, map.image.height, 0, map.mipmaps[0].data);\n          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);\n          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);\n          textureInfo.width = map.image.width;\n          textureInfo.height = map.image.height;\n          textureInfo.texture = tex;\n          callback && callback(map);\n        }, null, null);\n        return textureInfo;\n      };\n    }\n  }\n}; // fileloader usage\n// var f = new Easycanvas.threeLoaders.FileLoader();\n// f.load('../resource/fbxdds/mx.fbx', function (object) {\n//     console.log(object); // unreadable\n// }, console.log, console.warn);\n\nif (inBrowser && window.Easycanvas) {\n  Easycanvas.loaders = loaders;\n  Easycanvas.use(plugin);\n} else {\n  module.exports = loaders;\n}\n\n//# sourceURL=webpack:///./src/plugin.webgl.loaders.js?");
+
+/***/ }),
+
+/***/ 8:
+/*!*******************************************!*\
+  !*** multi ./src/plugin.webgl.loaders.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("module.exports = __webpack_require__(/*! ./src/plugin.webgl.loaders.js */\"./src/plugin.webgl.loaders.js\");\n\n\n//# sourceURL=webpack:///multi_./src/plugin.webgl.loaders.js?");
+
+/***/ })
+
+/******/ })));

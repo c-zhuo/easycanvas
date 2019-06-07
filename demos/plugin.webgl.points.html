@@ -14,7 +14,7 @@
     <canvas id="app"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter({
+        var $app = new Easycanvas.Painter({
             el: '#app',
             fullScreen: true,
             webgl: {
@@ -34,12 +34,12 @@
         function createEffect () {
             var $effect = $app.add({
                 style: {
-                    left: Easycanvas.transition.pendulum(
+                    left: Easycanvas.Transition.pendulum(
                         mouseX + 5 - Math.random() * 10,
                         mouseX - 100 - Math.random() * 400,
                         3000
                     ).loop(),
-                    top: Easycanvas.transition.ease(
+                    top: Easycanvas.Transition.ease(
                         mouseY,
                         mouseY - 200,
                         1000

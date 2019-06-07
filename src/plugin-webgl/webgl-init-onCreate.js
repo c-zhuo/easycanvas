@@ -6,6 +6,7 @@ import { degToRad, err } from './webgl-utils';
 // import toggleShader from './webgl-shader-toggle.js';
 
 const m4 = _webglM4();
+const OImage = typeof window !== 'undefined' && Image;
 
 const webglRegister = function ($canvas, option) {
     $canvas.$isWebgl = true;
@@ -37,7 +38,7 @@ const webglRegister = function ($canvas, option) {
 
         img2base64(url, function (base64url) {
             function loadImageAndCreateTextureInfo(url) {
-                var img = new Image();
+                var img = new OImage();
                 img.addEventListener('load', function() {
                     textureInfo.width = img.width;
                     textureInfo.height = img.height;

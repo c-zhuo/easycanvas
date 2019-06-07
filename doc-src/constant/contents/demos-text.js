@@ -7,7 +7,7 @@ module.exports = `
                 </body>
 
                 <script>
-                    var $app = new Easycanvas.painter({
+                    var $app = new Easycanvas.Painter({
                         el: '#app',
                         width: 800,
                         height: 800
@@ -32,7 +32,7 @@ module.exports = `
                             width: 400, height: 400,
                             color: '#000',
                             textAlign: 'left',
-                            textFont: '22px serif',
+                            fontSize: 22,
                         },
                     });
 
@@ -46,7 +46,7 @@ module.exports = `
                             color: 'red',
                             textAlign: 'left',
                             textVerticalAlign: 'top',
-                            textFont: '28px serif',
+                            fontSize: 28,
                         },
                     });
 
@@ -60,7 +60,7 @@ module.exports = `
                             color: 'blue',
                             textAlign: 'right',
                             textVerticalAlign: 'top',
-                            textFont: '28px serif',
+                            fontSize: 28,
                         },
                     });
 
@@ -74,7 +74,7 @@ module.exports = `
                             color: '#FFF',
                             textAlign: 'left',
                             textVerticalAlign: 'bottom',
-                            textFont: '44px serif',
+                            fontSize: 44,
                         },
                     });
 
@@ -88,7 +88,7 @@ module.exports = `
                             color: 'rgb(0, 255, 0)',
                             textAlign: 'right',
                             textVerticalAlign: 'bottom',
-                            textFont: '14px serif',
+                            fontSize: 14,
                         },
                     });
 
@@ -108,7 +108,7 @@ module.exports = `
                             },
                             textAlign: 'center',
                             textVerticalAlign: 'middle',
-                            textFont: '30px serif',
+                            fontSize: 30,
                         },
                     });
 

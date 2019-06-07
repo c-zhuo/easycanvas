@@ -17,7 +17,7 @@
     <canvas id="app" width="600" height="600"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             webgl: true,
             fullScreen: true,
@@ -39,7 +39,7 @@
                     top: 350,
                 },
                 webgl: {
-                    rx: 90, ry: 0, rz: Easycanvas.transition.linear(0, 360, 5000).loop(),
+                    rx: 90, ry: 0, rz: Easycanvas.Transition.linear(0, 360, 5000).loop(),
                 },
             });
 
@@ -60,7 +60,7 @@
                         rz: function () {
                             return this.$parent.webgl.rz();
                         },
-                        scale: Easycanvas.transition.pendulum(40, 60, 3000).loop(),
+                        scale: Easycanvas.Transition.pendulum(40, 60, 3000).loop(),
                         colors2: [
                             Math.random() * 255,
                             Math.random() * 255,
@@ -73,8 +73,8 @@
         });
 
         $app.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
-            // create a sprite
-            window.sprite1 = $app.add({
+            // create a Sprite
+            window.Sprite1 = $app.add({
                 name: 'letter_G',
                 content: {
                     img: img,
@@ -82,7 +82,7 @@
                 style: {
                     width: 200, height: 200,
                     cutLeft: 0, cutTop: 0, // source position, default 0
-                    left: Easycanvas.transition.pendulum(300, 400, 2500).loop(),
+                    left: Easycanvas.Transition.pendulum(300, 400, 2500).loop(),
                     top: 300,
                     opacity: 1,
                     rotate: 20,

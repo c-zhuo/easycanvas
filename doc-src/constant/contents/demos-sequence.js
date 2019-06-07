@@ -12,11 +12,11 @@ module.exports = `
                 </body>
 
                 <script>
-                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png', function () {
+                    var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png', function () {
                         document.getElementById('content').innerText = '点击画布可以看到爆炸效果';
                     });
 
-                    var $app = new Easycanvas.painter();
+                    var $app = new Easycanvas.Painter();
                     $app.register(document.getElementById('app'), {
                         events: {
                             click: function (e) {
@@ -26,10 +26,10 @@ module.exports = `
                         }
                     });
 
-                    var Fire = Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png');
+                    var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png');
 
                     var createFire = function (initX, initY) {
-                        return Easycanvas.class.sequence({
+                        return Easycanvas.Sequence({
                             content: {
                                 img: Fire,
                             },

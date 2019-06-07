@@ -11,7 +11,7 @@ const getScaledParent = function ($sprite) {
     return getScaledParent($sprite.$parent);
 };
 
-// 后面可能要拆成计算$cahche、触发钩子、生成渲染对象$render，便于将部分逻辑复用于combine等场景
+// 后面可能要拆成计算$cache、触发钩子、生成渲染对象$render，便于将部分逻辑复用于combine等场景
 module.exports = function (force) {
     let $sprite = this;
 
@@ -44,6 +44,18 @@ module.exports = function (force) {
             if (typeof $sprite.$style[key] === 'function') {
                 $needUpdate[key] = 1;
                 $sprite.$cache[key] = $sprite.$style[key].call($sprite);
+            } else if (typeof $sprite.$style[key] === 'string' && $sprite.$style[key].indexOf('%') > -1) {
+                // 百分比的样式相对于parent计算
+                let parentWidth = $sprite.$parent && $sprite.$parent.$cache.width || $sprite.$canvas.width || 0;
+                let parentHeight = $sprite.$parent && $sprite.$parent.$cache.width || $sprite.$canvas.width || 0;
+
+                if (key === 'left' || key === 'width') {
+                    $sprite.$cache[key] = Math.floor(parseFloat($sprite.$style[key]) / 100 * parentWidth);
+                } else if (key === 'top' || key === 'height') {
+                    $sprite.$cache[key] = Math.floor(parseFloat($sprite.$style[key]) / 100 * parentHeight);
+                } else if (key === 'fontSize') {
+                    $sprite.$cache[key] = Math.floor(parseFloat($sprite.$style[key]) / 100 * $sprite.$canvas.width);
+                }
             } else {
                 $sprite.$cache[key] = $sprite.$style[key];
             }

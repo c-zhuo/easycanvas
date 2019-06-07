@@ -29,7 +29,7 @@
 
 
     <script>
-        var $pp = new Easycanvas.painter({
+        var $pp = new Easycanvas.Painter({
             el: '#app',
             fullScreen: true,
             webgl: {
@@ -70,9 +70,9 @@
         //     }),
         // });
 
-        // Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
-        //     // create a sprite
-        //     window.sprite2d = $pp.add({
+        // Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+        //     // create a Sprite
+        //     window.Sprite2d = $pp.add({
         //         name: '2d',
         //         content: {
         //             img: img,
@@ -80,7 +80,7 @@
         //         style: {
         //             width: 250, height: 130,
         //             cutLeft: 0, cutTop: 0, // source position, default 0
-        //             left: Easycanvas.transition.pendulum(111, 222, 2500).loop(),
+        //             left: Easycanvas.Transition.pendulum(111, 222, 2500).loop(),
         //             top: 80,
         //             opacity: 1,
         //             rotate: 20,
@@ -90,7 +90,7 @@
         //         events: {
         //             eIndex: 2, // event-index of this image
         //             mousemove: function (e) {
-        //                 // "this" means this sprite, as sprite1
+        //                 // "this" means this Sprite, as Sprite1
         //                 console.log(this, e);
         //             },
         //             // others: mousehold, mousedown, mouseout and touch events
@@ -136,7 +136,7 @@
 
         $pp.start();
 
-        // var $cut = new Easycanvas.painter({
+        // var $cut = new Easycanvas.Painter({
         //     el: '#cut',
         //     fullScreen: true,
         // });
@@ -145,9 +145,9 @@
         var current = $pp.webgl.camera.current;
 
         function changeCamera () {
-            Easycanvas.transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
-            Easycanvas.transition(current, 'y', 'ease', Math.random() * 1000 - 500, interval);
-            Easycanvas.transition(current, 'z', 'linear', -1000 - Math.random() * 500, interval);
+            Easycanvas.Transition(current, 'x', 'ease', Math.random() * 1000 - 500, interval);
+            Easycanvas.Transition(current, 'y', 'ease', Math.random() * 1000 - 500, interval);
+            Easycanvas.Transition(current, 'z', 'linear', -1000 - Math.random() * 500, interval);
         }
 
         // changeCamera();

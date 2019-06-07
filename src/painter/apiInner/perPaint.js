@@ -161,7 +161,8 @@ module.exports = function ($sprite, index) {
 
     // TODO: rewrite
     if (_text) {
-        _props.textFont = $sprite.$cache.textFont;
+        _props.fontSize = $sprite.$cache.fontSize;
+        _props.fontFamily = $sprite.$cache.fontFamily;
         _props.color = $sprite.$cache.color;
         _props.textAlign = $sprite.$cache.textAlign;
         _props.textVerticalAlign = $sprite.$cache.textVerticalAlign;
@@ -171,7 +172,7 @@ module.exports = function ($sprite, index) {
         let textLeft = _props.left;
         let textTop = _props.top;
         let textAlign = _props.align || _props.textAlign || 'left';
-        let textFont = _props.textFont || '14px Arial';
+        let textFont = (_props.fontSize || 14) + 'px ' + (_props.fontFamily || 'serif');
         let textFontsize = parseInt(textFont);
         let textBaseline = 'top';
         // let textFontsize = parseInt(textFont) * _props.scale;

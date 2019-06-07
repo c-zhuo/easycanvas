@@ -4,19 +4,18 @@ module.exports = `
 
         <h2>在微信小游戏中引入</h2>
 
-        <p>在微信小游戏入口文件引入以下两个文件，即可使用Easycanvas。</p>
+        <p>在微信小游戏入口文件引入以下文件，即可使用Easycanvas。</p>
 
         <p><strong>注意：目前只能引入prod版本，不支持开发者工具</strong>，未来版本将支持引入开发版进行调试。</p>
 
         <code>
             // 注意先引入Wxgame，后引入Easycanvas
-            import Wxgame from './your-path/plugin.wxgame.standalone.prod.js'
-            import Easycanvas from './your-path/easycanvas.standalone.prod.js'
+            import Easycanvas from './your-path/easycanvas.wxgame.common.prod.js'
 
             // 如果要使用其它插件（例如扩展物理效果），放在Easycanvas后加载即可
-            import EasycanvasPhysics from './your-path/plugin.physics.standalone.prod.js'
+            import Physics from './your-path/plugin.physics.common.prod.js'
 
-            Easycanvas.extend(EasycanvasPhysics);
+            Easycanvas.extend(Physics);
         </code>
 
         <p>这里的js文件可以在<a href="https://github.com/c-zhuo/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>
@@ -27,17 +26,17 @@ module.exports = `
 
         <section>
             <code>
-                var $app = new Easycanvas.painter();
+                var $app = new Easycanvas.Painter();
                 $app.register(canvas);
 
-                var $letterG = new Easycanvas.sprite({
+                var $letterG = new Easycanvas.Sprite({
                     content: {
                         img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                     },
                     style: {
                         width: 50,
                         height: 50,
-                        left: Easycanvas.transition.pendulum(50, 150, 3000).loop(),
+                        left: Easycanvas.Transition.pendulum(50, 150, 3000).loop(),
                         top: 100,
                     },
                     events: {
@@ -57,7 +56,7 @@ module.exports = `
 
         <section>
             <code>
-                var $app = new Easycanvas.painter();
+                var $app = new Easycanvas.Painter();
                 $app.register(typeof wx !== 'undefined' ? canvas : document.getElementById('app'));
             </code>
         </section>

@@ -6,29 +6,29 @@
     <canvas id="app" width="500" height="400"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'));
         $app.start();
 
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=0', null, {
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=0', null, {
             block: true
         });
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=1');
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=2', null, {
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=1');
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=2', null, {
             block: true
         });
-        Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=3', function () {
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=3', function () {
             console.log('a=3 loaded 1st');
         });
         setTimeout(function () {
             for (var i = 0; i <= 20; i++) {
-                Easycanvas.imgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=3', function () {
+                Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=3', function () {
                     console.log('a=3 loaded again');
                 });
             }
         }, 0);
 
-        Easycanvas.imgLoader([
+        Easycanvas.ImgLoader([
             'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=4',
             'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=5',
             'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png?a=6'

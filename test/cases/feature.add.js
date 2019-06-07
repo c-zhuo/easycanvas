@@ -5,12 +5,12 @@ var $canvas = document.createElement('canvas');
 $canvas.width = 888;
 $canvas.height = 888;
 
-var $Painter = new Easycanvas.painter();
+var $Painter = new Easycanvas.Painter();
 $Painter.register($canvas);
 $Painter.start();
 
 var sprite1, obj;
-Easycanvas.imgLoader(constants.png10px, function (img) {
+Easycanvas.ImgLoader(constants.png10px, function (img) {
     obj = {
         name: 'root',
         content: {

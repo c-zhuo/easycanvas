@@ -8,13 +8,13 @@
     <canvas id="app"></canvas>
 
     <script>
-        var $app = new Easycanvas.painter();
+        var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             fullScreen: true
         });
         $app.start();
 
-        var $below = Easycanvas.sprite({
+        var $below = Easycanvas.Sprite({
             name: 'bgbelow',
             content: {
                 img: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',

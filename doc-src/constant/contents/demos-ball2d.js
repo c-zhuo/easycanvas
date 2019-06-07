@@ -45,7 +45,7 @@ module.exports = `
                     // 用于碰撞检测
                     var BALL_TYPE = 1, BLOCK_TYPE = 2, BORDER_TYPE = 3, BOTTOM_TYPE = 4, BONUS_TYPE = 5;
                     // 初始化easycanvas实例
-                    var $app = new Easycanvas.painter();
+                    var $app = new Easycanvas.Painter();
                     $app.register(document.getElementById('app'), {
                         width: width,
                         height: height,
@@ -92,7 +92,7 @@ module.exports = `
                         }
                     });
                     // 初始化easycanvas物理引擎
-                    var $space = new Easycanvas.class.sprite({
+                    var $space = new Easycanvas.Sprite({
                         physics: {
                             gravitop: 2,
                             accuracy: 2,
@@ -146,7 +146,7 @@ module.exports = `
                     };
                     function addBall (mouse) {
                         ballLeft++;
-                        var $ball = new Easycanvas.class.sprite({
+                        var $ball = new Easycanvas.Sprite({
                             name: 'ball',
                             content: {
                                 img: BALL,
@@ -181,7 +181,7 @@ module.exports = `
                                                 return;
                                             }
                                             ball.toRemove = true;
-                                            ball.style.opacity = Easycanvas.transition.linear(1, 0, 500);
+                                            ball.style.opacity = Easycanvas.Transition.linear(1, 0, 500);
                                             setTimeout(function () {
                                                 ball.physicsOff();
                                                 ball.remove();
@@ -283,7 +283,7 @@ module.exports = `
                     var lastBlockPositionX = 50;
                     function addBlock (max, boolAddToBottom) {
                         var deg = Math.floor(Math.random() * 360);
-                        var sprite = $space.add(new Easycanvas.class.sprite({
+                        var Sprite = $space.add(new Easycanvas.Sprite({
                             name: 'block',
                             content: {
                                 img: BLOCK,
@@ -314,20 +314,20 @@ module.exports = `
                                     color: 'yellow',
                                     textAlign: 'center',
                                     textVerticalAlign: 'middle',
-                                    textFont: '28px Arial',
+                                    fontSize: 28,
                                     left: 15, top: 10
                                 }
                             }]
                         }));
-                        sprite.physicsOn();
-                        blockArray.push(sprite);
+                        Sprite.physicsOn();
+                        blockArray.push(Sprite);
                         lastBlockPositionX += 50;
                         if (lastBlockPositionX > 350) {
                             lastBlockPositionX = 50;
                         }
                     }
                     function addBonus () {
-                        var sprite = $space.add(new Easycanvas.class.sprite({
+                        var Sprite = $space.add(new Easycanvas.Sprite({
                             name: 'bonus',
                             content: {
                                 img: BALL,
@@ -348,19 +348,19 @@ module.exports = `
                                 top: 500,
                                 locate: 'center',
                                 zIndex: 2,
-                                fv: Easycanvas.transition.pendulum(0, 0.2, 200).loop(),
-                                fh: Easycanvas.transition.pendulum(0.2, 0, 200).loop(),
+                                fv: Easycanvas.Transition.pendulum(0, 0.2, 200).loop(),
+                                fh: Easycanvas.Transition.pendulum(0.2, 0, 200).loop(),
                             },
                         }));
-                        sprite.physicsOn();
-                        blockArray.push(sprite);
+                        Sprite.physicsOn();
+                        blockArray.push(Sprite);
                         lastBlockPositionX += 50;
                         if (lastBlockPositionX > 350) {
                             lastBlockPositionX = 50;
                         }
                     }
                     // 上半部分的边，摩擦小、弹性大
-                    var borderSprite = $space.add(new Easycanvas.class.sprite({
+                    var borderSprite = $space.add(new Easycanvas.Sprite({
                         physics: {
                             shape: [
                                 [[0, 0], [width, 0]],
@@ -379,7 +379,7 @@ module.exports = `
                     }));
                     borderSprite.physicsOn();
                     // 下半部分的边，摩擦大、弹性小
-                    var bottomSprite = $space.add(new Easycanvas.class.sprite({
+                    var bottomSprite = $space.add(new Easycanvas.Sprite({
                         name: 'border',
                         physics: {
                             shape: [
