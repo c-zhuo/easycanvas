@@ -146,5 +146,4 @@ module.exports = `
         </section>
 
     </article>
-
 `;

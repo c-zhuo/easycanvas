@@ -1,7 +1,7 @@
 // <p>Feature：为Painter实例增加afterEvent钩子。</p>
 
 module.exports = `
-    <article id="更新日志（Latest：2019-1-26）">
+    <article id="更新日志（Latest：2019-6-8">
         <h1>更新</h1>
 
         <p class="tip">Tips：小版本号为bugfix或增加API，中版本号可能包含个别不向下兼容的API调整。</p>

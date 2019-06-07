@@ -15,4 +15,5 @@ module.exports = `
         <code>
             create-easycanvas
         </code>
+    </article>
 `;
