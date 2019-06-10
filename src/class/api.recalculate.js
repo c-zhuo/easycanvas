@@ -141,7 +141,7 @@ module.exports = function (force) {
             _props.cutWidth = $sprite.$cache.cutWidth || _props._imgWidth;
             _props.cutHeight = $sprite.$cache.cutHeight || _props._imgHeight;
 
-            // 太小的图其实应该不取整，以免“高1像素的图，在sx和sw均为0.5的情况下渲染不出来”
+            // 太小的图其实应该不取整，以免“高1像素的图，在cutLeft和cutWidth均为0.5的情况下渲染不出来”
             _props.cutLeft = Math.round(_props.cutLeft);
             _props.cutTop = Math.round(_props.cutTop);
             _props.cutWidth = Math.round(_props.cutWidth);

@@ -6,7 +6,6 @@
  * ********** **/
 
 import utils from 'utils/utils.js';
-import constants from 'constants';
 
 // var c = document.createElement('canvas');
 // c.height = 1334;

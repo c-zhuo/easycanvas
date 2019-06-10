@@ -63,18 +63,19 @@ Easycanvas.ImgLoader(constants.jpg100px, function (img) {
         },
     }));
 
-    shouldBeJumped.push($Painter.add({
-        name: '看起来部分在内部，但是其实都在外部，因为sw溢出',
-        content: {
-            img: img,
-        },
-        style: {
-            left: -100, top: 200,
-            width: 110, height: 200,
-            cutLeft: 10, cutWidth: 120,
-            zIndex: 1, locate: 'lt',
-        },
-    }));
+    // 不再判断这种case
+    // shouldBeJumped.push($Painter.add({
+    //     name: '看起来部分在内部，但是其实都在外部，因为sw溢出',
+    //     content: {
+    //         img: img,
+    //     },
+    //     style: {
+    //         left: -100, top: 200,
+    //         width: 110, height: 200,
+    //         cutLeft: 10, cutWidth: 120,
+    //         zIndex: 1, locate: 'lt',
+    //     },
+    // }));
 
     shouldBePrinted.push($Painter.add({
         name: '画在外部，但是有旋转，导致有一部分画在内部',
@@ -96,15 +97,13 @@ describe('Featrue.perf-jumpRenderOfOutside Test.', function () {
     it('Cut outside correctly.', function (done) {
         setTimeout(() => {
             var shouldBeJumpedButPrinted = shouldBeJumped.filter(($sprite) => {
-                return $sprite.$rendered === true;
+                return $sprite.$render.$insight === true;
             });
             var shouldBePrintedButJumped = shouldBePrinted.filter(($sprite) => {
-                return $sprite.$rendered === false;
+                return $sprite.$render.$insight === false;
             });
 
-            // render逻辑调整，这里不再跳过
-            // expect(shouldBeJumpedButPrinted.length).toBe(0);
-            expect(shouldBeJumpedButPrinted.length).toBe(2);
+            expect(shouldBeJumpedButPrinted.length).toBe(0);
             if (shouldBeJumpedButPrinted.length) {
                 console.error(shouldBeJumpedButPrinted.map(($sprite) => {
                     return $sprite.name;

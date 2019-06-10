@@ -19,7 +19,8 @@ module.exports = function (args) {
         name: 'type',
         type: 'list',
         message: 'Language?',
-        choices: ['Node + Javascript', 'Node + Typescript'],
+        choices: ['Node + Javascript'],
+        // choices: ['Node + Javascript', 'Node + Typescript'],
         default: 0,
     }]).then((answers) => {
         ncp(path.resolve(__dirname, 'template-jsx'), path.resolve('./', answers.name), (err) => {

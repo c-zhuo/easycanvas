@@ -1,11 +1,13 @@
 {
     "name": "easycanvas-gen",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A CLI to bootstrap my new projects",
     "main": "index.js",
     "files": [
-        "./bin",
-        "./template-jsx",
+        "bin/*",
+        "template-jsx/src/*",
+        "template-jsx/*.js",
+        "template-jsx/*.json",
         "index.js",
         "gen.js"
     ],
@@ -27,6 +29,8 @@
     "homepage": "https://c-zhuo.github.io/easycanvas/",
     "dependencies": {
         "esm": "^3.2.18",
-        "ncp": "^2.0.0"
+        "inquirer": "^6.3.1",
+        "ncp": "^2.0.0",
+        "valid-filename": "^3.1.0"
     }
 }

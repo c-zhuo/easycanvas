@@ -2,7 +2,6 @@
 // https://github.com/karma-runner/karma-phantomjs-launcher/issues/120
 
 var webpack = require('webpack')
-var webpackBase = require('../webpack/webpack.config.base.js');
 var path = require('path');
 var base = require('../webpack/webpack.config.base.js');
 
