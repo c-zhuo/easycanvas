@@ -36,7 +36,7 @@ module.exports = `
                                             fontSize: Size
                                         }}
                                         events={{
-                                            mousemove: this.onWordClick
+                                            mousemove: this.changeWordColor
                                         }}
                                     >{word}</Text>
                                 })
@@ -44,7 +44,7 @@ module.exports = `
                         </View>;
                     }
                 
-                    onWordClick () {
+                    changeWordColor () {
                         this.style.color = '#0F0';
                     }
                 }
