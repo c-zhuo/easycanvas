@@ -25,11 +25,11 @@ module.exports = `
                         height: 400
                     });
 
-                    var handler = function ($e) {
+                    var handler = function (e) {
                         document.getElementById('eventName').innerHTML = JSON.stringify({
-                            type: $e.type,
-                            x: $e.canvasX,
-                            y: $e.canvasY,
+                            type: e.type,
+                            x: e.canvasX,
+                            y: e.canvasY,
                         }) + '<br>' + document.getElementById('eventName').innerHTML;
                     };
 
@@ -42,9 +42,10 @@ module.exports = `
                             left: 100, top: 100,
                         },
                         events: {
-                            contextmenu: function ($e) {
+                            contextmenu: function (e) {
                                 alert('禁止鼠标右键菜单');
-                                $e.event.preventDefault();
+                                e.stopPropagation();
+                                e.preventDefault();
                             },
                             click: handler,
                             mousedown: handler,
@@ -100,9 +101,9 @@ module.exports = `
                             width: 10, height: 20
                         },
                         events: {
-                            click: function ($e) {
+                            click: function (e) {
                                 alert('pass to Sprite2.');
-                                $e.stopPropagation();
+                                e.stopPropagation();
                             }
                         },
                     });
@@ -144,6 +145,8 @@ module.exports = `
                 </script>
             </code>
         </section>
+
+        <p><strong>preventDefault</strong>这个API也同样生效，并且可以在<strong>e.event</strong>属性中找到浏览器原生的Event对象，但Event对象的stopPropagation方法不会停止事件在Easycanvas中的冒泡，但它会阻止事件从canvas向上冒泡。</p>
 
         <p><strong>如果需要自定义事件的触发顺序，可以在events中指定eIndex。</strong>这样事件的先后判定将不使用zIndex，可能会与看到的层次不同，所以不建议大量使用这个API，以免降低调试的效率。例如下面这个例子，zIndex大的、eIndex小，反而后响应到事件：</p>
 

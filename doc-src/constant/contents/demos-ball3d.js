@@ -35,9 +35,9 @@ module.exports = `
 
                     // 记录鼠标轨迹
                     var mouse = {x: 300, y: 50};
-                    var mouseRecord = function ($e) {
-                        mouse.x = $e.canvasX;
-                        mouse.y = Math.max(30, $e.canvasY);
+                    var mouseRecord = function (e) {
+                        mouse.x = e.canvasX;
+                        mouse.y = Math.max(30, e.canvasY);
                     };
 
                     // 游戏状态

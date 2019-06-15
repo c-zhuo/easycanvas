@@ -1,0 +1,54 @@
+<head>
+    <style>
+        body {margin: 0; padding: 0;}
+        canvas {
+            border: 1px solid grey;
+            background-color: #eee;
+            background-size: auto 100%;
+            background-position: 50% 50%;
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+    <script src="../build/index.js"></script>
+    <script src="../build/components.js"></script>
+</head>
+
+<body>
+    <canvas id="app"></canvas>
+
+    <script>
+        var $app = new Easycanvas.Painter();
+        var dom = document.getElementById('app');
+
+        $app.register(dom, {
+            width: 800,
+            height: 800,
+        });
+        $app.start();
+
+        window.Sprite1 = $app.add(Easycanvas.Input({
+            style: {
+                left: 55, top: 55,
+                locate: 'lt',
+                fontSize: 36,
+                fontFamily: 'Arial',
+                color: '#0FF',
+                width: 420, height: 40,
+                fontWeight: 'bold',
+                borderWidth: 1,
+                borderColor: '#888',
+                padding: 8,
+                borderRadius: 11,
+                boxShadow: '1px 1px 0px #fff',
+                innerShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
+                placeHolder: 'Enter message here...',
+            },
+            onkeyup (value) {
+                console.log(value);
+            }
+        }));
+
+        $app.start();
+    </script>
+</body>

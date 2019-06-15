@@ -105,12 +105,12 @@ describe('Feature.rendering Test.', function () {
             $Painter.$children.forEach((i) => {
                 console.log(i.$origin.name);
             });
-            expect($Painter.$children.length).toBe(4);
-            expect($Painter.$children[0].type).toBe('img');
-            expect(getRenderStyle($Painter.$children[0].props)).toBe('0,0,30,30,100,100,30,30');
+            expect($Painter.$children.length).toBe(6);
+            expect($Painter.$children[1].type).toBe('img');
+            expect(getRenderStyle($Painter.$children[1].props)).toBe('0,0,30,30,100,100,30,30');
             expect($Painter.$children[3].settings.rotate).toBe(undefined);
             expect($Painter.$children[2].settings.rotate).toBe(undefined);
-            expect(getRenderStyle($Painter.$children[2].props)).toBe('0,0,30,30,40,540,150,150');
+            expect(getRenderStyle($Painter.$children[3].props)).toBe('0,0,30,30,40,540,150,150');
             done();
         }, constants.waitForUpdateTime);
     });

@@ -47,7 +47,7 @@ const component = function (opt, Easycanvas) {
     };
 
     return $sprite;
-}
+};
 
 browserRegister(component, 'RichText');
 

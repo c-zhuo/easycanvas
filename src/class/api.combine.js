@@ -17,18 +17,17 @@ module.exports = function () {//return;
         if ($sprite.$combine !== COMBINE_ING) {
             // 日历组件会走到这里，原因未知，做一下兜底
             // TODO
-            return COMBINE_DONE;
+            return;// COMBINE_DONE;
         }
 
-        if ($sprite.getStyle('visible') === false) return COMBINE_DELAY;
-// if ($sprite.name === '热门'){debugger;}
+        if ($sprite.getStyle('visible') === false) return;// COMBINE_DELAY;
 
         let $canvas = this.$canvas;
 
         let rect = $sprite.getRect(false, true);
 
-        if (rect.tw > $canvas.width) return COMBINE_FAIL;
-        if (rect.th > $canvas.height) return COMBINE_FAIL;
+        if (rect.tw > $canvas.width) return;// COMBINE_FAIL;
+        if (rect.th > $canvas.height) return;// COMBINE_FAIL;
 
         let allChildrenInCombine = $sprite.getAllChildren(true);
 
@@ -36,10 +35,10 @@ module.exports = function () {//return;
             let $child = allChildrenInCombine[i];
             if ($child.content.img && !$child.$render._imgWidth) {
                 // 存在未加载完的子对象，不进行合并
-                return COMBINE_DELAY;
+                return;// COMBINE_DELAY;
             }
             if ($child.getStyle('scale') !== 1) {
-                return COMBINE_DELAY;
+                return;// COMBINE_DELAY;
             }
         }
 
@@ -55,8 +54,8 @@ module.exports = function () {//return;
             outerRect.bottom = Math.round(outerRect.bottom);
 
             // if (!force) {
-                if (outerRect.width > $canvas.width) return COMBINE_FAIL;
-                if (outerRect.height > $canvas.height) return COMBINE_FAIL;
+                if (outerRect.width > $canvas.width) return;// COMBINE_FAIL;
+                if (outerRect.height > $canvas.height) return;// COMBINE_FAIL;
             // }
         } else {
             outerRect = rect;
@@ -154,7 +153,7 @@ module.exports = function () {//return;
             backgroundColor: undefined,
         });
 
-        return COMBINE_DONE;
+        return;// COMBINE_DONE;
     });
 
     return this;

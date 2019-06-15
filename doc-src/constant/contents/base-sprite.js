@@ -23,9 +23,9 @@ module.exports = `
                         width: 400,
                         height: 400,
                         events: {
-                            mousemove: function ($event) {
-                                mouseX = $event.canvasX;
-                                mouseY = $event.canvasY;
+                            mousemove: function (event) {
+                                mouseX = event.canvasX;
+                                mouseY = event.canvasY;
                             }
                         }
                     });

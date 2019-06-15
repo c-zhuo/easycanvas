@@ -53,7 +53,6 @@ module.exports = `
                         events: {
                             click: function (e) {
                                 this.style.width = 100;
-                                return true;
                             },
                         },
                     });

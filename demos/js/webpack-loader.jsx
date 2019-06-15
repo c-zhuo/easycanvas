@@ -1,5 +1,6 @@
 import Easycanvas, { Painter, Transition } from '../../src/index.js';
-import { View as View, Image, RichText, Text } from '../../src/components.js';
+import Text from '../../src/components/Text.js';
+import View from '../../src/components/View.js';
 
 window.Painter = Painter;
 

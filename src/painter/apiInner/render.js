@@ -29,6 +29,7 @@ module.exports = function (_ctx, _children, renderAll) {
 
     if (!renderAll && !$canvas.webgl) {
         $children = $children.filter(($child) => {
+            if ($child.type !== 'img') return true;
             return $child.props.$insight !== false;
         });
     }
@@ -49,7 +50,7 @@ module.exports = function (_ctx, _children, renderAll) {
         // let isText = $sprite.type === 'text';
 
         // 一些扩展插件的绘制可能没有props
-        if (props && $sprite.type !== 'clip' && $sprite.type !== 'text' && $sprite.type !== 'clipOver' && $sprite.type !== 'line') {
+        if (props && $sprite.type !== 'clip' && $sprite.type !== 'rotateStart' && $sprite.type !== 'rotateEnd' && $sprite.type !== 'text' && $sprite.type !== 'clipOver' && $sprite.type !== 'line') {
             // if (isText) {
             //     let length = props.content.length;
 
@@ -168,6 +169,13 @@ module.exports = function (_ctx, _children, renderAll) {
 
         let ctx = _ctx || $canvas.$paintContext;
 
+        if ($sprite.type === 'rotateStart') {
+            ctx.save();
+            ctx.translate(settings.beforeRotate[0] || 0, settings.beforeRotate[1] || 0);
+            ctx.rotate(settings.rotate || 0);
+            ctx.translate(settings.afterRotate[0] || 0, settings.afterRotate[1] || 0);
+        }
+
         if ($sprite.type === 'clip') { 
             ctx.save();
             // rect会导致FPS逐渐降低，怀疑未清理导致
@@ -214,16 +222,6 @@ module.exports = function (_ctx, _children, renderAll) {
             ctx.translate(settings.translate[0] || 0, settings.translate[1] || 0);
         }
 
-        if (settings.rotate) {
-            if (!saved) {
-                ctx.save();
-                saved = true;
-            }
-            ctx.translate(settings.beforeRotate[0] || 0, settings.beforeRotate[1] || 0);
-            ctx.rotate(settings.rotate || 0);
-            ctx.translate(settings.afterRotate[0] || 0, settings.afterRotate[1] || 0);
-        }
-
         if (settings.scale) {
             if (!saved) {
                 ctx.save();
@@ -263,19 +261,19 @@ module.exports = function (_ctx, _children, renderAll) {
         } else if ($sprite.type === 'line') {
             ctx.beginPath();
 
-            let strokeStyle = props.border.substr(props.border.indexOf(' ')) || 'black';
+            let strokeStyle = props.borderColor || 'black';
             ctx.strokeStyle = strokeStyle;
             // if (ctx._strokeStyle !== strokeStyle)
             //     ctx._strokeStyle = ctx.strokeStyle = strokeStyle;
 
-            ctx.lineWidth = props.border.split(' ')[0] || 1;
-            ctx.moveTo(props.left, props.top);
-            ctx.lineTo(props.left + props.width, props.top);
-            ctx.lineTo(props.left + props.width, props.top + props.height);
-            ctx.lineTo(props.left, props.top + props.height);
+            let borderWidth = ctx.lineWidth = props.borderWidth || 1;
+            ctx.moveTo(props.left - borderWidth, props.top - borderWidth);
+            ctx.lineTo(props.left + props.width + borderWidth, props.top - borderWidth);
+            ctx.lineTo(props.left + props.width + borderWidth, props.top + props.height + borderWidth);
+            ctx.lineTo(props.left - borderWidth, props.top + props.height + borderWidth);
             // ctx.lineTo(props.left, props.top);
 
-            // let lineWidth = props.border.split(' ')[0] || 1;
+            // let lineWidth = props.borderWidth || 1;
             // ctx.lineWidth = lineWidth;
             // ctx.moveTo(props.left - lineWidth, props.top - lineWidth);
             // ctx.lineTo(props.left + props.width + lineWidth, props.top - lineWidth);
@@ -285,7 +283,15 @@ module.exports = function (_ctx, _children, renderAll) {
 
             ctx.closePath();
             ctx.stroke();
+        } else if ($sprite.type === 'rotateEnd') {
+            ctx.$globalAlpha = false;
+            ctx.restore();
+            // ctx.save();
+            // ctx.translate(settings.beforeRotate[0] || 0, settings.beforeRotate[1] || 0);
+            // ctx.rotate(settings.rotate || 0);
+            // ctx.translate(settings.afterRotate[0] || 0, settings.afterRotate[1] || 0);
         } else if ($sprite.type === 'clipOver') {
+            ctx.$globalAlpha = false;
             ctx.restore();
         }
 

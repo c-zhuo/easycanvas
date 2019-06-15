@@ -32,7 +32,7 @@ module.exports = `
                         },
                     });
 
-                    for (var i = 0; i < 500; i++) {
+                    for (var i = 1; i < 500; i++) {
                         (function (j) {
                             $app.add({
                                 content: {
@@ -42,12 +42,14 @@ module.exports = `
                                     left: 200, top: 200,
                                     width: 20, height: 20,
                                     zIndex: j + 1,
-                                    rotate: j,
+                                    rotate: Easycanvas.Transition.linear(0, 360, 800).loop(),
                                 },
                                 hooks: {
                                     ticked: function () {
-                                        this.style.left = (this.getStyle('left') + $app.children[j].getStyle('left')) / 2;
-                                        this.style.top = (this.getStyle('top') + $app.children[j].getStyle('top')) / 2;
+                                        let leftGap = $root.getStyle('left') - this.getStyle('left');
+                                        let TopGap = $root.getStyle('top') - this.getStyle('top');
+                                        this.style.left += leftGap / j;
+                                        this.style.top += TopGap / j;
                                     },
                                 }
                             });

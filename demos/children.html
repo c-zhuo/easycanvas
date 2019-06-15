@@ -23,6 +23,7 @@
                     locate: 'lt',
                     opacity: 0.5,
                     rotate: 40,
+                    // rx: 0, ry: 0,
                 },
                 events: {
                     click: function () {
@@ -56,10 +57,10 @@
                         },
                         style: {
                             left: 0, top: 500,
-                            opacity: 1,
+                            opacity: 0.2,
                             zIndex: 2,
                             locate: 'lt',
-                            scale: 5
+                            // scale: 5
                         },
                         events: {
                             eIndex: -31,
@@ -89,6 +90,7 @@
                     },
                 ],
             });
+            // Sprite1.combineAsync();
             window.Sprite2 = $app.add({
                 name: 'Sprite2',
             });

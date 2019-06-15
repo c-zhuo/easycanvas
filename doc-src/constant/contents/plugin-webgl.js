@@ -489,9 +489,9 @@ module.exports = `
                             singleShader: true,
                         },
                         events: {
-                            mousemove: function ($e) {
-                                mouseX = $e.canvasX;
-                                mouseY = $e.canvasY;
+                            mousemove: function (e) {
+                                mouseX = e.canvasX;
+                                mouseY = e.canvasY;
                             },
                         }
                     });

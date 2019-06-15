@@ -50,7 +50,7 @@ module.exports = function ($sprite, index) {
     let childrenInside = _props.childrenInside;
 
     // 容器提前结束
-    if (!_img && !_text && !_props.backgroundColor && !_props.border && !childrenInside) {
+    if (!_img && !_text && !_props.settings.rotate && !_props.backgroundColor && !_props.borderWidth && !childrenInside) {
         $sprite.$rendered = undefined;
         let _children = $sprite.children;
         if (_children.length) {
@@ -91,6 +91,22 @@ module.exports = function ($sprite, index) {
     //         });
     //     }
     // }
+
+    if (settings.rotate) {
+        let $paintSprite = {
+            $id: $sprite.$id,
+            type: 'rotateStart',
+            settings: settings,
+            props: _props,
+        };
+
+        // if (process.env.NODE_ENV !== 'production') {
+        //     // 开发环境下，将元素挂载到$children里以供标记
+            $paintSprite.$origin = $sprite;
+        // };
+
+        $canvas.$children.push($paintSprite);
+    }
 
     if (settings.clip) {
         let $paintSprite = {
@@ -314,6 +330,22 @@ module.exports = function ($sprite, index) {
         let $paintSprite = {
             $id: $sprite.$id,
             type: 'line',
+            settings: settings,
+            props: _props,
+        };
+
+        // if (process.env.NODE_ENV !== 'production') {
+        //     // 开发环境下，将元素挂载到$children里以供标记
+            $paintSprite.$origin = $sprite;
+        // };
+
+        $canvas.$children.push($paintSprite);
+    }
+
+    if (settings.rotate) {
+        let $paintSprite = {
+            $id: $sprite.$id,
+            type: 'rotateEnd',
             settings: settings,
             props: _props,
         };

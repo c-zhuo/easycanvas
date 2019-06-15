@@ -9,7 +9,6 @@ $App.register(document.getElementById('app'), {
 });
 $App.start();
 
-// $App.add(new HelloWorld($App));
 $App.add(<ComponentHelloWorld width={$App.width} />);
 $App.add(<ComponentWordG onclick={() => {
     $App.clear();

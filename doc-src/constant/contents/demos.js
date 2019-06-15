@@ -12,14 +12,14 @@ import perf2000 from './demos-perf-2000.js';
 import perf3d from './demos-perf-3d.js';
 import perf3ds from './demos-perf-3ds.js';
 
+import browser from './demos-style-browser.js';
+import jsx from './demos-style-jsx.js';
+
 module.exports = `
     <article id="一些demo">
         <h1>一些demo</h1>
 
-        <p class="tip">点击蓝色小箭头可以查看演示，支持修改代码之后立即预览。其中涉及3D效果的Demo需要你的浏览器支持WebGL。</p>
-
-        <h2>3D Webgl</h2>
-        <p></p>
+        <p>点击<strong>蓝色小箭头</strong>可以查看演示，支持<strong>在线修改代码实时预览</strong>。其中涉及3D效果的Demo需要你的浏览器支持WebGL。</p>
 
         <style>
             .demos-card {
@@ -34,17 +34,38 @@ module.exports = `
                 padding-bottom: 100%;
                 height: 0;
                 border-bottom: 2px solid #eee;
-                background-size: cover;
+                background-size: 100%;
                 background-position: 50%;
+            }
+            .demos-screenshoot:hover {
+                opacity: 0.8;
             }
 
             .demos-card > .demo-box {
                 padding: 10px 20px 40px;
             }
+            .demos-card > .demo-box > .code-2-demo {
+                font-weight: bold;
+            }
             .demos-card > .demo-box > .code-2-demo:hover {
                 color: #019fa0;
             }
         </style>
+
+        <h2>Code Stucture</h2>
+        <p></p>
+
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/style1.jpg)"></div>
+            ${browser}
+        </div>
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/style2.jpg)"></div>
+            ${jsx}
+        </div>
+
+        <h2>3D Webgl Demos</h2>
+        <p></p>
 
         <div class="demos-card">
             <div class="demos-screenshoot" style="background-image:url(../resource/doc/1.jpg)"></div>
@@ -71,7 +92,7 @@ module.exports = `
             ${perf3ds}
         </div>
 
-        <h2>2D Canvas</h2>
+        <h2>2D Canvas Demos</h2>
         <p></p>
 
         <div class="demos-card">

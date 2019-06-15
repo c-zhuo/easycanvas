@@ -1,6 +1,6 @@
 import Easycanvas, { Image } from 'easycanvas';
 
-class HelloWorld {
+class Letter {
     constructor (props) {
         return <Image
             src="https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png"
@@ -17,4 +17,4 @@ class HelloWorld {
     }
 }
 
-export default HelloWorld;
+export default Letter;

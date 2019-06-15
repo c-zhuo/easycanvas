@@ -29,7 +29,7 @@
 
         // 滚动
 
-        var $scroll = $app.add(Easycanvas.class.scroll({
+        var $scroll = $app.add(Easycanvas.Scroll({
             name: 'scroll-box',
             style: {
                 left: 50, top: 50,
@@ -90,7 +90,7 @@
 
         // 按钮
 
-        $app.add(new Easycanvas.class.button({
+        $app.add(new Easycanvas.Button({
             name: 'button-1',
             props: {
                 text: 'click',
@@ -117,7 +117,7 @@
             }
         }));
 
-        $app.add(Easycanvas.class.button({
+        $app.add(Easycanvas.Button({
             name: 'button-2',
             props: {
                 text: 'hover',
@@ -144,7 +144,7 @@
             }
         }));
 
-        $app.add(Easycanvas.class.button({
+        $app.add(Easycanvas.Button({
             name: 'button-3',
             props: {
                 text: 'hover & click',
@@ -181,7 +181,7 @@
 
         // 文本
 
-        $app.add(Easycanvas.class.text({
+        $app.add(Easycanvas.Text({
             name: 'text-1',
             props: {
                 text: '这里是一段单行的文本',
@@ -199,7 +199,7 @@
             }
         }));
 
-        $app.add(Easycanvas.class.text({
+        $app.add(Easycanvas.Text({
             name: 'text-2',
             props: {
                 text: '这里是一段很长的单行文本',
@@ -218,7 +218,7 @@
             }
         }));
 
-        $app.add(Easycanvas.class.text({
+        $app.add(Easycanvas.Text({
             name: 'text-3',
             props: {
                 text: '这里是一段多行文本abcdefg1234567！？：.,?',
@@ -236,7 +236,7 @@
             }
         }));
 
-        $app.add(Easycanvas.class.text({
+        $app.add(Easycanvas.Text({
             name: 'text-4',
             props: {
                 text: 'emoji🐶',
@@ -253,7 +253,7 @@
             }
         }));
 
-        $app.add(Easycanvas.class.text({
+        $app.add(Easycanvas.Text({
             name: 'text-5',
             props: {
                 text: 'padding 10px 30px',
@@ -272,7 +272,7 @@
             }
         }));
 
-        $app.add(Easycanvas.class.text({
+        $app.add(Easycanvas.Text({
             name: 'text-6',
             props: {
                 text: 'text 24, lineHeight 72, text 24, lineHeight 72',
@@ -292,7 +292,7 @@
             }
         }));
 
-        $app.add(Easycanvas.class.text({
+        $app.add(Easycanvas.Text({
             name: 'text-7',
             props: {
                 text: 'color & font 颜色字体',

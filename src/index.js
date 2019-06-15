@@ -11,14 +11,6 @@ import multlineText from 'utils/multline-text';
 import sprite from './class/sprite.js';
 import extend from './class/extend.js';
 
-// import Button from './components/Button.js';
-// import Image from './components/Image.js';
-// import Scroll from './components/Scroll.js';
-// import Sequence from './components/Sequence.js';
-// import Text from './components/Text.js';
-// import View from './components/View.js';
-// import RichText from './components/RichText';
-
 import './bridge/chrome-devtool.js';
 
 // const $version = constants.version;
@@ -41,13 +33,6 @@ const Easycanvas = {
     },
     sprite,
     Sprite,
-    // Button,
-    // Image,
-    // Scroll,
-    // Sequence,
-    // Text,
-    // View,
-    // RichText,
 };
 
 const use = Easycanvas.use = function (pluginHook) {

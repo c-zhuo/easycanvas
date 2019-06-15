@@ -39,6 +39,8 @@ import constants from 'constants';
 
 import on from './api.on.js';
 import off from './api.off.js';
+import addEventListener from './api.addEventListener.js';
+import removeEventListener from './api.removeEventListener.js';
 import clear from '../painter/apiOuter/clear.js';
 import nextTick from '../painter/apiOuter/nextTick.js';
 import trigger from './api.trigger.js';
@@ -92,6 +94,7 @@ const preAdd = function (_item, $instance) {
 
     item.style.scale = utils.firstValuable(item.style.scale, 1);
     item.style.opacity = utils.firstValuable(item.style.opacity, 1);
+    item.style.borderWidth = utils.firstValuable(item.style.borderWidth, 0);
 
     item.style.zIndex = item.style.zIndex || 0;
     // item.style.mirrX = item.style.mirrX || 0;
@@ -455,6 +458,8 @@ sprite.prototype.refresh = function () {
 sprite.prototype.nextTick = nextTick;
 sprite.prototype.on = on;
 sprite.prototype.off = off;
+sprite.prototype.addEventListener = addEventListener;
+sprite.prototype.removeEventListener = removeEventListener;
 sprite.prototype.clear = clear;
 sprite.prototype.trigger = trigger;
 sprite.prototype.broadcast = broadcast;

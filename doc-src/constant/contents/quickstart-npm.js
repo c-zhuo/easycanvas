@@ -1,5 +1,5 @@
 module.exports = `
-    <article id="npm包方式引入">
+    <article id="npm引入与JSX写法">
         <h1>快速开始</h1>
 
         <h2>引入并配置Webpack</h2>
@@ -53,7 +53,7 @@ module.exports = `
                     el: "#app",
                     width: "400",
                     height: "400"
-                }).start();;
+                }).start();
 
                 let styleTop = 200;
 
@@ -96,7 +96,7 @@ module.exports = `
         <p>上面的例子等同于：</p>
 
         <section>
-            <div class="code-2-demo bg-demo"></div>
+            <div class="code-2-demo code-2-demo-jsx bg-demo"></div>
             <code>
                 <body>
                     <canvas id="app"></canvas>
@@ -109,7 +109,7 @@ module.exports = `
                         el: "#app",
                         width: "400",
                         height: "400"
-                    }).start();;
+                    }).start();
 
                     let styleTop = 200;
 
@@ -142,6 +142,65 @@ module.exports = `
                         })
                     }));
                 </script>
+            </code>
+        </section>
+
+        <h2>Class写法</h2>
+
+        <p>也可以使用Class的方式来进行组件的封装，例如将上例中的HelloWord封装为一个组件：</p>
+
+        <section>
+            <div class="code-2-demo code-2-demo-jsx bg-demo"></div>
+            <code>
+                import { Painter, View, Text, Transition } from 'easycanvas';
+
+                const $app = new Painter({
+                    el: "#app",
+                    width: "400",
+                    height: "400"
+                }).start();
+
+                let styleTop = 200;
+
+                class HelloWorld {
+                    constructor (props) {
+                        const HelloWorld = 'Hello World';
+                        const Size = props.fontSize;
+                
+                        return <View name="root-element">
+                            {
+                                HelloWorld.split('').map((word, index) => {
+                                    return <Text
+                                        style={{
+                                            left: 50 + 30 * index,
+                                            top: Transition.pendulum(120, 240, 3000, {
+                                                start: index * 60
+                                            }).loop(),
+                                            rotate: Transition.pendulum(-20, 20, 3000, {
+                                                start: index * 60
+                                            }).loop(),
+                                            width: 50,
+                                            height: 50,
+                                            color: "#F00",
+                                            locate: "lt",
+                                            fontSize: Size
+                                        }}
+                                        events={{
+                                            mousemove: this.onWordClick
+                                        }}
+                                    >{word}</Text>
+                                })
+                            }
+                        </View>;
+                    }
+                
+                    onWordClick () {
+                        this.style.color = '#0F0';
+                    }
+                }
+
+                const $texts = $app.add(<HelloWorld fontSize="30"/>);
+
             </code>
         </section>
 

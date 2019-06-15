@@ -70,8 +70,11 @@ const looper = function (arr, e, caughts) {
             }
 
             if (interceptor) {
-                var result = utils.firstValuable(interceptor.call(item, e), e);
-                if (!result || result.$stopPropagation) return;
+                // var result = utils.firstValuable(interceptor.call(item, e), e);
+                // if (!result || result.$stopPropagation) return;
+
+                utils.execFuncs(interceptor, item, [e]);
+                if (e.$stopPropagation) return;
             }
         }
 
@@ -226,9 +229,16 @@ eventHandler = function (e, _$e) {
         $e.$stopPropagation = true;
     };
 
+    $e.preventDefault = function () {
+        $e.event.preventDefault();
+    };
+
     if ($canvas.events.interceptor) {
-        $e = utils.firstValuable($canvas.events.interceptor.call($canvas, $e), $e);
-        if (!$e || $e.$stopPropagation) return;
+        // $e = utils.firstValuable($canvas.events.interceptor.call($canvas, $e), $e);
+        // if (!$e || $e.$stopPropagation) return;
+
+        utils.execFuncs($canvas.events.interceptor, $canvas, [e]);
+        if (e.$stopPropagation) return;
     }
 
     let caughts = [];

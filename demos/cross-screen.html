@@ -33,12 +33,12 @@
             dom.style.transform = 'rotate(90deg) translateX(' + transform_distance + 'px) translateY(' + transform_distance + 'px)';
             option.events = {
                 // 横屏转换
-                interceptor: function ($e) {
-                    var x = $e.canvasX;
-                    $e.canvasX = $e.canvasY;
-                    $e.canvasY = document.body.clientWidth - x;
-                    console.log($e)
-                    return $e;
+                interceptor: function (e) {
+                    var x = e.canvasX;
+                    e.canvasX = e.canvasY;
+                    e.canvasY = document.body.clientWidth - x;
+                    console.log(e)
+                    return e;
                 }
             };
         }

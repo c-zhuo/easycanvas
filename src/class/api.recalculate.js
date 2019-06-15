@@ -100,159 +100,165 @@ module.exports = function (force) {
 
     // $render
     if (isNeedUpdate || ($sprite.$cache.text !== _text) || ($sprite.$cache.img !== _img) || ($sprite.content.img && !$sprite.$render._imgWidth)) {
-        let _props = $sprite.$render;
+        let $render = $sprite.$render;
 
-        $sprite.$cache.img = _props.img = _img = utils.funcOrValue($sprite.content.img, $sprite);
-        $sprite.$cache.text = _props.text = _text
+        $sprite.$cache.img = $render.img = _img = utils.funcOrValue($sprite.content.img, $sprite);
+        $sprite.$cache.text = $render.text = _text
 
-        if (typeof _props.img === 'string') {
-            _props.img = $sprite.content.img = $sprite.$canvas.imgLoader(_props.img);
+        if (typeof $render.img === 'string') {
+            $render.img = $sprite.content.img = $sprite.$canvas.imgLoader($render.img);
         }
 
         // img有宽高，但是没有onload时，仍不能绘制
         if (_img && _img._complete === false) _img = false;
 
-        _props.backgroundColor = $sprite.$cache.backgroundColor;
-        _props.border = $sprite.$cache.border;
-        _props.overflow = $sprite.$cache.overflow;
-        _props.overflowX = $sprite.$cache.overflowX;
-        _props.overflowY = $sprite.$cache.overflowY;
-        _props.locate = $sprite.$cache.locate;
-        _props.rotate = $sprite.$cache.rotate;
-        _props.scale = $sprite.$cache.scale;
-        _props.opacity = $sprite.$cache.opacity;
-        _props.$moved = false; // ugly
+        // 并不是所有属性都要现在挂在$render里，比如color、fontSize就是到perPaint阶段再挂的
+        // 可能需要都搬过来，因为这里是每次更新的时候运行一次，perPaint是每次都运行
+        $render.backgroundColor = $sprite.$cache.backgroundColor;
+        $render.borderWidth = $sprite.$cache.borderWidth;
+        $render.borderColor = $sprite.$cache.borderColor;
+        $render.overflow = $sprite.$cache.overflow;
+        $render.overflowX = $sprite.$cache.overflowX;
+        $render.overflowY = $sprite.$cache.overflowY;
+        $render.locate = $sprite.$cache.locate;
+        $render.rotate = $sprite.$cache.rotate;
+        $render.scale = $sprite.$cache.scale;
+        $render.opacity = $sprite.$cache.opacity;
+        $render.$moved = false; // ugly
 
-        _props.childrenInside = (_props.overflow || _props.overflowX || _props.overflowY) && _props.overflow !== 'visible';
+        $render.childrenInside = ($render.overflow || $render.overflowX || $render.overflowY) && $render.overflow !== 'visible';
 
-        _props.left = $sprite.$cache.left;
-        _props.top = $sprite.$cache.top;
-        _props.width = $sprite.$cache.width;
-        _props.height = $sprite.$cache.height;
+        $render.left = $sprite.$cache.left;
+        $render.top = $sprite.$cache.top;
+        $render.width = $sprite.$cache.width;
+        $render.height = $sprite.$cache.height;
 
-        _props._imgWidth = 0;
-        _props._imgHeight = 0;
+        $render._imgWidth = 0;
+        $render._imgHeight = 0;
 
         if (_img && _img.width) {
-            _props._imgWidth = _img.width || 0;
-            _props._imgHeight = _img.height || 0;
-            _props.cutLeft = $sprite.$cache.cutLeft || 0;
-            _props.cutTop = $sprite.$cache.cutTop || 0;
-            _props.cutWidth = $sprite.$cache.cutWidth || _props._imgWidth;
-            _props.cutHeight = $sprite.$cache.cutHeight || _props._imgHeight;
+            $render._imgWidth = _img.width || 0;
+            $render._imgHeight = _img.height || 0;
+            $render.cutLeft = $sprite.$cache.cutLeft || 0;
+            $render.cutTop = $sprite.$cache.cutTop || 0;
+            $render.cutWidth = $sprite.$cache.cutWidth || $render._imgWidth;
+            $render.cutHeight = $sprite.$cache.cutHeight || $render._imgHeight;
 
             // 太小的图其实应该不取整，以免“高1像素的图，在cutLeft和cutWidth均为0.5的情况下渲染不出来”
-            _props.cutLeft = Math.round(_props.cutLeft);
-            _props.cutTop = Math.round(_props.cutTop);
-            _props.cutWidth = Math.round(_props.cutWidth);
-            _props.cutHeight = Math.round(_props.cutHeight);
+            $render.cutLeft = Math.round($render.cutLeft);
+            $render.cutTop = Math.round($render.cutTop);
+            $render.cutWidth = Math.round($render.cutWidth);
+            $render.cutHeight = Math.round($render.cutHeight);
 
-            _props.width = _props.width || _props.cutWidth || 0;
-            _props.height = _props.height || _props.cutHeight || 0;
+            $render.width = $render.width || $render.cutWidth || 0;
+            $render.height = $render.height || $render.cutHeight || 0;
         }
 
-        if (_props.locate === 'lt') {
-        } else if (_props.locate === 'ld') {
-            _props.top -= _props.height;
-        } else if (_props.locate === 'rt') {
-            _props.left -= _props.width;
-        } else if (_props.locate === 'rd') {
-            _props.left -= _props.width;
-            _props.top -= _props.height;
+        if ($render.locate === 'lt') {
+        } else if ($render.locate === 'ld') {
+            $render.top -= $render.height;
+        } else if ($render.locate === 'rt') {
+            $render.left -= $render.width;
+        } else if ($render.locate === 'rd') {
+            $render.left -= $render.width;
+            $render.top -= $render.height;
         } else { // center
-            _props.left -= _props.width >> 1;
-            _props.top -= _props.height >> 1;
+            $render.left -= $render.width >> 1;
+            $render.top -= $render.height >> 1;
         }
 
         // 不能干掉，否则combine的时候可能模糊
-        _props.left = Math.round(_props.left);
-        _props.top = Math.round(_props.top);
-        _props.width = Math.round(_props.width);
-        _props.height = Math.round(_props.height);
+        $render.left = Math.round($render.left);
+        $render.top = Math.round($render.top);
+        $render.width = Math.round($render.width);
+        $render.height = Math.round($render.height);
 
-        let settings = _props.settings = {};
+        let settings = $render.settings = {};
 
-        settings.globalAlpha = utils.firstValuable(_props.opacity, 1);
-        if (_props.childrenInside) {
+        settings.globalAlpha = utils.firstValuable($render.opacity, 1);
+        if ($render.childrenInside) {
             settings.clip = true;
         }
 
         if ($sprite.$cache.scale !== 1) {
-            let scale = _props.scale;
+            let scale = $render.scale;
             let scaledParent = getScaledParent($sprite);
 
             if (scaledParent) {
                 let scaleCenterX = scaledParent.$render.left + scaledParent.$render.width / 2;
                 let scaleCenterY = scaledParent.$render.top + scaledParent.$render.height / 2;
 
-                _props.left -= (scaleCenterX - _props.left) * (scale - 1);
-                _props.top -= (scaleCenterY - _props.top) * (scale - 1);
+                $render.left -= (scaleCenterX - $render.left) * (scale - 1);
+                $render.top -= (scaleCenterY - $render.top) * (scale - 1);
 
-                _props.width *= scale;
-                _props.height *= scale;
+                $render.width *= scale;
+                $render.height *= scale;
             }
         }
 
-        if (_props.fh || _props.fv) {
-            _props.fh = _props.fh || 0;
-            _props.fv = _props.fv || 0;
-            _props.fx = _props.fx || 0;
-            _props.fy = _props.fy || 0;
+        if ($render.fh || $render.fv) {
+            $render.fh = $render.fh || 0;
+            $render.fv = $render.fv || 0;
+            $render.fx = $render.fx || 0;
+            $render.fy = $render.fy || 0;
             settings.transform = {
-                fh: _props.fh,
-                fv: _props.fv,
-                fx: -(_props.top + (_props.height >> 1)) * _props.fv + _props.fx,
-                fy: -(_props.left + (_props.width >> 1)) * _props.fh + _props.fy,
+                fh: $render.fh,
+                fv: $render.fv,
+                fx: -($render.top + ($render.height >> 1)) * $render.fv + $render.fx,
+                fy: -($render.left + ($render.width >> 1)) * $render.fh + $render.fy,
             };
         }
 
-        if (_props.blend) {
-            if (typeof _props.blend === 'string') {
-                settings.globalCompositeOperation = _props.blend;
+        if ($render.blend) {
+            if (typeof $render.blend === 'string') {
+                settings.globalCompositeOperation = $render.blend;
             } else {
-                settings.globalCompositeOperation = blend[_props.blend];
+                settings.globalCompositeOperation = blend[$render.blend];
             }
         }
 
-        if (_props.backgroundColor) {
-            settings.fillRect = _props.backgroundColor;
+        if ($render.backgroundColor) {
+            settings.fillRect = $render.backgroundColor;
         }
 
-        if (_props.border) {
-            // TODO：导致width扩大，判断是否超出范围时需要调整算法
-            settings.line = _props.border;
+        if ($render.borderWidth) {
+            settings.line = $render.borderWidth;
         }
 
-        if (_props.mirrX) {
+        if ($render.mirrX) {
             settings.translate = [$canvas.width, 0];
             settings.scale = [-1, 1];
-            _props.left = $canvas.width - _props.left - _props.width;
-            if (_props.mirrY) {
+            $render.left = $canvas.width - $render.left - $render.width;
+            if ($render.mirrY) {
                 settings.translate = [$canvas.width, $canvas.height];
                 settings.scale = [-1, -1];
-                _props.top = $canvas.height - _props.top - _props.height;
+                $render.top = $canvas.height - $render.top - $render.height;
             }
-        } else if (_props.mirrY) {
+        } else if ($render.mirrY) {
             settings.translate = [0, $canvas.height];
             settings.scale = [1, -1];
-            _props.top = $canvas.height - _props.top - _props.height;
+            $render.top = $canvas.height - $render.top - $render.height;
         }
 
-        if (_props.rotate) {
+        if ($render.rotate) {
             // 定点旋转
-            _props.rx = utils.firstValuable(utils.funcOrValue($sprite.$cache.rx, $sprite), _props.left + 0.5 * _props.width);
-            _props.ry = utils.firstValuable(utils.funcOrValue($sprite.$cache.ry, $sprite), _props.top + 0.5 * _props.height);
+            $render.rx = utils.firstValuable(utils.funcOrValue($sprite.$cache.rx, $sprite), $render.left + 0.5 * $render.width);
+            $render.ry = utils.firstValuable(utils.funcOrValue($sprite.$cache.ry, $sprite), $render.top + 0.5 * $render.height);
 
-            let transX = utils.firstValuable(_props.rx, _props.left + 0.5 * _props.width);
-            let transY = utils.firstValuable(_props.ry, _props.top + 0.5 * _props.height);
+            let transX = utils.firstValuable($render.rx, $render.left + 0.5 * $render.width);
+            let transY = utils.firstValuable($render.ry, $render.top + 0.5 * $render.height);
 
             settings.beforeRotate = [transX, transY];
-            settings.rotate = -_props.rotate * Math.PI / 180;
+            settings.rotate = -$render.rotate * Math.PI / 180;
             settings.rotate = Number(settings.rotate.toFixed(4));
             settings.afterRotate = [-transX, -transY];
         }
 
-        _props.$insight = rectMeet(_props.left, _props.top, _props.width, _props.height, 0, 0, $sprite.$canvas.width, $sprite.$canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
+        if (!$render.borderWidth) {
+            $render.$insight = rectMeet($render.left, $render.top, $render.width, $render.height, 0, 0, $sprite.$canvas.width, $sprite.$canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], $render.rotate);
+        } else {
+            $render.$insight = rectMeet($render.left - $render.borderWidth, $render.top - $render.borderWidth, $render.width + $render.borderWidth * 2, $render.height + $render.borderWidth * 2, 0, 0, $sprite.$canvas.width, $sprite.$canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], $render.rotate);
+        }
     }
 
     $sprite.children.forEach(($child) => {

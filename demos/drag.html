@@ -26,9 +26,9 @@
                 dragable: true,
             },
             events: {
-                mousemove: function ($e) {
-                    $e.event.preventDefault();
-                    $e.event.stopPropagation();
+                mousemove: function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                 }
             }
         });
