@@ -6,25 +6,7 @@ module.exports = `
 
         <img class="article-img" width="100%" src="https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png"></img>
 
-        <h2>引入方式</h2>
-
-        <code>
-            <!-- js文件方式引入 -->
-            <!-- 注意放在easycanvas.js后；prod为线上压缩版、dev为开发版；开发版带有调试、警告信息 -->
-
-            <script src="http://your-path/easycanvas.standalone.prod.js"></script>
-            <script src="http://your-path/components.standalone.prod.js"></script>
-
-            <!-- node环境引入 -->
-
-            import Easycanvas from easycanvas;
-            import EasycanvasComponentScroll from easycanvas/build/components.js;
-
-            // node环境中引入，可以指定组件名称，作为“命名空间”，防止多个组件重复
-            Easycanvas.component(EasycanvasComponentScroll.scroll, 'scroll');
-        </code>
-
-        <h2>基本配置</h2>
+        <h2>示例</h2>
 
         <p>以上图为例：</p>
 
@@ -141,5 +123,24 @@ module.exports = `
         <p>这里用到的<strong>sequence的index参数是序列索引，代表当前播放到了精灵动画的第几帧子画面</strong>。例如这个例子中的interval为40，那么index的值会每40毫秒自增1。</p>
 
         <p class="tip">Tips：当然，也可以通过状态钩子来实现同样的效果，将cutLeft和cutHeight的值通过绘制钩子“ticked”或者”beforeTick“动态计算出来。或者，封装自己的组件来实现更多参数可配置的精灵动画。</p>
+
+        <h2>API</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th align="left">content</th>
+                    <th align="left"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="left">img <String/Image/Canvas></td>
+                    <td align="left">绘图内容</td>
+                </tr>
+            </tbody>
+        </table>
+
+
     </article>
 `;

@@ -36,7 +36,7 @@ const component = function (opt, Easycanvas) {
     option.style.height = option.style.height - (option.style.borderWidth || 0) * 2 - (option.style.padding || 0) * 2;
 
     const $canvasInput = new CanvasInput(canvasInputOption);
-    console.log($canvasInput._renderCanvas);
+    // console.log($canvasInput._renderCanvas);
 
     option.style.borderWidth = 0;
     option.style.borderColor = undefined;

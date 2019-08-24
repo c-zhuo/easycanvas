@@ -1,7 +1,5 @@
-import utils from 'utils/utils.js';
 import rectMeet from 'utils/math.rect-meet';
 
-import { default0s, default1s, styleKeys } from './webgl-utils';
 import webglRender3d from './webgl-render-3d.js';
 import webglRender2d from './webgl-render-2d.js';
 

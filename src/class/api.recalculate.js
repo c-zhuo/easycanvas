@@ -2,6 +2,8 @@ import utils from 'utils/utils.js';
 import rectMeet from 'utils/math.rect-meet';
 import constants from 'constants';
 
+const blend = utils.blend;
+
 const getScaledParent = function ($sprite) {
     if (!$sprite) return;
 
@@ -102,7 +104,7 @@ module.exports = function (force) {
     if (isNeedUpdate || ($sprite.$cache.text !== _text) || ($sprite.$cache.img !== _img) || ($sprite.content.img && !$sprite.$render._imgWidth)) {
         let $render = $sprite.$render;
 
-        $sprite.$cache.img = $render.img = _img = utils.funcOrValue($sprite.content.img, $sprite);
+        $sprite.$cache.img = $render.img = _img;
         $sprite.$cache.text = $render.text = _text
 
         if (typeof $render.img === 'string') {
@@ -242,8 +244,8 @@ module.exports = function (force) {
 
         if ($render.rotate) {
             // 定点旋转
-            $render.rx = utils.firstValuable(utils.funcOrValue($sprite.$cache.rx, $sprite), $render.left + 0.5 * $render.width);
-            $render.ry = utils.firstValuable(utils.funcOrValue($sprite.$cache.ry, $sprite), $render.top + 0.5 * $render.height);
+            $render.rx = utils.firstValuable(utils.funcOrValue($sprite.$cache.rotateOriginLeft, $sprite), $render.left + 0.5 * $render.width);
+            $render.ry = utils.firstValuable(utils.funcOrValue($sprite.$cache.rotateOriginTop, $sprite), $render.top + 0.5 * $render.height);
 
             let transX = utils.firstValuable($render.rx, $render.left + 0.5 * $render.width);
             let transY = utils.firstValuable($render.ry, $render.top + 0.5 * $render.height);
@@ -254,10 +256,12 @@ module.exports = function (force) {
             settings.afterRotate = [-transX, -transY];
         }
 
-        if (!$render.borderWidth) {
-            $render.$insight = rectMeet($render.left, $render.top, $render.width, $render.height, 0, 0, $sprite.$canvas.width, $sprite.$canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], $render.rotate);
-        } else {
-            $render.$insight = rectMeet($render.left - $render.borderWidth, $render.top - $render.borderWidth, $render.width + $render.borderWidth * 2, $render.height + $render.borderWidth * 2, 0, 0, $sprite.$canvas.width, $sprite.$canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], $render.rotate);
+        if ($sprite.$canvas) {
+            if (!$render.borderWidth) {
+                $render.$insight = rectMeet($render.left, $render.top, $render.width, $render.height, 0, 0, $sprite.$canvas.width, $sprite.$canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], $render.rotate);
+            } else {
+                $render.$insight = rectMeet($render.left - $render.borderWidth, $render.top - $render.borderWidth, $render.width + $render.borderWidth * 2, $render.height + $render.borderWidth * 2, 0, 0, $sprite.$canvas.width, $sprite.$canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], $render.rotate);
+            }
         }
     }
 

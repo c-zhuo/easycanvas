@@ -36,6 +36,7 @@ import Text from './components/Text.js';
 import RichText from './components/RichText';
 import View from './components/View.js';
 import Input from './components/Input.js';
+import Draggable from './components/Draggable.js';
 
  export {
      Button,
@@ -45,5 +46,6 @@ import Input from './components/Input.js';
      Text,
      View,
      Input,
-     RichText
+     RichText,
+     Draggable,
  };

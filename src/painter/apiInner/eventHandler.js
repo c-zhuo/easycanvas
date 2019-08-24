@@ -3,9 +3,9 @@
  * Handle events on canvas (Includes both user's events and debugging events)
  * - Compare event's coordinate and the coordinate of every sprite in
  *   Easycanvas.children, and check sprite's handlers one by one.
- * - Events: mousedown, mousemove, mouseup, touchstart, touchmove, touchend,
- *   click, contextmenu
- * - Expanded events: hold, touchout
+ * - Events: 'contextmenu', 'mousewheel', 'click', 'dblclick', 'mousedown',
+ *   'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'
+ * - Expanded events: touchout(deprecated)
  *
  * ********** **/
 
@@ -237,7 +237,7 @@ eventHandler = function (e, _$e) {
         // $e = utils.firstValuable($canvas.events.interceptor.call($canvas, $e), $e);
         // if (!$e || $e.$stopPropagation) return;
 
-        utils.execFuncs($canvas.events.interceptor, $canvas, [e]);
+        utils.execFuncs($canvas.events.interceptor, $canvas, [$e]);
         if (e.$stopPropagation) return;
     }
 

@@ -29,7 +29,7 @@ const textRendering = function (_text, config) {
     }
 
     var width = config.minWidth || config.width || (
-        (config.fontSize || 16) * text.length + padding[1] + padding[3] + 100
+        config.fontSize * text.length + padding[1] + padding[3] + 100
     );
     var minLines = text.split('\n').length;
 
@@ -55,7 +55,7 @@ const textRendering = function (_text, config) {
     tempCtx.textAlign = config.textAlign || 'left';
 
     if (process.env.NODE_ENV !== 'production') {
-        var context = [];
+        var context = []; // 骨架
         context.push(`var tempCanvas = document.createElement('canvas')`);
         context.push(`tempCanvas.width=${tempCanvas.width}`);
         context.push(`tempCanvas.height=${tempCanvas.height}`);

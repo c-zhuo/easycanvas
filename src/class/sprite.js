@@ -387,7 +387,9 @@ sprite.prototype.update = function (opt) {
         }
     }
 
-    this.recalculate(true); // force update
+    if (this.$canvas) {
+        this.recalculate(true); // if painted, force update
+    }
     return this;
 };
 

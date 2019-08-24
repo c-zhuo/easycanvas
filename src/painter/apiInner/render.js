@@ -35,12 +35,13 @@ module.exports = function (_ctx, _children, renderAll) {
     }
 
     $children.forEach(($sprite, i) => {
-        /*
-            props(Array)
-            @0    image/canvas Object
-            @1~4  source x, y, w, h
-            @5~8  target x, y, w, h
-        */
+        if (process.env.NODE_ENV !== 'production') {
+            if ($sprite.$origin) {
+                // 先标记为true，绘制的时候改为false
+                $sprite.$origin.$useless = true;
+            }
+        }
+
         let props = $sprite.props;
 
         /*
@@ -251,7 +252,7 @@ module.exports = function (_ctx, _children, renderAll) {
             }
         } else if ($sprite.type === 'text' && props.content) {
             ctx.font = props.font;
-            ctx.fillStyle = props.color || 'white';
+            ctx.fillStyle = props.color || 'black';
             ctx.textAlign = props.align;
             ctx.textBaseline = props.baseline;
             ctx[props.type || 'fillText'](props.content, props.left, props.top);

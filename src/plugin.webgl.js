@@ -5,7 +5,7 @@
  *
  * ********** **/
 
-import onEvent from './plugin-webgl/webgl-init-onEvent.js';
+// import onEvent from './plugin-webgl/webgl-init-onEvent.js';
 import onUse from './plugin-webgl/webgl-init-onUse.js';
 import onCreate from './plugin-webgl/webgl-init-onCreate.js';
 import onPaint from './plugin-webgl/webgl-init-onPaint.js';

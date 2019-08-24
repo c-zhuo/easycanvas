@@ -18,6 +18,7 @@ const tree = `
     样式获取与更新
     状态钩子
     自定义事件
+    - API
     - 组件
     精灵动画sequence
     滚动组件scroll

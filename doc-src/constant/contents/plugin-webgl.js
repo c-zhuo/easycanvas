@@ -22,8 +22,8 @@ module.exports = `
         <code>
             <!-- node环境引入 -->
 
-            import Easycanvas from easycanvas;
-            import EasycanvasWebgl from easycanvas/build/plugin.webgl.js;
+            import Easycanvas from 'easycanvas';
+            import EasycanvasWebgl from 'easycanvas/build/plugin.webgl.js';
 
             Easycanvas.use(EasycanvasWebgl);
 

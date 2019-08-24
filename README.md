@@ -2,7 +2,7 @@
 
 ![https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/index_v2.gif](https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/index_v2.gif)
 
-Easycanvas是一个轻量、高效的渐进式canvas渲染库。基于组件的开发方式、支持JSX写法，可在浏览器、微信小游戏和小程序中使用，并提供了一个Chrome插件来便于开发——包括数据结构的显示、对canvas中某个元素的样式进行调整等。同时，也支持物理引擎、3D模型渲染等插件的渐进式引入。
+Easycanvas是一个同时支持2D和3D渲染、轻量、高效的渐进式canvas渲染库。提供了基于组件的开发方式，支持JSX写法，可在浏览器、微信小游戏和小程序中使用，并具备Chrome插件来便于开发（包括数据结构的显示、对canvas中某个元素的样式进行调整等），也支持物理引擎、3D模型渲染等插件的渐进式引入。
 
 浏览器兼容性：IE>=9（原因为defineProperty）
 
