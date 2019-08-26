@@ -1,16 +1,16 @@
 module.exports = `
-    <article id="Event API">
-        <h1>Event属性与API列表</h1>
+    <article id="Event-API">
+        <h1>Event API</h1>
 
         <p>Event是Easycanvas中的事件对象。当Sprite.events下的事件或者addEventListener(EventName, Handle)注册的事件触发时，它是Handle函数的第一个入参。</p>
 
         <code>
-            someSprite.addEventListener('click', function (e) {
-                console.log(e.canvasX, e.canvasY);
-                console.log(e.event.layerX, e.event.layerX);
-                e.stopPropagation();
-                e.event.stopPropagation();
-            });
+                someSprite.addEventListener('click', function (e) {
+                    console.log(e.canvasX, e.canvasY);
+                    console.log(e.event.layerX, e.event.layerX);
+                    e.stopPropagation();
+                    e.event.stopPropagation();
+                });
         </code>
 
         <p>可使用的属性包含：</p>

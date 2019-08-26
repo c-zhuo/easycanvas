@@ -42,4 +42,20 @@ module.exports = function (easycanvas) {
             }
         }
     };
+
+    const originRemove = easycanvas.sprite.prototype.remove;
+    easycanvas.sprite.prototype.remove = function (child) {
+        const $sprite = this;
+
+        if ($sprite.webgl) {
+            for (let key in $sprite.webgl) {
+                if ($sprite.webgl[key].$cacheBuffer) {
+                    $sprite.$canvas.$gl.deleteBuffer($sprite.webgl[key].$cacheBuffer);
+                    $sprite.webgl[key].$cacheBuffer = undefined;
+                }
+            }
+        }
+
+        originRemove.call($sprite, child);
+    };
 };

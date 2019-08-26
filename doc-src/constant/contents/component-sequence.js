@@ -1,8 +1,8 @@
 module.exports = `
-    <article id="精灵动画sequence">
-        <h1>精灵动画组件sequence</h1>
+    <article id="帧动画Sequence">
+        <h1>帧动画组件Sequence</h1>
 
-        <p>“精灵动画”也称为“序列动画”、“逐帧动画”、“动作序列”等，是指把一个元素在各个帧的状态的画面归到一组依次绘制，形成动画。例如下面是一个爆炸的动作序列图：</p>
+        <p>“帧动画”也称为“序列动画”、“精灵动画”等，是指把一个元素在各个帧的状态的画面归到一组依次绘制，形成动画。例如下面是一个爆炸的动作序列图：</p>
 
         <img class="article-img" width="100%" src="https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png"></img>
 
@@ -40,15 +40,11 @@ module.exports = `
 
                     var createFire = function (initX, initY) {
                         return Easycanvas.Sequence({
-                            content: {
-                                img: Fire,
-                            },
-                            props: {
-                                frameWidth: -9,
-                                frameHeight: -1,
-                                interval: 50,
-                                loop: false,
-                            },
+                            src: Fire,
+                            frameWidth: -9,
+                            frameHeight: -1,
+                            interval: 50,
+                            loop: false,
                             style: {
                                 left: initX,
                                 top: initY,
@@ -94,13 +90,9 @@ module.exports = `
                     var width = 166, height = 103;
 
                     var $human = Easycanvas.Sequence({
-                        content: {
-                            img: img,
-                        },
-                        props: {
-                            interval: 40,
-                            loop: true,
-                        },
+                        src: img,
+                        interval: 40,
+                        loop: true,
                         style: {
                             left: 150,
                             top: 150,
@@ -129,18 +121,29 @@ module.exports = `
         <table>
             <thead>
                 <tr>
-                    <th align="left">content</th>
-                    <th align="left"></th>
+                    <th align="left">API</th>
+                    <th align="left">描述</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td align="left">img <String/Image/Canvas></td>
+                    <td align="left">src <String/Image/Canvas></td>
                     <td align="left">绘图内容</td>
+                </tr>
+                <tr>
+                    <td align="left">loop <Boolean></td>
+                    <td align="left">播放结束后是否循环开始，默认false；为false时，播放完最后一帧后会自动调用remove方法</td>
+                </tr>
+                <tr>
+                    <td align="left">frameWidth / frameHeight <Number></td>
+                    <td align="left">每帧尺寸，如设置，将用于自动计算cutLeft和cutTop；如为负数，代表将图像N等分，例如-5表示每行（或每列）含有5帧，会自动计算出cutWidth和cutHeight</td>
+                </tr>
+                <tr>
+                    <td align="left">index <Number></td>
+                    <td align="left">初始化时为起始帧数，默认0，之后随着帧动画的播放会自动变化</td>
                 </tr>
             </tbody>
         </table>
-
 
     </article>
 `;

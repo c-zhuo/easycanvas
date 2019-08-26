@@ -16,12 +16,18 @@ import hooks from './contents/base-hooks.js';
 import customEvent from './contents/base-customEvent.js';
 import Sprite from './contents/base-Sprite.js';
 
+import apiSprite from './contents/api-sprite.js';
+import apiEvent from './contents/api-event.js';
+
 import pluginPhysics from './contents/plugin-physics.js';
 import pluginWebgl from './contents/plugin-webgl.js';
 import pluginWebgl3DS from './contents/plugin-webgl-3ds.js';
 import pluginWebglMMD from './contents/plugin-webgl-mmd.js';
 import pluginWebglLoaders from './contents/plugin-webgl-loaders.js';
 
+import componentBase from './contents/component.js';
+import componentView from './contents/component-view.js';
+import componentText from './contents/component-text.js';
 import componentScroll from './contents/component-scroll.js';
 import componentSequence from './contents/component-sequence.js';
 
@@ -44,12 +50,18 @@ let content = `
     ${customEvent}
     ${Sprite}
 
+    ${apiSprite}
+    ${apiEvent}
+
     ${pluginPhysics}
     ${pluginWebgl}
     ${pluginWebgl3DS}
     ${pluginWebglMMD}
     ${pluginWebglLoaders}
 
+    ${componentBase}
+    ${componentView}
+    ${componentText}
     ${componentScroll}
     ${componentSequence}
 `;

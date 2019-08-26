@@ -21,6 +21,11 @@ module.exports = function (force) {
 
     if (utils.funcOrValue($sprite.style.visible, $sprite) === false) {
         $sprite.$cache.visible = false;
+
+        // 有可能在上面的beforeTick里调用了remove，这样就没有$canvas属性了
+        // TODO：execFuncs的调用加判断，没有钩子时，没必要构造第三个数组参数，节约性能
+        if (!$sprite.$canvas) return;
+
         !force && utils.execFuncs($sprite.hooks.ticked, $sprite, [$sprite.$canvas.$rafTime]);
         return;
     }

@@ -1,18 +1,18 @@
 module.exports = `
-    <article id="Sprite API">
-        <h1>Sprite属性与API列表</h1>
+    <article id="Sprite-API">
+        <h1>Sprite API</h1>
 
         <p>Sprite是Easycanvas中的基类，拥有大量的属性与API。</p>
         
         <p>这些属性可以直接访问修改，也可以用函数的形式返回结果。后者可以实现类似“数据绑定”的概念，如下：</p>
 
         <code>
-            someSprite.style.left = 100;
+                someSprite.style.left = 100;
 
-            someSprite.style.left = function () {
-                // window.data.left变化时，left将随之变化
-                return window.data.left;
-            };
+                someSprite.style.left = function () {
+                    // window.data.left变化时，left将随之变化
+                    return window.data.left;
+                };
         </code>
 
         <p>可使用的属性包含：</p>

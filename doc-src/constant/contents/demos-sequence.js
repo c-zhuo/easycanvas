@@ -30,15 +30,11 @@ module.exports = `
 
                     var createFire = function (initX, initY) {
                         return Easycanvas.Sequence({
-                            content: {
-                                img: Fire,
-                            },
-                            props: {
-                                frameWidth: -9,
-                                frameHeight: -1,
-                                interval: 50,
-                                loop: false,
-                            },
+                            src: Fire,
+                            frameWidth: -9,
+                            frameHeight: -1,
+                            interval: 50,
+                            loop: false,
                             style: {
                                 left: initX, top: initY,
                                 width: 120, height: 120,

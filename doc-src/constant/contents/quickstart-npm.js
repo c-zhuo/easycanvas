@@ -51,8 +51,8 @@ module.exports = `
 
                 const $app = new Painter({
                     el: "#app",
-                    width: "400",
-                    height: "400"
+                    width: 400,
+                    height: 400
                 }).start();
 
                 let styleTop = 200;
@@ -89,11 +89,11 @@ module.exports = `
             </code>
         </section>
 
-        <p>Easycanvas提供了ES模块tree-shaking的支持：当你的只用到了部分组件时，不会将其它组件也打包进来。</p>
+        <p>Easycanvas提供了ES模块tree-shaking的支持：当你的只用到了部分组件时，不会将其它组件打包进来。</p>
 
         <p>这里的Text、View组件是Easycanvas内置的一些基础组件，你也可以参考文档的其它部分来定义自己的组件。</p>
 
-        <p>上面的例子等同于：</p>
+        <p>上面的例子以非JSX的方式可以写成如下形式：</p>
 
         <section>
             <div class="code-2-demo code-2-demo-jsx bg-demo"></div>
@@ -107,8 +107,8 @@ module.exports = `
 
                     const $app = new Painter({
                         el: "#app",
-                        width: "400",
-                        height: "400"
+                        width: 400,
+                        height: 400
                     }).start();
 
                     let styleTop = 200;
@@ -156,8 +156,8 @@ module.exports = `
 
                 const $app = new Painter({
                     el: "#app",
-                    width: "400",
-                    height: "400"
+                    width: 400,
+                    height: 400
                 }).start();
 
                 let styleTop = 200;

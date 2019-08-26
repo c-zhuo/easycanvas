@@ -77,7 +77,9 @@ module.exports = `
             </code>
         </section>
 
-        <p class="tip">Tips：如果浏览器不支持WebGL，那么会自动使用Canvas进行渲染，但是只会进行2D的渲染，不会使用下面的3D相关特性。可以将webgl从true改为对象，在webgl的callback属性进行不支持WebGL模式渲染的监听。</p>
+        <p class="tip">Tips：如果浏览器不支持WebGL，那么会自动使用Canvas进行渲染，但是只会进行2D的渲染，不会使用下面的3D相关特性。可以将webgl从true改为对象，在webgl的fallback属性设置不支持WebGL模式渲染的回调。</p>
+        
+        <p class="tip">Tips：当渲染带有透明通道的图片，例如png图像时，可以为webgl增加hasAlpha属性，值为true。</p>
 
         <h2>常见3D形状</h2>
 
@@ -546,6 +548,6 @@ module.exports = `
             </code>
         </section>
 
-        <p class="tip">Tips：这里的singleShader的用途是让Easycanvas使用同一个shader渲染各种不同的图形，以降低切换shader造成的性能损耗。当渲染像素点时，这项必须为true，但后续版本会解除这个限制。</p>
+        <p class="tip">Tips：这里的singleShader的用途是让Easycanvas使用同一个shader渲染各种不同的图形，以降低切换shader造成的性能损耗。当渲染像素点时，这项必须为true。后续版本可能会解除这个限制。</p>
     </article>
 `;
