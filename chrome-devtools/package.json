@@ -26,7 +26,7 @@
     "css-loader": "0.28.0",
     "easy-vuex": "0.2.0",
     "ejs-compiled-loader": "1.1.0",
-    "eslint": "3.19.0",
+    "eslint": "4.18.2",
     "eslint-loader": "1.7.1",
     "eslint-plugin-html": "2.0.1",
     "file-loader": "0.11.1",

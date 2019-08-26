@@ -5,36 +5,37 @@
  * ********** **/
 
 import browserRegister from './_browserRegister.js';
+import Image from './Image.js';
 
 const component = function (opt, Easycanvas) {
     const funcOrValue = Easycanvas.utils.funcOrValue;
 
-    let $sprite = new Easycanvas.Sprite(opt);
+    // let $sprite = new Easycanvas.Sprite(opt);
+    let $sprite = new Image(opt, Easycanvas);
 
-    opt.props.index = opt.props.index || 0;
+    $sprite.index = opt.index || 0;
 
     $sprite.on('beforeTick', function () {
-        let _props = this.props;
         let img = funcOrValue(this.content.img, this);
 
         if (!img || !img.width) return;
 
         // 确立index
-        let index = _props.index || 0;
+        let index = this.index || 0;
         if (index < 0) index = 0;
 
         // 计算每帧的宽高
         let pw, ph;
-        if (_props.frameWidth || _props.frameHeight) {
-            if (_props.frameWidth < 0) {
-                pw = img.width / -_props.frameWidth;
+        if (this.frameWidth || this.frameHeight) {
+            if (this.frameWidth < 0) {
+                pw = img.width / -this.frameWidth;
             } else {
-                pw = _props.frameWidth;
+                pw = this.frameWidth;
             }
-            if (_props.frameHeight < 0) {
-                ph = img.height / -_props.frameHeight;
+            if (this.frameHeight < 0) {
+                ph = img.height / -this.frameHeight;
             } else {
-                ph = _props.frameHeight;
+                ph = this.frameHeight;
             }
 
             let wTimes = Math.floor(img.width / pw);
@@ -45,20 +46,17 @@ const component = function (opt, Easycanvas) {
         }
 
         // 不循环的精灵动画自动移除
-        if (!_props.loop && index > 0 && this.style.cutLeft === 0 && this.style.cutTop === 0) {
+        if (!this.loop && index > 0 && this.style.cutLeft === 0 && this.style.cutTop === 0) {
             this.style.img = undefined;
-            if (_props.onOver) {
-                _props.onOver.call(this);
-            } else {
-                this.remove();
-            }
+            this.remove();
+            return;
         }
 
         // 判断是否应该下一帧
-        _props.lastFrameTime = _props.lastFrameTime || 0;
-        if (this.$canvas.$nextTickTime - _props.lastFrameTime >= funcOrValue(_props.interval, this)) {
-            _props.lastFrameTime = this.$canvas.$nextTickTime;
-            _props.index++;
+        this.$lastFrameTime = this.$lastFrameTime || 0;
+        if (this.$canvas.$nextTickTime - this.$lastFrameTime >= funcOrValue(this.interval, this)) {
+            this.$lastFrameTime = this.$canvas.$nextTickTime;
+            this.index++;
         }
 
         // 默认的读取和绘制尺寸等于每帧尺寸

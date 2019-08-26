@@ -28,9 +28,9 @@ module.exports = `
             <!-- node环境引入 -->
             <!-- 注意：在node环境引入，也需要引入mmdparser或者zlib -->
 
-            import Easycanvas from easycanvas;
-            import EasycanvasWebgl from easycanvas/build/plugin.webgl.js;
-            import EasycanvasWebglLoaders from easycanvas/build/plugin.webgl.loaders.js;
+            import Easycanvas from 'easycanvas';
+            import EasycanvasWebgl from 'easycanvas/build/plugin.webgl.js';
+            import EasycanvasWebglLoaders from 'easycanvas/build/plugin.webgl.loaders.js';
 
             Easycanvas.use(EasycanvasWebgl);
             Easycanvas.use(EasycanvasWebglLoaders);

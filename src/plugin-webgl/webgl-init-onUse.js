@@ -1,7 +1,7 @@
 import utils from 'utils/utils.js';
 
 import webglShapes from './webgl-shapes.js';
-import { arrayRepeat, degToRad, default0s, default1s, styleKeys } from './webgl-utils';
+import { arrayRepeat, default0s, default1s } from './webgl-utils';
 
 module.exports = function (easycanvas) {
     easycanvas.webglShapes = webglShapes;
@@ -33,6 +33,7 @@ module.exports = function (easycanvas) {
         let $sprite = this;
 
         if ($sprite.webgl && $sprite.webgl[key]) {
+            $sprite.$canvas.$gl.deleteBuffer($sprite.webgl[key].$cacheBuffer);
             $sprite.webgl[key].$cacheBuffer = undefined;
 
             if (key === 'colors' && value) {
@@ -40,5 +41,21 @@ module.exports = function (easycanvas) {
                 $sprite.webgl.colors = new Uint8Array(arrayRepeat(value, repeatTimes));
             }
         }
+    };
+
+    const originRemove = easycanvas.sprite.prototype.remove;
+    easycanvas.sprite.prototype.remove = function (child) {
+        const $sprite = this;
+
+        if ($sprite.webgl) {
+            for (let key in $sprite.webgl) {
+                if ($sprite.webgl[key].$cacheBuffer) {
+                    $sprite.$canvas.$gl.deleteBuffer($sprite.webgl[key].$cacheBuffer);
+                    $sprite.webgl[key].$cacheBuffer = undefined;
+                }
+            }
+        }
+
+        originRemove.call($sprite, child);
     };
 };

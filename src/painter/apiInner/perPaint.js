@@ -8,19 +8,7 @@
  * ********** **/
 
 import utils from 'utils/utils.js';
-import constants from 'constants';
-// import getComputedStyle from './perPaint.getComputedStyle.js';
-// import cutOutside from './perPaint.cutOutside.js';
 import deliverChildren from './perPaint.deliverChildren.js';
-import rectMeet from 'utils/math.rect-meet';
-// import img2base64 from 'utils/img2base64.js';
-
-const blend = utils.blend;
-
-const isChineseChar = function (temp) {
-    let re = /[^\u4e00-\u9fa5]/;
-    return !re.test(temp);
-};
 
 const extend = function () {
     this.$canvas.$extendList.forEach((plugin) => {
@@ -64,9 +52,6 @@ module.exports = function ($sprite, index) {
     let _children = $sprite.children;
 
     let settings = _props.settings;
-
-    // let meetResult = rectMeet(_props.left, _props.top, _props.width, _props.height, 0, 0, $canvas.width, $canvas.height, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
-    // let meetResult = true;
 
     /*
      * 性能浪费检测
@@ -150,12 +135,7 @@ module.exports = function ($sprite, index) {
             // cut的结果没有取整，要看是否需要
         // }
 
-        // let meetResultAfterCut = rectMeet(_props.left, _props.top, _props.width, _props.height, 0, 0, $canvas.width - 1, $canvas.height - 1, settings.beforeRotate && settings.beforeRotate[0], settings.beforeRotate && settings.beforeRotate[1], _props.rotate);
-        // let meetResultAfterCut = true;
-
         $sprite.$rendered = true;
-
-        /* Avoid overflow painting (wasting & causing bugs in some iOS webview) */
 
         let $paintSprite = {
             $id: $sprite.$id,
@@ -191,9 +171,6 @@ module.exports = function ($sprite, index) {
         let textFont = (_props.fontSize || 14) + 'px ' + (_props.fontFamily || 'serif');
         let textFontsize = parseInt(textFont);
         let textBaseline = 'top';
-        // let textFontsize = parseInt(textFont) * _props.scale;
-        // textFont = textFontsize + 'px Arial';
-        let textLineHeight = _props.lineHeight || textFontsize;
 
         // Change css-align to canvas-align style
         if (textAlign === 'center') {
@@ -253,52 +230,6 @@ module.exports = function ($sprite, index) {
                     $origin: $sprite,
                 });
             });
-        } else if (_text.toppe === 'multline-text') {
-            let textArr = _text.text.split(/\t|\n/);
-            let renderArr = [];
-            textArr.forEach(function (eachText, textIndex) {
-                eachText = String.prototype.trim.apply(eachText);
-                if (_text.config.start) {
-                    eachText = eachText.replace(_text.config.start, '');
-                }
-                let _i = 0;
-                let length = _props.width;
-                while (eachText.length && _i < eachText.length) {
-                    if (length <= 0) {
-                        length = _props.width;
-                        renderArr.push(eachText.substr(0, _i));
-                        eachText = eachText.substr(_i);
-                        _i = 0;
-                    }
-                    _i++;
-                    length -= textFontsize * (isChineseChar(eachText[_i]) ? 1.05 : 0.6);
-                }
-                if (eachText || textIndex) {
-                    renderArr.push(eachText);
-                }
-            });
-            renderArr.forEach(function (r) {
-                $canvas.$children.push({
-                    $id: $sprite.$id,
-                    type: 'text',
-                    settings: settings,
-                    props: {
-                        left: textLeft,
-                        top: textTop,
-                        // width: _props.width,
-                        // height: _props.height,
-                        fontsize: textFontsize,
-                        content: r,
-                        baseline: textBaseline,
-                        align: textAlign,
-                        font: textFont,
-                        color: _props.color,
-                        type: _props.textToppe,
-                    },
-                    $origin: $sprite,
-                });
-                textTop += textLineHeight || textFontsize;
-            });
         }
     }
 
@@ -312,7 +243,6 @@ module.exports = function ($sprite, index) {
         let $paintSprite = {
             $id: $sprite.$id,
             type: 'clipOver',
-            // settings: settings,
             props: _props,
         };
 

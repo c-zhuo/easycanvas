@@ -25,6 +25,7 @@ module.exports = function ($sprite, sync) {
         }
 
         if ($sprite.$canvas) {
+            utils.execFuncs($sprite.hooks.removed, $sprite, $sprite.$tickedTimes);
             $sprite.$canvas = undefined;
             $sprite.$parent = undefined;
             $sprite.$tickedTimes = undefined;
@@ -33,7 +34,6 @@ module.exports = function ($sprite, sync) {
             if (process.env.NODE_ENV !== 'production') {
                 $sprite.$perf = undefined;
             }
-            utils.execFuncs($sprite.hooks.removed, $sprite, $sprite.$tickedTimes);
         }
     // });
 

@@ -35,7 +35,7 @@ const Easycanvas = {
     Sprite,
 };
 
-const use = Easycanvas.use = function (pluginHook) {
+Easycanvas.use = function (pluginHook) {
     let $extendList = Easycanvas.Painter.prototype.$extendList;
 
     if ($extendList.indexOf(pluginHook) >= 0) return;

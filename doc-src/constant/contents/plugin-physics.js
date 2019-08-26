@@ -18,8 +18,8 @@ module.exports = `
         <code>
             <!-- node环境引入 -->
 
-            import Easycanvas from easycanvas;
-            import EasycanvasPhysics from easycanvas/build/plugin.physics.js;
+            import Easycanvas from 'easycanvas';
+            import EasycanvasPhysics from 'easycanvas/build/plugin.physics.js';
 
             Easycanvas.extend(EasycanvasPhysics);
         </code>

@@ -1,8 +1,8 @@
 module.exports = `
-    <article id="滚动组件scroll">
-        <h1>滚动组件scroll</h1>
+    <article id="滚动组件Scroll">
+        <h1>滚动组件Scroll</h1>
 
-        <p>scroll提供了类似css中<strong>overflow: scroll;</strong>的功能。</p>
+        <p>Scroll提供了类似css中<strong>overflow: scroll;</strong>的功能。</p>
 
         <p class="tip">其原理是创建一个容器Sprite，监听touch和wheel（鼠标滚轮）事件，调整内部的元素位置。</p>
 
@@ -17,8 +17,8 @@ module.exports = `
 
             <!-- node环境引入 -->
 
-            import Easycanvas from easycanvas;
-            import EasycanvasComponentScroll from easycanvas/build/components.js;
+            import Easycanvas from 'easycanvas';
+            import EasycanvasComponentScroll from 'easycanvas/build/components.js';
 
             // node环境中引入，可以指定组件名称，作为“命名空间”，防止多个组件重复
             Easycanvas.component(EasycanvasComponentScroll.scroll, 'scroll');
@@ -113,7 +113,7 @@ module.exports = `
             </code>
         </section>
 
-        <p>scroll组件拥有如下属性，例如<strong>创建对象时Sprite.scroll.scrollY为0可以立即调整滚动位置到顶部</strong>。所有的API如下：</p>
+        <p>Scroll组件拥有如下属性：</p>
 
         <table>
             <thead>
@@ -141,16 +141,16 @@ module.exports = `
                 </tr>
                 <tr>
                     <td align="left">smooth</td>
-                    <td align="left">速度衰减系数，默认0.9，设置0代表立即停止，1代表不减速</td>
+                    <td align="left">速度衰减系数，默认0.8，设置0代表结束滑动后立即停止，1为永不停止</td>
                 </tr>
                 <tr>
                     <td align="left">capture</td>
-                    <td align="left">捕获内部的事件，默认false，为true时会阻止touchstart、touchmove、wheel等滚动相关事件在内部传递，在移动端可以提升滚动性能；注意：多个scroll嵌套时，外层设置为capture将阻止内部scroll的功能</td>
+                    <td align="left">捕获内部的事件，默认false，为true时会阻止touchstart、touchmove、wheel等滚动相关事件在内部传递，在移动端可以提升滚动性能（否则事件会传入内部之后再冒泡回来，事件传递的链路长一些），但将导致内部节点不再感知这些事件（因此，多个scroll嵌套时，外层设置capture将阻止内部scroll的使用）</td>
                 </tr>
             </tbody>
         </table>
 
-        <p>scroll组件有一些事件，例如 Sprite.trigger('scrollTo', 0, 100, 500) 可以让容器在0.5秒的时间内滚动至100：</p>
+        <p>Scroll组件扩展了如下API。例如 Sprite.scrollTo(0, 100, 500) 可以让容器在0.5秒的时间内滚动至100的位置：</p>
 
         <table>
             <thead>
@@ -166,5 +166,7 @@ module.exports = `
                 </tr>
             </tbody>
         </table>
+
+        <p>Scroll组件也提供了一些事件，例如可以用 Sprite.on('reachBottom', callback) 监听容器滚动到底部。</p>
     </article>
 `;

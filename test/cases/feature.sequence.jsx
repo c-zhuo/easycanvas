@@ -21,15 +21,11 @@ var Fire = Easycanvas.ImgLoader(constants.fire);
 
 var createFire = function (initX, initY) {
     return <Sequence
-        content={{
-            img: Fire
-        }}
-        props={{
-            frameWidth: -9,
-            frameHeight: -1,
-            interval: 200,
-            loop: false,
-        }}
+        src={Fire}
+        frameWidth="-9"
+        frameHeight="-1"
+        interval="200"
+        loop="false"
         style={{
             left: initX, top: initY,
             // width: 120, height: 120,

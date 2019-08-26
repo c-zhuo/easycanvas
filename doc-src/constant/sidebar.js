@@ -2,7 +2,7 @@ const tree = `
     - 介绍
     一些demo
     概述
-    更新日志（Latest：2019-6-8）
+    更新日志（Latest：2019-8-26）
     - 快速开始
     浏览器中引入
     npm引入与JSX写法
@@ -18,10 +18,15 @@ const tree = `
     样式获取与更新
     状态钩子
     自定义事件
+    - API
+    Sprite-API
+    Event-API
     - 组件
-    精灵动画sequence
-    滚动组件scroll
-    多行文本text（用法暂时参考Demo）
+    开始使用组件
+    容器组件View
+    单行文本Text
+    帧动画Sequence
+    滚动组件Scroll
     按钮组件button（用法暂时参考Demo）
     拖拽组件drag（文档待补充）
     - 插件

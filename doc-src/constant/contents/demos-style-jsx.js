@@ -43,7 +43,8 @@ module.exports = `
                             }
                         </View>;
                     }
-                
+
+                    // 鼠标在Text上mousemove后变色
                     changeWordColor () {
                         this.style.color = '#0F0';
                     }

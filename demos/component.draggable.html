@@ -1,0 +1,109 @@
+<head>
+    <style>
+        body {margin: 0; padding: 0;}
+        canvas {
+            border: 1px solid grey;
+            background-color: #eee;
+            background-size: auto 100%;
+            background-position: 50% 50%;
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+    <script src="../build/index.js"></script>
+    <script src="../build/components.js"></script>
+</head>
+
+<body>
+    <canvas id="app"></canvas>
+
+    <script>
+        var $app = new Easycanvas.Painter();
+        var dom = document.getElementById('app');
+
+        $app.register(dom, {
+            width: 800,
+            height: 800,
+        });
+        $app.start();
+
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+            // create a Sprite
+            window.Sprite1 = $app.add(Easycanvas.Draggable({
+                name: 'root',
+                content: {
+                    img: img,
+                },
+                style: {
+                    width: 250, height: 130,
+                    cutLeft: 0, cutTop: 0, // source position, default 0
+                    left: Easycanvas.Transition.ease(111, 422, 2500).loop(),
+                    top: 80,
+                    opacity: 0.2,
+                    rotate: 20,
+                    locate: 'center', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    mousemove: function (e) {
+                        // "this" means this Sprite, as Sprite1
+                        console.log(this, e);
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+            }));
+        });
+
+        var getPositionWithinLength = function (x1, y1, x2, y2, length) {
+            var actualLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+            if (!actualLength) {
+                return {
+                    x: x1,
+                    y: y1
+                };
+            }
+
+            var rate = length / actualLength;
+            return {
+                x: x1 + (x2 - x1) * rate,
+                y: y1 + (y2 - y1) * rate
+            };
+        };
+
+        Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png', function (img) {
+            // create a Sprite
+            window.Sprite2 = $app.add(Easycanvas.Draggable({
+                name: 'root',
+                content: {
+                    img: img,
+                },
+                style: {
+                    width: 250, height: 130,
+                    cutLeft: 0, cutTop: 0, // source position, default 0
+                    left: 200,
+                    top: 200,
+                    opacity: 0.2,
+                    rotate: 20,
+                    locate: 'center', // default center
+                    zIndex: 1, // z-index of this image
+                },
+                onDragStep: function (pos) {
+                    var newPos = getPositionWithinLength(200, 200, pos.left, pos.top, 100);
+                    this.style.left = newPos.x;
+                    this.style.top = newPos.y;
+                },
+                events: {
+                    eIndex: 2, // event-index of this image
+                    mousemove: function (e) {
+                        // "this" means this Sprite, as Sprite1
+                        console.log(this, e);
+                    },
+                    // others: mousehold, mousedown, mouseout and touch events
+                },
+            }));
+        });
+
+        $app.start();
+    </script>
+</body>

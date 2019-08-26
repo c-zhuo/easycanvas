@@ -68,7 +68,7 @@ const component = function (opt, Easycanvas) {
     };
 
     $sprite = new Easycanvas.Sprite({
-        name: opt.name || ('button_' + opt.props.text),
+        name: opt.name || ('Button_' + opt.props.text),
         content: {
             img: buttonStyle.imageNormal,
         },

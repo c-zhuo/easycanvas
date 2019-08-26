@@ -79,7 +79,7 @@ let scrollFuncs = {
         } else if (!isNaN(maxScrollY) && $sprite.scroll.scrollY > maxScrollY) {
             $sprite.scroll.scrollY = maxScrollY;
 
-            $sprite.broadcast('scrolledToBottom');
+            $sprite.trigger('reachBottom');
             $sprite.$scroll.speedY = 0;
         }
 
@@ -314,7 +314,7 @@ const component = function (opt, Easycanvas) {
 
     // $sprite.on('handleToggle', handleToggle);
 
-    $sprite.on('scrollTo', (left, top, duration) => {
+    $sprite.scrollTo = (left, top, duration) => {
         let callback;
 
         autoScrollX = transition.ease(
@@ -352,7 +352,7 @@ const component = function (opt, Easycanvas) {
                 callback = cb;
             },
         }
-    });
+    };
 
     $sprite.$scroll = {
         speedX: 0,
