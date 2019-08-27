@@ -25,7 +25,7 @@ var html = glob.sync('./doc-src/index.html').map(function (item) {
 var config = docConfig;
 
 config.entry = js;
-config.mode = 'development';
+config.mode = 'production';
 config.plugins = config.plugins.concat(html);
 
 Object.assign(config, {
