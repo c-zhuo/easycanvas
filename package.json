@@ -52,8 +52,7 @@
     "webpack-dev-server": "3.4.1"
   },
   "files": [
-    "build",
-    "loader.js"
+    "build"
   ],
   "scripts": {
     "d": "npm run ec:build",

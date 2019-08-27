@@ -12,9 +12,9 @@ module.exports = `
 
         <h3>0.8.1 (2019.8.26)</h3>
 
-        <p>Bugfix：修复了使用<strong>WebGL</strong>插件时，通过remove方法移除Sprite、使用updateWebglStyle更新Sprite属性时，由于没有清空缓冲区导致的内存泄露的bug。</p>
+        <p>Bugfix：修复了使用<strong>WebGL</strong>插件时，通过remove方法移除Sprite、使用updateWebglStyle更新Sprite属性时，由于没有清空缓冲区导致的内存泄露的bug。(<a href="https://github.com/c-zhuo/easycanvas/issues/20" target="_blank">Issue-20</a>)</p>
         <p>Bugfix：修复了使用<strong>WebGL</strong>渲染带有透明通道的图片时，设置hasAlpha后仍然有可能存在图片底色的bug。(<a href="https://github.com/c-zhuo/easycanvas/issues/19" target="_blank">Issue-19</a>)</p>
-        <p>Bugfix：修复<strong>Sequence组件</strong>的部分bug，变更了部分属性的结构，详见组件文档。(<a href="https://github.com/c-zhuo/easycanvas/issues/20" target="_blank">Issue-20</a>)</p>
+        <p>Bugfix：修复<strong>Sequence组件</strong>的部分bug，变更了部分属性的结构，详见组件文档。</p>
         <p>Feature：增加Canvas 2D下的<strong>输入框组件Input、可拖拽组件Draggable</strong>等UI组件，详见文档。</p>
         <p>文档补充：增加部分API和组件的文档。</p>
 

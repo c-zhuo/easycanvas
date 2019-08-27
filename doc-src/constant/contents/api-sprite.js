@@ -62,10 +62,6 @@ module.exports = `
                     <td align="left">节点的渲染层次（类似CSS的zIndex）。默认0。不建议同一位置存在相同zIndex的多个节点。</td>
                 </tr>
                 <tr>
-                    <td align="left">zIndex <Number|Function></td>
-                    <td align="left">节点的渲染层次（类似CSS的zIndex）。默认0。不建议同一位置存在相同zIndex的多个节点。</td>
-                </tr>
-                <tr>
                     <td align="left">opacity <Number|Function></td>
                     <td align="left">节点的透明度（与CSS规则相同）。默认1。子节点的透明度会受到父节点影响，相乘计算。为便于使用，允许为子节点设置大于1的透明度，例如父节点设置为0.5、子节点设置为2以上时，子节点将不透明。</td>
                 </tr>

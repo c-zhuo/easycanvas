@@ -20,39 +20,6 @@ const Analyze = function (str) {
     img.src = 'http://122.114.162.204:8001/point?title=' + str;
 };
 
-(function initBackgroundPhysics () {
-    return;
-    window.w = document.body.clientWidth;
-    window.h = document.body.clientHeight;
-    window.onresize = function () {
-        setTimeout(window.location.reload.bind(window.location), 1000);
-    };
-
-    let $app = document.getElementById('bgCanvas');
-    $app.style.width = w;
-    $app.style.height = h;
-    $app.width = w;
-    $app.height = h;
-
-    window.$Doc = new Easycanvas.Painter();
-
-    $Doc.register($app, {
-        events: {
-            contextmenu: function (e) {
-                console.log('contextmenu!');
-                e.event.stopPropagation();
-                e.event.preventDefault();
-            }
-        }
-    });
-    $Doc.setMaxFps(50);
-    $Doc.start();
-
-    window.__EASYCANVAS_DEVTOOL__ = false;
-
-    Physics.start();
-})();
-
 (function initDocInstance () {
     window.t = new Vue({
         el: '#docApp',
