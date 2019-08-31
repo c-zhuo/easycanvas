@@ -36,9 +36,10 @@ const component = function (opt, Easycanvas) {
             return $sprite.content.text;
         },
 
-        set (value) {
-            $sprite.content.img = text;
-        },
+        set (text) {
+            $sprite.content.text = text;
+            setImage($sprite);
+}       ,
     });
 
     $sprite.update = function (obj) {

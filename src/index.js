@@ -33,6 +33,11 @@ const Easycanvas = {
     },
     sprite,
     Sprite,
+    // for JSX
+    createElement: (Component, props = {}, ...children) => {
+        props.children = children || [];
+        return new Component(props, Easycanvas);
+    },
 };
 
 Easycanvas.use = function (pluginHook) {

@@ -8,6 +8,8 @@ module.exports = {
         return glob.sync('./src/' + name);
     },
 
+    target: 'node',
+
     resolve: {
         alias: {
             constants: path.join(__dirname, '../constants.js'),
@@ -63,10 +65,14 @@ module.exports = {
                     {
                         loader: 'babel-loader',
                         options: {
-                            presets: ['@babel/preset-env']
+                            presets: ['@babel/preset-env'],
+                            plugins: [
+                                // path.resolve('./src/babel-loader.js'),
+                                path.resolve('./build/babel-loader.umd.prod.js'),
+                            ]
                         }
                     },
-                    { loader: path.resolve('./src/loader.js') }
+                    // { loader: path.resolve('./src/loader.js') }
                 ]
             }
         ]

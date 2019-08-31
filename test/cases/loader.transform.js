@@ -82,7 +82,9 @@ describe('Featrue.add Test.', function () {
                         cutTop: 0,
                         left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
                         top: 80
-                    }
+                    },
+
+                    children: []
                 }, Easycanvas)]
             }, Easycanvas));
         `)).toBe(true);

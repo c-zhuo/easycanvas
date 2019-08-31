@@ -1,5 +1,7 @@
+// 图层合并，原理：
+// 取出要合并的sprite的所有children，新建一个<canvas>在上面render，然后截图放到sprite的$combine里
+
 import utils from 'utils/utils.js';
-import constants from 'constants';
 
 const COMBINE_ING = 9;
 const COMBINE_DONE = 1;
@@ -76,11 +78,14 @@ module.exports = function () {//return;
         $renders.forEach(($render) => {
             if(!$render.settings) return;
 
+            // sprite的透明度可能受到parent的影响，截图时需要还原opacity，先备份一下
             $render.settings.$combineGlobalAlpha = $render.settings.globalAlpha;
             $render.settings.globalAlpha = spriteOpacity > 0 ? $render.settings.globalAlpha / spriteOpacity : 1;
 
             if (!$render.props.$moved) {
+                // 渲染之前先位移，便于裁剪
                 // 多个渲染对象来自同一个$sprite，那么在perPaint里计算出来的props是同一份引用
+                // 所以这里打一个标记，避免重复位移(hard code，硬编码)
                 $render.props.$moved = true;
                 $render.props.left -= outerRect.left;
                 $render.props.top -= outerRect.top;
@@ -103,6 +108,7 @@ module.exports = function () {//return;
         $renders.forEach(($render) => {
             if(!$render.settings) return;
 
+            // sprite的透明度可能受到parent的影响，这里恢复
             $render.settings.globalAlpha = $render.settings.$combineGlobalAlpha;
         });
         // combineCtx.translate(-outerRect.tx, -outerRect.ty);

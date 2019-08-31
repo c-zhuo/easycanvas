@@ -1,7 +1,5 @@
-import utils from 'utils/utils.js';
 import _webglM4 from 'lib/m4.js';
 
-import { degToRad } from './webgl-utils';
 import toggleShader from './webgl-shader-toggle.js';
 
 const m4 = _webglM4();

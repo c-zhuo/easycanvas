@@ -1,12 +1,15 @@
 import Easycanvas, { Painter, Transition } from '../../src/index.js';
 import Text from '../../src/components/Text.js';
 import View from '../../src/components/View.js';
+import Input from '../../src/components/Input.js';
 
 window.Painter = Painter;
 
 var $app = new Painter();
 $app.register(document.getElementById('app'));
 $app.start();
+
+console.log('source');
 
 $app.add(
     <View name="root-element">
@@ -36,6 +39,54 @@ $app.add(
         }
     </View>
 );
+
+const value = 'Default Value';
+
+class MyInput {
+    constructor (props) {
+        return <Input
+            style={{
+                width: 100,
+                height: 30,
+                fontSize: 30,
+                color: '#F00',
+                locate: 'lt',
+            }}
+            value={props.defaultValue}
+            onkeyup={this.onkeyup}
+        />;
+    }
+
+    onkeyup (event) {
+        console.log(event.keycode, this.value);
+    }
+}
+
+const $input = <MyInput defaultValue={value} />;
+
+window.x = $app.add(
+    <View
+        style={{
+            left: 100,
+            top: 100,
+        }}>
+
+        { $input }
+
+        <Text
+            style={{
+                left: 100,
+                top: 100,
+                color: '#0F0',
+                fontSize: 24,
+            }}
+        >
+            { () => value }
+        </Text>
+    </View>
+);
+
+$input.focus();
 
 // class HelloWorld {
 //     constructor (App) {
@@ -192,5 +243,3 @@ $app.add(
 //         </Image>
 //     );
 // });
-
-console.log('source');

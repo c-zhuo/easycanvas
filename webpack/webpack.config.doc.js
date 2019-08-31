@@ -1,42 +1,33 @@
 const base = require('./webpack.config.base.js');
-const TerserPlugin = require('terser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
-const path = require('path');
 
 const env = 'development';
 
 const config = {
+    target: base.base,
     resolve: base.resolve,
-    output: {
-        path: path.resolve('./dev/'),
-        filename: '[name].js',
-    },
-    optimization: {
-        minimizer: [
-            new TerserPlugin({
-                cache: env === 'development',
-                parallel: true,
-                terserOptions: {
-                    ecma: 6,
-                    compress: {},
-                    toplevel: true,
-                    ie8: true,
-                }
-            }),
-        ]
-    },
+    optimization: base.optimization(env),
     module: {
-        rules: base.module.rules.concat([{
-            test: /\.scss$/,
-            use: [
-                {
-                    loader: 'css-loader',
-                }, {
-                    loader: 'sass-loader',
-                },
-            ]
-        }])
+        rules: [
+            {
+                test: /\.js$/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        plugins: ['@babel/plugin-syntax-dynamic-import'],
+                    }
+                }
+            }, {
+                test: /\.scss$/,
+                use: [
+                    {
+                        loader: 'css-loader',
+                    }, {
+                        loader: 'sass-loader',
+                    },
+                ]
+            }]
     },
     plugins: [
         new webpack.DefinePlugin({

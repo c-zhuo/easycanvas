@@ -26,9 +26,10 @@ const tree = `
     容器组件View
     单行文本Text
     帧动画Sequence
-    滚动组件Scroll
-    按钮组件button（用法暂时参考Demo）
-    拖拽组件drag（文档待补充）
+    滚动容器Scroll
+    输入框Input
+    按钮组件Button（用法暂时参考Demo）
+    拖拽组件Draggable（文档待补充）
     - 插件
     物理引擎
     WebGL

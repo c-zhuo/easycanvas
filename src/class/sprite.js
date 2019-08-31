@@ -53,11 +53,32 @@ import combine from './api.combine.js';
 import uncombine from './api.uncombine.js';
 import recalculate from './api.recalculate.js';
 
+function flat (arr) {
+    var depth = isNaN(arguments[1]) ? 1 : Number(arguments[1]);
+
+    return depth ? Array.prototype.reduce.call(arr, function (acc, cur) {
+        if (Array.isArray(cur)) {
+            acc.push.apply(acc, flat(cur, depth - 1));
+        } else {
+            acc.push(cur);
+        }
+
+        return acc;
+    }, []) : Array.prototype.slice.call(arr);
+}
+
 // 记录sprite创建的顺序，用于调试工具的排序
 let $addIndex = 0;
 
 const ChangeChildrenToSprite = function ($parent) {
     if ($parent.children) {
+
+        if (process.env.NODE_ENV !== 'production') {
+            if ($parent.children && !Array.isArray($parent.children)) {
+                console.error(`[Easycanvas] Children is not an array`, $parent.children);
+            }
+        }
+
         $parent.children.forEach((child, i) => {
             if (!child.$id) {
                 $parent.children[i] = new sprite(child);
@@ -200,12 +221,15 @@ const preAdd = function (_item, $instance) {
     }
 
     item.children = item.children || [];
+    // JSX可能有[[a,b],c]的数据结构
+    item.children = flat(item.children, Infinity);
 
     // JSX中text可能作为children写在JSXElement内
-    if (typeof item.children === 'string') {
-        item.content.text = item.children;
-        item.children = [];
-    }
+    // update: 逻辑改到JSX的Text组件
+    // if (typeof item.children === 'string') {
+    //     item.content.text = item.children;
+    //     item.children = [];
+    // }
 
     ChangeChildrenToSprite(item);
 

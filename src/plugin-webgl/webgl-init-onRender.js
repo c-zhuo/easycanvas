@@ -10,8 +10,8 @@ const webglRender = function ($sprite, settings, $canvas) {
     var gl = $canvas.$gl;
 
     if ($sprite.type !== '3d') {
-        if (!props[0] && props.content) {
-            var cacheKey = props.content + props.font + props.align + props.color;
+        if (!props.img && props.text) {
+            var cacheKey = props.text + props.font + props.align + props.color;
             var cacheValue = textCachePool[cacheKey];
 
             if (!cacheValue) {
@@ -20,12 +20,12 @@ const webglRender = function ($sprite, settings, $canvas) {
                 var textCtx = document.createElement('canvas').getContext('2d');
                 textCtx.clearRect(0, 0, textCtx.canvas.width, textCtx.canvas.height);
 
-                textCtx.canvas.width = props.content.length * parseInt(props.font) * 2;
+                textCtx.canvas.width = props.text.length * parseInt(props.font) * 2;
                 textCtx.canvas.height = parseInt(props.font) + 5;
                 textCtx.font = props.font;
                 textCtx.textAlign = props.align;
                 textCtx.fillStyle = props.color;
-                textCtx.fillText(props.content,
+                textCtx.fillText(props.text,
                     props.align === 'right' ? textCtx.canvas.width : (props.align === 'center' ? textCtx.canvas.width / 2 : 0),
                     textCtx.canvas.height - 5);
 
@@ -54,10 +54,10 @@ const webglRender = function ($sprite, settings, $canvas) {
             ];
         }
 
-        if (props[0] && props[0].texture) {
+        if (props.img && props.img.texture) {
             // 跳过绘制
             var meet = rectMeet(
-                props[5], props[6], props[7], props[8],
+                props.left, props.top, props.width, props.height,
                 0, 0, $canvas.width, $canvas.height,
                 settings.beforeRotate && settings.beforeRotate[0],
                 settings.beforeRotate && settings.beforeRotate[1],
@@ -67,10 +67,10 @@ const webglRender = function ($sprite, settings, $canvas) {
                 return;
             }
 
-            if (props[0].img.width === 0) return;
+            if (props.img.width === 0) return;
 
             // 2d
-            gl.bindTexture(gl.TEXTURE_2D, props[0].texture);
+            gl.bindTexture(gl.TEXTURE_2D, props.img.texture);
             // gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, props[0].img);
 
             // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
@@ -78,11 +78,11 @@ const webglRender = function ($sprite, settings, $canvas) {
             // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
             webglRender2d(
                 $canvas,
-                props[0].texture,
-                props[0].width,
-                props[0].height,
-                props[1], props[2], props[3], props[4],
-                props[5], props[6], props[7], props[8],
+                props.img.texture,
+                props.img.width,
+                props.img.height,
+                props.cutLeft, props.cutTop, props.cutWidth, props.cutHeight,
+                props.left, props.top, props.width, props.height,
                 settings
             );
         }

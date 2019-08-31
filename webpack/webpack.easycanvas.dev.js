@@ -9,8 +9,6 @@ var base = require('./webpack.config.base.js');
 
 var env = 'development';
 
-var mkdirp = require('mkdirp');
-
 var js = base.js('*.js').reduce(function (prev, curr) {
     prev[curr.slice(2, -3).replace('src', 'build')] = [curr];
     return prev;
@@ -40,6 +38,7 @@ var html = glob.sync('./demos/*.html').map(function (item) {
 var config = {
     mode: env,
     entry: js,
+    target: base.target,
     resolve: base.resolve,
     output: {
         path: path.resolve('./dev/'),
@@ -71,6 +70,9 @@ var config = {
     devServer: base.devServer,
 };
 
+// config.node = {
+//     fs: 'empty' // https://github.com/webpack-contrib/css-loader/issues/447
+// };
 config.devtool = '#cheap-module-eval-source-map';
 
 module.exports = config;

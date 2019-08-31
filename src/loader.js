@@ -6,9 +6,6 @@
  * ********** **/
 
 const recast = require("recast");
-// const acorn = require("acorn");
-// const jsx = require("acorn-jsx");
-// const jsxParser = acorn.Parser.extend(jsx());
 const babelParser = require('@babel/parser');
 const builders = recast.types.builders;
 
@@ -62,48 +59,81 @@ const JSXElementNode2Sprite = node => {
     const spriteType = node.openingElement.name.name;
 
     if (node.children) {
-        // avoid JSXText, such as '\n'
-        let childrenJSXElement = node.children.filter(child => child.type === JSXElement);
-        if (childrenJSXElement.length) {
-            attrMap.push(
-                builders.property('init',
-                    builders.identifier('children'),
-                    builders.arrayExpression(
-                        childrenJSXElement.map(JSXElementNode2Sprite)
-                    )
-                )
-            );
-        }
+        const transformChildren = [];
 
-        let childrenJSXExpressionContainer = node.children.filter(child => child.type === JSXExpressionContainer);
-        if (childrenJSXExpressionContainer.length) {
-            let innerExpression = childrenJSXExpressionContainer[0].expression;
-            // 对于jsx中的{}，可能内部仍然存在JSXElement
-            astWalker(innerExpression, node => {
-                return node.type === JSXElement;
-            }, JSXElementNode2Sprite);
-            attrMap.push(
-                builders.property('init',
-                    builders.identifier('children'),
-                    innerExpression
-                )
-            );
-        }
+        node.children.forEach((child) => {
+            if (child.type === JSXElement) {
+                transformChildren.push(JSXElementNode2Sprite(child));
+            } else if (child.type === JSXExpressionContainer) {
+                let innerExpression = child.expression;
 
-        // move JSXText to text, avoid '\n'
-        // update：使用acorn时raw在child一级属性下，babel里在child.extra里
-        // let childrenJSXText = node.children.filter(child => child.type === JSXText && child.raw && String.prototype.trim.call(child.raw));
-        let childrenJSXText = node.children.filter(child => child.type === JSXText && child.extra.raw && String.prototype.trim.call(child.extra.raw));
-        if (childrenJSXText.length) {
-            attrMap.push(
-                builders.property('init',
-                    builders.identifier('text'),
-                    builders.literal(
-                        childrenJSXText.map(child => String.prototype.trim.call(child.extra.raw)).join('\n')
-                    )
+                // 对于jsx中的{}，可能内部仍然存在JSXElement
+                astWalker(innerExpression, node => {
+                    return node.type === JSXElement;
+                }, JSXElementNode2Sprite);
+
+                transformChildren.push(innerExpression);
+            } else if (child.type === JSXText && child.extra.raw && String.prototype.trim.call(child.extra.raw)) {
+                // move JSXText to text, avoid '\n'
+                transformChildren.push(builders.literal(
+                    childrenJSXText.map(child => String.prototype.trim.call(child.extra.raw)).join('\n')
+                ));
+            }
+        });
+
+        attrMap.push(
+            builders.property('init',
+                builders.identifier('children'),
+                builders.arrayExpression(
+                    transformChildren
                 )
-            );
-        }
+            )
+        );
+
+        // 下面是旧的实现，会导致一个children内部同时含有childrenJSXElement和childrenJSXExpressionContainer时，前者被后者覆盖掉
+
+        // // avoid JSXText, such as '\n'
+        // let childrenJSXElement = node.children.filter(child => child.type === JSXElement);
+        // if (childrenJSXElement.length) {
+        //     attrMap.push(
+        //         builders.property('init',
+        //             builders.identifier('children'),
+        //             builders.arrayExpression(
+        //                 childrenJSXElement.map(JSXElementNode2Sprite)
+        //             )
+        //         )
+        //     );
+        // }
+
+        // let childrenJSXExpressionContainer = node.children.filter(child => child.type === JSXExpressionContainer);
+        // if (childrenJSXExpressionContainer.length) {
+        //     let innerExpression = childrenJSXExpressionContainer[0].expression;
+        //     // 对于jsx中的{}，可能内部仍然存在JSXElement
+        //     astWalker(innerExpression, node => {
+        //         return node.type === JSXElement;
+        //     }, JSXElementNode2Sprite);
+        //     attrMap.push(
+        //         builders.property('init',
+        //             builders.identifier('children'),
+        //             innerExpression
+        //         )
+        //     );
+        // }
+
+        // // move JSXText to text, avoid '\n'
+        // // update：使用acorn时raw在child一级属性下，babel里在child.extra里
+        // // let childrenJSXText = node.children.filter(child => child.type === JSXText && child.raw && String.prototype.trim.call(child.raw));
+        // let childrenJSXText = node.children.filter(child => child.type === JSXText && child.extra.raw && String.prototype.trim.call(child.extra.raw));
+        // if (childrenJSXText.length) {
+        //     attrMap.push(
+        //         builders.property('init',
+        //             builders.identifier('text'),
+        //             builders.literal(
+        //                 childrenJSXText.map(child => String.prototype.trim.call(child.extra.raw)).join('\n')
+        //             )
+        //         )
+        //     );
+        // }
     }
 
     const objectExpression = builders.objectExpression(attrMap);
@@ -127,7 +157,27 @@ const transformer = (source) => {
             "jsx",
             "typescript",
             "dynamicImport",
-            "classProperties"
+            "classProperties",
+            // 'estree', // is Miscellaneous, not extensions or proposals
+            'doExpressions',
+            'objectRestSpread',
+            'decorators-legacy',
+            'classProperties',
+            'classPrivateProperties',
+            'classPrivateMethods',
+            'exportDefaultFrom',
+            'exportNamespaceFrom',
+            'asyncGenerators',
+            'functionBind',
+            'functionSent',
+            'dynamicImport',
+            'numericSeparator',
+            'optionalChaining',
+            'importMeta',
+            'bigInt',
+            'optionalCatchBinding',
+            'throwExpressions',
+            'nullishCoalescingOperator'
         ]
     }).program;
 

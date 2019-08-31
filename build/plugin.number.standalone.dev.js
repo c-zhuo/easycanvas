@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -98,7 +98,7 @@ eval("\n\nvar _ec;\n\nvar number = function number(opt) {\n  var sprite = new _e
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /*!************************************!*\
   !*** multi ./src/plugin.number.js ***!
   \************************************/

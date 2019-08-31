@@ -7,7 +7,6 @@ let demoCode = `
 	const Text = Easycanvas.class.text;
 
 	var $app = new Easycanvas.Painter();
-	var a = {b: 2,c: $app}
 	$app.register(document.getElementById('app'));
 	$app.start();
 
@@ -133,7 +132,7 @@ let demoCode = `
 	                    locate: 'lt',
 	                }}
 	            >
-	                这里是一段多行文本abcdefg1234567！？：.,?
+	                {'这里是一段多行文本abcdefg1234567！？：.,?'}
 	            </Text>
 	        </Image>
 	    );

@@ -8,7 +8,7 @@
  *  MIT License
  */
 
-// modified to ESM by chenzhuo04
+// modified by c-zhuo
 
 // create a buffer that stores all inputs so that tabbing
 // between them is made possible.
@@ -1207,7 +1207,9 @@ CanvasInput.prototype = {
         }
 
         // remove the hidden input box
-        document.body.removeChild(self._hiddenInput);
+        // modified: no need to remove - not in body
+        // document.body.removeChild(self._hiddenInput);
+        self._hiddenInput = null;
 
         // remove off-DOM canvas
         self._renderCanvas = null;
