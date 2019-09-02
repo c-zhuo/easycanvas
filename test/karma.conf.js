@@ -7,6 +7,9 @@ var base = require('../webpack/webpack.config.base.js');
 
 var webpackConfig = {
     mode: 'development',
+    node: {
+        fs: 'empty'
+    },
     resolve: {
         alias: Object.assign(base.resolve.alias, {
             karma: path.join(__dirname, '../test/'),

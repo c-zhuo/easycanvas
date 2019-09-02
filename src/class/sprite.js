@@ -123,7 +123,7 @@ const preAdd = function (_item, $instance) {
     item.style.locate = item.style.locate || 'center';
     // item.style.rotate = item.style.rotate || 0;
 
-    let _img = utils.funcOrValue(item.content.img);
+    // let _img = utils.funcOrValue(item.content.img);
 
     $instance.$cache = {}; // 当前最终style
     $instance.$render = {}; // 当前渲染style

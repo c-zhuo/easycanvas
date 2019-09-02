@@ -1,15 +1,9 @@
-import Loader from '../../src/loader.js';
-
-const result = [];
-
-const loader = {
-    callback: (u, code) => {
-        result.push(code);
-    }
-};
+import { transformSync } from "@babel/core";
+import babelPlugin  from '../../src/babel-loader';
+import preset from '@babel/preset-env';
 
 const codeFormat = (str) => {
-    str = str.replace(/\ \ \ \ /g, '');
+    str = str.replace(/\ \ /g, '');
 
     if (str[0] === '\n') str = str.substr(1);
     if (str.substr(-1) === '\n') str = str.substr(0, str.length - 1);
@@ -21,7 +15,7 @@ const compareCode = (a, b) => {
     return codeFormat(a) === codeFormat(b);
 };
 
-Loader.call(loader, `
+const Code = `
     const content = {
         img: './abc.png'
     };
@@ -49,44 +43,46 @@ Loader.call(loader, `
             />
         </Sprite>
     );
-`);
+`;
+
+const result = transformSync(Code, {
+    presets: [preset],
+    plugins: [
+        babelPlugin
+    ]
+}).code;
 
 describe('Featrue.add Test.', function () {
     it('JSX transformed to JS correctly.', function (done) {
-        expect(compareCode(result[0], `
-            const content = {
-                img: "./abc.png"
-            };
-            
-            const a = $app.add(new Sprite({
-                name: "p1",
-                content: content,
-            
-                style: {
-                    width: 40,
-                    height: 20,
-                    cutLeft: 0,
-                    cutTop: 0,
-                    left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
-                    top: 80
-                },
-            
-                children: [new Sprite({
-                    name: "c1",
-                    content: content,
-            
-                    style: {
-                        width: 20,
-                        height: 20,
-                        cutLeft: 0,
-                        cutTop: 0,
-                        left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
-                        top: 80
-                    },
+        expect(compareCode(result, `
+            "use strict";
 
-                    children: []
-                }, Easycanvas)]
-            }, Easycanvas));
+            var content = {
+            img: './abc.png'
+            };
+            var a = $app.add(Easycanvas.createElement(Sprite, {
+            name: "p1",
+            content: content,
+            style: {
+                width: 40,
+                height: 20,
+                cutLeft: 0,
+                cutTop: 0,
+                left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
+                top: 80
+            }
+            }, Easycanvas.createElement(Sprite, {
+            name: "c1",
+            content: content,
+            style: {
+                width: 20,
+                height: 20,
+                cutLeft: 0,
+                cutTop: 0,
+                left: Easycanvas.Transition.ease(111, 422, 5500).loop(),
+                top: 80
+            }
+            })));
         `)).toBe(true);
         done();
     });

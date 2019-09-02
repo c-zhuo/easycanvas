@@ -52,12 +52,12 @@ module.exports = {
                 test: /\.jsx$/,
                 use: [
                     {
-                        loader: 'babel-loader',
+                        loader: "babel-loader",
                         options: {
-                            presets: ['@babel/preset-env']
+                            presets: ['@babel/preset-env'],
+                            plugins: ['easycanvas/build/babel-plugin']
                         }
-                    },
-                    { loader: 'easycanvas/build/loader' }
+                    }
                 ]
             }
         ]

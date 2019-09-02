@@ -12,33 +12,26 @@ export default `
 
         <p>打包时，会根据<strong>process.env.NODE_ENV</strong>这个环境变量来选择版本。当它不为<strong>production</strong>的时候，都会使用开发版本。开发版本包含一些warnning，并且可以使用Chrome调试插件在运行时进行调试工作。</p>
 
-        <p>如果项目使用了Webpack进行构建打包，可以引入相应的Loader来使用JSX的语法进行开发。如果你的项目也用到了Babel，需要将这个Loader放在Babel转换之前调用。由于Webpack的Loader是从后向前依次执行，所以需要书写在Babel后面：</p>
+        <p>如果项目使用了Webpack进行构建打包，可以引入相应的babel-plugin来<strong>使用JSX的语法进行开发</strong>：</p>
 
         <code>
                 // Webpack 4.* 的rules配置如下
                 rules: [{
-                    test: /\.js$/,
+                    test: /\.(js|jsx)$/,
                     use: {
                         loader: "babel-loader",
                         options: {
                             presets: ['@babel/preset-env']
-                        }
-                    }
-                }, {
-                    test: /\.jsx$/,
-                    use: [
-                        {
-                            loader: 'babel-loader',
-                            options: {
-                                presets: ['@babel/preset-env']
-                            }
                         },
-                        { loader: 'easycanvas/build/loader' }
-                    ]
+                        plugins: [
+                            // 引入Easycanvas提供的babel-plugin
+                            'easycanvas/build/babel-plugin'
+                        ]
+                    }
                 }]
         </code>
 
-        <p>建议在html中引入一个作为入口的js文件，这个入口文件再去引Easycanvas项目的jsx语法的文件。<strong>如果你的项目本身需要使用jsx，为了避免冲突，可以换成其它的文件后缀</strong>，例如<strong>.ec</strong>。</p>
+        <p>建议在html中引入一个作为入口的js文件，这个入口文件再去引Easycanvas项目的jsx语法的文件。<strong>如果你的项目本身需要使用jsx这个文件格式（例如React项目），为了避免冲突，可以定义其它的文件后缀</strong>，例如.easycanvas等，然后将不同技术栈的组件放入不同格式的文件中</p>
 
         <h2>创建实例</h2>
 

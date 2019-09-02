@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -218,7 +218,7 @@ eval("\n\nvar _MMDLoader2 = _interopRequireDefault(__webpack_require__(/*! ./plu
 
 /***/ }),
 
-/***/ 9:
+/***/ 10:
 /*!*******************************************!*\
   !*** multi ./src/plugin.webgl.loaders.js ***!
   \*******************************************/

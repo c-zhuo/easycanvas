@@ -5,3 +5,4 @@ node_modules/
 demos/.*
 *.lock
 package-lock.json
+.npmrc
