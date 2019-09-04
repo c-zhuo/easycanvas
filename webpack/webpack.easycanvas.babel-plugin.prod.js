@@ -8,6 +8,7 @@ config.output.filename = 'babel-plugin.js';
 config.output.libraryTarget = 'umd';
 config.target = 'node';
 config.mode = 'production';
+// 项目的依赖中包含这几项
 config.externals = {
     '@babel/core': '@babel/core',
     '@babel/helper-builder-react-jsx': '@babel/helper-builder-react-jsx',

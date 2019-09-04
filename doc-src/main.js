@@ -2,6 +2,7 @@ import sidebar from './constant/sidebar.js';
 import loadContent from './constant/content.js';
 
 import css from './style.scss';
+
 document.body.appendChild(document.createElement('style')).innerHTML = css;
 
 const DefaultPage = '一些demo';
@@ -161,17 +162,15 @@ const Analyze = function (str) {
                 if (this.isDebuggingJSX) {
                     // todo: 检测window.EasycanvasJSXTransformer等是否被js文件初始化完
 
-                    // transform jsx to js in browser
-                    // code = code.replace(/\<script>([\s\S]*)\<\/script\>/gm, function (outer, inner) {
-                    //     console.log(inner);
-                    //     const result = '<script>\n' + window.EasycanvasJSXTransformer(inner) + '\n</script>';
-                    //     console.log(result);
-
-                    //     return result;
-                    // });
-                    code = window.EasycanvasJSXTransformer(code);
+                    // import 'xx' ====> const {} = xxx;
                     code = code.replace(/import/g, 'const').replace(/from\ [\'|\"]easycanvas[\'|\"]/g, '= Easycanvas');
-                    code = Babel.transform(code, { presets: ['es2015'] }).code;
+
+                    const result = window.Babel.transform(code, {
+                        plugins: [
+                            EasycanvasBabelPlugin
+                        ]
+                    });
+                    code = result.code;
 
                     iframeHtmlCodes = `
                         <html>

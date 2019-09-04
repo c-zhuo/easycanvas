@@ -1,4 +1,3 @@
-// Math.PI wastes some performace
 const PI = Math.PI;
 
 import { funcOrValue } from './utils.js';

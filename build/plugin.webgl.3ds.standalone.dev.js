@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -170,7 +170,7 @@ eval("\n\nvar _lib3ds = _interopRequireDefault(__webpack_require__(/*! lib/lib3d
 
 /***/ }),
 
-/***/ 7:
+/***/ 6:
 /*!***************************************!*\
   !*** multi ./src/plugin.webgl.3ds.js ***!
   \***************************************/

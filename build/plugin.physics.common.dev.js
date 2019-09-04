@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -134,7 +134,7 @@ eval("\n\nvar utils = {\n  isArray: Array.isArray || function (arg) {\n    retur
 
 /***/ }),
 
-/***/ 7:
+/***/ 6:
 /*!*************************************!*\
   !*** multi ./src/plugin.physics.js ***!
   \*************************************/

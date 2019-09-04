@@ -11,7 +11,6 @@
 </head>
 
 <body>
-    <canvas id="bgCanvas" width="400" height="800"></canvas>
     <section id="docApp"></section>
 
     <script id="docApp-template" type="javascript/template">
@@ -79,9 +78,10 @@
 <script src="./lib/ace.js"></script>
 <script src="./lib/es6-promise.auto.min.js"></script>
 <script src="./main.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.5.5/babel.min.js"></script>
+<script src="https://unpkg.com/@babel/preset-env-standalone@7.5.5/babel-preset-env.min.js"></script>
 <script async src="./lib/mode-jsx.js"></script>
 <script async src="./lib/mode-html.js"></script>
-<script async src="./lib/easycanvas/loader.standalone.prod.js"></script>
-<script async src="./lib/babel-standalone-6.26.0.min.js"></script>
+<script async src="./lib/easycanvas/babel-plugin.standalone.prod.js"></script>
 
 </html>

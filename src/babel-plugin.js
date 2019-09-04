@@ -3,14 +3,14 @@ import jsx from '@babel/plugin-syntax-jsx';
 import helper from '@babel/helper-builder-react-jsx';
 import { types as t } from "@babel/core";
 
-export default declare((api, options) => {
+const plugin = declare((api, options) => {
     api.assertVersion(7);
 
     const THROW_IF_NAMESPACE =
         options.throwIfNamespace === undefined ? true : !!options.throwIfNamespace;
 
     const PRAGMA_DEFAULT = options.pragma || "Easycanvas.createElement";
-    const PRAGMA_FRAG_DEFAULT = options.pragmaFrag || "Easycanvas.createElement";
+    const PRAGMA_FRAG_DEFAULT = options.pragmaFrag || "window.Easycanvas ? window.Easycanvas.View : View";
 
     const JSX_ANNOTATION_REGEX = /\*?\s*@jsx\s+([^\s]+)/;
     const JSX_FRAG_ANNOTATION_REGEX = /\*?\s*@jsxFrag\s+([^\s]+)/;
@@ -98,3 +98,11 @@ export default declare((api, options) => {
         visitor,
     };
 });
+
+const inBrowser = typeof window !== 'undefined';
+
+if (inBrowser) {
+    window.EasycanvasBabelPlugin = plugin;
+}
+
+export default plugin;

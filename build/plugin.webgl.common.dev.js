@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -338,7 +338,7 @@ eval("\n\nvar utils = {\n  isArray: Array.isArray || function (arg) {\n    retur
 
 /***/ }),
 
-/***/ 9:
+/***/ 8:
 /*!***********************************!*\
   !*** multi ./src/plugin.webgl.js ***!
   \***********************************/

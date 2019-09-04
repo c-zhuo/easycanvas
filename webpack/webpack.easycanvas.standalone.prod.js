@@ -9,6 +9,9 @@ config.entry = config.entry('!(index.wxapp|index.wxgame).js');
 config.output.filename = '[name].standalone.prod.js';
 config.output.libraryTarget = 'window';
 config.mode = 'production';
+config.externals = {
+    // '@babel/core': 'Babel',
+};
 
 config.optimization = base.optimization(config.mode);
 

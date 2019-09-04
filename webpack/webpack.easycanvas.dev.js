@@ -38,7 +38,7 @@ var html = glob.sync('./demos/*.html').map(function (item) {
 var config = {
     mode: env,
     entry: js,
-    target: base.target,
+    // target: base.target,
     resolve: base.resolve,
     output: {
         path: path.resolve('./dev/'),
@@ -70,9 +70,9 @@ var config = {
     devServer: base.devServer,
 };
 
-// config.node = {
-//     fs: 'empty' // https://github.com/webpack-contrib/css-loader/issues/447
-// };
+config.node = {
+    fs: 'empty' // https://github.com/webpack-contrib/css-loader/issues/447
+};
 config.devtool = '#cheap-module-eval-source-map';
 
 module.exports = config;

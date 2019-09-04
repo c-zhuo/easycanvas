@@ -1,7 +1,6 @@
-import babelPlugin  from '../../src/babel-loader.js';
-import preset from '@babel/preset-env';
+import babelPlugin  from '../../src/babel-plugin.js';
 
-window.babelPlugin=babelPlugin;
+window.babelPlugin = babelPlugin;
 
 let demoCode = window.demoCode = `
 	const Sprite = Easycanvas.Sprite;
@@ -170,7 +169,6 @@ let demoCode = window.demoCode = `
 // console.log(demoCode);
 
 const result = window.Babel.transform(demoCode, {
-    presets: [preset],
     plugins: [
         babelPlugin
         // path.resolve('./src/babel-loader.js'),

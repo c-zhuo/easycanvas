@@ -1,5 +1,5 @@
 import { transformSync } from "@babel/core";
-import babelPlugin  from '../../src/babel-loader';
+import babelPlugin  from '../../src/babel-plugin';
 import preset from '@babel/preset-env';
 
 const codeFormat = (str) => {

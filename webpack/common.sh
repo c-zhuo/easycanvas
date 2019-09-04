@@ -19,9 +19,6 @@ if test -f "$LOADERFILE"; then
     rm ${LOADERFILE}
 fi
 
-# loader直接copy过去，用到的依赖在项目中都是有的
-cp ./src/loader.js ./build/loader.js
-
 # 增加动态选择common的入口
 echo "if (process.env.NODE_ENV === 'production') {
   module.exports = require('./easycanvas.common.prod.js')
@@ -34,7 +31,6 @@ import Easycanvas, {
     Painter,
     ImgLoader,
     imgPretreat,
-    multlineText,
     Transition,
     tick,
     utils,
@@ -56,7 +52,7 @@ export var use = Easycanvas.use = function (pluginHook) {
 };
 
 Easycanvas.createElement = function createElement(Component) {
-    var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var props = arguments.length > 1 && arguments[1] ? arguments[1] : {};
 
     for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
       children[_key - 2] = arguments[_key];
@@ -70,7 +66,6 @@ export {
     Painter,
     ImgLoader,
     imgPretreat,
-    multlineText,
     Transition,
     tick,
     utils,

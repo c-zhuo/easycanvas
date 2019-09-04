@@ -65,7 +65,7 @@
     "serv": "npm run ec:docserver",
     "instem": "rm -rf ./generator/template-jsx/node_modules/easycanvas/build/ && cp -r ./build ./generator/template-jsx/node_modules/easycanvas/build && cp ./package.json ./generator/template-jsx/node_modules/easycanvas/package.json",
     "ec:build": "rm -rf ./build && (concurrently 'webpack --config ./webpack/webpack.easycanvas.common.dev.js' 'webpack --config ./webpack/webpack.easycanvas.common.prod.js' 'webpack --config ./webpack/webpack.easycanvas.standalone.dev.js' 'webpack --config ./webpack/webpack.easycanvas.standalone.prod.js' 'webpack --config ./webpack/webpack.easycanvas.components.common.prod.js' 'webpack --config ./webpack/webpack.easycanvas.babel-plugin.prod.js') && sh ./webpack/common.sh && echo done.",
-    "ec:babel": "webpack --config ./webpack/webpack.easycanvas.loader.prod.js && echo done.",
+    "ec:babel": "webpack --config ./webpack/webpack.easycanvas.babel-plugin.prod.js && echo done.",
     "ec:dev": "webpack-dev-server --config ./webpack/webpack.easycanvas.dev.js",
     "ec:docs": "rm ./doc-src/lib/easycanvas/*.js & cp ./build/*.prod.js ./doc-src/lib/easycanvas/ & webpack-dev-server --config ./webpack/webpack.easycanvas.docs.dev.js",
     "ec:docsprod": "rm -rf ./docs && webpack --config ./webpack/webpack.easycanvas.docs.prod.js",

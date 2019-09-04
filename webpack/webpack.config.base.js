@@ -68,7 +68,7 @@ module.exports = {
                             presets: ['@babel/preset-env'],
                             plugins: [
                                 // path.resolve('./src/babel-loader.js'),
-                                path.resolve('./build/babel-loader.umd.prod.js'),
+                                path.resolve('./build/babel-plugin'),
                             ]
                         }
                     },
