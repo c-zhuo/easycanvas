@@ -21,12 +21,12 @@ export default `
                     use: {
                         loader: "babel-loader",
                         options: {
-                            presets: ['@babel/preset-env']
-                        },
-                        plugins: [
-                            // 引入Easycanvas提供的babel-plugin
-                            'easycanvas/build/babel-plugin'
-                        ]
+                            presets: ['@babel/preset-env'],
+                            plugins: [
+                                // 引入Easycanvas提供的babel-plugin
+                                'easycanvas/build/babel-plugin'
+                            ]
+                        }
                     }
                 }]
         </code>

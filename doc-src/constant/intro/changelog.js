@@ -1,5 +1,5 @@
 export default `
-    <article id="更新日志（Latest：2019-8-26）">
+    <article id="更新日志（Latest：2019-9-5）">
         <h1>更新</h1>
 
         <p class="tip">Tips：小版本号为bugfix或新增API使用，中版本号可能包含个别不向下兼容的API调整。</p>
