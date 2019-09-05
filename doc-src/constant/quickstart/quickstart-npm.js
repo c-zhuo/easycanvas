@@ -35,7 +35,7 @@ export default `
 
         <h2>创建实例</h2>
 
-        <p>这样，可以用JSX的标签写法来创建Painter实例与Sprite组件，代码的语义性更好。下面是一个例子：</p>
+        <p>可以用JSX的标签写法来创建Painter实例与Sprite组件，代码的语义性更好。下面是一个例子：</p>
 
         <section>
             <div class="code-2-demo code-2-demo-jsx bg-demo"></div>

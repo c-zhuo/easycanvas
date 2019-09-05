@@ -1,6 +1,6 @@
 {
     "name": "easycanvas-gen",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "A CLI to bootstrap my new projects",
     "main": "index.js",
     "files": [

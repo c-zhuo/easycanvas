@@ -6,9 +6,20 @@ export default `
 
         <h2>进行中</h2>
 
-        <p>Feature：为WebGL增加<strong>事件监听</strong>功能。</p>
+        <p>Feature：更多API和组件的文档。</p>
+        <p>Feature：拆分调试工具、文档等到不同的git仓库中。</p>
+        <p>Feature：开放部分https://github.com/c-zhuo/Mir2项目的源码，将应用于Easycanvas的大型游戏设计和开发文档系列。</p>
 
         <h2>当前版本</h2>
+
+        <h3>0.8.2 (2019.9.5)</h3>
+
+        <p>Bugfix：修复了使用<strong>WebGL</strong>渲染2D的Sprite时，渲染异常的bug。</p>
+        <p>Feature：现在<strong>使用babel-plugin进行JSX语法的编译</strong>，而不是webpack-loader，以兼容更多语法并提高编译速度，详见npm引入相关文档。升级了对应的脚手架。</p>
+        <p>Feature：为Canvas 2D的<strong>Input组件</strong>补充部分事件和参数，详见文档。</p>
+        <p>文档补充：增加部分API和组件的文档。</p>
+
+        <h2>历史版本</h2>
 
         <h3>0.8.1 (2019.8.26)</h3>
 
@@ -17,8 +28,6 @@ export default `
         <p>Bugfix：修复<strong>Sequence组件</strong>的部分bug，变更了部分属性的结构，详见组件文档。</p>
         <p>Feature：增加Canvas 2D下的<strong>输入框组件Input、可拖拽组件Draggable</strong>等UI组件，详见文档。</p>
         <p>文档补充：增加部分API和组件的文档。</p>
-
-        <h2>历史版本</h2>
 
         <h3>0.8.0 (2019.6.8)</h3>
 

@@ -24,11 +24,11 @@ export default `
             </thead>
             <tbody>
                 <tr>
-                    <td align="left">canvasX/canvasY <Number></td>
+                    <td align="left">canvasX/canvasY <<Number>></td>
                     <td align="left">点击坐标点的绝对坐标（相对于整个canvas实例）。</td>
                 </tr>
                 <tr>
-                    <td align="left">event <原生Event></td>
+                    <td align="left">event <<原生Event>></td>
                     <td align="left">浏览器原生Event事件。</td>
                 </tr>
             </tbody>

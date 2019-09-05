@@ -5,8 +5,8 @@ var webpack = require('webpack');
 var base = require('./webpack.config.base.js');
 var config = require('./webpack.easycanvas.dist.js');
 
-config.entry = config.entry('!(index.wxapp|index.wxgame|babel-plugin).js');
-config.output.filename = '[name].standalone.prod.js';
+config.entry = config.entry('babel-plugin.js');
+config.output.filename = 'babel-plugin.standalone.prod.js';
 config.output.libraryTarget = 'window';
 config.mode = 'production';
 config.externals = {

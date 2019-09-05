@@ -2,7 +2,7 @@ const tree = `
     - 介绍
     一些demo
     概述
-    更新日志（Latest：2019-8-26）
+    更新日志（Latest：2019-9-5）
     - 快速开始
     浏览器中引入
     npm引入与JSX写法
@@ -21,6 +21,7 @@ const tree = `
     - API
     Sprite-API
     Event-API
+    Transition-API
     - 组件
     开始使用组件
     容器组件View

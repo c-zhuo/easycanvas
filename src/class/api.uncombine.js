@@ -1,6 +1,8 @@
 import constants from 'constants';
 
 module.exports = function () {
+    this.off('ticked', this.combine);
+
     if (!this.$combine) return;
     if (this.$combine === 9) {
         this.$combine = false;

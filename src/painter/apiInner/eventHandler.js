@@ -243,11 +243,6 @@ eventHandler = function (e, _$e) {
 
     let caughts = [];
 
-    // if ($canvas.$flags.dragging && $canvas.$flags.dragging.$id) {
-    //     // 拖拽状态下，拖拽中的sprite优先触发事件
-    //     caughts.push($canvas.$flags.dragging);
-    // }
-
     looper(sortByIndex($canvas.children), $e, caughts);
 
     // utils.execFuncs($canvas.hooks.afterEvent, $canvas, $e);

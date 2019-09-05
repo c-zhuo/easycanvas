@@ -6,8 +6,6 @@
  *
  * ********** **/
 
-import utils from 'utils/utils.js';
-
 module.exports = function () {
     let arg = Array.prototype.slice.call(arguments);
     let name = arg.shift();

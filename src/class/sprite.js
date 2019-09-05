@@ -319,11 +319,11 @@ sprite.prototype.getRect = function (notImg, fromCache) {
 // };
 
 sprite.prototype.getSelfStyle = function (key) {
-    let res = {};
-
     if (key) {
         return utils.funcOrValue(this.style[key], this);
     }
+
+    let res = {};
 
     for (let key in this.style) {
         res[key] = utils.funcOrValue(this.style[key], this);
@@ -417,16 +417,6 @@ sprite.prototype.update = function (opt) {
     return this;
 };
 
-sprite.prototype.hide = function () {
-    this.style.display = 'none';
-    return this;
-};
-
-sprite.prototype.show = function () {
-    this.style.display = undefined;
-    return this;
-};
-
 sprite.prototype.getAllChildren = function (includeSelf) {
     let $sprite = this;
 
@@ -473,13 +463,13 @@ sprite.prototype.combineAsync = function () {
 
 sprite.prototype.recalculate = recalculate;
 
-sprite.prototype.refresh = function () {
-    for (let key in $sprite.$style) {
-        $sprite.$cache[key] = sprite.get($sprite.$style[key], $sprite);
-    }
+// sprite.prototype.refresh = function () {
+//     for (let key in $sprite.$style) {
+//         $sprite.$cache[key] = sprite.get($sprite.$style[key], $sprite);
+//     }
 
-    return this;
-};
+//     return this;
+// };
 
 sprite.prototype.nextTick = nextTick;
 sprite.prototype.on = on;

@@ -28,17 +28,12 @@ const PROTOS = {
     eLastMouseHover: null,
 
     maxFps: -1,
-
-    /* optimise */
-    // optimiser: {
-    //     blockSize: 100,
-    //     cacheMap: {},
-    // },
-
-    /* flags */
-    $flags: {
-        // dragging: false
-    },
 };
+
+if (process.env.NODE_ENV !== 'production') {
+    PROTOS.$flags = {
+        // dragging: false
+    }
+}
 
 module.exports = PROTOS;
