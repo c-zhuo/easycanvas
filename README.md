@@ -25,8 +25,8 @@ Easycanvas是一个同时支持2D和3D渲染、轻量、高效、MVVM模式的�
 - ☑ 精灵动画
 - ☑ 物理引擎（插件）
 - ☑ 事件、钩子
+- ☑ 使用JSX开发（babel-plugin）
 - ☑ 开发者工具（Chrome扩展插件）
-- ☑ 使用JSX开发模版（Webpack-loader）
 - ☑ 基础文档
 - ☑ 基础功能的单元测试
 - ☑ 3D渲染（插件）

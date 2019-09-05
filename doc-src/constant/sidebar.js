@@ -2,7 +2,7 @@ const tree = `
     - 介绍
     一些demo
     概述
-    更新日志（Latest：2019-8-26）
+    更新日志（Latest：2019-9-5）
     - 快速开始
     浏览器中引入
     npm引入与JSX写法
@@ -21,14 +21,16 @@ const tree = `
     - API
     Sprite-API
     Event-API
+    Transition-API
     - 组件
     开始使用组件
     容器组件View
     单行文本Text
     帧动画Sequence
-    滚动组件Scroll
-    按钮组件button（用法暂时参考Demo）
-    拖拽组件drag（文档待补充）
+    滚动容器Scroll
+    输入框Input
+    按钮组件Button（用法暂时参考Demo）
+    拖拽组件Draggable（文档待补充）
     - 插件
     物理引擎
     WebGL

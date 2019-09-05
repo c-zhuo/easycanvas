@@ -53,11 +53,32 @@ import combine from './api.combine.js';
 import uncombine from './api.uncombine.js';
 import recalculate from './api.recalculate.js';
 
+function flat (arr) {
+    var depth = isNaN(arguments[1]) ? 1 : Number(arguments[1]);
+
+    return depth ? Array.prototype.reduce.call(arr, function (acc, cur) {
+        if (Array.isArray(cur)) {
+            acc.push.apply(acc, flat(cur, depth - 1));
+        } else {
+            acc.push(cur);
+        }
+
+        return acc;
+    }, []) : Array.prototype.slice.call(arr);
+}
+
 // 记录sprite创建的顺序，用于调试工具的排序
 let $addIndex = 0;
 
 const ChangeChildrenToSprite = function ($parent) {
     if ($parent.children) {
+
+        if (process.env.NODE_ENV !== 'production') {
+            if ($parent.children && !Array.isArray($parent.children)) {
+                console.error(`[Easycanvas] Children is not an array`, $parent.children);
+            }
+        }
+
         $parent.children.forEach((child, i) => {
             if (!child.$id) {
                 $parent.children[i] = new sprite(child);
@@ -102,7 +123,7 @@ const preAdd = function (_item, $instance) {
     item.style.locate = item.style.locate || 'center';
     // item.style.rotate = item.style.rotate || 0;
 
-    let _img = utils.funcOrValue(item.content.img);
+    // let _img = utils.funcOrValue(item.content.img);
 
     $instance.$cache = {}; // 当前最终style
     $instance.$render = {}; // 当前渲染style
@@ -200,12 +221,15 @@ const preAdd = function (_item, $instance) {
     }
 
     item.children = item.children || [];
+    // JSX可能有[[a,b],c]的数据结构
+    item.children = flat(item.children, Infinity);
 
     // JSX中text可能作为children写在JSXElement内
-    if (typeof item.children === 'string') {
-        item.content.text = item.children;
-        item.children = [];
-    }
+    // update: 逻辑改到JSX的Text组件
+    // if (typeof item.children === 'string') {
+    //     item.content.text = item.children;
+    //     item.children = [];
+    // }
 
     ChangeChildrenToSprite(item);
 
@@ -295,11 +319,11 @@ sprite.prototype.getRect = function (notImg, fromCache) {
 // };
 
 sprite.prototype.getSelfStyle = function (key) {
-    let res = {};
-
     if (key) {
         return utils.funcOrValue(this.style[key], this);
     }
+
+    let res = {};
 
     for (let key in this.style) {
         res[key] = utils.funcOrValue(this.style[key], this);
@@ -393,16 +417,6 @@ sprite.prototype.update = function (opt) {
     return this;
 };
 
-sprite.prototype.hide = function () {
-    this.style.display = 'none';
-    return this;
-};
-
-sprite.prototype.show = function () {
-    this.style.display = undefined;
-    return this;
-};
-
 sprite.prototype.getAllChildren = function (includeSelf) {
     let $sprite = this;
 
@@ -449,13 +463,13 @@ sprite.prototype.combineAsync = function () {
 
 sprite.prototype.recalculate = recalculate;
 
-sprite.prototype.refresh = function () {
-    for (let key in $sprite.$style) {
-        $sprite.$cache[key] = sprite.get($sprite.$style[key], $sprite);
-    }
+// sprite.prototype.refresh = function () {
+//     for (let key in $sprite.$style) {
+//         $sprite.$cache[key] = sprite.get($sprite.$style[key], $sprite);
+//     }
 
-    return this;
-};
+//     return this;
+// };
 
 sprite.prototype.nextTick = nextTick;
 sprite.prototype.on = on;

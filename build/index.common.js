@@ -3,7 +3,6 @@ import Easycanvas, {
     Painter,
     ImgLoader,
     imgPretreat,
-    multlineText,
     Transition,
     tick,
     utils,
@@ -12,13 +11,33 @@ import Easycanvas, {
 } from './easycanvas.common.js';
 
 export var Sprite = sprite;
-export var use = Easycanvas.use;
+export var use = Easycanvas.use = function (pluginHook) {
+    var $extendList = Easycanvas.Painter.prototype.$extendList;
+
+    if ($extendList.indexOf(pluginHook) >= 0) return;
+
+    if (pluginHook.onUse) {
+        pluginHook.onUse(Easycanvas);
+    }
+
+    $extendList.push(pluginHook);
+};
+
+Easycanvas.createElement = function createElement(Component) {
+    var props = arguments.length > 1 && arguments[1] ? arguments[1] : {};
+
+    for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+      children[_key - 2] = arguments[_key];
+    }
+
+    props.children = children || [];
+    return new Component(props, Easycanvas);
+};
 
 export {
     Painter,
     ImgLoader,
     imgPretreat,
-    multlineText,
     Transition,
     tick,
     utils,

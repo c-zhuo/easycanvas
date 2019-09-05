@@ -15,8 +15,8 @@ module.exports = {
         port: 8080
     },
     optimization: {
-        // usedExports: true,
         minimizer: [
+            // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
             new TerserPlugin({
                 cache: true,
                 parallel: true,
@@ -25,7 +25,6 @@ module.exports = {
                     compress: {},
                     toplevel: true,
                     ie8: true,
-                    // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
                 }
             }),
         ],
@@ -52,12 +51,12 @@ module.exports = {
                 test: /\.jsx$/,
                 use: [
                     {
-                        loader: 'babel-loader',
+                        loader: "babel-loader",
                         options: {
-                            presets: ['@babel/preset-env']
+                            presets: ['@babel/preset-env'],
+                            plugins: ['easycanvas/build/babel-plugin']
                         }
-                    },
-                    { loader: 'easycanvas/build/loader' }
+                    }
                 ]
             }
         ]

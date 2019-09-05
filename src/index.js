@@ -7,7 +7,6 @@ import utils from 'utils/utils.js';
 import Transition from 'utils/transition.js';
 import ImgLoader from 'utils/img-loader.js';
 import imgPretreat from 'utils/img-pretreat.js';
-import multlineText from 'utils/multline-text';
 import sprite from './class/sprite.js';
 import extend from './class/extend.js';
 
@@ -21,7 +20,6 @@ const Easycanvas = {
     Painter,
     ImgLoader,
     imgPretreat,
-    multlineText,
     Transition,
     tick,
     utils,
@@ -33,6 +31,12 @@ const Easycanvas = {
     },
     sprite,
     Sprite,
+    // for JSX
+    createElement: (Component, props, ...children) => {
+        var _props = props || {};
+        _props.children = children || [];
+        return new Component(_props, Easycanvas);
+    },
 };
 
 Easycanvas.use = function (pluginHook) {
@@ -72,7 +76,6 @@ export {
     Painter,
     ImgLoader,
     imgPretreat,
-    multlineText,
     Transition,
     tick,
     utils,

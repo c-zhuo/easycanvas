@@ -1,10 +1,10 @@
 <body>
     <script src="../build/index.js"></script>
     <script src="../build/plugin.webgl.js"></script>
-    <canvas id="app" width="800" height="1800" style="width: 800px; height: 1800px;"></canvas>
+    <canvas id="app" width="800" height="1800" style="width: 800px; height: 1800px; opacity: 0.1;"></canvas>
 
     <script>
-        var COUNT = 2000;
+        var COUNT = 1000; // 5000  20-30fps
 
         var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
@@ -12,7 +12,7 @@
             webgl: !true
         });
         $app.start();
-        $app.fpsHandler = console.log;
+        // $app.fpsHandler = console.log;
 
         $app.imgLoader.cacheCanvas = true;
         var demoPicUrl = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/block.jpg';
@@ -36,6 +36,20 @@
                 });
         });
 
+        // console.log(Date.now());
+        // for (let i = 0;i< 10; i++){
+
+        // $app.children[0].style.left = Math.random() * 200
+        // $app.children[0].style.top = Math.random() * 200
+        // $app.children[0].recalculate()
+        // $app.$render()
+
+        // }
+        // console.log(Date.now()); // ~30+
+
+
+
+        // another canvas instance
         // var $Temp = new Easycanvas.Painter();
         // $Temp.register(document.createElement('canvas'), {
         //     name: 'temp',

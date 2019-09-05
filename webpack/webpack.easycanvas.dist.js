@@ -1,8 +1,6 @@
 'use strict';
 
 var path = require('path');
-var glob = require('glob');
-var webpack = require('webpack');
 var base = require('./webpack.config.base.js');
 
 var js = function (name) {
@@ -14,6 +12,7 @@ var js = function (name) {
 
 var config = {
     entry: js,
+    // target: base.target,
     resolve: base.resolve,
     output: {
         path: path.resolve('./build'),
@@ -24,6 +23,10 @@ var config = {
         rules: base.module.rules,
     },
     plugins: [],
+};
+
+config.node = {
+    fs: 'empty' // https://github.com/webpack-contrib/css-loader/issues/447
 };
 
 module.exports = config;

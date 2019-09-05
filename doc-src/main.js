@@ -1,12 +1,8 @@
-// import Easycanvas from 'src/index.js';
-// import EasycanvasPhysics from 'src/plugin.physics.js';
-// import Physics from './physics/physics.js';
-
-import Vue from './lib/vue-2.4.0.min.js';
 import sidebar from './constant/sidebar.js';
-import content from './constant/content.js';
+import loadContent from './constant/content.js';
 
 import css from './style.scss';
+
 document.body.appendChild(document.createElement('style')).innerHTML = css;
 
 const DefaultPage = '一些demo';
@@ -27,9 +23,10 @@ const Analyze = function (str) {
         data: {
             sidebar: sidebar,
             currentTitle: '',
+            content: '',
             contentDom: (function () {
                 let $section = document.createElement('section');
-                $section.innerHTML = content;
+                // $section.innerHTML = content;
                 return $section;
             })(),
             $iframe: null,
@@ -38,21 +35,16 @@ const Analyze = function (str) {
             hasDemo: false,
             isDebuggingJSX: false,
         },
-        computed: {
-            content () {
-                if (!this.currentTitle) {
-                    return;
-                }
-
-                let $content = this.contentDom.querySelector('#' + this.currentTitle);
-                if ($content) {
-                    return $content.innerHTML;
-                }
-
-                return '';
-            }
-        },
         mounted () {
+            loadContent(content => {
+                this.contentDom.innerHTML += content;
+
+                // 当前内容为空，说明懒加载的文档内容可能是正在查看的，触发内容更新方法
+                if (this.content === '') {
+                    this.updateContent();
+                }
+            });
+
             var editor = ace.edit(document.querySelector('.ace'), {
                 mode: 'ace/mode/html',
                 selectionStyle: 'text'
@@ -103,9 +95,26 @@ const Analyze = function (str) {
                 });
             }
 
+            this.updateContent();
+
             Analyze(title);
         },
         methods: {
+            updateContent () {
+                if (!this.currentTitle) {
+                    this.content = '';
+                    return;
+                }
+
+                let $content = this.contentDom.querySelector('#' + this.currentTitle);
+                if ($content) {
+                    this.content = $content.innerHTML;
+                    return;
+                }
+
+                this.content = '';
+            },
+
             chooseTitle (item) {
                 if (item.type === 'folder') {
                     return;
@@ -115,6 +124,8 @@ const Analyze = function (str) {
                 this.$nextTick(() => {
                     document.querySelector('.content').scrollTo(0, 0);
                 });
+
+                this.updateContent();
 
                 Analyze(item.name);
             },
@@ -151,17 +162,15 @@ const Analyze = function (str) {
                 if (this.isDebuggingJSX) {
                     // todo: 检测window.EasycanvasJSXTransformer等是否被js文件初始化完
 
-                    // transform jsx to js in browser
-                    // code = code.replace(/\<script>([\s\S]*)\<\/script\>/gm, function (outer, inner) {
-                    //     console.log(inner);
-                    //     const result = '<script>\n' + window.EasycanvasJSXTransformer(inner) + '\n</script>';
-                    //     console.log(result);
-
-                    //     return result;
-                    // });
-                    code = window.EasycanvasJSXTransformer(code);
+                    // import 'xx' ====> const {} = xxx;
                     code = code.replace(/import/g, 'const').replace(/from\ [\'|\"]easycanvas[\'|\"]/g, '= Easycanvas');
-                    code = Babel.transform(code, { presets: ['es2015'] }).code;
+
+                    const result = window.Babel.transform(code, {
+                        plugins: [
+                            EasycanvasBabelPlugin
+                        ]
+                    });
+                    code = result.code;
 
                     iframeHtmlCodes = `
                         <html>

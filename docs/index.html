@@ -5,12 +5,12 @@
 
     <link href="./lib/sidebar/css/jquery-accordion-menu.css" rel="stylesheet" type="text/css" />
     <link href="./lib/sidebar/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <script src="./lib/vue-2.4.0.min.js"></script>
     <script src="./lib/sidebar/js/jquery-1.11.2.min.js" type="text/javascript"></script>
     <script src="./lib/sidebar/js/jquery-accordion-menu.js" type="text/javascript"></script>
 </head>
 
 <body>
-    <canvas id="bgCanvas" width="400" height="800"></canvas>
     <section id="docApp"></section>
 
     <script id="docApp-template" type="javascript/template">
@@ -47,44 +47,6 @@
                         </ul>
                     </li>
                 </ul>
-
-                <ul v-if=0>
-                   <li class="active"><a href="#"><i class="fa fa-home"></i>Home </a></li>
-                    <li><a href="#"><i class="fa fa-glass"></i>Events </a></li>
-                    <li><a href="#"><i class="fa fa-file-image-o"></i>Gallery </a><span class="jquery-accordion-menu-label">
-                        12 </span></li>
-                    <li><a href="#"><i class="fa fa-cog"></i>Services </a>
-                        <ul class="submenu">
-                            <li><a href="#">Web Design </a></li>
-                            <li><a href="#">Hosting </a></li>
-                            <li><a href="#">Design </a>
-                                <ul class="submenu">
-                                    <li><a href="#">Graphics </a></li>
-                                    <li><a href="#">Vectors </a></li>
-                                    <li><a href="#">Photoshop </a></li>
-                                    <li><a href="#">Fonts </a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Consulting </a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="fa fa-home"></i>系统管理 </a></li>
-                    <li><a href="#"><i class="fa fa-suitcase"></i>Portfolio </a>
-                        <ul class="submenu">
-                            <li><a href="#">Web Design </a></li>
-                            <li><a href="#">Graphics </a><span class="jquery-accordion-menu-label">10 </span>
-                            </li>
-                            <li><a href="#">Photoshop </a></li>
-                            <li><a href="#">Programming </a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="fa fa-user"></i>About </a></li>
-                    <li><a href="#"><i class="fa fa-envelope"></i>Contact </a></li>
-                   
-                </ul>
-                <div class="jquery-accordion-menu-footer" v-show=0>
-                    Footer
-                </div>
             </div>
                 
             <div class="content">
@@ -114,10 +76,12 @@
 </body>
 
 <script src="./lib/ace.js"></script>
+<script src="./lib/es6-promise.auto.min.js"></script>
 <script src="./main.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.5.5/babel.min.js"></script>
+<script src="https://unpkg.com/@babel/preset-env-standalone@7.5.5/babel-preset-env.min.js"></script>
 <script async src="./lib/mode-jsx.js"></script>
 <script async src="./lib/mode-html.js"></script>
-<script async src="./lib/easycanvas/loader.standalone.prod.js" type="text/javascript"></script>
-<script async src="./lib/babel-standalone-6.26.0.min.js" type="text/javascript"></script>
+<script async src="./lib/babel-plugin.standalone.prod.js"></script>
 
 </html>

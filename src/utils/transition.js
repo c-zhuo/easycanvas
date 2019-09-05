@@ -1,7 +1,6 @@
-// Math.PI wastes some performace
-const PI = Math.PI;
-
 import { funcOrValue } from './utils.js';
+
+const PI = Math.PI;
 
 const getLastPaintTime = function (transitions) {
     return transitions.$lastPaintTime || Date.now();

@@ -3,13 +3,11 @@
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 var glob = require('glob');
-var webpack = require('webpack');
 var docConfig = require('./webpack.config.doc.js');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var StringReplacePlugin = require("string-replace-webpack-plugin");
 
 var js = glob.sync('./doc-src/main.js').reduce(function (prev, curr) {
-    console.log(curr);
     prev[curr.slice(2, -3).replace('doc-src/', '')] = [curr];
     return prev;
 }, {});
@@ -32,7 +30,7 @@ Object.assign(config, {
     output: {
         path: path.resolve('./docs'),
         filename: '[name].js',
-        libraryTarget: 'umd'
+        chunkFilename: '[name].bundle.js'
     },
     module: {
         rules: docConfig.module.rules.concat([{
@@ -61,9 +59,6 @@ Object.assign(config, {
                 to: './lib/'
             }
         ]),
-        new webpack.DefinePlugin({
-            // 'process.env.NODE_ENV': JSON.stringify(env)
-        })
     ]).concat(html),
 });
 

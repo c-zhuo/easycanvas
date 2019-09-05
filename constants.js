@@ -9,5 +9,5 @@ module.exports = {
     xywh,
     styles,
     devFlag: '__EASYCANVAS_DEVTOOL__',
-    version: '0.8.1',
+    version: '0.8.2',
 };

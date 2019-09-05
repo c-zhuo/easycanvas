@@ -82,10 +82,12 @@ module.exports = function (force) {
             }
 
             if (cur === $sprite.$cache[key]) {
+                // 一些属性可能本次计算和上次的结果相同，例如return固定值的一些function，不要触发刷新
                 delete $sprite.$needUpdate[key];
             } else {
                 if (key === 'left' || key === 'top' || key === 'opacity' || key === 'scale') {
                     if (cur !== $sprite.$cache[key]) {
+                        // 继承的属性，parent变化时，child也需要update
                         $sprite.children.forEach(($child) => {
                             $child.$needUpdate[key] = 1;
                         });
@@ -94,13 +96,16 @@ module.exports = function (force) {
             }
         };
 
+        // 重新得出是否需要更新
         isNeedUpdate = Object.keys($sprite.$needUpdate).length;
+
+        // 一些属性是function的，提前标记出来，为下一次循环准备
         $sprite.$needUpdate = $needUpdate;
     }
 
     !force && utils.execFuncs($sprite.hooks.ticked, $sprite, [$sprite.$canvas.$rafTime]);
 
-    // 这两个属性目前没有通过依赖关系来主动更新，暂时用每帧计算，有优化空间
+    // TODO:这两个属性目前没有通过依赖关系来主动更新，暂时用每帧计算，有优化空间
     // 但是未加载成功的图片要一直触发更新操作，因为不知道什么时候加载成功
     let _text = utils.funcOrValue($sprite.content.text, $sprite);
     let _img = utils.funcOrValue($sprite.content.img, $sprite);

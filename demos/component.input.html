@@ -44,10 +44,14 @@
                 innerShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
                 placeHolder: 'Enter message here...',
             },
-            onkeyup (value) {
-                console.log(value);
-            }
+            onkeyup (e) {
+                console.log(e);
+                console.warn(this.value);
+            },
+            value: 'asd',
         }));
+
+        Sprite1.focus();
 
         $app.start();
     </script>

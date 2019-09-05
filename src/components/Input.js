@@ -44,6 +44,22 @@ const component = function (opt, Easycanvas) {
     $sprite = new Easycanvas.Sprite(option);
     $sprite.$canvasInput = $canvasInput;
 
+    ['onsubmit', 'onkeydown', 'onkeyup', 'onfocus', 'onblur'].forEach(method => {
+        $canvasInput['_' + method] = (event) => {
+            if ($sprite[method]) {
+                $sprite[method].call($sprite, event);
+            }
+        };
+    });
+
+    ['focus', 'blur', 'selectText'].forEach(method => {
+        $sprite[method] = $canvasInput[method].bind($canvasInput);
+    });
+
+    $sprite.on('removed', () => {
+        $canvasInput.destroy.call($canvasInput);
+    });
+
     // $sprite.content.img = $canvasInput._canvas;
     $sprite.content.img = $canvasInput._renderCanvas;
 
@@ -66,6 +82,16 @@ const component = function (opt, Easycanvas) {
             };
             $sprite.$canvas.addEventListener('interceptor', interceptor);
         }
+    });
+
+    Object.defineProperty($sprite, 'value', {
+        get () {
+            return $canvasInput.value();
+        },
+
+        set (str) {
+            $canvasInput.value(typeof str === 'undefined' ? '' : str);
+        },
     });
 
     return $sprite;

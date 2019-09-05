@@ -8,7 +8,8 @@ class Letter {
                 top: 400,
                 left: '50%',
                 width: 40,
-                height: 40
+                height: 40,
+                locate: 'center'
             }}
             events={{
                 click: props.onclick

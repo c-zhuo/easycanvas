@@ -6,16 +6,11 @@
  *
  * ********** **/
 
-// import add from './apiOuter/add.js';
 import remove from './apiOuter/remove.js';
 import start from './apiOuter/start.js';
 import paint from './apiOuter/paint.js';
 import clear from './apiOuter/clear.js';
 import pause from './apiOuter/pause.js';
-// import on from './apiOuter/on.js';
-// import off from './apiOuter/off.js';
-// import trigger from './apiOuter/trigger.js';
-// import broadcast from './apiOuter/broadcast.js';
 import nextTick from './apiOuter/nextTick.js';
 import register from './apiOuter/register.js';
 import setFpsHandler from './apiOuter/setFpsHandler.js';
