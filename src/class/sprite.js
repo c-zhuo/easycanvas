@@ -53,6 +53,8 @@ import combine from './api.combine.js';
 import uncombine from './api.uncombine.js';
 import recalculate from './api.recalculate.js';
 
+const COMBINE_ING = 9;
+
 function flat (arr) {
     var depth = isNaN(arguments[1]) ? 1 : Number(arguments[1]);
 
@@ -453,7 +455,7 @@ sprite.prototype.uncombine = uncombine;
 
 sprite.prototype.combineAsync = function () {
     if (this.$combine) return this;
-    this.$combine = 9;
+    this.$combine = COMBINE_ING;
 
     this.off('ticked', this.combine);
     this.on('ticked', this.combine, 100);

@@ -77,7 +77,6 @@ const loader = function (url, callback, option) {
         Cache[cacheNamespace] = tempCanvas;
     }
 
-
     i.onload = function (e) {
         i._complete = true;
 

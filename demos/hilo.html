@@ -37,6 +37,8 @@
         };
         loop();
 
+        var demoPicUrl = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/block.jpg';
+
         function init(){
             //init stage
             window.stage = new Hilo.Stage({
@@ -50,10 +52,10 @@
             ticker.addTick(stage);
             ticker.start();
             stage.enableDOMEvent([Hilo.event.POINTER_START, Hilo.event.POINTER_MOVE, Hilo.event.POINTER_END]);
-            for (var i = 0; i <= 2000; i++)
+            for (var i = 0; i <= 5000; i++)
                 var test = new Hilo.Button({
                     id: 'blueBtn',
-                    image: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
+                    image: demoPicUrl,
                     width: Math.random() * 200,
                     height: Math.random() * 200,
                     upState: {rect:[0, 0, 330, 330]},

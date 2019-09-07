@@ -5,8 +5,8 @@ import utils from 'utils/utils.js';
 
 const COMBINE_ING = 9;
 const COMBINE_DONE = 1;
-const COMBINE_FAIL = 2;
-const COMBINE_DELAY = 3;
+// const COMBINE_FAIL = 2;
+// const COMBINE_DELAY = 3;
 
 module.exports = function () {//return;
     let $sprite = this;
@@ -17,8 +17,6 @@ module.exports = function () {//return;
 
     setTimeout(() => {
         if ($sprite.$combine !== COMBINE_ING) {
-            // 日历组件会走到这里，原因未知，做一下兜底
-            // TODO
             return;// COMBINE_DONE;
         }
 
@@ -70,9 +68,6 @@ module.exports = function () {//return;
                 if (allChildrenInCombine[i].$id === $child.$id) return true;
             } 
         });
-        // if ($sprite.name === 'intro') {
-        //     console.warn('length', $renders.length);
-        // }
 
         let spriteOpacity = $sprite.getStyle('opacity');
         $renders.forEach(($render) => {
@@ -101,7 +96,6 @@ module.exports = function () {//return;
         }
         let combineCtx = combinerCanvas.getContext('2d');
         combineCtx.clearRect(0, 0, $canvas.width, $canvas.height);
-        // combineCtx.translate(outerRect.tx, outerRect.ty);
 
         $canvas.$render(combineCtx, $renders, true/* renderAll */);
 
@@ -111,7 +105,6 @@ module.exports = function () {//return;
             // sprite的透明度可能受到parent的影响，这里恢复
             $render.settings.globalAlpha = $render.settings.$combineGlobalAlpha;
         });
-        // combineCtx.translate(-outerRect.tx, -outerRect.ty);
 
         let canvas = document.createElement('canvas');
         // document.body.prepend(canvas);

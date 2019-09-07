@@ -16,6 +16,7 @@ const Analyze = function (str) {
     img.src = 'http://122.114.162.204:8001/point?title=' + str;
 };
 
+
 (function initDocInstance () {
     window.t = new Vue({
         el: '#docApp',
@@ -145,6 +146,15 @@ const Analyze = function (str) {
             },
 
             debug (code) {
+                // 还没加载完ace或者babel
+                const acePlugin = ace.require(this.isDebuggingJSX ? 'ace/mode/jsx' : 'ace/mode/html');
+                if (!acePlugin) {
+                    setTimeout(() => {
+                        this.debug(code);
+                    }, 500);
+                    return;
+                }
+
                 if (code) {
                     this.$ace.setValue(String(code));
                 } else {
@@ -154,7 +164,7 @@ const Analyze = function (str) {
                 this.$ace.clearSelection();
                 this.$ace.moveCursorTo(0, 0);
 
-                const JavaScriptMode = ace.require(this.isDebuggingJSX ? 'ace/mode/jsx' : 'ace/mode/html').Mode;
+                const JavaScriptMode = acePlugin.Mode;
                 this.$ace.session.setMode(new JavaScriptMode());
 
                 let iframeHtmlCodes;
