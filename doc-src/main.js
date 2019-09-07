@@ -149,6 +149,7 @@ const Analyze = function (str) {
                 // 还没加载完ace或者babel
                 const acePlugin = ace.require(this.isDebuggingJSX ? 'ace/mode/jsx' : 'ace/mode/html');
                 if (!acePlugin) {
+                    this.$ace.setValue('// Babel初始化中，请稍后');
                     setTimeout(() => {
                         this.debug(code);
                     }, 500);
