@@ -99,10 +99,10 @@ export default `
                             cutWidth: width,
                             cutHeight: height,
                             cutLeft: function () {
-                                return this.props.index % 6 * width;
+                                return this.index % 6 * width;
                             },
                             cutTop: function () {
-                                return height * (this.props.index % 20 >= 10 ? 2 : 6);
+                                return height * (this.index % 20 >= 10 ? 2 : 6);
                             },
                         },
                     });

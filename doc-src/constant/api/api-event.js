@@ -34,6 +34,28 @@ export default `
             </tbody>
         </table>
 
-        <p>可使用的API包含：待补充</p>
-    </article>
+        <p>可使用的API包含：</p>
+
+        <table>
+        <thead>
+            <tr>
+                <th align="left">API</th>
+                <th align="left">含义</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td align="left">stopPropagation()</td>
+                <td align="left">停止事件在Easycanvas内的冒泡。事件不会再向当前Sprite的父节点传递。</td>
+            </tr>
+            <tr>
+                <td align="left">event.stopPropagation()</td>
+                <td align="left">停止事件在DOM上的冒泡，即事件不会向上传递到当前canvas节点的parent节点。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>event属性内包含全部的浏览器事件对象属性。</p>
+
+</article>
 `;
