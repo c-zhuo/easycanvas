@@ -22,9 +22,9 @@ Easycanvas是一个同时支持2D和3D渲染、轻量、高效、MVVM模式的�
 - ☑ JSX写法
 - ☑ 脚手架
 - ☑ 2D渲染
-- ☑ 精灵动画
+- ☑ 精灵动画（组件形式）
 - ☑ 物理引擎（插件）
-- ☑ 事件、钩子
+- ☑ 事件、生命周期钩子、自定义钩子
 - ☑ 使用JSX开发（babel-plugin）
 - ☑ 开发者工具（Chrome扩展插件）
 - ☑ 基础文档
@@ -43,7 +43,7 @@ Easycanvas是一个同时支持2D和3D渲染、轻量、高效、MVVM模式的�
 - ☑ 支持加载dds图片（插件）
 - ☑ 支持微信小游戏（插件）
 - ☑ 支持微信小程序（插件）
-- ☑ 导出原生javascript+canvas骨架屏
+- ☑ 导出原生javascript+canvas骨架屏（未开放）
 - ☑ CanvasUI基础组件
 - ☐ 调试工具完善
 - ☐ CanvasRouter路由（插件）

@@ -6,27 +6,11 @@ export default `
 
         <p class="tip">其原理是创建一个容器Sprite，监听touch和wheel（鼠标滚轮）事件，调整内部的元素位置。</p>
 
-        <h2>引入方式</h2>
+        <h2>示例</h2>
 
-        <code>
-            <!-- js文件方式引入 -->
-            <!-- 注意放在easycanvas.js后；prod为线上压缩版、dev为开发版；开发版带有调试、警告信息 -->
+        <p>创建组件时，需要用Easycanvas.Scroll来创建一个Sprite。<strong>将style中的overflow设置为scroll可以指定允许滚动，也可以用overflowX和overflowY设置单个方向是否允许滚动</strong>。</p>
 
-            <script src="http://your-path/easycanvas.standalone.prod.js"></script>
-            <script src="http://your-path/components.standalone.prod.js"></script>
-
-            <!-- node环境引入 -->
-
-            import Easycanvas from 'easycanvas';
-            import EasycanvasComponentScroll from 'easycanvas/build/components.js';
-
-            // node环境中引入，可以指定组件名称，作为“命名空间”，防止多个组件重复
-            Easycanvas.component(EasycanvasComponentScroll.scroll, 'scroll');
-        </code>
-
-        <h2>使用</h2>
-
-        <p>创建组件时，需要用Easycanvas.Scroll来创建一个Sprite。<strong>将style中的overflow设置为scroll可以指定允许滚动，也可以用overflowX和overflowY设置单个方向是否允许滚动</strong>，Demo如下：</p>
+        <p>下面是一个没有使用JSX的例子：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>

@@ -1,6 +1,10 @@
 <head>
     <style>
-        body {margin: 0; padding: 0;}
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
         canvas {
             border: 1px solid grey;
             background-color: #eee;
@@ -12,10 +16,12 @@
     </style>
     <script src="../build/index.js"></script>
     <script src="../build/components.js"></script>
+    <script src="https://goldfirestudios.com/proj/canvasinput/CanvasInput.min.js?v=1.2.3"></script>
 </head>
 
 <body>
     <canvas id="app"></canvas>
+    <canvas id="origin" width="400" height="400"></canvas>
 
     <script>
         var $app = new Easycanvas.Painter();
@@ -34,7 +40,7 @@
                 fontSize: 36,
                 fontFamily: 'Arial',
                 color: '#0FF',
-                width: 420, height: 40,
+                width: 100, height: 40,
                 fontWeight: 'bold',
                 borderWidth: 1,
                 borderColor: '#888',
@@ -42,17 +48,35 @@
                 borderRadius: 11,
                 boxShadow: '1px 1px 0px #fff',
                 innerShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
-                placeHolder: 'Enter message here...',
+                placeHolder: 'ph',
             },
-            onkeyup (e) {
+            onkeyup(e) {
                 console.log(e);
                 console.warn(this.value);
             },
-            value: 'asd',
+            value: '',
         }));
 
         Sprite1.focus();
 
         $app.start();
+    </script>
+
+    <script>
+        var input = new CanvasInput({
+            canvas: document.getElementById('origin'),
+            fontSize: 18,
+            fontFamily: 'Arial',
+            fontColor: '#212121',
+            fontWeight: 'bold',
+            width: 100,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#000',
+            borderRadius: 3,
+            boxShadow: '1px 1px 0px #fff',
+            innerShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
+            value: ''
+        });
     </script>
 </body>

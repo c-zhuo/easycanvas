@@ -161,6 +161,12 @@ var CanvasInput = function (o) {
         // update the canvas input state information from the hidden input
         self._value = self._hiddenInput.value;
         self._cursorPos = self._hiddenInput.selectionStart;
+
+        // @fix by c-zhuo
+        if (self._value.length > self._clipText().length && self._hiddenInput.selectionStart > self._clipText().length) {
+            self._cursorPos = self._clipText().length - (self._value.length - self._hiddenInput.selectionStart);
+        }
+
         // update selection to hidden input's selection in case user did keyboard-based selection
         self._selection = [self._hiddenInput.selectionStart, self._hiddenInput.selectionEnd];
         self.render();
@@ -802,6 +808,8 @@ CanvasInput.prototype = {
 
             // update the cursor position
             self._cursorPos = (typeof pos === 'number') ? pos : self._clipText().length;
+            // window.s = self;
+            // console.log('_cursorPos', pos, self._clipText().length, self._cursorPos);
 
             // clear the place holder
             if (self._placeHolder === self._value) {
@@ -821,11 +829,26 @@ CanvasInput.prototype = {
             }, 500);
         }
 
+        let fixedC = self._cursorPos;
+        if (self._value.length > self._clipText().length) {
+            self._cursorPos = self._value.length - (self._clipText().length - (pos || 0));
+        }
+
         // move the real focus to the hidden input
         var hasSelection = (self._selection[0] > 0 || self._selection[1] > 0);
         self._hiddenInput.focus();
         self._hiddenInput.selectionStart = hasSelection ? self._selection[0] : self._cursorPos;
         self._hiddenInput.selectionEnd = hasSelection ? self._selection[1] : self._cursorPos;
+
+
+        if (self._value.length > self._clipText().length) {
+            self._cursorPos = fixedC;
+
+            if (self._hiddenInput.selectionEnd !== self._hiddenInput.selectionStart) {
+                self._hiddenInput.selectionStart = self._value.length - (self._clipText().length - self._selection[0]);
+                self._hiddenInput.selectionEnd = self._value.length - (self._clipText().length - self._selection[1]);
+            }
+        }
 
         return self.render();
     },
@@ -974,6 +997,8 @@ CanvasInput.prototype = {
 
             if (self._selection[0] !== start || self._selection[1] !== end) {
                 self._selection = [start, end];
+                console.log(self._selection)
+                window.s=self;
                 self.render();
             }
         }

@@ -19,13 +19,13 @@ export default `
                     height: 400
                 }).start();
 
-                const value = 'Default Value';
+                const value = 'Default';
 
                 class MyInput {
                     constructor (props) {
                         return <Input
                             style={{
-                                width: 100,
+                                width: 200,
                                 height: 30,
                                 fontSize: 30,
                                 color: '#F00',
@@ -69,7 +69,7 @@ export default `
             </code>
         </section>
 
-        <h2>API</h2>
+        <h2>API（待补充）</h2>
 
         <table>
             <thead>
