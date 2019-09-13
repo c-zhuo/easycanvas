@@ -16,7 +16,7 @@ const component = function (opt, Easycanvas) {
     $sprite.index = opt.index || 0;
 
     $sprite.on('beforeTick', function () {
-        let img = funcOrValue(this.content.img, this);
+        let img = this.getImage();
 
         if (!img || !img.width) return;
 
@@ -25,29 +25,38 @@ const component = function (opt, Easycanvas) {
         if (index < 0) index = 0;
 
         // 计算每帧的宽高
-        let pw, ph;
-        if (this.frameWidth || this.frameHeight) {
-            if (this.frameWidth < 0) {
-                pw = img.width / -this.frameWidth;
+        let pw, ph, wTimes;
+
+        if (this.frameWidth) {
+            const frameWidth = funcOrValue(this.frameWidth, this);
+
+            if (frameWidth < 0) {
+                pw = img.width / -frameWidth;
             } else {
-                pw = this.frameWidth;
-            }
-            if (this.frameHeight < 0) {
-                ph = img.height / -this.frameHeight;
-            } else {
-                ph = this.frameHeight;
+                pw = frameWidth;
             }
 
-            let wTimes = Math.floor(img.width / pw);
-            let hTimes = Math.floor(img.height / ph);
+            wTimes = Math.floor(img.width / pw);
 
             this.style.cutLeft = index % wTimes * pw;
+        }
+        if (this.frameHeight) {
+            const frameHeight = funcOrValue(this.frameHeight, this);
+
+            if (frameHeight < 0) {
+                ph = img.height / -frameHeight;
+            } else {
+                ph = frameHeight;
+            }
+
+            let hTimes = Math.floor(img.height / ph);
+
             this.style.cutTop = Math.floor(index / wTimes) % hTimes * ph;
         }
 
         // 不循环的精灵动画自动移除
         if (!this.loop && index > 0 && this.style.cutLeft === 0 && this.style.cutTop === 0) {
-            this.style.img = undefined;
+            this.content.img = undefined;
             this.remove();
             return;
         }

@@ -4,7 +4,7 @@ export default `
 
         <p>“帧动画”也称为“序列动画”、“精灵动画”等，是指把一个元素在各个帧的状态的画面归到一组依次绘制，形成动画。例如下面是一个爆炸的动作序列图：</p>
 
-        <img class="article-img" width="100%" src="https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png"></img>
+        <img class="article-img" width="100%" src="../resource/image/Fire.png"></img>
 
         <h2>示例</h2>
 
@@ -22,7 +22,7 @@ export default `
                 </body>
 
                 <script>
-                    var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png', function () {
+                    var Fire = Easycanvas.ImgLoader('../resource/image/Fire.png', function () {
                         document.getElementById('content').innerText = '点击画布可以看到爆炸效果';
                     });
 
@@ -36,7 +36,7 @@ export default `
                         }
                     });
 
-                    var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png');
+                    var Fire = Easycanvas.ImgLoader('../resource/image/Fire.png');
 
                     var createFire = function (initX, initY) {
                         return Easycanvas.Sequence({
@@ -86,7 +86,7 @@ export default `
                         height: 400
                     });
 
-                    var img = 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/human.png';
+                    var img = '../resource/image/run.png';
                     var width = 166, height = 103;
 
                     var $human = Easycanvas.Sequence({

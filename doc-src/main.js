@@ -178,7 +178,8 @@ const Analyze = function (str) {
 
                     const result = window.Babel.transform(code, {
                         plugins: [
-                            EasycanvasBabelPlugin
+                            EasycanvasBabelPlugin,
+                            require('@babel/plugin-proposal-class-properties')
                         ]
                     });
                     code = result.code;

@@ -5,7 +5,7 @@ const utils = {
 
     funcOrValue: (funcOrValue, _this) => {
         if (typeof funcOrValue === 'function') {
-            return funcOrValue.call(_this);
+            return funcOrValue.call(_this, _this);
         }
 
         return funcOrValue;

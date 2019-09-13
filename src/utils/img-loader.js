@@ -105,7 +105,6 @@ const loader = function (url, callback, option) {
 
             if (_option.alphaColor) {
                 let data = cts.getImageData(0, 0, i.width, i.height);
-                let pixel = [];
 
                 for (let d = 0; d < data.data.length; d += 4) {
                     let colorWeight = data.data[d] + data.data[d + 1] + data.data[d + 2];

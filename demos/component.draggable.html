@@ -88,6 +88,7 @@
                     locate: 'center', // default center
                     zIndex: 1, // z-index of this image
                 },
+                draggable: true,
                 onDragStep: function (pos) {
                     var newPos = getPositionWithinLength(200, 200, pos.left, pos.top, 100);
                     this.style.left = newPos.x;

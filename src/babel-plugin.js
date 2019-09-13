@@ -79,7 +79,7 @@ const plugin = declare((api, options) => {
                 !state.get("pragmaFragSet")
             ) {
                 throw new Error(
-                    "transform-react-jsx: pragma has been set but " +
+                    "transform-easycanvas-jsx: pragma has been set but " +
                     "pragmafrag has not been set",
                 );
             }

@@ -69,6 +69,7 @@ module.exports = {
                             plugins: [
                                 // path.resolve('./src/babel-loader.js'),
                                 path.resolve('./build/babel-plugin'),
+                                require('@babel/plugin-proposal-class-properties')
                             ]
                         }
                     },

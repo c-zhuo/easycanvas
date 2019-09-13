@@ -147,7 +147,8 @@ const triggerEventOnSprite = function ($sprite, $e, caughts) {
     caughts && caughts.push($sprite);
 
     if ($sprite.events[$e.type]) {
-        $sprite.events[$e.type].call($sprite, $e);
+        utils.execFuncs($sprite.events[$e.type], $sprite, [$e]);
+        // $sprite.events[$e.type].call($sprite, $e);
         if ($e.$stopPropagation) return;
     }
 
@@ -284,10 +285,11 @@ eventHandler = function (e, _$e) {
 
     let handler = $canvas.events[$e.type];
     if (handler && !$e.$stopPropagation) {
-        if (handler.call($canvas, $e)) {
-            $canvas.eHoldingFlag = false;
-            return true;
-        }
+        utils.execFuncs(handler, $canvas, [$e]);
+        // if (handler.call($canvas, $e)) {
+        //     $canvas.eHoldingFlag = false;
+        //     return true;
+        // }
     }
 };
 

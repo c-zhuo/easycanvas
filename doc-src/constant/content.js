@@ -55,4 +55,8 @@ export default (callback) => {
     import('./api').then(({ default: str }) => {
         callback(contentProcessor(str));
     });
+
+    import('./senior').then(({ default: str }) => {
+        callback(contentProcessor(str));
+    });
 };

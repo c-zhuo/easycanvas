@@ -90,8 +90,8 @@ export default `
                         }
                     });
 
-                    $ScrollBox.trigger('scrollTo', 0, 500, 300, () => {
-                        $ScrollBox.trigger('scrollTo', 0, 0, 300);
+                    $ScrollBox.scrollTo(0, 500, 300, () => {
+                        $ScrollBox.scrollTo(0, 0, 300);
                     });
                 </script>
             </code>
@@ -108,33 +108,37 @@ export default `
             </thead>
             <tbody>
                 <tr>
-                    <td align="left">scrollX / scrollY</td>
-                    <td align="left">横、纵向滚动距离</td>
+                    <td align="left">scrollX / scrollY <<Number>></td>
+                    <td align="left">横、纵向滚动距离，默认0</td>
                 </tr>
                 <tr>
-                    <td align="left">minScrollX / minScrollY</td>
+                    <td align="left">minScrollX / minScrollY <<Number>></td>
                     <td align="left">横、纵向最小滚动距离，默认为0</td>
                 </tr>
                 <tr>
-                    <td align="left">maxScrollX / maxScrollY</td>
+                    <td align="left">maxScrollX / maxScrollY  <<Number>></td>
                     <td align="left">横、纵向最大滚动距离，默认自适应，一旦赋值将取消自适应</td>
                 </tr>
                 <tr>
-                    <td align="left">flexible / flexibleX / flexibleY</td>
+                    <td align="left">flexible / flexibleX / flexibleY <<Boolean>></td>
                     <td align="left">是否开启弹性拉伸效果，默认为false</td>
                 </tr>
                 <tr>
-                    <td align="left">smooth</td>
+                    <td align="left">smooth <<Number>></td>
                     <td align="left">速度衰减系数，默认0.8，设置0代表结束滑动后立即停止，1为永不停止</td>
                 </tr>
                 <tr>
-                    <td align="left">capture</td>
+                    <td align="left">capture <<Boolean>></td>
                     <td align="left">捕获内部的事件，默认false，为true时会阻止touchstart、touchmove、wheel等滚动相关事件在内部传递，在移动端可以提升滚动性能（否则事件会传入内部之后再冒泡回来，事件传递的链路长一些），但将导致内部节点不再感知这些事件（因此，多个scroll嵌套时，外层设置capture将阻止内部scroll的使用）</td>
+                </tr>
+                <tr>
+                    <td align="left">onReachBottom  <<Function>></td>
+                    <td align="left">监听容器滚动到底部之后触发的回调</td>
                 </tr>
             </tbody>
         </table>
 
-        <p>Scroll组件扩展了如下API。例如 Sprite.scrollTo(0, 100, 500) 可以让容器在0.5秒的时间内滚动至100的位置：</p>
+        <p>Scroll组件扩展了如下API。例如 Sprite.scrollTo(0, 100, 500) 可以让容器在0.5秒的时间内滚动至垂直方向为100的位置：</p>
 
         <table>
             <thead>
@@ -150,7 +154,5 @@ export default `
                 </tr>
             </tbody>
         </table>
-
-        <p>Scroll组件也提供了一些事件，例如可以用 Sprite.on('reachBottom', callback) 监听容器滚动到底部。</p>
     </article>
 `;

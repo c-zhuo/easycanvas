@@ -160,7 +160,7 @@ export default `
             </tbody>
         </table>
 
-        <p>Sprite类包含如下API（没有特殊返回值的API均会返回Sprite实例本身，以便于链式调用）：</p>
+        <p>Sprite类包含如下API（没有特殊注明返回值的API均会返回当前Sprite自身，以便于链式调用）：</p>
 
         <table>
             <thead>
@@ -173,6 +173,10 @@ export default `
                 <tr>
                     <td align="left">child <<Sprite|Object>></td>
                     <td align="left">子节点。如果传入的是Object，会调用new Sprite(child)构建一个Sprite类。</td>
+                </tr>
+                <tr>
+                    <td align="left">返回值 <<Sprite>></td>
+                    <td align="left">返回child实例。</td>
                 </tr>
             </tbody>
             <thead>

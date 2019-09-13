@@ -19,24 +19,21 @@ const setStyle = function (buttonStyle, config) {
         minWidth: config.style.width,
         lineHeight: config.style.height,
         padding: 0,
-    }, config.props.normal);
+    }, config.normal);
     buttonStyle.buttonStyleHovered = Object.assign({},
-        buttonStyle.buttonStyleNormal, config.props.hovered);
+        buttonStyle.buttonStyleNormal, config.hovered);
     buttonStyle.buttonStylePressed = Object.assign({},
-        buttonStyle.buttonStyleNormal, config.props.pressed);
-    // const buttonStyleToggled = Object.assign({}, buttonStyleNormal, opt.props.toggled);
+        buttonStyle.buttonStyleNormal, config.pressed);
+    // const buttonStyleToggled = Object.assign({}, buttonStyleNormal, opt.toggled);
 
-    buttonStyle.imageNormal = text2image(config.props.text || '', buttonStyle.buttonStyleNormal);
-    buttonStyle.imageHovered = config.props.hovered && text2image(config.props.text || '', buttonStyle.buttonStyleHovered);
-    buttonStyle.imagePressed = config.props.pressed && text2image(config.props.text || '', buttonStyle.buttonStylePressed);
-    // const imageToggled = text2image(opt.props.text || '', buttonStyleToggled);
+    buttonStyle.imageNormal = text2image(config.text || '', buttonStyle.buttonStyleNormal);
+    buttonStyle.imageHovered = config.hovered && text2image(config.text || '', buttonStyle.buttonStyleHovered);
+    buttonStyle.imagePressed = config.pressed && text2image(config.text || '', buttonStyle.buttonStylePressed);
+    // const imageToggled = text2image(opt.text || '', buttonStyleToggled);
 };
 
 const component = function (opt, Easycanvas) {
     let $sprite;
-
-    let option = opt || {};
-    opt.props = opt.props || {};
 
     const buttonStyle = {
         buttonStyleNormal: undefined,
@@ -68,18 +65,17 @@ const component = function (opt, Easycanvas) {
     };
 
     $sprite = new Easycanvas.Sprite({
-        name: opt.name || ('Button_' + opt.props.text),
+        name: opt.name || ('Button_' + opt.text),
         content: {
             img: buttonStyle.imageNormal,
         },
         style: opt.style,
-        props: opt.props,
         events: events,
         hooks: opt.hooks,
     });
 
     // $sprite.on('ticked', () => {
-    //     if (ec.utils.funcOrValue($sprite.props.toggled, $sprite)) {
+    //     if (ec.utils.funcOrValue($sprite.toggled, $sprite)) {
     //         $sprite.content.img = imageToggled;
     //     } else {
     //         $sprite.content.img = imageNormal;
@@ -88,7 +84,7 @@ const component = function (opt, Easycanvas) {
 
     $sprite.update = function (obj) {
         this.__proto__.update.call(this, obj);
-        setStyle(buttonStyle, opt);
+        setStyle(buttonStyle, this);
         $sprite.content.img = buttonStyle.imageNormal;
     };
 

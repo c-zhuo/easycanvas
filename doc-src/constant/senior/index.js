@@ -1,5 +1,5 @@
-// import quickstartStand from './quickstart-standalone.js';
+import seniorRunningplayer from './senior-runningplayer';
 
-// export default `
-//     ${quickstartNPM}
-// `;
+export default `
+    ${seniorRunningplayer}
+`;

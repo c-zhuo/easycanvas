@@ -3,6 +3,7 @@ import componentScroll from './component-scroll';
 import componentSequence from './component-sequence';
 import componentText from './component-text';
 import componentView from './component-view';
+import componentDraggable from './component-draggable';
 import component from './component';
 
 export default `
@@ -11,5 +12,6 @@ export default `
     ${componentSequence}
     ${componentText}
     ${componentView}
+    ${componentDraggable}
     ${component}
 `;

@@ -87,6 +87,12 @@ export default `
                         el: '#app',
                         width: 400,
                         height: 400,
+                        events: {
+                            mousemove: function (event) {
+                                mouseX = event.canvasX;
+                                mouseY = event.canvasY;
+                            }
+                        }
                     });
 
                     var $parent = new Easycanvas.Sprite({
@@ -151,6 +157,12 @@ export default `
                         el: '#app',
                         width: 400,
                         height: 400,
+                        events: {
+                            mousemove: function (event) {
+                                mouseX = event.canvasX;
+                                mouseY = event.canvasY;
+                            }
+                        }
                     });
 
                     var $letterG = new Easycanvas.Sprite({

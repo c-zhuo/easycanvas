@@ -1,7 +1,7 @@
 /** ********** *
  *
  * scroll
- * - Event listeners
+ * - todo: anchors fix
  *
  * ********** **/
 
@@ -62,7 +62,7 @@ let scrollFuncs = {
                     (delta > 0 && delta < range && $sprite.$scroll.speedY > 0) ||
                     (delta < 0 && delta > -range && $sprite.$scroll.speedY < 0)
                 ) {
-                    $sprite.trigger('scrollTo', m, 200);
+                    $sprite.scrollTo(0, m, 200);
                     $sprite.$scroll.speedY = 0;
                     break;
                 }
@@ -79,7 +79,7 @@ let scrollFuncs = {
         } else if (!isNaN(maxScrollY) && $sprite.scroll.scrollY > maxScrollY) {
             $sprite.scroll.scrollY = maxScrollY;
 
-            $sprite.trigger('reachBottom');
+            $sprite.onReachBottom && $sprite.onReachBottom();
             $sprite.$scroll.speedY = 0;
         }
 
@@ -198,10 +198,12 @@ const component = function (opt, Easycanvas) {
         scrollX: 0,
         scrollY: 0,
         scrollableX: function () {
-            return (this.style.overflowX || this.style.overflow) !== 'visible';
+            let overflowX = this.style.overflowX || this.style.overflow;
+            return overflowX !== 'visible' && overflowX !== 'hidden';
         },
         scrollableY: function () {
-            return (this.style.overflowY || this.style.overflow) !== 'visible';
+            let overflowY = this.style.overflowY || this.style.overflow;
+            return overflowY !== 'visible' && overflowY !== 'hidden';
         },
         minScrollX: 0,
         maxScrollX: function () {
@@ -307,6 +309,8 @@ const component = function (opt, Easycanvas) {
     }
 
     let $sprite = new Easycanvas.Sprite(option);
+
+    $sprite.onReachBottom = option.onReachBottom;
 
     $sprite.on('ticked', () => {
         scrollFuncs.looper($sprite);

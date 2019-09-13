@@ -50,7 +50,8 @@ module.exports = function (force) {
 
             if (typeof $sprite.$style[key] === 'function') {
                 $needUpdate[key] = 1;
-                $sprite.$cache[key] = $sprite.$style[key].call($sprite);
+                // double $sprite: same as what funcOrValue do
+                $sprite.$cache[key] = $sprite.$style[key].call($sprite, $sprite);
             } else if (typeof $sprite.$style[key] === 'string' && $sprite.$style[key].indexOf('%') > -1) {
                 // 百分比的样式相对于parent计算
                 let parentWidth = $sprite.$parent && $sprite.$parent.$cache.width || $sprite.$canvas.width || 0;
@@ -118,7 +119,7 @@ module.exports = function (force) {
         $sprite.$cache.text = $render.text = _text
 
         if (typeof $render.img === 'string') {
-            $render.img = $sprite.content.img = $sprite.$canvas.imgLoader($render.img);
+            _img = $render.img = $sprite.$canvas.imgLoader($render.img);
         }
 
         // img有宽高，但是没有onload时，仍不能绘制

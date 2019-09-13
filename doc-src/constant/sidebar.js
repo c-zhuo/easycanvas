@@ -30,7 +30,9 @@ const tree = `
     滚动容器Scroll
     输入框Input
     按钮组件Button（用法暂时参考Demo）
-    拖拽组件Draggable（文档待补充）
+    拖拽组件Draggable
+    - 进阶
+    数据绑定-场景中跑动的人物
     - 插件
     物理引擎
     WebGL

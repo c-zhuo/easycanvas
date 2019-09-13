@@ -191,7 +191,6 @@ const preAdd = function (_item, $instance) {
     //         },
     //     });
     // });
-    // item.inherit = item.inherit || ['tx', 'ty', 'scale', 'opacity'];
 
     item.events = item.events || {};
     if (process.env.NODE_ENV !== 'production') {
@@ -206,7 +205,7 @@ const preAdd = function (_item, $instance) {
         item.$addIndex = $addIndex++;
     }
 
-    item.events.eIndex = item.events.eIndex;
+    // item.events.eIndex = item.events.eIndex;
 
     if (process.env.NODE_ENV !== 'production') {
         item.$perf = {};
@@ -225,13 +224,6 @@ const preAdd = function (_item, $instance) {
     item.children = item.children || [];
     // JSX可能有[[a,b],c]的数据结构
     item.children = flat(item.children, Infinity);
-
-    // JSX中text可能作为children写在JSXElement内
-    // update: 逻辑改到JSX的Text组件
-    // if (typeof item.children === 'string') {
-    //     item.content.text = item.children;
-    //     item.children = [];
-    // }
 
     ChangeChildrenToSprite(item);
 
@@ -271,9 +263,16 @@ sprite.prototype.add = function (child) {
 
     ChangeChildrenToSprite(this);
 
-    // bindDrag.bind(this.children[this.children.length - 1]);
-
     return this.children[this.children.length - 1];
+};
+
+sprite.prototype.getImage = function () {
+    let img = utils.funcOrValue(this.content.img, this);
+    if (typeof img === 'string' && this.$canvas) {
+        return this.$canvas.imgLoader(img);
+    }
+
+    return img;
 };
 
 sprite.prototype.getRect = function (notImg, fromCache) {
@@ -464,14 +463,6 @@ sprite.prototype.combineAsync = function () {
 };
 
 sprite.prototype.recalculate = recalculate;
-
-// sprite.prototype.refresh = function () {
-//     for (let key in $sprite.$style) {
-//         $sprite.$cache[key] = sprite.get($sprite.$style[key], $sprite);
-//     }
-
-//     return this;
-// };
 
 sprite.prototype.nextTick = nextTick;
 sprite.prototype.on = on;

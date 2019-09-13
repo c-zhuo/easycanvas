@@ -58,7 +58,7 @@ describe('Feature.load-img Test.', function () {
             expect($Painter.$children[0].type).toBe('img');
             expect($Painter.$children[1].type).toBe('img');
             expect($Painter.$children[2].type).toBe('img');
-            expect($sp1.content.img.tagName).toBe('CANVAS');
+            expect($sp1.getImage().tagName).toBe('CANVAS');
             expect($sp2.content.img.tagName).toBe('CANVAS');
             expect($sp3.content.img.tagName).toBe('IMG');
             done();

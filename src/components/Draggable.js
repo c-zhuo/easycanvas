@@ -1,6 +1,9 @@
 /** ********** *
  *
  * Draggable
+ * @onDragStep: 每次拖拽后调用，将不再自动移动
+ * @ondragStop: 结束回调
+ * @draggble: boolean
  *
  * ********** **/
 
@@ -16,10 +19,12 @@ const spritePos = {
 };
 
 const mousemove = ($sprite, event) => {
+    if (!$sprite.draggable) return;
+
     if ($sprite.onDragStep) {
         $sprite.onDragStep({
-            left: spritePos.left + event.canvasX - startPos.left,
-            top: spritePos.top + event.canvasY - startPos.top,
+            left: event.canvasX - startPos.left,
+            top: event.canvasY - startPos.top,
         });
     } else {
         $sprite.style.left = spritePos.left + event.canvasX - startPos.left;
@@ -34,6 +39,10 @@ const component = function (opt, Easycanvas) {
     $sprite = new Easycanvas.Sprite(opt);
 
     $sprite.addEventListener('mousedown', (event) => {
+        if (!$sprite.draggable) return;
+
+        $sprite.onDragStart && $sprite.onDragStart();
+
         startPos.left = event.canvasX;
         startPos.top = event.canvasY;
 
@@ -54,7 +63,12 @@ const component = function (opt, Easycanvas) {
         };
         $sprite.$canvas.addEventListener('interceptor', interceptor);
     });
+
     $sprite.addEventListener('touchstart', (event) => {
+        if (!$sprite.draggable) return;
+
+        $sprite.onDragStart && $sprite.onDragStart();
+
         startPos.left = event.canvasX;
         startPos.top = event.canvasY;
 
@@ -66,6 +80,11 @@ const component = function (opt, Easycanvas) {
                 mousemove($sprite, e);
             } else if (e.type === 'touchend') {
                 $sprite.$canvas.removeEventListener('interceptor', interceptor);
+
+                $sprite.onDragEnd && $sprite.onDragEnd({
+                    left: spritePos.left + e.canvasX - startPos.left,
+                    top: spritePos.top + e.canvasY - startPos.top,
+                });
             }
         };
         $sprite.$canvas.addEventListener('interceptor', interceptor);

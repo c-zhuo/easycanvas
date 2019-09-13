@@ -72,18 +72,16 @@ export default `
 
                     $app.add(new Easycanvas.Button({
                         name: 'button-1',
-                        props: {
-                            text: 'click',
-                            normal: {
-                                fontSize: 24,
-                                color: '#2eb6a8',
-                                border: '4px solid #2eb6a8',
-                                family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-                            },
-                            pressed: {
-                                color: '#FFF',
-                                backgroundColor: '#2eb6a8',
-                            },
+                        text: 'click',
+                        normal: {
+                            fontSize: 24,
+                            color: '#2eb6a8',
+                            border: '4px solid #2eb6a8',
+                            family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+                        },
+                        pressed: {
+                            color: '#FFF',
+                            backgroundColor: '#2eb6a8',
                         },
                         style: {
                             locate: 'lt',
@@ -99,18 +97,16 @@ export default `
 
                     $app.add(Easycanvas.Button({
                         name: 'button-2',
-                        props: {
-                            text: 'hover',
-                            normal: {
-                                fontSize: 24,
-                                color: '#2eb6a8',
-                                border: '4px solid #2eb6a8',
-                                family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-                            },
-                            hovered: {
-                                color: '#FFF',
-                                backgroundColor: '#2eb6a8',
-                            },
+                        text: 'hover',
+                        normal: {
+                            fontSize: 24,
+                            color: '#2eb6a8',
+                            border: '4px solid #2eb6a8',
+                            family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+                        },
+                        hovered: {
+                            color: '#FFF',
+                            backgroundColor: '#2eb6a8',
                         },
                         style: {
                             locate: 'lt',
@@ -126,22 +122,20 @@ export default `
 
                     $app.add(Easycanvas.Button({
                         name: 'button-3',
-                        props: {
-                            text: 'hover & click',
-                            normal: {
-                                fontSize: 24,
-                                color: '#2eb6a8',
-                                border: '4px solid #2eb6a8',
-                                family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-                            },
-                            hovered: {
-                                color: '#FFF',
-                                backgroundColor: '#2eb6a8',
-                            },
-                            pressed: {
-                                color: '#FFF',
-                                backgroundColor: '#1a988b',
-                            },
+                        text: 'hover & click',
+                        normal: {
+                            fontSize: 24,
+                            color: '#2eb6a8',
+                            border: '4px solid #2eb6a8',
+                            family: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+                        },
+                        hovered: {
+                            color: '#FFF',
+                            backgroundColor: '#2eb6a8',
+                        },
+                        pressed: {
+                            color: '#FFF',
+                            backgroundColor: '#1a988b',
                         },
                         style: {
                             locate: 'lt',
@@ -151,9 +145,7 @@ export default `
                         events: {
                             click () {
                                 this.update({
-                                    props: {
-                                        text: Date.now()
-                                    }
+                                    text: Date.now()
                                 });
                             }
                         }
@@ -181,9 +173,7 @@ export default `
 
                     $app.add(Easycanvas.Text({
                         name: 'text-2',
-                        props: {
-                            text: '这里是一段很长的单行文本',
-                        },
+                        text: '这里是一段很长的单行文本',
                         style: {
                             locate: 'lt',
                             left: 500, top: 270,
@@ -200,9 +190,7 @@ export default `
 
                     $app.add(Easycanvas.Text({
                         name: 'text-3',
-                        props: {
-                            text: '这里是一段多行文本abcdefg1234567！？：.,?',
-                        },
+                        text: '这里是一段多行文本abcdefg1234567！？：.,?',
                         style: {
                             locate: 'lt',
                             left: 500, top: 320,
@@ -218,9 +206,7 @@ export default `
 
                     $app.add(Easycanvas.Text({
                         name: 'text-4',
-                        props: {
-                            text: 'emoji🐶',
-                        },
+                        text: 'emoji🐶',
                         style: {
                             locate: 'lt',
                             left: 500, top: 420,
@@ -235,9 +221,7 @@ export default `
 
                     $app.add(Easycanvas.Text({
                         name: 'text-5',
-                        props: {
-                            text: 'padding 10px 30px',
-                        },
+                        text: 'padding 10px 30px',
                         style: {
                             locate: 'lt',
                             left: 500, top: 470,
@@ -254,9 +238,7 @@ export default `
 
                     $app.add(Easycanvas.Text({
                         name: 'text-6',
-                        props: {
-                            text: 'text 24, lineHeight 72, text 24, lineHeight 72',
-                        },
+                        text: 'text 24, lineHeight 72, text 24, lineHeight 72',
                         style: {
                             locate: 'lt',
                             left: 500, top: 540,
@@ -274,9 +256,7 @@ export default `
 
                     $app.add(Easycanvas.Text({
                         name: 'text-7',
-                        props: {
-                            text: 'color & font 颜色字体',
-                        },
+                        text: 'color & font 颜色字体',
                         style: {
                             locate: 'lt',
                             left: 500, top: 700,
