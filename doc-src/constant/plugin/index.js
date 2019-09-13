@@ -10,4 +10,4 @@ export default `
     ${pluginWebglMMD}
     ${pluginWebglLoaders}
     ${pluginWebgl}
-`;
+`.replace(/<</g, '&lt;').replace(/>>/g, '&gt;');

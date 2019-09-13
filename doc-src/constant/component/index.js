@@ -14,4 +14,4 @@ export default `
     ${componentView}
     ${componentDraggable}
     ${component}
-`;
+`.replace(/<</g, '&lt;').replace(/>>/g, '&gt;');
