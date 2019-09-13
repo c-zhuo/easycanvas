@@ -2,7 +2,7 @@ const tree = `
     - 介绍
     一些demo
     概述
-    更新日志（Latest：2019-9-9）
+    更新日志（Latest：2019-9-13）
     - 快速开始
     浏览器中引入
     npm引入与JSX写法

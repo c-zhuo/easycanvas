@@ -18,6 +18,7 @@ export default `
                             left: 400, top: 400,
                             width: 400, height: 400,
                             backgroundColor: 'orange',
+                            zIndex: -1,
                         },
                     });
 

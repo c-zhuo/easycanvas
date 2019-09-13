@@ -155,9 +155,7 @@ export default `
 
                     $app.add(Easycanvas.Text({
                         name: 'text-1',
-                        props: {
-                            text: '这里是一段单行的文本',
-                        },
+                        text: '这里是一段单行的文本',
                         style: {
                             locate: 'lt',
                             left: 500, top: 220,
@@ -188,7 +186,7 @@ export default `
                         }
                     }));
 
-                    $app.add(Easycanvas.Text({
+                    $app.add(Easycanvas.RichText({
                         name: 'text-3',
                         text: '这里是一段多行文本abcdefg1234567！？：.,?',
                         style: {
@@ -236,7 +234,7 @@ export default `
                         }
                     }));
 
-                    $app.add(Easycanvas.Text({
+                    $app.add(Easycanvas.RichText({
                         name: 'text-6',
                         text: 'text 24, lineHeight 72, text 24, lineHeight 72',
                         style: {

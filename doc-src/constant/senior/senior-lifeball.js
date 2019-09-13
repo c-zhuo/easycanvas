@@ -33,13 +33,11 @@ export default `
                 const playerImageConfig = {
                     run: {
                         url: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
-                        //url: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/human.png',
                         width: 166,
                         height: 103,
                     },
                     stand: {
                         url: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
-                        //url: 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/human.png',
                         width: 166,
                         height: 103,
                     },

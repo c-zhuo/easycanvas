@@ -1,19 +1,20 @@
-import miku from './demos-miku.js';
-import mikuCamera from './demos-miku-camera.js';
-import mikuFbxdds from './demos-fbxdds.js';
-import ball3d from './demos-ball3d.js';
-import ball2d from './demos-ball2d.js';
-import sequence from './demos-sequence.js';
-import text from './demos-text.js';
-import components from './demos-components.js';
+import miku from './demos-miku';
+import mikuCamera from './demos-miku-camera';
+import mikuFbxdds from './demos-fbxdds';
+import ball3d from './demos-ball3d';
+import ball2d from './demos-ball2d';
+import sequence from './demos-sequence';
+import text from './demos-text';
+import player from './demos-player';
+import components from './demos-components';
 
-import perfBall from './demos-perf-ball.js';
-import perf2000 from './demos-perf-2000.js';
-import perf3d from './demos-perf-3d.js';
-import perf3ds from './demos-perf-3ds.js';
+import perfBall from './demos-perf-ball';
+import perf2000 from './demos-perf-2000';
+import perf3d from './demos-perf-3d';
+import perf3ds from './demos-perf-3ds';
 
-import browser from './demos-style-browser.js';
-import jsx from './demos-style-jsx.js';
+import browser from './demos-style-browser';
+import jsx from './demos-style-jsx';
 
 export default `
     <article id="一些demo">
@@ -27,6 +28,7 @@ export default `
                 margin: 1%;
                 box-shadow: 0px 2px 7px 1px #d8d0d0;
                 width: 30%;
+                max-width: 200px;
                 overflow: hidden;
             }
             .demos-screenshoot {
@@ -52,7 +54,7 @@ export default `
             }
         </style>
 
-        <h2>Code Stucture</h2>
+        <h2>使用方式</h2>
         <p></p>
 
         <div class="demos-card">
@@ -62,6 +64,38 @@ export default `
         <div class="demos-card">
             <div class="demos-screenshoot" style="background-image:url(../resource/doc/style2.jpg)"></div>
             ${jsx}
+        </div>
+
+        <h2>2D Canvas Demos</h2>
+        <p></p>
+
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/9.png)"></div>
+            ${player}
+        </div>
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/7.jpg)"></div>
+            ${ball2d}
+        </div>
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/8.jpg)"></div>
+            ${sequence}
+        </div>
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/10.jpg)"></div>
+            ${perfBall}
+        </div>
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/11.jpg)"></div>
+            ${perf2000}
+        </div>
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/12.jpg)"></div>
+            ${components}
+        </div>
+        <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/13.jpg)"></div>
+            ${text}
         </div>
 
         <h2>3D Webgl Demos</h2>
@@ -90,34 +124,6 @@ export default `
         <div class="demos-card">
             <div class="demos-screenshoot" style="background-image:url(../resource/doc/6.jpg)"></div>
             ${perf3ds}
-        </div>
-
-        <h2>2D Canvas Demos</h2>
-        <p></p>
-
-        <div class="demos-card">
-            <div class="demos-screenshoot" style="background-image:url(../resource/doc/7.jpg)"></div>
-            ${ball2d}
-        </div>
-        <div class="demos-card">
-            <div class="demos-screenshoot" style="background-image:url(../resource/doc/8.jpg)"></div>
-            ${sequence}
-        </div>
-        <div class="demos-card">
-            <div class="demos-screenshoot" style="background-image:url(../resource/doc/9.jpg)"></div>
-            ${text}
-        </div>
-        <div class="demos-card">
-            <div class="demos-screenshoot" style="background-image:url(../resource/doc/10.jpg)"></div>
-            ${perfBall}
-        </div>
-        <div class="demos-card">
-            <div class="demos-screenshoot" style="background-image:url(../resource/doc/11.jpg)"></div>
-            ${perf2000}
-        </div>
-        <div class="demos-card">
-            <div class="demos-screenshoot" style="background-image:url(../resource/doc/12.jpg)"></div>
-            ${components}
         </div>
 
         <h2>微信小游戏</h2>

@@ -1,5 +1,5 @@
 export default `
-    <article id="更新日志（Latest：2019-9-9）">
+    <article id="更新日志（Latest：2019-9-13）">
         <h1>更新</h1>
 
         <p class="tip">Tips：小版本号为bugfix或新增API使用，中版本号可能包含个别不向下兼容的API调整。</p>
@@ -12,12 +12,18 @@ export default `
 
         <h2>当前版本</h2>
 
+        <h3>0.8.4 (2019.9.13)</h3>
+
+        <p>Bugfix：修复了当<strong>content.img是一个返回了图片URL的函数</strong>时，渲染的图片始终是函数首次的运行结果（不会根据函数返回值动态改变的bug）。</p>
+        <p>Bugfix：调整了Canvas 2D的<strong>Button组件</strong>的入参和<strong>Scroll组件</strong>的API，现在数据结构与其它组件相同（属性展开放在最外层，不需要放在props对象里）。修复了Text组件部分参数异常的bug。</p>
+        <p>文档补充：增加进阶使用相关文档，修复个别老旧的demo。</p>
+
+        <h2>历史版本</h2>
+
         <h3>0.8.3 (2019.9.9)</h3>
 
         <p>Bugfix：修复了使用Canvas 2D的<strong>Input</strong>组件时，当文本长度超过组件宽度时，调整光标位置会导致光标位置异常的bug。（这是一个第三方库提供的Input组件的bug，这个三方库还有另一个不完善的地方，就是文本较长时，无法通过拖拽将光标移动到被挡住的位置，但场景较小，目前没有修复）</p>
         <p>文档补充：完善组件相关文档。</p>
-
-        <h2>历史版本</h2>
 
         <h3>0.8.2 (2019.9.5)</h3>
 
