@@ -42,8 +42,8 @@ Object.assign(config, {
                             {
                                 pattern: /\.\.\/resource\//ig,
                                 replacement: function (match, p1, offset, string) {
-                                    return 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/resource/';
-                                    // return 'https://raw.githubusercontent.com/c-zhuo/easycanvas/develop/0.5.5/demos/resource/';
+                                    // return 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/resource/';
+                                    return 'https://raw.githubusercontent.com/c-zhuo/easycanvas/develop/0.8.4/demos/resource/';
                                 }
                             }
                         ]
@@ -62,5 +62,8 @@ Object.assign(config, {
     ]).concat(html),
 });
 
+config.node = {
+    fs: 'empty' // https://github.com/webpack-contrib/css-loader/issues/447
+};
 
 module.exports = config;
