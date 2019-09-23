@@ -6,7 +6,7 @@ import tick from 'utils/tick.js';
 import utils from 'utils/utils.js';
 import Transition from 'utils/transition.js';
 import ImgLoader from 'utils/img-loader.js';
-import imgPretreat from 'utils/img-pretreat.js';
+import ImgPretreat from 'utils/img-pretreat.js';
 import sprite from './class/sprite.js';
 import extend from './class/extend.js';
 
@@ -19,7 +19,7 @@ const Sprite = sprite;
 const Easycanvas = {
     Painter,
     ImgLoader,
-    imgPretreat,
+    ImgPretreat,
     Transition,
     tick,
     utils,
@@ -75,7 +75,7 @@ export default Easycanvas;
 export {
     Painter,
     ImgLoader,
-    imgPretreat,
+    ImgPretreat,
     Transition,
     tick,
     utils,

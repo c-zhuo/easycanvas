@@ -19,10 +19,10 @@ module.exports = function (url, option) {
                         b: data[i - 1],
                         a: data[i],
                     }, ((i + 1) >> 2) % cw, Math.floor(((i + 1) >> 2) / cw));
-                    data[i - 3] = pixel.r;
-                    data[i - 2] = pixel.g;
-                    data[i - 1] = pixel.b;
-                    data[i - 0] = pixel.a;
+                    data[i - 3] = Math.max(Math.min(pixel.r, 255), 0);
+                    data[i - 2] = Math.max(Math.min(pixel.g, 255), 0);
+                    data[i - 1] = Math.max(Math.min(pixel.b, 255), 0);
+                    data[i - 0] = Math.max(Math.min(pixel.a, 255), 0);
                 }
             }
 

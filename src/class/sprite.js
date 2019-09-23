@@ -247,6 +247,10 @@ const sprite = function (opt) {
         }
     }
 
+    if (opt.ref) {
+        opt.ref(this);
+    }
+
     extend.call(this, _opt);
 
     return this;

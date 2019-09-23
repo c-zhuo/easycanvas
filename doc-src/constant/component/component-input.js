@@ -69,7 +69,9 @@ export default `
             </code>
         </section>
 
-        <h2>API（待补充）</h2>
+        <h2>API</h2>
+
+        <p>下面的value等大部分属性可以直接访问或修改。</p>
 
         <table>
             <thead>
@@ -80,8 +82,60 @@ export default `
             </thead>
             <tbody>
                 <tr>
-                    <td align="left">text <Function|String|Number></td>
+                    <td align="left">value <<String>></td>
                     <td align="left">文本内容，与Sprite的contenta.text完全相同</td>
+                </tr>
+                <tr>
+                    <td align="left">onsubmit <<Function>></td>
+                    <td align="left">按下回车键时的回调</td>
+                </tr>
+                <tr>
+                    <td align="left">onkeydown/onkeyup <<Function>></td>
+                    <td align="left">键盘按下和弹起时的回调</td>
+                </tr>
+                <tr>
+                    <td align="left">onfocus/onblur <<Function>></td>
+                    <td align="left">获得和失去焦点时的回调</td>
+                </tr>
+                <tr>
+                    <td align="left">focus()/blur()</td>
+                    <td align="left">让输入框获得和失去焦点</td>
+                </tr>
+                <tr>
+                    <td align="left">selectText()</td>
+                    <td align="left">选中输入框中的文本</td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th align="left">style下的属性扩展</th>
+                    <th align="left">描述</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="left">borderRadius <<Number>></td>
+                    <td align="left">边框圆角</td>
+                </tr>
+                <tr>
+                    <td align="left">boxShadow <<String>></td>
+                    <td align="left">外阴影，如'1px 1px 0px #fff'</td>
+                </tr>
+                <tr>
+                    <td align="left">innerShadow <<String>></td>
+                    <td align="left">内阴影，如'0px 0px 5px rgba(0, 0, 0, 0.5)'</td>
+                </tr>
+                <tr>
+                    <td align="left">placeHolder <<String>></td>
+                    <td align="left">value为空字符串时的占位提示文本，默认为空字符串</td>
+                </tr>
+                <tr>
+                    <td align="left">fontWeight <<'normal' | 'bold'>></td>
+                    <td align="left">是否为粗体，默认'normal'</td>
+                </tr>
+                <tr>
+                    <td align="left">更多属性</td>
+                    <td align="left">请参考<a href="https://github.com/goldfire/CanvasInput" target="_blank">CanvasInput的github</a>（其中fontColor也可以写为color）</td>
                 </tr>
             </tbody>
         </table>

@@ -1,6 +1,6 @@
 /** ********** *
  *
- * RichText
+ * MultiLineText
  * - Actually it is a image.
  *
  * ********** **/
@@ -50,6 +50,6 @@ const component = function (opt, Easycanvas) {
     return $sprite;
 };
 
-browserRegister(component, 'RichText');
+browserRegister(component, 'MultiLineText');
 
 export default component;

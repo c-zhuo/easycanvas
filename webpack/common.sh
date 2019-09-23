@@ -30,7 +30,7 @@ echo "
 import Easycanvas, {
     Painter,
     ImgLoader,
-    imgPretreat,
+    ImgPretreat,
     Transition,
     tick,
     utils,
@@ -65,7 +65,7 @@ Easycanvas.createElement = function createElement(Component) {
 export {
     Painter,
     ImgLoader,
-    imgPretreat,
+    ImgPretreat,
     Transition,
     tick,
     utils,

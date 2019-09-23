@@ -63,7 +63,7 @@ export default `
             </thead>
             <tbody>
                 <tr>
-                    <td align="left">text <Function|String|Number></td>
+                    <td align="left">text <<Function|String|Number>></td>
                     <td align="left">文本内容，与Sprite的contenta.text完全相同</td>
                 </tr>
             </tbody>

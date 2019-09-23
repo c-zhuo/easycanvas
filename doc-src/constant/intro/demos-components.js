@@ -186,7 +186,7 @@ export default `
                         }
                     }));
 
-                    $app.add(Easycanvas.RichText({
+                    $app.add(Easycanvas.MultiLineText({
                         name: 'text-3',
                         text: '这里是一段多行文本abcdefg1234567！？：.,?',
                         style: {
@@ -234,7 +234,7 @@ export default `
                         }
                     }));
 
-                    $app.add(Easycanvas.RichText({
+                    $app.add(Easycanvas.MultiLineText({
                         name: 'text-6',
                         text: 'text 24, lineHeight 72, text 24, lineHeight 72',
                         style: {

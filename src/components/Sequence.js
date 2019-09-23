@@ -10,10 +10,13 @@ import Image from './Image.js';
 const component = function (opt, Easycanvas) {
     const funcOrValue = Easycanvas.utils.funcOrValue;
 
-    // let $sprite = new Easycanvas.Sprite(opt);
     let $sprite = new Image(opt, Easycanvas);
 
     $sprite.index = opt.index || 0;
+
+    $sprite.restart = function () {
+        this.index = 0;
+    };
 
     $sprite.on('beforeTick', function () {
         let img = this.getImage();
@@ -57,13 +60,18 @@ const component = function (opt, Easycanvas) {
         // 不循环的精灵动画自动移除
         if (!this.loop && index > 0 && this.style.cutLeft === 0 && this.style.cutTop === 0) {
             this.content.img = undefined;
+            this.onOver && this.onOver()
             this.remove();
             return;
         }
 
         // 判断是否应该下一帧
         this.$lastFrameTime = this.$lastFrameTime || 0;
-        if (this.$canvas.$nextTickTime - this.$lastFrameTime >= funcOrValue(this.interval, this)) {
+
+        let interval = funcOrValue(this.interval, this);
+        if (interval.length) interval = interval[this.index % interval.length];
+
+        if (this.$canvas.$nextTickTime - this.$lastFrameTime >= interval) {
             this.$lastFrameTime = this.$canvas.$nextTickTime;
             this.index++;
         }

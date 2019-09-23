@@ -1,5 +1,7 @@
-import seniorRunningplayer from './senior-runningplayer';
+import seniorPlayerRun from './senior-playerrun';
+import seniorPlayerSkill from './senior-playerskill';
 
 export default `
-    ${seniorRunningplayer}
+    ${seniorPlayerRun}
+    ${seniorPlayerSkill}
 `;

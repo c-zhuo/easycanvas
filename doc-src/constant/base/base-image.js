@@ -90,7 +90,7 @@ export default `
 
         <h2>像素预处理</h2>
 
-        <p>Easycanvas也提供了一个图片预处理方法imgPretreat，用于进行像素级别的图像预处理。例如：</p>
+        <p>Easycanvas也提供了一个图片预处理方法ImgPretreat，用于进行像素级别的图像预处理。例如：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -108,7 +108,7 @@ export default `
 
                     var $letterG = new Easycanvas.Sprite({
                         content: {
-                            img: Easycanvas.imgPretreat(
+                            img: Easycanvas.ImgPretreat(
                                 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/G.png',
                                 {
                                     conversion: function (pixel, x, y) {
@@ -135,7 +135,7 @@ export default `
 
         <p>传入的conversion是一个修改像素点的方法，参数为像素点的rgba值以及像素的坐标。</p>
 
-        <p class="tip">Tips：大面积的像素处理的性能开销较大，移动端设备下不建议对大图片频繁使用imgPretreat，尤其要避免在状态钩子的每帧钩子函数中调用imgPretreat来编辑色值。</p>
+        <p class="tip">Tips：大面积的像素处理的性能开销较大，移动端设备下不建议对大图片频繁使用ImgPretreat，尤其要避免在状态钩子的每帧钩子函数中调用ImgPretreat来编辑色值。</p>
     </article>
 
 `;

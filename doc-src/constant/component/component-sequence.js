@@ -8,7 +8,7 @@ export default `
 
         <h2>示例</h2>
 
-        <p>以上图为例：</p>
+        <p>以上图为例，下面是一个没有使用JSX语法的使用方式：</p>
 
         <section>
             <div class="code-2-demo bg-demo"></div>
@@ -127,20 +127,32 @@ export default `
             </thead>
             <tbody>
                 <tr>
-                    <td align="left">src <String/Image/Canvas></td>
+                    <td align="left">src <<String/Image/Canvas>></td>
                     <td align="left">绘图内容</td>
                 </tr>
                 <tr>
-                    <td align="left">loop <Boolean></td>
-                    <td align="left">播放结束后是否循环开始，默认false；为false时，播放完最后一帧后会自动调用remove方法</td>
-                </tr>
-                <tr>
-                    <td align="left">frameWidth / frameHeight <Number></td>
+                    <td align="left">frameWidth/frameHeight <<Number>></td>
                     <td align="left">每帧尺寸，如设置，将用于自动计算cutLeft和cutTop；如为负数，代表将图像N等分，例如-5表示每行（或每列）含有5帧，会自动计算出cutWidth和cutHeight</td>
                 </tr>
                 <tr>
-                    <td align="left">index <Number></td>
-                    <td align="left">初始化时为起始帧数，默认0，之后随着帧动画的播放会自动变化</td>
+                    <td align="left">index <<Number>></td>
+                    <td align="left">初始化时为起始帧数，默认0，之后随着帧动画的播放会连续自增；loop为true时每次播放完成后不会归零；可以直接修改index来调整播放帧数</td>
+                </tr>
+                <tr>
+                    <td align="left">loop <<Boolean>></td>
+                    <td align="left">播放结束后是否循环开始，默认false</td>
+                </tr>
+                <tr>
+                    <td align="left">interval <<Number|Array|Function>></td>
+                    <td align="left">每帧持续时长；如果类型为Function，可以在函数中通过this.index拿到当前帧数；如果类型为Array，会根据index依次使用数组中各项并循环</td>
+                </tr>
+                <tr>
+                    <td align="left">onOver <<Function>></td>
+                    <td align="left">播放结束后触发的回调，只有loop为true时才会触发，触发后会立即调用remove()移除自身</td>
+                </tr>
+                <tr>
+                    <td align="left">restart()</td>
+                    <td align="left">从第一帧开始重新播放，等同于将index修改为0</td>
                 </tr>
             </tbody>
         </table>

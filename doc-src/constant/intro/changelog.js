@@ -12,13 +12,19 @@ export default `
 
         <h2>当前版本</h2>
 
+        <h3>0.8.5 (2019.9.13)</h3>
+
+        <p>change：将<strong>imgPretreat</strong>API的首字母改为大写，请使用<strong>Easycanvas.ImgPretreat</strong>或<strong>import { ImgPretreat } from 'easycanvas'</strong>。</p>
+        <p>Feature：为Canvas 2D的<strong>Sequence组件</strong>补充了onOver和restart两个API，详见文档。</p>
+        <p>文档补充：补充进阶使用相关文档。</p>
+
+        <h2>历史版本</h2>
+
         <h3>0.8.4 (2019.9.13)</h3>
 
         <p>Bugfix：修复了当<strong>content.img是一个返回了图片URL的函数</strong>时，渲染的图片始终是函数首次的运行结果（不会根据函数返回值动态改变的bug）。</p>
         <p>Bugfix：调整了Canvas 2D的<strong>Button组件</strong>的入参和<strong>Scroll组件</strong>的API，现在数据结构与其它组件相同（属性展开放在最外层，不需要放在props对象里）。修复了Text组件部分参数异常的bug。</p>
         <p>文档补充：增加进阶使用相关文档，修复个别老旧的demo。</p>
-
-        <h2>历史版本</h2>
 
         <h3>0.8.3 (2019.9.9)</h3>
 

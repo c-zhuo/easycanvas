@@ -31,7 +31,7 @@ export default `
                             }}
                         >Easycanvas</Text>
                     </View>
-                )
+                );
             </code>
         </section>
 

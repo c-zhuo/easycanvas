@@ -38,7 +38,7 @@ module.exports = function ($sprite, index) {
     let childrenInside = _props.childrenInside;
 
     // 容器提前结束
-    if (!_img && !_text && !_props.settings.rotate && !_props.backgroundColor && !_props.borderWidth && !childrenInside) {
+    if (!_props.settings || !_img && !_text && !_props.settings.rotate && !_props.backgroundColor && !_props.borderWidth && !childrenInside) {
         $sprite.$rendered = undefined;
         let _children = $sprite.children;
         if (_children.length) {

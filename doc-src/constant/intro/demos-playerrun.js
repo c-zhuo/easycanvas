@@ -151,7 +151,7 @@ export default `
                     $app.addEventListener('mousemove', setDirection);
                 };
                 bindMouseEvent();
-                
+
             </code>
         </section>
 `;

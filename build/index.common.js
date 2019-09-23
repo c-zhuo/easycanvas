@@ -2,7 +2,7 @@
 import Easycanvas, {
     Painter,
     ImgLoader,
-    imgPretreat,
+    ImgPretreat,
     Transition,
     tick,
     utils,
@@ -37,7 +37,7 @@ Easycanvas.createElement = function createElement(Component) {
 export {
     Painter,
     ImgLoader,
-    imgPretreat,
+    ImgPretreat,
     Transition,
     tick,
     utils,
@@ -54,7 +54,7 @@ import Sequence from './components/Sequence.js';
 import Text from './components/Text.js';
 import View from './components/View.js';
 import Input from './components/Input.js';
-import RichText from './components/RichText';
+import MultiLineText from './components/MultiLineText';
 import Draggable from './components/Draggable.js';
 
  export {
@@ -65,6 +65,6 @@ import Draggable from './components/Draggable.js';
      Text,
      View,
      Input,
-     RichText,
+     MultiLineText,
      Draggable,
  };

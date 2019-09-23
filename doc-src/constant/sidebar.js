@@ -26,6 +26,7 @@ const tree = `
     开始使用组件
     容器组件View
     单行文本Text
+    多行文本MultiLineText
     帧动画Sequence
     滚动容器Scroll
     输入框Input

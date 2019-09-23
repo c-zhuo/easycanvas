@@ -5,7 +5,8 @@ import ball3d from './demos-ball3d';
 import ball2d from './demos-ball2d';
 import sequence from './demos-sequence';
 import text from './demos-text';
-import player from './demos-player';
+import playerrun from './demos-playerrun';
+import playerskill from './demos-playerskill';
 import components from './demos-components';
 
 import perfBall from './demos-perf-ball';
@@ -71,7 +72,7 @@ export default `
 
         <div class="demos-card">
             <div class="demos-screenshoot" style="background-image:url(../resource/doc/9.png)"></div>
-            ${player}
+            ${playerrun}
         </div>
         <div class="demos-card">
             <div class="demos-screenshoot" style="background-image:url(../resource/doc/7.jpg)"></div>
