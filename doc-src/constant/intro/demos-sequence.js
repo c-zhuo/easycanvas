@@ -8,11 +8,11 @@ export default `
                 <body>
                     <canvas id="app"></canvas>
                     <p id="content">点击画布可以看到爆炸效果（爆炸图加载中，请稍等）</p>
-                    <img src="https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png" width="400">
+                    <img src="../resource/image/Fire.png" width="400">
                 </body>
 
                 <script>
-                    var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png', function () {
+                    var Fire = Easycanvas.ImgLoader('../resource/image/Fire.png', function () {
                         document.getElementById('content').innerText = '点击画布可以看到爆炸效果';
                     });
 
@@ -25,8 +25,6 @@ export default `
                             }
                         }
                     });
-
-                    var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png');
 
                     var createFire = function (initX, initY) {
                         return Easycanvas.Sequence({

@@ -19,7 +19,7 @@ export default `
                     height: 400
                 }).start();
 
-                const value = 'Default';
+                let value = 'Default';
 
                 class MyInput {
                     constructor (props) {
@@ -38,6 +38,7 @@ export default `
 
                     onkeyup (event) {
                         console.log(event.keycode, this.value);
+                        value = this.value;
                     }
                 }
 
@@ -54,7 +55,7 @@ export default `
 
                         <Text
                             style={{
-                                left: 100,
+                                left: 0,
                                 top: 100,
                                 color: '#0F0',
                                 fontSize: 24,

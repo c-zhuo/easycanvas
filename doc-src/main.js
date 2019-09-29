@@ -48,7 +48,7 @@ const Analyze = function (str) {
 
             var editor = ace.edit(document.querySelector('.ace'), {
                 mode: 'ace/mode/html',
-                selectionStyle: 'text'
+                selectionStyle: 'text',
             });
             window.editor = editor;
 
@@ -57,8 +57,10 @@ const Analyze = function (str) {
 
             document.body.onclick = function (e) {
                 if (e.target.className.indexOf(DemoableCodeClassName) !== -1) {
-                    let demoCode = e.target.nextElementSibling.innerText;
-                    demoCode = demoCode.replace(new RegExp(String.fromCharCode(160), 'g'), String.fromCharCode(32))
+                    let demoCode = e.target.nextElementSibling.$ace ?
+                        e.target.nextElementSibling.$ace.getValue() :
+                        e.target.nextElementSibling.innerText;
+                    demoCode = demoCode.replace(new RegExp(String.fromCharCode(160), 'g'), String.fromCharCode(32));
 
                     this.isDebuggingJSX = e.target.className.indexOf(JSXDemoableCodeClassName) !== -1;
 
@@ -101,6 +103,34 @@ const Analyze = function (str) {
             Analyze(title);
         },
         methods: {
+            updateACEInContent (dom, code) {
+                let $ace = dom.$ace;
+
+                // 还没加载完ace或者babel
+                let isDebuggingJSX = dom.previousElementSibling.className.indexOf(JSXDemoableCodeClassName) !== -1;
+                const acePlugin = ace.require(isDebuggingJSX ? 'ace/mode/jsx' : 'ace/mode/html');
+                if (!acePlugin) {
+                    $ace.setValue('// Babel初始化中，请稍后');
+                    dom.style.height = '20px';
+                    setTimeout(() => {
+                        this.updateACEInContent(dom, code);
+                    }, 500);
+                    return;
+                } else {
+                    $ace.renderer.$size.height = code.split('\n').length * 16;
+                    $ace.renderer.updateText();
+
+                    const JavaScriptMode = acePlugin.Mode;
+                    $ace.session.setMode(new JavaScriptMode());
+    
+                    $ace.setValue(code);
+                }
+                
+                $ace.clearSelection();
+                $ace.moveCursorTo(0, 0);
+                $ace.scrollToLine(0)
+            },
+
             updateContent () {
                 if (!this.currentTitle) {
                     this.content = '';
@@ -110,6 +140,26 @@ const Analyze = function (str) {
                 let $content = this.contentDom.querySelector('#' + this.currentTitle);
                 if ($content) {
                     this.content = $content.innerHTML;
+
+                    this.$nextTick(() => {
+                        document.querySelectorAll('code').forEach(dom => {
+                            if (dom.parentElement.className.indexOf('demo-box') > -1) return;
+                            if (!dom.previousElementSibling || dom.innerText.split('\n').length < 10) return;
+
+                            let code = dom.innerText;
+                            code = code.replace(new RegExp(String.fromCharCode(160), 'g'), String.fromCharCode(32));
+
+                            dom.style.height = code.split('\n').length * 16 + 'px';
+                            dom.innerText = '';
+                            dom.$ace = ace.edit(dom, {
+                                mode: 'ace/mode/html',
+                                selectionStyle: 'line',
+                                readOnly: true,
+                            });
+
+                            this.updateACEInContent(dom, code);
+                        });
+                    });
                     return;
                 }
 
@@ -162,11 +212,12 @@ const Analyze = function (str) {
                     code = this.$ace.getValue();
                 }
 
-                this.$ace.clearSelection();
-                this.$ace.moveCursorTo(0, 0);
-
                 const JavaScriptMode = acePlugin.Mode;
                 this.$ace.session.setMode(new JavaScriptMode());
+
+                this.$ace.clearSelection();
+                this.$ace.moveCursorTo(0, 0);
+                this.$ace.scrollToLine(0)
 
                 let iframeHtmlCodes;
 

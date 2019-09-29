@@ -1,9 +1,7 @@
 module.exports = function (notImg, fromCache) {
     let $sprite = this;
 
-    let rect = $sprite.getRect(notImg, fromCache);
-    rect.right = rect.left + rect.width;
-    rect.bottom = rect.top + rect.height;
+    let rect = $sprite.getRect(fromCache);
 
     this.children.forEach((child) => {
         if (child.$cache.visible === false) return;

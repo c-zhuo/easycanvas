@@ -14,6 +14,7 @@ export default `
 
         <h3>0.8.5 (2019.9.13)</h3>
 
+        <p>Bugfix：修复了<strong>Sprite.getOuterRect()</strong>返回的right和bottom不准确的bug。</p>
         <p>change：将<strong>imgPretreat</strong>API的首字母改为大写，请使用<strong>Easycanvas.ImgPretreat</strong>或<strong>import { ImgPretreat } from 'easycanvas'</strong>。</p>
         <p>Feature：为Canvas 2D的<strong>Sequence组件</strong>补充了onOver和restart两个API，详见文档。</p>
         <p>文档补充：补充进阶使用相关文档。</p>

@@ -1,6 +1,6 @@
 export default `
         <section class="demo-box">
-            <div class="code-2-demo code-2-demo-jsx bg-demo">场景中跑动的人物</div>
+            <div class="code-2-demo code-2-demo-jsx bg-demo">释放技能与动效衔接</div>
             <code>
                 import { Painter, ImgPretreat, View, Text, Sequence } from 'easycanvas';
 

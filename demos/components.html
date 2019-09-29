@@ -189,9 +189,17 @@
             }
         }));
 
-        $app.add(Easycanvas.Text({
+        var $static = $app.add(Easycanvas.StaticView({
+            style: {
+                left: 0,
+                top: 0,
+                // locate: 'lt',
+            }
+        }));
+
+        $static.add(Easycanvas.MultiLineText({
             name: 'text-2',
-            text: '这里是一段很长的单行文本',
+            text: '这里是一段很长的单行文本1234567',
             style: {
                 locate: 'lt',
                 left: 500, top: 270,
@@ -206,7 +214,7 @@
             }
         }));
 
-        $app.add(Easycanvas.Text({
+        $static.add(Easycanvas.MultiLineText({
             name: 'text-3',
             text: '这里是一段多行文本abcdefg1234567！？：.,?',
             style: {
@@ -222,7 +230,7 @@
             }
         }));
 
-        $app.add(Easycanvas.Text({
+        $static.add(Easycanvas.Text({
             name: 'text-4',
             text: 'emoji🐶',
             style: {
@@ -237,7 +245,7 @@
             }
         }));
 
-        $app.add(Easycanvas.Text({
+        $static.add(Easycanvas.Text({
             name: 'text-5',
             text: 'padding 10px 30px',
             style: {
@@ -254,7 +262,7 @@
             }
         }));
 
-        $app.add(Easycanvas.Text({
+        $static.add(Easycanvas.MultiLineText({
             name: 'text-6',
             text: 'text 24, lineHeight 72, text 24, lineHeight 72',
             style: {

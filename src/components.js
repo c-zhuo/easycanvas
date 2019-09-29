@@ -7,6 +7,7 @@ import View from './components/View.js';
 import Input from './components/Input.js';
 import MultiLineText from './components/MultiLineText';
 import Draggable from './components/Draggable.js';
+import StaticView from './components/StaticView.js';
 
 // export {
 //     Button,
@@ -18,4 +19,5 @@ import Draggable from './components/Draggable.js';
 //     Input,
 //     MultiLineText,
 //     Draggable,
+//     StaticView,
 // };

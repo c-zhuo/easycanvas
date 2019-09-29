@@ -75,6 +75,10 @@ export default `
             ${playerrun}
         </div>
         <div class="demos-card">
+            <div class="demos-screenshoot" style="background-image:url(../resource/doc/9.png)"></div>
+            ${playerskill}
+        </div>
+        <div class="demos-card">
             <div class="demos-screenshoot" style="background-image:url(../resource/doc/7.jpg)"></div>
             ${ball2d}
         </div>

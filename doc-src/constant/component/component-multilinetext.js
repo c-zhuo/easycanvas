@@ -21,37 +21,37 @@ export default `
 
                 $app.add(
                     <MultiLineText
-                        text: '这里是一段多行文本abcdefg1234567！？：.,?',
-                        style: {
+                        text='这里是一段多行文本abcdefg1234567！？：.,?'
+                        style={{
                             locate: 'lt',
                             left: 100, top: 200,
                             width: 240,
                             fontSize: 24,
-                        },
-                        events: {
+                        }}
+                        events={{
                             click () {
                                 alert('click 1');
                             }
-                        }
+                        }}
                     />
                 );
 
                 $app.add(
                     <MultiLineText
-                        text: 'text 24, lineHeight 72, text 24, lineHeight 72',
-                        style: {
+                        text='text 24, lineHeight 72, text 24, lineHeight 72'
+                        style={{
                             locate: 'lt',
                             left: 100, top: 300,
                             width: 240,
                             fontSize: 24,
                             lineHeight: 72,
                             backgroundColor: '#FFF',
-                        },
-                        events: {
+                        }}
+                        events={{
                             click () {
                                 alert('click 2');
                             }
-                        }
+                        }}
                     />
                 );
             </code>

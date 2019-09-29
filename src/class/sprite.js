@@ -53,8 +53,6 @@ import combine from './api.combine.js';
 import uncombine from './api.uncombine.js';
 import recalculate from './api.recalculate.js';
 
-const COMBINE_ING = 9;
-
 function flat (arr) {
     var depth = isNaN(arguments[1]) ? 1 : Number(arguments[1]);
 
@@ -130,6 +128,11 @@ const preAdd = function (_item, $instance) {
     $instance.$cache = {}; // 当前最终style
     $instance.$render = {}; // 当前渲染style
     $instance.$style = {}; // 当前自身style
+    $instance.$self = {}; // 当前自身style的缓存
+
+    // sprite是自身发生变化还是因为继承导致有更新，如果是后者，那么可以与父级合并，优化性能
+    $instance.$selfChanged = false;
+
     $instance.$needUpdate = {};
 
     item.hooks = item.hooks || {};
@@ -143,7 +146,7 @@ const preAdd = function (_item, $instance) {
         }
 
         if (constants.xywh.indexOf(key) > -1) {
-            $instance.$style[key] = $instance.$style[key] || 0;
+            $instance.$style[key] = $instance.$style[key] || (key === 'width' || key === 'height' ? undefined : 0);
         } else if (['opacity', 'scale'].indexOf(key) > -1) {
             $instance.$style[key] = utils.firstValuable($instance.$style[key], 1);
         }
@@ -279,18 +282,18 @@ sprite.prototype.getImage = function () {
     return img;
 };
 
-sprite.prototype.getRect = function (notImg, fromCache) {
+sprite.prototype.getRect = function (fromCache) {
     let res = {};
 
     constants.txywh.forEach((key) => {
-        res[key] = this.getStyle(key, fromCache);
+        res[key] = this.getStyle(key, fromCache) || 0;
     });
 
-    if (res.width === 0 && this.content.img && !notImg) {
-        let img = utils.funcOrValue(this.content.img, this);
-        res.width = img.width;
-        res.height = img.height;
-    }
+    // if (res.width === 0 && this.content.img && !notImg) {
+    //     let img = utils.funcOrValue(this.content.img, this);
+    //     res.width = img.width;
+    //     res.height = img.height;
+    // }
 
     let locate = this.getStyle('locate');
     if (locate === 'lt') {
@@ -306,8 +309,8 @@ sprite.prototype.getRect = function (notImg, fromCache) {
         res.top -= res.height >> 1;
     }
 
-    res.right = this.$canvas.width - res.left - res.width;
-    res.bottom = this.$canvas.height - res.top - res.height;
+    res.right = res.left + res.width;
+    res.bottom = res.top + res.height;
 
     return res;
 };
@@ -376,6 +379,10 @@ sprite.prototype.getStyle = function (key, fromCache) {
             if (parentValue === false) return false;
             // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
             // $sprite.$parent.$cache[key] = parentValue;
+
+            return currentValue;
+        } else if (key === 'width' || key === 'height' || typeof currentValue === 'undefined') {
+            currentValue = $sprite.$cache[key];
 
             return currentValue;
         }
@@ -458,7 +465,6 @@ sprite.prototype.uncombine = uncombine;
 
 sprite.prototype.combineAsync = function () {
     if (this.$combine) return this;
-    this.$combine = COMBINE_ING;
 
     this.off('ticked', this.combine);
     this.on('ticked', this.combine, 100);

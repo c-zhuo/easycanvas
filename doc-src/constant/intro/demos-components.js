@@ -169,9 +169,9 @@ export default `
                         }
                     }));
 
-                    $app.add(Easycanvas.Text({
+                    $app.add(Easycanvas.MultiLineText({
                         name: 'text-2',
-                        text: '这里是一段很长的单行文本',
+                        text: '这里是一段很长很长的单行文本',
                         style: {
                             locate: 'lt',
                             left: 500, top: 270,

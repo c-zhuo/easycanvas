@@ -31,6 +31,8 @@ module.exports = function (force) {
     }
     $sprite.$cache.visible = true;
 
+    $sprite.$selfChanged = false;
+
     if (force) {
         $sprite.$cache = {};
         constants.styles.forEach((key) => {
@@ -46,11 +48,11 @@ module.exports = function (force) {
         let $needUpdate = {};
 
         for (let key in $sprite.$needUpdate) {
-            let cur = $sprite.$cache[key];
+            let lastValue = $sprite.$cache[key];
 
             if (typeof $sprite.$style[key] === 'function') {
                 $needUpdate[key] = 1;
-                // double $sprite: same as what funcOrValue do
+                // @double $sprite: same as what funcOrValue do
                 $sprite.$cache[key] = $sprite.$style[key].call($sprite, $sprite);
             } else if (typeof $sprite.$style[key] === 'string' && $sprite.$style[key].indexOf('%') > -1) {
                 // 百分比的样式相对于parent计算
@@ -68,7 +70,10 @@ module.exports = function (force) {
                 $sprite.$cache[key] = $sprite.$style[key];
             }
 
-            // $sprite.$cache[key] = utils.funcOrValue($sprite.$style[key], $sprite);
+            if ($sprite.$self[key] !== $sprite.$cache[key]) {
+                $sprite.$self[key] = $sprite.$cache[key];
+                $sprite.$selfChanged = true;
+            }
 
             if (key === 'left' || key === 'top') {
                 let parent = $sprite.$parent;
@@ -82,12 +87,12 @@ module.exports = function (force) {
                 }
             }
 
-            if (cur === $sprite.$cache[key]) {
+            if (lastValue === $sprite.$cache[key]) {
                 // 一些属性可能本次计算和上次的结果相同，例如return固定值的一些function，不要触发刷新
                 delete $sprite.$needUpdate[key];
             } else {
                 if (key === 'left' || key === 'top' || key === 'opacity' || key === 'scale') {
-                    if (cur !== $sprite.$cache[key]) {
+                    if (lastValue !== $sprite.$cache[key]) {
                         // 继承的属性，parent变化时，child也需要update
                         $sprite.children.forEach(($child) => {
                             $child.$needUpdate[key] = 1;
@@ -104,19 +109,36 @@ module.exports = function (force) {
         $sprite.$needUpdate = $needUpdate;
     }
 
-    !force && utils.execFuncs($sprite.hooks.ticked, $sprite, [$sprite.$canvas.$rafTime]);
-
     // TODO:这两个属性目前没有通过依赖关系来主动更新，暂时用每帧计算，有优化空间
     // 但是未加载成功的图片要一直触发更新操作，因为不知道什么时候加载成功
     let _text = utils.funcOrValue($sprite.content.text, $sprite);
     let _img = utils.funcOrValue($sprite.content.img, $sprite);
+    let isContentChanged = ($sprite.$cache.text !== _text) || ($sprite.$cache.img !== _img) || ($sprite.content.img && !$sprite.$render._imgWidth);
 
-    // $render
-    if (isNeedUpdate || ($sprite.$cache.text !== _text) || ($sprite.$cache.img !== _img) || ($sprite.content.img && !$sprite.$render._imgWidth)) {
+    if (isContentChanged) {
+        $sprite.$selfChanged = true;
+    }
+
+    !force && utils.execFuncs($sprite.hooks.ticked, $sprite, [$sprite.$canvas.$rafTime]);
+
+    // 更新$render
+    if (isNeedUpdate || isContentChanged) {
         let $render = $sprite.$render;
 
         $sprite.$cache.img = $render.img = _img;
-        $sprite.$cache.text = $render.text = _text
+        $sprite.$cache.text = $render.text = _text;
+
+        if (_img) {
+            if (typeof $sprite.$cache.width === 'undefined' && _img.width) {
+                $sprite.$cache.width = _img.width;
+            }
+            if (typeof $sprite.$cache.height === 'undefined' && _img.height) {
+                $sprite.$cache.height = _img.height;
+            }
+        } else if (_text) {
+            $sprite.$cache.width = $sprite.$cache.width || 0;
+            $sprite.$cache.height = $sprite.$cache.height || 0;
+        }
 
         if (typeof $render.img === 'string') {
             _img = $render.img = $sprite.$canvas.imgLoader($render.img);

@@ -3,28 +3,19 @@
 
 import utils from 'utils/utils.js';
 
-const COMBINE_ING = 9;
-const COMBINE_DONE = 1;
+// const COMBINE_ING = 9;
 // const COMBINE_FAIL = 2;
 // const COMBINE_DELAY = 3;
 
 module.exports = function () {//return;
     let $sprite = this;
 
-    if ($sprite.$combine !== COMBINE_ING) {
-        return COMBINE_DONE;
-    }
-
     setTimeout(() => {
-        if ($sprite.$combine !== COMBINE_ING) {
-            return;// COMBINE_DONE;
-        }
-
         if ($sprite.getStyle('visible') === false) return;// COMBINE_DELAY;
 
         let $canvas = this.$canvas;
 
-        let rect = $sprite.getRect(false, true);
+        let rect = $sprite.getRect(true);
 
         if (rect.tw > $canvas.width) return;// COMBINE_FAIL;
         if (rect.th > $canvas.height) return;// COMBINE_FAIL;
@@ -132,8 +123,9 @@ module.exports = function () {//return;
         $sprite.$combine = {
             content: $sprite.content,
             children: $sprite.children,
-            style: Object.assign({}, $sprite.style),
+            style: Object.assign({}, $sprite.$style), // style有的属性被代理，assign这个API拿不到
         };
+
         $sprite.children = [];
         $sprite.content = {
             img: canvas,
@@ -150,6 +142,7 @@ module.exports = function () {//return;
             width: canvas.width,
             height: canvas.height,
             backgroundColor: undefined,
+            locate: 'lt',
         });
 
         return;// COMBINE_DONE;

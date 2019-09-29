@@ -1,13 +1,7 @@
-import constants from 'constants';
-
 module.exports = function () {
     this.off('ticked', this.combine);
 
     if (!this.$combine) return;
-    if (this.$combine === 9) {
-        this.$combine = false;
-        return;
-    }
 
 	this.content = this.$combine.content;
     this.children = this.$combine.children;
@@ -23,5 +17,9 @@ module.exports = function () {
 
     this.$combine = false;
 
-    this.recalculate(true);
+    // I don't know why nextTick
+    // cache is not 0 after recalculating in current tick
+    this.nextTick(() => {
+        this.recalculate(true);
+    });
 };

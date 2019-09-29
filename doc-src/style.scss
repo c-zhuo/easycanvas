@@ -154,6 +154,9 @@ div.content {
     }
 }
 
+code {
+    width: 100%;
+}
 div.demo {
     position: fixed;
     z-index: 10;
@@ -326,6 +329,7 @@ section.demo-box {
         // display: none;
         width: 0;
         height: 0;
+        padding: 0;
         overflow: hidden;
         display: block;
         opacity: 0;

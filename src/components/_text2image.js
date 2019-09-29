@@ -106,6 +106,12 @@ const textRendering = function (_text, config) {
                 endIndex = startIndex + 1;
                 drawY += config.fontSize + (config.lineHeight ? (config.lineHeight - config.fontSize) / 2 : 10);
                 lineCount++;
+
+                // 第二行开始行首不为空格
+                if (text[startIndex] === ' ') {
+                    startIndex++;
+                    endIndex++;
+                }
             }
         } else {
             if (endIndex > text.length - 1) {
