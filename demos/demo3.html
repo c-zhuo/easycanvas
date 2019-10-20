@@ -22,10 +22,12 @@
                 rotate: function () {return r1;},
                 rx: 250, ry: 200, left: 250, top: 200,
                 zIndex: 1,
+                locate: 'center',
             },
             events: {
                 eIndex: 2,
-                click: function () {
+                touchstart: function () {
+                    console.log(1);
                     r1 += 180;
                     return true;
                 },
@@ -39,11 +41,54 @@
                 rotate: function () {return r2;},
                 rx: 350, ry: 200, left: 350, top: 200,
                 zIndex: 2,
+                locate: 'lt',
             },
             events: {
                 eIndex: 1,
-                click: function () {
+                touchstart: function () {
+                    console.log(2);
                     r2 += 180;
+                    return true;
+                },
+            },
+        });
+
+        var Sprite3 = Sprite1.add({
+            content: {
+                img: G,
+            },
+            style: {
+                rotate: function () {return r1;},
+                rx: 250, ry: 200, left: 55, top: 55,
+                zIndex: 1,
+                locate: 'center',
+            },
+            events: {
+                eIndex: 2,
+                touchstart: function (e) {
+                    console.log(1);
+                    r1 += 25;
+                    e.preventDefault();
+                    return true;
+                },
+            },
+        });
+        var Sprite4 = Sprite2.add({
+            content: {
+                img: G,
+            },
+            style: {
+                rotate: function () {return r2;},
+                rx: 350, ry: 200, left: 55, top: 55,
+                zIndex: 2,
+                locate: 'lt',
+            },
+            events: {
+                eIndex: 1,
+                touchstart: function (e) {
+                    console.log(2);
+                    r2 += 25;
+                    e.preventDefault();
                     return true;
                 },
             },

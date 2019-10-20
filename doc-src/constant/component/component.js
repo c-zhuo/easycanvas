@@ -34,7 +34,7 @@ export default `
             <!-- 推荐：node环境引入组件 -->
             <!-- 注意Easycanvas是必须引入的，创建View的时候会隐式调用，原理与React相同 -->
             import Easycanvas, { View } from 'easycanvas';
-            var view1 = <View yourConfig="value" />
+            var view1 = <View yourConfig="value" />;
         </code>
 
         <p>浏览器引入时，需要的js文件可以在<a href="https://github.com/c-zhuo/easycanvas/tree/master/build" target="_blank">这里</a>找到。</p>

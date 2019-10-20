@@ -1,22 +1,26 @@
 export default `
-    <article id="更新日志（Latest：2019-9-13）">
+    <article id="更新日志（Latest：2019-10-20）">
         <h1>更新</h1>
 
         <p class="tip">Tips：小版本号为bugfix或新增API使用，中版本号可能包含个别不向下兼容的API调整。</p>
 
         <h2>进行中</h2>
 
-        <p>Feature：更多API和组件的文档。</p>
         <p>Feature：拆分调试工具、文档等到不同的git仓库中。</p>
         <p>Feature：开放部分https://github.com/c-zhuo/Mir2项目的源码，将应用于Easycanvas的大型游戏设计和开发文档系列。</p>
 
         <h2>当前版本</h2>
 
-        <h3>0.8.5 (2019.9.13)</h3>
+        <h3>0.8.5 (2019.10.20)</h3>
 
-        <p>Bugfix：修复了<strong>Sprite.getOuterRect()</strong>返回的right和bottom不准确的bug。</p>
-        <p>change：将<strong>imgPretreat</strong>API的首字母改为大写，请使用<strong>Easycanvas.ImgPretreat</strong>或<strong>import { ImgPretreat } from 'easycanvas'</strong>。</p>
-        <p>Feature：为Canvas 2D的<strong>Sequence组件</strong>补充了onOver和restart两个API，详见文档。</p>
+        <p>Bugfix：修复了文档站中的个别bug，并优化了文档的加载策略。</p>
+        <p>Bugfix：修复了<strong>Sprite.getRect()</strong>可能不正确的问题，在API文档中补充了其参数。</p>
+        <p>Bugfix：修复了Canvas 2D的<strong>MultiLineText</strong>组件渲染出来的文本可能被拉伸的bug。</p>
+        <p>Change：Easycanvas.imgPretreat更名为Easycanvas.ImgPretreat，同时会自动将rgba中超过255与小于0的值修正为255和0。</p>
+        <p>Change：现在绘制图片时，如果不传入width和height属性，将不再会自动填充这两个属性为图片自身的尺寸（但渲染时仍以图片自身宽高作为默认值，只是为了更规范，框架不再擅自修改开发者给出的参数配置）。</p>
+        <p>Feature：为Canvas 2D的<strong>Sequence</strong>组件增加onOver属性，同时interva属性为数组时，轮播间隔会循环遍历数组进行读取（数组长度可以小于帧数了），以支持更多场景。详见文档。</p>
+        <p>Feature：为Canvas 2D增加<strong>Button组件和StaticView组件</strong>，详见文档。</p>
+        <p>Performance：现在在处理事件时会进行部分缓存，以<strong>提升节点数量较多时的事件响应速度</strong>，当所有节点数量在千级以上时效果明显。</p>
         <p>文档补充：补充进阶使用相关文档。</p>
 
         <h2>历史版本</h2>

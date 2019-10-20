@@ -1,5 +1,5 @@
 import babelPlugin from '../../src/babel-plugin.js';
-import './babel-loader-runtime.jsx';
+import './babel-loader-runtime-perf.jsx';
 
 window.babelPlugin = babelPlugin;
 

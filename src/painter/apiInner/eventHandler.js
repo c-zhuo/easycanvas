@@ -16,13 +16,14 @@ const isMobile = typeof wx !== 'undefined' ||
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 /**
- * Sort sprite
+ * Sprite排序
  * - Order by eIndex dev-tool's in events' triggering
  * - Order by zIndex in dev-tool's select mode
  */
 const sortByIndex = function (arr) {
     return arr.sort(function (a, b) {
         if (process.env.NODE_ENV !== 'production') {
+            // Chrome开发者工具选取元素时，按照可见顺序(zIndex)触发事件，更符合开发者的习惯
             if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
                 return utils.funcOrValue(a.style.zIndex, a) < utils.funcOrValue(b.style.zIndex, b) ? 1 : -1;
             }
@@ -32,16 +33,19 @@ const sortByIndex = function (arr) {
     });
 };
 
-/**
- * Check whether the event hits certain sprite
- */
+// 需要根据eIndex或者zIndex对所有子节点进行排序，可能时间开销较大，因此对排序结果进行缓存
+// 为了避免影响用户体验，缓存有效期控制在50ms以内
+// js的sort的复杂度为O(nlogn)，近似认为n，
+// 因此，根据数组长度计算真正的缓存有效期 = Math.min(50, 50 * length / 1000)
+const sortMaxCacheExpire = 50;
+
 const hitSprite = function ($sprite, e) {
-    let rect = $sprite.getRect();
+    let rect = $sprite.getRect(true/* from cache */);
 
     return utils.pointInRect(
         e.canvasX, e.canvasY,
-        rect.left, rect.left + rect.width,
-        rect.top, rect.top + rect.height
+        rect.left, rect.right,
+        rect.top, rect.bottom
     );
 };
 
@@ -55,12 +59,12 @@ const looper = function (arr, e, caughts) {
 
     let l = arr.length;
     for (let i = 0; i < l; i++) {
-        let item = arr[i];
-        if (utils.funcOrValue(item.style.visible, item) === false) continue;
-        if (item.events && item.events.pointerEvents === 'none') continue;
+        let $sprite = arr[i];
+        if (utils.funcOrValue($sprite.style.visible, $sprite) === false) continue;
+        if ($sprite.events && $sprite.events.pointerEvents === 'none') continue;
 
-        if (hitSprite(item, e)) {
-            let interceptor = item.events.interceptor;
+        if (hitSprite($sprite, e)) {
+            let interceptor = $sprite.events.interceptor;
 
             if (process.env.NODE_ENV !== 'production') {
                 if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
@@ -70,25 +74,28 @@ const looper = function (arr, e, caughts) {
             }
 
             if (interceptor) {
-                // var result = utils.firstValuable(interceptor.call(item, e), e);
+                // var result = utils.firstValuable(interceptor.call($sprite, e), e);
                 // if (!result || result.$stopPropagation) return;
 
-                utils.execFuncs(interceptor, item, [e]);
+                utils.execFuncs(interceptor, $sprite, [e]);
                 if (e.$stopPropagation) return;
             }
         }
 
-        let children = item.$combine && item.$combine.children ? item.$combine.children : item.children;
+        let children = $sprite.$combine && $sprite.$combine.children ? $sprite.$combine.children : $sprite.children;
         if (process.env.NODE_ENV !== 'production') {
             if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
-                // 选取Sprite时不选取内部Sprite
-                children = item.children;
+                // 选取Sprite时不选取内部Combine的Sprite
+                children = $sprite.children;
             }
         }
 
+        const lastPaintTime = $sprite.$canvas.$lastPaintTime;
+        const cacheTime = Math.min(sortMaxCacheExpire, sortMaxCacheExpire * children.length / 1000);
+
         if (children.length) {
             // Children above
-            looper(sortByIndex(children.filter(function (a) {
+            const aboveChildrenInOrder = $sprite.$cache.aboveChildrenGenTime + cacheTime > lastPaintTime && $sprite.$cache.aboveChildrenInOrder || sortByIndex(children.filter(function (a) {
                 if (process.env.NODE_ENV !== 'production') {
                     if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
                         return utils.funcOrValue(a.style.zIndex, a) >= 0;
@@ -96,18 +103,22 @@ const looper = function (arr, e, caughts) {
                 }
 
                 return utils.funcOrValue(utils.firstValuable(a.events.eIndex, a.style.zIndex), a) >= 0;
-            })), e, caughts);
+            }));
+            $sprite.$cache.aboveChildrenInOrder = aboveChildrenInOrder;
+            $sprite.$cache.aboveChildrenGenTime = lastPaintTime;
+
+            looper(aboveChildrenInOrder, e, caughts);
         }
 
         if (e.$stopPropagation) break;
 
-        if (hitSprite(item, e)) {
+        if (hitSprite($sprite, e)) {
             if (process.env.NODE_ENV !== 'production') {
                 // 开发者工具select模式下为选取元素
                 if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
-                    if (item.name !== constants.devFlag) {
+                    if ($sprite.name !== constants.devFlag) {
                         e.stopPropagation();
-                        if (item.$canvas.$plugin.selectSprite(e.type === 'click' || e.type === 'touchend', item.$canvas, item)) {
+                        if ($sprite.$canvas.$plugin.selectSprite(e.type === 'click' || e.type === 'touchend', $sprite.$canvas, $sprite)) {
                             return;
                         }
                     }
@@ -115,14 +126,14 @@ const looper = function (arr, e, caughts) {
                 }
             }
 
-            triggerEventOnSprite(item, e, caughts);
+            triggerEventOnSprite($sprite, e, caughts);
             e.stopPropagation();
             return;
         }
 
         if (children.length) {
             // Children below
-            looper(sortByIndex(children.filter(function (a) {
+            const belowChildrenInOrder = $sprite.$cache.belowChildrenGenTime + cacheTime > lastPaintTime && $sprite.$cache.aboveChildrenInOrder || sortByIndex(children.filter(function (a) {
                 if (process.env.NODE_ENV !== 'production') {
                     if (window[constants.devFlag] && window[constants.devFlag].selectMode) {
                         return utils.funcOrValue(a.style.zIndex, a) < 0;
@@ -130,7 +141,11 @@ const looper = function (arr, e, caughts) {
                 }
 
                 return !(utils.funcOrValue(utils.firstValuable(a.events.eIndex, a.style.zIndex), a) >= 0);
-            })), e, caughts);
+            }));
+            $sprite.$cache.belowChildrenInOrder = belowChildrenInOrder;
+            $sprite.$cache.belowChildrenGenTime = lastPaintTime;
+
+            looper(belowChildrenInOrder, e, caughts);
         }
     }
 };
@@ -166,8 +181,7 @@ const fastclick = {
     x: 0, y: 0, timeStamp: 0,
 };
 
-var eventHandler;
-eventHandler = function (e, _$e) {
+var eventHandler = function (e, _$e) {
     let $canvas = this;
 
     let layerX;
@@ -208,12 +222,14 @@ eventHandler = function (e, _$e) {
 
     if (isMobile && $canvas.fastclick) {
         if ($e.type === 'click' && !$e.$fakeClick) {
+            // 已经触发过模拟的click，不再触发原生click事件
             return;
         } else if ($e.type === 'touchstart') {
             fastclick.x = $e.canvasX;
             fastclick.y = $e.canvasY;
             fastclick.timeStamp = Date.now();
         } else if ($e.type === 'touchend') {
+            // 满足fastclick条件，touchend后立刻触发模拟的click
             if (Math.abs(fastclick.x - $e.canvasX) < 30 && Math.abs(fastclick.y - $e.canvasY) < 30 && Date.now() - fastclick.timeStamp < 200) {
                 eventHandler.call(this, null, {
                     $fakeClick: true,

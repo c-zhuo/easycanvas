@@ -55,7 +55,7 @@ export default `
                 </tr>
                 <tr>
                     <td align="left">locate <<'center'|'lt'|'rt'|'ld'|'rd'|Function>></td>
-                    <td align="left">节点的定位方式（类似CSS的transform的translate）。默认'center'（以left、top为中心，向四周扩散到width、height的大小）。例如希望在(100,100)的位置展示一个30*30的爆炸效果，只需要让left和top为100、width和height为30即可，而不需要关注图片本身的尺寸，图片将以(100,100)为中心进行渲染。指定为'lt'可以使用类似CSS的方式（图片向右下方展开）。</td>
+                    <td align="left">节点的定位方式（类似CSS的transform的translate）。默认'center'（以left、top为中心，向四周扩散到width、height的大小）。例如希望在(100,100)的位置展示一个30*30的爆炸效果，只需要让left和top为100、width和height为30即可，而不需要关注图片本身的尺寸，图片将以(100,100)为中心进行渲染。指定为'lt'可以使用CSS中默认的布局方式，即矩形的盒子模型向右下方展开。</td>
                 </tr>
                 <tr>
                     <td align="left">zIndex <<Number|Function>></td>
@@ -181,11 +181,15 @@ export default `
             </tbody>
             <thead>
                 <tr>
-                    <th align="left">getRect()</th>
+                    <th align="left">getRect(fromCache)</th>
                     <th align="left">获取Sprite模型所占的区域盒子。</th>
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td align="left">getRect <<Boolean>></td>
+                    <td align="left">是否使用当前帧渲染时的缓存结果，默认false。设置为true后不会重新计算，例如手动改变了节点位置和大小，之后立刻调用这个API，拿到的将仍是上一帧渲染时的位置和大小。</td>
+                </tr>
                 <tr>
                     <td align="left">返回值 <<{left,top,right,bottom,width,height}>></td>
                     <td align="left">Sprite所占区域的边界。如果style中没有width和height，但是存在content.img，那么会使用图片的尺寸。这一点与HTML的<<img>>标签的规则是相同的。</td>

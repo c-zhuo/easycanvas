@@ -90,7 +90,7 @@
 
         // 按钮
 
-        $app.add(new Easycanvas.Button({
+        $app.add(Easycanvas.Button({
             name: 'button-1',
             text: 'click',
             normal: {
@@ -193,9 +193,11 @@
             style: {
                 left: 0,
                 top: 0,
+                zIndex: -1 // 防止事件被staticView捕获到
                 // locate: 'lt',
             }
         }));
+        $static = $app;
 
         $static.add(Easycanvas.MultiLineText({
             name: 'text-2',

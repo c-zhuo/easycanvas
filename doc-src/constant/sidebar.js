@@ -2,7 +2,7 @@ const tree = `
     - 介绍
     一些demo
     概述
-    更新日志（Latest：2019-9-13）
+    更新日志（Latest：2019-10-20）
     - 快速开始
     浏览器中引入
     npm引入与JSX写法
@@ -30,10 +30,12 @@ const tree = `
     帧动画Sequence
     滚动容器Scroll
     输入框Input
-    按钮组件Button（用法暂时参考Demo）
+    按钮组件Button
     拖拽组件Draggable
+    静态容器StaticView
     - 进阶
     数据绑定-场景中跑动的人物
+    复杂动画-释放技能与动效衔接
     - 插件
     物理引擎
     WebGL

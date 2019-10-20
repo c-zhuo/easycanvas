@@ -44,8 +44,8 @@ Easycanvas是一个同时支持2D和3D渲染、轻量、高效、MVVM模式的�
 - ☑ 支持微信小游戏（插件）
 - ☑ 支持微信小程序（插件）
 - ☑ CanvasUI基础组件
-- ☐ 导出原生javascript+canvas骨架屏（未开放）
 - ☐ 支持typescript
+- ☐ 导出原生javascript+canvas骨架屏（未开放）
 - ☐ 调试工具完善
 - ☐ CanvasRouter路由（插件）
 - ☐ CanvasStore数据管理（插件）

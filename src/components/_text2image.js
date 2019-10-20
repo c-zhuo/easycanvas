@@ -50,7 +50,7 @@ const textRendering = function (_text, config) {
     // tempCtx.textBaseline = 'top';
     // tempCtx.textBaseline = 'hanging';
     tempCtx.textBaseline = 'middle';
-    tempCtx.font = (config.fontStyle ? config.fontStyle + ' ' : '') + config.fontSize + 'px ' + (config.family || 'serif');
+    tempCtx.font = (config.fontStyle ? config.fontStyle + ' ' : '') + config.fontSize + 'px ' + (config.fontFamily || 'serif');
     tempCtx.fillStyle = config.color || '#000';
     tempCtx.textAlign = config.textAlign || 'left';
 

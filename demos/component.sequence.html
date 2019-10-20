@@ -19,14 +19,14 @@
         var $app = new Easycanvas.Painter();
         $app.register(document.getElementById('app'), {
             events: {
-                click: function (e) {
+                touchstart: function (e) {
                     var fireConfig = createFire(e.canvasX, e.canvasY);
                     $app.add(fireConfig);
                 }
             }
         });
 
-        var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/Fire.png');
+        var Fire = Easycanvas.ImgLoader('https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/resource/image/Fire.png');
 
         var createFire = function (initX, initY) {
             return Easycanvas.Sequence({

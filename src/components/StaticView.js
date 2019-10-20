@@ -24,29 +24,32 @@ const component = function (opt, Easycanvas) {
 
     let state = 0;
 
-    // setTimeout(() => {
-        $sprite.on('ticked', () => {
-            if (state === 2 && $sprite.$combine && $sprite.$combine.children) {
-                $sprite.$combine.children.forEach(child => child.recalculate());
+    $sprite.on('ticked', () => {
+        if (!$sprite.$canvas.$children) return;
+        if (state === 2 && $sprite.$combine && $sprite.$combine.children) {
+            $sprite.$combine.children.forEach(child => child.recalculate());
 
-                const changed = $sprite.$combine.children.find(child => {
-                    return child.$selfChanged || child.children.find(grandChild => grandChild.$selfChanged === true);
-                });
-    
-                if (changed || $sprite.$selfChanged) {
-                    $sprite.uncombine();
-                    state = 0;
-                }
-            } else if (state === 0 && !$sprite.getAllChildren().find(child => child.$selfChanged === true)) {
+            // combine之后如果调用了add，会推到children里，需要重新uncombine
+            const changed = $sprite.children.length > 1 || $sprite.$combine.children.find(child => {
+                return child.$selfChanged || child.getAllChildren().find(grandChild => grandChild.$selfChanged !== false);
+            });
+
+            if (changed) {
+                $sprite.uncombine();
+                state = 0;
+            }
+        } else if (state === 0 && !$sprite.getAllChildren(false).find(child => child.$selfChanged !== false)) {
+            if ($sprite.combine()) {
                 state = 1;
-                $sprite.combine();
+
+                // 防止合并之后立刻满足上面的if，触发uncombine
                 $sprite.nextTick(() => {
                     state++;
                 });
-                return;
             }
-        });
-    // }, 2400);
+            return;
+        }
+    });
 
     return $sprite;
 };

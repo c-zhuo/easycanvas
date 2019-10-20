@@ -118,6 +118,7 @@ const Analyze = function (str) {
                     return;
                 } else {
                     $ace.renderer.$size.height = code.split('\n').length * 16;
+                    dom.style.height = code.split('\n').length * 16 + 'px';
                     $ace.renderer.updateText();
 
                     const JavaScriptMode = acePlugin.Mode;
@@ -142,6 +143,12 @@ const Analyze = function (str) {
                     this.content = $content.innerHTML;
 
                     this.$nextTick(() => {
+                        document.querySelectorAll('img').forEach(dom => {
+                            if (!dom.src && dom.attributes.presrc && dom.attributes.presrc.value) {
+                                dom.src = dom.attributes.presrc.value;
+                            }
+                        });
+
                         document.querySelectorAll('code').forEach(dom => {
                             if (dom.parentElement.className.indexOf('demo-box') > -1) return;
                             if (!dom.previousElementSibling || dom.innerText.split('\n').length < 10) return;
@@ -168,6 +175,10 @@ const Analyze = function (str) {
 
             chooseTitle (item) {
                 if (item.type === 'folder') {
+                    return;
+                }
+
+                if (this.currentTitle === item.name) {
                     return;
                 }
 

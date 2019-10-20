@@ -4,7 +4,7 @@ export default `
 
         <p>“帧动画”也称为“序列动画”、“精灵动画”等，是指把一个元素在各个帧的状态的画面归到一组依次绘制，形成动画。例如下面是一个爆炸的动作序列图：</p>
 
-        <img class="article-img" width="100%" src="../resource/image/Fire.png"></img>
+        <img class="article-img" width="100%" presrc="../resource/image/Fire.png"></img>
 
         <h2>示例</h2>
 

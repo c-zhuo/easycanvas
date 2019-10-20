@@ -74,7 +74,7 @@ export default `
             </tbody>
             <thead>
                 <tr>
-                    <th align="left">style下的属性扩展</th>
+                    <th align="left">style下的扩展属性</th>
                     <th align="left">描述</th>
                 </tr>
             </thead>

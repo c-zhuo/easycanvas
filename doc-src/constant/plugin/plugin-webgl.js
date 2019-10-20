@@ -345,7 +345,7 @@ export default `
 
         <p>透射是3D场景“近大远小”的效果。即例如下面这张图，路的宽度是不变的，但是越远，看起来显得越窄。</p>
 
-        <img class="article-img" width="200" src="../resource/image/fudgeFactor.jpg"></img>
+        <img class="article-img" width="200" presrc="../resource/image/fudgeFactor.jpg"></img>
 
         <p>这个程度用fudgeFactor参数表示，默认为0，代表远近不影响视觉上的大小。在下例中，随着fudgeFactor的增大，“近大远小”的效果会更加明显。</p>
 
