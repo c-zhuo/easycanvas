@@ -42,8 +42,8 @@ Object.assign(config, {
                             {
                                 pattern: /\.\.\/resource\//ig,
                                 replacement: function (match, p1, offset, string) {
-                                    // return 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/resource/';
-                                    return 'https://raw.githubusercontent.com/c-zhuo/easycanvas/develop/0.8.4/demos/resource/';
+                                    return 'https://raw.githubusercontent.com/c-zhuo/easycanvas/master/demos/resource/';
+                                    // return 'https://raw.githubusercontent.com/c-zhuo/easycanvas/develop/0.8.4/demos/resource/';
                                 }
                             }
                         ]
