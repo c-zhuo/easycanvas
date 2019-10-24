@@ -92,50 +92,8 @@ div.sidebar {
 .github {
     position: absolute;
     left: 620px;
-    top: 13px;
+    top: 20px;
 }
-
-/*div.demos {
-    position: fixed;
-    left: 220px;
-    top: 0;
-    height: 56px;
-}*/
-
-/*ul {
-    padding: 5px;
-    margin: 5px;
-}
-
-li {
-    list-style: none;
-}*/
-
-/*li.sidebar-folder {
-    font-size: 16px;
-    color: $liteBlue;
-    padding: 10px 0 5px;
-    cursor: default;
-}
-li.sidebar-title {
-    font-size: 14px;
-    color: $liteBlue;
-    padding: 5px 0 5px 10px;
-    cursor: pointer;
-    background: white;
-    transition: all 1.2s;
-
-    & > .sidebar-text {
-        &:hover {
-            border-bottom: 1px solid $darkBlue;
-        }
-    }
-}
-li.sidebar-active {
-    color: $darkBlue;
-    background: linear-gradient(90deg, #fff, #479ce0);
-}
-*/
 
 div.content {
     position: fixed;

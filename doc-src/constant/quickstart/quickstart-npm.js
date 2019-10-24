@@ -89,7 +89,7 @@ export default `
         <p>上面的例子以非JSX的方式可以写成如下形式：</p>
 
         <section>
-            <div class="code-2-demo code-2-demo-jsx bg-demo"></div>
+            <div class="code-2-demo bg-demo"></div>
             <code>
                 <body>
                     <canvas id="app"></canvas>
@@ -127,7 +127,7 @@ export default `
                                     fontSize: 30
                                 },
                                 events: {
-                                    click: () => {
+                                    click () {
                                         this.style.color = "#00F";
                                     }
                                 },
