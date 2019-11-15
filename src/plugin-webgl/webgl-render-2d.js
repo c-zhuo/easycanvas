@@ -6,7 +6,7 @@ const m4 = _webglM4();
 
 var cacheBuffer2d;
 
-module.exports = function ($canvas,
+export default function ($canvas,
     texture, texWidth, texHeight,
     srcX, srcY, srcWidth, srcHeight,
     dstX, dstY, dstWidth, dstHeight,

@@ -111,7 +111,7 @@ PMD.prototype.toRight = function() {
  * TODO: change strings if sjis-lib is used
  */
 PMD.prototype._keepSomeBonesInfo = function() {
-  // ƒZƒ“ƒ^[, ¶‘«ñ, ‰E‘«ñ, ¶–Ú, ‰E–Ú
+  // ï¿½Zï¿½ï¿½ï¿½^ï¿½[, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Eï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½Eï¿½ï¿½
   this._keepBoneInfo(this.centerBone,    '0x830x5a0x830x930x830x5e0x810x5b');
   this._keepBoneInfo(this.leftFootBone,  '0x8d0xb60x910xab0x8e0xf1');
   this._keepBoneInfo(this.rightFootBone, '0x890x450x910xab0x8e0xf1');
@@ -1084,7 +1084,7 @@ PMDImageLoader.prototype._checkDone = function(callback) {
   }
 };
 
-module.exports = {
+export default {
   PMD,
   PMDHeader,
   PMDVertex,

@@ -1,5 +1,5 @@
 // @primitive: 0-points
-module.exports = function (type, useLight, primitive) {
+export default function (type, useLight, primitive) {
     let shaderString = `
         precision mediump float;
 

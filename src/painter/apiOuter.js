@@ -17,7 +17,7 @@ import setFpsHandler from './apiOuter/setFpsHandler.js';
 import setMaxFps from './apiOuter/setMaxFps.js';
 import skeleton from './apiOuter/skeleton.js';
 
-import sprite from 'class/sprite.js';
+import sprite from 'class/sprite';
 
 let apiOuter = {
     start,
@@ -44,4 +44,4 @@ if (process.env.NODE_ENV !== 'production') {
     apiOuter.skeleton = skeleton;
 }
 
-module.exports = apiOuter;
+export default apiOuter;

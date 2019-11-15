@@ -342,4 +342,4 @@ for (let shape in regularPolyhedron) {
     };
 }
 
-module.exports = webglShapes;
+export default webglShapes;

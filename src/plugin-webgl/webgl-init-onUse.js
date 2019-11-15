@@ -3,7 +3,7 @@ import utils from 'utils/utils.js';
 import webglShapes from './webgl-shapes.js';
 import { arrayRepeat, default0s, default1s } from './webgl-utils';
 
-module.exports = function (easycanvas) {
+export default function (easycanvas) {
     easycanvas.webglShapes = webglShapes;
 
     easycanvas.sprite.prototype.getWebglStyle = function (key) {

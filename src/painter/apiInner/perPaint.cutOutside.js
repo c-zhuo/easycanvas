@@ -4,7 +4,7 @@
  *
  * ********** **/
 
-// module.exports = function ($canvas, props, imgWidth, imgHeight) {
+// export default function ($canvas, props, imgWidth, imgHeight) {
 //     // source在图片外
 //     if (props.sx < 0 && props.sw) {
 //         let cutRate = (-props.sx / props.sw);

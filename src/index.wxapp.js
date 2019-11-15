@@ -1,4 +1,4 @@
-import Easycanvas from './index.js';
+import Easycanvas from './index';
 
 const cache = {};
 const ImgLoader = function (str, callback) {
@@ -91,4 +91,4 @@ Easycanvas.use({
     onCreate,
 });
 
-module.exports = Easycanvas;
+export default Easycanvas;

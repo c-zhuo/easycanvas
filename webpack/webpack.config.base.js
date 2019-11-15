@@ -17,7 +17,9 @@ module.exports = {
             class: path.join(__dirname, '../src/class'),
             lib: path.join(__dirname, '../src/lib'),
             utils: path.join(__dirname, '../src/utils'),
+            type: path.join(__dirname, '../src/type'),
         },
+        extensions: ['.tsx', '.ts', '.js'],
     },
 
     optimization: (env) => {
@@ -58,7 +60,27 @@ module.exports = {
                     options: {
                         presets: ['@babel/preset-env']
                     }
-                }
+                },
+                exclude: [
+                    path.resolve(__dirname, "src/lib"),
+                ],
+            }, {
+                test: /\.ts$/,
+                use: [{
+                    loader: "babel-loader",
+                }, {
+                    loader: "ts-loader",
+                    options: {
+                        compilerOptions: {
+                            "checkJs": false,
+                            "strict": false,
+                        }
+                    }
+                }],
+                exclude: [
+                    path.resolve(__dirname, "node_modules"),
+                    path.resolve(__dirname, "src/lib"),
+                ],
             }, {
                 test: /\.jsx$/,
                 use: [
@@ -73,8 +95,7 @@ module.exports = {
                             ]
                         }
                     },
-                    // { loader: path.resolve('./src/loader.js') }
-                ]
+                ],
             }
         ]
     },

@@ -814,7 +814,7 @@ VMDLight.prototype.dump = function() {
   return str;
 };
 
-module.exports = {
+export default {
   VMD,
   VMDLight,
   VMDHeader,

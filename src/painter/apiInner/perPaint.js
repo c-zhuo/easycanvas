@@ -18,7 +18,7 @@ const extend = function () {
     });
 };
 
-module.exports = function ($sprite, index) {
+export default function ($sprite, index) {
     $sprite.$rendered = false;
 
     if ($sprite.$cache.visible === false) {

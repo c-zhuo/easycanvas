@@ -83,7 +83,7 @@ var mix = function (a, b, wb) {
   );
 };
 
-module.exports = {
+export default {
   cross,
   qtransform,
   arrayAdd,

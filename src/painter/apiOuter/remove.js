@@ -6,7 +6,7 @@
 
 import utils from 'utils/utils.js';
 
-module.exports = function ($sprite) {
+export default function ($sprite) {
     utils.execFuncs($sprite.hooks.beforeRemove, $sprite, $sprite.$tickedTimes++);
 
     $sprite.style.visible = false;

@@ -8,6 +8,7 @@
     "game engine"
   ],
   "main": "build/index.common.js",
+  "types": "build/index.d.ts",
   "sideEffects": [
     "./build/*.wxapp.*",
     "./build/*.wxgame.*"
@@ -48,6 +49,7 @@
     "requirejs": "^2.3.5",
     "sass-loader": "^6.0.6",
     "string-replace-webpack-plugin": "^0.1.3",
+    "typescript": "^3.7.2",
     "webpack": "4.32.2",
     "webpack-dev-server": "3.4.1"
   },
@@ -79,7 +81,9 @@
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-syntax-jsx": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
+    "gifler": "^0.1.0",
     "recast": "^0.16.1",
+    "ts-loader": "^6.2.1",
     "uglifyjs-webpack-plugin": "^2.1.3",
     "webpack-cli": "3.3.2"
   }

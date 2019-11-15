@@ -7,7 +7,7 @@
 
 import THREE from './mock-three.js';
 
-module.exports = ( function () {
+export default ( function () {
 
 	THREE.FBXLoader = function ( manager ) {
 

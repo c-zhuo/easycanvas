@@ -94,6 +94,6 @@ const plugin = {
 if (inBrowser && window.Easycanvas) {
     Easycanvas.loaders = loaders;
     Easycanvas.use(plugin);
-} else {
-    module.exports = loaders;
 }
+
+export default loaders;

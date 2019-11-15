@@ -5,6 +5,6 @@
  *
  * ********** **/
 
-module.exports = function (callback) {
+export default function (callback) {
     this.fpsHandler = callback;
 };

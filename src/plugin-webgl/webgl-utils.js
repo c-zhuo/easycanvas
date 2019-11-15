@@ -21,7 +21,7 @@ const err = function (msg) {
     console.error('[Easycanvas-webgl] ' + msg);
 };
 
-module.exports = {
+export default {
 	arrayRepeat,
 	degToRad,
 	default0s,

@@ -23,7 +23,7 @@ const extend = function ($sprite, settings) {
     return stopDefault;
 };
 
-module.exports = function (_ctx, _children, renderAll) {
+export default function (_ctx, _children, renderAll) {
     let $canvas = this;
     let $children = _children || $canvas.$children;
 

@@ -671,4 +671,4 @@ PMDView.prototype._moveLight = function() {
   this.layer.lightPosition = light.location;
 };
 
-module.exports = PMDView;
+export default PMDView;

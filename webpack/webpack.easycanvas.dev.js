@@ -9,7 +9,7 @@ var base = require('./webpack.config.base.js');
 
 var env = 'development';
 
-var js = base.js('*.js').reduce(function (prev, curr) {
+var js = base.js('*.ts').reduce(function (prev, curr) {
     prev[curr.slice(2, -3).replace('src', 'build')] = [curr];
     return prev;
 }, {});

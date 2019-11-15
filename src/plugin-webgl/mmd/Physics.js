@@ -1213,4 +1213,4 @@ Physics.prototype.resetRigidBodies = function(motions) {
   }
 };
 
-module.exports = Physics;
+export default Physics;

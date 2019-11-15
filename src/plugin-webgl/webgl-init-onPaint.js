@@ -2,7 +2,7 @@ import utils from 'utils/utils.js';
 
 import { default0s, default1s, styleKeys } from './webgl-utils';
 
-module.exports = function () {
+export default function () {
     let $sprite = this;
     let $canvas = this.$canvas;
 

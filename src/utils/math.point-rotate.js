@@ -1,6 +1,6 @@
 const PI = 3.141593;
 
-module.exports = function (x, y, rx0, ry0, d, returnArr) {
+export default function (x, y, rx0, ry0, d, returnArr) {
     let deg = d ? -d / 180 * PI : 0;
     let _x = x, _y = y;
 

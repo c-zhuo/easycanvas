@@ -43,7 +43,7 @@ const loop = function (rafTime) {
     this.paint();
 };
 
-module.exports = function () {
+export default function () {
     this.fpsCalculateTime = Date.now();
 
 

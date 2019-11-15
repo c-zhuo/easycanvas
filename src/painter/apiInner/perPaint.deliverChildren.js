@@ -9,7 +9,7 @@
 
 import utils from 'utils/utils.js';
 
-module.exports = function ($canvas, children, part) {
+export default function ($canvas, children, part) {
     children.filter(function (item) {
         let zIndex = utils.funcOrValue(item.style.zIndex, item);
         if (part < 0) {

@@ -1,5 +1,5 @@
 // @type: 0-color 1-textcoord
-module.exports = function (type, useLight) {
+export default function (type, useLight) {
     let shaderString = `
         precision mediump float;
 

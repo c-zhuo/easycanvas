@@ -186,4 +186,4 @@ for (var i in types) {
     transition[i] = types[i];
 }
 
-module.exports = transition;
+export default transition;

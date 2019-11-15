@@ -62,7 +62,7 @@ const webglRegister = function ($canvas, option) {
     }
 };
 
-module.exports = function (_option) {
+export default function (_option) {
     if (_option.webgl) {
         // 获取webgl对象
         this.$paintContext = this.$dom.getContext('webgl', {

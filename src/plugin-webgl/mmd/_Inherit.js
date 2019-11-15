@@ -21,4 +21,4 @@ function __inherit( child, parent ) {
 //   child.prototype[name] = parent.prototype[methodName];
 // }
 
-module.exports = __inherit;
+export default __inherit;

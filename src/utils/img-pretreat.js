@@ -1,7 +1,7 @@
 import imgLoader from './img-loader.js';
 import img2base64 from './img2base64.js';
 
-module.exports = function (url, option) {
+export default function (url, option) {
     var result;
 
     img2base64(url, function (base64) {

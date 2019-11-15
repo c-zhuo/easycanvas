@@ -1,4 +1,4 @@
-import Easycanvas from 'src/index.js';
+import Easycanvas from 'src/index';
 import Sequence from 'src/components/Sequence.js';
 import constants from 'karma/case.constant.js';
 

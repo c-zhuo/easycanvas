@@ -11,7 +11,7 @@ import THREE from './mock-three.js';
  * @author mrdoob / http://mrdoob.com/
  */
 
-module.exports = THREE.DDSLoader = function () {
+export default THREE.DDSLoader = function () {
 
 	this._parser = THREE.DDSLoader.parse;
 

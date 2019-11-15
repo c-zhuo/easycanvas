@@ -52,4 +52,4 @@ for (let i in apiOuter) {
     }
 }
 
-module.exports = painter;
+export default painter;

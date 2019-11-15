@@ -20,4 +20,4 @@ function __toString(type, num, figure) {
   return prefix + (base + num.toString(type)).substr(-1 * figure);
 };
 
-module.exports = __toString;
+export default __toString;

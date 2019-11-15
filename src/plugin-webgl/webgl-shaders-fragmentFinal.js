@@ -1,4 +1,4 @@
-module.exports = function (type, useLight) {
+export default function (type, useLight) {
     let shaderString = `
         precision mediump float;
 

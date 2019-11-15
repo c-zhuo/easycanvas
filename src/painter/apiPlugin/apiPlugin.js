@@ -10,7 +10,7 @@
 import utils from 'utils/utils.js';
 import constants from 'constants';
 
-module.exports = function () {
+export default function () {
     if (process.env.NODE_ENV !== 'production') {
         const TO_PANEL_EVENT_NAME = '__EASYCANVAS_BRIDGE_TOPANEL__';
 

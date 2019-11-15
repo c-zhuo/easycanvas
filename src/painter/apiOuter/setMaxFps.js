@@ -5,6 +5,6 @@
  *
  * ********** **/
 
-module.exports = function (fps) {
+export default function (fps) {
     this.maxFps = fps || -1;
 };

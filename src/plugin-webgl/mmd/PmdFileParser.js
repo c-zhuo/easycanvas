@@ -577,5 +577,5 @@ PMDFileParser.prototype._parseJoint = function(p, n) {
   p.joints[n] = j;
 };
 
-module.exports = PMDFileParser;
+export default PMDFileParser;
 

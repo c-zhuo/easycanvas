@@ -1,4 +1,4 @@
-module.exports = function (notImg, fromCache) {
+export default function (notImg, fromCache) {
     let $sprite = this;
 
     let rect = $sprite.getRect(fromCache);

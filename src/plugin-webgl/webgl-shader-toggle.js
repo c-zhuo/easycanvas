@@ -52,7 +52,7 @@ const createShader = (function () {
 
 var lastType;
 
-module.exports = function (gl, type, light, primitive) {
+export default function (gl, type, light, primitive) {
     let currentType = '' + type + light + primitive;
     if (gl.singleShader) {
         currentType = 'singleShader';

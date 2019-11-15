@@ -13,7 +13,7 @@ const extend = function (opt) {
     });
 };
 
-module.exports = function (dom, option) {
+export default function (dom, option) {
     if (process.env.NODE_ENV !== 'production') {
         this.fpsHandler = this.fpsHandler || function (fps) {
             if (this.maxFps > 0 && fps < this.maxFps - 5 && fps < 40) {

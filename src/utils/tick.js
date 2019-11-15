@@ -11,4 +11,4 @@ const rAF = typeof requestAnimationFrame !== 'undefined' ? (
         fallback
     ) : fallback;
 
-module.exports = rAF;
+export default rAF;

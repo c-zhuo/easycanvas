@@ -255,4 +255,4 @@ FileParser.prototype.dump = function() {
   return dump;
 };
 
-module.exports = FileParser;
+export default FileParser;

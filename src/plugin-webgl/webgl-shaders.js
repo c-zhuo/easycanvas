@@ -3,7 +3,7 @@ import shaderVertexFinal from './webgl-shaders-vertexFinal';
 import shaderFragmentFactory from './webgl-shaders-fragmentFactory';
 import shaderFragmentFinal from './webgl-shaders-fragmentFinal';
 
-module.exports = {
+export default {
     factory: function (gl, type) {
         return type === gl.FRAGMENT_SHADER ? shaderFragmentFactory : shaderVertexFactory;
     },

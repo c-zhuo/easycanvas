@@ -1,4 +1,4 @@
-import sprite from './sprite.js';
+import sprite from './sprite';
 
 export default function (pluginHook) {
     let $extendList = sprite.prototype.$extendList;

@@ -22,4 +22,4 @@ if (process.env.NODE_ENV !== 'production') {
     apiInner.$plugin = $apiPlugin();
 }
 
-module.exports = apiInner;
+export default apiInner;

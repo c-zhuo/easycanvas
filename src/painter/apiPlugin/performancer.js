@@ -39,4 +39,4 @@ const Performancer = function () {
 
 P = new Performancer();
 
-module.exports = new Performancer();
+export default new Performancer();

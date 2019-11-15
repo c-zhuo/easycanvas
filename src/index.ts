@@ -1,4 +1,4 @@
-import constants from 'constants';
+import constants from '../constants';
 
 import Painter from './painter/index.js';
 import tick from 'utils/tick.js';
@@ -7,21 +7,58 @@ import utils from 'utils/utils.js';
 import Transition from 'utils/transition.js';
 import ImgLoader from 'utils/img-loader.js';
 import ImgPretreat from 'utils/img-pretreat.js';
-import sprite from './class/sprite.js';
+import sprite from './class/sprite';
 import extend from './class/extend.js';
 
 import './bridge/chrome-devtool.js';
+
+interface TEasycanvas {
+    use: typeof use
+    Painter: typeof Painter
+    ImgLoader: typeof ImgLoader
+    ImgPretreat: typeof ImgPretreat
+    Transition: typeof Transition
+    tick: typeof tick
+    utils: typeof utils
+    extend: typeof extend
+    class: {
+        sprite: typeof sprite
+    }
+    sprite: typeof sprite
+    Sprite: typeof sprite
+    // for JSX
+    createElement: Function
+}
+
+declare global {
+    interface Window {
+        Easycanvas?: TEasycanvas
+    }
+}
 
 // const $version = constants.version;
 
 const Sprite = sprite;
 
-const Easycanvas = {
+const use = function (pluginHook) {
+    let $extendList = Easycanvas.Painter.prototype.$extendList;
+
+    if ($extendList.indexOf(pluginHook) >= 0) return;
+
+    if (pluginHook.onUse) {
+        pluginHook.onUse(Easycanvas);
+    }
+
+    $extendList.push(pluginHook);
+};
+
+const Easycanvas: TEasycanvas = {
     Painter,
     ImgLoader,
     ImgPretreat,
     Transition,
     tick,
+    use,
     utils,
     extend,
     // mirror,
@@ -32,23 +69,11 @@ const Easycanvas = {
     sprite,
     Sprite,
     // for JSX
-    createElement: (Component, props, ...children) => {
+    createElement: (Component, props, ...children): typeof sprite => {
         var _props = props || {};
         _props.children = children || [];
         return new Component(_props, Easycanvas);
     },
-};
-
-Easycanvas.use = function (pluginHook) {
-    let $extendList = Easycanvas.Painter.prototype.$extendList;
-
-    if ($extendList.indexOf(pluginHook) >= 0) return;
-
-    if (pluginHook.onUse) {
-        pluginHook.onUse(Easycanvas);
-    }
-
-    $extendList.push(pluginHook);
 };
 
 const inBrowser = typeof window !== 'undefined';

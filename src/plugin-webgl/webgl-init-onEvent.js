@@ -28,7 +28,7 @@ const floatEqual = function (a, b) {
 var eventedTimestamp = 0;
 var eventedResult = false;
 
-module.exports = function ($e, caughts) {
+export default function ($e, caughts) {
     var $canvas = this;
     var gl = $canvas.$gl;
     var fbo = gl.createFramebuffer();

@@ -10,7 +10,7 @@ import { LoaderUtils } from './LoaderUtils.js';
 import { Interpolant } from './Interpolant.js';
 import { CompressedTextureLoader } from './CompressedTextureLoader.js';
 
-module.exports = {
+export default {
     FileLoader,
     LoaderUtils,
     Interpolant,

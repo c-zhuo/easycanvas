@@ -73,7 +73,7 @@ export {
     sprite,
 };
 
-export default Easycanvas;
+module.exports = Easycanvas;
 " >> ./build/index.common.js
 
 # ./src/components.js里的//过滤掉，node下需要export，浏览器下不需要export（否则挂到window上了）

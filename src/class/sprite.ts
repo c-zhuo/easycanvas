@@ -35,27 +35,21 @@
  * ********** **/
 
 import utils from 'utils/utils.js';
-import constants from 'constants';
+import constants from '../../constants';
 
-import on from './api.on.js';
-import off from './api.off.js';
-import addEventListener from './api.addEventListener.js';
-import removeEventListener from './api.removeEventListener.js';
+import { on, off, trigger, broadcast, distribute } from './api.hook';
+import { addEventListener, removeEventListener } from './api.eventListener';
 import clear from '../painter/apiOuter/clear.js';
 import nextTick from '../painter/apiOuter/nextTick.js';
-import trigger from './api.trigger.js';
-import broadcast from './api.broadcast.js';
-import distribute from './api.distribute.js';
-// import bindDrag from '../painter/apiInner/bindDrag.js';
 
 import getOuterRect from './api.getOuterRect.js';
 import combine from './api.combine.js';
 import uncombine from './api.uncombine.js';
 import recalculate from './api.recalculate.js';
 
-function flat (arr) {
-    var depth = isNaN(arguments[1]) ? 1 : Number(arguments[1]);
+import TSprite from 'type/sprite'
 
+function flat (arr, depth = 1) {
     return depth ? Array.prototype.reduce.call(arr, function (acc, cur) {
         if (Array.isArray(cur)) {
             acc.push.apply(acc, flat(cur, depth - 1));
@@ -241,247 +235,253 @@ const extend = function (opt) {
     });
 };
 
-const sprite = function (opt) {
-    let _opt = preAdd(opt, this);
+interface TStyle {
+    left?: any
+    top?: any
+    width?: any
+    height?: any
+    right?: any
+    bottom?: any
+}
 
-    for (let i in _opt) {
-        if (Object.prototype.hasOwnProperty.call(_opt, i)) {
-            this[i] = _opt[i];
-        }
-    }
+class Sprite implements TSprite {
+    $cache = {}
+    content: any = {}
+    style: any = {}
+    events: any = {}
+    hooks: any = {}
+    $parent: any = null
+    $canvas = null;
+    $style = null;
+    $extendList = []
+    $combine: any = {}
+    children = []
 
-    if (opt.ref) {
-        opt.ref(this);
-    }
+    constructor (opt) {
+        let _opt = preAdd(opt, this);
 
-    extend.call(this, _opt);
-
-    return this;
-};
-
-sprite.prototype.$extendList = [];
-
-sprite.prototype.add = function (child) {
-    if (!child) {
-        return;
-    }
-
-    this.children.push(child);
-
-    ChangeChildrenToSprite(this);
-
-    return this.children[this.children.length - 1];
-};
-
-sprite.prototype.getImage = function () {
-    let img = utils.funcOrValue(this.content.img, this);
-    if (typeof img === 'string' && this.$canvas) {
-        return this.$canvas.imgLoader(img);
-    }
-
-    return img;
-};
-
-sprite.prototype.getRect = function (fromCache) {
-    let res = {};
-
-    constants.txywh.forEach((key) => {
-        res[key] = this.getStyle(key, fromCache) || 0;
-    });
-
-    // if (res.width === 0 && this.content.img && !notImg) {
-    //     let img = utils.funcOrValue(this.content.img, this);
-    //     res.width = img.width;
-    //     res.height = img.height;
-    // }
-
-    let locate = this.getStyle('locate');
-    if (locate === 'lt') {
-    } else if (locate === 'ld') {
-        res.top -= res.height;
-    } else if (locate === 'rt') {
-        res.left -= res.width;
-    } else if (locate === 'rd') {
-        res.left -= res.width;
-        res.top -= res.height;
-    } else { // center
-        res.left -= res.width >> 1;
-        res.top -= res.height >> 1;
-    }
-
-    res.right = res.left + res.width;
-    res.bottom = res.top + res.height;
-
-    return res;
-};
-
-// sprite.prototype.getRender = function () {
-
-//     if (!this.$canvas) return {};
-
-//     let res = this.$canvas.$children.filter(($children) => {
-//         return $children.$id === this.$id;
-//     });
-
-//     return res && res[0];
-// };
-
-sprite.prototype.getSelfStyle = function (key) {
-    if (key) {
-        return utils.funcOrValue(this.style[key], this);
-    }
-
-    let res = {};
-
-    for (let key in this.style) {
-        res[key] = utils.funcOrValue(this.style[key], this);
-    }
-
-    return res;
-};
-
-sprite.prototype.getStyle = function (key, fromCache) {
-    let $sprite = this;
-    // let lastPaintTime = $sprite.$canvas.$lastPaintTime;
-
-    // if ($sprite.$styleCacheTime[key] === lastPaintTime) {
-    //     return $sprite.$cache[key];
-    // }
-
-    if (fromCache && $sprite.$cache[key] !== undefined) {
-        return $sprite.$cache[key];
-    }
-
-    let currentValue = utils.funcOrValue($sprite.$style[key], $sprite);
-
-    if ($sprite.$parent) {
-        let parentValue = $sprite.$parent.getStyle(key);
-
-        if (key === 'left' || key === 'top') {
-            parentValue = utils.firstValuable(parentValue, 0);
-
-            // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
-            // $sprite.$parent.$cache[key] = parentValue;
-
-            return (
-                parentValue
-            ) + utils.firstValuable(currentValue, 0);
-        } else if (key === 'scale' || key === 'opacity') {
-            parentValue = utils.firstValuable(parentValue, 1);
-
-            // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
-            // $sprite.$parent.$cache[key] = parentValue;
-
-            return (
-                parentValue
-            ) * utils.firstValuable(currentValue, 1);
-        } else if (key === 'visible') {
-            if (parentValue === false) return false;
-            // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
-            // $sprite.$parent.$cache[key] = parentValue;
-
-            return currentValue;
-        } else if (key === 'width' || key === 'height' || typeof currentValue === 'undefined') {
-            currentValue = $sprite.$cache[key];
-
-            return currentValue;
-        }
-    }
-
-    return currentValue;
-};
-
-sprite.prototype.remove = function (child) {
-    if (child) {
-        this.$canvas.remove(child);
-        utils.execFuncs(child.hooks.removed, child);
-        return;
-    }
-
-    if (this.$parent) {
-        this.$parent.remove(this);
-    } else {
-        this.$canvas.remove(this);
-    }
-    utils.execFuncs(this.hooks.removed, this);
-};
-
-sprite.prototype.update = function (opt) {
-    if (!opt) return;
-
-    for (var i in opt) {
-        if (typeof opt[i] === 'object') {
-            for (var j in opt[i]) {
-                if (!this[i]) {
-                    this[i] = {};
-                }
-
-                this[i][j] = opt[i][j];
+        for (let i in _opt) {
+            if (Object.prototype.hasOwnProperty.call(_opt, i)) {
+                this[i] = _opt[i];
             }
-        } else {
-            this[i] = opt[i];
         }
+
+        if (opt.ref) {
+            opt.ref(this);
+        }
+
+        extend.call(this, _opt);
+
+        return this;
     }
 
-    if (this.$canvas) {
-        this.recalculate(true); // if painted, force update
-    }
-    return this;
-};
-
-sprite.prototype.getAllChildren = function (includeSelf) {
-    let $sprite = this;
-
-    let childrenSet = includeSelf ? [$sprite] : [];
-
-    $sprite.children.forEach((child) => {
-        childrenSet = childrenSet.concat(child.getAllChildren(true));
-    });
-
-    return childrenSet;
-};
-
-sprite.prototype.getAllVisibleChildren = function (includeSelf) {
-    let $sprite = this;
-
-    if (utils.funcOrValue($sprite.style.visible, $sprite) === false) {
-        return [];
+    add (child) {
+        if (!child) {
+            return;
+        }
+    
+        this.children.push(child);
+    
+        ChangeChildrenToSprite(this);
+    
+        return this.children[this.children.length - 1];
     }
 
-    let childrenSet = includeSelf ? [$sprite] : [];
+    getImage () {
+        let img = utils.funcOrValue(this.content.img, this);
+        if (typeof img === 'string' && this.$canvas) {
+            return this.$canvas.imgLoader(img);
+        }
+    
+        return img;
+    }
 
-    $sprite.children.forEach((child) => {
-        childrenSet = childrenSet.concat(child.getAllVisibleChildren(true));
-    });
+    getRect (fromCache) {
+        let res: TStyle = {};
+    
+        constants.txywh.forEach((key) => {
+            res[key] = this.getStyle(key, fromCache) || 0;
+        });
+    
+        // if (res.width === 0 && this.content.img && !notImg) {
+        //     let img = utils.funcOrValue(this.content.img, this);
+        //     res.width = img.width;
+        //     res.height = img.height;
+        // }
+    
+        let locate = this.getStyle('locate');
+        if (locate === 'lt') {
+        } else if (locate === 'ld') {
+            res.top -= res.height;
+        } else if (locate === 'rt') {
+            res.left -= res.width;
+        } else if (locate === 'rd') {
+            res.left -= res.width;
+            res.top -= res.height;
+        } else { // center
+            res.left -= res.width >> 1;
+            res.top -= res.height >> 1;
+        }
+    
+        res.right = res.left + res.width;
+        res.bottom = res.top + res.height;
+    
+        return res;
+    }
 
-    return childrenSet;
-};
+    getSelfStyle (key) {
+        if (key) {
+            return utils.funcOrValue(this.style[key], this);
+        }
+    
+        let res = {};
+    
+        for (let key in this.style) {
+            res[key] = utils.funcOrValue(this.style[key], this);
+        }
+    
+        return res;
+    }
 
-sprite.prototype.getOuterRect = getOuterRect;
+    getStyle (key, fromCache?: boolean): TStyle | String | Number | Boolean {
+        let $sprite = this;
+        // let lastPaintTime = $sprite.$canvas.$lastPaintTime;
+    
+        // if ($sprite.$styleCacheTime[key] === lastPaintTime) {
+        //     return $sprite.$cache[key];
+        // }
+    
+        if (fromCache && $sprite.$cache[key] !== undefined) {
+            return $sprite.$cache[key];
+        }
+    
+        let currentValue = utils.funcOrValue($sprite.$style[key], $sprite);
+    
+        if ($sprite.$parent) {
+            let parentValue = $sprite.$parent.getStyle(key);
+    
+            if (key === 'left' || key === 'top') {
+                parentValue = utils.firstValuable(parentValue, 0);
+    
+                // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+                // $sprite.$parent.$cache[key] = parentValue;
+    
+                return (
+                    parentValue
+                ) + utils.firstValuable(currentValue, 0);
+            } else if (key === 'scale' || key === 'opacity') {
+                parentValue = utils.firstValuable(parentValue, 1);
+    
+                // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+                // $sprite.$parent.$cache[key] = parentValue;
+    
+                return (
+                    parentValue
+                ) * utils.firstValuable(currentValue, 1);
+            } else if (key === 'visible') {
+                if (parentValue === false) return false;
+                // $sprite.$parent.$styleCacheTime[key] = lastPaintTime;
+                // $sprite.$parent.$cache[key] = parentValue;
+    
+                return currentValue;
+            } else if (key === 'width' || key === 'height' || typeof currentValue === 'undefined') {
+                currentValue = $sprite.$cache[key];
+    
+                return currentValue;
+            }
+        }
+    
+        return currentValue;
+    }
 
-sprite.prototype.combine = combine;
+    remove (child) {
+        if (child) {
+            this.$canvas.remove(child);
+            utils.execFuncs(child.hooks.removed, child);
+            return;
+        }
+    
+        if (this.$parent) {
+            this.$parent.remove(this);
+        } else {
+            this.$canvas.remove(this);
+        }
+        utils.execFuncs(this.hooks.removed, this);
+    }
 
-sprite.prototype.uncombine = uncombine;
+    update (opt) {
+        if (!opt) return;
+    
+        for (var i in opt) {
+            if (typeof opt[i] === 'object') {
+                for (var j in opt[i]) {
+                    if (!this[i]) {
+                        this[i] = {};
+                    }
+    
+                    this[i][j] = opt[i][j];
+                }
+            } else {
+                this[i] = opt[i];
+            }
+        }
+    
+        if (this.$canvas) {
+            this.recalculate(true); // if painted, force update
+        }
+        return this;
+    }
 
-sprite.prototype.combineAsync = function () {
-    if (this.$combine) return this;
+    getAllChildren (includeSelf) {
+        let $sprite = this;
+    
+        let childrenSet = includeSelf ? [$sprite] : [];
+    
+        $sprite.children.forEach((child) => {
+            childrenSet = childrenSet.concat(child.getAllChildren(true));
+        });
+    
+        return childrenSet;
+    }
 
-    this.off('ticked', this.combine);
-    this.on('ticked', this.combine, 100);
+    getAllVisibleChildren (includeSelf) {
+        let $sprite = this;
+    
+        if (utils.funcOrValue($sprite.style.visible, $sprite) === false) {
+            return [];
+        }
+    
+        let childrenSet = includeSelf ? [$sprite] : [];
+    
+        $sprite.children.forEach((child) => {
+            childrenSet = childrenSet.concat(child.getAllVisibleChildren(true));
+        });
+    
+        return childrenSet;
+    }
 
-    return this;
-};
+    getOuterRect = getOuterRect
+    combine= combine
+    uncombine = uncombine
+    recalculate = recalculate
+    nextTick = nextTick
+    on = on
+    off = off
+    addEventListener = addEventListener
+    removeEventListener = removeEventListener
+    clear = clear
+    trigger = trigger
+    broadcast = broadcast
+    distribute = distribute
 
-sprite.prototype.recalculate = recalculate;
+    combineAsync () {
+        if (this.$combine) return this;
+    
+        this.off('ticked', this.combine);
+        this.on('ticked', this.combine, 100);
+    
+        return this;
+    }
+}
 
-sprite.prototype.nextTick = nextTick;
-sprite.prototype.on = on;
-sprite.prototype.off = off;
-sprite.prototype.addEventListener = addEventListener;
-sprite.prototype.removeEventListener = removeEventListener;
-sprite.prototype.clear = clear;
-sprite.prototype.trigger = trigger;
-sprite.prototype.broadcast = broadcast;
-sprite.prototype.distribute = distribute;
-
-module.exports = sprite;
+export default Sprite;

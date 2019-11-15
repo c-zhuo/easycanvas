@@ -23,6 +23,6 @@ const plugin = {
 
 if (inBrowser && window.Easycanvas) {
     Easycanvas.use(plugin);
-} else {
-    module.exports = plugin;
 }
+
+export default plugin;

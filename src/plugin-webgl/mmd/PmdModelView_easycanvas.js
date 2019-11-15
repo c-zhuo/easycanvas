@@ -1062,4 +1062,4 @@ PMDModelView.prototype._moveMorph = function(index, weight) {
   }
 };
 
-module.exports = PMDModelView;
+export default PMDModelView;

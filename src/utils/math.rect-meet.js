@@ -5,7 +5,7 @@
 import pointRotate from './math.point-rotate.js';
 import pointInRect from './math.point-in-rect.js';
 
-// module.exports = function (x1, y1, w1, h1, x2, y2, w2, h2, rx, ry, deg) {
+// export default function (x1, y1, w1, h1, x2, y2, w2, h2, rx, ry, deg) {
 //     var cx = x1 + w1 / 2;
 //     var cy = y1 + h1 / 2;
 
@@ -43,7 +43,7 @@ import pointInRect from './math.point-in-rect.js';
 //     return meet;
 // };
 
-module.exports = function (x1, y1, w1, h1, x2, y2, w2, h2, rx, ry, deg) {
+export default function (x1, y1, w1, h1, x2, y2, w2, h2, rx, ry, deg) {
     if (!deg) {
         // 先快速判断几个明显不相交的场景，提升性能
         if (y1 > y2 + h2) return false;

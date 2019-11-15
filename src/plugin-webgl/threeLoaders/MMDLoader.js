@@ -38,7 +38,7 @@ import THREE from './mock-three.js';
  *  - shadow support.
  */
 
-module.exports = ( function () {
+export default ( function () {
 // THREE.MMDLoader = ( function () {
 
 	/**

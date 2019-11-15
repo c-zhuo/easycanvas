@@ -117,7 +117,7 @@ const webglRender = function ($sprite, settings, $canvas) {
     }
 };
 
-module.exports = function ($sprite, settings) {
+export default function ($sprite, settings) {
     let $canvas = this;
 
     if ($canvas.$isWebgl) {

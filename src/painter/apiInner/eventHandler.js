@@ -309,4 +309,4 @@ var eventHandler = function (e, _$e) {
     }
 };
 
-module.exports = eventHandler;
+export default eventHandler;

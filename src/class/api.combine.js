@@ -7,7 +7,7 @@ import utils from 'utils/utils.js';
 // const COMBINE_FAIL = 2;
 // const COMBINE_DELAY = 3;
 
-module.exports = function () {//return;
+export default function () {//return;
     let $sprite = this;
 
     if ($sprite.getStyle('visible') === false) {

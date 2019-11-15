@@ -6,7 +6,7 @@
  *
  * ********** **/
 
-import gifler from 'lib/gifler.js';
+import gifler from 'gifler';
 
 const Cache = {};
 const ProcessingFlag = 'processing';
@@ -66,7 +66,7 @@ if (window && window.Easycanvas) {
     _ec.gif2canvas = gif2canvas;
 }
 
-module.exports = function (ec) {
+export default function (ec) {
     _ec = ec;
     ec.gif2canvas = gif2canvas;
 };

@@ -4,7 +4,7 @@
  *
  * ********** **/
 
-module.exports = function () {
+export default function () {
     this.children.forEach((child) => {
         child.remove();
     });

@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV !== 'production') {
-    module.exports = function () {
+export default function () {
+    if (process.env.NODE_ENV !== 'production') {
         let $canvas = this;
 
         $canvas.children[0].__proto__.getAllChildren.call($canvas).forEach((child) => {
@@ -13,13 +13,13 @@ if (process.env.NODE_ENV !== 'production') {
             child.$combine = false;
         });
 
-        let sekeletonString = '';
-        sekeletonString += "var $SKL=document.getElementsByTagName('canvas')[0];";
-        sekeletonString += `$SKL.width=${$canvas.width};$SKL.height=${$canvas.height};`;
-        sekeletonString += "$SKL.style.width='100%';$SKL.style.width='100%';";
-        sekeletonString += "var SKLIMG=[];";
-        sekeletonString += "var SKL = function(){";
-        sekeletonString += "var _=$SKL.getContext('2d');";
+        let skeletonString = '';
+        skeletonString += "var $SKL=document.getElementsByTagName('canvas')[0];";
+        skeletonString += `$SKL.width=${$canvas.width};$SKL.height=${$canvas.height};`;
+        skeletonString += "$SKL.style.width='100%';$SKL.style.width='100%';";
+        skeletonString += "var SKLIMG=[];";
+        skeletonString += "var SKL = function(){";
+        skeletonString += "var _=$SKL.getContext('2d');";
 
         let $children = $canvas.$children;
         $children.forEach(($child) => {
@@ -28,32 +28,32 @@ if (process.env.NODE_ENV !== 'production') {
 
 
             if ($child.type === 'img') {
-                sekeletonString += `_.globalAlpha=${settings.globalAlpha};`;
+                skeletonString += `_.globalAlpha=${settings.globalAlpha};`;
 
                 if ($child.img && $child.img.$origin) {
                     // is canvas
-                    sekeletonString += $child.img.$origin.join(';') + ';';
-                    sekeletonString += `_.drawImage(tempCanvas, ${props.cutLeft}, ${props.cutTop}, ${props.cutWidth}, ${props.cutHeight}, ${props.left}, ${props.top}, ${props.width}, ${props.height});`;
+                    skeletonString += $child.img.$origin.join(';') + ';';
+                    skeletonString += `_.drawImage(tempCanvas, ${props.cutLeft}, ${props.cutTop}, ${props.cutWidth}, ${props.cutHeight}, ${props.left}, ${props.top}, ${props.width}, ${props.height});`;
                 } else if ($child.img && $child.img.src) {
-                    sekeletonString += `var img = new Image();`;
-                    sekeletonString += `var imgUrl='${$child.img.src}';if(SKLIMG.indexOf(imgUrl)===-1){SKLIMG.push(imgUrl);img.onload=function(){_.clearRect(0,0,$SKL.width,$SKL.height);SKL();}};`;
-                    sekeletonString += `img.src=imgUrl;`;
-                    sekeletonString += `_.drawImage(img, ${props.cutLeft}, ${props.cutTop}, ${props.cutWidth}, ${props.cutHeight}, ${props.left}, ${props.top}, ${props.width}, ${props.height});`;
+                    skeletonString += `var img = new Image();`;
+                    skeletonString += `var imgUrl='${$child.img.src}';if(SKLIMG.indexOf(imgUrl)===-1){SKLIMG.push(imgUrl);img.onload=function(){_.clearRect(0,0,$SKL.width,$SKL.height);SKL();}};`;
+                    skeletonString += `img.src=imgUrl;`;
+                    skeletonString += `_.drawImage(img, ${props.cutLeft}, ${props.cutTop}, ${props.cutWidth}, ${props.cutHeight}, ${props.left}, ${props.top}, ${props.width}, ${props.height});`;
                 } else {
-                    sekeletonString += `_.fillStyle='#666';`;
-                    sekeletonString += `_.fillRect(${props.left}, ${props.top}, ${props.width}, ${props.height});`;
+                    skeletonString += `_.fillStyle='#666';`;
+                    skeletonString += `_.fillRect(${props.left}, ${props.top}, ${props.width}, ${props.height});`;
                 }
             } else if ($child.type === 'fillRect') {
-                sekeletonString += `_.globalAlpha=${settings.globalAlpha};`;
+                skeletonString += `_.globalAlpha=${settings.globalAlpha};`;
 
-                sekeletonString += `_.fillStyle='${settings.fillRect}';`;
-                sekeletonString += `_.fillRect(${props.left}, ${props.top}, ${props.width}, ${props.height});`;
+                skeletonString += `_.fillStyle='${settings.fillRect}';`;
+                skeletonString += `_.fillRect(${props.left}, ${props.top}, ${props.width}, ${props.height});`;
             }
         });
 
-        sekeletonString += `_.globalAlpha=1;`;
-        sekeletonString += '};SKL($SKL);'
+        skeletonString += `_.globalAlpha=1;`;
+        skeletonString += '};SKL($SKL);'
 
-        console.log(sekeletonString);
-    };
-}
+        console.log(skeletonString);
+    }
+};

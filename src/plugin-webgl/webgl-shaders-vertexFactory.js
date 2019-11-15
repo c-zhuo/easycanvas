@@ -1,6 +1,6 @@
 // @type: 0-color 1-textcoord
 // @primitive: 0-points
-module.exports = function (type, useLight, primitive) {
+export default function (type, useLight, primitive) {
     let shaderString = `
         precision mediump float;
         attribute vec4 a_position;

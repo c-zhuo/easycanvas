@@ -134,4 +134,4 @@ const loader = function (url, callback, option) {
 
 loader.cacheCanvas = false;
 
-module.exports = loader;
+export default loader;

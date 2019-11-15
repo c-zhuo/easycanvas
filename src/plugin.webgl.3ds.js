@@ -138,9 +138,9 @@ const inBrowser = typeof window !== 'undefined';
 if (inBrowser && window.Easycanvas) {
     window.Easycanvas.loader3DS = loader3DS;
     Easycanvas.extend(classInit);
-} else {
-    module.exports = {
-        loader3DS,
-        classInit,
-    };
 }
+
+export default {
+    loader3DS,
+    classInit,
+};

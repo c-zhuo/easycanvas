@@ -50,7 +50,7 @@ import utils from 'utils/utils.js';
 //     return false;
 // };
 
-module.exports = function () {
+export default function () {
     if (this.$pausing || (this.$inBrowser && document.hidden)) return;
 
     let $canvas = this;

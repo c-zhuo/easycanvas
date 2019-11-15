@@ -240,10 +240,10 @@ if (inBrowser && window.Easycanvas) {
     Easycanvas.loaderPMD = loaderPMD;
     Easycanvas.loaderVMD = loaderVMD;
     Easycanvas.extend(classInit);
-} else {
-    module.exports = {
-        loaderPMD,
-        loaderVMD,
-        classInit,
-    };
 }
+
+export default {
+    loaderPMD,
+    loaderVMD,
+    classInit,
+};

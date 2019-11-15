@@ -6,7 +6,7 @@ import toggleShader from './webgl-shader-toggle.js';
 
 const m4 = _webglM4();
 
-module.exports = function ($canvas, webgl) {
+export default function ($canvas, webgl) {
     if ((!webgl.colors || !webgl.colors.length) && (!webgl.textures || !webgl.textures.length)) return;
 
     let gl = $canvas.$gl;

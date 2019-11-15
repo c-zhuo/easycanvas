@@ -34,4 +34,4 @@ function toDataURL (url, callback) {
     xhr.send();
 }
 
-module.exports = toDataURL;
+export default toDataURL;

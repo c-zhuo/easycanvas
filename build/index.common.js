@@ -45,7 +45,7 @@ export {
     sprite,
 };
 
-export default Easycanvas;
+module.exports = Easycanvas;
 
 import Button from './components/Button.js';
 import Image from './components/Image.js';

@@ -1,4 +1,4 @@
 import './plugin-wxgame/wxgame-adaptor.js';
-import Easycanvas from './index.js';
+import Easycanvas from './index';
 
-module.exports = Easycanvas;
+export default Easycanvas;

@@ -6,7 +6,7 @@ import pointRotate from './math.point-rotate.js';
 
 const PI = 3.141593;
 
-module.exports = function (x, y, x2, y2, w2, h2, rx, ry, deg) {
+export default function (x, y, x2, y2, w2, h2, rx, ry, deg) {
     let _deg = deg ? -deg / 180 * PI : 0;
 
     if (_deg) {

@@ -5,7 +5,7 @@
  *
  * ********** **/
 
-module.exports = function (func) {
+export default function (func) {
     let _func = function () {
         func.apply(this, arguments);
         this.off('ticked', _func);

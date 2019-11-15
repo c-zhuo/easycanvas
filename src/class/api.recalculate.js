@@ -14,7 +14,7 @@ const getScaledParent = function ($sprite) {
 };
 
 // 后面可能要拆成计算$cache、触发钩子、生成渲染对象$render，便于将部分逻辑复用于combine等场景
-module.exports = function (force) {
+export default function (force) {
     let $sprite = this;
 
     !force && utils.execFuncs($sprite.hooks.beforeTick, $sprite, [$sprite.$canvas.$rafTime]);

@@ -180,4 +180,4 @@ VMDFileParser.prototype._parseLight = function(v, n) {
   v.lights[n] = l;
 };
 
-module.exports = VMDFileParser;
+export default VMDFileParser;

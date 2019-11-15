@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "checkJs": false,
+        "sourceMap": true,
+        "outDir": "./build/",
+        "strict": false,
+        "baseUrl": ".",
+        "skipLibCheck": true,
+        "paths": {
+            "src/*": ["src/*"],
+            "class/*": ["src/class/*"],
+            "lib/*": ["src/lib/*"],
+            "type/*": ["src/type/*"],
+            "utils/*": ["src/utils/*"],
+        },
+        "declaration": true
+    },
+    "files": ["src/index.ts"],
+    "include": ["src"],
+    "exclude": ["src/lib"],
+}

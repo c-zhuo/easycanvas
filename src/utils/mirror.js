@@ -1,4 +1,4 @@
-module.exports = function mirrorImage (orgImage) {  
+export default function mirrorImage (orgImage) {  
     let imageWidth = orgImage.width;  
     let imageHeight = orgImage.height;  
   

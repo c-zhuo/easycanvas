@@ -457,6 +457,6 @@ function spritePhysicsOn ($sprite) {
 
 if (inBrowser && window.Easycanvas) {
     Easycanvas.extend(init);
-} else {
-    module.exports = init;
 }
+
+export default init;
